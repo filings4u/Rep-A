@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>filings4u | Launch Your Business</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f7f6; color: #333; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .funnel-container { background: white; max-width: 500px; width: 100%; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .step { display: none; }
+        .step.active { display: block; }
+        h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; color: #111; }
+        p { color: #666; font-size: 15px; margin-bottom: 25px; line-height: 1.5; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        select, input, textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        .btn { background: #0070f3; color: white; border: none; width: 100%; padding: 14px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .btn:hover { background: #0051a8; }
+        .upsell-card { border: 2px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 15px; position: relative; cursor: pointer; }
+        .upsell-card.selected { border-color: #0070f3; background: #f0f7ff; }
+        .upsell-price { font-weight: bold; color: #0070f3; float: right; }
+        .summary-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; }
+        .total { font-weight: bold; font-size: 18px; border-top: 1px solid #eee; padding-top: 10px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="funnel-container">
+    <!-- SCREEN 1: STATE SELECTION -->
+    <div id="step1" class="step active">
+        <h1>Form your LLC or Corporation in minutes.</h1>
+        <p>Fast, accurate, and handled completely for you. Choose your state below to launch.</p>
+        <label>Where are you forming your business?</label>
+        <select id="stateSelect">
+            <option value="" disabled selected>Select your state...</option>
+            <option value="CA" data-fee="50">California ($50 State Fee)</option>
+            <option value="DE" data-fee="90">Delaware ($90 State Fee)</option>
+            <option value="TX" data-fee="300">Texas ($300 State Fee)</option>
+        </select>
+        <button class="btn" onclick="nextStep(2)">Continue to Incorporation</button>
+    </div>
+
+    <!-- SCREEN 2: INTAKE -->
+    <div id="step2" class="step">
+        <h1>Tell us about your business</h1>
+        <p>Provide details to start processing your formation documents.</p>
+        <label>Desired Company Name</label>
+        <input type="text" id="bizName" placeholder="e.g. Acme Holdings LLC" required>
+        <label>Founder's Email Address</label>
+        <input type="email" id="founderEmail" placeholder="you@example.com" required>
+        <button class="btn" onclick="nextStep(3)">Save & View Packages</button>
+    </div>
+
+    <!-- SCREEN 3: UPSELLS -->
+    <div id="step3" class="step">
+        <h1>Complete your protection</h1>
+        <p>Skip the IRS hold times and state paperwork by choosing options below.</p>
+        
+        <div class="upsell-card" id="einCard" onclick="toggleUpsell('einCard')">
+            <span class="upsell-price">$79</span>
+            <strong>Obtain Federal EIN (Tax ID)</strong>
+            <div style="font-size:13px; color:#666; margin-top:5px;">Required to open a business bank account and hire employees.</div>
+        </div>
+
+        <div class="upsell-card" id="raCard" onclick="toggleUpsell('raCard')">
+            <span class="upsell-price">$149/yr</span>
+            <strong>Registered Agent Service</strong>
+            <div style="font-size:13px; color:#666; margin-top:5px;">Protect your personal home privacy from the public registry. First 3 months free.</div>
+        </div>
+        <button class="btn" onclick="calculateTotal(); nextStep(4)">Proceed to Checkout</button>
+    </div>
+
+    <!-- SCREEN 4: CHECKOUT SUMMARY -->
+    <div id="step4" class="step">
+        <h1>Review your application</h1>
+        <p>Your order configuration is finalized.</p>
+        <div class="summary-line"><span>Standard Filing Fee:</span><span>$49.00</span></div>
+        <div class="summary-line"><span>State Registry Fee:</span><span id="summaryStateFee">$0.00</span></div>
+        <div class="summary-line" id="summaryEinRow" style="display:none;"><span>Federal EIN:</span><span>$79.00</span></div>
+        <div class="summary-line" id="summaryRaRow" style="display:none;"><span>Registered Agent:</span><span>$0.00 today</span></div>
+        <div class="summary-line total"><span>Total Amount Due:</span><span id="summaryTotal">$0.00</span></div>
+        <br>
+        <button class="btn" style="background:#24b47e;" onclick="redirectToStripe()">Complete My Formation Now</button>
+    </div>
+</div>
+
+<script>
+    let currentStep = 1;
+    let einSelected = false;
+    let raSelected = false;
+    let stateFee = 0;
+    let serviceFee = 49;
+
+    function nextStep(step) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById(`step${step}`).classList.add('active');
+        currentStep = step;
+    }
+
+    function toggleUpsell(cardId) {
+        const card = document.getElementById(cardId);
+        card.classList.toggle('selected');
+        if(cardId === 'einCard') einSelected = !einSelected;
+        if(cardId === 'raCard') raSelected = !raSelected;
+    }
+
+    function calculateTotal() {
+        const select = document.getElementById('stateSelect');
+        stateFee = parseFloat(select.options[select.selectedIndex].getAttribute('data-fee')) || 0;
+        
+        document.getElementById('summaryStateFee').innerText = `$${stateFee.toFixed(2)}`;
+        document.getElementById('summaryEinRow').style.display = einSelected ? 'flex' : 'none';
+        document.getElementById('summaryRaRow').style.display = raSelected ? 'flex' : 'none';
+        
+        let total = serviceFee + stateFee;
+        if(einSelected) total += 79;
+        
+        document.getElementById('summaryTotal').innerText = `$${total.toFixed(2)}`;
+    }
+
+    function redirectToStripe() {
+        // Collect custom text metadata to inject dynamically
+        const email = document.getElementById('founderEmail').value;
+        const businessName = document.getElementById('bizName').value;
+        const state = document.getElementById('stateSelect').value;
+        
+        // This targets your lightweight backend function 
+        window.location.href = `/api/checkout?email=${email}&name=${encodeURIComponent(businessName)}&state=${state}&ein=${einSelected}&ra=${raSelected}`;
+    }
+</script>
+</body>
+</html>
