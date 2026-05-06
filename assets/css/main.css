@@ -3783,3 +3783,28 @@ input, select, textarea {
 			}
 
 		}
+
+		/* ==========================================================================
+   FOOTER RESTORATION ACCELERATOR 
+   ========================================================================== */
+#footer {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-top: 4rem !important;
+    padding: 4rem 2rem !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+#footer section {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#footer h2, #footer a, #footer p {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+#footer a:hover {
+    color: #FF6B00 !important; /* Brand Orange highlight on footer links */
+}
