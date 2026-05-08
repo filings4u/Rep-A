@@ -4875,7 +4875,7 @@ body { background-color: var(--black); color: #fff; font-family: 'Inter', sans-s
     /* Pushes the image to the absolute right and keeps it 20% from the top */
     background-position: 100% 20%; 
     /* Zooming in slightly (125%) is what allows the "move" to actually happen */
-    background-size: 80%; 
+    background-size: 125%; 
 }
 
 
