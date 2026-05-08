@@ -5010,3 +5010,378 @@ body { background-color: var(--black); color: #fff; font-family: 'Inter', sans-s
     font-weight: 500;
 }
 
+/* Ensure the container is the reference point for the absolute position */
+.hero-relative {
+    position: relative;
+    height: 100%;
+    min-height: 500px; /* Matches hero height */
+    display: flex;
+    align-items: center;
+}
+
+/* NEW: Bottom-Right Positioning */
+.hero-search-wrapper-bottom-right {
+    position: absolute;
+    bottom: 20px; /* Distance from the bottom of the hero */
+    right: 20px;  /* Distance from the right edge of the container */
+    width: 100%;
+    max-width: 450px; /* Slightly smaller for the corner placement */
+    z-index: 5;
+}
+
+.hero-search-form {
+    display: flex;
+    background: white;
+    padding: 5px;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); /* Heavier shadow to pop against background */
+}
+
+.hero-search-form input {
+    flex: 1;
+    border: none;
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    outline: none;
+    color: #0a1f44;
+}
+
+.hero-search-form button {
+    background: #0a1f44; /* Navy button to differentiate from Orange CTA */
+    color: white;
+    border: none;
+    padding: 0 20px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.hero-search-form button:hover {
+    background: #FF6B00; /* Turns orange on hover */
+}
+
+.search-note {
+    display: block;
+    text-align: right;
+    margin-top: 8px;
+    font-size: 0.75rem;
+    color: #cbd5e1;
+}
+
+/* MOBILE FIX: Move it back into the normal flow on small screens */
+@media (max-width: 768px) {
+    .hero-relative {
+        flex-direction: column;
+    }
+    .hero-search-wrapper-bottom-right {
+        position: static;
+        margin-top: 40px;
+        max-width: 100%;
+    }
+    .search-note {
+        text-align: center;
+    }
+}
+
+
+
+/* 1. HERO CONTAINER: Centers content vertically */
+.hero-relative {
+    position: relative;
+    display: flex;
+    align-items: center; /* Pushes text content to the middle vertically */
+    min-height: 600px;    /* Height of your hero section */
+    width: 100%;
+}
+
+/* 2. TEXT CONTENT: Vertically centered by parent flex */
+.hero-content-left {
+    max-width: 600px;
+    z-index: 2;
+}
+
+/* 3. SEARCH BAR: Anchored to the bottom right */
+.hero-search-wrapper-right {
+    position: absolute;
+    bottom: 60px;  /* Vertical distance from bottom */
+    right: -190px;      /* Pushed all the way to the right edge of container */
+    width: 100%;
+    max-width: 400px; /* Precise width for clean look */
+    z-index: 5;
+}
+
+/* 4. SEARCH BAR FORMATTING: High-End Look */
+.hero-search-form {
+    display: flex;
+    background: #ffffff;
+    padding: 6px;
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(10, 31, 68, 0.1);
+}
+
+.hero-search-form input {
+    flex: 1;
+    border: none;
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    outline: none;
+    color: #0a1f44;
+    background: transparent;
+}
+
+.hero-search-form button {
+    background: #0a1f44; /* Corporate Navy */
+    color: #ffffff;
+    border: none;
+    padding: 0 25px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hero-search-form button:hover {
+    background: #FF6B00; /* Glows orange on hover */
+    box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+}
+
+.search-note {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 0.75rem;
+    color: #cbd5e1;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* 5. MOBILE OVERRIDE: Stacks elements for usability */
+@media (max-width: 768px) {
+    .hero-relative {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding-top: 60px;
+    }
+    .hero-search-wrapper-right {
+        position: static;
+        margin-top: 40px;
+        max-width: 100%;
+    }
+    .search-note {
+        text-align: center;
+    }
+}
+
+.hero-search-form {
+    display: flex;
+    background: #ffffff;
+    padding: 6px; /* Space between the edge of the box and the elements */
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(10, 31, 68, 0.1);
+    /* Forces children to line up perfectly */
+    align-items: stretch; 
+}
+
+.hero-search-form input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0 15px; /* Side padding only */
+    font-size: 0.95rem;
+    color: #0a1f44;
+    outline: none;
+    /* This height must match the button's line-height/padding */
+    height: 50px; 
+}
+
+.hero-search-form button {
+    background: #0a1f44;
+    color: #ffffff;
+    border: none;
+    padding: 0 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* Ensuring the button matches the input exactly */
+    height: 50px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-search-form button:hover {
+    background: #FF6B00;
+}
+
+
+/* 1. THE BAR: Anchored right, but centers its internal content */
+.hero-search-wrapper-right {
+    position: absolute;
+    bottom: 40px;
+    right: 0;
+    width: 100%;
+    max-width: 550px; /* Adjust width as needed */
+    z-index: 5;
+}
+
+/* 2. THE WHITE CONTAINER: The Flex Engine */
+.hero-search-form {
+    display: flex;
+    background: #ffffff;
+    padding: 8px 12px; /* Internal "border" space */
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(10, 31, 68, 0.1);
+    
+    /* THE FIX: Centers the pair horizontally and vertically inside the bar */
+    justify-content: center; 
+    align-items: center;
+    gap: 15px; /* Consistent space between input and button */
+}
+
+/* 3. THE INPUT: Centered and sized */
+.hero-search-form input {
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #0a1f44;
+    outline: none;
+    
+    /* THE FIX: Identical height to button */
+    height: 50px; 
+    width: 280px; /* Fixed width to allow centering */
+    text-align: left; /* Keeps typing natural */
+    padding: 0;
+    margin: 0;
+}
+
+/* 4. THE BUTTON: Centered and sized */
+.hero-search-form button {
+    background: #0a1f44;
+    color: #ffffff;
+    border: none;
+    padding: 0 30px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    
+    /* THE FIX: Identical height to input */
+    height: 50px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevents button from squishing */
+}
+
+.hero-search-form button:hover {
+    background: #FF6B00;
+}
+
+/* 5. THE NOTE: Right-aligned under the bar */
+.search-note {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    text-align: right; 
+    padding-right: 10px;
+}
+
+/* 1. THE BAR: Anchored further right and shortened */
+.hero-search-wrapper-right {
+    position: absolute;
+    bottom: 25px;
+    right: -174px;           /* Locks it to the far right edge of the container */
+    width: 100%;
+    max-width: 420px;   /* SHORTER WIDTH: Adjust this number to make it even shorter */
+    z-index: 5;
+}
+
+/* 2. THE WHITE CONTAINER: Perfect centering for contents */
+.hero-search-form {
+    display: flex;
+    background: #ffffff;
+    padding: 6px 10px;  /* Tightened internal padding */
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(10, 31, 68, 0.1);
+    
+    /* Keeps input and button centered inside the white box */
+    justify-content: center; 
+    align-items: center;
+    gap: 10px;
+}
+
+/* 3. THE INPUT: Sized for the shorter bar */
+.hero-search-form input {
+    border: none;
+    background: transparent;
+    font-size: 0.9rem;  /* Slightly smaller font for shorter bar */
+    color: #0a1f44;
+    outline: none;
+    height: 48px;       /* Fixed height */
+    width: 200px;       /* SHORTER INPUT: Helps shrink the overall bar width */
+    padding: 0 5px;
+}
+
+/* 4. THE BUTTON: Matches input height exactly */
+.hero-search-form button {
+    background: #0a1f44;
+    color: #ffffff;
+    border: none;
+    padding: 0 20px;    /* Slightly tighter button padding */
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    height: 48px;       /* MATCHED HEIGHT */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.hero-search-form button:hover {
+    background: #FF6B00;
+}
+
+/* 5. THE NOTE: Aligned to the end of the shorter bar */
+.search-note {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.75rem;
+    color: #cbd5e1;
+    text-align: right; 
+    width: 100%;
+}
+
+/* Update the Hero Container to push everything down */
+.ra-hero {
+    /* ... keep your other settings ... */
+    
+    display: flex;
+    /* This centers the content vertically in the middle of the height */
+    align-items: center; 
+    
+    /* OR: If you want to "nudge" it down specifically from the top */
+    padding-top: 85px !important; 
+    
+    /* Ensure the height is enough to allow movement */
+    min-height: 600px; 
+}
+
+/* Alternatively, add top margin to the text block itself */
+.hero-content-left {
+    margin-top: 60px; /* Adjust this number to push text lower */
+}

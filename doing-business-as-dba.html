@@ -65,25 +65,29 @@
 
 <!-- HERO SECTION -->
 <header class="ra-hero dba-hero">
-    <div class="container">
+    <div class="container hero-relative">
+        <!-- Text Content: Now Vertically Centered -->
         <div class="hero-content-left">
             <span class="hero-subtitle">Expand Your Brand Horizon</span>
             <h1 class="hero-title">New Name. Same Business. <br><span class="text-orange">Instant Impact.</span></h1>
             <p>Launch a new brand identity without the cost of a new LLC. Our DBA engine handles the state and local filings for you.</p>
-            
-            <!-- NEW: Search Availability Bar -->
-            <div class="hero-search-wrapper">
-                <form action="order.html" class="hero-search-form">
-                    <input type="text" placeholder="Enter your desired business name..." required>
-                    <button type="submit">Check Availability</button>
-                </form>
-                <span class="search-note">✓ Instant state database cross-check</span>
-            </div>
-
             <a href="#pricing" class="cta-button">Register Your DBA — $100 + State Fees</a>
         </div>
-    </div>
+
+        <!-- The main wrapper anchored to the right of your hero -->
+<div class="hero-search-wrapper-right">
+    <!-- Changed to id="nameSearchForm" -->
+    <form id="nameSearchForm" class="hero-search-form">
+        <input type="text" id="businessNameInput" placeholder="Check name availability..." required>
+        <button type="submit">Search</button>
+    </form>
+    <span class="search-note">✓ Instant local database cross-check</span>
+</div>
+
+
 </header>
+
+
 
 
 <!-- SECTION 1: THE ADVANTAGE (Off-White) -->
@@ -298,6 +302,25 @@
 </div>
 
 </footer>
+
+<script>
+document.getElementById('nameSearchForm').addEventListener('submit', function(e) {
+    // 1. Prevent the default form submission
+    e.preventDefault();
+
+    // 2. Get the value from the search bar
+    const businessName = document.getElementById('businessNameInput').value;
+
+    // 3. Encode the name for the URL (handles spaces and special characters)
+    const encodedName = encodeURIComponent(businessName);
+
+    // 4. Redirect to order.html with the name in the "query string"
+    window.location.href = `order.html?biz_name=${encodedName}`;
+});
+</script>
+
+
+
 
 </body>
 </html>
