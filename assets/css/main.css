@@ -4873,9 +4873,9 @@ body { background-color: var(--black); color: #fff; font-family: 'Inter', sans-s
                 url('../../images/corporations-hero.jpg') no-repeat;
     
     /* Pushes the image to the absolute right and keeps it 20% from the top */
-    background-position: 100% 20%; 
+    background-position: 80% 20%; 
     /* Zooming in slightly (125%) is what allows the "move" to actually happen */
-    background-size: 125%; 
+    background-size: 80%; 
 }
 
 
