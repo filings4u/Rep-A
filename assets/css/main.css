@@ -6180,3 +6180,29 @@ button {
     padding: 0 20px;
     z-index: 2; /* Keeps text above the background */
 }
+
+
+.index-hybrid-hero {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    
+    /* 1. Navy Gradient + Background Image */
+    background: linear-gradient(to right, rgba(10, 31, 68, 0.98) 30%, rgba(10, 31, 68, 0.4) 70%, rgba(10, 31, 68, 0) 100%), 
+                url('images/index-background.jpg') no-repeat;
+    
+    /* 2. Image Scaling & Positioning */
+    background-size: cover;
+    background-position: center;
+}
+
+/* Ensures the text stays above the background layers */
+.hero-split-container {
+    z-index: 2;
+    position: relative;
+}
+
+
