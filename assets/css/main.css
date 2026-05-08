@@ -4698,7 +4698,7 @@ body { background-color: var(--black); color: #fff; font-family: 'Inter', sans-s
 /* CORPORATION HERO IMAGE */
 .corp-hero {
     background: linear-gradient(to right, rgba(10, 31, 68, 0.98) 25%, rgba(10, 31, 68, 0.6) 50%, rgba(10, 31, 68, 0) 85%), 
-                url('../../images/corp-hero.jpg') no-repeat;
+                url('images\corporations-hero.jpg') no-repeat;
     background-size: cover;
     background-position: center right;
     height: 60vh !important; /* Matches your tightened LLC hero */
@@ -4855,3 +4855,29 @@ body { background-color: var(--black); color: #fff; font-family: 'Inter', sans-s
     margin: 0 auto;     /* Ensures no side margins are pushing it off-center */
     display: block;
 }
+
+/* CORPORATION HERO BACKGROUND */
+.corp-hero {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    color: white;
+
+    /* THE FIX: Use 125% size so the image has room to move, and 100% horizontal position */
+    background: linear-gradient(to right, rgba(10, 31, 68, 0.98) 25%, rgba(10, 31, 68, 0.6) 50%, rgba(10, 31, 68, 0) 85%), 
+                url('../../images/corporations-hero.jpg') no-repeat;
+    
+    /* Pushes the image to the absolute right and keeps it 20% from the top */
+    background-position: 100% 20%; 
+    /* Zooming in slightly (125%) is what allows the "move" to actually happen */
+    background-size: 80%; 
+}
+
+
+
+
