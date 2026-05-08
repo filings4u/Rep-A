@@ -6206,3 +6206,65 @@ button {
 }
 
 
+/* Section Backgrounds */
+.bg-soft { background-color: #f8fafc; }
+.bg-white { background-color: #ffffff; }
+
+/* Grid Layouts */
+.formation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.formation-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.formation-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.featured-entry {
+    border: 2px solid #ff8c00;
+}
+
+/* List Styling inside cards */
+.card-features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+/* Ecosystem Grid */
+.premium-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    margin-top: 60px;
+}
+
+.feature-icon-box {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.badge-accent {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
