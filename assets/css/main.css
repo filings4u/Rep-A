@@ -3478,3 +3478,59 @@ body {
         padding: 15px 20px;
     }
 }
+
+/* LLC SPECIFIC HERO IMAGE */
+.llc-hero {
+    background: linear-gradient(to right, rgba(10, 31, 68, 0.98) 25%, rgba(10, 31, 68, 0.6) 50%, rgba(10, 31, 68, 0) 85%), 
+                url('../../images/llc-hero.jpg') no-repeat;
+    background-size: cover;
+    background-position: center right;
+}
+
+/* PRICING FLEX BOX */
+.pricing-flex {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.pricing-card-legal.featured-plan {
+    border: 2px solid var(--brand-orange);
+    transform: scale(1.05);
+    position: relative;
+    z-index: 5;
+}
+
+.featured-plan .pricing-details {
+    background: #fff9f5;
+}
+
+/* SECTION HEADER */
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    color: var(--primary-navy);
+}
+
+/* TABLE OVERRIDE FOR LLC PAGE */
+.comparison-table-wrapper {
+    margin-top: 50px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(10, 31, 68, 0.08);
+}
+
+@media (max-width: 768px) {
+    .pricing-flex {
+        flex-direction: column;
+        align-items: center;
+    }
+    .pricing-card-legal.featured-plan {
+        transform: scale(1);
+    }
+}
