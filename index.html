@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>filings4u | Professional Business Formation & Compliance</title>
+    <title>Professional Registered Agent Services | filings4u</title>
+    
+    <!-- Stripe.js Library -->
+    <script src="https://stripe.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="assets/css/main.css">
-    <link href="https://googleapis.com" rel="stylesheet">
+
+
 </head>
 <body>
 
-    <!-- NAVIGATION BAR -->
+   <!-- NAVIGATION BAR -->
 <nav class="brand-nav-bar">
     <a href="index.html">
         <img src="images/logo.png" alt="filings4u logo" style="height: 36px;">
@@ -59,6 +69,29 @@
         <li><a href="license-permits.html">License/Permits</a></li>
     </ul>
 </nav>
+
+ <!-- LOGIN STATE -->
+    <div id="auth-section" class="portal-container">
+        <h2 style="margin-bottom: 10px;">Portal Login</h2>
+        <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 25px;">Access your formation documents and compliance vault.</p>
+        <input type="email" id="email" placeholder="Email Address">
+        <input type="password" id="password" placeholder="Password">
+        <button id="loginBtn">Sign In</button>
+    </div>
+
+    <!-- DASHBOARD STATE -->
+    <div id="dashboard-section" class="portal-container hidden">
+        <h2>Dashboard</h2>
+        <p style="font-size: 0.9rem;">Authenticated as: <strong id="userDisplay"></strong></p>
+        <div class="dashboard-grid">
+            <div class="doc-card">
+                <h4 style="margin: 0;">Formation Docs</h4>
+                <p style="font-size: 0.8rem; margin: 5px 0;">Articles of Organization, EIN</p>
+                <button style="background: var(--navy); padding: 8px; font-size: 0.8rem;">View Files</button>
+            </div>
+        </div>
+        <button id="logoutBtn" style="background: transparent; color: var(--navy); border: 1px solid var(--navy); margin-top: 25px;">Logout</button>
+    </div>
 
 
 <!-- HERO SECTION -->
