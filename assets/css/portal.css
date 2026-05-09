@@ -114,3 +114,26 @@
 .portal-search:focus {
     border-color: #ff6b00;
 }
+
+.cat-icon {
+    background: #ff6b00;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    margin-right: 12px;
+    font-size: 1.1rem;
+}
+
+.category-title {
+    display: flex;
+    align-items: center;
+    color: #0a1f44;
+    font-size: 1.4rem;
+}
+
+/* Ensure cards in the list have equal height for a "State of the Art" grid */
+.filing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
