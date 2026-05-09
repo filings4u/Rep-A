@@ -1,1 +1,28 @@
+<div class="intake-card signature-box" style="border: 2px solid #0a1f44; padding: 40px; background: #f8fafc;">
+    <h3 style="margin-bottom: 20px;">Review & Execute Document</h3>
+    <div class="document-preview-pane" style="height: 300px; background: #fff; border: 1px solid #cbd5e1; overflow-y: scroll; padding: 20px; margin-bottom: 25px; font-family: serif; font-size: 0.9rem;">
+        <h4>IRS FORM 2848 - POWER OF ATTORNEY</h4>
+        <p>By signing this document, I, the undersigned, hereby appoint filings4u and its designated representatives to act as my attorney-in-fact regarding federal tax matters...</p>
+        <!-- Document Text continues... -->
+    </div>
 
+    <form id="e-sign-form">
+        <label class="checkbox-container" style="font-size: 0.95rem; line-height: 1.5;">
+            <input type="checkbox" id="consent-check" required>
+            <span class="checkmark"></span>
+            I, <strong>[User Full Name]</strong>, understand that by checking this box, I am providing a binding electronic signature under the <strong>UETA and ESIGN Acts</strong>. I authorize filings4u to submit this document on my behalf.
+        </label>
+
+        <!-- AUDIT LOG DATA (Hidden from user, but sent to backend) -->
+        <input type="hidden" name="ip_address" value="AUTO_DETECT">
+        <input type="hidden" name="timestamp" value="UTC_NOW">
+        
+        <div style="margin-top: 30px; display: flex; align-items: center; gap: 20px;">
+            <button type="submit" class="btn-primary-small" style="height: 50px; padding: 0 40px;">Finalize & Sign</button>
+            <div class="security-meta" style="color: #64748b; font-size: 0.75rem;">
+                <span>🔒 SECURE ENCRYPTED SESSION</span><br>
+                <span>LOG ID: SIG-TX-4242-88</span>
+            </div>
+        </div>
+    </form>
+</div>
