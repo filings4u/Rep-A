@@ -1,1 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexus Heatmap | filings4u Portal</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/portal.css">
+    <!-- Map Styling -->
+    <style>
+        .nexus-grid { display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
+        .map-container { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; position: relative; min-height: 500px; }
+        .risk-high { color: #c15254; font-weight: 800; }
+        .nexus-list-item { padding: 15px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+        .sms-badge { background: #e0f2fe; color: #0369a1; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
+    </style>
+</head>
+<body class="portal-body">
 
+    <!-- [SIDEBAR CONSISTENT] -->
+
+    <main class="portal-main">
+        <header class="portal-header">
+            <div class="welcome-text">
+                <h1>Nexus Heatmap</h1>
+                <p>Real-time monitoring of state tax obligations based on economic thresholds.</p>
+            </div>
+            <div class="header-actions">
+                <span class="sms-badge">📲 SMS Alerts Enabled</span>
+            </div>
+        </header>
+
+        <div class="nexus-grid">
+            <!-- INTERACTIVE MAP PLACEHOLDER -->
+            <div class="map-container">
+                <h3 style="margin-bottom: 20px;">Geographic Liability Map</h3>
+                <div style="background: #f8fafc; height: 400px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1;">
+                    <p style="color: #64748b; text-align: center;">
+                        <span style="font-size: 3rem;">🗺️</span><br>
+                        Interactive SVG Map Loading...<br>
+                        <small>(Displays Heat-Intensity by Revenue/Transaction Volume)</small>
+                    </p>
+                </div>
+                
+                <!-- LEGEND -->
+                <div style="margin-top: 20px; display: flex; gap: 20px; font-size: 0.85rem;">
+                    <span><span style="color: #c15254;">●</span> Registered</span>
+                    <span><span style="color: #ff6b00;">●</span> Approaching Threshold</span>
+                    <span><span style="color: #cbd5e1;">●</span> No Nexus</span>
+                </div>
+            </div>
+
+            <!-- RISK ALERTS PANEL -->
+            <div class="portal-card">
+                <h3>Priority Risk Alerts</h3>
+                
+                <div class="nexus-list">
+                    <!-- High Risk Item -->
+                    <div class="nexus-list-item">
+                        <div>
+                            <h4 class="risk-high">California</h4>
+                            <p style="font-size: 0.8rem; color: #64748b;">Economic Threshold: 92%</p>
+                        </div>
+                        <button class="btn-primary-small" style="padding: 5px 12px; font-size: 0.75rem;">Register Now</button>
+                    </div>
+
+                    <!-- Penalty Urgency Item -->
+                    <div class="nexus-list-item" style="background: #fff9f5; border: 1px solid #ff6b00; border-radius: 8px; margin-top: 10px;">
+                        <div>
+                            <h4 style="color: #0a1f44;">Texas</h4>
+                            <p style="font-size: 0.8rem; color: #c15254; font-weight: 700;">🚨 Potential Late Penalty: $50.00</p>
+                        </div>
+                        <span style="font-size: 0.7rem; font-weight: 800; color: #ff6b00;">DUE IN 12 DAYS</span>
+                    </div>
+
+                    <!-- Stable Item -->
+                    <div class="nexus-list-item">
+                        <div>
+                            <h4>Florida</h4>
+                            <p style="font-size: 0.8rem; color: #64748b;">Current Status: Active</p>
+                        </div>
+                        <span style="color: #10b981;">✓ Secure</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; padding: 15px; background: #f1f5f9; border-radius: 8px;">
+                    <h5 style="font-size: 0.8rem; margin-bottom: 5px;">Pro-Tip: Remote Employees</h5>
+                    <p style="font-size: 0.75rem; color: #475569;">Hiring a single employee in a new state triggers <strong>Physical Nexus</strong> regardless of revenue.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
