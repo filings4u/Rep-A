@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Logs | Admin | filings4u</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/portal.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* Admin Dark Theme */
+        .admin-sidebar { background: #020617 !important; border-right: 1px solid #1e293b !important; }
+        .admin-sidebar .nav-item { color: rgba(255,255,255,0.6) !important; }
+        .admin-sidebar .nav-item:hover, .admin-sidebar .nav-item.active { background: rgba(255,255,255,0.05) !important; color: #ff6b00 !important; }
+        
+        .log-table { width: 100%; border-collapse: collapse; background: white; }
+        .log-row { border-bottom: 1px solid #f1f5f9; transition: background 0.2s; }
+        .log-row:hover { background: #f8fafc; }
+        .log-row td { padding: 12px 20px; font-size: 0.85rem; vertical-align: top; }
+        
+        .timestamp { font-family: 'Courier New', monospace; color: #64748b; font-weight: 700; min-width: 180px; }
+        .action-tag { font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
+        
+        /* Event Types */
+        .tag-kms { background: #e0f2fe; color: #0369a1; } /* Encryption Access */
+        .tag-sig { background: #dcfce7; color: #166534; } /* Digital Signatures */
+        .tag-adm { background: #fee2e2; color: #991b1b; } /* Admin Overrides */
+        
+        .raw-data-preview { font-size: 0.75rem; color: #475569; display: block; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 400px; }
+    </style>
+</head>
+<body class="portal-body">
 
+    <!-- ADMIN SIDEBAR -->
+    <aside class="portal-sidebar admin-sidebar">
+        <div class="sidebar-header">
+            <img src="images/logo.png" alt="filings4u" style="height: 25px; filter: brightness(0) invert(1);">
+            <p style="color: #ff6b00; font-size: 0.65rem; font-weight: 800; margin-top: 5px; text-transform: uppercase;">Admin Operations</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="admin-dashboard.html" class="nav-item"><span>🚨</span> Filing Queue</a>
+            <span>🏢</span> Entity Master</a>
+            <a href="admin-revenue-reconciliation.html" class="nav-item"><span>💰</span> Revenue Reports</a>
+            <a href="admin-system-logs.html" class="nav-item active"><span>⚙️</span> System Logs</a>
+        </nav>
+    </aside>
+
+    <main class="portal-main">
+        <header class="portal-header">
+            <div class="welcome-text">
+                <h1>System Logs & Security Audit</h1>
+                <p>Monitoring AWS CloudTrail and Internal Event metadata.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-outline-small" style="background: white;">Download Full Audit Trail</button>
+            </div>
+        </header>
+
+        <!-- LOG FILTER BAR -->
+        <div class="portal-card" style="padding: 15px 25px; margin-bottom: 25px; display: flex; gap: 20px; align-items: center;">
+            <span style="font-weight: 700; font-size: 0.85rem;">Filter By:</span>
+            <select class="intake-input" style="max-width: 150px; margin: 0; padding: 5px;">
+                <option>All Events</option>
+                <option>Encryption (KMS)</option>
+                <option>Signatures (ESIGN)</option>
+                <option>Admin Access</option>
+            </select>
+            <input type="text" placeholder="Search by Entity ID or IP..." class="intake-input" style="max-width: 300px; margin: 0; padding: 5px;">
+        </div>
+
+        <!-- LOG LEDGER -->
+        <div class="portal-card" style="padding: 0; overflow: hidden;">
+            <table class="log-table">
+                <thead style="background: #f8fafc; text-align: left; font-size: 0.7rem; color: #64748b; text-transform: uppercase;">
+                    <tr>
+                        <th style="padding: 15px 20px;">Timestamp (UTC)</th>
+                        <th>Event Type</th>
+                        <th>Actor / Entity</th>
+                        <th>Metadata (IP & Payload)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- LOG ENTRY 1: KMS ACCESS -->
+                    <tr class="log-row">
+                        <td class="timestamp">2026-05-09 11:42:08</td>
+                        <td><span class="action-tag tag-kms">KMS_DECRYPT</span></td>
+                        <td>
+                            <strong>SYSTEM_CORE</strong><br>
+                            <small>Ref: Roseland Logistics</small>
+                        </td>
+                        <td>
+                            <strong>IP: 54.210.XX.XX</strong> (AWS Internal)<br>
+                            <code class="raw-data-preview">Action: Read; File: EIN_Letter_CP575.pdf; Key: alias/filings4u-vault</code>
+                        </td>
+                    </tr>
+
+                    <!-- LOG ENTRY 2: SIGNATURE EXECUTION -->
+                    <tr class="log-row">
+                        <td class="timestamp">2026-05-09 11:38:12</td>
+                        <td><span class="action-tag tag-sig">ESIGN_COMPLETE</span></td>
+                        <td>
+                            <strong>User: j.roseland@llc.com</strong><br>
+                            <small>Entity ID: 4242-88</small>
+                        </td>
+                        <td>
+                            <strong>IP: 192.168.1.42</strong> (Client Browser)<br>
+                            <code class="raw-data-preview">Form: 2848; Checkbox: True; BrowserID: Chrome/124.0.0</code>
+                        </td>
+                    </tr>
+
+                    <!-- LOG ENTRY 3: ADMIN CONTEXT SWITCH -->
+                    <tr class="log-row" style="background: #fff9f5;">
+                        <td class="timestamp">2026-05-09 11:35:00</td>
+                        <td><span class="action-tag tag-adm">ADMIN_ASSUME</span></td>
+                        <td>
+                            <strong>Admin: Sara Ops</strong><br>
+                            <small>Action: Context Switch</small>
+                        </td>
+                        <td>
+                            <strong>IP: 72.14.XX.XX</strong> (Internal Office)<br>
+                            <code class="raw-data-preview">Target: Northstar Trucking; Reason: SOS Discrepancy Support</code>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+</html>
