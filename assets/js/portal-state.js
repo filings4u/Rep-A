@@ -8,7 +8,8 @@ const PortalState = {
         isMobile: window.innerWidth  {
             el.innerText = names[this.state.activeEntityId] || 'All Entities';
         });
-    },
+
+    }
 
     // Handle Entity Switching across ALL pages
     handleSwitch(id) {
