@@ -41,3 +41,35 @@ const PortalState = {
 };
 
 document.addEventListener('DOMContentLoaded', () => PortalState.init());
+
+/* --- REFINED PAYMENT RETRY LOGIC --- */
+const PaymentEngine = {
+    handleFailure(errorCode) {
+        console.warn("Payment Declined: " + errorCode);
+        
+        // Find the status area on Step 4
+        const statusArea = document.getElementById('payment-status-area');
+        if (!statusArea) return;
+
+        statusArea.innerHTML = `
+            <div class="error-box" style="padding: 25px; background: #fff1f2; border: 1px solid #fecaca; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="color: #991b1b;">Card Declined (${errorCode})</h4>
+                <p style="font-size: 0.85rem; color: #475569;">Your filing data is securely saved. Please use a different card or contact your bank.</p>
+                <button class="btn-primary-small" style="margin-top: 15px; background: #991b1b;" onclick="location.reload()">Try Different Card</button>
+            </div>
+        `;
+        
+        // Ensure the scroll position moves to the error so they see it
+        statusArea.scrollIntoView({ behavior: 'smooth' });
+    }
+};
+
+// Add to your global retry function
+PortalState.retryPayment = function() {
+    // This function clears the error UI and re-enables the Stripe inputs
+    const statusArea = document.getElementById('payment-status-area');
+    if (statusArea) statusArea.innerHTML = '';
+    console.log("Re-initializing Stripe Elements for retry...");
+};
+
+

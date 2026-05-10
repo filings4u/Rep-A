@@ -1,1 +1,52 @@
+<!-- WALLET TRANSFER MODAL -->
+<div id="transfer-modal" class="portal-card" style="max-width: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3000; border: 1px solid #e2e8f0; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2 style="color: #0a1f44; font-size: 1.2rem;">Internal Credit Transfer</h2>
+        <span onclick="closeTransfer()" style="cursor: pointer; color: #64748b;">✕</span>
+    </div>
 
+    <div class="transfer-logic-box">
+        <!-- SOURCE -->
+        <div class="form-section">
+            <label style="font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Transfer From</label>
+            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 5px; display: flex; justify-content: space-between;">
+                <strong>Roseland Logistics LLC</strong>
+                <span style="color: #10b981; font-weight: 700;">$142.50 Available</span>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 15px 0; color: #ff6b00; font-size: 1.2rem;">↓</div>
+
+        <!-- DESTINATION -->
+        <div class="form-section">
+            <label style="font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Transfer To</label>
+            
+                <option value="4243">Roseland Real Estate (Current: $0.00)</option>
+                <option value="4244">Roseland Fleet Mgmt (Current: $10.00)</option>
+            </select>
+        </div>
+
+        <!-- AMOUNT -->
+        <div class="form-section" style="margin-top: 20px;">
+            <label style="font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Amount to Move</label>
+            <div class="price-input-group" style="margin-top: 5px;">
+                <span style="padding-left: 15px; color: #64748b;">$</span>
+                <input type="number" class="intake-input" placeholder="0.00" style="border: none; padding-left: 5px;">
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; background: #fff9f5; padding: 15px; border-radius: 8px; border: 1px solid #ff6b00;">
+        <p style="font-size: 0.75rem; color: #475569;">
+            <strong>Policy Check:</strong> Credit transfers are instant and final. Transferred credits retain their original 12-month expiration date.
+        </p>
+    </div>
+
+    <div style="margin-top: 25px; display: flex; gap: 15px;">
+        <button class="btn-outline-small" style="flex: 1;" onclick="closeTransfer()">Cancel</button>
+        <button class="btn-primary-small" style="flex: 1; background: #0a1f44;">Execute Transfer</button>
+    </div>
+</div>
+
+<!-- MODAL BACKDROP -->
+<div id="modal-backdrop" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 31, 68, 0.5); z-index: 2999;"></div>

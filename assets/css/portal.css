@@ -590,3 +590,17 @@
     border: 1px solid #cbd5e1;
 }
 
+.btn-primary-small {
+    background-color: #0a1f44;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.btn-primary-small:hover {
+    opacity: 0.9; /* Subtle feedback when hovering */
+}
