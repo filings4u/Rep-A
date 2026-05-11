@@ -252,20 +252,50 @@
     </aside>
 </div>
 
+<!-- 1. Load Firebase SDKs first -->
+<script src="https://gstatic.com"></script>
+<script src="https://gstatic.com"></script>
+
 <script>
+    // 2. Firebase Configuration
+   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyA_45sXieC6fdfQstLQ2a21psXeOxhfdwo",
+  authDomain: "customer-portal-18728.firebaseapp.com",
+  projectId: "customer-portal-18728",
+  storageBucket: "customer-portal-18728.firebasestorage.app",
+  messagingSenderId: "117765841972",
+  appId: "1:117765841972:web:9746c4f3037270a7811661",
+  measurementId: "G-Q2L5R7LP6R"
+};
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // 3. Page Session Timestamp
     document.getElementById('timestamp').innerText = "Session: " + new Date().toLocaleString();
+
+    // 4. Navigation Logic
     function nextStep(s) {
         document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
         document.getElementById('step' + s).classList.add('active');
-        document.querySelectorAll('.s-pill').forEach((p, i) => { if(i < s) p.classList.add('active'); else p.classList.remove('active'); });
+        document.querySelectorAll('.s-pill').forEach((p, i) => { 
+            if(i < s) p.classList.add('active'); 
+            else p.classList.remove('active'); 
+        });
         window.scrollTo(0,0);
     }
+
+    // 5. Registered Agent Toggle Math
     function toggleAgentLogic() {
         const hasRA = document.getElementById('ra_choice').value === 'yes';
         document.getElementById('ra_fields').style.display = hasRA ? 'block' : 'none';
         document.getElementById('ra_sum').style.opacity = hasRA ? '0.3' : '1';
         document.getElementById('sum_total').innerText = hasRA ? '$199.00' : '$324.00';
     }
+
+    // 6. Review Document Generation
     function generateFinalReview() {
         let text = `MASTER INTAKE LOG\nTIMESTAMP: ${new Date().toLocaleString()}\n----------------\n`;
         text += `APPLICANT: ${document.getElementById('own_fname').value} ${document.getElementById('own_lname').value}\n`;
@@ -274,6 +304,30 @@
         document.getElementById('review_doc').innerText = text;
         nextStep(10);
     }
+
+    // 7. FIREBASE SUBMIT LOGIC (Account Creation)
+    document.getElementById('masterIntake').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('own_email').value; // Field from Step 2
+        const password = document.querySelector('input[type="password"]').value; // Field from Step 10
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+
+        submitBtn.innerText = "Creating Secure Account...";
+        submitBtn.disabled = true;
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Success: Redirect to success/payment page
+                window.location.href = "success.html";
+            })
+            .catch((error) => {
+                submitBtn.innerText = "Authorize & Pay →";
+                submitBtn.disabled = false;
+                alert("Account Creation Error: " + error.message);
+            });
+    });
 </script>
+
 </body>
 </html>
