@@ -2,108 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Checkout | filings4u Professional</title>
+    <title>Order Summary | filings4u</title>
     <link rel="stylesheet" href="assets/css/site-elite.css">
     <style>
-        .intake-grid { display: grid; grid-template-columns: 1fr 380px; gap: 40px; margin-top: 30px; }
-        .form-card { background: white; padding: 40px; border-radius: 20px; border: 1px solid var(--border); }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; color: var(--navy); }
-        .form-group input, .form-group select { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; font-size: 0.95rem; }
-        .summary-card { background: var(--ice); padding: 30px; border-radius: 20px; position: sticky; top: 100px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; }
+        .summary-card { max-width: 600px; margin: 60px auto; background: white; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .item-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f1f5f9; }
+        .total { font-size: 1.4rem; font-weight: 800; margin-top: 25px; color: var(--navy); display: flex; justify-content: space-between; }
+        .btn-pay { width: 100%; background: var(--emerald); color: white; border: none; padding: 18px; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 30px; font-size: 1.1rem; }
     </style>
 </head>
-<body>
+<body style="background: var(--ice);">
 
-<nav>
-    <a href="index.html"><img src="images/logo.png" alt="filings4u" class="logo"></a>
-    <div class="nav-links">
-        <a href="index.html">Back to Dashboard</a>
-    </div>
-</nav>
+    <div class="summary-card">
+        <h2>Order Review</h2>
+        <p style="color: var(--text-gray);">Please confirm your filing details before payment.</p>
 
-<main class="page-container">
-    <div class="service-grid">
-        <article class="content-area">
-            <span class="hero-tag">Secure Intake</span>
-            <h1>Review & <br>Submit Filing.</h1>
-            <p>Enter your business details below. Your information is encrypted and transmitted directly to the appropriate jurisdiction via our secure handshake protocol.</p>
-        </article>
-    </div>
-
-    <div class="intake-grid">
-        <!-- FORM SECTION -->
-        <div class="form-card">
-            <h3 style="margin-bottom: 25px;">Business Information</h3>
-            <div class="form-group">
-                <label>Company Name (Desired)</label>
-                <input type="text" placeholder="e.g. Acme Logistics LLC">
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="form-group">
-                    <label>Filing State</label>
-                    <select>
-                        <option>Delaware</option>
-                        <option>Texas</option>
-                        <option>Florida</option>
-                        <option>Wyoming</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Entity Type</label>
-                    <select>
-                        <option>LLC</option>
-                        <option>Corporation</option>
-                        <option>B-Corp</option>
-                    </select>
-                </div>
-            </div>
-
-            <h3 style="margin-bottom: 25px; margin-top: 40px;">Contact Details</h3>
-            <div class="form-group">
-                <label>Primary Contact Name</label>
-                <input type="text" placeholder="John Doe">
-            </div>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" placeholder="john@example.com">
-            </div>
-
-            <button type="submit" class="btn-main" style="width: 100%; margin-top: 20px;">Submit Secure Filing</button>
+        <div id="summaryList">
+            <!-- Data from Wizard will appear here -->
         </div>
 
-        <!-- SUMMARY SIDEBAR -->
-        <aside class="summary-card">
-            <h4 style="margin-bottom: 20px;">Order Summary</h4>
-            <div class="summary-row">
-                <span>Elite LLC Formation</span>
-                <strong>$199.00</strong>
-            </div>
-            <div class="summary-row">
-                <span>State Filing Fee</span>
-                <strong>$90.00</strong>
-            </div>
-            <div class="summary-row">
-                <span>Registered Agent</span>
-                <span style="color: var(--emerald); font-weight: 700;">INCLUDED</span>
-            </div>
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
-            <div class="summary-row" style="font-size: 1.1rem; color: var(--navy);">
-                <strong>Total Due</strong>
-                <strong>$289.00</strong>
-            </div>
-            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 20px; line-height: 1.4;">
-                By clicking submit, you agree to our Terms of Service and authorize filings4u to act as your agent for this filing.
-            </p>
-        </aside>
+        <div class="total">
+            <span>Total Due:</span>
+            <span id="priceDisplay">$0.00</span>
+        </div>
+
+        <button class="btn-pay" onclick="handleCheckout()" id="payButton">Complete Order & Setup Portal →</button>
     </div>
-</main>
 
-<footer class="site-footer" style="margin-top: 80px;">
-    <!-- [STANDARDIZED FOOTER CONTENT] -->
-</footer>
+    <!-- Stripe.js SDK -->
+    <script src="https://stripe.com"></script>
+    <script>
+        // 1. Get data from the Wizard session
+        const orderData = JSON.parse(sessionStorage.getItem('pendingOrder'));
+        if (!orderData) window.location.href = 'index.html';
 
+        // 2. Show details on screen
+        const list = document.getElementById('summaryList');
+        const displayFields = {
+            'service_type': 'Service',
+            'company_name': 'Company',
+            'customer_email': 'Contact Email'
+        };
+
+        Object.keys(displayFields).forEach(key => {
+            list.innerHTML += `
+                <div class="item-row">
+                    <span style="color: var(--text-gray)">${displayFields[key]}</span>
+                    <strong>${orderData[key]}</strong>
+                </div>`;
+        });
+
+        document.getElementById('priceDisplay').innerText = `$${orderData.price}.00`;
+
+        // 3. Initiate Checkout
+        async function handleCheckout() {
+            const btn = document.getElementById('payButton');
+            btn.innerText = "Opening Secure Checkout...";
+            btn.disabled = true;
+
+            // Replace with your STRIPE PUBLISHABLE KEY (pk_test_...)
+            const stripe = Stripe('pk_test_YOUR_PUBLISHABLE_KEY');
+
+            // In production, you will call a script to create a "Checkout Session"
+            // For now, this is where you link to your Stripe Payment Link 
+            // OR call your backend to get a sessionId.
+            alert("Redirecting to Stripe... \nMetadata: " + orderData.company_name);
+            
+            // Example: window.location.href = "YOUR_STRIPE_PAYMENT_LINK_URL?prefilled_email=" + orderData.customer_email;
+        }
+    </script>
 </body>
 </html>
