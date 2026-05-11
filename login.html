@@ -19,33 +19,33 @@
     <a href="index.html"><img src="images/logo.png" alt="filings4u" style="height: 35px;"></a>
 </div>
 
+<!-- ... inside login.html container ... -->
 <main class="login-container">
     <span class="hero-tag">Client Access</span>
     <h2 style="margin-bottom: 30px;">Welcome Back.</h2>
     
-    <!-- ERROR MESSAGE BOX -->
-    <div id="errorMessage"></div>
-
     <form id="loginForm">
         <div class="form-group">
             <label>Email Address</label>
-            <input type="email" id="email" placeholder="name@company.com" required>
+            <input type="email" id="email" required>
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input type="password" id="password" placeholder="••••••••" required>
+            <input type="password" id="password" required>
         </div>
-        <button type="submit" id="loginBtn" class="btn-main" style="width: 100%; margin-top: 10px;">Sign In to Portal →</button>
+        <button type="submit" class="btn-main" style="width: 100%; margin-top: 10px;">Sign In to Portal →</button>
     </form>
 
-    <div style="margin-top: 30px; text-align: center; border-top: 1px solid var(--border); padding-top: 20px;">
-        <p style="font-size: 0.85rem; color: var(--text-muted);">New client? <a href="signup.html" style="color: var(--emerald); font-weight: 700; text-decoration: none;">Create an account</a></p>
+    <div style="margin-top: 30px; text-align: center; border-top: 1px solid var(--border); padding-top: 25px;">
+        <p style="font-size: 0.85rem; color: var(--text-gray); margin-bottom: 10px;">
+            New client? <a href="onboarding-gate.html" style="color: var(--emerald); font-weight: 800; text-decoration: none;">Create an account</a>
+        </p>
+        <p style="font-size: 0.85rem;">
+            <a href="forgot-password.html" style="color: var(--emerald); font-weight: 800; text-decoration: none;">Forgot password?</a>
+        </p>
     </div>
-    <div style="margin-top: 15px; text-align: center;">
-    <a href="forgot-password.html" style="font-size: 0.8rem; color: var(--text-gray); text-decoration: none;">Forgot password?</a>
-</div>
-
 </main>
+
 
 <!-- 1. LOAD FIREBASE COMPAT SDKS -->
 <script src="https://gstatic.com"></script>
