@@ -2,48 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmed | filings4u</title>
     <link rel="stylesheet" href="assets/css/site-elite.css">
     <style>
-        :root { --emerald: #10b981; --navy: #0f172a; --border: #e2e8f0; }
-        body { font-family: sans-serif; background: #f8fafc; margin: 0; padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .success-card { max-width: 500px; width: 100%; background: white; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.05); text-align: center; }
-        .icon-circle { width: 80px; height: 80px; background: #ecfdf5; color: var(--emerald); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 2.5rem; }
-        .btn-portal { display: inline-block; background: var(--navy); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 700; margin-top: 30px; transition: 0.3s; }
-        .btn-portal:hover { transform: translateY(-2px); opacity: 0.9; }
+        .header-logo { text-align: center; margin-bottom: 20px; }
+        .header-logo img { height: 40px; }
+        /* Existing styles from previous steps... */
     </style>
 </head>
 <body>
-
     <div class="success-card">
-        <div class="icon-circle">✓</div>
-        <h2 style="color: var(--navy); margin-bottom: 10px;">Payment Successful!</h2>
-        <p style="color: #64748b; line-height: 1.6;">
-            Your filing for <strong id="companyName" style="color: var(--navy);">your company</strong> is being processed. 
-        </p>
+        <!-- BRANDED LOGO -->
+        <div class="header-logo">
+            <img src="images/logo.png" alt="filings4u logo">
+        </div>
         
-        <div style="background: #f1f5f9; padding: 20px; border-radius: 16px; margin-top: 25px; text-align: left;">
-            <h4 style="margin: 0 0 10px 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Next Steps:</h4>
-            <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: #475569; line-height: 1.8;">
+        <div class="icon-circle">✓</div>
+        <h2>Payment Successful!</h2>
+        <p>Your filing for <strong id="companyName">your company</strong> is being processed.</p>
+        
+        <div class="next-steps-box">
+            <h4>Next Steps:</h4>
+            <ul>
                 <li>Check your inbox for a <strong>Password Setup</strong> email.</li>
                 <li>Log in to your <strong>filings4u Portal</strong>.</li>
-                <li>Upload any remaining required documents.</li>
             </ul>
         </div>
-
         <a href="login.html" class="btn-portal">Go to Login Page →</a>
     </div>
-
-    <script>
-        // Optional: Grab the company name from session storage one last time
-        const orderData = JSON.parse(sessionStorage.getItem('pendingOrder'));
-        if (orderData && orderData.company_name) {
-            document.getElementById('companyName').innerText = orderData.company_name;
-        }
-        
-        // Clear session storage so they don't accidentally "re-order"
-        sessionStorage.removeItem('pendingOrder');
-    </script>
 </body>
 </html>

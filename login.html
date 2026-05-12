@@ -2,121 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Login | filings4u Professional</title>
+    <title>Login | filings4u Portal</title>
+    <script src="https://jsdelivr.net"></script>
+    <link rel="stylesheet" href="assets/css/site-elite.css">
     <style>
-        :root { --border: #e2e8f0; --navy: #0f172a; --ice: #f8fafc; --emerald: #10b981; --text-gray: #64748b; }
-        body { font-family: sans-serif; background: var(--ice); margin: 0; }
-        .login-container { max-width: 450px; margin: 80px auto; background: white; padding: 50px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(10,31,68,0.08); }
+        .auth-card { max-width: 400px; margin: 80px auto; background: white; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--navy); }
-        .form-group input { width: 100%; padding: 14px; border-radius: 8px; border: 1.5px solid var(--border); font-family: inherit; font-size: 1rem; box-sizing: border-box; }
-        #errorMessage { color: #e53e3e; font-size: 0.85rem; margin-bottom: 15px; display: none; background: #fff5f5; padding: 10px; border-radius: 6px; border: 1px solid #feb2b2; }
-        .btn-main { background: var(--navy); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+        .form-group label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--navy); margin-bottom: 6px; }
+        .form-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
+        .tab-btn { background: none; border: none; font-weight: 700; color: #64748b; cursor: pointer; padding: 10px 0; margin-right: 20px; }
+        .tab-btn.active { color: var(--navy); border-bottom: 2px solid var(--navy); }
     </style>
 </head>
-<body>
+<body style="background: var(--ice);">
 
-    <div style="text-align: center; padding: 40px 0 0;">
-        <a href="index.html"><img src="images/logo.png" alt="filings4u" style="height: 35px;"></a>
-    </div>
+    <div class="auth-card">
+        <div id="authTabs" style="margin-bottom: 30px;">
+            <button class="tab-btn active" id="loginTab">Sign In</button>
+        </div>
 
-    <main class="login-container">
-        <div id="errorMessage"></div>
-        <h2 style="margin-bottom: 30px;">Welcome Back.</h2>
-        
+        <!-- Login Form -->
         <form id="loginForm">
             <div class="form-group">
                 <label>Email Address</label>
-                <input type="email" id="email" required>
+                <input type="email" id="email" placeholder="email@example.com" required>
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" id="password" required>
+                <input type="password" id="password" placeholder="••••••••" required>
             </div>
-            <button type="submit" id="loginBtn" class="btn-main">Sign In to Portal →</button>
+            <button type="submit" class="btn-main" style="width:100%">Access Portal →</button>
         </form>
 
-        <div style="margin-top: 30px; text-align: center; border-top: 1px solid var(--border); padding-top: 25px;">
-            <p style="font-size: 0.85rem; color: var(--text-gray); margin-bottom: 10px;">
-                New client? <a href="onboarding-gate.html" style="color: var(--emerald); font-weight: 800; text-decoration: none;">Create an account</a>
-            </p>
-            <p style="font-size: 0.85rem;">
-                <a href="#" onclick="sendPasswordReset()" style="color: var(--emerald); font-weight: 800; text-decoration: none;">Forgot password?</a>
-            </p>
-        </div>
-    </main>
+        <p id="msg" style="margin-top: 20px; font-size: 0.9rem; text-align: center; color: #e53e3e;"></p>
+    </div>
 
-<!-- Load the specific Auth and App modules -->
-<script type="module">
-  import { initializeApp } from "https://gstatic.com";
-  import { 
-    getAuth, 
-    signInWithEmailAndPassword, 
-    sendPasswordResetEmail 
-  } from "https://gstatic.com";
+    <script>
+        // 1. Initialize Supabase
+        const supabaseUrl = 'https://supabase.co';
+        const supabaseKey = 'YOUR_ANON_KEY'; // Get this from your Supabase Dashboard Settings > API
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-  // 1. YOUR CONFIG
-  const firebaseConfig = {
-    apiKey: "AIzaSyA_45sXieC6fdfQstLQ2a21psXeOxhfdwo",
-    authDomain: "://firebaseapp.com",
-    projectId: "customer-portal-18728",
-    storageBucket: "customer-portal-18728.firebasestorage.app",
-    messagingSenderId: "117765841972",
-    appId: "1:117765841972:web:9746c4f3037270a7811661"
-  };
+        const loginForm = document.getElementById('loginForm');
+        const msg = document.getElementById('msg');
 
-  // 2. INITIALIZE
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+        // 2. Handle Login
+        loginForm.onsubmit = async (e) => {
+            e.preventDefault();
+            msg.innerText = "Authenticating...";
+            
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+            });
 
-  const loginForm = document.getElementById('loginForm');
-  const errorDiv = document.getElementById('errorMessage');
-  const loginBtn = document.getElementById('loginBtn');
+            if (error) {
+                msg.innerText = error.message;
+            } else {
+                window.location.href = 'portal-dashboard.html';
+            }
+        };
 
-  // 3. LOGIN & REDIRECT LOGIC
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    loginBtn.innerText = "Authenticating...";
-    errorDiv.style.display = 'none';
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // Success: Redirect to dashboard
-      window.location.href = "https://filings4u.com";
-    } catch (error) {
-      loginBtn.innerText = "Sign In to Portal →";
-      
-      // TEST: Redirect on wrong email or "user not found"
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-email') {
-        window.location.href = "verify.html?error=notfound";
-      } else {
-        errorDiv.innerText = error.message;
-        errorDiv.style.display = 'block';
-      }
-    }
-  });
-
-  // 4. PASSWORD RESET GENERATION
-  // We attach it to the window so the onclick="sendPasswordReset()" still works
-  window.sendPasswordReset = async function() {
-    const email = document.getElementById('email').value;
-    if (!email) {
-      alert("Please enter your email address first.");
-      return;
-    }
-    try {
-      await sendPasswordResetEmail(auth, email);
-      alert("Success! Check your email to set your password.");
-    } catch (error) {
-      alert("Error: " + error.message);
-    }
-  };
-</script>
-
-
+        // 3. SPECIAL: Check if they arrived from a Password Setup link
+        window.onload = () => {
+            const hash = window.location.hash;
+            if (hash && hash.includes('type=recovery')) {
+                // Redirect them to a specific "Set Password" page
+                window.location.href = 'update-password.html' + hash;
+            }
+        };
+    </script>
 </body>
 </html>
