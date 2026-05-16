@@ -1079,3 +1079,26 @@ h1.section-title {
     }
 }
 
+/* 🚀 FIX: Prevent marketing pages from leaking sideways */
+html, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important; /* Locks structural layout horizontally */
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.page-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px 15px !important;
+    box-sizing: border-box !important; /* Prevents padding from bloating width calculations */
+}
+
+.service-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+}
