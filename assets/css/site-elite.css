@@ -970,3 +970,50 @@ section, .feature-section, .pricing-section, .resource-section, .faq-section {
         padding: 0 !important;
     }
 }
+
+
+/* ==========================================================================
+   📱 INDEX SCREEN HOMEPAGE VIEWPORT OVERRIDES (Under 980px Breakpoints)
+   ========================================================================== */
+@media screen and (max-width: 980px) {
+    /* Hard-locks the mobile toggle button visible inside the homepage nav grid */
+    #nav .mobile-toggle-btn,
+    nav .mobile-toggle-btn {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        pointer-events: auto !important;
+        color: #0a1f44 !important;
+        background: none !important;
+        border: none !important;
+        font-size: 26px !important;
+        cursor: pointer !important;
+        z-index: 2000 !important;
+    }
+
+    /* Pulls your menu layout fields smoothly out of sight until clicked open */
+    #nav .nav-links,
+    nav .nav-links {
+        position: fixed !important;
+        top: 0 !important;
+        right: -100% !important;
+        width: 280px !important;
+        height: 100vh !important;
+        background: #ffffff !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        padding: 80px 20px 40px 20px !important;
+        box-shadow: -5px 0 25px rgba(10,31,68,0.15) !important;
+        transition: right 0.3s ease-in-out !important;
+        z-index: 1999 !important;
+        display: flex !important;
+    }
+
+    /* Slides the drawer right out onto the canvas when the 'active' token is attached */
+    #nav .nav-links.active,
+    nav .nav-links.active {
+        right: 0 !important;
+    }
+}

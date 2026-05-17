@@ -123,25 +123,31 @@ window.addEventListener('resize', function() {
     } 
 });
 
+
 /* ==========================================================================
-   📱 RESPONSIVE INTERACTION CONTROLLER: MOBILE MENU DRAWER ENGINE
+   🌐 UNIFIED MOBILE NAVIGATION DRAWER CONTROLLER ENGINE (main.js)
    ========================================================================== */
 
 function toggleMobileMenu() {
-    // 🌟 Matches the class wrappers assigned inside your site-elite.css stylesheet layout
+    // 🌟 Standardizes selections across all page types on filings4u.com
     const navLinks = document.querySelector('.nav-links');
-    const toggleBtn = document.querySelector('.mobile-menu-trigger');
+    
+    // 🚀 FIXED: Searches for either class selector profile to prevent connection breaks
+    const toggleBtn = document.querySelector('.mobile-menu-trigger') || document.querySelector('.mobile-toggle-btn');
     
     if (navLinks && toggleBtn) {
         navLinks.classList.toggle('active');
         
-        // Dynamic icon graphic translations toggle based on state parameters
+        // Translate icons visual states natively matching user selection layers
         if (navLinks.classList.contains('active')) {
             toggleBtn.innerHTML = '✕';
-            toggleBtn.style.color = '#e53e3e'; /* Smooth alert red accent color */
+            toggleBtn.style.color = '#e53e3e'; /* Transition to crisp alert red on open */
         } else {
             toggleBtn.innerHTML = '☰';
-            toggleBtn.style.color = '#0a1f44'; /* Restores brand deep navy contrast */
+            toggleBtn.style.color = '#0a1f44'; /* Restore deep brand navy on close */
         }
+    } else {
+        console.warn("Mobile Navigation Hub Warning: Required structural framework elements missing from layout.");
     }
 }
+
