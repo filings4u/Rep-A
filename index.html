@@ -236,7 +236,27 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     
-    <!-- 🚀 FIXED: Your custom main file now loads last so it can read jQuery safely with zero errors -->
-    <script src="assets/js/main.js?v=9"></script>
+    <!-- 1. Load the official Supabase Client library engine framework -->
+<script src="https://jsdelivr.net"></script>
+
+<!-- 2. Securely bind your project public anonymous credentials to the window scope -->
+<script>
+  (function() {
+    const supabaseUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
+    // 🚀 ACTION REQUIRED: Replace the placeholder string below with your actual project Anon API Key
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; 
+    
+    if (typeof supabaseJs !== 'undefined') {
+        window.supabase = supabaseJs.createClient(supabaseUrl, supabaseAnonKey);
+        console.log("📰 Supabase connection layer initialized for automated blog mapping.");
+    } else {
+        console.error("Critical: Supabase library failed to inject into canvas window.");
+    }
+  })();
+</script>
+
+<!-- 3. Your custom main file runs last, instantly picking up the database link -->
+<script src="assets/js/main.js?v=9"></script>
+
 </body>
 </html>
