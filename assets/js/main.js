@@ -153,3 +153,70 @@ window.addEventListener('resize', function() {
         });
     }
 });
+
+
+/* ==========================================================================
+   🚨 CRITICAL BLOCKADE OVERRIDE: FORCES MOBILE MENU REVEAL (BYPASSES THEME)
+   ========================================================================== */
+
+(function() {
+    function forceIgniteMobileMenuDrawer() {
+        // Target your explicit buttons and mobile trigger class anchors
+        const triggerButtons = document.querySelectorAll('.mobile-menu-trigger, .mobile-toggle-btn');
+        const slideDrawerContainer = document.querySelector('.nav-links');
+
+        if (triggerButtons.length === 0 || !slideDrawerContainer) {
+            // Re-check in a split second if elements are still loading into place
+            setTimeout(forceIgniteMobileMenuDrawer, 200);
+            return;
+        }
+
+        // Wipe out old duplicate listeners to keep browser memory clean
+        triggerButtons.forEach(btn => {
+            btn.removeAttribute('onclick'); // Strips out old HTML handlers
+            
+            // Attach a direct, aggressive listener that the theme cannot block
+            btn.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation(); // Stops the theme script from catching the click event
+                
+                // Inject the active visibility status token straight to your navigation drawer wrapper
+                slideDrawerContainer.classList.toggle('active');
+                
+                // Toggle the action button symbols matching open/close states
+                if (slideDrawerContainer.classList.contains('active')) {
+                    btn.innerHTML = '✕';
+                    btn.style.setProperty('color', '#e53e3e', 'important'); // Alert Red accent
+                } else {
+                    btn.innerHTML = '☰';
+                    btn.style.setProperty('color', '#0a1f44', 'important'); // Brand Navy contrast
+                }
+            });
+            
+            // Add smartphone touchscreen support to eliminate tap response delays
+            btn.addEventListener('touchstart', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                slideDrawerContainer.classList.toggle('active');
+                
+                if (slideDrawerContainer.classList.contains('active')) {
+                    btn.innerHTML = '✕';
+                    btn.style.setProperty('color', '#e53e3e', 'important');
+                } else {
+                    btn.innerHTML = '☰';
+                    btn.style.setProperty('color', '#0a1f44', 'important');
+                }
+            }, { passive: false });
+        });
+        
+        console.log("🎯 Core Override Complete: Mobile navigation handlers successfully armed.");
+    }
+
+    // Initialize the override sequence instantly as soon as document layers mount
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", forceIgniteMobileMenuDrawer);
+    } else {
+        forceIgniteMobileMenuDrawer();
+    }
+})();
