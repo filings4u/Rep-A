@@ -150,6 +150,57 @@
             flex-shrink: 0;
             margin-top: auto !important;
         }
+
+        /* ==========================================================================
+🧱 1. DIRECTORY CANVAS INFRASTRUCTURE
+========================================================================== */
+.blog-wrapper-canvas {
+    max-width: 1200px;
+    margin: 80px auto 120px auto; /* Clean spacing for desktop */
+    padding: 0 4%;
+    box-sizing: border-box;
+}
+#dynamicBlogPostsContainer {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 60px 40px !important; 
+    padding-top: 50px !important; 
+    width: 100% !important;
+}
+
+/* 📱 MOBILE RESPONSIVE OVERRIDES TO TIGHTEN SPACE */
+@media screen and (max-width: 980px) {
+    #dynamicBlogPostsContainer {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 30px !important; /* 🔄 REDUCED from 35px to save vertical space */
+    }
+}
+
+@media screen and (max-width: 640px) {
+    /* 🔄 NEW: Shrinks the massive outer canvas layout gaps on mobile devices */
+    .blog-wrapper-canvas {
+        margin: 20px auto 40px auto !important; /* Drops canvas margins down significantly */
+    }
+    
+    /* 🔄 NEW: Tightens the space between the top menu bar and the blog grid */
+    nav.top-filter-menu-bar {
+        margin: 30px 0 10px 0 !important; /* Drops spacing above/below filter bar */
+        padding-bottom: 10px !important;
+    }
+
+    /* 🔄 NEW: Reduces grid gap so single-column cards aren't miles apart */
+    #dynamicBlogPostsContainer {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important; /* 🔄 REDUCED from 45px for crisp vertical stack spacing */
+        padding-top: 15px !important; /* 🔄 REDUCED from 50px to eliminate giant empty space */
+    }
+    
+    /* 🔄 NEW: Shaves interior padding down inside mobile cards so text blocks feel snug */
+    .blog-card > div[style*="padding: 28px"] {
+        padding: 20px !important; 
+    }
+}
+
     </style>
 </head>
 <body>
@@ -325,94 +376,101 @@
         </div>
     </footer>
 
-    <!-- 🚀 AUTOMATED INSIGHTS SYNC QUERY ENGINE (FULLY FIXED & ISOLATED) -->
-    <script>
-        let directorySupabaseInstance = null;
+<!-- 🚀 AUTOMATED INSIGHTS SYNC QUERY ENGINE (FULLY FIXED & ISOLATED) --> 
+<script> 
+let directorySupabaseInstance = null; 
 
-        window.addEventListener('load', () => {
-            if (typeof window.supabase === 'undefined') {
-                const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-                script.onload = () => initBlogDirectoryRouter();
-                document.head.appendChild(script);
-            } else {
-                initBlogDirectoryRouter();
-            }
-        });
+window.addEventListener('load', () => { 
+    if (typeof window.supabase === 'undefined') { 
+        const script = document.createElement('script'); 
+        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'; 
+        script.onload = () => initBlogDirectoryRouter(); 
+        document.head.appendChild(script); 
+    } else { 
+        initBlogDirectoryRouter(); 
+    } 
+}); 
 
-        function initBlogDirectoryRouter() {
-            directorySupabaseInstance = window.supabase.createClient(
-                'https://lrbimrlbskjweynxlgas.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
-            );
-            fetchBlogArticlesByTier(null);
-        }
+function initBlogDirectoryRouter() { 
+    directorySupabaseInstance = window.supabase.createClient( 
+        'https://lrbimrlbskjweynxlgas.supabase.co', 
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU' 
+    ); 
+    fetchBlogArticlesByTier(null); 
+} 
 
-        async function fetchBlogArticlesByTier(categoryFilterString) {
-            const displayContainer = document.getElementById('dynamicBlogPostsContainer');
-            if (!displayContainer) return;
+async function fetchBlogArticlesByTier(categoryFilterString) { 
+    const displayContainer = document.getElementById('dynamicBlogPostsContainer'); 
+    if (!displayContainer) return; 
+    
+    displayContainer.innerHTML = '<div style="grid-column: span 3; text-align:center; padding:60px 0; color:#64748b; font-weight:600;">Querying live insights matrix...</div>'; 
+    
+    document.querySelectorAll('.horizontal-category-links a').forEach(link => { 
+        link.classList.remove('active-filter-tier'); 
+        if (categoryFilterString === null && link.innerText.includes('Show All')) { 
+            link.classList.add('active-filter-tier'); 
+        } else if (categoryFilterString && link.getAttribute('onclick').includes(categoryFilterString)) { 
+            link.classList.add('active-filter-tier'); 
+        } 
+    }); 
+    
+    try { 
+        let query = directorySupabaseInstance.from('blog_posts').select('*').order('created_at', { ascending: false }); 
+        if (categoryFilterString) { 
+            query = query.eq('category', categoryFilterString); 
+        } 
+        
+        const { data: posts, error } = await query; 
+        if (error) throw error; 
+        
+        if (!posts || posts.length === 0) { 
+            displayContainer.innerHTML = ` 
+                <div style="grid-column: span 3; text-align:center; padding:60px 20px; background:#f8fafc; border: 1px dashed #e2e8f0; border-radius:12px; color:#64748b; width:100%; box-sizing:border-box;"> 
+                    <h3 style="margin:0 0 8px 0; color:#0a1f44; font-weight:800;">No Insights Posted Yet</h3> 
+                    <p style="margin:0; font-size:0.9rem;">The filter container folder "${categoryFilterString || 'All'}" currently contains zero active articles.</p> 
+                </div>`; 
+            return; 
+        } 
+        
+        displayContainer.innerHTML = ''; 
+        
+        posts.forEach(post => { 
+            const dateString = new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); 
+            const cardElement = document.createElement('a'); 
+            cardElement.href = `article.html?slug=${post.slug}`; 
+            cardElement.className = 'blog-card'; 
+            cardElement.style.cssText = "display: block !important; text-decoration: none !important; box-sizing: border-box !important; background: #ffffff !important;"; 
+            
+            // 🔄 FIXED METADATA WRAPPER AND BLOCK MARGIN ANCHORS BELOW TO PREVENT TEXT COLLISION
+            cardElement.innerHTML = ` 
+                <div style="height:180px; width:100%; background: url('${post.image_url || 'images/blog-fallback.jpg'}') center/cover no-repeat; border-radius:12px 12px 0 0; background-color:#f1f5f9; display:block;"></div> 
+                <div style="padding: 28px !important; text-align: left !important; display: block !important; box-sizing: border-box !important; background: #ffffff !important; border-radius: 0 0 12px 12px; width: 100% !important;"> 
+                    
+                    <!-- Meta info alignment wrapper with rigid columns gaps -->
+                    <div style="display:flex !important; flex-direction:row !important; justify-content:space-between !important; align-items:center !important; gap:15px !important; margin-bottom:20px !important; width:100% !important; padding:0 !important; box-sizing:border-box !important;"> 
+                        <span style="font-size:0.68rem; padding:5px 10px; border-radius:4px; background:#10b981; color:#ffffff; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; display:inline-block !important; flex-shrink:0 !important; max-width:65% !important; overflow:hidden !important; text-overflow:ellipsis !important; white-space:nowrap !important;">${post.category}</span> 
+                        <span style="font-size:0.75rem; color:#94a3b8; font-weight:600; display:inline-block !important; flex-shrink:0 !important; white-space:nowrap !important;">${dateString}</span> 
+                    </div> 
+                    
+                    <!-- Title container with isolating lower padding block -->
+                    <div style="margin: 0 0 14px 0 !important; padding: 0 !important; display: block !important; width: 100% !important; text-align: left !important; box-sizing:border-box !important;"> 
+                        <h3 style="margin: 0 !important; padding: 0 !important; font-size: 1.25rem !important; color: #0a1f44 !important; font-weight: 700 !important; line-height: 1.4 !important; text-transform: none !important; letter-spacing: normal !important; text-align: left !important; display: block !important;">${post.title}</h3> 
+                    </div> 
+                    
+                    <!-- Summary block cleanly separated from elements above -->
+                    <div style="margin: 0 !important; padding: 0 !important; display: block !important; width: 100% !important; text-align: left !important; box-sizing:border-box !important;"> 
+                        <p style="margin: 0 !important; padding: 0 !important; color: #64748b !important; font-size: 0.88rem !important; line-height: 1.6 !important; text-transform: none !important; letter-spacing: normal !important; text-align: left !important; display: block !important;">${post.summary || 'Click to view full insight data analysis report...'}</p> 
+                    </div> 
+                </div>`; 
+            
+            displayContainer.appendChild(cardElement); 
+        }); 
+    } catch (err) { 
+        console.error("Directory engine failed to pull entries:", err); 
+        displayContainer.innerHTML = '<div style="grid-column: span 3; color:#ef4444; font-weight:700; text-align:center; padding:40px;"> HANDSHAKE INTERRUPTED: Unable to sync articles stream records.</div>'; 
+    } 
+} 
+</script>
 
-            displayContainer.innerHTML = '<div style="grid-column: span 3; text-align:center; padding:60px 0; color:#64748b; font-weight:600;">Querying live insights matrix...</div>';
-
-            document.querySelectorAll('.horizontal-category-links a').forEach(link => {
-                link.classList.remove('active-filter-tier');
-                if (categoryFilterString === null && link.innerText.includes('Show All')) {
-                    link.classList.add('active-filter-tier');
-                } else if (categoryFilterString && link.getAttribute('onclick').includes(categoryFilterString)) {
-                    link.classList.add('active-filter-tier');
-                }
-            });
-
-            try {
-                let query = directorySupabaseInstance.from('blog_posts').select('*').order('created_at', { ascending: false });
-                if (categoryFilterString) {
-                    query = query.eq('category', categoryFilterString);
-                }
-
-                const { data: posts, error } = await query;
-                if (error) throw error;
-
-                if (!posts || posts.length === 0) {
-                    displayContainer.innerHTML = `
-                        <div style="grid-column: span 3; text-align:center; padding:60px 20px; background:#f8fafc; border: 1px dashed #e2e8f0; border-radius:12px; color:#64748b; width:100%; box-sizing:border-box;">
-                            <h3 style="margin:0 0 8px 0; color:#0a1f44; font-weight:800;">No Insights Posted Yet</h3>
-                            <p style="margin:0; font-size:0.9rem;">The filter container folder "${categoryFilterString || 'All'}" currently contains zero active articles.</p>
-                        </div>`;
-                    return;
-                }
-
-                displayContainer.innerHTML = '';
-
-                posts.forEach(post => {
-                    const dateString = new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-                    const cardElement = document.createElement('a');
-                    cardElement.href = `article.html?slug=${post.slug}`;
-                    cardElement.className = 'blog-card';
-                    cardElement.style.cssText = "display: block !important; text-decoration: none !important; box-sizing: border-box !important; background: #ffffff !important;";
-
-                    cardElement.innerHTML = `
-                        <div style="height:180px; width:100%; background: url('${post.image_url || 'images/blog-fallback.jpg'}') center/cover no-repeat; border-radius:12px 12px 0 0; background-color:#f1f5f9; display:block;"></div>
-                        <div style="padding: 26px !important; text-align: left !important; display: block !important; box-sizing: border-box !important; background: #ffffff !important; border-radius: 0 0 12px 12px; width: 100% !important;">
-                            <div style="display:flex !important; justify-content:space-between !important; align-items:center !important; margin-bottom:15px !important; width:100% !important; padding:0 !important;">
-                                <span style="font-size:0.68rem; padding:4px 8px; border-radius:4px; background:#10b981; color:#ffffff; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; display:inline-block !important;">${post.category}</span>
-                                <span style="font-size:0.75rem; color:#94a3b8; font-weight:600; display:inline-block !important;">${dateString}</span>
-                            </div>
-                            <!-- 🔄 FIXED: Added a 15px bottom margin to separate title and paragraph summary text elements cleanly -->
-                            <div style="margin: 15px 0 15px 0 !important; padding: 0 !important; display: block !important; width: 100% !important; text-align: left !important;">
-                                <h3 style="margin: 0 !important; padding: 0 !important; font-size: 1.25rem !important; color: #0a1f44 !important; font-weight: 700 !important; line-height: 1.4 !important; text-transform: none !important; letter-spacing: normal !important; text-align: left !important; display: block !important;">${post.title}</h3>
-                            </div>
-                            <!-- 🔄 FIXED: Adjusted top buffer to give paragraph summary structural breathing room -->
-                            <div style="margin: 10px 0 0 0 !important; padding: 0 !important; display: block !important; width: 100% !important; text-align: left !important;">
-                                <p style="margin: 0 !important; padding: 0 !important; color: #64748b !important; font-size: 0.88rem !important; line-height: 1.6 !important; text-transform: none !important; letter-spacing: normal !important; text-align: left !important; display: block !important;">${post.summary || 'Click to view full insight data analysis report...'}</p>
-                            </div>
-                        </div>`;
-                    displayContainer.appendChild(cardElement);
-                });
-            } catch (err) {
-                console.error("Directory engine failed to pull entries:", err);
-                displayContainer.innerHTML = '<div style="grid-column: span 3; color:#ef4444; font-weight:700; text-align:center; padding:40px;"> HANDSHAKE INTERRUPTED: Unable to sync articles stream records.</div>';
-            }
-        }
-    </script>
 </body>
 </html>
