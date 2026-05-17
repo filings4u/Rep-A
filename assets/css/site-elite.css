@@ -880,3 +880,56 @@ section, .feature-section, .pricing-section, .resource-section, .faq-section {
     }
 }
 
+/* ==========================================================================
+   📱 FILINGS4U MASTER MOBILE FINISHING TOUCHES (Viewports Under 980px)
+   ========================================================================== */
+@media screen and (max-width: 980px) {
+
+    /* 1. FORCE THE MENU TOGGLE ICON TO BE BRAND NAVY */
+    nav button,
+    nav .mobile-toggle-btn,
+    .mobile-toggle-btn {
+        color: #0a1f44 !important; /* Locks icon to your solid brand Navy profile */
+        font-size: 28px !important; /* Slightly enlarged for easier finger-tapping */
+        margin: 0 !important;
+        padding: 5px !important;
+    }
+
+    /* 2. FLIP THE HERO GRID: Moves the image to the top, above the text */
+    .service-grid {
+        display: flex !important;
+        flex-direction: column-reverse !important; /* Flips stack layout ordering constraints */
+        gap: 30px !important;
+    }
+
+    /* Adjust space below the newly positioned top image */
+    .hero-image-container {
+        width: 100% !important;
+        height: 280px !important; /* Tighter panoramic height ratio for mobile headers */
+        margin-bottom: 10px !important;
+    }
+
+    /* 3. ALIGN LOWER FOOTER META LINKS SIDE-BY-SIDE (ROW FLEX) */
+    .site-footer .footer-bottom {
+        display: flex !important;
+        flex-direction: column !important; /* Keeps structural text chunks vertically sorted */
+        align-items: center !important;
+        gap: 20px !important;
+    }
+
+    /* Forces your legal policies block to expand horizontally side-by-side */
+    .site-footer .legal-links {
+        display: flex !important;
+        flex-direction: row !important; /* Forces row positioning instead of stacking vertical blocks */
+        flex-wrap: wrap !important;     /* Safely wraps links if the screen width gets ultra-narrow */
+        justify-content: center !important;
+        gap: 20px !important;           /* Clean spacing gutter channels between links */
+        margin: 10px 0 0 0 !important;
+    }
+
+    .site-footer .legal-links a {
+        margin: 0 !important; /* Cleans up duplicate spacer margins */
+        display: inline-block !important;
+        font-size: 0.85rem !important;
+    }
+}
