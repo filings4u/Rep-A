@@ -1100,6 +1100,20 @@ footer.site-footer,
 
 } /* 🌟 ALL MEDIA QUERIES CLEANLY SEALED HERE */
 
+}
 
+
+/* BREAK FOOTER TO FULL SCREEN WIDTH ON MOBILE */
+@media screen and (max-width: 980px) {
+  footer.site-footer, 
+  .site-footer {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: 50% !important;
+    transform: translateX(-50%) !important;
+    padding-left: 20px !important;  /* Provides clean breathing room for text near edges */
+    padding-right: 20px !important; /* Prevents text from clipping off the screen */
+    box-sizing: border-box !important;
+  }
 }
 
