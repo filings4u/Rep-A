@@ -1069,16 +1069,16 @@ footer.site-footer,
     gap: 20px !important;
   }
   
-  /* 1. Secure Badge on Top */
-  .site-footer .trust-badge {
-    order: 1 !important;
-  }
-  
-  /* 2. Legal Links in the Middle */
+   /* 2. Legal Links in the Middle */
   .site-footer .legal-links {
     order: 2 !important;
     width: 100% !important;
     justify-content: center !important;
+  }
+
+  /* 1. Secure Badge on Top */
+  .site-footer .trust-badge {
+    order: 1 !important;
   }
   
   /* 3. Copyright Block at the Bottom */
