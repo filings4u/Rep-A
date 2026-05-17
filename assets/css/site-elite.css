@@ -881,123 +881,42 @@ section, .feature-section, .pricing-section, .resource-section, .faq-section {
 }
 
 /* ==========================================================================
-   📱 FILINGS4U MASTER MOBILE FINISHING TOUCHES (Viewports Under 980px)
+   📱 UNIFIED MASTER MOBILE COMPLIANCE ENGINE (Strictly Viewports Under 980px)
    ========================================================================== */
 @media screen and (max-width: 980px) {
 
-    /* 1. FORCE THE MENU TOGGLE ICON TO BE BRAND NAVY */
-    nav button,
+    /* --- 1. SITE HEADER & NAVIGATION DRAWER CONTROLLER --- */
+    nav {
+        padding: 15px 20px !important;
+    }
+
+    /* Target both selector instances to secure an error-free cross-page layout */
+    nav .mobile-menu-trigger,
     nav .mobile-toggle-btn,
-    .mobile-toggle-btn {
-        color: #0a1f44 !important; /* Locks icon to your solid brand Navy profile */
-        font-size: 28px !important; /* Slightly enlarged for easier finger-tapping */
-        margin: 0 !important;
-        padding: 5px !important;
-    }
-
-    /* 2. FLIP THE HERO GRID: Moves the image to the top, above the text */
-    .service-grid {
-        display: flex !important;
-        flex-direction: column-reverse !important; /* Flips stack layout ordering constraints */
-        gap: 30px !important;
-    }
-
-    /* Adjust space below the newly positioned top image */
-    .hero-image-container {
-        width: 100% !important;
-        height: 280px !important; /* Tighter panoramic height ratio for mobile headers */
-        margin-bottom: 10px !important;
-    }
-
-    /* 3. ALIGN LOWER FOOTER META LINKS SIDE-BY-SIDE (ROW FLEX) */
-    .site-footer .footer-bottom {
-        display: flex !important;
-        flex-direction: column !important; /* Keeps structural text chunks vertically sorted */
-        align-items: center !important;
-        gap: 20px !important;
-    }
-
-    /* Forces your legal policies block to expand horizontally side-by-side */
-    .site-footer .legal-links {
-        display: flex !important;
-        flex-direction: row !important; /* Forces row positioning instead of stacking vertical blocks */
-        flex-wrap: wrap !important;     /* Safely wraps links if the screen width gets ultra-narrow */
-        justify-content: center !important;
-        gap: 20px !important;           /* Clean spacing gutter channels between links */
-        margin: 10px 0 0 0 !important;
-    }
-
-    .site-footer .legal-links a {
-        margin: 0 !important; /* Cleans up duplicate spacer margins */
-        display: inline-block !important;
-        font-size: 0.85rem !important;
-    }
-}
-
-/* ==========================================================================
-   📱 MOBILE-ONLY FOOTER COMPONENT RE-ALIGNMENT (Monitors Unchanged)
-   ========================================================================= */
-@media screen and (max-width: 980px) {
-    /* Collapses the 4 top categories into clean, readable vertical stacks */
-    .site-footer .footer-container,
-    footer .footer-container {
-        display: grid !important;
-        grid-template-columns: 1fr !important; /* Single column layout for mobile */
-        gap: 40px !important; /* Vertical spacing between stacked lists */
-        text-align: center !important; /* Clean center-aligned mobile lists */
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
-    /* Centers brand asset graphics, social icons, and bio text on phones */
-    .site-footer .footer-brand {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        text-align: center !important;
-    }
-    
-    .site-footer .footer-brand p {
-        max-width: 450px !important;
-        margin: 15px auto 0 auto !important;
-    }
-
-    /* Centers the bullet lists beneath category headers */
-    .site-footer .footer-col ul {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        padding: 0 !important;
-    }
-}
-
-
-/* ==========================================================================
-   📱 INDEX SCREEN HOMEPAGE VIEWPORT OVERRIDES (Under 980px Breakpoints)
-   ========================================================================== */
-@media screen and (max-width: 980px) {
-    /* Hard-locks the mobile toggle button visible inside the homepage nav grid */
-    #nav .mobile-toggle-btn,
-    nav .mobile-toggle-btn {
+    .mobile-menu-trigger,
+    .mobile-toggle-btn,
+    #nav .mobile-toggle-btn {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
         position: relative !important;
         pointer-events: auto !important;
-        color: #0a1f44 !important;
         background: none !important;
         border: none !important;
-        font-size: 26px !important;
+        font-size: 28px !important; /* Calibrated size tracking for responsive touch mapping */
+        color: #0a1f44 !important; /* Hard-locks menu icon to your brand Navy profile */
         cursor: pointer !important;
         z-index: 2000 !important;
+        margin: 0 !important;
+        padding: 5px !important;
     }
 
-    /* Pulls your menu layout fields smoothly out of sight until clicked open */
-    #nav .nav-links,
-    nav .nav-links {
+    /* Secures layout parameter transitions for your fly-out link sheets */
+    nav .nav-links,
+    #nav .nav-links {
         position: fixed !important;
         top: 0 !important;
-        right: -100% !important;
+        right: -100% !important; /* Keeps container safely off-screen right until called */
         width: 280px !important;
         height: 100vh !important;
         background: #ffffff !important;
@@ -1006,14 +925,126 @@ section, .feature-section, .pricing-section, .resource-section, .faq-section {
         justify-content: flex-start !important;
         padding: 80px 20px 40px 20px !important;
         box-shadow: -5px 0 25px rgba(10,31,68,0.15) !important;
-        transition: right 0.3s ease-in-out !important;
+        transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Silky elastic tracking push */
         z-index: 1999 !important;
         display: flex !important;
     }
 
-    /* Slides the drawer right out onto the canvas when the 'active' token is attached */
-    #nav .nav-links.active,
-    nav .nav-links.active {
+    /* Slides the panel out cleanly when the main.js engine appends the active class token */
+    nav .nav-links.active,
+    #nav .nav-links.active {
         right: 0 !important;
+    }
+
+    /* Accordion Dropdown Sub-menu Collapses Hooks */
+    .nav-item-dropdown {
+        width: 100% !important;
+    }
+
+    .nav-item-dropdown > a {
+        display: flex !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        padding: 12px 10px !important;
+    }
+
+    .nav-item-dropdown .dropdown-content {
+        display: none !important;
+    }
+    
+    .nav-item-dropdown.active-toggle .dropdown-content {
+        display: block !important;
+        position: relative !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: #f8fafc !important;
+        width: 100% !important;
+        padding-left: 15px !important;
+        border-left: 2px solid var(--border, #e2e8f0) !important;
+    }
+
+    /* --- 2. HERO HIGHLIGHT PANELS POSITION FLIP --- */
+    .service-grid {
+        display: flex !important;
+        flex-direction: column-reverse !important; /* Pulls the panoramic cover image above your H1 copy */
+        gap: 30px !important;
+    }
+
+    .hero-image-container {
+        width: 100% !important;
+        height: 280px !important; /* Optimizes content height constraints for smartphone rows */
+        margin-bottom: 10px !important;
+    }
+
+    /* --- 3. PUBLIC MARKETING FOOTER RECONCILIATION --- */
+    .site-footer .footer-container, 
+    footer .footer-container {
+        display: grid !important;
+        grid-template-columns: 1fr !important; /* Converts column categories into single vertical layouts */
+        gap: 40px !important;
+        text-align: center !important;
+    }
+
+    .site-footer .footer-brand {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .site-footer .footer-brand p {
+        max-width: 450px !important;
+        margin: 15px auto 0 auto !important;
+    }
+
+    .site-footer .footer-col ul {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 0 !important;
+    }
+
+    /* Lower Metadata Center alignment blocks */
+    .site-footer .footer-bottom {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 20px !important;
+        text-align: center !important;
+    }
+
+    /* Forces your legal metadata sub-links rows to align side-by-side */
+    .site-footer .legal-links {
+        display: flex !important;
+        flex-direction: row !important; /* Locks links horizontally */
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 20px !important; /* Generates proportional gutter gutters spacing */
+        margin: 10px 0 0 0 !important;
+        width: 100% !important;
+    }
+
+    .site-footer .legal-links a {
+        margin: 0 !important;
+        display: inline-block !important;
+        font-size: 0.85rem !important;
+        color: #f4f7fa !important;
+    }
+}
+
+/* ==========================================================================
+   🖥️ MASTER DESKTOP OVERLAY SAFEGUARDS (Monitors Above 980px)
+   ========================================================================== */
+@media screen and (min-width: 981px) {
+    /* Guarantees menu button never bleeds or renders onto desktop screens */
+    nav .mobile-menu-trigger,
+    nav .mobile-toggle-btn,
+    .mobile-menu-trigger,
+    .mobile-toggle-btn {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        pointer-events: none !important;
     }
 }
