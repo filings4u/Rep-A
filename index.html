@@ -17,17 +17,13 @@
 </head>
 <body>
 
-    <!-- 🌐 SITE-WIDE BALANCED NAVIGATION BAR HEADER -->
+   <!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
     <nav>
         <a href="index.html">
             <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
         </a>
-        
-        <!-- 🚀 FIXED: Set to matching universal class trigger hook. Handled instantly via main.js interceptors! -->
-        <button class="mobile-menu-trigger">☰</button>
-        
+        <button class="mobile-toggle-btn" onclick="toggleMobileMenu()">☰</button>
         <div class="nav-links">
-            <!-- 🏢 BUSINESS FORMATION DROPDOWN -->
             <div class="nav-item-dropdown">
                 <a href="#" onclick="toggleMobileDropdown(event, this)">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
                 <div class="dropdown-content">
@@ -38,8 +34,6 @@
                     <a href="sole-proprietorship.html">Sole Proprietorship</a>
                 </div>
             </div>
-
-            <!-- 📜 COMPLIANCE SERVICES DROPDOWN -->
             <div class="nav-item-dropdown">
                 <a href="#" onclick="toggleMobileDropdown(event, this)">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
                 <div class="dropdown-content">
@@ -51,8 +45,6 @@
                     <a href="dissolution.html">Entity Dissolution</a>
                 </div>
             </div>
-
-            <!-- 💰 TAX FILINGS DROPDOWN -->
             <div class="nav-item-dropdown">
                 <a href="#" onclick="toggleMobileDropdown(event, this)">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
                 <div class="dropdown-content">
@@ -64,8 +56,6 @@
                     <a href="franchise-tax.html">Franchise Tax Filing</a>
                 </div>
             </div>
-
-            <!-- 🚛 DOT & FLEET DROPDOWN -->
             <div class="nav-item-dropdown">
                 <a href="#" onclick="toggleMobileDropdown(event, this)">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
                 <div class="dropdown-content">
@@ -82,8 +72,6 @@
                     <a href="broker-insurance.html">Broker Insurance</a>
                 </div>
             </div>
-
-            <!-- Main Site Portal Action Target -->
             <a href="https://filings4u.com" class="btn-client-portal">Secure Portal</a>
         </div>
     </nav>
