@@ -1060,4 +1060,31 @@ footer.site-footer,
     .site-footer .trust-badge {
         margin: 0 !important;
     }
+
+    /* RE-ORDER LOWER FOOTER META ELEMENTS ON MOBILE */
+@media screen and (max-width: 980px) {
+  .site-footer .footer-bottom {
+    /* Changes direction to stack items in a clean vertical column */
+    flex-direction: column !important; 
+    gap: 20px !important;
+  }
+  
+  /* 1. Secure Badge on Top */
+  .site-footer .trust-badge {
+    order: 1 !important;
+  }
+  
+  /* 2. Legal Links in the Middle */
+  .site-footer .legal-links {
+    order: 2 !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  
+  /* 3. Copyright Block at the Bottom */
+  .site-footer .footer-bottom > div:first-child {
+    order: 3 !important;
+  }
+}
+
 } /* 🌟 ALL MEDIA QUERIES CLEANLY SEALED HERE */
