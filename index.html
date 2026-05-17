@@ -153,35 +153,14 @@
         </div>
     </section>
 
-    <!-- SECTION 5: RESOURCE HUB -->
-    <section class="resource-section">
-        <div class="hero-tag">Insights</div>
-        <h2>Founder Insights</h2>
-        <div class="resource-grid" id="public-homepage-blog-grid-target">
-            <!-- 🌟 AUTOMATED SYNC: Dynamically loaded via admin-blog entries. Fallback static cards remain below -->
-            <a href="#" class="blog-card">
-                <div style="height:150px; background:#ddd;"></div>
-                <div style="padding:20px;">
-                    <span class="hero-tag" style="margin-bottom:5px;">Launch</span>
-                    <h4>2026 Small Business Checklist</h4>
-                </div>
-            </a>
-            <a href="#" class="blog-card">
-                <div style="height:150px; background:#ddd;"></div>
-                <div style="padding:20px;">
-                    <span class="hero-tag" style="margin-bottom:5px;">Compliance</span>
-                    <h4>DOT Authority 101</h4>
-                </div>
-            </a>
-            <a href="#" class="blog-card">
-                <div style="height:150px; background:#ddd;"></div>
-                <div style="padding:20px;">
-                    <span class="hero-tag" style="margin-bottom:5px;">Tax</span>
-                    <h4>Maximizing Depreciation</h4>
-                </div>
-            </a>
-        </div>
-    </section>
+<div class="resource-grid" id="public-homepage-blog-grid-target">
+  <!-- 🌟 AUTOMATED SYNC HANDLER SPINNER -->
+  <div id="blog-loading-spinner" style="grid-column: span 3; text-align: center; padding: 40px 0; color: #64748b;">
+    <div style="margin: 0 auto 10px; width: 25px; height: 25px; border: 2px solid #e2e8f0; border-top: 2px solid #10b981; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <span>Gathering latest articles...</span>
+  </div>
+</div>
+
 
     <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX -->
     <footer class="site-footer">
