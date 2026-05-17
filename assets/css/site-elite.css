@@ -735,14 +735,6 @@ section, .feature-section, .pricing-section, .resource-section, .faq-section {
         box-sizing: border-box !important;
     }
 
-    /* Forces columns to occupy all vacant structural workspace space */
-    .footer-container {
-        display: grid !important;
-        grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
-        gap: 40px !important;
-        width: 100% !important;
-        max-width: 100% !important;
-    }
 
     /* Ensure the lower metadata link panels span the entire canvas width */
     .footer-bottom {
@@ -998,15 +990,16 @@ footer.site-footer,
         margin-bottom: 10px !important;
     }
 
-    /* 3. PUBLIC MARKETING TOP FOOTER (2x2 SIDE-BY-SIDE MOBILE GRID) */
-    .site-footer .footer-container, footer .footer-container {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important; /* 2 side-by-side horizontal mobile columns */
-        gap: 30px 20px !important;
-        text-align: left !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
+   /* 3. PUBLIC MARKETING TOP FOOTER (2x2 SIDE-BY-SIDE MOBILE GRID) */
+.site-footer .footer-container, footer .footer-container { 
+    display: grid !important; 
+    grid-template-columns: repeat(2, 1fr) !important; /* 🌟 This will now correctly force the side-by-side view */
+    gap: 30px 20px !important; 
+    text-align: left !important; 
+    width: 100% !important; 
+    box-sizing: border-box !important; 
+}
+
     .site-footer .footer-brand {
         grid-column: span 2 !important; /* Brand spans full width row above lists */
         display: block !important;
