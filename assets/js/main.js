@@ -154,46 +154,41 @@ window.addEventListener('resize', function() {
     }
 });
 
-
 /* ==========================================================================
-   🚨 CRITICAL BLOCKADE OVERRIDE: FORCES MOBILE MENU REVEAL (BYPASSES THEME)
+   📱 UNIFIED MOBILE MENU CONTROLLER (FIXED DOUBLE-TOGGLE GLITCH)
    ========================================================================== */
-
 (function() {
-    function forceIgniteMobileMenuDrawer() {
-        // Target your explicit buttons and mobile trigger class anchors
+    function initMobileMenuSystem() {
         const triggerButtons = document.querySelectorAll('.mobile-menu-trigger, .mobile-toggle-btn');
         const slideDrawerContainer = document.querySelector('.nav-links');
 
+        // Safety Guard: Re-poll if the page elements are lagging during load
         if (triggerButtons.length === 0 || !slideDrawerContainer) {
-            // Re-check in a split second if elements are still loading into place
-            setTimeout(forceIgniteMobileMenuDrawer, 200);
+            setTimeout(initMobileMenuSystem, 150);
             return;
         }
 
-        // Wipe out old duplicate listeners to keep browser memory clean
         triggerButtons.forEach(btn => {
-            btn.removeAttribute('onclick'); // Strips out old HTML handlers
-            
-            // Attach a direct, aggressive listener that the theme cannot block
+            // Strip out conflicting fallback attributes
+            btn.removeAttribute('onclick');
+
+            // 1. Direct Click Interceptor
             btn.addEventListener('click', function(event) {
                 event.preventDefault();
-                event.stopPropagation(); // Stops the theme script from catching the click event
+                event.stopPropagation(); // Blocks theme overlays from breaking the toggle
                 
-                // Inject the active visibility status token straight to your navigation drawer wrapper
                 slideDrawerContainer.classList.toggle('active');
                 
-                // Toggle the action button symbols matching open/close states
                 if (slideDrawerContainer.classList.contains('active')) {
                     btn.innerHTML = '✕';
-                    btn.style.setProperty('color', '#e53e3e', 'important'); // Alert Red accent
+                    btn.style.setProperty('color', '#e53e3e', 'important'); // Crimson Exit Icon
                 } else {
                     btn.innerHTML = '☰';
-                    btn.style.setProperty('color', '#0a1f44', 'important'); // Brand Navy contrast
+                    btn.style.setProperty('color', '#0a1f44', 'important'); // Brand Navy Menu Icon
                 }
             });
-            
-            // Add smartphone touchscreen support to eliminate tap response delays
+
+            // 2. High-Performance Smartphone Touch Integration
             btn.addEventListener('touchstart', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -209,61 +204,15 @@ window.addEventListener('resize', function() {
                 }
             }, { passive: false });
         });
-        
-        console.log("🎯 Core Override Complete: Mobile navigation handlers successfully armed.");
+
+        console.log("🎯 Mobile Navigation Engine successfully synchronized and isolated.");
     }
 
-    // Initialize the override sequence instantly as soon as document layers mount
+    // Execute engine initialization depending on canvas mount states
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", forceIgniteMobileMenuDrawer);
+        document.addEventListener("DOMContentLoaded", initMobileMenuSystem);
     } else {
-        forceIgniteMobileMenuDrawer();
-    }
-})();
-
-
-/* ==========================================================================
-   🚨 RESPONSIVE CORE INTERCEPTOR: BYPASSES HTML5 UP OVERLAYS
-   ========================================================================== */
-
-(function() {
-    function armFilings4uMobileMenu() {
-        const hamburgerBtn = document.querySelector('.mobile-menu-trigger');
-        const linksDrawer = document.querySelector('.nav-links');
-
-        if (!hamburgerBtn || !linksDrawer) {
-            // Keep poll indexing alive during canvas mounting lag
-            setTimeout(armFilings4uMobileMenu, 150);
-            return;
-        }
-
-        // Wipe out blocking inline event strings properties
-        hamburgerBtn.removeAttribute('onclick');
-
-        // Attach an direct click handler that the theme's default scripts cannot intercept
-        hamburgerBtn.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation(); // Restricts parent library event bubbling blocks
-            
-            linksDrawer.classList.toggle('active');
-            
-            if (linksDrawer.classList.contains('active')) {
-                hamburgerBtn.innerHTML = '✕';
-                hamburgerBtn.style.setProperty('color', '#e53e3e', 'important'); // Smooth alert crimson on open
-            } else {
-                hamburgerBtn.innerHTML = '☰';
-                hamburgerBtn.style.setProperty('color', '#0a1f44', 'important'); // Restores brand navy on close
-            }
-        });
-
-        console.log("🎯 Mobile Navigation Triggers armed and synchronized successfully.");
-    }
-
-    // Initialize as soon as script compiled loops complete
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", armFilings4uMobileMenu);
-    } else {
-        armFilings4uMobileMenu();
+        initMobileMenuSystem();
     }
 })();
 
@@ -284,63 +233,78 @@ function toggleMobileDropdown(event, element) {
     }
 }
 
-
 /* ==========================================================================
-   🚨 CORE EVENT INTERCEPTOR ENGINE: ENFORCES MOBILE SIDEBAR DRAWER CLICK
+   📰 AUTOMATED SUPABASE BLOG SYNC MODULE (FOUNDER INSIGHTS)
    ========================================================================== */
-(function() {
-    function forceIgniteMobileMenuDrawer() {
-        const hamburgerBtn = document.querySelector('.mobile-menu-trigger');
-        const linksDrawer = document.querySelector('.nav-links');
+document.addEventListener('DOMContentLoaded', async () => {
+    const gridTarget = document.getElementById('public-homepage-blog-grid-target');
+    
+    // 🚀 SAFETY GUARD RAIL: Prevents script crashes on contact, pricing, and wizard pages!
+    if (!gridTarget) return; 
 
-        if (!hamburgerBtn || !linksDrawer) {
-            // Keep poll indexing alive during canvas mounting lag
-            setTimeout(forceIgniteMobileMenuDrawer, 150);
+    const spinner = document.getElementById('blog-loading-spinner');
+
+    // Default static placeholder markup cards to display if database tables are empty
+    const fallbackStaticCardsHTML = `
+        <a href="blog/checklist-2026.html" class="blog-card">
+            <div style="height:150px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-weight:600;">Launch Core</div>
+            <div style="padding:20px;"><span class="hero-tag" style="margin-bottom:5px;">Launch</span><h4>2026 Small Business Checklist</h4></div>
+        </a>
+        <a href="blog/dot-101.html" class="blog-card">
+            <div style="height:150px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-weight:600;">Logistics Hub</div>
+            <div style="padding:20px;"><span class="hero-tag" style="margin-bottom:5px;">Compliance</span><h4>DOT Authority 101</h4></div>
+        </a>
+        <a href="blog/depreciation.html" class="blog-card">
+            <div style="height:150px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-weight:600;">Tax Engine</div>
+            <div style="padding:20px;"><span class="hero-tag" style="margin-bottom:5px;">Tax</span><h4>Maximizing Depreciation</h4></div>
+        </a>
+    `;
+
+    try {
+        // Double check if Supabase library framework loaded accurately in window scope
+        if (typeof window.supabase === 'undefined') {
+            throw new Error("Supabase library not initialized yet.");
+        }
+
+        // Fetch latest 3 items from public database table row logs
+        const { data: posts, error } = await window.supabase
+            .from('blog_posts')
+            .select('title, category, image_url, slug')
+            .order('created_at', { ascending: false })
+            .limit(3);
+
+        if (error) throw error;
+
+        // If no items have been added to the dashboard table yet, paint the design fallbacks
+        if (!posts || posts.length === 0) {
+            if (spinner) spinner.remove();
+            gridTarget.innerHTML = fallbackStaticCardsHTML;
             return;
         }
 
-        // Wipe out blocking inline click attributes strings properties
-        hamburgerBtn.removeAttribute('onclick');
+        // Clean out loading placeholder element frame
+        if (spinner) spinner.remove();
+        gridTarget.innerHTML = "";
 
-        // Attach a direct event that the baseline theme cannot intercept or block
-        hamburgerBtn.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation(); // Stops parent theme scripts from catching the click
+        // Build and append individual dynamic article tiles
+        posts.forEach(post => {
+            const cardElement = document.createElement('a');
+            cardElement.href = `blog/${post.slug}.html`;
+            cardElement.className = 'blog-card';
             
-            linksDrawer.classList.toggle('active');
-            
-            if (linksDrawer.classList.contains('active')) {
-                hamburgerBtn.innerHTML = '✕';
-                hamburgerBtn.style.setProperty('color', '#e53e3e', 'important'); // Alert Red accent
-            } else {
-                hamburgerBtn.innerHTML = '☰';
-                hamburgerBtn.style.setProperty('color', '#0a1f44', 'important'); // Brand Navy contrast
-            }
+            cardElement.innerHTML = `
+                <div style="height:150px; background: url('${post.image_url}') center/cover no-repeat; background-color: #f1f5f9;"></div>
+                <div style="padding:20px;">
+                    <span class="hero-tag" style="margin-bottom:10px; display:inline-block; font-size:0.7rem;">${post.category}</span>
+                    <h4 style="margin:0; font-size:1.1rem; color:#0a1f44; font-weight:700; line-height:1.4;">${post.title}</h4>
+                </div>
+            `;
+            gridTarget.appendChild(cardElement);
         });
 
-        // Add smartphone touchscreen support to eliminate tap response delays
-        hamburgerBtn.addEventListener('touchstart', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            linksDrawer.classList.toggle('active');
-            
-            if (linksDrawer.classList.contains('active')) {
-                hamburgerBtn.innerHTML = '✕';
-                hamburgerBtn.style.setProperty('color', '#e53e3e', 'important');
-            } else {
-                hamburgerBtn.innerHTML = '☰';
-                hamburgerBtn.style.setProperty('color', '#0a1f44', 'important');
-            }
-        }, { passive: false });
-
-        console.log("🎯 Mobile Navigation Triggers successfully armed and synchronized.");
+    } catch (err) {
+        console.warn("Blog module handled connection fallback safely:", err.message);
+        if (spinner) spinner.remove();
+        gridTarget.innerHTML = fallbackStaticCardsHTML;
     }
-
-    // Initialize the override sequence instantly as soon as document layers mount
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", forceIgniteMobileMenuDrawer);
-    } else {
-        forceIgniteMobileMenuDrawer();
-    }
-})();
+});
