@@ -122,3 +122,26 @@ window.addEventListener('resize', function() {
         }); 
     } 
 });
+
+/* ==========================================================================
+   📱 RESPONSIVE INTERACTION CONTROLLER: MOBILE MENU DRAWER ENGINE
+   ========================================================================== */
+
+function toggleMobileMenu() {
+    // 🌟 Matches the class wrappers assigned inside your site-elite.css stylesheet layout
+    const navLinks = document.querySelector('.nav-links');
+    const toggleBtn = document.querySelector('.mobile-menu-trigger');
+    
+    if (navLinks && toggleBtn) {
+        navLinks.classList.toggle('active');
+        
+        // Dynamic icon graphic translations toggle based on state parameters
+        if (navLinks.classList.contains('active')) {
+            toggleBtn.innerHTML = '✕';
+            toggleBtn.style.color = '#e53e3e'; /* Smooth alert red accent color */
+        } else {
+            toggleBtn.innerHTML = '☰';
+            toggleBtn.style.color = '#0a1f44'; /* Restores brand deep navy contrast */
+        }
+    }
+}
