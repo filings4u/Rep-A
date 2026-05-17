@@ -28,7 +28,8 @@
 </head>
 <body>
     <!-- Floating Action Toggle Engine for Mobile Dashboards -->
-<button class="mobile-menu-trigger" onclick="toggleMobileAdminSidebar()" aria-label="Toggle Navigation Menu">☰</button>
+<button class="mobile-menu-trigger" onclick="toggleMobileAdminSidebar()">☰</button>
+
 
 <nav>
     <a href="index.html"><img src="images/logo.png" alt="filings4u" class="logo"></a>
@@ -282,40 +283,51 @@
 </footer>
 
 <script>
-function toggleMobileAdminSidebar() {
-    const sidebar = document.querySelector('.portal-sidebar');
-    const trigger = document.querySelector('.mobile-menu-trigger');
-    
-    if (sidebar) {
-        // Toggle layout class modifier
-        sidebar.classList.toggle('mobile-open');
+    /**
+     * 1. Toggle mobile sidebar canvas panels and update action icons
+     */
+    function toggleMobileAdminSidebar() { 
+        const sidebar = document.querySelector('.portal-sidebar'); 
+        const trigger = document.querySelector('.mobile-menu-trigger'); 
         
-        // Update button visual state icons
-        if (sidebar.classList.contains('mobile-open')) {
-            trigger.innerHTML = '✕';
-            trigger.style.background = '#e53e3e'; // Crimson alert layout color
-        } else {
-            trigger.innerHTML = '☰';
-            trigger.style.background = '#0a1f44'; // Navy default theme accent
-        }
-    }
-}
+        if (sidebar && trigger) { 
+            // Toggle layout class modifier definitions
+            sidebar.classList.toggle('mobile-open'); 
+            
+            // Update button visual state configurations dynamically
+            if (sidebar.classList.contains('mobile-open')) { 
+                trigger.innerHTML = '✕'; 
+                trigger.style.background = '#e53e3e'; // Crimson alert state profile
+                trigger.style.color = '#ffffff';      // Clear white icon contrast
+            } else { 
+                trigger.innerHTML = '☰'; 
+                trigger.style.background = '#0a1f44'; // Locks back to your brand Navy profile
+                trigger.style.color = '#ffffff';      // Solid brand profile visibility
+            } 
+        } 
+    } 
 
-// Automatically close the menu overlay panel if a user resizes their dashboard back to desktop view
-window.addEventListener('resize', function() {
-    if (window.innerWidth > 992) {
-        const sidebar = document.querySelector('.portal-sidebar');
-        const trigger = document.querySelector('.mobile-menu-trigger');
-        if (sidebar && sidebar.classList.contains('mobile-open')) {
-            sidebar.classList.remove('mobile-open');
-            if (trigger) {
-                trigger.innerHTML = '☰';
-                trigger.style.background = '#0a1f44';
-            }
-        }
-    }
-});
+    /**
+     * 2. Automatically close the menu overlay panel if a user resizes their dashboard back to desktop view
+     * FIXED: Changed threshold value down from 992 to 980 to sync with your master site-elite.css queries
+     */
+    window.addEventListener('resize', function() { 
+        if (window.innerWidth > 980) { 
+            const sidebar = document.querySelector('.portal-sidebar'); 
+            const trigger = document.querySelector('.mobile-menu-trigger'); 
+            
+            if (sidebar && sidebar.classList.contains('mobile-open')) { 
+                sidebar.classList.remove('mobile-open'); 
+                if (trigger) { 
+                    trigger.innerHTML = '☰'; 
+                    trigger.style.background = '#0a1f44'; 
+                    trigger.style.color = '#ffffff';
+                } 
+            } 
+        } 
+    }); 
 </script>
+
 
 
 </body>
