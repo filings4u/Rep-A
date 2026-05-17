@@ -1,4 +1,6 @@
-/* site-elite.css - Master Global Styles for filings4u */
+/* ==========================================================================
+   🌐 FILINGS4U MASTER GLOBAL CORE & PROFILE SYSTEM (Unfailing Clean Build)
+   ========================================================================== */
 @import url('https://googleapis.com');
 
 :root {
@@ -11,586 +13,84 @@
     --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* --- 1. GLOBAL INITIALIZATION SANITIZATION --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-body { 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
-    color: var(--navy); 
-    background: var(--white); 
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; /* Safely secures side-leaking horizontal elements across views */
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--navy);
+    background: var(--white);
     line-height: 1.6;
-    -webkit-font-smoothing: antialiased; 
-    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* NAVIGATION */
-nav { 
-    display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; 
-    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
-    position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); 
+img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
 }
-.logo { height: 35px; }
-.nav-links { display: flex; align-items: center; gap: 40px; }
-.nav-links a { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 0.9rem; transition: var(--transition); }
-.nav-links a:hover { color: var(--emerald); }
-.btn-client-portal { background: var(--navy); color: white !important; padding: 10px 24px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
 
-/* TIGHT HERO SYSTEM (Service Pages) */
-.page-container { padding: 60px 8% 40px; } /* Tightened vertical spacing */
-.service-grid { display: grid; grid-template-columns: 1fr 400px; gap: 60px; align-items: start; }
-
-.hero-tag { color: var(--emerald); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: block; }
-.content-area h1 { font-size: 3.2rem; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 15px; font-weight: 800; }
-.content-area p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px; max-width: 600px; }
-
-/* SIDEBAR CARD */
-.sidebar-card { 
-    background: var(--white); padding: 40px; border-radius: 24px; border: 1px solid var(--border); 
-    box-shadow: 0 20px 40px rgba(10,31,68,0.05); position: sticky; top: 100px; 
+/* --- 2. DESKTOP NAVIGATION BAR (PERFECT HORIZONTAL FLEX LOCK) --- */
+nav {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 15px 8% !important; /* Locks left side of logo perfectly with sections */
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    position: sticky !important;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
-.price-tag { font-size: 3rem; font-weight: 800; margin: 10px 0; display: flex; align-items: baseline; gap: 5px; }
-.price-tag span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
 
-/* BUTTONS */
-.btn-main { 
-    background: var(--emerald); color: white; padding: 18px 45px; border-radius: 4px; 
-    font-size: 1rem; font-weight: 700; text-decoration: none; transition: var(--transition); 
-    display: inline-block; border: none; cursor: pointer; text-align: center;
+.logo {
+    height: 35px;
+    width: auto;
+    object-fit: contain;
 }
-.btn-main:hover { background: #0e9f6e; transform: translateY(-2px); }
 
-/* ADDITIONAL SECTIONS */
-.feature-section { padding: 80px 8%; background: var(--white); }
-.icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-.icon-box { padding: 30px; border: 1px solid var(--border); border-radius: 16px; }
-
-.faq-section { padding: 80px 8%; background: var(--ice); }
-.faq-item { margin-bottom: 15px; padding: 20px; background: white; border-radius: 12px; border: 1px solid var(--border); }
-
-/* GLOBAL FOOTER */
-.site-footer { background: var(--navy); color: rgba(255, 255, 255, 0.8); padding: 60px 8% 40px; }
-.footer-container { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; max-width: 1300px; margin: 0 auto; }
-.footer-col h4 { color: var(--white); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 25px; font-weight: 800; }
-.footer-col ul { list-style: none; }
-.footer-col ul li { margin-bottom: 12px; }
-.footer-col ul li a { color: rgba(255, 255, 255, 0.6); text-decoration: none; font-size: 0.9rem; }
-.footer-bottom { margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; font-size: 0.8rem; }
-
-@media (max-width: 1024px) {
-    .service-grid { grid-template-columns: 1fr; }
-    .sidebar-card { position: static; }
+.nav-links {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 40px !important;
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
-.site-footer { background: var(--navy); color: rgba(255, 255, 255, 0.8); padding: 80px 8% 40px; }
-.footer-container { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; max-width: 1300px; margin: 0 auto; }
-.footer-col h4 { color: var(--white); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; font-weight: 800; }
-.footer-col ul { list-style: none; padding: 0; }
-.footer-col ul li { margin-bottom: 12px; }
-.footer-col ul li a { color: rgba(255, 255, 255, 0.6); text-decoration: none; font-size: 0.9rem; transition: 0.2s; }
-.footer-col ul li a:hover { color: var(--emerald); padding-left: 5px; }
 
-.footer-bottom { 
-    margin-top: 80px; 
-    padding-top: 30px; 
-    border-top: 1px solid rgba(255, 255, 255, 0.1); 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-}
-.legal-links { display: flex; gap: 30px; }
-.legal-links a { color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 0.8rem; }
-.trust-badge { background: rgba(255, 255, 255, 0.05); padding: 10px 20px; border-radius: 8px; font-size: 0.75rem; color: var(--white); }
-.trust-badge span { color: var(--emerald); font-weight: 800; margin-right: 8px; }
-
-/* RESOURCE HUB / BLOG PREVIEW */
-.resource-section { padding: 80px 8%; background: var(--white); }
-.resource-grid { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 30px; 
-    margin-top: 40px; 
-}
-.blog-card { 
-    text-decoration: none; 
-    color: inherit; 
-    border-radius: 16px; 
-    overflow: hidden; 
-    border: 1px solid var(--border);
+.nav-links a {
+    text-decoration: none;
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 0.9rem;
     transition: var(--transition);
 }
-.blog-card:hover { transform: translateY(-5px); border-color: var(--emerald); box-shadow: 0 20px 40px rgba(10,31,68,0.05); }
-.blog-thumb { height: 200px; background: var(--ice); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.blog-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.blog-body { padding: 25px; }
-.blog-body span { font-size: 0.75rem; color: var(--emerald); font-weight: 800; text-transform: uppercase; }
-.blog-body h4 { margin: 10px 0; font-size: 1.2rem; line-height: 1.3; color: var(--navy); }
-.blog-body p { font-size: 0.9rem; color: var(--text-muted); }
 
-/* PRICING MATRIX SYSTEM */
-.pricing-section { padding: 80px 8%; background: var(--ice); text-align: center; }
-.pricing-grid { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 30px; 
-    margin-top: 50px; 
-    max-width: 1200px; 
-    margin-left: auto; 
-    margin-right: auto; 
-}
-
-.price-card { 
-    background: white; 
-    padding: 40px; 
-    border-radius: 24px; 
-    border: 1px solid var(--border); 
-    text-align: left; 
-    transition: var(--transition); 
-    display: flex; 
-    flex-direction: column;
-}
-
-.price-card.featured { 
-    border: 2.5px solid var(--emerald); 
-    transform: scale(1.05); 
-    box-shadow: 0 30px 60px rgba(10,31,68,0.1); 
-    z-index: 10;
-}
-
-.price-badge { 
-    background: var(--emerald); 
-    color: white; 
-    font-size: 0.65rem; 
-    font-weight: 800; 
-    padding: 5px 12px; 
-    border-radius: 50px; 
-    display: inline-block; 
-    margin-bottom: 20px; 
-    text-transform: uppercase;
-}
-
-.price-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
-.price-card .amount { font-size: 3rem; font-weight: 800; color: var(--navy); margin-bottom: 5px; }
-.price-card .amount span { font-size: 0.9rem; color: var(--text-muted); font-weight: 400; }
-
-.price-features { list-style: none; margin: 30px 0; flex-grow: 1; }
-.price-features li { 
-    padding: 12px 0; 
-    font-size: 0.9rem; 
-    border-bottom: 1px solid var(--ice); 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-}
-.price-features li::before { content: "→"; color: var(--emerald); font-weight: 800; }
-
-@media (max-width: 992px) {
-    .pricing-grid { grid-template-columns: 1fr; }
-    .price-card.featured { transform: scale(1); }
-}
-
-/* HERO IMAGE STYLES */
-.hero-image-container {
-    width: 100%;
-    height: 400px; /* Matching the sidebar height */
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(10,31,68,0.1);
-}
-.hero-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* EXPANDED FAQ STYLES */
-.faq-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 30px;
-}
-@media (max-width: 768px) { .faq-grid { grid-template-columns: 1fr; } }
-
-/* Update the grid to give the image more horizontal space */
-.service-grid { 
-    display: grid; 
-    grid-template-columns: 1.1fr 1.3fr; /* Stretches the right column toward the left */
-    gap: 60px; 
-    align-items: center; /* Centers the content vertically with the image */
-}
-
-/* Ensure the image container fills the newly stretched space */
-.hero-image-container {
-    width: 100%;
-    height: 420px; /* Slightly taller to maintain the professional 'panoramic' look */
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(10,31,68,0.1);
-}
-
-
-/* 1. TIGHTER VERTICAL SPACING & ALIGNMENT */
-.page-container { padding: 40px 8% 20px; } /* Move everything up */
-.service-grid { 
-    display: grid; 
-    grid-template-columns: 1.1fr 1.3fr; 
-    gap: 60px; 
-    align-items: flex-start; /* Aligns image to the top of the text */
-}
-
-/* 2. REFINED SECTIONS (Tightened) */
-section { padding: 50px 8% !important; } /* Uniform tight vertical space */
-
-/* 3. BRAND COLOR SWAPPING */
-/* Feature section: Brand Navy */
-.feature-section { background: var(--navy); color: var(--white); }
-.feature-section .hero-tag { color: var(--emerald); }
-.feature-section h2 { color: var(--white); }
-.feature-section .icon-box { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); }
-.feature-section .icon-box h4 { color: var(--emerald); }
-.feature-section .icon-box p { color: rgba(255,255,255,0.7); }
-
-/* Pricing section: Brand Ice */
-.pricing-section { background: var(--ice); }
-
-/* FAQ section: White */
-.faq-section { background: var(--white); }
-
-/* Resource section: Brand Ice */
-.resource-section { background: var(--ice); }
-
-/* 4. IMAGE CONTAINER ADJUSTMENT */
-.hero-image-container {
-    width: 100%;
-    height: 380px; /* Shorter to pull bottom up */
-    border-radius: 20px;
-    margin-top: 10px; /* Fine-tune top alignment */
-}
-
-/* site-elite.css - Master Global Styles */
-@import url('https://googleapis.com');
-
-:root {
-    --navy: #0a1f44;
-    --emerald: #10b981;
-    --ice: #f4f7fa;
-    --white: #ffffff;
-    --border: #e2e8f0;
-    --text-muted: #64748b;
-    --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body { 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
-    color: var(--navy); 
-    background: var(--white); 
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased; 
-}
-
-/* NAVIGATION */
-nav { 
-    display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; 
-    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
-    position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); 
-}
-.logo { height: 35px; }
-.nav-links { display: flex; align-items: center; gap: 40px; }
-.nav-links a { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 0.9rem; transition: var(--transition); }
-.nav-links a:hover { color: var(--emerald); }
-.btn-client-portal { background: var(--navy); color: white !important; padding: 10px 24px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
-
-/* REUSABLE HERO & GRID (Tightened) */
-.page-container { padding: 40px 8% 20px; }
-.service-grid { 
-    display: grid; 
-    grid-template-columns: 1.1fr 1.3fr; 
-    gap: 60px; 
-    align-items: flex-start; /* This moves the image UP to align with the H1 */
-}
-
-.hero-tag { color: var(--emerald); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: block; }
-.content-area h1 { font-size: 3.2rem; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 15px; font-weight: 800; }
-.content-area p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px; max-width: 600px; }
-
-.hero-image-container {
-    width: 100%;
-    height: 400px; 
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(10,31,68,0.1);
-}
-.hero-image-container img { width: 100%; height: 100%; object-fit: cover; }
-
-/* UNIVERSAL SECTION PADDING (Tightened) */
-section { padding: 80px 8% !important; }
-
-/* BRAND COLOR VARIATIONS */
-.bg-navy { background: var(--navy); color: var(--white); }
-.bg-navy h2, .bg-navy h4 { color: var(--white); }
-.bg-navy .icon-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
-.bg-navy .icon-box p { color: rgba(255,255,255,0.7); }
-
-.bg-ice { background: var(--ice); }
-.bg-white { background: var(--white); }
-
-/* CARDS & GRIDS */
-.icon-grid, .pricing-grid, .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px; }
-.icon-box, .price-card, .faq-item, .blog-card { padding: 30px; border-radius: 16px; border: 1px solid var(--border); transition: var(--transition); }
-.price-card { background: var(--white); }
-.price-card.featured { border: 2.5px solid var(--emerald); transform: scale(1.03); }
-.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-/* BUTTONS */
-.btn-main { background: var(--emerald); color: white; padding: 16px 40px; border-radius: 4px; font-size: 0.95rem; font-weight: 700; text-decoration: none; transition: var(--transition); display: inline-block; text-align: center; border: none; cursor: pointer; }
-.btn-main:hover { background: #0e9f6e; transform: translateY(-2px); }
-
-/* FOOTER */
-.site-footer { background: var(--navy); color: rgba(255, 255, 255, 0.8); padding: 60px 8% 40px; }
-.footer-container { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 60px; }
-.footer-bottom { margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; }
-.trust-badge { background: rgba(255, 255, 255, 0.05); padding: 10px 20px; border-radius: 8px; font-size: 0.75rem; color: var(--white); }
-.trust-badge span { color: var(--emerald); font-weight: 800; margin-right: 8px; }
-.legal-links a { color: rgba(255, 255, 255, 0.4); text-decoration: none; margin-left: 20px; font-size: 0.8rem; }
-
-@media (max-width: 1024px) {
-    .service-grid, .icon-grid, .pricing-grid, .resource-grid, .faq-grid { grid-template-columns: 1fr; }
-}
-
-/* UNIVERSAL SECTION PADDING */
-section { 
-    padding: 40px 8% !important; 
-}
-
-/* FEATURE SECTION (NAVY) */
-.feature-section { 
-    background: var(--navy); 
-    color: var(--white); 
-}
-
-.feature-section h2 { 
-    color: var(--white); 
-}
-
-.feature-section .icon-box { 
-    border: 1px solid rgba(255,255,255,0.1); 
-    background: rgba(255,255,255,0.03); 
-    padding: 30px;
-    border-radius: 16px;
-}
-/* UNIVERSAL HERO TAG STYLING (Standardized Size) */
-.hero-tag { 
-    color: var(--emerald); 
-    font-size: 0.75rem; /* Standardized for all sections */
-    font-weight: 800; 
-    text-transform: uppercase; 
-    letter-spacing: 2px; 
-    margin-bottom: 12px; 
-    display: block; 
-}
-
-/* UNIVERSAL SECTION PADDING */
-section { 
-    padding: 40px 8% !important; 
-}
-
-/* BRAND COLOR VARIATIONS */
-.bg-navy { background: var(--navy); color: var(--white); }
-.bg-navy h2 { color: var(--white); }
-.bg-ice { background: var(--ice); }
-.bg-white { background: var(--white); }
-
-/* GRID SYSTEMS */
-.service-grid { display: grid; grid-template-columns: 1.1fr 1.3fr; gap: 60px; align-items: flex-start; }
-.pricing-grid, .resource-grid, .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-
-/* site-elite.css - Master Global Styles */
-@import url('https://googleapis.com');
-
-:root {
-    --navy: #0a1f44;
-    --emerald: #10b981;
-    --ice: #f4f7fa;
-    --white: #ffffff;
-    --border: #e2e8f0;
-    --text-muted: #64748b;
-    --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body { 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
-    color: var(--navy); 
-    background: var(--white); 
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased; 
-}
-
-/* NAVIGATION */
-nav { 
-    display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; 
-    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
-    position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); 
-}
-
-/* STANDARDIZED LABELS */
-.hero-tag { 
-    color: var(--emerald); 
-    font-size: 0.75rem; /* Standardized across all sections */
-    font-weight: 800; 
-    text-transform: uppercase; 
-    letter-spacing: 2px; 
-    margin-bottom: 12px; 
-    display: block; 
-}
-
-/* HERO SECTION ALIGNMENT */
-.page-container { padding: 40px 8% 20px; }
-.service-grid { 
-    display: grid; 
-    grid-template-columns: 1.1fr 1.3fr; 
-    gap: 60px; 
-    align-items: flex-start; /* Aligns image top with text top */
-}
-
-.content-area h1 { 
-    font-size: 3.2rem; 
-    line-height: 1.05; 
-    letter-spacing: -0.04em; 
-    margin: 0 0 15px 0; /* Reset top margin to 0 for perfect leveling */
-    font-weight: 800; 
-}
-
-.hero-image-container {
-    width: 100%;
-    height: 400px; 
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(10,31,68,0.1);
-}
-.hero-image-container img { width: 100%; height: 100%; object-fit: cover; }
-
-/* UNIVERSAL SECTION PADDING */
-section { padding: 40px 8% !important; }
-
-/* COLOR THEMES */
-.bg-navy { background: var(--navy); color: var(--white); }
-.bg-navy h2 { color: var(--white); }
-.bg-ice { background: var(--ice); }
-.bg-white { background: var(--white); }
-
-/* GRID SYSTEMS */
-.pricing-grid, .resource-grid, .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px; }
-.price-card, .faq-item, .blog-card, .icon-box { padding: 30px; border-radius: 16px; border: 1px solid var(--border); background: white; }
-
-.btn-main { background: var(--emerald); color: white; padding: 18px 45px; border-radius: 4px; font-size: 1rem; font-weight: 700; text-decoration: none; transition: var(--transition); display: inline-block; border: none; cursor: pointer; }
-
-/* site-elite.css - Master Global Styles */
-@import url('https://googleapis.com');
-
-:root {
-    --navy: #0a1f44;
-    --emerald: #10b981;
-    --ice: #f4f7fa;
-    --white: #ffffff;
-    --border: #e2e8f0;
-    --text-muted: #64748b;
-    --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body { 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
-    color: var(--navy); 
-    background: var(--white); 
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased; 
-}
-
-/* NAVIGATION */
-nav { 
-    display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; 
-    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
-    position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); 
-}
-
-/* STANDARDIZED LABELS */
-.hero-tag { 
-    color: var(--emerald); 
-    font-size: 0.75rem; /* Standardized across all sections */
-    font-weight: 800; 
-    text-transform: uppercase; 
-    letter-spacing: 2px; 
-    margin-bottom: 12px; 
-    display: block; 
-}
-
-/* HERO SECTION ALIGNMENT */
-.page-container { padding: 40px 8% 20px; }
-.service-grid { 
-    display: grid; 
-    grid-template-columns: 1.1fr 1.3fr; 
-    gap: 150px; 
-    align-items: flex-start; /* Aligns image top with text top */
-}
-
-.content-area h1 { 
-    font-size: 3.2rem; 
-    line-height: 1.05; 
-    letter-spacing: -0.04em; 
-    margin: 0 0 15px 0; /* Reset top margin to 0 for perfect leveling */
-    font-weight: 800; 
-}
-
-.hero-image-container {
-    width: 100%;
-    height: 380px; 
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(10,31,68,0.1);
-}
-.hero-image-container img { width: 100%; height: 100%; object-fit: cover; }
-
-/* UNIVERSAL SECTION PADDING */
-section { padding: 80px 8% !important; }
-
-/* COLOR THEMES */
-.bg-navy { background: var(--navy); color: var(--white); }
-.bg-navy h2 { color: var(--white); }
-.bg-ice { background: var(--ice); }
-.bg-white { background: var(--white); }
-
-/* GRID SYSTEMS */
-.pricing-grid, .resource-grid, .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px; }
-.price-card, .faq-item, .blog-card, .icon-box { padding: 30px; border-radius: 16px; border: 1px solid var(--border); background: white; }
-
-.btn-main { background: var(--emerald); color: white; padding: 18px 45px; border-radius: 4px; font-size: 1rem; font-weight: 700; text-decoration: none; transition: var(--transition); display: inline-block; border: none; cursor: pointer; }
-
-/* HERO SECTION (MOVE CONTENT UP) */
-.page-container { 
-    padding: 30px 8% 40px; /* Reduced top padding from 40px/60px to 30px */
-}
-
-
-.service-grid { 
-    display: grid; 
-    grid-template-columns: 1.1fr 1.3fr; 
-    gap: 60px; 
-    align-items: flex-start; 
-}
-.hero-tag { 
-    font-size: 0.75rem; 
-    font-weight: 800; 
-    text-transform: uppercase; 
-    letter-spacing: 2px; 
+.nav-links a:hover {
     color: var(--emerald);
-    margin-bottom: 12px;
-    display: block;
 }
 
-/* DROPDOWN SYSTEM */
+/* Mega Dropdown Architectures */
 .nav-item-dropdown {
     position: relative;
     display: inline-block;
@@ -599,6 +99,8 @@ section { padding: 80px 8% !important; }
 .dropdown-content {
     display: none;
     position: absolute;
+    top: 100%;
+    left: 0;
     background-color: var(--white);
     min-width: 240px;
     box-shadow: 0px 20px 40px rgba(10, 31, 68, 0.12);
@@ -606,8 +108,6 @@ section { padding: 80px 8% !important; }
     border-radius: 12px;
     z-index: 1100;
     padding: 10px 0;
-    top: 100%;
-    left: 0;
 }
 
 .dropdown-content a {
@@ -631,186 +131,105 @@ section { padding: 80px 8% !important; }
     animation: navFadeUp 0.3s ease;
 }
 
-@keyframes navFadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-
-/* portal-elite.css - Specialized Dashboard Styles */
-
-.portal-container { 
-    display: grid; 
-    grid-template-columns: 280px 1fr; 
-    min-height: 100vh; 
-}
-
-.portal-sidebar { 
-    background: var(--navy); 
-    color: white; 
-    padding: 40px 30px; 
-    border-right: 1px solid rgba(255,255,255,0.05); 
-    position: sticky;
-    top: 0;
-    height: 100vh;
-}
-
-.portal-main { 
-    background: var(--ice); 
-    padding: 40px 5%; 
-}
-
-/* SIDEBAR NAVIGATION */
-.nav-sidebar { 
-    list-style: none; 
-    margin-top: 40px; 
-}
-
-.nav-sidebar li { 
-    margin-bottom: 15px; 
-}
-
-.nav-sidebar a { 
-    color: rgba(255,255,255,0.6); 
-    text-decoration: none; 
-    font-size: 0.9rem; 
-    font-weight: 600; 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    transition: var(--transition); 
-}
-
-.nav-sidebar li.active a, 
-.nav-sidebar a:hover { 
-    color: var(--emerald); 
-}
-
-/* VAULT HEADER & SEARCH */
-.vault-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: flex-end; 
-    margin-bottom: 40px; 
-    border-bottom: 1px solid var(--border); 
-    padding-bottom: 20px; 
-}
-
-.vault-search { 
-    background: var(--white); 
-    border: 1px solid var(--border); 
-    padding: 12px 20px; 
-    border-radius: 50px; 
-    width: 300px; 
-    font-family: inherit; 
-    font-size: 0.85rem; 
+.btn-client-portal {
+    background: var(--navy);
+    color: var(--white) !important;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
     transition: var(--transition);
 }
 
-.vault-search:focus {
-    outline: none;
-    border-color: var(--emerald);
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+.btn-client-portal:hover {
+    background: var(--emerald);
 }
 
-/* DOCUMENT ROWS */
-.document-row { 
-    background: var(--white); 
-    border-radius: 12px; 
-    padding: 20px 25px; 
-    border: 1px solid var(--border); 
-    display: grid; 
-    grid-template-columns: 50px 1fr 180px 120px; 
-    align-items: center; 
-    gap: 20px; 
-    margin-bottom: 12px; 
-    transition: var(--transition); 
+/* ❌ ABSOLUTE DESKTOP TOGGLE RESETS (Destroys the stray icon completely on Desktops) */
+nav button,
+nav .mobile-toggle-btn,
+.mobile-toggle-btn {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    pointer-events: none !important;
 }
 
-.document-row:hover { 
-    border-color: var(--emerald); 
-    transform: translateX(5px);
-    box-shadow: 0 10px 25px rgba(10,31,68,0.05); 
+/* --- 3. REUSABLE HERO LAYOUTS (FULL WIDTH 8% PADDING ALIGNED) --- */
+.page-container {
+    padding: 40px 8% 20px !important; /* Matches exactly down to the pixel with sections */
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 }
 
-.doc-icon { 
-    width: 40px; 
-    height: 40px; 
-    background: var(--ice); 
-    border-radius: 8px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: var(--navy); 
-    font-weight: 800; 
-    font-size: 0.7rem; 
+.service-grid {
+    display: grid !important;
+    grid-template-columns: 1.1fr 1.3fr !important;
+    gap: 60px !important;
+    align-items: flex-start !important; /* Perfect horizon alignment between H1 and image */
+    width: 100% !important;
 }
 
-.doc-name { 
-    font-weight: 700; 
-    color: var(--navy); 
-}
-
-.doc-meta { 
-    font-size: 0.8rem; 
-    color: var(--text-muted); 
-}
-
-.btn-download { 
-    color: var(--emerald); 
-    font-weight: 800; 
-    font-size: 0.8rem; 
-    text-decoration: none; 
-    text-transform: uppercase; 
-    letter-spacing: 1px; 
-    display: flex; 
-    align-items: center; 
-    gap: 5px; 
-}
-
- .social-icon {
-    width: 32px; 
-    height: 32px; 
-    background: rgba(255,255,255,0.1); 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    transition: background 0.3s ease;
-  }
-  .social-icon:hover {
-    background: rgba(255,255,255,0.3); /* Brightens on hover */
-  }
-
-:root {
-    --navy: #0a1f44;
-    --ice: #f4f7fa;
-    --white: #ffffff;
-        }
-
-.wizard-section { padding: 120px 0; width: 100%; }
-        
- /* Unified H1 to match Hero exactly */
-h1.section-title { 
-    max-width: 1200px; 
-    margin: 0 auto 60px auto; 
-    padding: 0 20px; 
-    font-size: 3.5rem; 
-    line-height: 1; 
-    color: var(--navy); 
+.hero-tag {
+    color: var(--emerald);
+    font-size: 0.75rem;
     font-weight: 800;
-        }
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    display: block;
+}
 
-.wizard-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-    gap: 30px; 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 0 20px;
-        }
+.content-area h1 {
+    font-size: 3.2rem;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    margin: 0 0 15px 0; /* Clear space parameters for crisp leveling */
+    font-weight: 800;
+}
 
- /* 24px Rounded, Shadowed White Containers */
+.content-area p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    max-width: 600px;
+}
+
+.hero-image-container {
+    width: 100%;
+    height: 380px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(10,31,68,0.1);
+    margin-top: 10px;
+}
+
+.hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- 4. COMPONENT & CONTENT MATRIX CORES --- */
+h1.section-title {
+    width: 100%;
+    margin: 0 auto 60px auto;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--navy);
+    font-weight: 800;
+}
+
+.wizard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
 .wizard-card {
     background: var(--white);
     padding: 45px;
@@ -823,95 +242,641 @@ h1.section-title {
     justify-content: space-between;
     min-height: 320px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+}
 
 .wizard-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 30px 60px rgba(10, 31, 68, 0.12);
-        }
+}
 
-.wizard-card h3 { font-size: 1.3rem; margin: 0 0 15px 0; color: var(--navy); font-weight: 800; }
-.wizard-card p { font-size: 0.95rem; color: #666; line-height: 1.6; margin: 0 0 30px 0; }
-        
-.card-label { font-size: 0.75rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; opacity: 0.6; }
+.wizard-card h3 {
+    font-size: 1.3rem;
+    margin: 0 0 15px 0;
+    color: var(--navy);
+    font-weight: 800;
+}
 
-/* Professional Compact Navy Button */
-.btn-wizard {
-    background: var(--navy);
+.wizard-card p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+}
+
+.card-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: block;
+    opacity: 0.6;
+}
+
+.sidebar-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(10,31,68,0.05);
+    position: sticky;
+    top: 100px;
+}
+
+.price-tag {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 10px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.price-tag span {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.btn-main {
+    background: var(--emerald);
+    color: white;
+    padding: 16px 40px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-block;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-main:hover {
+    background: #0e9f6e;
+    transform: translateY(-2px);
+}
+
+/* --- 5. UNIVERSAL MARKETING SECTIONS (CLEAN EXTENSION SETTINGS) --- */
+section, .feature-section, .pricing-section, .resource-section, .faq-section {
+    padding: 50px 8% !important; /* Strict uniform padding synchronization */
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Color Theme Modifiers */
+.bg-navy, .feature-section {
+    background: var(--navy) !important;
     color: var(--white);
-     padding: 12px 24px;
+}
+
+.bg-navy h2, .bg-navy h4, .feature-section h2 {
+    color: var(--white);
+}
+
+.bg-navy .icon-box, .feature-section .icon-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 16px;
+}
+
+.bg-navy .icon-box h4, .feature-section .icon-box h4 {
+    color: var(--emerald);
+}
+
+.bg-navy .icon-box p, .feature-section .icon-box p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.bg-ice, .pricing-section, .resource-section { background: var(--ice) !important; }
+.bg-white, .faq-section { background: var(--white) !important; }
+
+/* Grid Layout Implementations */
+.icon-grid, .pricing-grid, .resource-grid, .faq-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 30px !important;
+    margin-top: 30px !important;
+    width: 100% !important;
+}
+
+.faq-grid {
+    grid-template-columns: 1fr 1fr !important;
+}
+
+.price-card, .faq-item, .blog-card, .icon-box {
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    background: var(--white);
+}
+
+.price-card.featured {
+    border: 2.5px solid var(--emerald);
+    transform: scale(1.03);
+}
+
+/* Blog Card Extensions */
+.blog-card { text-decoration: none; color: inherit; overflow: hidden; }
+.blog-card:hover { transform: translateY(-5px); border-color: var(--emerald); box-shadow: 0 20px 40px rgba(10,31,68,0.05); }
+.blog-thumb { height: 200px; background: var(--ice); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.blog-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.blog-body { padding: 25px; }
+.blog-body span { font-size: 0.75rem; color: var(--emerald); font-weight: 800; text-transform: uppercase; }
+.blog-body h4 { margin: 10px 0; font-size: 1.2rem; line-height: 1.3; color: var(--navy); }
+.blog-body p { font-size: 0.9rem; color: var(--text-muted); }
+
+/* --- 6. CORE PUBLIC FOOTER (FULL WIDTH 8% LOCK / REMOVED PURPLE LINKS) --- */
+.site-footer {
+    background: var(--navy) !important;
+    color: #94a3b8 !important; /* Uniform Slate Gray Base Text */
+    padding: 60px 8% 40px !important; /* Absolute matching full-page horizontal alignment grid */
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.footer-container {
+    display: grid !important;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
+    gap: 60px !important;
+    width: 100% !important;
+}
+
+.footer-col h4 {
+    color: var(--white);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    font-weight: 800;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 12px;
+}
+
+/* LOCKOUT PURPLE COLORS: Hard override removes browser default visited link colors */
+.footer-col ul li a,
+.footer-col ul li a:visited,
+.footer-col ul li a:active,
+.legal-links a,
+.legal-links a:visited,
+.legal-links a:active {
+    color: #94a3b8 !important; /* Standard Slate Gray across all historical view logs */
+    text-decoration: none !important;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.footer-col ul li a:hover,
+.legal-links a:hover {
+    color: var(--emerald) !important;
+    padding-left: 5px;
+}
+
+.footer-bottom {
+    width: 100% !important;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.legal-links {
+    display: flex !important;
+    gap: 30px;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+}
+
+.trust-badge {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 20px;
     border-radius: 8px;
     font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: inline-block;
-    width: fit-content;
-        }
+    color: var(--white);
+}
 
-:root {
-    --navy: #0a1f44;
-    --ice: #f4f7fa;
-    --white: #ffffff;
-        }
+.trust-badge span {
+    color: var(--emerald);
+    font-weight: 800;
+    margin-right: 8px;
+}
 
-.wizard-section { padding: 120px 0; width: 100%; }
-        
-        /* Unified H1 to match Hero exactly */
-        h1.section-title { 
-            max-width: 1200px; 
-            margin: 0 auto 60px auto; 
-            padding: 0 20px; 
-            font-size: 3.5rem; 
-            line-height: 1; 
-            color: var(--navy); 
-            font-weight: 800;
-        }
 
-        .wizard-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 30px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 0 20px;
-        }
+/* ==========================================================================
+   📱 MOBILE & TABLET RESPONSIVE CORE ENGINE (STRICTLY VIEWPORTS UNDER 980px)
+   ========================================================================== */
+@media screen and (max-width: 980px) {
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 
-        /* 24px Rounded, Shadowed White Containers */
-        .wizard-card {
-            background: var(--white);
-            padding: 45px;
-            border-radius: 24px;
-            border: 1px solid #eef2f6;
-            box-shadow: 0 20px 40px rgba(10, 31, 68, 0.06);
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 320px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    /* Navbar Drawer Shifts */
+    nav {
+        padding: 15px 20px !important;
+    }
 
-        .wizard-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(10, 31, 68, 0.12);
-        }
+    /* Reactivate Mobile Burger Icon Exclusively Under 980px Breakpoints */
+    nav button,
+    nav .mobile-toggle-btn,
+    .mobile-toggle-btn {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        pointer-events: auto !important;
+        background: none !important;
+        border: none !important;
+        font-size: 24px !important;
+        color: var(--navy) !important;
+        cursor: pointer !important;
+        z-index: 2000 !important;
+        padding: 5px !important;
+    }
 
-        .wizard-card h3 { font-size: 1.3rem; margin: 0 0 15px 0; color: var(--navy); font-weight: 800; }
-        .wizard-card p { font-size: 0.95rem; color: #666; line-height: 1.6; margin: 0 0 30px 0; }
-        
-        .card-label { font-size: 0.75rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; opacity: 0.6; }
+    .nav-links {
+        position: fixed !important;
+        top: 0 !important;
+        right: -100% !important;
+        width: 280px !important;
+        height: 100vh !important;
+        background: var(--white) !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        padding: 80px 20px 40px 20px !important;
+        gap: 0 !important;
+        overflow-y: auto !important;
+        box-shadow: -5px 0 25px rgba(10,31,68,0.15) !important;
+        transition: right 0.3s ease-in-out !important;
+        z-index: 1999 !important;
+    }
 
-/* Professional Compact Navy Button */
-        .btn-wizard {
-            background: var(--navy);
-            color: var(--white);
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: inline-block;
-            width: fit-content;
-        }
+    .nav-links.active {
+        right: 0 !important;
+    }
+
+    .nav-item-dropdown {
+        width: 100%;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .nav-item-dropdown > a {
+        width: 100%;
+        padding: 15px 5px !important;
+        font-size: 1rem !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    .dropdown-content {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        box-shadow: none !important;
+        padding: 0 0 10px 15px !important;
+        border-left: 2px solid var(--border) !important;
+        margin-bottom: 5px !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+    }
+
+    .dropdown-content a {
+        padding: 8px 10px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .nav-item-dropdown:hover .dropdown-content {
+        display: none !important;
+    }
+
+    .nav-item-dropdown.active-toggle .dropdown-content {
+        display: block !important;
+    }
+
+    .btn-client-portal {
+        width: 100%;
+        text-align: center;
+        margin-top: 25px;
+        padding: 12px !important;
+        display: block !important;
+    }
+
+    /* Full-Width Grid Collapse into Single Linear Column Blocks */
+    .page-container, section, .feature-section, .pricing-section, .resource-section, .faq-section {
+        padding: 40px 20px 20px !important;
+    }
+
+    .service-grid, .wizard-grid, .icon-grid, .pricing-grid, .resource-grid, .faq-grid, .footer-container {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .content-area h1 { font-size: 2.3rem !important; }
+    .content-area p { margin-left: auto; margin-right: auto; }
+    .content-area div { justify-content: center !important; }
+    .btn-main { width: 100% !important; text-align: center; }
+    .hero-image-container { height: 320px !important; }
+    
+    .sidebar-card { position: static !important; width: 100% !important; }
+    .price-card.featured { transform: scale(1) !important; }
+
+    .footer-brand { display: flex !important; flex-direction: column !important; align-items: center !important; }
+    .footer-bottom { flex-direction: column !important; text-align: center !important; gap: 24px !important; }
+    .legal-links { justify-content: center !important; gap: 15px !important; }
+}
+
+/* --- 7. HARDWARE ANIMATION ENGINES --- */
+@keyframes navFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ==========================================================================
+   🚨 CRITICAL STRUCTURAL OVERRIDES: GRAY ICON LOCKDOWN (SITE-WIDE)
+   ========================================================================== */
+
+@media screen and (min-width: 981px) {
+    /* 1. Eliminate any element trying to force an inline character glyph inside the header */
+    nav *, .nav-links *, .logo * {
+        text-shadow: none !important;
+    }
+    
+    /* 2. Target any loose native list or bullet elements from the theme's reset sheet */
+    nav ul, nav li {
+        list-style: none !important;
+        list-style-type: none !important;
+    }
+
+    /* 3. Aggressive blanket hide for any theme-specific toggle mechanisms */
+    [class*="toggle"], [id*="toggle"],
+    [class*="burger"], [id*="burger"],
+    [class*="trigger"], [id*="trigger"],
+    [class*="mobile-menu"], [id*="mobile-menu"],
+    [class*="navPanel"], [id*="navPanel"],
+    [class*="navButton"], [id*="navButton"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        position: absolute !important;
+        pointer-events: none !important;
+    }
+
+    /* 4. Force reset body and canvas padding to stop the hero section from leaning right */
+    body, #wrapper, #main, .page-container {
+        padding-left: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        transform: none !important;
+        left: 0 !important;
+    }
+
+    /* 5. Keep the explicit hero alignment locked into its proper 8% boundary channel */
+    .page-container {
+        padding: 40px 8% 20px !important;
+    }
+}
+
+
+/* ==========================================================================
+   🚀 SITE-WIDE EDGE-TO-EDGE FULL WIDTH EXTENSION 
+   ========================================================================== */
+
+@media screen and (min-width: 981px) {
+    /* 1. Force the Header Navigation bar to touch both screen edges */
+    nav {
+        padding: 15px 4% !important; /* Expands width by dropping horizontal padding to a lean 4% */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 2. Force the Hero Section grid layout container to go completely full-width */
+    .page-container, 
+    main,
+    .service-grid {
+        padding: 40px 4% 20px !important; /* Stretches the hero copy andPanoramic image out safely */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 3. Force the Site Footer grid to map perfectly with the new wider columns */
+    .site-footer {
+        padding: 60px 4% 40px !important; /* Extends dark ledger panels completely side-to-side */
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .footer-container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+
+/* ==========================================================================
+   🚀 FILINGS4U ULTRA-WIDE EDGE-TO-EDGE LIQUID LAYOUT ENGINES
+   ========================================================================== */
+
+@media screen and (min-width: 981px) {
+    /* 1. EXTEND HERO CONTAINER AND FORCE GRID COLUMNS TO OUTMOST BOUNDARIES */
+    .page-container, 
+    main {
+        padding-left: 2% !important;  /* Ultra-flush edge placement on the left */
+        padding-right: 2% !important; /* Ultra-flush edge placement on the right */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Expands the internal structural grid row elements completely */
+    .service-grid {
+        display: grid !important;
+        grid-template-columns: 1.1fr 1.3fr !important;
+        gap: 40px !important; /* Tightened gap to let columns breathe outward */
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Force the panoramic image box to stretch out to the right screen edge */
+    .hero-image-container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* 2. FORCE FOOTER COLUMNS TO STRETCH EDGE-TO-EDGE PROPORTIONALLY */
+    .site-footer {
+        padding-left: 2% !important;  /* Snaps left side of footer to match the hero */
+        padding-right: 2% !important; /* Snaps right side of footer to match the edge */
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Forces columns to occupy all vacant structural workspace space */
+    .footer-container {
+        display: grid !important;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
+        gap: 40px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Ensure the lower metadata link panels span the entire canvas width */
+    .footer-bottom {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+}
+
+
+/* ==========================================================================
+   🧱 MASTER FOOTER STRETCH & EXTENSION CONTROLLER (site-footer OVERRIDES)
+   ========================================================================== */
+
+@media screen and (min-width: 981px) {
+    /* 1. Expand the master footer background completely out to the screen edges */
+    footer.site-footer,
+    .site-footer {
+        padding-left: 2% !important;   /* Matches your ultra-wide hero alignment */
+        padding-right: 2% !important;  /* Stretches container frame tightly to the right */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+    }
+
+    /* 2. Force the internal column block container to use 100% available canvas real estate */
+    .site-footer .footer-container,
+    .footer-container {
+        display: grid !important;
+        grid-template-columns: 1.8fr 1fr 1fr 1fr !important; /* Slightly enlarged brand gap to push rows right */
+        gap: 5% !important; /* Uses fluid percentage gaps instead of rigid fixed pixels */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 3. Ensure the last link category column snaps completely flush with the right screen margin */
+    .footer-container .footer-col:last-child {
+        text-align: right !important;
+    }
+    
+    .footer-container .footer-col:last-child ul {
+        align-items: flex-end !important;
+        text-align: right !important;
+    }
+
+    /* 4. Guarantee lower metadata row spans full width right beneath your column grids */
+    .site-footer .footer-bottom,
+    .footer-bottom {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* ==========================================================================
+   🧱 MASTER FOOTER BALANCING SYSTEM (TIGHTENS TOP GRID ALIGNMENT)
+   ========================================================================== */
+
+@media screen and (min-width: 981px) {
+    /* 1. Standardize master background padding to use a clean 4% horizontal boundary */
+    footer.site-footer,
+    .site-footer {
+        padding: 60px 4% 40px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 2. Tighten column widths to stop them from stretching excessively right */
+    .site-footer .footer-container,
+    .footer-container {
+        display: grid !important;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr !important; /* Re-proportioned for tight balancing */
+        gap: 40px !important; /* Reverted from % gaps back to a crisp, controlled 40px margin */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 3. Revert right alignment so text stays clean, readable, and left-aligned */
+    .footer-container .footer-col:last-child {
+        text-align: left !important;
+    }
+    
+    .footer-container .footer-col:last-child ul {
+        align-items: flex-start !important;
+        text-align: left !important;
+    }
+
+    /* 4. Match the lower footer bottom section perfectly with the upper container width */
+    .site-footer .footer-bottom,
+    .footer-bottom {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-top: 60px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* ==========================================================================
+   ⚡ HERO HEIGHT OPTIMIZATION (ELIMINATES NAV GAP)
+   ========================================================================== */
+
+@media screen and (min-width: 981px) {
+    /* 1. Pull the master page container right up to the navigation border line */
+    .page-container,
+    main.page-container {
+        padding-top: 30px !important;    /* Drastically cut from 40px/60px to 10px */
+        margin-top: 0 !important;        /* Clear loose structural layout gaps */
+        box-sizing: border-box !important;
+    }
+
+    /* 2. Remove default top spacing parameters from the internal grid structure */
+    .service-grid {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        align-items: flex-start !important; /* Forces copy and image to hug the absolute top */
+    }
+
+    /* 3. Strip any top whitespace from the primary text headings */
+    .content-area h1,
+    .content-area {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+}
+
