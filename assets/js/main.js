@@ -283,3 +283,64 @@ function toggleMobileDropdown(event, element) {
         });
     }
 }
+
+
+/* ==========================================================================
+   🚨 CORE EVENT INTERCEPTOR ENGINE: ENFORCES MOBILE SIDEBAR DRAWER CLICK
+   ========================================================================== */
+(function() {
+    function forceIgniteMobileMenuDrawer() {
+        const hamburgerBtn = document.querySelector('.mobile-menu-trigger');
+        const linksDrawer = document.querySelector('.nav-links');
+
+        if (!hamburgerBtn || !linksDrawer) {
+            // Keep poll indexing alive during canvas mounting lag
+            setTimeout(forceIgniteMobileMenuDrawer, 150);
+            return;
+        }
+
+        // Wipe out blocking inline click attributes strings properties
+        hamburgerBtn.removeAttribute('onclick');
+
+        // Attach a direct event that the baseline theme cannot intercept or block
+        hamburgerBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Stops parent theme scripts from catching the click
+            
+            linksDrawer.classList.toggle('active');
+            
+            if (linksDrawer.classList.contains('active')) {
+                hamburgerBtn.innerHTML = '✕';
+                hamburgerBtn.style.setProperty('color', '#e53e3e', 'important'); // Alert Red accent
+            } else {
+                hamburgerBtn.innerHTML = '☰';
+                hamburgerBtn.style.setProperty('color', '#0a1f44', 'important'); // Brand Navy contrast
+            }
+        });
+
+        // Add smartphone touchscreen support to eliminate tap response delays
+        hamburgerBtn.addEventListener('touchstart', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            linksDrawer.classList.toggle('active');
+            
+            if (linksDrawer.classList.contains('active')) {
+                hamburgerBtn.innerHTML = '✕';
+                hamburgerBtn.style.setProperty('color', '#e53e3e', 'important');
+            } else {
+                hamburgerBtn.innerHTML = '☰';
+                hamburgerBtn.style.setProperty('color', '#0a1f44', 'important');
+            }
+        }, { passive: false });
+
+        console.log("🎯 Mobile Navigation Triggers successfully armed and synchronized.");
+    }
+
+    // Initialize the override sequence instantly as soon as document layers mount
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", forceIgniteMobileMenuDrawer);
+    } else {
+        forceIgniteMobileMenuDrawer();
+    }
+})();

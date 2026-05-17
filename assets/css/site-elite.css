@@ -1050,3 +1050,58 @@ section, .feature-section, .pricing-section, .resource-section, .faq-section {
 }
 
 
+/* ==========================================================================
+   🚨 CRITICAL FIXED MOBILE DRAWER ANIMATION OVERRIDES (Under 980px)
+   ========================================================================== */
+@media screen and (max-width: 980px) {
+    /* 1. Reset parent nav constraints to prevent overflow clipping blocks */
+    nav {
+        overflow: visible !important;
+        position: relative !important;
+    }
+
+    /* 2. Hard-lock the mobile links drawer positioning layout rules */
+    nav .nav-links {
+        position: fixed !important;
+        top: 0 !important;
+        right: -100% !important; /* Keeps panel hidden completely off-screen right */
+        width: 280px !important;
+        height: 100vh !important;
+        background: #ffffff !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        padding: 80px 24px 40px 24px !important;
+        box-shadow: -5px 0 25px rgba(10,31,68,0.15) !important;
+        transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Silk elastic snap slider */
+        z-index: 1999 !important;
+        display: flex !important;
+    }
+
+    /* 🚀 THE MAGIC FIX: Slides the menu drawer directly into view when active! */
+    nav .nav-links.active {
+        right: 0 !important;
+    }
+
+    /* 3. Style links stack list elements spacing inside mobile views layout */
+    nav .nav-links a {
+        color: #0a1f44 !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding: 12px 0 !important;
+        margin: 0 !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Clean portal button button display adjustments for responsive grids */
+    nav .nav-links .btn-client-portal {
+        background: #0a1f44 !important;
+        color: #ffffff !important;
+        text-align: center !important;
+        margin-top: 20px !important;
+        border-radius: 6px !important;
+        padding: 12px !important;
+    }
+}
