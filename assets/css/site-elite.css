@@ -1105,3 +1105,57 @@ section, .feature-section, .pricing-section, .resource-section, .faq-section {
         padding: 12px !important;
     }
 }
+
+/* ==========================================================================
+   🧱 FOOTER WIDTH RECONCILIATION & MOBILE SPACER REDUCTION
+   ========================================================================== */
+
+/* --- A. DESKTOP VIEWPORTS (Monitors above 980px) --- */
+@media screen and (min-width: 981px) {
+    /* Hard-locks the 4 main footer elements side-by-side across desktop display monitors */
+    .site-footer .footer-container,
+    footer .footer-container {
+        display: grid !important;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr !important; /* Spreads Brand, Formations, Fleet, and Support horizontally */
+        gap: 50px !important; /* Managed spacing gutters between the categories */
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* --- B. MOBILE VIEWPORTS (Smartphones and Tablets under 980px) --- */
+@media screen and (max-width: 980px) {
+    /* 1. DECREASE WHITE SPACE BELOW NAVIGATION & HAMBURGER DRAWERS */
+    .page-container,
+    main.page-container,
+    #main,
+    .wrapper {
+        margin-top: 10px !important;  /* Pulls the main content box up close to the navigation bar */
+        padding-top: 15px !important; /* Minimizes white spacing gaps on smartphone displays */
+    }
+
+    .service-grid,
+    .hero-section {
+        margin-top: 0 !important;
+        padding-top: 5px !important;
+    }
+
+    /* 2. OPTIMIZE OVERLAP SPACING: Pulls up the horizontal separator lines dynamically */
+    hr, 
+    .site-header,
+    nav {
+        margin-bottom: 10px !important; /* Closes the vertical separation distance between components */
+    }
+
+    /* Stacks columns vertically on mobile viewports for clean phone reading */
+    .site-footer .footer-container,
+    footer .footer-container {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 35px !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+}
