@@ -179,33 +179,65 @@
         margin-bottom: 10px !important; 
     } 
 
-    /* --- 🧱 UNIVERSAL MOBILE CONFIG MATRIX --- */
-    .blog-wrapper-canvas { 
-        margin: 0 auto 40px auto !important; 
-    } 
-    #dynamicBlogPostsContainer, #public-homepage-blog-grid-target, .wizard-grid, .icon-grid, .pricing-grid, .resource-grid, .faq-grid { 
-        grid-template-columns: 1fr !important; 
-        gap: 24px !important; 
-        padding-top: 0px !important; 
-        padding-left: 16px !important; 
-        padding-right: 16px !important; 
-        margin-bottom: 40px !important; 
-        box-sizing: border-box !important; 
-        width: 100% !important; 
-    } 
-    .blog-card-body { 
-        padding: 20px !important; 
-    } 
-    nav.top-filter-menu-bar { 
-        margin: 15px 0 35px 0 !important; 
-        padding-bottom: 12px !important; 
-        justify-content: flex-start !important; 
-        overflow-x: auto !important; 
-        -webkit-overflow-scrolling: touch !important; 
-    } 
-    nav.top-filter-menu-bar::-webkit-scrollbar { 
-        display: none !important; 
-    } 
+ /* --- 🧱 UNIVERSAL MOBILE CONFIG MATRIX (REPAIRED COLLAPSE) --- */ 
+.blog-wrapper-canvas { 
+    margin: 0 auto 40px auto !important; 
+} 
+
+/* 🔄 FIXED COMPONENT RE-LOCK: Extracted blog grids to use absolute full-width flex columns */
+#dynamicBlogPostsContainer, 
+#public-homepage-blog-grid-target {
+    display: flex !important; /* 🔄 CHANGED: Switched to flex layout to stop cards from smashing */
+    flex-direction: column !important;
+    gap: 24px !important;
+    padding-top: 0px !important; 
+    padding-left: 16px !important; /* Safety grid tracks away from phone screen glass edges */
+    padding-right: 16px !important; 
+    margin-bottom: 40px !important; 
+    box-sizing: border-box !important; 
+    width: 100% !important; 
+    max-width: 100% !important;
+}
+
+/* Keeps standard landing page components collapsed cleanly into a unified linear view */
+.wizard-grid, .icon-grid, .pricing-grid, .resource-grid, .faq-grid { 
+    display: grid !important;
+    grid-template-columns: 1fr !important; 
+    gap: 24px !important; 
+    padding-top: 0px !important; 
+    padding-left: 16px !important; 
+    padding-right: 16px !important; 
+    margin-bottom: 40px !important; 
+    box-sizing: border-box !important; 
+    width: 100% !important; 
+} 
+
+/* 🔄 FIXED: Forces every individual blog card to stretch out to 100% width space */
+.blog-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+.blog-card-body, .blog-body { 
+    padding: 20px !important; 
+    width: 100% !important;
+    box-sizing: border-box !important;
+} 
+
+/* Horizontal touch swiping selector mechanics for mobile screen formats */
+nav.top-filter-menu-bar { 
+    margin: 15px 0 35px 0 !important; 
+    padding-bottom: 12px !important; 
+    justify-content: flex-start !important; 
+    overflow-x: auto !important; 
+    -webkit-overflow-scrolling: touch !important; 
+} 
+nav.top-filter-menu-bar::-webkit-scrollbar { 
+    display: none !important; 
+}
+
 
     /* ========================================================================== 
     🧱 3. PUBLIC MOBILE FOOTER MATRIX RE-LOCK (STABLE 2x2 CONFIGURATION) 
