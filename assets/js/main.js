@@ -85,79 +85,11 @@
 })(jQuery);
 
 /* ==========================================================================
-   🌐 UNIFIED MOBILE NAVIGATION DRAWER CONTROLLER ENGINE
-   ========================================================================== */
-
-/**
- * 1. Primary Drawer Toggle: Handles opening, closing, and action icons transformations
- */
-function toggleMobileMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    // 🚀 FIXED: Dual selector support ensures it catches all button configurations site-wide
-    const toggleBtn = document.querySelector('.mobile-menu-trigger') || document.querySelector('.mobile-toggle-btn');
-    
-    if (navLinks && toggleBtn) {
-        navLinks.classList.toggle('active');
-        
-        // Translate visual states based on the presence of the active layout class
-        if (navLinks.classList.contains('active')) {
-            toggleBtn.innerHTML = '✕';
-            toggleBtn.style.color = '#e53e3e'; /* Crimson alert color on open */
-        } else {
-            toggleBtn.innerHTML = '☰';
-            toggleBtn.style.color = '#0a1f44'; /* Restores brand deep navy on close */
-        }
-    } else {
-        console.warn("Mobile Navigation Hub Warning: Required layout elements missing from DOM tree framework.");
-    }
-}
-
-/**
- * 2. Mobile Touch Interface Category Dropdown Accordion Item Controller
- */
-function toggleMobileDropdown(event, element) {
-    if (window.innerWidth <= 980) {
-        event.preventDefault();
-        event.stopPropagation(); // Stops event bubbling crashes inside the nav block
-        
-        const dropdownParent = element.parentElement;
-        dropdownParent.classList.toggle('active-toggle');
-        
-        // Close other open tabs to keep mobile navigation clean
-        document.querySelectorAll('.nav-item-dropdown').forEach(item => {
-            if (item !== dropdownParent) {
-                item.classList.remove('active-toggle');
-            }
-        });
-    }
-}
-
-/**
- * 3. Resolution Watchdog: Auto-closes open drawer links if screen is resized to desktop width
- */
-window.addEventListener('resize', function() {
-    if (window.innerWidth > 980) {
-        const navLinks = document.querySelector('.nav-links');
-        const toggleBtn = document.querySelector('.mobile-menu-trigger') || document.querySelector('.mobile-toggle-btn');
-        
-        if (navLinks && navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            if (toggleBtn) {
-                toggleBtn.innerHTML = '☰';
-                toggleBtn.style.color = '#0a1f44';
-            }
-        }
-        
-        document.querySelectorAll('.nav-item-dropdown').forEach(item => {
-            item.classList.remove('active-toggle');
-        });
-    }
-});
-
-/* ==========================================================================
-   📱 UNIFIED MOBILE MENU CONTROLLER (FIXED DOUBLE-TOGGLE GLITCH)
-   ========================================================================== */
+📱 UNIFIED MOBILE MENU CONTROLLER (FIXED DOUBLE-TOGGLE GLITCH)
+========================================================================== */
 (function() {
+    "use strict";
+
     function initMobileMenuSystem() {
         const triggerButtons = document.querySelectorAll('.mobile-menu-trigger, .mobile-toggle-btn');
         const slideDrawerContainer = document.querySelector('.nav-links');
@@ -176,7 +108,6 @@ window.addEventListener('resize', function() {
             btn.addEventListener('click', function(event) {
                 event.preventDefault();
                 event.stopPropagation(); // Blocks theme overlays from breaking the toggle
-                
                 slideDrawerContainer.classList.toggle('active');
                 
                 if (slideDrawerContainer.classList.contains('active')) {
@@ -192,7 +123,6 @@ window.addEventListener('resize', function() {
             btn.addEventListener('touchstart', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                
                 slideDrawerContainer.classList.toggle('active');
                 
                 if (slideDrawerContainer.classList.contains('active')) {
@@ -214,24 +144,31 @@ window.addEventListener('resize', function() {
     } else {
         initMobileMenuSystem();
     }
+
+    /* ==========================================================================
+    🔄 FIXED MOBILE DROPDOWN ACCORDION ENGINE (WINDOW EXPOSED)
+    ========================================================================== */
+    // Attaching directly to window scope lets your HTML templates trigger it instantly without errors
+    window.toggleMobileDropdown = function(event, element) {
+        if (window.innerWidth <= 991) { // 🔄 FIXED: Synchronized width threshold to match your stylesheet 991px breakpoints
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const parentBlock = element.parentElement;
+            if (!parentBlock) return;
+            
+            parentBlock.classList.toggle('active-toggle');
+            
+            // Auto-closes other open dropdown categories so only one accordion pane stays active
+            document.querySelectorAll('.nav-item-dropdown').forEach(card => {
+                if (card !== parentBlock) {
+                    card.classList.remove('active-toggle');
+                }
+            });
+        }
+    };
 })();
 
-/**
- * Mobile Touch Accordion Item Dropdowns Controller
- */
-function toggleMobileDropdown(event, element) {
-    if (window.innerWidth <= 980) {
-        event.preventDefault();
-        event.stopPropagation();
-        
-        const parentBlock = element.parentElement;
-        parentBlock.classList.toggle('active-toggle');
-        
-        document.querySelectorAll('.nav-item-dropdown').forEach(card => {
-            if (card !== parentBlock) card.classList.remove('active-toggle');
-        });
-    }
-}
 
 /* ==========================================================================
 📰 AUTOMATED SUPABASE BLOG SYNC MODULE (FOUNDER INSIGHTS)
