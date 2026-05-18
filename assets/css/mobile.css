@@ -179,6 +179,20 @@
         margin-bottom: 10px !important; 
     } 
 
+    @media screen and (max-width: 991px) {
+    /* Collapses the numbers section safely into a single vertical column track on phones */
+    .stats-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        width: 100% !important;
+    }
+    .stats-card.featured {
+        transform: scale(1) !important;
+    }
+}
+
+
  /* --- 🧱 UNIVERSAL MOBILE CONFIG MATRIX (REPAIRED COLLAPSE) --- */ 
 .blog-wrapper-canvas { 
     margin: 0 auto 40px auto !important; 
