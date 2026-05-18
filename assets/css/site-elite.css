@@ -617,10 +617,35 @@ footer.site-footer, .site-footer {
 
 /* 🔄 DESKTOP: Bold, prominent size for large monitor layouts */
 .amount {
-    font-size: 4.0rem !important; /* Increased from 4rem to 4.5rem */
+    font-size: 1rem !important; /* Increased from 4rem to 4.5rem */
     font-weight: 800 !important;
     color: #0a1f44 !important; /* Brand Navy color */
     line-height: 1.1 !important;
     margin-bottom: 10px !important;
     display: block !important;
+}
+
+
+/* ==========================================================================
+📊 INDEPENDENT SYSTEM STATS SECTION (PROTECTS MAIN PRICING TABLES)
+========================================================================== */
+.stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 30px !important;
+    margin-top: 30px !important;
+    width: 100% !important;
+}
+
+.stats-card {
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border, #e2e8f0);
+    background: var(--white, #ffffff);
+    transition: var(--transition, all 0.3s ease);
+}
+
+.stats-card.featured {
+    border: 2.5px solid var(--emerald, #10b981);
+    transform: scale(1.03);
 }
