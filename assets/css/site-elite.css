@@ -607,12 +607,20 @@ footer.site-footer, .site-footer {
     }
 }
 
-
-
 }
 
 /* --- Hardware Engine --- */
 @keyframes navFadeUp {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🔄 DESKTOP: Bold, prominent size for large monitor layouts */
+.amount {
+    font-size: 4.0rem !important; /* Increased from 4rem to 4.5rem */
+    font-weight: 800 !important;
+    color: #0a1f44 !important; /* Brand Navy color */
+    line-height: 1.1 !important;
+    margin-bottom: 10px !important;
+    display: block !important;
 }
