@@ -524,7 +524,7 @@ footer.site-footer, .site-footer {
         gap: 20px !important; /* Safety grid track spacing */
         padding-left: 0% !important;  
         padding-right: 0% !important; 
-        max-width: 1250px !important; /* 🔄 Keep the outer framework width aligned with your Hero */
+        max-width: 1300px !important; /* 🔄 Keep the outer framework width aligned with your Hero */
         width: 100% !important;
         margin: 0 auto !important;     
         box-sizing: border-box !important;
@@ -587,7 +587,7 @@ footer.site-footer, .site-footer {
     /* Lower metadata row split bar */
     .site-footer .footer-bottom {
         width: 100% !important;
-        max-width: 1250px !important; 
+        max-width: 1300px !important; 
         margin: 60px auto 0 auto !important; 
         display: flex !important;
         flex-direction: row !important;
