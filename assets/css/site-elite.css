@@ -1214,3 +1214,168 @@ footer.site-footer, .site-footer {
             color: #4a5568;
             font-weight: 600;
         }
+
+/* ==========================================================================
+   🛠️ GLOBAL NAVIGATION ENGINE AND SPACING RESET
+   ========================================================================== */
+
+/* Outer container: Fixed background strip spanning the entire browser width */
+nav {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 70px !important; /* Forces a standard, predictable layout size */
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
+    z-index: 99999 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+/* Centralized Grid Wrapper: Neatly matches your site's content alignment layout width */
+.nav-content-wrapper {
+    max-width: 1200px !important;
+    height: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important; /* Centers the logo and links on a single vertical axis */
+    justify-content: space-between !important; /* Dispatches items left and right */
+    position: relative !important; /* Critical baseline coordinate tracking point */
+}
+
+/* Force the logo link wrapper to maintain alignment constraints */
+.logo-link {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Text link group: Safely pushed over to the far right side of the screen */
+.nav-links {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    height: 100% !important;
+    margin: 0 0 0 auto !important; /* Consumes middle space to isolate logo left, links right */
+    gap: 28px !important; /* Clean, spacious horizontal gaps between navigation lists */
+    padding: 0 !important;
+}
+
+/* General Dropdown Parent rules on Desktop views */
+@media (min-width: 992px) {
+    .static-dropdown {
+        position: static !important; /* Lets submenus calculate their size from the centralized wrapper */
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .static-dropdown > a {
+        display: flex !important;
+        align-items: center !important;
+        height: 100% !important;
+        color: #334155 !important;
+        text-decoration: none !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+        padding: 0 4px !important;
+        transition: color 0.15s ease;
+    }
+
+    .static-dropdown:hover > a {
+        color: #10b981 !important;
+    }
+
+    /* Mega-Menu Grid Panels configuration */
+    .dropdown-content.mega-panel-two-col,
+    .dropdown-content.mega-panel-three-col {
+        position: absolute !important;
+        top: 70px !important; /* Rests perfectly flush with the bottom of the navigation bar */
+        left: 20px !important; /* Aligns with the left boundary padding of the content wrapper */
+        width: calc(100% - 40px) !important; /* Spans the full length of the site content grid */
+        background: #ffffff !important;
+        box-sizing: border-box !important;
+        border-top: 3px solid #10b981 !important;
+        box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1) !important;
+        border-radius: 0 0 8px 8px !important;
+        padding: 30px 40px !important;
+        gap: 40px !important;
+        display: none !important; /* Hidden by default */
+        z-index: 100000 !important;
+    }
+
+    .dropdown-content.mega-panel-two-col {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .dropdown-content.mega-panel-three-col {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    /* Displays menus smoothly on hover */
+    .static-dropdown:hover .dropdown-content.mega-panel-two-col,
+    .static-dropdown:hover .dropdown-content.mega-panel-three-col {
+        display: grid !important;
+    }
+
+    /* Sub-Column Formatting */
+    .mega-column {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .mega-column .column-title {
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        color: #10b981 !important;
+        letter-spacing: 0.5px !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        padding-bottom: 8px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .mega-column a {
+        color: #475569 !important;
+        padding: 6px 0 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+        text-decoration: none !important;
+    }
+
+    .mega-column a:hover {
+        color: #10b981 !important;
+    }
+}
+
+/* Adjust the content container layout offset to prevent overlap under fixed header line */
+.page-container, 
+main.page-container {
+    padding-top: 110px !important; /* Safely pushes your page content clear of the frozen navbar layer */
+}
+
+
+/* 🛠️ SNAP BRAND LOGO AND NAVIGATION CHAINS DIRECTLY TO VIEWPORT WINDOW EDGES */
+.nav-content-wrapper {
+    max-width: 100% !important; /* Strips the narrow 1200px content box constraint entirely */
+    width: 100% !important;
+    padding: 0 40px !important; /* Injects a clean, professional 40px buffer padding from the screens glass edges */
+    box-sizing: border-box !important;
+}
+
+/* Re-adjust the massive drop panels so they expand and match your new ultra-wide header flow layout */
+@media (min-width: 992px) {
+    .dropdown-content.mega-panel-two-col,
+    .dropdown-content.mega-panel-three-col {
+        left: 40px !important; /* Instantly snaps left borders directly to the new wide logo starting line alignment axis */
+        width: calc(100% - 80px) !important; /* Scales fluidly across any desktop, 4K screen layout seamlessly */
+    }
+}

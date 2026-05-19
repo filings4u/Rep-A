@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#10b981">
+    <title>Total Corporate Compliance Solutions | filings4u</title>
+   
+        <link rel="stylesheet" href="assets/css/site-elite.css?v=12">
+    <link rel="stylesheet" href="assets/css/mobile.css?v=12">
+
+   <link rel="icon" type="image/png" href="images/fav.png">
+
+   <!-- 1. The jQuery library MUST load absolutely first -->
+<script src="https://jquery.com"></script>
+
+<!-- 2. The Supabase data engine loads second -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- 3. Your custom main dashboard script executes LAST -->
+<script src="assets/js/main.js?v=14"></script>
+</head>
+<body>
+
+<!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
+<nav>
+    <div class="nav-content-wrapper">
+        <a href="index.html" class="logo-link">
+            <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
+        </a>
+        <button class="mobile-toggle-btn" onclick="toggleMobileMenu()">☰</button>
+        
+        <div class="nav-links">
+            <!-- FORMATIONS DROPDOWN -->
+            <div class="nav-item-dropdown static-dropdown">
+                <a href="#" onclick="toggleMobileDropdown(event, this)">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+                <div class="dropdown-content mega-panel-two-col">
+                    <div class="mega-column">
+                        <span class="column-title">Popular Formations</span>
+                        <a href="limited-liability-company.html">LLC Formation</a>
+                        <a href="corporations.html">Corporations (C/S-Corp)</a>
+                        <a href="sole-proprietorship.html">Sole Proprietorship</a>
+                    </div>
+                    <div class="mega-column">
+                        <span class="column-title">Specialty Structures</span>
+                        <a href="doing-business-as-dba.html">DBA Registration</a>
+                        <a href="nonprofits.html">Nonprofit Organization</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLIANCE DROPDOWN -->
+            <div class="nav-item-dropdown static-dropdown">
+                <a href="#" onclick="toggleMobileDropdown(event, this)">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+                <div class="dropdown-content mega-panel-two-col">
+                    <div class="mega-column">
+                        <span class="column-title">Entity Health</span>
+                        <a href="annual-reports.html">Annual Reports</a>
+                        <a href="operating-agreement.html">Operating Agreement</a>
+                        <a href="registered-agent.html">Registered Agent</a>
+                    </div>
+                    <div class="mega-column">
+                        <span class="column-title">Licensing & Exit</span>
+                        <a href="business-licenses.html">Business Licenses</a>
+                        <a href="employer-identification-number-ein.html">Employer ID (EIN)</a>
+                        <a href="dissolution.html">Entity Dissolution</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAX FILINGS DROPDOWN -->
+            <div class="nav-item-dropdown static-dropdown">
+                <a href="#" onclick="toggleMobileDropdown(event, this)">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+                <div class="dropdown-content mega-panel-two-col">
+                    <div class="mega-column">
+                        <span class="column-title">Income & Operations</span>
+                        <a href="federal-income-tax.html">Federal Income Tax</a>
+                        <a href="state-income-tax.html">State Income Tax</a>
+                        <a href="franchise-tax.html">Franchise Tax Filing</a>
+                    </div>
+                    <div class="mega-column">
+                        <span class="column-title">Sales & Payroll</span>
+                        <a href="sales-tax-registration.html">Sales Tax Registration</a>
+                        <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a>
+                        <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOT & FLEET DROPDOWN -->
+            <div class="nav-item-dropdown static-dropdown">
+                <a href="#" onclick="toggleMobileDropdown(event, this)">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+                <div class="dropdown-content mega-panel-three-col">
+                    <div class="mega-column">
+                        <span class="column-title">Authority Setup</span>
+                        <a href="owner-operators.html">Owner Operators</a>
+                        <a href="trucker-authority.html">Trucker Authority</a>
+                        <a href="broker-authority.html">Broker Authority</a>
+                        <a href="ucr-registration.html">UCR Registration</a>
+                    </div>
+                    <div class="mega-column">
+                        <span class="column-title">Compliance & Regs</span>
+                        <a href="dot-consortium.html">DOT Consortium</a>
+                        <a href="driver-qualification-file.html">Driver Qualification File</a>
+                        <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
+                        <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a>
+                    </div>
+                    <div class="mega-column">
+                        <span class="column-title">Insurance & Risk</span>
+                        <a href="licenses-permits.html">Licenses & Permits</a>
+                        <a href="trucker-insurance.html">Trucker Insurance</a>
+                        <a href="broker-insurance.html">Broker Insurance</a>
+                        <a href="new-entrant-audit.html">New Entrant Audit</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Secure Portal</a>
+        </div>
+    </div>
+</nav>
+
+    <!-- SECTION 1: COMPACT HERO WITH IMAGE -->
+    <main class="page-container">
+        <div class="service-grid">
+            <article class="content-area">
+                <span class="hero-tag">Lifecycle Compliance Hub</span>
+                <h1>Total Corporate <br>Compliance Infrastructure.</h1>
+                <p>Maintain your entity's active status across every jurisdiction seamlessly. We track state deadlines, manage tax records, and automate filings to guarantee you never face administrative dissolution or structural penalties.</p>
+                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 50px;">
+                    <div style="height: 2px; width: 30px; background: #10b981;"></div>
+                    <span style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">50-State Multi-Entity Monitoring</span>
+                </div>
+                <a href="#pricing" class="btn-main">Explore Compliance Plans →</a>
+            </article>
+            <aside>
+                <div class="hero-image-container">
+                    <img src="images/annual-reports.jpg" alt="Business Compliance Setup">
+                </div>
+            </aside>
+        </div>
+
+        <!-- MARKETING SECTION 2: VALUE VALUE PROPOSITIONS -->
+        <section style="margin: 80px 0 40px 0;">
+            <div style="text-align: center; max-width: 700px; margin: 0 auto 50px auto;">
+                <h2 style="font-size: 2.2rem; margin-bottom: 15px;">Complete Regulatory Protection</h2>
+                <p style="color: #64748b; font-size: 1.1rem;">Missing a simple state deadline can void your limited liability shield. Our proactive platform handles the heavy lifting.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px;">
+                <div style="background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                    <div style="font-size: 2rem; margin-bottom: 15px;">🛡️</div>
+                    <h3 style="margin-top: 0; font-size: 1.25rem; margin-bottom: 10px;">Liability Shield Protection</h3>
+                    <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin: 0;">We track franchise taxes, annual reports, and information returns to protect your corporate veil in all 50 states.</p>
+                </div>
+                <div style="background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                    <div style="font-size: 2rem; margin-bottom: 15px;">⏰</div>
+                    <h3 style="margin-top: 0; font-size: 1.25rem; margin-bottom: 10px;">Automated Tracking</h3>
+                    <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin: 0;">No more tracking shifting calendars. Receive clear operational notifications well before penalty deadlines hit.</p>
+                </div>
+                <div style="background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                    <div style="font-size: 2rem; margin-bottom: 15px;">📁</div>
+                    <h3 style="margin-top: 0; font-size: 1.25rem; margin-bottom: 10px;">Centralized Storage</h3>
+                    <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin: 0;">Access certified articles, tax confirmations, receipts, and good-standing credentials anytime inside the portal.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARKETING SECTION 3: PRICING MATRIX -->
+        <section id="pricing" style="margin: 80px 0; padding: 60px 0; border-top: 1px solid #e2e8f0;">
+            <div style="text-align: center; max-width: 700px; margin: 0 auto 50px auto;">
+                <h2 style="font-size: 2.2rem; margin-bottom: 15px;">Predictable Compliance Pricing</h2>
+                <p style="color: #64748b; font-size: 1.1rem;">Choose the tier that fits your structure, from single owner-operators to complex multi-state transport fleets.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto;">
+                <!-- Basic Plan -->
+                <div style="background: #ffffff; padding: 40px 30px; border-radius: 12px; border: 1px solid #e2e8f0; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="margin-top: 0; font-size: 1.4rem; margin-bottom: 5px;">Standard Tracker</h3>
+                        <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">Essential monitoring for growing companies.</p>
+                        <div style="margin-bottom: 30px;">
+                            <span style="font-size: 2.5rem; font-weight: 800;">$99</span>
+                            <span style="color: #64748b;"> / year + state fees</span>
+                        </div>
+                        <ul style="padding-left: 20px; color: #64748b; font-size: 0.95rem; line-height: 2;">
+                            <li>50-State Monitoring Engine</li>
+                            <li>Email & SMS Deadline Notifications</li>
+                            <li>Document Repository Access</li>
+                            <li>Standard Filing Support</li>
+                        </ul>
+                    </div>
+                    <a href="https://filings4u.com/get-started.html" class="btn-main" style="width: 100%; text-align: center; margin-top: 30px; background: #0f172a;">Get Started</a>
+                </div>
+
+                <!-- Premium Plan -->
+                <div style="background: #ffffff; padding: 40px 30px; border-radius: 12px; border: 2px solid #10b981; position: relative; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);">
+                    <span style="position: absolute; top: -15px; right: 20px; background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Most Popular</span>
+                    <div>
+                        <h3 style="margin-top: 0; font-size: 1.4rem; margin-bottom: 5px;">Total Automation</h3>
+                        <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">Complete turn-key filing peace of mind.</p>
+                        <div style="margin-bottom: 30px;">
+                            <span style="font-size: 2.5rem; font-weight: 800;">$199</span>
+                            <span style="color: #64748b;"> / year + state fees</span>
+                        </div>
+                        <ul style="padding-left: 20px; color: #0f172a; font-size: 0.95rem; line-height: 2; font-weight: 500;">
+                            <li><span style="color:#10b981;">✓</span> Full Auto-Pilot Annual Reports</li>
+                            <li><span style="color:#10b981;">✓</span> Registered Agent Infrastructure</li>
+                            <li><span style="color:#10b981;">✓</span> Corporate Veil Protection Audits</li>
+                            <li><span style="color:#10b981;">✓</span> Priority Document Acquisition</li>
+                        </ul>
+                    </div>
+                    <a href="https://filings4u.com/get-started.html" class="btn-main" style="width: 100%; text-align: center; margin-top: 30px;">Automate My Entity</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARKETING SECTION 4: FAQ INTEGRATION -->
+        <section style="margin: 80px 0 120px 0; border-top: 1px solid #e2e8f0; padding-top: 60px;">
+            <div style="text-align: center; max-width: 700px; margin: 0 auto 50px auto;">
+                <h2 style="font-size: 2.2rem; margin-bottom: 15px;">Frequently Asked Questions</h2>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #e2e8f0;">
+                    <h4 style="font-size: 1.15rem; margin-bottom: 10px; color: #0f172a;">What is an Annual Report filing?</h4>
+                    <p style="color: #64748b; line-height: 1.6; margin: 0; font-size: 0.95rem;">An Annual Report updates the state database with key details about your business structures, including management changes, operating addresses, and authorized agents.</p>
+                </div>
+                <div style="margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #e2e8f0;">
+                    <h4 style="font-size: 1.15rem; margin-bottom: 10px; color: #0f172a;">What happens if my business misses a deadline?</h4>
+                    <p style="color: #64748b; line-height: 1.6; margin: 0; font-size: 0.95rem;">States apply steep punitive financial penalties quickly and eventually change company statuses to "Inactive" or "Dissolved"—putting your personal asset protection shields at high risk.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                    <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;">
+                </a>
+                <p>Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.</p>
+                <div style="margin-top: 25px; display: flex; gap: 15px;">
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                        <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+                    </a>
+                    <!-- YouTube -->
+                    <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                        <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg>
+                    </a>
+                    <!-- X -->
+                    <a href="https://x.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                        <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Formations</h4>
+                <ul>
+                    <li><a href="limited-liability-company.html">LLC Formation</a></li>
+                    <li><a href="corporations.html">Corporations</a></li>
+                    <li><a href="nonprofits.html">Non-Profits</a></li>
+                    <li><a href="registered-agent.html">Registered Agent</a></li>
+                    <li><a href="employer-identification-number-ein.html">Tax ID (EIN)</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Fleet & DOT</h4>
+                <ul>
+                    <li><a href="ucr-registration.html">UCR Registration</a></li>
+                    <li><a href="international-fuel-tax-agreement-ifta.html">IFTA Filings</a></li>
+                    <li><a href="trucker-authority.html">DOT Authority</a></li>
+                    <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li>
+                    <li><a href="heavy-use-tax-2290.html">Form 2290</a></li>
+                </ul>
+            </div>
+            <!-- 🔄 NEW SECTION: Tax & Filings -->
+            <div class="footer-col">
+                <h4>Tax & Filings</h4>
+                <ul>
+                    <li><a href="federal-income-tax.html">Federal Income Tax</a></li>
+                    <li><a href="state-income-tax.html">State Income Tax</a></li>
+                    <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li>
+                    <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li>
+                    <li><a href="franchise-tax.html">Franchise Tax Filing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="login.html">Client Portal</a></li>
+                    <li><a href="compliance.html">Compliance Hub</a></li>
+                    <li><a href="contact.html">Contact Experts</a></li>
+                    <li><a href="annual-reports.html">Annual Reports</a></li>
+                    <li><a href="blog.html">Resource Library</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>
+                <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;">
+                    &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a>
+                </p>
+            </div>
+            <!-- 🔄 FIXED SECURE BADGE CONTAINER -->
+            <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;">
+                <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection
+            </div>
+            <div class="legal-links">
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-of-service.html">Terms of Service</a>
+                <a href="refund-policy.html">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
