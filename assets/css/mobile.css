@@ -409,32 +409,36 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
     } 
 } 
 
-/* ========================================== */
-/* 📱 MOBILE ONLY: SHIFT LOGO & NAV APART     */
-/* ========================================== */
-@media screen and (max-width: 991px) {
-    
-    header, nav, .site-header, .nav-content-wrapper {
-        display: flex !important;
-        flex-direction: row !important;
+/* ========================================================================== */ 
+/* 📱 MOBILE ONLY: SHIFT LOGO & NAV APART (SYNTAX VISIBILITY FIXED)           */ 
+/* ========================================================================== */ 
+@media screen and (max-width: 991px) { 
+    header, nav, .site-header, .nav-content-wrapper { 
+        display: flex !important; 
+        flex-direction: row !important; 
+        
+        /* 🟢 FORCES LOGO AND TOGGLE APART REGARDLESS OF HIDDEN CONTAINERS */
         justify-content: space-between !important; 
-        align-items: center !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-    }
+        align-items: center !important; 
+        width: 100% !important; 
+        box-sizing: border-box !important; 
+        padding-left: 20px !important; 
+        padding-right: 20px !important; 
+    } 
 
-    header img, nav img, .logo-img, .logo-container img {
+    header img, nav img, .logo-img, .logo-container img { 
         max-width: 200px !important; 
-        height: auto !important;
-        max-height: 25px !important;
-        flex-shrink: 0 !important;
-    }
+        height: auto !important; 
+        max-height: 25px !important; 
+        flex-shrink: 0 !important; 
+        margin: 0 !important; /* Strips any residual auto alignment gaps */
+    } 
 
-    .mobile-toggle-btn, .mobile-menu-trigger, .hamburger, .menu-toggle, .nav-toggle {
-        margin-left: auto !important; 
-        flex-shrink: 0 !important;
-    }
+    .mobile-toggle-btn, .mobile-menu-trigger, .hamburger, .menu-toggle, .nav-toggle { 
+        /* 🎯 REMOVED MARGIN-LEFT: AUTO TO UNLOCK THE SPACE-BETWEEN EDGE POSITION */
+        margin: 0 !important; 
+        flex-shrink: 0 !important; 
+    } 
 }
+
 
