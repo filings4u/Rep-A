@@ -414,38 +414,6 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
 /* ========================================== */
 @media screen and (max-width: 991px) {
     
-    /* Force mobile header elements to sit on opposite edges */
-    header, nav, .site-header, .nav-content-wrapper {
-        display: flex !important;
-        flex-direction: row !important;
-        justify-content: space-between !important; 
-        align-items: center !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-    }
-
-    /* Keep the logo small on mobile screens only */
-    header img, nav img, .logo-img, .logo-container img {
-        max-width: 120px !important; 
-        height: auto !important;
-        max-height: 35px !important;
-        flex-shrink: 0 !important;
-    }
-
-    /* Force mobile menu button to the far right */
-    .mobile-toggle-btn, .mobile-menu-trigger, .hamburger, .menu-toggle, .nav-toggle {
-        margin-left: auto !important; 
-        flex-shrink: 0 !important;
-    }
-}
-
-/* ========================================== */
-/* 📱 MOBILE ONLY: SHIFT LOGO & NAV APART     */
-/* ========================================== */
-@media screen and (max-width: 991px) {
-    
     header, nav, .site-header, .nav-content-wrapper {
         display: flex !important;
         flex-direction: row !important;
@@ -460,7 +428,7 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
     header img, nav img, .logo-img, .logo-container img {
         max-width: 200px !important; 
         height: auto !important;
-        max-height: 35px !important;
+        max-height: 25px !important;
         flex-shrink: 0 !important;
     }
 
