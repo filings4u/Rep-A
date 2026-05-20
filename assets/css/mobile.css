@@ -417,7 +417,7 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
     }
     
     .logo-img {
-        max-width: 120px; /* Prevents the logo from eating up space */
+        max-width: 520px; /* Prevents the logo from eating up space */
         height: auto;
     }
 
