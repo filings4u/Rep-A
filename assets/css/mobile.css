@@ -458,7 +458,7 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
     }
 
     header img, nav img, .logo-img, .logo-container img {
-        max-width: 50px !important; 
+        max-width: 200px !important; 
         height: auto !important;
         max-height: 35px !important;
         flex-shrink: 0 !important;
