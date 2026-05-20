@@ -1446,3 +1446,281 @@ main.page-container {
   }
 }
 
+
+
+
+
+
+
+/* ==========================================================================
+   📚 COMPLIANCE INFORMATION & KNOWLEDGE BASE COMPONENT STYLES
+   ========================================================================== */
+
+/* 1. LAYOUT INK ARCHITECTURE */
+.compliance-hub-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+@media screen and (min-width: 992px) {
+  .compliance-hub-grid {
+    grid-template-columns: 280px 1fr; /* Distinct sidebar navigation desktop tracking */
+    align-items: start;
+  }
+}
+
+/* 2. LIVE SEARCH BAR INNER WRAPPER */
+.kb-search-container {
+  background: var(--ice, #f4f7fa);
+  padding: 30px;
+  border-radius: 16px;
+  margin-bottom: 40px;
+  border: 1px solid var(--border, #e2e8f0);
+}
+
+.kb-search-container h2 {
+  font-size: 1.5rem !important;
+  color: var(--navy, #0a1f44) !important;
+  margin-bottom: 15px !important;
+  font-weight: 800;
+}
+
+.kb-search-box {
+  width: 100%;
+  padding: 16px 20px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background: var(--white, #ffffff);
+  color: var(--navy, #0a1f44);
+  transition: border-color 0.2s ease;
+}
+
+.kb-search-box:focus {
+  border-color: var(--emerald, #10b981);
+}
+
+/* 3. SIDEBAR NAVIGATION PANELS */
+.kb-sidebar-menu {
+  background: var(--white, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 20px;
+  position: sticky;
+  top: 105px; /* Floats safely beneath your fixed 75px header line wrapper */
+}
+
+.kb-sidebar-menu h3 {
+  font-size: 0.75rem !important;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted, #64748b);
+  margin-bottom: 15px !important;
+  font-weight: 800;
+  padding-left: 10px;
+}
+
+.kb-side-link {
+  display: block;
+  padding: 12px 15px;
+  color: var(--navy, #0a1f44);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  margin-bottom: 4px;
+}
+
+.kb-side-link:hover, 
+.kb-side-link.active-topic {
+  background: var(--ice, #f4f7fa);
+  color: var(--emerald, #10b981);
+}
+
+/* 4. CONTENT ACCORDION PANELS */
+.kb-article-group {
+  margin-bottom: 50px;
+}
+
+.kb-article-group h2 {
+  font-size: 1.8rem !important;
+  color: var(--navy, #0a1f44) !important;
+  margin-bottom: 25px !important;
+  font-weight: 800;
+  border-bottom: 2px solid var(--ice, #f4f7fa);
+  padding-bottom: 10px;
+}
+
+.kb-accordion-item {
+  background: var(--white, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.kb-accordion-item:hover {
+  border-color: #cbd5e1;
+}
+
+.kb-trigger-bar {
+  width: 100%;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.kb-trigger-bar h4 {
+  margin: 0 !important;
+  font-size: 1.1rem !important;
+  color: var(--navy, #0a1f44) !important;
+  font-weight: 700;
+}
+
+.kb-icon {
+  font-size: 0.85rem;
+  color: var(--text-muted, #64748b);
+  transition: transform 0.2s ease;
+}
+
+.kb-panel-body {
+  display: none;
+  padding: 0 24px 24px 24px;
+  color: var(--text-dark, #4a5568);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.kb-panel-body p {
+  margin-bottom: 15px;
+}
+
+.kb-panel-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Accordion Active Expanded States */
+.kb-accordion-item.is-expanded {
+  border-color: var(--emerald, #10b981);
+}
+
+.kb-accordion-item.is-expanded .kb-icon {
+  transform: rotate(180deg);
+  color: var(--emerald, #10b981);
+}
+
+.kb-accordion-item.is-expanded .kb-panel-body {
+  display: block;
+}
+
+/* Universal text highlight marker tool for live search matches */
+mark.search-highlight {
+  background: #fef08a;
+  color: #1e293b;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+
+/* ==========================================================================
+   📱 SYSTEM BREAKPOINT LOCK (Forces Edge-to-Edge HUD & Menu Toggle Visibility)
+   ========================================================================== */
+
+@media screen and (max-width: 991px), screen and (max-width: 980px) {
+  /* Locks the main bar framework across the full width of phone screens */
+  nav, .site-header {
+    width: 100% !important;
+    max-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-sizing: border-box !important;
+    display: block !important;
+  }
+
+  /* Splits your logo to the far left and the ☰ toggle button to the far right */
+  .nav-content-wrapper, 
+  nav .nav-content-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 20px !important;  /* Inner left margin spacing */
+    padding-right: 20px !important; /* Inner right margin spacing */
+    box-sizing: border-box !important;
+  }
+
+  /* Stabilizes the brand image alignment layout box */
+  .logo-link, 
+  nav .logo-link {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Scales the logo image to prevent layout breaking or overlaps */
+  .logo, 
+  .logo-img, 
+  nav .logo {
+    height: 35px !important; /* Adjusted layout scaling footprint */
+    width: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* FORCES TOGGLE TRIGGER OPEN VISIBILITY (Overrides template blanket desktop hide states) */
+  .mobile-toggle-btn, 
+  nav .mobile-toggle-btn,
+  nav button.mobile-toggle-btn {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    pointer-events: auto !important; /* Activates click sensitivity links */
+    
+    /* Structural click target area rules */
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    
+    /* Sharp text icon character mapping values */
+    font-size: 32px !important;
+    line-height: 44px !important;
+    text-align: center !important;
+    font-family: sans-serif !important;
+    background: transparent !important;
+    border: none !important;
+    color: #0a1f44 !important; /* Matches your brand navy color code token */
+    cursor: pointer !important;
+    z-index: 999999 !important; /* Floats button cleanly on top of graphic frames */
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .site-footer .footer-container {
+    flex-direction: column !important; /* Converts horizontal columns into a top-to-bottom stack */
+    gap: 40px !important;              /* Spares breathing room between category buckets */
+  }
+
+  .footer-container .footer-brand, 
+  .footer-container .footer-col {
+    width: 100% !important;            /* Forces each column to claim 100% of the screen width */
+    text-align: left !important;       /* Re-aligns text left for standard reading comfort */
+  }
+}
