@@ -409,40 +409,32 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
     } 
 } 
 
-/* Final Media Query Closing Bracket */
-/* ==========================================================================
-   📱 OVERRIDE TRICK: SHARP CONTRAINT FOR MOBILE LOGO SPACING
-   ========================================================================== */
 @media screen and (max-width: 991px) {
     
-    /* 1. Force structural constraints onto any image child inside your mobile nav */
-    nav img, 
-    .site-header img, 
-    .logo-container img, 
-    .logo-img {
-        max-width: 130px !important; /* Forces the image to drop the heavy 520px footprint */
-        height: auto !important;
-        max-height: 32px !important; /* Keeps the header line clean and thin */
-        flex-shrink: 0 !important;   /* Prevents the browser from squeezing the logo image asset */
-        display: block !important;
-        margin: 0 !important;        /* Wipes out rogue margins pushing the hamburger down */
-    }
-
-    /* 2. Stabilize flex gaps on the main mobile nav line element */
-    nav {
+    /* 1. Target ANY header or navigation container */
+    header, nav, .site-header, .nav-content-wrapper {
         display: flex !important;
         flex-direction: row !important;
-        justify-content: space-between !important; /* Pushes logo completely left, button completely right */
+        justify-content: space-between !important; /* Forces items to opposite sides */
         align-items: center !important;
         width: 100% !important;
         box-sizing: border-box !important;
-        gap: 20px !important; /* Guarantees a minimum visual cushion buffer zone between items */
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
 
-    /* 3. Bind your actual hamburger classes directly to the alignment grid */
-    .mobile-toggle-btn, 
-    .mobile-menu-trigger {
-        margin-left: auto !important; /* Absolute structural fallback to pin items right */
+    /* 2. Target ANY image inside that header to shrink it */
+    header img, nav img, .logo-img, .logo-container img {
+        max-width: 120px !important; /* Shrinks the logo to make physical room */
+        height: auto !important;
+        max-height: 35px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* 3. Target ANY common class for hamburger toggles */
+    .mobile-toggle-btn, .mobile-menu-trigger, .hamburger, .menu-toggle, .nav-toggle {
+        margin-left: auto !important; /* Forces the toggle to stick to the right edge */
         flex-shrink: 0 !important;
     }
 }
+
