@@ -409,13 +409,16 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
     } 
 } 
 
+/* ========================================== */
+/* 📱 MOBILE ONLY: SHIFT LOGO & NAV APART     */
+/* ========================================== */
 @media screen and (max-width: 991px) {
     
-    /* 1. Target ANY header or navigation container */
+    /* Force mobile header elements to sit on opposite edges */
     header, nav, .site-header, .nav-content-wrapper {
         display: flex !important;
         flex-direction: row !important;
-        justify-content: space-between !important; /* Forces items to opposite sides */
+        justify-content: space-between !important; 
         align-items: center !important;
         width: 100% !important;
         box-sizing: border-box !important;
@@ -423,17 +426,46 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
         padding-right: 20px !important;
     }
 
-    /* 2. Target ANY image inside that header to shrink it */
+    /* Keep the logo small on mobile screens only */
     header img, nav img, .logo-img, .logo-container img {
-        max-width: 120px !important; /* Shrinks the logo to make physical room */
+        max-width: 120px !important; 
         height: auto !important;
         max-height: 35px !important;
         flex-shrink: 0 !important;
     }
 
-    /* 3. Target ANY common class for hamburger toggles */
+    /* Force mobile menu button to the far right */
     .mobile-toggle-btn, .mobile-menu-trigger, .hamburger, .menu-toggle, .nav-toggle {
-        margin-left: auto !important; /* Forces the toggle to stick to the right edge */
+        margin-left: auto !important; 
+        flex-shrink: 0 !important;
+    }
+}
+
+/* ========================================== */
+/* 📱 MOBILE ONLY: SHIFT LOGO & NAV APART     */
+/* ========================================== */
+@media screen and (max-width: 991px) {
+    
+    header, nav, .site-header, .nav-content-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important; 
+        align-items: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    header img, nav img, .logo-img, .logo-container img {
+        max-width: 120px !important; 
+        height: auto !important;
+        max-height: 35px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .mobile-toggle-btn, .mobile-menu-trigger, .hamburger, .menu-toggle, .nav-toggle {
+        margin-left: auto !important; 
         flex-shrink: 0 !important;
     }
 }
