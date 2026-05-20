@@ -281,49 +281,4 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
         box-sizing: border-box !important; 
     } 
     
- /* ==========================================================================
-   🧱 PUBLIC MOBILE FOOTER MATRIX HOOK LINES CLOSURE TRACKS (COMPLETED)
-   ========================================================================== */
-    .site-footer .footer-bottom > div:first-child, .footer-bottom > div:first-child { 
-        order: 3 !important; 
-    }
-} /* 🎯 ENSURES CLEARANCE CLOSURE TRACES ACROSS SISTER CHUNKS PREVENTS ENGINE BREAKS */
-
-/* ========================================================================== */ 
-/* 📱 MOBILE ONLY: SHIFT LOGO & NAV APART AND ESCALATE BRAND LOGO SIZE        */ 
-/* ========================================================================== */ 
-@media screen and (max-width: 991px) { 
-    header, nav, .site-header, .nav-content-wrapper { 
-        display: flex !important; 
-        flex-direction: row !important; 
-        
-        /* 🟢 SLAMS LOGO TO ABSOLUTE LEFT AND HAMBURGER MENU TOGGLE TO ABSOLUTE RIGHT */
-        justify-content: space-between !important; 
-        align-items: center !important; 
-        width: 100% !important; 
-        box-sizing: border-box !important; 
-        padding-left: 20px !important; 
-        padding-right: 20px !important; 
-        gap: 0 !important; /* Strips layout margin spaces */
-    } 
-
-    header img, nav img, .logo-img, .logo-container img { 
-        /* 🎯 ESCALATED SCALE: Increases visibility by nearly 100% across viewports */
-        max-width: 150px !important; 
-        height: auto !important; 
-        max-height: 48px !important; /* Raised roof bar height metric from 25px to 48px */
-        flex-shrink: 0 !important; 
-        
-        /* Clear auto alignment footprints pulling it toward the center lane */
-        margin: 80px !important; 
-        padding: 0 !important;
-        display: block !important;
-    } 
-
-    .mobile-toggle-btn, .mobile-menu-trigger, .hamburger, .menu-toggle, .nav-toggle { 
-        /* Enforces space-between flex alignment layout allocation markers */
-        margin: 0 !important; 
-        flex-shrink: 0 !important; 
-        display: flex !important;
-    } 
 }
