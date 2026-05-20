@@ -309,13 +309,13 @@ nav .nav-item-dropdown.active-toggle .dropdown-content {
 
     header img, nav img, .logo-img, .logo-container img { 
         /* 🎯 ESCALATED SCALE: Increases visibility by nearly 100% across viewports */
-        max-width: 250px !important; 
+        max-width: 150px !important; 
         height: auto !important; 
         max-height: 48px !important; /* Raised roof bar height metric from 25px to 48px */
         flex-shrink: 0 !important; 
         
         /* Clear auto alignment footprints pulling it toward the center lane */
-        margin: 0 !important; 
+        margin: 80px !important; 
         padding: 0 !important;
         display: block !important;
     } 
