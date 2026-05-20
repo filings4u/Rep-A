@@ -7504,3 +7504,41 @@ p, h1, h2, h3, h4, h5, h6, li, span {
     color: var(--navy) !important;
     display: list-item !important; /* Guarantees bullets stay active */
 }
+
+/* Final Media Query Closing Bracket */
+/* ==========================================================================
+   📱 OVERRIDE TRICK: SHARP CONTRAINT FOR MOBILE LOGO SPACING
+   ========================================================================== */
+@media screen and (max-width: 991px) {
+    
+    /* 1. Force structural constraints onto any image child inside your mobile nav */
+    nav img, 
+    .site-header img, 
+    .logo-container img, 
+    .logo-img {
+        max-width: 130px !important; /* Forces the image to drop the heavy 520px footprint */
+        height: auto !important;
+        max-height: 32px !important; /* Keeps the header line clean and thin */
+        flex-shrink: 0 !important;   /* Prevents the browser from squeezing the logo image asset */
+        display: block !important;
+        margin: 0 !important;        /* Wipes out rogue margins pushing the hamburger down */
+    }
+
+    /* 2. Stabilize flex gaps on the main mobile nav line element */
+    nav {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important; /* Pushes logo completely left, button completely right */
+        align-items: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        gap: 20px !important; /* Guarantees a minimum visual cushion buffer zone between items */
+    }
+
+    /* 3. Bind your actual hamburger classes directly to the alignment grid */
+    .mobile-toggle-btn, 
+    .mobile-menu-trigger {
+        margin-left: auto !important; /* Absolute structural fallback to pin items right */
+        flex-shrink: 0 !important;
+    }
+}
