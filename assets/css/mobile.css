@@ -308,3 +308,90 @@
     box-sizing: border-box !important;
   }
 }
+
+/* ==========================================================================
+   📱 MOBILE HUD SPACING & FOOTER LAYOUT FIX (Viewports Under 991px)
+   ========================================================================== */
+
+@media screen and (max-width: 991px), screen and (max-width: 980px) {
+  
+  /* --- 1. HEADER LOGO & TOGGLE SEPARATION --- */
+  nav, .site-header {
+    padding: 0 24px !important; /* Pushes outer edge content inward */
+    box-sizing: border-box !important;
+  }
+
+  .nav-content-wrapper, 
+  nav .nav-content-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important; /* Forces logo to the left, button to the right */
+    align-items: center !important;
+    width: 100% !important;
+    padding: 0 !important; /* Clears inner nested padding blocks */
+    box-sizing: border-box !important;
+  }
+
+  .logo-link, nav .logo-link {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+  }
+
+  .logo, .logo-img, nav .logo {
+    height: 34px !important; /* Scales down slightly to increase space */
+    width: auto !important;
+  }
+
+  /* --- 2. MOBILE FOOTER ROW COLLAPSE --- */
+  footer.site-footer, .site-footer {
+    padding: 40px 24px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+
+  .site-footer .footer-container {
+    display: flex !important;
+    flex-direction: column !important; /* Folds side-by-side layout into vertical block rows */
+    gap: 35px !important; /* Generates tap clearance space between text groups */
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .footer-container .footer-brand, 
+  .footer-container .footer-col {
+    width: 100% !important; /* Enforces clean 100% width on phone screens */
+    max-width: 100% !important;
+    text-align: left !important; /* Re-aligns elements for clean reading */
+    box-sizing: border-box !important;
+  }
+
+  .footer-container .footer-col ul {
+    display: block !important;
+  }
+
+  .footer-container .footer-col ul li {
+    text-align: left !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* --- 3. METADATA LOWER GRID ALIGNMENTS --- */
+  .site-footer .footer-bottom {
+    display: flex !important;
+    flex-direction: column !important; /* Stacks split row elements down the page layout */
+    align-items: flex-start !important;
+    gap: 24px !important;
+    margin-top: 35px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+  }
+
+  .site-footer .legal-links {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important; /* Allows links to flow naturally on thin phone viewports */
+    gap: 20px !important;
+  }
+}
