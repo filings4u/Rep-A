@@ -9,15 +9,16 @@
 
     <title>Annual Reports | filings4u Professional Compliance Dashboard</title>
     
-    <!-- Desktop Engine Blocks -->
-    <link rel="stylesheet" href="assets/css/desktop.css">
-    <link rel="stylesheet" href="assets/css/desktop-components.css">
-    <link rel="stylesheet" href="assets/css/desktop-pricing.css">
-    <link rel="stylesheet" href="assets/css/desktop-content.css">
-    <link rel="stylesheet" href="assets/css/desktop-footer.css">
-    
-    <!-- 🚀 MOBILE ENGINE CHARGED LAST FOR SPECIFICITY OVERRIDES -->
-    <link rel="stylesheet" href="assets/css/mobile.css">
+  <!-- 🚀 FIXED: These files will now completely shut off on screens smaller than 981px -->
+<link rel="stylesheet" href="assets/css/desktop.css?v=3" media="screen and (min-width: 981px)">
+<link rel="stylesheet" href="assets/css/desktop-components.css?v=3" media="screen and (min-width: 981px)">
+<link rel="stylesheet" href="assets/css/desktop-pricing.css?v=3" media="screen and (min-width: 981px)">
+<link rel="stylesheet" href="assets/css/desktop-content.css?v=3" media="screen and (min-width: 981px)">
+<link rel="stylesheet" href="assets/css/desktop-footer.css?v=3" media="screen and (min-width: 981px)">
+
+<!-- 🚀 FIXED: This file will only turn on for screens 980px or smaller -->
+<link rel="stylesheet" href="assets/css/mobile.css?v=3" media="screen and (max-width: 980px)">
+
 
     
 
@@ -41,7 +42,7 @@
         <a href="index.html" class="logo-link">
             <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
         </a>
-        <button class="mobile-toggle-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+        <button class="mobile-toggle-btn" aria-label="Toggle Navigation">☰</button>
         
         <div class="nav-links">
             <!-- FORMATIONS DROPDOWN -->
