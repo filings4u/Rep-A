@@ -1,11 +1,11 @@
 /**
  * ==========================================================================
- * 🖥️ FILINGS4U PRODUCTION DESKTOP FOOTER FRAMEWORK (ISOLATED FIX)
+ * 🖥️ FILINGS4U REPAIRED DESKTOP FOOTER FRAMEWORK (SYNTAX RECURSION LOCK)
  * FILE LOCATION: assets/css/desktop-footer.css
  * ==========================================================================
  */
 
- @media screen and (min-width: 981px) {
+@media screen and (min-width: 981px) {
     footer.site-footer, .site-footer {
         display: block !important;
         position: relative !important;
@@ -15,7 +15,7 @@
         transform: translateX(-50%) !important;
         left: 0 !important;
         right: 0 !important;
-        background: #0a1f44 !important; /* Hardcoded brand fallback to stop homepage unstyling bugs */
+        background: #0a1f44 !important; /* Forces signature deep navy background color */
         color: #94a3b8 !important;
         box-sizing: border-box !important;
         padding: 60px 0 40px 0 !important;
@@ -85,25 +85,18 @@
         display: block !important;
     }
 
-    .footer-col ul li a, 
-    .footer-col ul li a:visited, 
-    .footer-col ul li a:active, 
-    .legal-links a, 
-    .legal-links a:visited, 
-    .legal-links a:active {
+    .footer-col ul li a {
         color: #94a3b8 !important;
         text-decoration: none !important;
         font-size: 0.9rem;
         transition: all 0.2s ease;
     }
 
-    .footer-col ul li a:hover, 
-    .legal-links a:hover {
+    .footer-col ul li a:hover {
         color: #10b981 !important; /* Force Brand Emerald */
         padding-left: 5px;
     }
 
-    /* Aligning the final column elements neatly flush against the right margin */
     .footer-container .footer-col:last-child {
         text-align: right !important;
     }
@@ -123,7 +116,6 @@
         padding-right: 5px !important;
     }
 
-    /* Lower Split Layout Information Row */
     .site-footer .footer-bottom {
         width: 100% !important;
         max-width: 1300px !important;
@@ -148,4 +140,4 @@
         flex-direction: row !important;
         gap: 30px !important;
     }
-}
+} /* 🚀 SYNTAX REPAIR FIX: Closed desktop media query HERE so layout elements don't leak */
