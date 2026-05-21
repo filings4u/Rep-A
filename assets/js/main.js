@@ -151,3 +151,30 @@ async function fetchHomepageArticles(container) {
     container.innerHTML = '<div class="blog-error-msg">Unable to display recent updates.</div>';
   }
 }
+
+/**
+ * 🔄 MOBILE ACCORDION COMPONENT HELPER TRIGGER
+ * Fires directly via your HTML inline 'onclick' parameters on smartphone screens
+ */
+function toggleMobileDropdown(event, anchorElement) {
+    if (window.innerWidth < 992) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Find the parent dropdown box wrapper container
+        const targetDropdown = anchorElement.closest(".nav-item-dropdown");
+        
+        if (targetDropdown) {
+            // Force-close all OTHER open mobile menus to prevent layouts overlaying
+            document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
+                if (item !== targetDropdown) {
+                    item.classList.remove("active-toggle");
+                }
+            });
+            
+            // Toggle the current element's open layout drawer state
+            targetDropdown.classList.toggle("active-toggle");
+            console.log("📱 Mobile dropdown accordion toggled state changed.");
+        }
+    }
+}
