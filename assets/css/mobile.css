@@ -358,5 +358,79 @@
         font-weight: 800 !important;
         text-align: left !important;
     }
+    /* ==========================================================================
+     * 🎨 GLOBAL CONTRAST & LIGHT/DARK COLOR RECOVERY MATRIX
+     * ========================================================================== */
+
+    /* 1. FORCE BRIGHT LIGHT-THEME FOR MAIN SITE PAGES */
+    body,
+    main,
+    .page-container,
+    .unified-site-section.bg-white,
+    .faq-section,
+    .blog-section {
+        background-color: #ffffff !important;
+        color: #0a1f44 !important; /* Forces all standard text to dark brand navy */
+    }
+
+    /* 2. RECOVER TYPOGRAPHY READABILITY INSIDE STANDARD LIGHT SECTIONS */
+    .content-area h1,
+    .content-area h2,
+    .content-area h3,
+    main h1,
+    main h2,
+    main h3,
+    h1.section-title,
+    .faq-item h4,
+    .wizard-card h3,
+    .price-card h3,
+    .blog-card-title {
+        color: #0a1f44 !important; /* Eradicates white-on-white heading text invisibility */
+    }
+
+    .content-area p,
+    main p,
+    .faq-item p,
+    .wizard-card p,
+    .price-card p,
+    .blog-card-summary {
+        color: #64748b !important; /* Forces all descriptions to high-contrast readable gray */
+    }
+
+    /* 3. FORCE PRISTINE DARK-THEME CONTRAST ON NAVY SECTIONS */
+    .bg-navy,
+    .feature-section,
+    .info-panel-card,
+    footer.site-footer,
+    .site-footer {
+        background-color: #0a1f44 !important; /* Re-locks dark background strip profiles */
+        color: #94a3b8 !important; /* Forces base descriptions to readable light gray */
+    }
+
+    /* 4. RECOVER TYPOGRAPHY READABILITY INSIDE DARK SECTIONS */
+    .bg-navy h1, .bg-navy h2, .bg-navy h3, .bg-navy h4,
+    .feature-section h1, .feature-section h2, .feature-section h3, .feature-section h4,
+    .info-panel-card h1, .info-panel-card h2, .info-panel-card h3, .info-panel-card h4,
+    .site-footer h4 {
+        color: #ffffff !important; /* Eradicates dark-on-dark invisible text layout failures */
+    }
+
+    .bg-navy p,
+    .feature-section p,
+    .info-panel-card p {
+        color: #cbd5e1 !important; /* Forces dark layout paragraphs to soft white readability */
+    }
+
+    /* 5. SECURE WHITE CONTAINER HOOD RECOVERY FALLBACK */
+    .price-card, 
+    .wizard-card, 
+    .stats-card, 
+    .icon-box, 
+    .blog-card, 
+    .faq-item,
+    .form-panel-card {
+        background-color: #ffffff !important; /* Re-forces solid crisp white card background layers */
+        border: 1px solid #e2e8f0 !important;
+    }
 
 }
