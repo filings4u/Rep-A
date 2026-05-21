@@ -251,3 +251,43 @@ nav {
     }
 
 } 
+
+/* 🧱 UNIVERSAL KNOWLEDGE BASE DECORATOR SHADOW LOCK */
+.faq-grid, .faq-section .faq-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 30px !important;
+}
+
+.faq-item {
+    background: #ffffff !important;
+    padding: 35px !important;
+    border-radius: 16px !important;
+    border: 1px solid #eef2f6 !important;
+    box-shadow: 0 10px 30px rgba(10, 31, 68, 0.06) !important;
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.faq-item h4 {
+    color: #0a1f44 !important;
+    font-size: 1.2rem !important;
+    margin: 0 0 12px 0 !important;
+    font-weight: 700 !important;
+}
+
+.faq-item p {
+    color: #64748b !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+}
+
+/* Smartphone Stack Adjustment */
+@media screen and (max-width: 768px) {
+    .faq-grid, .faq-section .faq-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+}
