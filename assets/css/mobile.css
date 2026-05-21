@@ -395,3 +395,68 @@
     gap: 20px !important;
   }
 }
+
+/* ==========================================================================
+   📱 MOBILE FOOTER EDGE-TO-EDGE FULL WIDTH EXTENSION 
+   ========================================================================== */
+
+@media screen and (max-width: 991px), screen and (max-width: 980px) {
+  
+  /* 🔄 FORCES OUTER BOX TO TRUE VIEWPORT WIDTH */
+  footer.site-footer, 
+  body footer.site-footer,
+  .site-footer {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 100vw !important;
+    
+    /* Center breakouts for template setups */
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    
+    /* Inner breathing safety padding */
+    padding: 50px 4% 40px 4% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 🔄 FORCES INNER STRUCTURAL WRAPPER TO STRETCH WIDE */
+  .site-footer .footer-container,
+  footer .footer-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+    
+    /* Preserves centered 2-column flex rows */
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    gap: 40px 0px !important; /* Stripped side gap to maximize link space */
+  }
+
+  /* 🔄 COLUMN WIDTH CALCULATIONS FOR EDGE-TO-EDGE SPLIT */
+  .footer-container .footer-col {
+    flex: 0 0 50% !important; /* Stretches exactly half the screen width */
+    width: 50% !important;
+    max-width: 50% !important;
+    padding: 0 15px !important; /* Adds inner safety margin so text doesnt clip edges */
+    box-sizing: border-box !important;
+  }
+
+  /* 🔄 COMPENSATES LOWER METADATA BAR ROW TO FILL PAGE */
+  .site-footer .footer-bottom {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+    margin-top: 45px !important;
+  }
+}
