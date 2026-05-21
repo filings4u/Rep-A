@@ -462,17 +462,6 @@
 
 @media screen and (max-width: 991px), screen and (max-width: 980px) {
   
-  /* 🔄 FORCE CENTERS THE ENTIRE FOOTER PANEL BLOCK HOOK */
-  body.is-mobile #footer,
-  html body #footer,
-  footer.site-footer {
-    padding: 60px 24px 40px 24px !important;
-    text-align: center !important; /* Forces layout to center alignment */
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
 
   /* 🔄 ALIGNS LINK COLUMNS SIDE-BY-SIDE IN THE CENTER */
   body.is-mobile #footer .footer-container,
@@ -491,16 +480,6 @@
     box-sizing: border-box !important;
   }
 
-  /* 🔄 CENTERS BRAND INTRO TEXT */
-  body.is-mobile #footer .footer-brand,
-  .footer-container .footer-brand {
-    flex: 0 0 100% !important; /* Takes up the full row width to stay centered */
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-  }
 
   .footer-container .footer-brand p {
     text-align: center !important;
