@@ -130,7 +130,7 @@ async function fetchHomepageArticles(container) {
       });
 
       const postCard = document.createElement("a");
-      postCard.className = "blog-card price-card wizard-card icon-box";
+      postCard.className = "blog-card price-card wizard-card icon-box faq-item";
       postCard.href = `article.html?slug=${item.slug}`;
       postCard.innerHTML = `
         <div class="blog-card-img" style="background-image: url('${item.image_url || 'images/blog-fallback.jpg'}');"></div>
