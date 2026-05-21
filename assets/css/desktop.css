@@ -361,4 +361,16 @@ nav {
         display: flex !important;
     }
 
+    /* Keep your desktop header dimensions safe inside your master desktop file */
+nav {
+    position: fixed !important;
+    height: 70px !important;
+}
+
+.nav-content-wrapper {
+    max-width: 1550px !important;
+    display: flex !important;
+}
+
+
 } 
