@@ -310,6 +310,61 @@
 }
 
 /* ==========================================================================
+   📱 MOBILE HUD SPACING & FOOTER LAYOUT FIX (Viewports Under 991px)
+   ========================================================================== */
+
+@media screen and (max-width: 991px), screen and (max-width: 980px) {
+  
+  /* --- 1. HEADER LOGO & TOGGLE SEPARATION --- */
+  nav, .site-header {
+    padding: 0 24px !important; /* Pushes outer edge content inward */
+    box-sizing: border-box !important;
+  }
+
+  .nav-content-wrapper, 
+  nav .nav-content-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important; /* Forces logo to the left, button to the right */
+    align-items: center !important;
+    width: 100% !important;
+    padding: 0 !important; /* Clears inner nested padding blocks */
+    box-sizing: border-box !important;
+  }
+
+  .logo-link, nav .logo-link {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+  }
+
+  .logo, .logo-img, nav .logo {
+    height: 34px !important; /* Scales down slightly to increase space */
+    width: auto !important;
+  }
+
+
+  /* --- 3. METADATA LOWER GRID ALIGNMENTS --- */
+  .site-footer .footer-bottom {
+    display: flex !important;
+    flex-direction: column !important; /* Stacks split row elements down the page layout */
+    align-items: flex-start !important;
+    gap: 24px !important;
+    margin-top: 35px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+  }
+
+  .site-footer .legal-links {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important; /* Allows links to flow naturally on thin phone viewports */
+    gap: 20px !important;
+  }
+}
+
+/* ==========================================================================
    📱 MOBILE FOOTER CORRECTION LIFT (Locks True Edge-to-Edge Spanning Blocks)
    ========================================================================== */
 
