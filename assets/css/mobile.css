@@ -43,13 +43,7 @@
     }
 
     /* Force all structural section layout boundaries to stretch symmetrically across screens */
-    section, 
-    .unified-site-section,
-    .feature-section, 
-    .pricing-section, 
-    .resource-section, 
-    .faq-section,
-    .blog-section {
+    section, .unified-site-section, .feature-section, .pricing-section, .resource-section, .faq-section, .blog-section {
         width: 100% !important;
         max-width: 100% !important;
         padding: 45px 20px !important;
@@ -84,7 +78,7 @@
     /* 🔄 FIXED: Flips column orders, instantly shifting the dashboard preview graphic above text fields */
     .service-grid {
         display: flex !important;
-        flex-direction: column-reverse !important; 
+        flex-direction: column-reverse !important;
         gap: 30px !important;
         width: 100% !important;
         padding: 0 20px !important;
@@ -101,7 +95,7 @@
 
     /* 🔄 FIXED: Sized up text properties to establish clean headline visibility layout sizing on mobile screens */
     .content-area h1 {
-        font-size: 2.5rem !important; 
+        font-size: 2.5rem !important;
         line-height: 1.15 !important;
         margin-bottom: 15px !important;
         color: var(--navy) !important;
@@ -110,7 +104,7 @@
     }
 
     .content-area p {
-        font-size: 1.15rem !important; 
+        font-size: 1.15rem !important;
         line-height: 1.6 !important;
         color: var(--text-muted) !important;
         margin: 0 auto 30px auto !important;
@@ -119,8 +113,7 @@
     }
 
     /* 🔄 FIXED: Styled the raw text link directly as an elite, padded action button framework block */
-    .content-area a.btn-main,
-    .btn-main {
+    .content-area a.btn-main, .btn-main {
         display: block !important;
         width: 100% !important;
         max-width: 340px !important;
@@ -177,7 +170,7 @@
 
     /* 🔄 FIXED: Resizes branding assets to scale nicely beneath standard header constraints */
     .logo, .logo-link img {
-        height: 32px !important; 
+        height: 32px !important;
         width: auto !important;
         object-fit: contain !important;
         display: block !important;
@@ -185,7 +178,7 @@
 
     /* 🔄 FIXED: Restricts toggle menu from auto stretching across widescreen blocks content boundaries */
     nav button.mobile-toggle-btn, .mobile-toggle-btn {
-        display: inline-block !important; 
+        display: inline-block !important;
         width: auto !important;
         height: auto !important;
         background: transparent !important;
@@ -212,7 +205,7 @@
         background: var(--white) !important;
         box-shadow: 0 10px 30px rgba(10, 31, 68, 0.1) !important;
         /* 🔄 FIXED: Tightened tracking gap fields completely to stop extensive stretching downs */
-        gap: 14px !important; 
+        gap: 14px !important;
         padding: 30px 20px !important;
         margin: 0 !important;
         box-sizing: border-box !important;
@@ -256,7 +249,10 @@
     }
 
     /* Accordion mobile interaction lists definitions */
-    .nav-item-dropdown .dropdown-content { display: none !important; }
+    .nav-item-dropdown .dropdown-content {
+        display: none !important;
+    }
+
     .nav-item-dropdown.active-toggle .dropdown-content {
         display: grid !important;
         grid-template-columns: 1fr !important;
@@ -271,8 +267,15 @@
         border: none !important;
     }
 
-    .static-dropdown:hover .dropdown-content { display: none !important; }
-    .mega-column { display: flex !important; flex-direction: column !important; }
+    .static-dropdown:hover .dropdown-content {
+        display: none !important;
+    }
+
+    .mega-column {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
     .mega-column .column-title {
         font-size: 0.75rem !important;
         font-weight: 700 !important;
@@ -283,17 +286,17 @@
         padding-bottom: 6px !important;
         margin-bottom: 10px !important;
     }
-    .mega-column a { padding: 6px 0 !important; font-size: 0.95rem !important; text-align: center !important; color: #475569 !important; }
+
+    .mega-column a {
+        padding: 6px 0 !important;
+        font-size: 0.95rem !important;
+        text-align: center !important;
+        color: #475569 !important;
+    }
 
     /* --- 5. COMPONENT GRIDS row MATRIX STACKERS --- */
     /* Destroys multiple grid tracking lines layout models on phones */
-    .icon-grid, 
-    .pricing-grid, 
-    .stats-grid, 
-    .contact-layout-grid, 
-    .faq-grid, 
-    .resource-grid, 
-    #public-homepage-blog-grid-target {
+    .icon-grid, .pricing-grid, .stats-grid, .contact-layout-grid, .faq-grid, .resource-grid, #public-homepage-blog-grid-target {
         display: grid !important;
         grid-template-columns: 1fr !important; /* Force a single-column layout cascade */
         gap: 24px !important;
@@ -306,12 +309,7 @@
 
     /* --- 6. CRITICAL LIGHT THEME CONTRACT HIGH-CONTRAST LOCKED RECOVERY --- */
     /* Forces white background container layout, cards padding parameters, and left text alignments */
-    .icon-box, 
-    .price-card, 
-    .stats-card, 
-    .faq-item, 
-    .blog-card, 
-    .form-panel-card {
+    .icon-box, .price-card, .stats-card, .faq-item, .blog-card, .form-panel-card {
         width: 100% !important;
         min-height: auto !important; /* Drops forced vertical padding blocks settings from computers styles sheets */
         padding: 30px 20px !important;
@@ -331,7 +329,7 @@
         font-weight: 700 !important;
         margin: 0 0 10px 0 !important;
     }
-    
+
     .stat-amount {
         font-size: 3.5rem !important;
         font-weight: 800 !important;
@@ -346,15 +344,31 @@
         margin: 0 !important;
         text-align: left !important;
     }
-    
+
     .stats-card p {
         text-align: center !important; /* Balance stats text labels center underneath raw numerals amounts */
     }
 
-    .price-card.featured { border: 2px solid var(--emerald) !important; }
-    .price-features { margin: 15px 0 !important; }
-    .price-card .amount { font-size: 2.5rem !important; margin: 10px 0 !important; color: var(--navy) !important; }
-    .compliance-table { display: block !important; width: 100% !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+    .price-card.featured {
+        border: 2px solid var(--emerald) !important;
+    }
+
+    .price-features {
+        margin: 15px 0 !important;
+    }
+
+    .price-card .amount {
+        font-size: 2.5rem !important;
+        margin: 10px 0 !important;
+        color: var(--navy) !important;
+    }
+
+    .compliance-table {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
 
     /* --- 7. SYMMETRICAL 2x2 FOOTER MATRIX & HOMEPAGE LOGO RE-ALIGNMENT --- */
     footer.site-footer, .site-footer {
@@ -377,39 +391,75 @@
     }
 
     /* 🔄 FIXED: Forces brand info columns to line up flush left across the page tracking maps */
-    .site-footer .footer-brand { 
-        grid-column: 1 / -1 !important; 
-        text-align: left !important; 
+    .site-footer .footer-brand {
+        grid-column: 1 / -1 !important;
+        text-align: left !important;
         width: 100% !important;
     }
-    
-    .site-footer .footer-brand p { 
-        margin: 15px 0 0 0 !important; 
-        color: #94a3b8 !important; 
+
+    .site-footer .footer-brand p {
+        margin: 15px 0 0 0 !important;
+        color: #94a3b8 !important;
         text-align: left !important;
     }
-    
+
     /* 🔄 FIXED: Pushes social inline svg shapes rows elements far left */
-    .site-footer .footer-brand div[style*="display: flex"] { 
-        justify-content: flex-start !important; 
-        margin-top: 20px !important; 
+    .site-footer .footer-brand div[style*="display: flex"] {
+        justify-content: flex-start !important;
+        margin-top: 20px !important;
     }
-    
-    .site-footer .footer-col { text-align: left !important; width: 100% !important; }
-    .footer-col h4 { color: var(--white) !important; margin: 0 0 15px 0 !important; font-size: 0.9rem !important; font-weight: 800 !important; }
-    .site-footer .footer-col ul { display: flex !important; flex-direction: column !important; align-items: flex-start !important; list-style: none !important; padding: 0 !important; margin: 0 !important; }
-    .site-footer .footer-col ul li a { color: #94a3b8 !important; display: inline-block !important; padding: 4px 0 !important; font-size: 0.85rem !important; }
-    
-    .site-footer .footer-bottom { 
-        display: flex !important; 
-        flex-direction: column !important; 
-        align-items: center !important; 
-        gap: 20px !important; 
-        padding: 30px 0 0 0 !important; 
-        border-top: 1px solid rgba(255, 255, 255, 0.1) !important; 
+
+    .site-footer .footer-col {
+        text-align: left !important;
         width: 100% !important;
     }
-    .site-footer .footer-bottom div p { color: #94a3b8 !important; text-align: center !important; }
-    .site-footer .trust-badge { background: rgba(255, 255, 255, 0.05) !important; color: var(--white) !important; margin: 5px auto !important; }
-    .site-footer .legal-links { display: flex !important; gap: 12px 20px !important; }
+
+    .footer-col h4 {
+        color: var(--white) !important;
+        margin: 0 0 15px 0 !important;
+        font-size: 0.9rem !important;
+        font-weight: 800 !important;
+    }
+
+    .site-footer .footer-col ul {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .site-footer .footer-col ul li a {
+        color: #94a3b8 !important;
+        display: inline-block !important;
+        padding: 4px 0 !important;
+        font-size: 0.85rem !important;
+    }
+
+    .site-footer .footer-bottom {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 20px !important;
+        padding: 30px 0 0 0 !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        width: 100% !important;
+    }
+
+    .site-footer .footer-bottom div p {
+        color: #94a3b8 !important;
+        text-align: center !important;
+    }
+
+    .site-footer .trust-badge {
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: var(--white) !important;
+        margin: 5px auto !important;
+    }
+
+    .site-footer .legal-links {
+        display: flex !important;
+        gap: 12px 20px !important;
+    }
 }
