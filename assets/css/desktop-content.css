@@ -15,13 +15,61 @@
     flex: 1 0 auto !important;
 }
 
-#dynamicBlogPostsContainer, #public-homepage-blog-grid-target {
+#dynamicBlogPostsContainer, 
+#public-homepage-blog-grid-target {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 40px 30px !important;
     padding-top: 10px !important;
-    margin-bottom: 80px !important;
+    margin-bottom: 20px !important; /* Drastically reduced from 80px to close the gap */
     width: 100% !important;
+}
+
+/* 🔄 FIXED: Closes excess top space matching your flexible stretch layout wrappers */
+footer.site-footer {
+    margin-top: 20px !important; /* Reduced from 40px to completely unify spacing bounds */
+}
+
+/* 🔄 FIXED: Formats your 4-item FAQ container to display cleanly in a balanced 2x2 grid */
+.faq-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* Generates a perfect side-by-side layout layout grid */
+    gap: 30px !important;
+    margin-top: 30px !important;
+    width: 100% !important;
+}
+
+/* White box container specifications configuration */
+.faq-item {
+    background: #ffffff !important;
+    padding: 35px !important;
+    border-radius: 16px !important;
+    border: 1px solid #eef2f6 !important;
+    box-shadow: 0 10px 30px rgba(10, 31, 68, 0.05) !important;
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.faq-item:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 15px 35px rgba(10, 31, 68, 0.1) !important;
+    border-color: #cbd5e1 !important;
+}
+
+.faq-item h4 {
+    color: #0a1f44 !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 12px 0 !important;
+}
+
+.faq-item p {
+    color: #64748b !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
 }
 
 /* --- 2. CARD STRUCTURAL PARAMETERS --- */

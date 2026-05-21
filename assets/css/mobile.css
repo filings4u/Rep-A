@@ -427,3 +427,11 @@
         gap: 12px 20px !important;
     }
 }
+
+    /* 📱 MOBILE SINGLE COLUMN CASCADE FOR COMPACT PHONE DISPLAYS */
+    .faq-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important; /* Force items to snap straight downward */
+        gap: 20px !important;
+        width: 100% !important;
+    }
