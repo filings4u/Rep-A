@@ -93,25 +93,33 @@
     align-items: center !important; 
     height: 100% !important; 
     padding: 0 20px !important; 
+    box-sizing: border-box !important;
   } 
+  .logo-link, nav a.logo-link {
+    display: flex !important;
+    align-items: center !important;
+  }
   .logo-link img, nav img.logo { 
     height: 28px !important; 
     width: auto !important; 
     max-width: 130px !important; 
     object-fit: contain !important; 
-    display: inline-block !important; /* FIXED: Prevents block break */
+    display: inline-block !important; 
   } 
   nav button.mobile-toggle-btn, .mobile-toggle-btn { 
-    display: inline-block !important; 
-    width: auto !important; 
-    height: auto !important; 
+    display: flex !important; /* FIXED: Ensures flexible alignment centers your JS text strings */
+    align-items: center !important;
+    justify-content: center !important;
+    width: 44px !important; /* FIXED: Minimum touch target width */
+    height: 44px !important; /* FIXED: Minimum touch target height */
     background: transparent !important; 
     border: none !important; 
-    font-size: 1.8rem !important; 
+    font-size: 2rem !important; /* FIXED: Increased size for cleaner layout display */
     color: var(--navy) !important; 
     cursor: pointer !important; 
     z-index: 100001 !important; 
-    text-align: right !important; /* FIXED: Aligns button content */
+    padding: 0 !important;
+    margin: 0 !important;
   } 
   .nav-links { 
     display: flex !important; 
@@ -135,7 +143,8 @@
     z-index: 100000 !important; 
     overflow-y: auto !important; 
   } 
-  .nav-open .nav-links { 
+  /* Syncs with JS toggling class on document.body */
+  body.nav-open .nav-links { 
     opacity: 1 !important; 
     visibility: visible !important; 
     transform: translateY(0) !important; 
@@ -147,7 +156,7 @@
     width: 100% !important; 
     text-align: center !important; 
     display: block !important; 
-    padding: 5px 0 !important; 
+    padding: 10px 0 !important; 
   } 
   .btn-client-portal { 
     background: var(--navy) !important; 
@@ -171,14 +180,19 @@
   .wizard-card, .icon-box, .price-card, .stats-card, .faq-item, .blog-card, .form-panel-card, .info-panel-card { 
     width: 100% !important; 
     min-height: auto !important; 
-    padding: 30px 20px !important; 
     background: var(--white) !important; 
     border: 1px solid var(--border) !important; 
     border-radius: 16px !important; 
     box-sizing: border-box !important; 
     text-align: left !important; 
     box-shadow: 0 10px 25px rgba(10, 31, 68, 0.04) !important; 
+    overflow: hidden !important; /* FIXED: Keeps Supabase inner code items clean */
   } 
+  /* Overrides for your multi-class JavaScript elements */
+  a.blog-card {
+    padding: 0 !important; 
+    display: block !important;
+  }
   .icon-box h4, .price-card h3, .stats-card h3, .faq-item h4, .blog-card h3, .stat-amount { 
     color: var(--navy) !important; 
     font-size: 1.25rem !important; 
@@ -198,33 +212,34 @@
     display: block !important; 
     transform: none !important; 
     left: 0 !important; 
+    box-sizing: border-box !important;
   } 
   footer.site-footer .footer-container { 
     display: grid !important; 
-    grid-template-columns: 1fr !important; /* FIXED: Changed from 'repeat(2, 1fr)' to single column stack */
+    grid-template-columns: 1fr !important; /* FIXED: Stacks single file layout column */
     gap: 35px 20px !important; 
   } 
   .site-footer .footer-brand { 
     grid-column: 1 / -1 !important; 
-    text-align: center !important; /* FIXED: Set to center alignment */
+    text-align: center !important; /* FIXED: Centered branding container alignment */
   } 
   .site-footer .footer-brand img { 
     height: 30px !important; 
     width: auto !important; 
     max-width: 140px !important; 
     object-fit: contain !important; 
-    display: inline-block !important; /* FIXED: Allows text-align center on wrapper parent */
-    margin: 0 auto !important; 
+    display: inline-block !important; /* FIXED: Allows wrapper text alignment rules to function */
+    margin: 0 auto 12px auto !important; 
   } 
   .site-footer .footer-brand p { 
     color: #94a3b8 !important; 
-    text-align: center !important; /* FIXED: Centered footer body description text */
+    text-align: center !important; /* FIXED: Centered footer body description */
   } 
   .site-footer .footer-brand div[style*="display: flex"] { 
-    justify-content: center !important; /* FIXED: Aligns internal child wrappers */
+    justify-content: center !important; /* FIXED: Targets inline flex nodes securely */
   } 
   .site-footer .footer-col { 
-    text-align: center !important; /* FIXED: Centered columns labels and elements */
+    text-align: center !important; /* FIXED: Centered all text lists inside containers */
   } 
   .footer-col h4 { 
     color: var(--white) !important; 
@@ -234,7 +249,7 @@
   .site-footer .footer-col ul { 
     display: flex !important; 
     flex-direction: column !important; 
-    align-items: center !important; /* FIXED: Flex alignment changed from start to center */
+    align-items: center !important; /* FIXED: Aligns column items down center */
     list-style: none !important; 
     padding: 0 !important; 
     margin: 0 !important; 
@@ -242,7 +257,7 @@
   .site-footer .footer-col ul li a { 
     color: #94a3b8 !important; 
     display: inline-block !important; 
-    padding: 4px 0 !important; 
+    padding: 6px 0 !important; 
   } 
   .site-footer .footer-bottom { 
     display: flex !important; 
@@ -254,7 +269,7 @@
   } 
   .site-footer .footer-bottom div p { 
     color: #94a3b8 !important; 
-    text-align: center !important; /* FIXED: Centered copyrights text block */
+    text-align: center !important; /* FIXED: Alignment on copyright elements */
   } 
   .site-footer .trust-badge { 
     background: rgba(255, 255, 255, 0.05) !important; 
@@ -263,7 +278,6 @@
   .site-footer .legal-links { 
     display: flex !important; 
     gap: 12px 20px !important; 
-    justify-content: center !important; /* FIXED: Flex items inside grid are centered */
+    justify-content: center !important; /* FIXED: Centers privacy policy terms links */
   } 
 }
-
