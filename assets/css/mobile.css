@@ -633,3 +633,91 @@
     cursor: pointer !important;
   }
 }
+
+
+/* ==========================================================================
+   📱 MOBILE CANVAS OVERFLOW HARD LOCKDOWN (Clears Right White Gap)
+   ========================================================================== */
+
+@media screen and (max-width: 991px), screen and (max-width: 980px), screen and (max-width: 736px) {
+  
+  /* 🔄 HARD VIEWPLEX LIMIT: Drops a vertical clipping mask over the full browser root view */
+  html, body, #wrapper, #main, .portal-main, main {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important; /* Forces elements to trim back instead of sliding the canvas right */
+    margin: 0 !important;
+    padding: 0;
+    box-sizing: border-box !important;
+  }
+
+  /* 🔄 REALIGNS NAVY BACKGROUND WRAPPER FLUSH UP against CONTAINER WALLS */
+  #footer, 
+  footer.site-footer, 
+  .site-footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 40px 16px !important; /* Squeezes outer text away from touching display glass border edges */
+    box-sizing: border-box !important;
+    float: none !important;
+    clear: both !important;
+  }
+
+  /* 🔄 FORCES ALL CHILD ROW BLOCK MODULES TO STAY WITHIN THE 100% CANVAS EDGE ROW RANGE */
+  #footer .inner,
+  .site-footer .footer-container,
+  .footer-container,
+  .footer-bottom,
+  #footer .copyright {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    clear: both !important;
+  }
+
+  /* 🔄 LOCKS INTERNAL COLUMNS SO COMPETING FLEX CHANNELS DONT BUBBLE PAST BOX LINES */
+  .footer-container .footer-col,
+  #footer section,
+  .footer-container .footer-brand {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important; /* Prevents long titles from warping grid columns */
+  }
+
+  /* 🔄 FIXES CRASHING SOCIAL ROW CHANNELS (Common cause of white gaps) */
+  .social-channels-row,
+  #footer .icons,
+  footer .social {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 15px auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 🔄 CRITICAL TEXT SEPARATOR FIX FOR CODES AND METADATA BULLETS */
+  #footer .copyright li,
+  .footer-bottom p,
+  .legal-links a {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important; /* Disables continuous horizontal rendering tracks */
+  }
+}
