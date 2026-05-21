@@ -567,3 +567,46 @@
     gap: 15px 20px !important;
   }
 }
+
+
+/* ==========================================================================
+   📱 MOBILE TOGGLE HIGHEST SENSITIVITY CLICK-TARGET LOCK
+   ========================================================================== */
+
+@media screen and (max-width: 991px), screen and (max-width: 980px) {
+  
+  /* 🔄 FORCES TRIGGER ENTRY TO INDEPENDENTLY FLOAT ON TOP OF OVERLAPS */
+  .mobile-toggle-btn,
+  nav .mobile-toggle-btn,
+  #mobileNavTriggerIcon,
+  button#mobileNavTriggerIcon {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    
+    /* System coordinate override properties */
+    position: relative !important;
+    z-index: 999999999 !important; /* Floats button above invisible header backgrounds */
+    pointer-events: auto !important; /* Forces touchscreen glass to capture tap inputs */
+    
+    /* Generates an elegant, fingers-friendly touch hit-box area sizing matrix */
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    
+    /* Alignment centering locks */
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 48px !important;
+    text-align: center !important;
+    font-size: 32px !important;
+    
+    background: transparent !important;
+    border: none !important;
+    color: #0a1f44 !important; /* Brand Navy */
+    cursor: pointer !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+  }
+}
