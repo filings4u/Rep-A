@@ -1,12 +1,10 @@
 /**
  * ==========================================================================
- * 📱 FILINGS4U PRODUCTION MOBILE ENGINE & COLOR CONTRAST SYSTEM
+ * 📱 FILINGS4U COMPREHENSIVE PRODUCTION MOBILE ENGINE
  * FILE LOCATION: assets/css/mobile.css
- * TARGET BREAKPOINT: ALL SCREEN DEVICES 980px AND SMALLER
  * ==========================================================================
  */
 
-/* 🎨 1. CORE THEME LOGIC RESETS (LOADS GLOBALLY FOR RESPONSIVE VISIBILITY) */
 :root {
     --navy: #0a1f44;
     --emerald: #10b981;
@@ -19,7 +17,6 @@
 
 @media screen and (max-width: 980px) {
     
-    /* --- 2. GLOBAL PLATFORM INITIALIZATION & CONTRAST MATRICES --- */
     html, body {
         width: 100% !important;
         max-width: 100% !important;
@@ -36,107 +33,56 @@
         flex-direction: column !important;
     }
 
-    /* Rescues unstyled system text links from default blue/purple browser stains */
     a {
         color: var(--emerald) !important;
         text-decoration: none !important;
     }
 
-    /* Force all structural section layout boundaries to stretch symmetrically across screens */
     section, .unified-site-section, .feature-section, .pricing-section, .resource-section, .faq-section, .blog-section {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 45px 20px !important;
+        padding: 40px 20px !important;
         box-sizing: border-box !important;
         display: block !important;
-        float: none !important;
     }
 
-    /* Re-enforce background colors on utility marketing blocks */
-    .bg-ice, .resource-section, #system-stats {
-        background-color: var(--ice) !important;
-    }
-    .bg-navy, .feature-section {
-        background-color: var(--navy) !important;
-        color: var(--white) !important;
-    }
-    .bg-white, .faq-section, .blog-section {
-        background-color: var(--white) !important;
-    }
+    .bg-ice, .resource-section, #system-stats { background-color: var(--ice) !important; }
+    .bg-navy, .feature-section { background-color: var(--navy) !important; color: var(--white) !important; }
+    .bg-white, .faq-section, .blog-section { background-color: var(--white) !important; }
 
     .page-container, main.page-container {
-        padding-top: 95px !important; /* Safety padding clearance offset beneath the header strip line */
+        padding-top: 95px !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
         width: 100% !important;
-        max-width: 100% !important;
         box-sizing: border-box !important;
-        display: block !important;
     }
 
-    /* --- 3. HERO LAYOUT VERTICAL REVERSE ENGINE --- */
-    /* 🔄 FIXED: Flips column orders, instantly shifting the dashboard preview graphic above text fields */
+    /* --- HERO DISPLAY LAYOUT --- */
     .service-grid {
         display: flex !important;
-        flex-direction: column-reverse !important;
+        flex-direction: column-reverse !important; 
         gap: 30px !important;
         width: 100% !important;
         padding: 0 20px !important;
         box-sizing: border-box !important;
     }
 
-    .content-area, aside {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
-        display: block !important;
-    }
-
-    /* 🔄 FIXED: Sized up text properties to establish clean headline visibility layout sizing on mobile screens */
     .content-area h1 {
-        font-size: 2.5rem !important;
+        font-size: 2.4rem !important; 
         line-height: 1.15 !important;
-        margin-bottom: 15px !important;
         color: var(--navy) !important;
         font-weight: 800 !important;
         text-align: center !important;
     }
 
     .content-area p {
-        font-size: 1.15rem !important;
-        line-height: 1.6 !important;
+        font-size: 1.1rem !important; 
         color: var(--text-muted) !important;
-        margin: 0 auto 30px auto !important;
         text-align: center !important;
-        width: 100% !important;
     }
 
-    /* 🔄 FIXED: Styled the raw text link directly as an elite, padded action button framework block */
-    .content-area a.btn-main, .btn-main {
-        display: block !important;
-        width: 100% !important;
-        max-width: 340px !important;
-        margin: 0 auto !important;
-        background: var(--emerald) !important;
-        color: var(--white) !important;
-        padding: 16px 30px !important;
-        border-radius: 6px !important;
-        font-size: 1.05rem !important;
-        font-weight: 700 !important;
-        text-align: center !important;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2) !important;
-        box-sizing: border-box !important;
-    }
-
-    .hero-image-container {
-        width: 100% !important;
-        height: 240px !important;
-        border-radius: 12px !important;
-        overflow: hidden;
-    }
-
-    /* --- 4. HEADER NAVIGATION MECHANICS & COMPACT DROPDOWNS --- */
+    /* --- MOBILE NAVIGATION ASSEMBLY --- */
     nav {
         position: fixed !important;
         top: 0 !important;
@@ -155,30 +101,19 @@
         align-items: center !important;
         height: 100% !important;
         padding: 0 20px !important;
-        box-sizing: border-box !important;
     }
 
-    /* 🔄 FIXED: Shifts logo container back left instead of allowing full width centering lines layout resets */
-    .logo-link {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        margin: 0 !important;
-        padding: 0 !important;
+    /* 🔄 FIXED: Scales your header branding image logo size cleanly down for mobile bars */
+    .logo-link img, nav img.logo {
+        height: 28px !important; 
         width: auto !important;
-    }
-
-    /* 🔄 FIXED: Resizes branding assets to scale nicely beneath standard header constraints */
-    .logo, .logo-link img {
-        height: 32px !important;
-        width: auto !important;
+        max-width: 130px !important;
         object-fit: contain !important;
         display: block !important;
     }
 
-    /* 🔄 FIXED: Restricts toggle menu from auto stretching across widescreen blocks content boundaries */
     nav button.mobile-toggle-btn, .mobile-toggle-btn {
-        display: inline-block !important;
+        display: inline-block !important; 
         width: auto !important;
         height: auto !important;
         background: transparent !important;
@@ -187,16 +122,13 @@
         color: var(--navy) !important;
         cursor: pointer !important;
         z-index: 100001 !important;
-        padding: 0 5px !important;
-        margin: 0 !important;
     }
 
-    /* Slide drawer container architecture setup properties */
     .nav-links {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: flex-start !important; /* Locks list layout to the top edge line boundary tracks */
+        justify-content: flex-start !important; 
         position: fixed !important;
         top: 70px !important;
         left: 0 !important;
@@ -204,17 +136,15 @@
         height: calc(100vh - 70px) !important;
         background: var(--white) !important;
         box-shadow: 0 10px 30px rgba(10, 31, 68, 0.1) !important;
-        /* 🔄 FIXED: Tightened tracking gap fields completely to stop extensive stretching downs */
-        gap: 14px !important;
-        padding: 30px 20px !important;
-        margin: 0 !important;
+        gap: 12px !important; 
+        padding: 25px 20px !important;
         box-sizing: border-box !important;
         opacity: 0 !important;
         visibility: hidden !important;
         transform: translateY(-10px) !important;
         transition: var(--transition) !important;
         z-index: 100000 !important;
-        overflow-y: auto !important; /* Permits fluid touchscreen navigation scrolling paths if panels expand wide */
+        overflow-y: auto !important; 
     }
 
     .nav-open .nav-links {
@@ -229,237 +159,92 @@
         color: var(--navy) !important;
         width: 100% !important;
         text-align: center !important;
-        display: block !important;
-        padding: 6px 0 !important;
+        display: block;
+        padding: 5px 0 !important;
     }
 
-    /* 🔄 FIXED: Rebalanced background tags to produce high-contrast bright white texts inside portal controls */
     .btn-client-portal {
         background: var(--navy) !important;
-        color: var(--white) !important; /* Force pristine contrast white visibility */
+        color: var(--white) !important; /* Forces clean white visibility */
         width: 85% !important;
-        padding: 14px 0 !important;
+        padding: 12px 0 !important;
         border-radius: 6px !important;
         margin: 15px auto 0 auto !important;
         text-align: center !important;
         display: block !important;
         font-weight: 700 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
     }
 
-    /* Accordion mobile interaction lists definitions */
-    .nav-item-dropdown .dropdown-content {
-        display: none !important;
-    }
-
-    .nav-item-dropdown.active-toggle .dropdown-content {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-        position: relative !important;
-        width: 90vw !important;
-        background: #f8fafc !important;
-        border-radius: 8px !important;
-        padding: 15px !important;
-        gap: 12px !important;
-        box-sizing: border-box !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
-
-    .static-dropdown:hover .dropdown-content {
-        display: none !important;
-    }
-
-    .mega-column {
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    .mega-column .column-title {
-        font-size: 0.75rem !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        color: var(--emerald) !important;
-        letter-spacing: 0.5px !important;
-        border-bottom: 1px solid var(--border) !important;
-        padding-bottom: 6px !important;
-        margin-bottom: 10px !important;
-    }
-
-    .mega-column a {
-        padding: 6px 0 !important;
-        font-size: 0.95rem !important;
-        text-align: center !important;
-        color: #475569 !important;
-    }
-
-    /* --- 5. COMPONENT GRIDS row MATRIX STACKERS --- */
-    /* Destroys multiple grid tracking lines layout models on phones */
+    /* --- DISPLAY GRIDS STACKERS --- */
     .icon-grid, .pricing-grid, .stats-grid, .contact-layout-grid, .faq-grid, .resource-grid, #public-homepage-blog-grid-target {
         display: grid !important;
-        grid-template-columns: 1fr !important; /* Force a single-column layout cascade */
+        grid-template-columns: 1fr !important;
         gap: 24px !important;
         width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 25px 0 0 0 !important;
-        box-sizing: border-box !important;
     }
 
-    /* --- 6. CRITICAL LIGHT THEME CONTRACT HIGH-CONTRAST LOCKED RECOVERY --- */
-    /* Forces white background container layout, cards padding parameters, and left text alignments */
-    .icon-box, .price-card, .stats-card, .faq-item, .blog-card, .form-panel-card {
+    .wizard-card, .icon-box, .price-card, .stats-card, .faq-item, .blog-card, .form-panel-card, .info-panel-card {
         width: 100% !important;
-        min-height: auto !important; /* Drops forced vertical padding blocks settings from computers styles sheets */
+        min-height: auto !important;
         padding: 30px 20px !important;
         background: var(--white) !important;
         border: 1px solid var(--border) !important;
         border-radius: 16px !important;
         box-sizing: border-box !important;
-        text-align: left !important; /* Re-align links left inside text areas blocks cards for clean reading */
-        transform: none !important;
+        text-align: left !important;
         box-shadow: 0 10px 25px rgba(10, 31, 68, 0.04) !important;
     }
 
-    /* Typography fixes across interior framework sections fields definitions */
-    .price-card h3, .stats-card h3, .faq-item h4, .blog-card h3, .icon-box h4, .stat-amount {
-        color: var(--navy) !important; /* Forces invisible light typography to high contrast dark navy */
+    .icon-box h4, .price-card h3, .stats-card h3, .faq-item h4, .blog-card h3, .stat-amount {
+        color: var(--navy) !important;
         font-size: 1.25rem !important;
         font-weight: 700 !important;
-        margin: 0 0 10px 0 !important;
     }
 
-    .stat-amount {
-        font-size: 3.5rem !important;
-        font-weight: 800 !important;
-        text-align: center !important;
-        display: block !important;
-    }
-
-    .icon-box p, .price-card p, .stats-card p, .faq-item p, .blog-card p, .stats-card p {
+    .icon-box p, .price-card p, .stats-card p, .faq-item p, .blog-card p {
         color: var(--text-muted) !important;
-        font-size: 0.9rem !important;
-        line-height: 1.5 !important;
-        margin: 0 !important;
-        text-align: left !important;
     }
 
-    .stats-card p {
-        text-align: center !important; /* Balance stats text labels center underneath raw numerals amounts */
-    }
-
-    .price-card.featured {
-        border: 2px solid var(--emerald) !important;
-    }
-
-    .price-features {
-        margin: 15px 0 !important;
-    }
-
-    .price-card .amount {
-        font-size: 2.5rem !important;
-        margin: 10px 0 !important;
-        color: var(--navy) !important;
-    }
-
-    .compliance-table {
-        display: block !important;
-        width: 100% !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
-
-    /* --- 7. SYMMETRICAL 2x2 FOOTER MATRIX & HOMEPAGE LOGO RE-ALIGNMENT --- */
+    /* --- 2x2 FOOTER LAYOUT CONTROLS --- */
     footer.site-footer, .site-footer {
         width: 100% !important;
         max-width: 100% !important;
         margin: 40px 0 0 0 !important;
-        padding: 50px 20px 30px 20px !important;
-        background: var(--navy) !important; /* Force re-lock dark canvas stripes profiles background tags colors */
+        padding: 40px 20px !important;
+        background: var(--navy) !important;
         display: block !important;
         transform: none !important;
         left: 0 !important;
     }
 
-    footer.site-footer .footer-container, .footer-container {
+    footer.site-footer .footer-container {
         display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important; /* Re-splits layout row frames neatly into halves blocks grids */
-        gap: 40px 20px !important;
-        box-sizing: border-box !important;
-        width: 100% !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 35px 20px !important;
     }
 
-    /* 🔄 FIXED: Forces brand info columns to line up flush left across the page tracking maps */
-    .site-footer .footer-brand {
-        grid-column: 1 / -1 !important;
-        text-align: left !important;
-        width: 100% !important;
+    .site-footer .footer-brand { 
+        grid-column: 1 / -1 !important; 
+        text-align: left !important; 
     }
 
-    .site-footer .footer-brand p {
-        margin: 15px 0 0 0 !important;
-        color: #94a3b8 !important;
-        text-align: left !important;
+    /* 🔄 FIXED: Safely limits and downscales your white corporate footer branding logo on smartphones */
+    .site-footer .footer-brand img {
+        height: 30px !important;
+        width: auto !important;
+        max-width: 140px !important;
+        object-fit: contain !important;
+        display: block !important;
     }
 
-    /* 🔄 FIXED: Pushes social inline svg shapes rows elements far left */
-    .site-footer .footer-brand div[style*="display: flex"] {
-        justify-content: flex-start !important;
-        margin-top: 20px !important;
-    }
-
-    .site-footer .footer-col {
-        text-align: left !important;
-        width: 100% !important;
-    }
-
-    .footer-col h4 {
-        color: var(--white) !important;
-        margin: 0 0 15px 0 !important;
-        font-size: 0.9rem !important;
-        font-weight: 800 !important;
-    }
-
-    .site-footer .footer-col ul {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        list-style: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    .site-footer .footer-col ul li a {
-        color: #94a3b8 !important;
-        display: inline-block !important;
-        padding: 4px 0 !important;
-        font-size: 0.85rem !important;
-    }
-
-    .site-footer .footer-bottom {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 20px !important;
-        padding: 30px 0 0 0 !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-        width: 100% !important;
-    }
-
-    .site-footer .footer-bottom div p {
-        color: #94a3b8 !important;
-        text-align: center !important;
-    }
-
-    .site-footer .trust-badge {
-        background: rgba(255, 255, 255, 0.05) !important;
-        color: var(--white) !important;
-        margin: 5px auto !important;
-    }
-
-    .site-footer .legal-links {
-        display: flex !important;
-        gap: 12px 20px !important;
-    }
+    .site-footer .footer-brand p { color: #94a3b8 !important; text-align: left !important; }
+    .site-footer .footer-brand div[style*="display: flex"] { justify-content: flex-start !important; }
+    .site-footer .footer-col { text-align: left !important; }
+    .footer-col h4 { color: var(--white) !important; margin: 0 0 12px 0 !important; font-size: 0.9rem !important; }
+    .site-footer .footer-col ul { display: flex !important; flex-direction: column !important; align-items: flex-start !important; list-style: none !important; padding: 0 !important; margin: 0 !important; }
+    .site-footer .footer-col ul li a { color: #94a3b8 !important; display: inline-block !important; padding: 4px 0 !important; }
+    .site-footer .footer-bottom { display: flex !important; flex-direction: column !important; align-items: center !important; gap: 20px !important; padding: 25px 0 0 0 !important; border-top: 1px solid rgba(255, 255, 255, 0.1) !important; }
+    .site-footer .footer-bottom div p { color: #94a3b8 !important; }
+    .site-footer .trust-badge { background: rgba(255, 255, 255, 0.05) !important; color: var(--white) !important; }
+    .site-footer .legal-links { display: flex !important; gap: 12px 20px !important; }
 }
