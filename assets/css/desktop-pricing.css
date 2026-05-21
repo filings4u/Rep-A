@@ -5,6 +5,7 @@
  * WARNING: NO MOBILE STRETCH CONTROLS — STRUCTURAL DESKTOP INTEGRITY RE-LOCKED
  * ==========================================================================
  */
+@media screen and (min-width: 981px) {
 
 /* --- 1. CORE DESKTOP PRICING PLATFORM --- */
 .pricing-grid {
@@ -110,3 +111,14 @@
     border-color: var(--emerald, #10b981) !important;
     box-shadow: 0 25px 50px rgba(16, 185, 129, 0.25) !important; /* Deepens emerald glow intensity */
 }
+
+nav {
+        position: fixed !important;
+        height: 70px !important;
+    }
+    .nav-content-wrapper {
+        max-width: 1550px !important;
+        display: flex !important;
+    }
+
+} 

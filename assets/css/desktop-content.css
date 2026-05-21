@@ -4,7 +4,8 @@
  * FILE LOCATION: assets/css/desktop-content.css
  * ==========================================================================
  */
-
+@media screen and (min-width: 981px) {
+    
 /* --- 1. UNIVERSAL ARTICLES & CANVAS STRUCTURES --- */
 .blog-wrapper-canvas {
     max-width: 1200px;
@@ -425,3 +426,14 @@ ul.horizontal-category-links li a.active-filter-tier {
 .contact-form-textarea:focus {
     border-color: #0a1f44;
 }
+
+nav {
+        position: fixed !important;
+        height: 70px !important;
+    }
+    .nav-content-wrapper {
+        max-width: 1550px !important;
+        display: flex !important;
+    }
+
+} 

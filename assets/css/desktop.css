@@ -6,6 +6,8 @@
  * ==========================================================================
  */
 
+ @media screen and (min-width: 981px) {
+
 @import url('https://googleapis.com');
 
 :root {
@@ -349,3 +351,14 @@ nav button, nav .mobile-toggle-btn, .mobile-toggle-btn,
     height: 100%;
     object-fit: cover;
 }
+
+nav {
+        position: fixed !important;
+        height: 70px !important;
+    }
+    .nav-content-wrapper {
+        max-width: 1550px !important;
+        display: flex !important;
+    }
+
+} 

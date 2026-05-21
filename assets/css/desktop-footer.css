@@ -5,6 +5,8 @@
  * ==========================================================================
  */
 
+ @media screen and (min-width: 981px) {
+
 footer.site-footer, .site-footer {
     display: block !important;
     position: relative !important;
@@ -142,3 +144,14 @@ footer .footer-container,
     flex-direction: row !important;
     gap: 30px !important;
 }
+
+nav {
+        position: fixed !important;
+        height: 70px !important;
+    }
+    .nav-content-wrapper {
+        max-width: 1550px !important;
+        display: flex !important;
+    }
+
+} 
