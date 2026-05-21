@@ -13,67 +13,71 @@ document.addEventListener("DOMContentLoaded", () => {
  * 1. NAVIGATION DRAWER & ACCORDION ACTION HANDLERS
  */
 function initNavigationEngine() {
-  const mobileToggleBtn = document.querySelector(".mobile-toggle-btn");
-  const navLinksDrawer = document.querySelector(".nav-links");
-  const dropdownTriggers = document.querySelectorAll(".nav-item-dropdown > a");
+    const mobileToggleBtn = document.querySelector(".mobile-toggle-btn");
+    const navLinksDrawer = document.querySelector(".nav-links");
+    const dropdownTriggers = document.querySelectorAll(".nav-item-dropdown > a");
 
-  if (mobileToggleBtn && navLinksDrawer) {
-    // High-sensitivity pointer handle overrides for clean touch interface execution
-    mobileToggleBtn.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation(); // 🔐 Prevents background layout containers from instantly closing the menu
-      
-      navLinksDrawer.classList.toggle("active");
-      
-      if (navLinksDrawer.classList.contains("active")) {
-        mobileToggleBtn.textContent = "✕";
-        mobileToggleBtn.setAttribute("aria-expanded", "true");
-        console.log("📱 Mobile navigation slide-drawer menu revealed.");
-      } else {
-        mobileToggleBtn.textContent = "☰";
-        mobileToggleBtn.setAttribute("aria-expanded", "false");
-        console.log("📱 Mobile navigation slide-drawer menu hidden.");
-      }
-    });
-  }
-
-  dropdownTriggers.forEach((trigger) => {
-    trigger.addEventListener("click", (event) => {
-      if (window.innerWidth < 992) {
-        event.preventDefault();
-        event.stopPropagation(); // Prevents parent menu trees from collapsing on touch items selection
-        
-        const targetDropdown = trigger.closest(".nav-item-dropdown");
-        if (targetDropdown) {
-          document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
-            if (item !== targetDropdown) {
-              item.classList.remove("active-toggle");
+    if (mobileToggleBtn && navLinksDrawer) {
+        // High-sensitivity pointer handle overrides for clean touch interface execution
+        mobileToggleBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // 🚀 RE-LOCKED FOR MOBILE.CSS COMPLIANCE: Toggle nav-open state on body element
+            document.body.classList.toggle("nav-open");
+            
+            // Sync status flags based on the body state
+            if (document.body.classList.contains("nav-open")) {
+                mobileToggleBtn.textContent = "✕";
+                mobileToggleBtn.setAttribute("aria-expanded", "true");
+                console.log("📱 Mobile navigation slide-drawer menu revealed.");
+            } else {
+                mobileToggleBtn.textContent = "☰";
+                mobileToggleBtn.setAttribute("aria-expanded", "false");
+                console.log("📱 Mobile navigation slide-drawer menu hidden.");
             }
-          });
-          targetDropdown.classList.toggle("active-toggle");
-        }
-      }
-    });
-  });
-
-  // Global background document window tap dismiss handle
-  document.addEventListener("click", (event) => {
-    if (navLinksDrawer && navLinksDrawer.classList.contains("active")) {
-      // 🔐 SAFE GUARD EXTRACTION: Only force close if the touch is completely outside the menu matrix
-      const isClickInsideMenu = navLinksDrawer.contains(event.target);
-      const isClickOnToggleButton = mobileToggleBtn && mobileToggleBtn.contains(event.target);
-
-      if (!isClickInsideMenu && !isClickOnToggleButton) {
-        navLinksDrawer.classList.remove("active");
-        if (mobileToggleBtn) {
-          mobileToggleBtn.textContent = "☰";
-          mobileToggleBtn.setAttribute("aria-expanded", "false");
-        }
-        console.log("📱 Mobile drawer reset via external viewport canvas tap dismiss.");
-      }
+        });
     }
-  });
+
+    dropdownTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", (event) => {
+            if (window.innerWidth < 992) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                const targetDropdown = trigger.closest(".nav-item-dropdown");
+                if (targetDropdown) {
+                    document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
+                        if (item !== targetDropdown) {
+                            item.classList.remove("active-toggle");
+                        }
+                    });
+                    targetDropdown.classList.toggle("active-toggle");
+                }
+            }
+        });
+    });
+
+    // Global background document window tap dismiss handle
+    document.addEventListener("click", (event) => {
+        // 🚀 RE-LOCKED FOR MOBILE.CSS COMPLIANCE: Check body class instead
+        if (document.body.classList.contains("nav-open")) {
+            const isClickInsideMenu = navLinksDrawer.contains(event.target);
+            const isClickOnToggleButton = mobileToggleBtn && mobileToggleBtn.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnToggleButton) {
+                // Remove nav-open to hide drawer smoothly
+                document.body.classList.remove("nav-open");
+                if (mobileToggleBtn) {
+                    mobileToggleBtn.textContent = "☰";
+                    mobileToggleBtn.setAttribute("aria-expanded", "false");
+                }
+                console.log("📱 Mobile drawer reset via external viewport canvas tap dismiss.");
+            }
+        }
+    });
 }
+
 
 /**
  * 2. INITIALIZE SUPABASE DATA CONNECTION CHANNELS

@@ -1,872 +1,139 @@
-/* ==========================================================================
-   📱 FILINGS4U PRODUCTION MOBILE OVERRIDES ENGINE (Viewports Under 991px)
-   ========================================================================== */
+/**
+ * ==========================================================================
+ * 📱 FILINGS4U MOBILE OPTIMIZATION STYLESHEET (BREAKPOINT: 768px)
+ * ==========================================================================
+ */
+@media screen and (max-width: 768px) {
+    
+    /* 1. GLOBAL MOBILE RESET & CENTERING */
+    body {
+        padding: 10px !important;
+        text-align: center !important;
+        overflow-x: hidden; /* Prevents unwanted horizontal scrolling */
+    }
 
-@media screen and (max-width: 991px) {
-  
-  /* --- 1. VIEWPORT SAFE AREAS & SYSTEM RESETS --- */
-  html, body {
-    height: auto;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Hard lock to prevent horizontal page scrolling */
-  }
+    img, video, iframe {
+        max-width: 100% !important;
+        height: auto !important;
+    }
 
-  body {
-    padding-top: calc(70px + env(safe-area-inset-top)); /* Compensa fixed header height + iOS Notches */
-    padding-bottom: env(safe-area-inset-bottom);
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-  }
+    /* Force all block text blocks, buttons, and sections to center horizontally */
+    section, div, h1, h2, h3, p, button {
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 
-  /* --- 2. EDGE-TO-EDGE HEADER HUD NAVIGATION STRIP --- */
-  nav, .site-header {
-    position: fixed !important; /* Fixed coordinate pin over relative to prevent content jumping */
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 70px !important;
-    padding: 0 20px !important;
-    overflow: visible !important;
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between !important; /* Logo left, Hamburger right */
-    align-items: center !important;
-    box-sizing: border-box !important;
-    background: #ffffff !important;
-    z-index: 99999 !important;
-  }
+    /* 2. HEADER & TOGGLE NAVIGATION MECHANISM */
+    .site-header {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 15px 10px !important;
+        position: relative;
+    }
 
-  /* --- 3. HAMBURGER ACTION TRIGGER BUTTON --- */
-  nav .mobile-toggle-btn, 
-  nav button.mobile-toggle-btn, 
-  body nav .mobile-menu-trigger, 
-  .mobile-toggle-btn {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: relative !important;
-    pointer-events: auto !important;
-    width: 44px !important;
-    min-width: 44px !important;
-    height: 44px !important;
-    min-height: 44px !important;
-    font-size: 32px !important;
-    line-height: 44px !important;
-    text-align: center !important;
-    font-family: sans-serif !important;
-    background: transparent !important;
-    border: none !important;
-    color: #0a1f44 !important; /* Brand Navy Color */
-    cursor: pointer !important;
-    z-index: 2500 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    -webkit-appearance: none !important;
-    appearance: none !important;
-  }
+    /* Make toggle icon button highly visible */
+    .nav-toggle {
+        display: block !important;
+        background: transparent !important;
+        border: none !important;
+        font-size: 1.8rem !important;
+        color: #0a1f44 !important;
+        cursor: pointer !important;
+        z-index: 1001;
+    }
 
-  /* --- 4. SLIDE-OUT DRAWER STATE CONTROLLERS --- */
-  .nav-links, 
-  #nav .nav-links, 
-  nav .nav-links {
-    position: fixed !important;
-    top: 0 !important;
-    right: -100% !important; /* Default hidden offscreen position */
-    width: 280px !important;
-    height: 100vh !important;
-    background: #ffffff !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    padding: 90px 24px 40px 24px !important;
-    gap: 0 !important;
-    overflow-y: auto !important;
-    box-shadow: -5px 0 25px rgba(10,31,68,0.15) !important;
-    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    z-index: 2400 !important;
-    display: flex !important;
-    box-sizing: border-box !important;
-  }
+    /* Off-screen drop-down layout wrapper */
+    .main-nav {
+        display: flex !important;
+        flex-direction: column !important;
+        position: absolute !important;
+        top: 100%;
+        left: 0;
+        width: 100% !important;
+        background: #ffffff !important;
+        box-shadow: 0 10px 15px rgba(0,0,0,0.05) !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        padding: 20px 0 !important;
+        gap: 15px !important;
+        
+        /* Hidden state details */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease-in-out;
+        z-index: 1000;
+    }
 
-  /* Open state handler */
-  .nav-links.active, 
-  #nav .nav-links.active, 
-  nav .nav-links.active {
-    right: 0 !important;
-  }
+    /* Active toggle class triggered via JavaScript onclick */
+    .nav-open .main-nav {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+    }
 
-  /* --- 5. MOBILE ACCORDION REFORMATS --- */
-  .nav-item-dropdown, 
-  nav .nav-item-dropdown {
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
+    .main-nav a {
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        color: #0a1f44 !important;
+        text-decoration: none !important;
+        display: block !important;
+    }
 
-  .nav-item-dropdown > a, 
-  nav .nav-item-dropdown > a {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100% !important;
-    padding: 12px 10px !important;
-    font-size: 1rem !important;
-    color: #0a1f44 !important;
-    font-weight: 700 !important;
-    border-bottom: 1px solid #f1f5f9 !important;
-    box-sizing: border-box !important;
-  }
+    /* 3. 2x2 SYMMETRICAL FOOTER GRID GRID */
+    .site-footer {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* Perfect 2x2 split layout */
+        gap: 25px 15px !important; /* Row spacing vs column spacing */
+        padding: 30px 10px !important;
+        text-align: center !important;
+    }
 
-  .dropdown-content, 
-  nav .nav-item-dropdown .dropdown-content {
-    display: none !important; /* Hidden until triggered via JS */
-    position: relative !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    box-shadow: none !important;
-    border: none !important;
-    background: #f8fafc !important;
-    padding-left: 15px !important;
-    border-left: 2px solid #e2e8f0 !important;
-    margin-bottom: 5px !important;
-    border-radius: 0 !important;
-    box-sizing: border-box !important;
-  }
+    .footer-col {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important; /* Center link components vertically */
+        text-align: center !important;
+    }
 
-  .dropdown-content a {
-    padding: 8px 10px !important;
-    font-size: 0.9rem !important;
-    display: block !important;
-    width: 100% !important;
-  }
+    .footer-col h4 {
+        margin: 0 0 10px 0 !important;
+        font-size: 0.95rem !important;
+        color: #0a1f44 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px;
+    }
 
-  /* Disable hover interaction on mobile */
-  .nav-item-dropdown:hover .dropdown-content {
-    display: none !important;
-  }
-
-  /* Accordion Reveal Active Class */
-  .nav-item-dropdown.active-toggle .dropdown-content, 
-  nav .nav-item-dropdown.active-toggle .dropdown-content {
-    display: block !important;
-  }
-
-  /* --- 6. USER UTILITIES & ACTIONS PANELS --- */
-  .btn-client-portal {
-    background: #0a1f44 !important;
-    color: #ffffff !important;
-    width: 100% !important;
-    text-align: center !important;
-    margin-top: 20px !important;
-    border-radius: 6px !important;
-    padding: 12px !important;
-    display: block !important;
-    box-sizing: border-box !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    font-size: 0.85rem !important;
-  }
-
-  .btn-main {
-    width: 100% !important;
-    text-align: center !important;
-    box-sizing: border-box !important;
-    display: block !important;
-  }
-
-  /* --- 7. CORE BOX CONTAINER RE-ALIGNMENTS --- */
-  .page-container, 
-  main.page-container, 
-  #main, 
-  .wrapper {
-    margin-top: 0px !important;
-    padding: 25px 20px 20px 20px !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-  }
-
-  section, 
-  .feature-section, 
-  .pricing-section, 
-  .resource-section, 
-  .faq-section {
-    padding: 40px 20px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Vertical Hero Flip Mechanics */
-  .service-grid, 
-  .hero-section {
-    margin-top: 0 !important;
-    padding-top: 5px !important;
-    display: flex !important;
-    flex-direction: column-reverse !important; /* Restores image over headline stack flow */
-    gap: 25px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .hero-image-container {
-    width: 100% !important;
-    height: 280px !important;
-    margin-bottom: 10px !important;
-    border-radius: 12px !important;
-    overflow: hidden !important;
-  }
-
-  .hero-image-container img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-
-  hr, .site-header {
-    margin-bottom: 10px !important;
-  }
-
-  /* --- 8. TYPOGRAPHY SCALING PROFILES --- */
-  .content-area h1 {
-    font-size: 2.1rem !important;
-    line-height: 1.15 !important;
-  }
-
-  .pricing-grid .amount, 
-  .amount {
-    font-size: 2.5rem !important;
-    line-height: 1.1 !important;
-    margin-bottom: 8px !important;
-    font-weight: 800 !important;
-  }
-
-  .category-block h2 { font-size: 1.25rem !important; }
-  .wizard-card h3 { font-size: 1.15rem !important; }
-  .count-badge { font-size: 0.75rem !important; padding: 3px 8px !important; }
-
-  .content-area div {
-    justify-content: center !important;
-  }
-
-  /* --- 9. HARMONIZED VERTICAL OVERRIDE TRACKS --- */
-  .stats-grid, 
-  .wizard-grid, 
-  .icon-grid, 
-  .pricing-grid, 
-  .resource-grid, 
-  .faq-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important; /* Enforces strict 100% vertical rows layout */
-    gap: 24px !important;
-    padding-top: 0px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    margin-bottom: 40px !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-  }
-
-  .stats-card.featured {
-    transform: scale(1) !important; /* Disables monitor scale bursts to prevent offscreen clipping */
-  }
-
-  /* --- 10. PUBLIC INSIGHTS BLOG FEED CONTROLLERS --- */
-  .blog-wrapper-canvas {
-    margin: 0 auto 40px auto !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  #dynamicBlogPostsContainer, 
-  #public-homepage-blog-grid-target {
-    display: flex !important;
-    flex-direction: column !important; /* Stacks articles cleanly down the display footprint */
-    gap: 24px !important;
-    padding-top: 0px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    margin-bottom: 40px !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .blog-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    display: block !important;
-    box-sizing: border-box !important;
-  }
-
-  .blog-card-body, 
-  .blog-body {
-    padding: 20px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
+    .footer-col a {
+        margin-bottom: 8px !important;
+        font-size: 0.85rem !important;
+        color: #64748b !important;
+        text-decoration: none !important;
+    }
 }
 
-/* ==========================================================================
-   📱 MOBILE HUD SPACING & FOOTER LAYOUT FIX (Viewports Under 991px)
-   ========================================================================== */
-
-@media screen and (max-width: 991px), screen and (max-width: 980px) {
-  
-  /* --- 1. HEADER LOGO & TOGGLE SEPARATION --- */
-  nav, .site-header {
-    padding: 0 24px !important; /* Pushes outer edge content inward */
-    box-sizing: border-box !important;
-  }
-
-  .nav-content-wrapper, 
-  nav .nav-content-wrapper {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between !important; /* Forces logo to the left, button to the right */
-    align-items: center !important;
-    width: 100% !important;
-    padding: 0 !important; /* Clears inner nested padding blocks */
-    box-sizing: border-box !important;
-  }
-
-  .logo-link, nav .logo-link {
-    margin: 0 !important;
-    padding: 0 !important;
-    display: flex !important;
-  }
-
-  .logo, .logo-img, nav .logo {
-    height: 34px !important; /* Scales down slightly to increase space */
-    width: auto !important;
-  }
-
-
-  /* --- 3. METADATA LOWER GRID ALIGNMENTS --- */
-  .site-footer .footer-bottom {
-    display: flex !important;
-    flex-direction: column !important; /* Stacks split row elements down the page layout */
-    align-items: flex-start !important;
-    gap: 24px !important;
-    margin-top: 35px !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    width: 100% !important;
-  }
-
-  .site-footer .legal-links {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important; /* Allows links to flow naturally on thin phone viewports */
-    gap: 20px !important;
-  }
+/* 4. DESKTOP SYSTEM SAFETY GUARD */
+@media screen and (min-width: 769px) {
+    .nav-toggle {
+        display: none !important; /* Completely hides mobile bars on desktops */
+    }
 }
 
-/* ==========================================================================
-   📱 MOBILE FOOTER CORRECTION LIFT (Locks True Edge-to-Edge Spanning Blocks)
-   ========================================================================== */
+@media screen and (max-width: 980px) {
+    /* Keeps dropdown lists hidden by default on mobile rows */
+    .nav-item-dropdown .dropdown-content {
+        display: none !important;
+        position: relative !important;
+        width: 100% !important;
+        box-shadow: none !important;
+        background: #f8fafc !important;
+        border: none !important;
+    }
 
-@media screen and (max-width: 991px), screen and (max-width: 980px) {
-  
-  /* 🔄 REALIGNMENT CORRECTION: Normalizes container boxes to stop clipping left margins */
-  footer.site-footer, 
-  body footer.site-footer,
-  .site-footer {
-    /* Clear out the broken desktop positional coordinate offsets causing left page spilling */
-    position: static !important;
-    left: auto !important;
-    right: auto !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    
-    /* Forces the navy block matrix container to stretch perfectly across screen edges */
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 100% !important;
-    
-    /* Premium inner padding to shield elements from text touching display glass */
-    padding: 50px 24px 40px 24px !important;
-    text-align: center !important; /* Locks baseline typography center tracking */
-    box-sizing: border-box !important;
-    background: #0a1f44 !important; /* Brand Navy Color Token */
-  }
-
-  /* 🔄 WRAPPER GRID SYNCHRONIZATION */
-  .site-footer .footer-container,
-  footer .footer-container {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 auto !important;
-    box-sizing: border-box !important;
-    
-    /* Restores your dual column side-by-side link formatting rules */
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    align-items: flex-start !important;
-    gap: 40px 0px !important; /* Keeps links tightly organized down center bounds */
-  }
-
-  /* 🔄 STABLE MULTI-COLUMN VIEWPORT TRACK CALCULATIONS */
-  .footer-container .footer-col {
-    /* Splits columns evenly side-by-side into 50% width halves without layout spillover */
-    flex: 0 0 50% !important; 
-    width: 50% !important;
-    max-width: 50% !important;
-    padding: 0 12px !important; /* Generates text clearing buffers inside column tracks */
-    text-align: center !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 🔄 RE-CENTERS LOWER BRAND DETAILS & PARAGRAPHS */
-  .footer-container .footer-brand {
-    flex: 0 0 100% !important; /* Demands full width layout priority on row 1 */
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    margin-bottom: 10px !important;
-  }
-
-  .footer-container .footer-brand p {
-    margin: 15px auto 0 auto !important;
-    text-align: center !important;
-    max-width: 310px !important;
-    color: #94a3b8 !important; /* Clean silver layout text readability contrast */
-  }
-
-  /* 🔄 COMPENSATES LOWER METADATA SECTIONS FOOTPRINT */
-  .site-footer .footer-bottom {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-top: 40px !important;
-    padding: 30px 0 0 0 !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 20px !important;
-    box-sizing: border-box !important;
-  }
-}
-
-/* ==========================================================================
-   📱 STELLAR SPECIFICITY BREAK: CENTERING & ALIGNING OVERRIDES
-   ========================================================================== */
-
-@media screen and (max-width: 991px), screen and (max-width: 980px) {
-  
-
-  /* 🔄 ALIGNS LINK COLUMNS SIDE-BY-SIDE IN THE CENTER */
-  body.is-mobile #footer .footer-container,
-  html body footer.site-footer .footer-container,
-  .site-footer .footer-container {
-    display: flex !important;
-    flex-direction: row !important; /* Restores the side-by-side layout format */
-    flex-wrap: wrap !important;     /* Flows elements onto new lines neatly */
-    justify-content: center !important; /* Centers the row contents */
-    align-items: flex-start !important;
-    gap: 40px 0px !important;       /* Clean vertical padding space */
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 auto !important;
-    box-sizing: border-box !important;
-  }
-
-
-  .footer-container .footer-brand p {
-    text-align: center !important;
-    margin: 15px auto 0 auto !important;
-    max-width: 320px !important;
-  }
-
-  .social-channels-row {
-    justify-content: center !important; /* Centers social links underneath logo */
-    display: flex !important;
-  }
-
-  /* 🔄 LOCKS LINK CATEGORIES SIDE-BY-SIDE AT EXACTLY 50% WIDTH */
-  body.is-mobile #footer .footer-col,
-  .footer-container .footer-col {
-    flex: 0 0 50% !important; /* Splits width evenly into left and right halves */
-    width: 50% !important;
-    max-width: 50% !important;
-    text-align: center !important;
-    padding: 0 10px !important; /* Prevents text from touching screen edges */
-    box-sizing: border-box !important;
-    display: block !important;
-  }
-
-  /* 🔄 INDEPENDENT BULLET CLEANERS OVERRIDES */
-  .footer-container .footer-col h4 {
-    text-align: center !important;
-    margin-bottom: 15px !important;
-    width: 100% !important;
-  }
-
-  .footer-container .footer-col ul {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important; /* Centers text strings within their boxes */
-    width: 100% !important;
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .footer-container .footer-col ul li {
-    text-align: center !important;
-    width: 100% !important;
-    margin-bottom: 12px !important;
-    padding: 0 !important;
-  }
-
-  .footer-container .footer-col ul li a {
-    display: inline-block !important;
-    text-align: center !important;
-    width: auto !important;
-  }
-
-  /* 🔄 CENTERS LOWER SECURE BADGES ROW */
-  body.is-mobile #footer .footer-bottom,
-  .site-footer .footer-bottom {
-    display: flex !important;
-    flex-direction: column !important; /* Stacks text down the page layout */
-    align-items: center !important;    /* Centers secure badges and corporate alerts */
-    text-align: center !important;
-    gap: 20px !important;
-    margin-top: 40px !important;
-    padding: 30px 0 0 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .footer-copyright-wrapper, 
-  .footer-copyright-wrapper p {
-    text-align: center !important;
-    margin: 0 auto !important;
-  }
-
-  .trust-badge {
-    margin: 0 auto !important;
-    text-align: center !important;
-  }
-
-  .site-footer .legal-links {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important; /* Centers policy links */
-    gap: 15px 20px !important;
-  }
-}
-
-
-/* ==========================================================================
-   📱 MOBILE TOGGLE HIGHEST SENSITIVITY CLICK-TARGET LOCK
-   ========================================================================== */
-
-@media screen and (max-width: 991px), screen and (max-width: 980px) {
-  
-  /* 🔄 FORCES TRIGGER ENTRY TO INDEPENDENTLY FLOAT ON TOP OF OVERLAPS */
-  .mobile-toggle-btn,
-  nav .mobile-toggle-btn,
-  #mobileNavTriggerIcon,
-  button#mobileNavTriggerIcon {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    
-    /* System coordinate override properties */
-    position: relative !important;
-    z-index: 999999999 !important; /* Floats button above invisible header backgrounds */
-    pointer-events: auto !important; /* Forces touchscreen glass to capture tap inputs */
-    
-    /* Generates an elegant, fingers-friendly touch hit-box area sizing matrix */
-    width: 48px !important;
-    height: 48px !important;
-    min-width: 48px !important;
-    min-height: 48px !important;
-    
-    /* Alignment centering locks */
-    padding: 0 !important;
-    margin: 0 !important;
-    line-height: 48px !important;
-    text-align: center !important;
-    font-size: 32px !important;
-    
-    background: transparent !important;
-    border: none !important;
-    color: #0a1f44 !important; /* Brand Navy */
-    cursor: pointer !important;
-    -webkit-appearance: none !important;
-    appearance: none !important;
-  }
-}
-
-/* ==========================================================================
-   📱 MOBILE DRAWER DEPTH & LAYER OVERRIDE SPEED LOCKS
-   ========================================================================== */
-
-@media screen and (max-width: 991px), screen and (max-width: 980px) {
-  
-  /* Forces your navigation links menu to slide cleanly on top of all banner containers */
-  .nav-links,
-  nav .nav-links,
-  #nav .nav-links {
-    z-index: 999999 !important; /* Floats the slide-out navigation overlay block safely on top */
-    pointer-events: auto !important;
-  }
-
-  /* Enhances touch sensitivity area bounds for the toggle icon element */
-  .mobile-toggle-btn {
-    position: relative !important;
-    z-index: 9999999 !important; /* Floats toggle button text string layer above invisible backgrounds */
-    pointer-events: auto !important;
-    cursor: pointer !important;
-  }
-}
-
-
-/* ==========================================================================
-   📱 MOBILE CANVAS OVERFLOW HARD LOCKDOWN (Clears Right White Gap)
-   ========================================================================== */
-
-@media screen and (max-width: 991px), screen and (max-width: 980px), screen and (max-width: 736px) {
-  
-  /* 🔄 HARD VIEWPLEX LIMIT: Drops a vertical clipping mask over the full browser root view */
-  html, body, #wrapper, #main, .portal-main, main {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important; /* Forces elements to trim back instead of sliding the canvas right */
-    margin: 0 !important;
-    padding: 0;
-    box-sizing: border-box !important;
-  }
-
-  /* 🔄 REALIGNS NAVY BACKGROUND WRAPPER FLUSH UP against CONTAINER WALLS */
-  #footer, 
-  footer.site-footer, 
-  .site-footer {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 100% !important;
-    position: relative !important;
-    left: 0 !important;
-    right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding: 40px 16px !important; /* Squeezes outer text away from touching display glass border edges */
-    box-sizing: border-box !important;
-    float: none !important;
-    clear: both !important;
-  }
-
-  /* 🔄 FORCES ALL CHILD ROW BLOCK MODULES TO STAY WITHIN THE 100% CANVAS EDGE ROW RANGE */
-  #footer .inner,
-  .site-footer .footer-container,
-  .footer-container,
-  .footer-bottom,
-  #footer .copyright {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    box-sizing: border-box !important;
-    float: none !important;
-    clear: both !important;
-  }
-
-  /* 🔄 LOCKS INTERNAL COLUMNS SO COMPETING FLEX CHANNELS DONT BUBBLE PAST BOX LINES */
-  .footer-container .footer-col,
-  #footer section,
-  .footer-container .footer-brand {
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important; /* Prevents long titles from warping grid columns */
-  }
-
-  /* 🔄 FIXES CRASHING SOCIAL ROW CHANNELS (Common cause of white gaps) */
-  .social-channels-row,
-  #footer .icons,
-  footer .social {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: center !important;
-    flex-wrap: wrap !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 15px auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 🔄 CRITICAL TEXT SEPARATOR FIX FOR CODES AND METADATA BULLETS */
-  #footer .copyright li,
-  .footer-bottom p,
-  .legal-links a {
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    white-space: normal !important; /* Disables continuous horizontal rendering tracks */
-  }
-}
-
-
-/* ==========================================================================
-   📱 FILINGS4U MAIN HOME MARKETING PAGE MOBILE FOOTER FIX
-   ========================================================================== */
-
-@media screen and (max-width: 980px), screen and (max-width: 736px) {
-  
-  /* 🔄 FORCE CENTERS THE ENTIRE FOOTER BLOCK CONTAINER */
-  #wrapper #footer,
-  #footer,
-  .site-footer {
-    padding: 4em 24px 3em 24px !important;
-    text-align: center !important; /* Overrides template left tracking aligns */
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    float: none !important;
-    clear: both !important;
-  }
-
-  /* 🔄 NATIVE STELLAR INNER WRAPPER CORRECTION */
-  #footer .inner,
-  .site-footer .footer-container {
-    display: flex !important;
-    flex-direction: row !important; /* Restores the side-by-side grid */
-    flex-wrap: wrap !important;     /* Flow elements onto a 2-column mobile row */
-    justify-content: center !important; /* Centers the flex items horizontally */
-    align-items: flex-start !important;
-    gap: 40px 0px !important;       /* Clean vertical padding space */
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    float: none !important;
-  }
-
-  /* 🔄 CENTERS BRAND COLUMN DESCRIPTIONS & SOCIAL CHANNELS */
-  #footer .footer-brand,
-  .footer-container .footer-brand {
-    flex: 0 0 100% !important; /* Takes up 100% width on row 1 to lock center layout */
-    width: 100% !important;
-    max-width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    float: none !important;
-  }
-
-  .footer-brand p {
-    text-align: center !important;
-    margin: 15px auto 0 auto !important;
-    max-width: 320px !important;
-  }
-
-  .social-channels-row {
-    display: flex !important;
-    justify-content: center !important; /* Centers media links under brand description */
-    margin-top: 20px !important;
-    width: 100% !important;
-  }
-
-  /* 🔄 LOCKS MULTI-COLUMN LINK CATEGORIES SIDE-BY-SIDE IN THE CENTER */
-  #footer .footer-col,
-  .footer-container .footer-col,
-  #footer section {
-    flex: 0 0 50% !important; /* Splits link blocks perfectly at 50% width halves */
-    width: 50% !important;
-    max-width: 50% !important;
-    text-align: center !important;
-    padding: 0 12px !important; /* Protects text lines from clipping phone margins */
-    box-sizing: border-box !important;
-    display: block !important;
-    float: none !important;
-    margin: 0 !important;
-  }
-
-  /* 🔄 RE-CENTERS UNORDERED BULLET LIST TEXT ENTRIES */
-  .footer-col h4, #footer section h2 {
-    text-align: center !important;
-    margin: 0 0 15px 0 !important;
-    width: 100% !important;
-  }
-
-  .footer-col ul, #footer section ul {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important; /* Pulls text strings to column center line */
-    width: 100% !important;
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .footer-col ul li, #footer section ul li {
-    text-align: center !important;
-    width: 100% !important;
-    margin-bottom: 12px !important;
-    padding: 0 !important;
-  }
-
-  .footer-col ul li a, #footer section ul li a {
-    display: inline-block !important;
-    text-align: center !important;
-    width: auto !important;
-  }
-
-  /* 🔄 LOWER PRIVACY POLICY & COPYRIGHT ACCORD RE-ALIGNMENTS */
-  #footer .copyright,
-  .site-footer .footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-    margin-top: 40px !important;
-    padding: 30px 0 0 0 !important;
-    display: flex !important;
-    flex-direction: column !important; /* Stacks split files rows straight down */
-    align-items: center !important;    /* Centers secure badges and copyright notices */
-    text-align: center !important;
-    gap: 20px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    float: none !important;
-  }
-
-  .footer-copyright-wrapper p, #footer .copyright li {
-    text-align: center !important;
-    margin: 0 auto !important;
-    display: block !important;
-    border: none !important;
-    padding: 0 !important;
-  }
-
-  .trust-badge {
-    margin: 0 auto !important;
-    text-align: center !important;
-  }
-
-  .legal-links, .site-footer .legal-links {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important; /* Centers policy links along bottom margin */
-    gap: 12px 20px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+    /* 🚀 RE-LOCKED ACORDION OPEN SECTOR: Reveals panel when tapped */
+    .nav-item-dropdown.active-toggle .dropdown-content {
+        display: block !important;
+    }
 }

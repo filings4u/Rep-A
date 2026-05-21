@@ -1,0 +1,240 @@
+/**
+ * ==========================================================================
+ * 🖥️ FILINGS4U PRODUCTION DESKTOP COMPONENTS & CONTENT STRUCTURAL ENGINE
+ * FILE LOCATION: assets/css/desktop-components.css
+ * ==========================================================================
+ */
+
+/* --- 1. COMPONENT SECTIONS & CONTROLS --- */
+h1.section-title {
+    width: 100%;
+    margin: 0 auto 60px auto;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--navy);
+    font-weight: 800;
+}
+
+section, .feature-section, .pricing-section, .resource-section, .faq-section {
+    padding: 50px 8% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.bg-navy, .feature-section {
+    background: var(--navy) !important;
+    color: var(--white);
+}
+
+.bg-navy h2, .bg-navy h4, .feature-section h2 {
+    color: var(--white);
+}
+
+.bg-ice, .pricing-section, .resource-section {
+    background: var(--ice) !important;
+}
+
+.bg-white, .faq-section {
+    background: var(--white) !important;
+}
+
+/* --- 2. THE CORE WIZARD & DATA GRID PLATFORMS --- */
+.wizard-container, main.wizard-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 4% !important;
+    padding-right: 4% !important;
+    box-sizing: border-box !important;
+}
+
+.wizard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+.wizard-card {
+    background: var(--white);
+    padding: 45px;
+    border-radius: 24px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 20px 40px rgba(10, 31, 68, 0.06);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 320px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wizard-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(10, 31, 68, 0.12);
+}
+
+.wizard-card h3 {
+    font-size: 1.3rem;
+    margin: 0 0 15px 0;
+    color: var(--navy);
+    font-weight: 800;
+}
+
+.wizard-card p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+}
+
+.card-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: block;
+    opacity: 0.6;
+}
+
+.sidebar-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(10,31,68,0.05);
+    position: sticky;
+    top: 100px;
+}
+
+.step-pane-intake, #step-pane-intake, #step-pane-upsells, #step-pane-summary {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* --- 3. INFRASTRUCTURE BUTTON MATRICES --- */
+.btn-main {
+    background: var(--emerald);
+    color: white;
+    padding: 16px 40px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-block;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-main:hover {
+    background: #0e9f6e;
+    transform: translateY(-2px);
+}
+
+/* --- 4. ICON BLOCK LAYOUT CONSTRUCTS --- */
+.icon-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 30px !important;
+    margin-top: 30px !important;
+    width: 100% !important;
+}
+
+.icon-box {
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    background: var(--white);
+}
+
+.bg-navy .icon-box, .feature-section .icon-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 16px;
+}
+
+.bg-navy .icon-box h4, .feature-section .icon-box h4 {
+    color: var(--emerald);
+}
+
+.bg-navy .icon-box p, .feature-section .icon-box p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* --- 5. SYSTEM DATA STATUS DESKTOP TRACK --- */
+.stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 30px !important;
+    margin-top: 30px !important;
+    width: 100% !important;
+}
+
+.stats-card {
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border, #e2e8f0);
+    background: var(--white, #ffffff);
+    transition: var(--transition, all 0.3s ease);
+}
+
+.stats-card.featured {
+    border: 2.5px solid var(--emerald, #10b981);
+    transform: scale(1.03);
+}
+
+.amount {
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    color: #0a1f44 !important;
+    line-height: 1.1 !important;
+    margin-bottom: 10px !important;
+    display: block !important;
+}
+
+/* --- 6. SECURE BUSINESS COMPLIANCE TABLES --- */
+.compliance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.compliance-table th {
+    background: var(--navy);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.compliance-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--navy);
+}
+
+.compliance-table tr:last-child td {
+    border-bottom: none;
+}
+
+.compliance-table strong {
+    color: var(--emerald);
+}
+
+@keyframes navFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

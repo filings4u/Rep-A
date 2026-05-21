@@ -9,20 +9,25 @@
 
     <title>Annual Reports | filings4u Professional Compliance Dashboard</title>
     
-    <link rel="stylesheet" href="assets/css/site-elite.css?v=12">
+    <link rel="stylesheet" href="assets/css/desktop.css">
+<link rel="stylesheet" href="assets/css/desktop-components.css">
+<link rel="stylesheet" href="assets/css/desktop-pricing.css">
+<link rel="stylesheet" href="assets/css/desktop-content.css">
+<link rel="stylesheet" href="assets/css/desktop-footer.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
+
     
 
    <link rel="icon" type="image/png" href="images/fav.png">
 
-   <!-- 1. The jQuery library MUST load absolutely first -->
-<script src="https://jquery.com"></script>
+<!-- 1. The jQuery library MUST load absolutely first (Using the official Google CDN production build) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <!-- 2. The Supabase data engine loads second -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- 3. Your custom main dashboard script executes LAST -->
 <script src="assets/js/main.js?v=14"></script>
-
 
 </head>
 <body>
@@ -33,7 +38,7 @@
         <a href="index.html" class="logo-link">
             <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
         </a>
-        <button class="mobile-toggle-btn" onclick="toggleMobileMenu()">☰</button>
+        <button class="mobile-toggle-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
         
         <div class="nav-links">
             <!-- FORMATIONS DROPDOWN -->
