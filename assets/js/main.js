@@ -1,6 +1,6 @@
 /**
  * ==========================================================================
- * 🌐 FILINGS4U MAIN INTEGRATION APPLICATION ENGINE
+ * 🌐 FILINGS4U MAIN INTEGRATION APPLICATION ENGINE (ANTI-COLLISION BUILD)
  * ==========================================================================
  */
 
@@ -18,16 +18,21 @@ function initNavigationEngine() {
   const dropdownTriggers = document.querySelectorAll(".nav-item-dropdown > a");
 
   if (mobileToggleBtn && navLinksDrawer) {
+    // High-sensitivity pointer handle overrides for clean touch interface execution
     mobileToggleBtn.addEventListener("click", (event) => {
-      event.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation(); // 🔐 Prevents background layout containers from instantly closing the menu
+      
       navLinksDrawer.classList.toggle("active");
-
+      
       if (navLinksDrawer.classList.contains("active")) {
         mobileToggleBtn.textContent = "✕";
         mobileToggleBtn.setAttribute("aria-expanded", "true");
+        console.log("📱 Mobile navigation slide-drawer menu revealed.");
       } else {
         mobileToggleBtn.textContent = "☰";
         mobileToggleBtn.setAttribute("aria-expanded", "false");
+        console.log("📱 Mobile navigation slide-drawer menu hidden.");
       }
     });
   }
@@ -36,10 +41,9 @@ function initNavigationEngine() {
     trigger.addEventListener("click", (event) => {
       if (window.innerWidth < 992) {
         event.preventDefault();
-        event.stopPropagation();
-
-        const targetDropdown = trigger.closest(".nav-item-dropdown");
+        event.stopPropagation(); // Prevents parent menu trees from collapsing on touch items selection
         
+        const targetDropdown = trigger.closest(".nav-item-dropdown");
         if (targetDropdown) {
           document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
             if (item !== targetDropdown) {
@@ -52,12 +56,20 @@ function initNavigationEngine() {
     });
   });
 
+  // Global background document window tap dismiss handle
   document.addEventListener("click", (event) => {
     if (navLinksDrawer && navLinksDrawer.classList.contains("active")) {
-      if (!navLinksDrawer.contains(event.target) && !mobileToggleBtn.contains(event.target)) {
+      // 🔐 SAFE GUARD EXTRACTION: Only force close if the touch is completely outside the menu matrix
+      const isClickInsideMenu = navLinksDrawer.contains(event.target);
+      const isClickOnToggleButton = mobileToggleBtn && mobileToggleBtn.contains(event.target);
+
+      if (!isClickInsideMenu && !isClickOnToggleButton) {
         navLinksDrawer.classList.remove("active");
-        mobileToggleBtn.textContent = "☰";
-        mobileToggleBtn.setAttribute("aria-expanded", "false");
+        if (mobileToggleBtn) {
+          mobileToggleBtn.textContent = "☰";
+          mobileToggleBtn.setAttribute("aria-expanded", "false");
+        }
+        console.log("📱 Mobile drawer reset via external viewport canvas tap dismiss.");
       }
     }
   });
@@ -94,7 +106,7 @@ async function fetchHomepageArticles(container) {
 
     if (error) throw error;
 
-    // FIXED: Correctly flushes away the #blog-loading-spinner placeholder frame block element out of view
+    // Correctly flushes away the loading spinner placeholder block element out of view
     const loadingSpinner = document.getElementById("blog-loading-spinner");
     if (loadingSpinner) {
       loadingSpinner.remove();
@@ -105,18 +117,17 @@ async function fetchHomepageArticles(container) {
       return;
     }
 
+    container.innerHTML = ""; // Clear active initialization text frames securely
+
     // Append custom record objects purely via native clean classes matching site-elite.css definitions
     articles.forEach((item) => {
       const dateFormatted = new Date(item.created_at).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
+        year: "numeric", month: "short", day: "numeric"
       });
 
       const postCard = document.createElement("a");
       postCard.className = "blog-card";
       postCard.href = `article.html?slug=${item.slug}`;
-
       postCard.innerHTML = `
         <div class="blog-card-img" style="background-image: url('${item.image_url || 'images/blog-fallback.jpg'}');"></div>
         <div class="blog-card-body">
@@ -130,6 +141,7 @@ async function fetchHomepageArticles(container) {
       `;
       container.appendChild(postCard);
     });
+
   } catch (err) {
     console.error("Database sync operation caught a failure:", err);
     container.innerHTML = '<div class="blog-error-msg">Unable to display recent updates.</div>';

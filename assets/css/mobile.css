@@ -610,3 +610,26 @@
     appearance: none !important;
   }
 }
+
+/* ==========================================================================
+   📱 MOBILE DRAWER DEPTH & LAYER OVERRIDE SPEED LOCKS
+   ========================================================================== */
+
+@media screen and (max-width: 991px), screen and (max-width: 980px) {
+  
+  /* Forces your navigation links menu to slide cleanly on top of all banner containers */
+  .nav-links,
+  nav .nav-links,
+  #nav .nav-links {
+    z-index: 999999 !important; /* Floats the slide-out navigation overlay block safely on top */
+    pointer-events: auto !important;
+  }
+
+  /* Enhances touch sensitivity area bounds for the toggle icon element */
+  .mobile-toggle-btn {
+    position: relative !important;
+    z-index: 9999999 !important; /* Floats toggle button text string layer above invisible backgrounds */
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+}
