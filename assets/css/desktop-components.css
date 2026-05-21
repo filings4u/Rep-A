@@ -291,3 +291,29 @@ nav {
         gap: 20px !important;
     }
 }
+
+/* 🖥️ DESKTOP EXPLICIT AUTOMATED BLOG FEED MATRIX RESCUE */
+.resource-grid, 
+#public-homepage-blog-grid-target {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* Forces 3 symmetrical layout columns on desktops */
+    gap: 30px !important;
+    width: 100% !important;
+    margin-top: 40px !important;
+}
+
+.blog-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(10, 31, 68, 0.05) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 20px 40px rgba(10, 31, 68, 0.12) !important;
+}

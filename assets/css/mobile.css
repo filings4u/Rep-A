@@ -1,14 +1,14 @@
 /**
  * ==========================================================================
- * 📱 FILINGS4U FINAL PRODUCTION MOBILE EXECUTION ENGINE
+ * 📱 FILINGS4U PRODUCTION MOBILE RUNTIME COMPILATION ENGINE
  * FILE LOCATION: assets/css/mobile.css
- * TARGET BREAKPOINT: ALL SCREEN SIZES 980px AND SMALLER
+ * TARGET BREAKPOINT: ALL SMARTPHONES & TABLETS UNDER 980px 
  * ==========================================================================
  */
 
 @media screen and (max-width: 980px) {
     
-    /* --- 1. FORCE CORE VARIABLES & PLATFORM RESETS --- */
+    /* --- 1. GLOBAL LAYOUT FRAME RESETS --- */
     html, body {
         width: 100% !important;
         max-width: 100% !important;
@@ -25,58 +25,74 @@
         flex-direction: column !important;
     }
 
-    /* 🔄 RECOVERY: Rescues unstyled main text links from default purple/blue */
+    /* Rescues unstyled main text links from default browser colors */
     a {
         color: #10b981 !important;
         text-decoration: none !important;
     }
 
-    /* --- 2. MAIN CORE COMPONENT CARD DISPLAY CONSTANTS --- */
+    /* Force all major sections on your page to fill the phone screen width */
+    section, 
+    .unified-site-section,
+    .feature-section, 
+    .pricing-section, 
+    .resource-section, 
+    .faq-section,
+    .blog-section {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 50px 20px !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        float: none !important;
+        background-image: none !important;
+    }
+
     .page-container, 
     main.page-container,
     .blog-wrapper-canvas,
-    .article-view-container {
-        padding-top: 100px !important; /* Clears space beneath the frozen header link strip */
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-        display: block !important;
+    .section-alignment-wrapper {
+        padding-top: 95px !important; /* Safety clearance offset to clear frozen navbar link strip */
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         width: 100% !important;
+        max-width: 100% !important;
         box-sizing: border-box !important;
+        display: block !important;
     }
 
-    /* 🔄 RECOVERY: Translates horizontal side-by-side hero grids into stacked blocks */
+    /* --- 2. HERO LAYOUT STACKING ENGINE --- */
+    /* Drops the hero image right underneath the headline text */
     .service-grid {
         display: flex !important;
         flex-direction: column !important;
         gap: 35px !important;
         width: 100% !important;
+        padding: 0 !important;
     }
 
-    /* 🔄 RECOVERY: Centers primary content hero text elements cleanly */
     .content-area {
         width: 100% !important;
         text-align: center !important;
     }
 
-    .content-area h1, .content-area h2, .content-area p {
-        text-align: center !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
-
     .content-area h1 {
         font-size: 2.2rem !important;
         line-height: 1.2 !important;
+        margin-bottom: 15px !important;
+        text-align: center !important;
     }
 
     .content-area p {
-        max-width: 100% !important;
         font-size: 1rem !important;
+        max-width: 100% !important;
+        text-align: center !important;
+        margin: 0 auto 25px auto !important;
     }
 
     .hero-image-container {
         width: 100% !important;
-        height: 260px !important;
+        height: 250px !important; /* Prevents hero image from taking up the entire mobile view */
         border-radius: 12px !important;
     }
 
@@ -85,222 +101,89 @@
         height: auto !important;
     }
 
-    /* --- 3. HEADER NAVIGATION & INTERACTIVE MENU DRAWER --- */
-    nav {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 70px !important;
-        background: #ffffff !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
-        z-index: 99999 !important;
-        display: block !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    nav .nav-content-wrapper {
-        display: flex !important;
-        flex-direction: row !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        height: 100% !important;
-        padding: 0 20px !important;
-        box-sizing: border-box !important;
-    }
-
-    nav button.mobile-toggle-btn, .mobile-toggle-btn {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        background: transparent !important;
-        border: none !important;
-        font-size: 1.8rem !important;
-        color: #0a1f44 !important;
-        cursor: pointer !important;
-        position: relative !important;
-        pointer-events: auto !important;
-        z-index: 100001 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    /* Slide-out offscreen container links layer */
-    .nav-links {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        position: fixed !important;
-        top: 70px !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: calc(100vh - 70px) !important;
-        background: #ffffff !important;
-        box-shadow: 0 10px 30px rgba(10, 31, 68, 0.1) !important;
-        gap: 25px !important;
-        padding: 40px 20px !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
-        transform: translateY(-15px) !important;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        z-index: 100000 !important;
-    }
-
-    /* Activated via javascript body manipulation hooks */
-    .nav-open .nav-links {
-        opacity: 1 !important;
-        visibility: visible !important;
-        transform: translateY(0) !important;
-    }
-
-    .nav-links a {
-        font-size: 1.2rem !important;
-        font-weight: 600 !important;
-        color: #0a1f44 !important;
-        text-decoration: none !important;
-        display: block !important;
-        width: 100% !important;
-        text-align: center !important;
-    }
-
-    .btn-client-portal {
-        background: #0a1f44 !important;
-        color: #ffffff !important;
-        width: 80% !important;
-        padding: 12px 0 !important;
-        border-radius: 4px !important;
-        margin: 10px auto 0 auto !important;
-        text-align: center !important;
-        display: block !important;
-    }
-
-    /* --- 4. MOBILE ACCORDION DROP-DOWNS TRACK --- */
-    .nav-item-dropdown .dropdown-content {
-        display: none !important;
-    }
-
-    /* Drops accordion blocks vertically beneath links */
-    .nav-item-dropdown.active-toggle .dropdown-content {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-        position: relative !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 90vw !important;
-        background: #f8fafc !important;
-        border-radius: 8px !important;
-        padding: 15px !important;
-        gap: 15px !important;
-        box-sizing: border-box !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
-
-    .static-dropdown:hover .dropdown-content {
-        display: none !important; /* Disables desktop hover behaviors on touch inputs */
-    }
-
-    .mega-column {
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    .mega-column .column-title {
-        font-size: 0.75rem !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        color: #10b981 !important;
-        letter-spacing: 0.5px !important;
-        border-bottom: 1px solid #e2e8f0 !important;
-        padding-bottom: 6px !important;
-        margin-bottom: 10px !important;
-    }
-
-    .mega-column a {
-        padding: 6px 0 !important;
-        font-size: 0.9rem !important;
-        text-align: center !important;
-    }
-
-    /* --- 5. COMPONENT GRID RECOVERY MATRICES --- */
-    #dynamicBlogPostsContainer, 
-    #public-homepage-blog-grid-target, 
-    .pricing-grid, 
-    .wizard-grid, 
-    .icon-grid, 
-    .stats-grid, 
+    /* --- 3. THE 1-COLUMN SMARTPHONE CARD STACKER --- */
+    /* Destroys multi-column grids and stacks cards vertically */
+    .wizard-grid,
+    .icon-grid,
+    .pricing-grid,
+    .stats-grid,
     .contact-layout-grid,
-    .faq-grid {
+    .faq-grid,
+    .resource-grid,
+    #dynamicBlogPostsContainer,
+    #public-homepage-blog-grid-target {
         display: grid !important;
-        grid-template-columns: 1fr !important; /* Forces all cards into single-column layouts */
-        gap: 25px !important;
+        grid-template-columns: 1fr !important; /* Force a single-column layout cascade */
+        gap: 24px !important;
         width: 100% !important;
+        max-width: 100% !important;
         padding: 0 !important;
-        margin-top: 25px !important;
+        margin: 25px 0 0 0 !important;
         box-sizing: border-box !important;
     }
 
-    /* 🔄 RECOVERY: Unifies card text styling behaviors and sizes across sections */
-    .price-card, 
-    .wizard-card, 
-    .info-panel-card, 
-    .form-panel-card, 
-    .stats-card, 
-    .icon-box, 
+    /* --- 4. CARD DECORATION UNIFICATION MATRICES --- */
+    /* Forces white background container layout, cards padding parameters, and left text alignments */
+    .wizard-card,
+    .icon-box,
+    .price-card,
+    .stats-card,
+    .faq-item,
     .blog-card,
-    .faq-item {
-        min-height: auto !important;
+    .info-panel-card,
+    .form-panel-card {
         width: 100% !important;
+        min-height: auto !important; /* Kills forced height boundaries from desktop */
         padding: 30px 20px !important;
-        box-sizing: border-box !important;
-        transform: none !important;
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 16px !important;
-        text-align: left !important; /* Restores clean readability left alignments inside cards */
-        box-shadow: 0 4px 12px rgba(10, 31, 68, 0.04) !important;
+        box-sizing: border-box !important;
+        text-align: left !important; /* Left-align interior text for crisp readability */
+        transform: none !important; /* Removes lift-on-hover scale shifts that break scrolling */
+        box-shadow: 0 10px 25px rgba(10, 31, 68, 0.04) !important;
     }
 
-    /* Specific fixes for section heading and paragraph colors on mobile */
-    .price-card h3, .wizard-card h3, .stats-card h3, .icon-box h4, .blog-card-title, .faq-item h4 {
+    /* Recover typography styles and padding targets for inner components */
+    .wizard-card h3, .price-card h3, .stats-card h3, .faq-item h4, .blog-card h3, .icon-box h4 {
         color: #0a1f44 !important;
+        font-size: 1.2rem !important;
+        font-weight: 700 !important;
         margin: 0 0 10px 0 !important;
     }
 
-    .price-card p, .wizard-card p, .stats-card p, .icon-box p, .blog-card-summary, .faq-item p {
+    .wizard-card p, .price-card p, .stats-card p, .faq-item p, .blog-card p, .icon-box p {
         color: #64748b !important;
-        margin: 0 !important;
         font-size: 0.9rem !important;
+        line-height: 1.5 !important;
+        margin: 0 !important;
     }
 
+    /* Fix layout tracking parameters for the pricing cards options list */
     .price-card.featured {
-        transform: none !important;
         border: 2px solid #10b981 !important;
-        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12) !important;
-    }
-
-    .price-card:hover {
-        transform: none !important;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1) !important;
     }
 
     .price-features {
-        margin: 20px 0 !important;
+        margin: 15px 0 !important;
     }
 
-    /* 🔄 RECOVERY: Enables smooth horizontal swiping for compliance tables on mobile */
+    .price-card .amount {
+        font-size: 2.5rem !important;
+        margin: 10px 0 !important;
+    }
+
+    /* --- 5. COMPLIANCE SCROLLABLE DATA TABLES ENGINE --- */
     .compliance-table {
         display: block !important;
         width: 100% !important;
-        overflow-x: auto !important;
+        overflow-x: auto !important; /* Allows data to swipe horizontally rather than crashing */
         white-space: nowrap !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
-    /* --- 6. RECONCILED 2x2 FOOTER SYSTEM MATRIX --- */
+    /* --- 6. SYMMETRICAL 2x2 FOOTER RULES ENGINE --- */
     footer.site-footer, .site-footer {
         width: 100% !important;
         max-width: 100% !important;
@@ -309,38 +192,33 @@
         left: 0 !important;
         padding: 50px 20px 30px 20px !important;
         box-sizing: border-box !important;
-        background: #0a1f44 !important; /* Restores deep brand navy background layer */
+        background: #0a1f44 !important; /* Retains your signature deep navy background layer */
         display: block !important;
     }
 
-    footer.site-footer .footer-container, .footer-container {
+    footer.site-footer .footer-container {
         display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important; /* Splitting link rows into balanced halves */
+        grid-template-columns: repeat(2, 1fr) !important; /* Splits resource blocks into balanced halves */
         gap: 40px 20px !important;
         width: 100% !important;
         max-width: 100% !important;
         padding: 0 !important;
         margin: 0 auto !important;
-        box-sizing: border-box !important;
     }
 
-    /* Breaks blanket centering resets and locks brand identities left-flush */
     .site-footer .footer-brand {
-        grid-column: 1 / -1 !important; /* Stretches logo block entirely wide along the upper half track */
+        grid-column: 1 / -1 !important; /* Forces layout container box to span full row width above column link trees */
         text-align: left !important;
         width: 100% !important;
         margin-bottom: 10px !important;
-        padding: 0 !important;
     }
 
     .site-footer .footer-brand p {
         margin: 15px 0 0 0 !important;
         text-align: left !important;
-        max-width: 100% !important;
-        color: #94a3b8 !important; /* Restores missing slate/gray paragraph color layout */
+        color: #94a3b8 !important;
     }
 
-    /* Left-aligns social inline row icon boxes */
     .site-footer .footer-brand div[style*="display: flex"] {
         justify-content: flex-start !important;
         margin-top: 20px !important;
@@ -349,50 +227,39 @@
     .site-footer .footer-col {
         text-align: left !important;
         width: 100% !important;
-        flex: none !important;
     }
 
     .footer-col h4 {
-        color: #ffffff !important; /* Restores white heading blocks colors */
+        color: #ffffff !important;
         margin: 0 0 15px 0 !important;
         font-size: 0.9rem !important;
-        letter-spacing: 1px !important;
         font-weight: 800 !important;
     }
 
     .site-footer .footer-col ul {
         display: flex !important;
         flex-direction: column !important;
-        align-items: flex-start !important; /* Left-align link trees */
+        align-items: flex-start !important;
         padding: 0 !important;
         margin: 0 !important;
         list-style: none !important;
     }
 
-    .site-footer .footer-col ul li {
-        text-align: left !important;
-        width: 100% !important;
-        margin-bottom: 12px !important;
-    }
-
     .site-footer .footer-col ul li a {
-        color: #94a3b8 !important; /* Recover slate links state colors */
+        color: #94a3b8 !important;
         display: inline-block !important;
-        padding: 2px 0 !important;
+        padding: 4px 0 !important;
         font-size: 0.85rem !important;
     }
 
-    /* --- 7. METADATA ROW ALIGNMENTS --- */
     .site-footer .footer-bottom {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: center !important;
         gap: 20px !important;
         padding: 30px 0 0 0 !important;
         margin-top: 40px !important;
         border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-        width: 100% !important;
     }
 
     .site-footer .footer-bottom div p {
@@ -402,31 +269,13 @@
 
     .site-footer .trust-badge {
         background: rgba(255, 255, 255, 0.05) !important;
-        color: #ffffff !important; /* Restores secure layout frame panel colors */
+        color: #ffffff !important;
         margin: 5px auto !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
     }
 
     .site-footer .legal-links {
         display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
         justify-content: center !important;
         gap: 12px 20px !important;
     }
-
-    .site-footer .legal-links a {
-        color: #94a3b8 !important;
-    }
-}
-
-.faq-item {
-    background: #ffffff !important;
-    padding: 30px !important;
-    border-radius: 16px !important;
-    border: 1px solid #e2e8f0 !important;
-    box-shadow: 0 10px 30px rgba(10, 31, 68, 0.05) !important;
-    text-align: left !important;
 }
