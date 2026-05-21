@@ -107,14 +107,14 @@
     display: inline-block !important; 
   } 
   nav button.mobile-toggle-btn, .mobile-toggle-btn { 
-    display: flex !important; /* FIXED: Ensures flexible alignment centers your JS text strings */
+    display: flex !important; 
     align-items: center !important;
     justify-content: center !important;
-    width: 44px !important; /* FIXED: Minimum touch target width */
-    height: 44px !important; /* FIXED: Minimum touch target height */
+    width: 44px !important; 
+    height: 44px !important; 
     background: transparent !important; 
     border: none !important; 
-    font-size: 2rem !important; /* FIXED: Increased size for cleaner layout display */
+    font-size: 2rem !important; 
     color: var(--navy) !important; 
     cursor: pointer !important; 
     z-index: 100001 !important; 
@@ -133,8 +133,8 @@
     height: calc(100vh - 70px) !important; 
     background: var(--white) !important; 
     box-shadow: 0 10px 30px rgba(10, 31, 68, 0.1) !important; 
-    gap: 12px !important; 
-    padding: 25px 20px !important; 
+    gap: 8px !important; 
+    padding: 20px !important; 
     box-sizing: border-box !important; 
     opacity: 0 !important; 
     visibility: hidden !important; 
@@ -143,14 +143,13 @@
     z-index: 100000 !important; 
     overflow-y: auto !important; 
   } 
-  /* Syncs with JS toggling class on document.body */
   body.nav-open .nav-links { 
     opacity: 1 !important; 
     visibility: visible !important; 
     transform: translateY(0) !important; 
   } 
   .nav-links a { 
-    font-size: 1.15rem !important; 
+    font-size: 1.1rem !important; 
     font-weight: 600 !important; 
     color: var(--navy) !important; 
     width: 100% !important; 
@@ -158,13 +157,68 @@
     display: block !important; 
     padding: 10px 0 !important; 
   } 
+
+  /* 🛠️ FIXED: MOBILE DROPDOWN ACCORDION STYLES */
+  .nav-item-dropdown {
+    width: 100% !important;
+    display: block !important;
+  }
+  .nav-item-dropdown > a {
+    background: #f8fafc !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    border: 1px solid var(--border) !important;
+  }
+  .dropdown-content, .mega-panel-two-col, .mega-panel-three-col {
+    display: none !important; /* Collapsed by default */
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 10px 0 0 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+  }
+  /* Active toggle script hooks from your application engine file */
+  .nav-item-dropdown.active-toggle .dropdown-content {
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .mega-column {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin-bottom: 15px !important;
+  }
+  .mega-column .column-title {
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: var(--text-muted) !important;
+    letter-spacing: 0.05em !important;
+    text-align: center !important;
+    margin-bottom: 5px !important;
+    display: block !important;
+  }
+  .mega-column a {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    color: var(--emerald) !important;
+    padding: 8px 0 !important;
+    text-align: center !important;
+  }
+
   .btn-client-portal { 
     background: var(--navy) !important; 
     color: var(--white) !important; 
-    width: 85% !important; 
-    padding: 12px 0 !important; 
-    border-radius: 6px !important; 
-    margin: 15px auto 0 auto !important; 
+    width: 100% !important; 
+    padding: 14px 0 !important; 
+    border-radius: 8px !important; 
+    margin: 15px 0 0 0 !important; 
     text-align: center !important; 
     display: block !important; 
     font-weight: 700 !important; 
@@ -186,9 +240,8 @@
     box-sizing: border-box !important; 
     text-align: left !important; 
     box-shadow: 0 10px 25px rgba(10, 31, 68, 0.04) !important; 
-    overflow: hidden !important; /* FIXED: Keeps Supabase inner code items clean */
+    overflow: hidden !important; 
   } 
-  /* Overrides for your multi-class JavaScript elements */
   a.blog-card {
     padding: 0 !important; 
     display: block !important;
@@ -216,30 +269,30 @@
   } 
   footer.site-footer .footer-container { 
     display: grid !important; 
-    grid-template-columns: 1fr !important; /* FIXED: Stacks single file layout column */
+    grid-template-columns: 1fr !important; 
     gap: 35px 20px !important; 
   } 
   .site-footer .footer-brand { 
     grid-column: 1 / -1 !important; 
-    text-align: center !important; /* FIXED: Centered branding container alignment */
+    text-align: center !important; 
   } 
   .site-footer .footer-brand img { 
     height: 30px !important; 
     width: auto !important; 
     max-width: 140px !important; 
     object-fit: contain !important; 
-    display: inline-block !important; /* FIXED: Allows wrapper text alignment rules to function */
+    display: inline-block !important; 
     margin: 0 auto 12px auto !important; 
   } 
   .site-footer .footer-brand p { 
     color: #94a3b8 !important; 
-    text-align: center !important; /* FIXED: Centered footer body description */
+    text-align: center !important; 
   } 
   .site-footer .footer-brand div[style*="display: flex"] { 
-    justify-content: center !important; /* FIXED: Targets inline flex nodes securely */
+    justify-content: center !important; 
   } 
   .site-footer .footer-col { 
-    text-align: center !important; /* FIXED: Centered all text lists inside containers */
+    text-align: center !important; 
   } 
   .footer-col h4 { 
     color: var(--white) !important; 
@@ -249,7 +302,7 @@
   .site-footer .footer-col ul { 
     display: flex !important; 
     flex-direction: column !important; 
-    align-items: center !important; /* FIXED: Aligns column items down center */
+    align-items: center !important; 
     list-style: none !important; 
     padding: 0 !important; 
     margin: 0 !important; 
@@ -264,12 +317,12 @@
     flex-direction: column !important; 
     align-items: center !important; 
     gap: 20px !important; 
-    padding: 25px 0 0 0 !important; 
+    padding: 25px 0 ... !important; 
     border-top: 1px solid rgba(255, 255, 255, 0.1) !important; 
   } 
   .site-footer .footer-bottom div p { 
     color: #94a3b8 !important; 
-    text-align: center !important; /* FIXED: Alignment on copyright elements */
+    text-align: center !important; 
   } 
   .site-footer .trust-badge { 
     background: rgba(255, 255, 255, 0.05) !important; 
@@ -278,6 +331,6 @@
   .site-footer .legal-links { 
     display: flex !important; 
     gap: 12px 20px !important; 
-    justify-content: center !important; /* FIXED: Centers privacy policy terms links */
+    justify-content: center !important; 
   } 
 }
