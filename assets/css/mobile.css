@@ -1,379 +1,192 @@
-/** * ========================================================================== * 📱 FILINGS4U COMPREHENSIVE PRODUCTION MOBILE ENGINE * FILE LOCATION: assets/css/mobile.css * ========================================================================== */ 
-:root { 
-  --navy: #0a1f44; 
-  --emerald: #10b981; 
-  --ice: #f4f7fa; 
-  --white: #ffffff; 
-  --border: #e2e8f0; 
-  --text-muted: #64748b; 
-  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-} 
+/* ==========================================================================
+   GLOBAL MOBILE RESPONSIVE DESIGN SYSTEM
+   Applies to all platform pages using standard structural layouts.
+   ========================================================================== */
 
-@media screen and (max-width: 980px) { 
-  html, body { 
-    width: 100% !important; 
-    max-width: 100% !important; 
-    overflow-x: hidden !important; 
-    padding: 0 !important; 
-    margin: 0 !important; 
-    background-color: var(--white) !important; 
-    color: var(--navy) !important; 
-  } 
-  body { 
-    font-family: 'Plus Jakarta Sans', sans-serif !important; 
-    display: flex !important; 
-    flex-direction: column !important; 
-  } 
-  a { 
-    color: var(--emerald) !important; 
-    text-decoration: none !important; 
-  } 
-  section, .unified-site-section, .feature-section, .pricing-section, .resource-section, .faq-section, .blog-section { 
-    width: 100% !important; 
-    max-width: 100% !important; 
-    padding: 40px 20px !important; 
-    box-sizing: border-box !important; 
-    display: block !important; 
-  } 
-  .bg-ice, .resource-section, #system-stats { 
-    background-color: var(--ice) !important; 
-  } 
-  .bg-navy, .feature-section { 
-    background-color: var(--navy) !important; 
-    color: var(--white) !important; 
-  } 
-  .bg-white, .faq-section, .blog-section { 
-    background-color: var(--white) !important; 
-  } 
-  .page-container, main.page-container { 
-    padding-top: 95px !important; 
-    padding-left: 0 !important; 
-    padding-right: 0 !important; 
-    width: 100% !important; 
-    box-sizing: border-box !important; 
-  } 
+/* --- 1. GLOBAL LAYOUT & CONTAINER FIXES --- */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+    
+    .unified-site-section, 
+    .page-container,
+    section {
+        padding: 40px 16px !important;
+    }
 
-  /* --- HERO DISPLAY LAYOUT --- */ 
-  .service-grid { 
-    display: flex !important; 
-    flex-direction: column-reverse !important; 
-    gap: 30px !important; 
-    width: 100% !important; 
-    padding: 0 20px !important; 
-    box-sizing: border-box !important; 
-  } 
-  .content-area h1 { 
-    font-size: 2.4rem !important; 
-    line-height: 1.15 !important; 
-    color: var(--navy) !important; 
-    font-weight: 800 !important; 
-    text-align: center !important; 
-  } 
-  .content-area p { 
-    font-size: 1.1rem !important; 
-    color: var(--text-muted) !important; 
-    text-align: center !important; 
-  } 
+    /* --- 2. GLOBAL NAVIGATION TOGGLE CORE --- */
+    .mobile-toggle-btn {
+        display: block !important;
+        background: none;
+        border: none;
+        font-size: 1.6rem;
+        color: var(--navy);
+        cursor: pointer;
+        padding: 8px;
+        line-height: 1;
+    }
 
-  /* --- MOBILE NAVIGATION ASSEMBLY --- */ 
-  nav { 
-    position: fixed !important; 
-    top: 0 !important; 
-    left: 0 !important; 
-    width: 100% !important; 
-    height: 70px !important; 
-    background: var(--white) !important; 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important; 
-    z-index: 99999 !important; 
-  } 
-  nav .nav-content-wrapper { 
-    display: flex !important; 
-    flex-direction: row !important; 
-    justify-content: space-between !important; 
-    align-items: center !important; 
-    height: 100% !important; 
-    padding: 0 20px !important; 
-    box-sizing: border-box !important; 
-  } 
-  .logo-link, nav a.logo-link { 
-    display: flex !important; 
-    align-items: center !important; 
-  } 
-  .logo-link img, nav img.logo { 
-    height: 28px !important; 
-    width: auto !important; 
-    max-width: 130px !important; 
-    object-fit: contain !important; 
-    display: inline-block !important; 
-  } 
-  nav button.mobile-toggle-btn, .mobile-toggle-btn { 
-    display: flex !important; 
-    align-items: center !important; 
-    justify-content: center !important; 
-    width: 44px !important; 
-    height: 44px !important; 
-    background: transparent !important; 
-    border: none !important; 
-    font-size: 2rem !important; 
-    color: var(--navy) !important; 
-    cursor: pointer !important; 
-    z-index: 100001 !important; 
-    padding: 0 !important; 
-    margin: 0 !important; 
-  } 
-  .nav-links { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    align-items: center !important; 
-    justify-content: flex-start !important; 
-    position: fixed !important; 
-    top: 70px !important; 
-    left: 0 !important; 
-    width: 100vw !important; 
-    height: calc(100vh - 70px) !important; 
-    background: var(--white) !important; 
-    box-shadow: 0 10px 30px rgba(10, 31, 68, 0.1) !important; 
-    gap: 8px !important; 
-    padding: 20px !important; 
-    box-sizing: border-box !important; 
-    opacity: 0 !important; 
-    visibility: hidden !important; 
-    transform: translateY(-10px) !important; 
-    transition: var(--transition) !important; 
-    z-index: 100000 !important; 
-    overflow-y: auto !important; 
-  } 
-  body.nav-open .nav-links { 
-    opacity: 1 !important; 
-    visibility: visible !important; 
-    transform: translateY(0) !important; 
-  } 
-  .nav-links a { 
-    font-size: 1.1rem !important; 
-    font-weight: 600 !important; 
-    color: var(--navy) !important; 
-    width: 100% !important; 
-    text-align: center !important; 
-    display: block !important; 
-    padding: 10px 0 !important; 
-  } 
+    .nav-links {
+        display: none; /* Controlled via jQuery slideToggle */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 24px;
+        box-sizing: border-box;
+        gap: 16px;
+        align-items: stretch;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
 
-  /* --- MOBILE DROPDOWN ACCORDIONS --- */ 
-  .nav-item-dropdown { 
-    width: 100% !important; 
-    display: block !important; 
-  } 
-  .nav-item-dropdown > a { 
-    background: #f8fafc !important; 
-    border-radius: 8px !important; 
-    padding: 12px !important; 
-    border: 1px solid var(--border) !important; 
-  } 
-  .dropdown-content, .mega-panel-two-col, .mega-panel-three-col { 
-    display: none !important; 
-    position: relative !important; 
-    top: 0 !important; 
-    left: 0 !important; 
-    width: 100% !important; 
-    box-shadow: none !important; 
-    background: transparent !important; 
-    padding: 10px 0 0 0 !important; 
-    max-height: 0 !important; 
-    overflow: hidden !important; 
-  } 
-  .nav-item-dropdown.active-toggle .dropdown-content,
-  .nav-item-dropdown.active-toggle .mega-panel-two-col,
-  .nav-item-dropdown.active-toggle .mega-panel-three-col { 
-    display: block !important; 
-    max-height: none !important; 
-    overflow: visible !important; 
-    visibility: visible !important;
-    opacity: 1 !important;
-  } 
-  .mega-column { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    width: 100% !important; 
-    padding: 0 !important; 
-    margin-bottom: 15px !important; 
-  } 
-  .mega-column .column-title { 
-    font-size: 0.8rem !important; 
-    font-weight: 700 !important; 
-    text-transform: uppercase !important; 
-    color: var(--text-muted) !important; 
-    letter-spacing: 0.05em !important; 
-    text-align: center !important; 
-    margin-bottom: 5px !important; 
-    display: block !important; 
-  } 
-  .mega-column a { 
-    font-size: 0.95rem !important; 
-    font-weight: 500 !important; 
-    color: var(--emerald) !important; 
-    padding: 8px 0 !important; 
-    text-align: center !important; 
-  } 
+    /* Mobile Dropdown Specific Behavior */
+    .nav-item-dropdown {
+        width: 100%;
+    }
 
-  .btn-client-portal { 
-    background: var(--navy) !important; 
-    color: var(--white) !important; 
-    width: 100% !important; 
-    padding: 14px 0 !important; 
-    border-radius: 8px !important; 
-    margin: 15px 0 0 0 !important; 
-    text-align: center !important; 
-    display: block !important; 
-    font-weight: 700 !important; 
-  } 
+    .nav-item-dropdown > a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        width: 100%;
+    }
 
-  /* --- DISPLAY GRIDS STACKERS --- */ 
-  .icon-grid, .pricing-grid, .stats-grid, .contact-layout-grid, .faq-grid, .resource-grid, #public-homepage-blog-grid-target { 
-    display: grid !important; 
-    grid-template-columns: 1fr !important; 
-    gap: 24px !important; 
-    width: 100% !important; 
-  } 
-  .wizard-card, .icon-box, .price-card, .stats-card, .faq-item, .blog-card, .form-panel-card, .info-panel-card { 
-    width: 100% !important; 
-    min-height: auto !important; 
-    background: var(--white) !important; 
-    border: 1px solid var(--border) !important; 
-    border-radius: 16px !important; 
-    box-sizing: border-box !important; 
-    text-align: left !important; 
-    box-shadow: 0 10px 25px rgba(10, 31, 68, 0.04) !important; 
-    overflow: hidden !important; 
-  } 
-  a.blog-card { 
-    padding: 0 !important; 
-    display: block !important; 
-  } 
-  .icon-box h4, .price-card h3, .stats-card h3, .faq-item h4, .blog-card h3, .stat-amount { 
-    color: var(--navy) !important; 
-    font-size: 1.25rem !important; 
-    font-weight: 700 !important; 
-  } 
-  .icon-box p, .price-card p, .stats-card p, .faq-item p, .blog-card p { 
-    color: var(--text-muted) !important; 
-  } 
+    .nav-item-dropdown .dropdown-content {
+        position: static !important;
+        display: none; /* Toggled via click event */
+        box-shadow: none !important;
+        padding: 12px 0 4px 16px !important;
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+        background: transparent !important;
+        border: none !important;
+    }
 
-  /* --- 2x2 FOOTER LAYOUT CONTROLS --- */ 
-  footer.site-footer, .site-footer { 
-    width: 100% !important; 
-    max-width: 100% !important; 
-    margin: 40px 0 0 0 !important; 
-    padding: 40px 20px !important; 
-    background: var(--navy) !important; 
-    display: block !important; 
-    transform: none !important; 
-    left: 0 !important; 
-    box-sizing: border-box !important;
-  } 
-  footer.site-footer .footer-container { 
-    display: grid !important; 
-    grid-template-columns: repeat(2, 1fr) !important; /* FIXED: Forces links to stay side-by-side on mobile */
-    gap: 30px 15px !important; 
-  } 
-  .site-footer .footer-brand { 
-    grid-column: 1 / -1 !important; 
-    text-align: left !important; /* FIXED: Keeps branding block left aligned for split layout row consistency */
-  } 
-  .site-footer .footer-brand img { 
-    height: 28px !important; /* FIXED: Force locks image sizing on mobile layout pages */
-    width: auto !important; 
-    max-width: 130px !important; 
-    object-fit: contain !important; 
-    display: block !important; 
-    margin: 0 0 12px 0 !important; 
-  } 
-  .site-footer .footer-brand p { 
-    color: #94a3b8 !important; 
-    text-align: left !important; 
-  } 
-  .site-footer .footer-brand div[style*="display: flex"] { 
-    justify-content: flex-start !important; 
-  } 
-  .site-footer .footer-col { 
-    text-align: left !important; /* FIXED: Columns align clean to left edge side-by-side */
-  } 
-  .footer-col h4 { 
-    color: var(--white) !important; 
-    margin: 0 0 12px 0 !important; 
-    font-size: 0.85rem !important; 
-    white-space: nowrap !important; /* FIXED: Prevents heading words from shifting layout cells */
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  } 
-  .site-footer .footer-col ul { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    align-items: flex-start !important; 
-    list-style: none !important; 
-    padding: 0 !important; 
-    margin: 0 !important; 
-  } 
-  .site-footer .footer-col ul li a { 
-    color: #94a3b8 !important; 
-    display: inline-block !important; 
-    padding: 6px 0 !important; 
-    font-size: 0.85rem !important; /* FIXED: Compact text fitting for side-by-side presentation columns */
-  } 
-  .site-footer .footer-bottom { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    align-items: center !important; 
-    gap: 15px !important; 
-    padding: 25px 0 0 0 !important; 
-    border-top: 1px solid rgba(255, 255, 255, 0.1) !important; 
-  } 
-  .site-footer .footer-bottom div p { 
-    color: #94a3b8 !important; 
-    text-align: center !important; 
-  } 
-  .site-footer .trust-badge { 
-    background: rgba(255, 255, 255, 0.05) !important; 
-    color: var(--white) !important; 
-  } 
-  .site-footer .legal-links { 
-    display: flex !important; 
-    gap: 12px 16px !important; 
-    justify-content: center !important; 
-  }
+    .mega-column {
+        padding: 0 !important;
+        margin-bottom: 16px;
+    }
 
-}
+    .mega-column:last-child {
+        margin-bottom: 0;
+    }
 
-/* ==========================================
-   📱 MOBILE 2x2 FOOTER COMPACT ALIGNMENT OVERRIDE
-   ========================================== */
-@media screen and (max-width: 980px) {
-  footer.site-footer .footer-container {
-    gap: 20px 15px !important; /* FORCES TIGHTNESS: Pulls layout rows vertically closer together */
-  }
+    .btn-client-portal {
+        display: block !important;
+        text-align: center;
+        margin-top: 12px;
+        padding: 14px !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
 
-  .site-footer .footer-brand p {
-    margin-top: 8px !important;
-    margin-bottom: 5px !important;
-    line-height: 1.4 !important;
-    font-size: 0.85rem !important;
-  }
+    /* --- 3. HERO REVERSAL: IMAGE ON TOP, WORDS AT BOTTOM --- */
+    .service-grid {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        gap: 32px !important;
+    }
 
-  .footer-col h4 {
-    margin: 0 0 6px 0 !important; /* Closes empty void under column header tags */
-    font-size: 0.85rem !important;
-  }
+    .hero-image-container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
 
-  .site-footer .footer-col ul li {
-    margin-bottom: 6px !important; /* Prevents text elements from feeling too spaced out */
-  }
+    .hero-image-container img {
+        height: 260px !important;
+        width: 100% !important;
+        object-fit: cover !important;
+        border-radius: 12px !important;
+    }
 
-  .site-footer .footer-col ul li a {
-    padding: 2px 0 !important; /* Collapses line buffers inside your links grid layout */
-    font-size: 0.82rem !important;
-  }
+    .content-area {
+        text-align: center !important;
+    }
 
-  .site-footer .footer-bottom {
-    margin-top: 25px !important; /* Brings the lower legal section closer to the 2x2 columns */
-    padding-top: 15px !important;
-  }
+    .active-sync-badge-wrapper {
+        justify-content: center !important;
+        margin: 16px auto !important;
+    }
+
+    /* --- 4. STRUCTURAL GRID ELEMENT STACKING --- */
+    .icon-grid, 
+    .stats-grid, 
+    .faq-grid, 
+    .resource-grid,
+    .responsive-stack-grid {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        width: 100% !important;
+    }
+
+    /* Individual elements scale cleanly */
+    .stats-card, 
+    .icon-box, 
+    .faq-item {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 24px !important;
+    }
+
+    /* --- 5. 2x2 FOOTER SYSTEM OVERRIDE --- */
+    .footer-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 36px 20px !important;
+        padding: 40px 16px !important;
+    }
+
+    /* Brand Block takes full width over the columns */
+    .footer-brand {
+        grid-column: span 2 !important;
+        text-align: center !important;
+        max-width: 100% !important;
+        margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+        margin: 12px auto 0 auto !important;
+        max-width: 450px;
+    }
+
+    .footer-brand div {
+        justify-content: center !important;
+    }
+
+    .footer-col {
+        min-width: 0 !important; /* Prevents overflow inside grid nodes */
+    }
+
+    /* Footer Bottom Section Adjustments */
+    .footer-bottom {
+        flex-direction: column !important;
+        gap: 24px !important;
+        text-align: center !important;
+        padding: 24px 16px !important;
+        margin-top: 32px !important;
+    }
+
+    .footer-bottom p {
+        max-width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    .trust-badge {
+        margin: 0 auto !important;
+        display: inline-block !important;
+        width: max-content;
+    }
+
+    .legal-links {
+        justify-content: center !important;
+        gap: 20px !important;
+    }
 }
