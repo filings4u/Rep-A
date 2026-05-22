@@ -710,7 +710,7 @@ section, .feature-section, .pricing-section, .resource-section, .faq-section {
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 40px 30px !important;
   padding-top: 10px !important;
-  margin-bottom: 80px !important;
+  margin-bottom: 25px !important; /* OPTIMIZED: Slashed from 80px to 25px to pull the next elements upward */
   width: 100% !important;
 }
 
@@ -1298,3 +1298,4 @@ footer .footer-container,
   flex-direction: row !important;
   gap: 30px !important;
 }
+
