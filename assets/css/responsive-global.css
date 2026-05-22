@@ -1296,8 +1296,10 @@ body.nav-open .nav-links {
 
 /* Keep individual mobile dropdown paths full-width inside drawer layout */
 .nav-item-dropdown {
-    width: 100% !important;
-    display: block !important;
+    width: 300px !important; 
+        min-width: 300px !important;
+        max-width: 300px !important; 
+        height: auto !important;
 }
 
 .nav-item-dropdown > a {
@@ -1315,7 +1317,7 @@ body.nav-open .nav-links {
     display: none !important; /* Managed smoothly by your active-toggle click handler function */
     box-shadow: none !important;
     padding: 12px 0 4px 12px !important;
-    background: transparent !important;
+    background: #ffffff !important;
     border: none !important;
     width: 100% !important;
 }
