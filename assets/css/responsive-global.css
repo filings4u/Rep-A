@@ -1197,7 +1197,7 @@ main.wizard-container {
         --nav-height: 60px;
     }
 
-    /* --- GLOBAL MOBILE LAYOUT --- */
+/* --- 1. GLOBAL MOBILE LAYOUT --- */
     html, body {
         max-width: 100vw;
         overflow-x: hidden;
@@ -1207,14 +1207,17 @@ main.wizard-container {
         padding: 40px 16px;
     }
 
-    /* --- MOBILE NAVIGATION --- */
+    /* --- 2. FIXED MOBILE NAVIGATION & HEADER SYSTEM --- */
     nav {
         height: 60px;
-        position: relative;
+        position: fixed !important; /* Locks header to the top of screen */
+        top: 0;
+        left: 0;
         width: 100%;
         display: block;
         border-bottom: 1px solid var(--border);
-        overflow: visible !important;
+        background: var(--white) !important;
+        overflow: visible !important; /* Allows links dropdown drawer to fall through */
     }
 
     .nav-content-wrapper {
@@ -1222,18 +1225,175 @@ main.wizard-container {
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        padding: 12px 16px;
+        height: 100%;
+        padding: 0 16px;
         box-sizing: border-box;
     }
 
-    /* 🌟 FIXED: Locks branding link to position 1 on the far left */
     .logo-link {
         order: 1 !important;
+        display: flex;
+        align-items: center;
     }
 
     .logo-link img {
         height: 30px;
         max-width: 120px;
+        width: auto;
+    }
+
+    /* Mobile Toggle Button - Aligned to Far Right Margin */
+    .mobile-toggle-btn {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: auto !important;
+        height: auto !important;
+        pointer-events: auto !important;
+        position: relative !important; 
+        order: 2 !important; /* Slides the icon button past the logo to the right margin */
+        
+        background: transparent !important;
+        border: none !important;
+        font-size: 1.8rem !important;
+        color: var(--navy) !important;
+        cursor: pointer !important;
+        padding: 4px !important;
+        line-height: 1 !important;
+    }
+
+    /* 🌟 FIXED: Absolutely hides desktop links on mobile, transforming it into a hidden drop drawer */
+    .nav-links {
+        display: none !important; /* Overrides the desktop display:flex rule natively */
+        flex-direction: column !important;
+        position: absolute !important;
+        top: 60px !important; /* Drops cleanly below the nav bar header height line */
+        left: 0 !important;
+        width: 100% !important;
+        background: var(--white) !important;
+        border-bottom: 2px solid var(--border) !important;
+        padding: 24px 16px !important;
+        box-sizing: border-box !important;
+        gap: 16px !important;
+        z-index: 999999 !important;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        margin: 0 !important;
+    }
+
+    /* Keep individual mobile dropdown paths full-width inside drawer layout */
+    .nav-item-dropdown {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .nav-item-dropdown > a {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 12px 0 !important;
+        border-bottom: 1px solid var(--border) !important;
+        width: 100% !important;
+        color: var(--navy) !important;
+    }
+
+    .nav-item-dropdown .dropdown-content {
+        position: static !important;
+        display: none !important; /* Managed smoothly by your click handler function */
+        box-shadow: none !important;
+        padding: 12px 0 4px 12px !important;
+        background: transparent !important;
+        border: none !important;
+        width: 100% !important;
+    }
+
+    .btn-client-portal {
+        display: block !important;
+        text-align: center !important;
+        width: 100% !important;
+        margin-top: 16px !important;
+        padding: 14px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* --- 3. MOBILE HERO SECTION SHIFT --- */
+    .page-container {
+        /* Matches your navbar header space to pull your graphics up instantly */
+        padding: 85px 16px 40px 16px !important; 
+    }
+
+    .service-grid {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        gap: 32px !important;
+        width: 100% !important;
+    }
+
+    /* --- 4. OPTIMIZED CLEAN MOBILE FOOTER LAYOUT --- */
+    .footer-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* Locks columns side-by-side */
+        gap: 36px 16px !important;
+        padding: 40px 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 🌟 FIXED: Left-aligns brand elements and gives text breathing room away from the logo */
+    .footer-brand {
+        grid-column: span 2 !important; /* Spreads brand descriptors on row 1 to stop vertical overlapping */
+        text-align: left !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+
+    .footer-brand img {
+        margin-bottom: 12px !important; /* Pushes brand text down so it doesn't mesh into the graphic logo */
+        display: inline-block !important;
+    }
+
+    .footer-brand p {
+        font-size: 0.9rem !important;
+        line-height: 1.5 !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        margin: 0 0 16px 0 !important; /* 🌟 FIXED: Clear margin space below text before social icons mount */
+        text-align: left !important;
+        max-width: 100% !important;
+    }
+
+    /* Fix social icon margins to keep them lined up on the left side */
+    .footer-brand div, 
+    .footer-brand a {
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+
+    .footer-col {
+        width: 100% !important;
+        min-width: 0 !important;
+        display: block !important;
+    }
+
+    .footer-col h4 {
+        margin-top: 0 !important;
+        margin-bottom: 12px !important;
+        font-size: 0.95rem !important;
+        white-space: nowrap !important; /* Retains header columns text strings on one row line */
+    }
+
+    .footer-col ul li a {
+        white-space: nowrap !important; /* Stops list item text targets from wrapping messy down screen */
+    }
+
+    .footer-bottom {
+        flex-direction: column !important;
+        gap: 20px !important;
+        text-align: center !important;
+        padding: 24px 16px !important;
+        margin-top: 24px !important;
     }
 
     /* Mobile Toggle Button - NOW VISIBLE & ALIGNED TO RIGHT */
