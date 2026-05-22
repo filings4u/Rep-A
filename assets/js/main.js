@@ -34,7 +34,7 @@ function initNavigationEngine() {
     closeBtn.setAttribute("aria-label", "Close Menu");
     navLinksDrawer.appendChild(closeBtn);
 
-    // Event listener for the new Navy X Close Button
+    // Event listener for the Navy X Close Button
     closeBtn.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -57,7 +57,9 @@ function initNavigationEngine() {
   if (mobileToggleBtn && navLinksDrawer) {
     mobileToggleBtn.addEventListener("click", (event) => {
       event.preventDefault();
+      // FIXED: Prevents the document click listener from instantly firing and closing the menu
       event.stopPropagation();
+      event.stopImmediatePropagation(); 
       
       // Toggle CSS hook classes on the body and nav panel
       document.body.classList.toggle("nav-open");
@@ -97,12 +99,14 @@ function initNavigationEngine() {
       const isClickInsideMenu = navLinksDrawer && navLinksDrawer.contains(event.target);
       const isClickOnToggleButton = mobileToggleBtn && mobileToggleBtn.contains(event.target);
       
+      // Only close if the click was genuinely outside both elements
       if (!isClickInsideMenu && !isClickOnToggleButton) {
         closeMobileMenu();
       }
     }
   });
 }
+
 
 /**
  * 2. INITIALIZE SUPABASE DATA CONNECTION CHANNELS

@@ -212,7 +212,7 @@ body.nav-open .nav-links, .nav-links.active {
     left: 0 !important; 
     width: 100% !important; 
     box-shadow: none !important; 
-    background: transparent !important; 
+    background: #ffffff !important; 
     padding: 10px 0 0 0 !important; 
     max-height: 0 !important; 
     overflow: hidden !important; 
@@ -405,6 +405,7 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+   margin-left: auto !important;
   
   /* Add explicit structural baselines */
   min-width: 44px !important;
