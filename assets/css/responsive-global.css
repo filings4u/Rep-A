@@ -17,6 +17,20 @@
   --nav-height: 70px;
 }
 
+/* ==========================================================================
+   ⛔ DESKTOP SAFETY BLOCK: ENFORCE HIDDEN TOGGLE BY DEFAULT
+   ========================================================================== */
+.mobile-toggle-btn {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+}
+
+
 /* ========================================================================
    1. GLOBAL RESETS & BASE STYLES
    ======================================================================== */
@@ -996,7 +1010,7 @@ main.wizard-container {
     gap: 30px;
     /* 🌟 FIXED: Changed 6% padding to a small 24px margin to stretch to monitor edges */
     padding: 60px 24px; 
-    width: 100%;
+    width: 80%;
     max-width: 100%; 
     box-sizing: border-box;
     margin: 0;
