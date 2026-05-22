@@ -1,87 +1,80 @@
-/**
- * ==========================================================================
- * 🖥️ FILINGS4U DESKTOP ENGINE (WIDESCREEN UPGRADE) - PART 1
- * FILE LOCATION: assets/css/desktop-wide-part1.css
- * ==========================================================================
- */
-@import url('https://googleapis.com');
+/** * ========================================================================== * 🖥️ FILINGS4U PRODUCTION DESKTOP CORE ENGINE * FILE LOCATION: assets/css/desktop.css * WARNING: ALL MOBILE LAYER RULES REMOVED FOR CLEAN SEPARATION * ========================================================================== */ 
+@import url('https://googleapis.com'); 
 
-:root {
-  --navy: #0a1f44;
-  --emerald: #10b981;
-  --ice: #f4f7fa;
-  --white: #ffffff;
-  --border: #e2e8f0;
-  --text-muted: #64748b;
-  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
+:root { 
+  --navy: #0a1f44; 
+  --emerald: #10b981; 
+  --ice: #f4f7fa; 
+  --white: #ffffff; 
+  --border: #e2e8f0; 
+  --text-muted: #64748b; 
+  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+} 
 
-/* --- 1. GLOBAL WIDTH EXPANSIONS --- */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* --- 1. GLOBAL PLATFORM SYSTEM RESETS --- */ 
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+} 
 
-html, body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  height: auto;
-  min-height: 100vh;
-}
+html, body { 
+  width: 100%; 
+  max-width: 100%; 
+  overflow-x: hidden; 
+  height: auto; 
+  min-height: 100vh; 
+} 
 
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: var(--navy);
-  background: var(--white);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  display: flex;
-  flex-direction: column;
-}
+body { 
+  font-family: 'Plus Jakarta Sans', sans-serif; 
+  color: var(--navy); 
+  background: var(--white); 
+  line-height: 1.6; 
+  -webkit-font-smoothing: antialiased; 
+  display: flex; 
+  flex-direction: column; 
+} 
 
-img {
-  max-width: none;
-  max-height: none;
-  display: inline-block;
-}
+img { 
+  max-width: none; 
+  max-height: none; 
+  display: inline-block; 
+} 
 
-/* WIDESCREEN UPGRADE: Stretched your core container bounds safely */
-.container {
-  width: 100%;
-  max-width: 1750px !important;
-  margin: 0 auto;
-}
+.container { 
+  width: 100%; 
+  max-width: 100% !important; 
+  margin: 0 auto; 
+} 
 
-/* --- 2. FULL-SPAN WIDESCREEN NAVIGATION --- */
-nav {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 70px !important;
-  background-color: #ffffff !important;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
-  z-index: 99999 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  display: block !important;
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-}
+/* --- 2. DESKTOP HEADER & FULL-SPAN NAVIGATION MATRIX --- */ 
+nav { 
+  position: fixed !important; 
+  top: 0 !important; 
+  left: 0 !important; 
+  width: 100% !important; 
+  height: 70px !important; 
+  background-color: #ffffff !important; 
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important; 
+  z-index: 99999 !important; 
+  padding: 0 !important; 
+  margin: 0 !important; 
+  display: block !important; 
+  border-bottom: 1px solid var(--border); 
+  backdrop-filter: blur(10px); 
+} 
 
-header, .site-header {
-  display: block !important;
-  width: 100% !important;
-}
+header, .site-header { 
+  display: block !important; 
+  width: 100% !important; 
+} 
 
-/* --- 2. HEADER FULL-SPAN ALIGNMENT OVERRIDES --- */
-.nav-content-wrapper {
-  max-width: 100% !important; /* Lifts static max-width cap to allow grid binding */
+.nav-content-wrapper { 
+  max-width: 100% !important; 
   height: 100% !important; 
   margin: 0 auto !important; 
-  padding: 0 6% !important; /* MATCHED BOUNDARY: Locks header edges directly to section tracks */
+  padding: 0 6% !important; /* MATCHED BOUNDARY: Pulls text edges in to match sections */
   box-sizing: border-box !important; 
   display: flex !important; 
   flex-direction: row !important; 
@@ -89,206 +82,206 @@ header, .site-header {
   justify-content: space-between !important; 
   position: relative !important; 
   float: none !important; 
-}
+} 
+
+.logo-link { 
+  display: flex !important; 
+  align-items: center !important; 
+  height: 100% !important; 
+  margin: 0 !important; 
+  padding: 0 !important; 
+} 
 
 /* --- GLOBAL DESKTOP LOGO SIZING LOCK --- */
 .logo-link img, 
 nav img.logo, 
 .nav-content-wrapper .logo { 
-  height: 35px !important; /* FIXED: Hard locks height on all global desktop integration layouts */
+  height: 35px !important; /* FIXED: Hard locks logo height on all inner pages */
   width: auto !important; 
   max-width: 160px !important; 
   object-fit: contain !important; 
   display: inline-block !important; 
-}
+} 
 
+.nav-links { 
+  display: flex !important; 
+  flex-direction: row !important; 
+  align-items: center !important; 
+  height: 100% !important; 
+  margin: 0 0 0 auto !important; 
+  gap: 28px !important; 
+  padding: 0 !important; 
+  position: relative !important; 
+  top: auto !important; 
+  right: auto !important; 
+  width: auto !important; 
+  background: transparent !important; 
+  box-shadow: none !important; 
+} 
 
-.logo {
-  height: 35px;
-  width: auto;
-  object-fit: contain;
-}
+.nav-links a { 
+  text-decoration: none; 
+  color: var(--navy); 
+  font-weight: 600; 
+  font-size: 0.9rem; 
+  transition: var(--transition); 
+} 
 
-.nav-links {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  height: 100% !important;
-  margin: 0 0 0 auto !important;
-  gap: 32px !important;
-  padding: 0 !important;
-  position: relative !important;
-  top: auto !important;
-  right: auto !important;
-  width: auto !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
+.nav-links a:hover { 
+  color: var(--emerald); 
+} 
 
-.nav-links a {
-  text-decoration: none;
-  color: var(--navy);
-  font-weight: 600;
-  font-size: 0.90rem;
-  transition: var(--transition);
-}
+/* --- 3. DROP-DOWNS & DESKTOP MEGA-MENU INTERFACES --- */ 
+.nav-item-dropdown { 
+  position: relative; 
+  display: inline-block; 
+} 
 
-.nav-links a:hover {
-  color: var(--emerald);
-}
+.dropdown-content { 
+  display: none; 
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  background-color: var(--white); 
+  min-width: 240px; 
+  box-shadow: 0px 20px 40px rgba(10, 31, 68, 0.12); 
+  border: 1px solid var(--border); 
+  border-radius: 12px; 
+  z-index: 1100; 
+  padding: 10px 0; 
+} 
 
-/* --- 3. MEGA-MENU SPATIAL EXPANSIONS --- */
-.nav-item-dropdown {
-  position: relative;
-  display: inline-block;
-}
+.dropdown-content a { 
+  color: var(--navy); 
+  padding: 12px 20px; 
+  text-decoration: none; 
+  display: block; 
+  font-size: 0.85rem; 
+  font-weight: 500; 
+  transition: var(--transition); 
+} 
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: var(--white);
-  min-width: 240px;
-  box-shadow: 0px 20px 40px rgba(10, 31, 68, 0.12);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  z-index: 1100;
-  padding: 10px 0;
-}
+.dropdown-content a:hover { 
+  background-color: var(--ice); 
+  color: var(--emerald); 
+  padding-left: 25px; 
+} 
 
-.dropdown-content a {
-  color: var(--navy);
-  padding: 12px 20px;
-  text-decoration: none;
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: var(--transition);
-}
+.nav-item-dropdown:hover .dropdown-content { 
+  display: block; 
+  animation: navFadeUp 0.3s ease; 
+} 
 
-.dropdown-content a:hover {
-  background-color: var(--ice);
-  color: var(--emerald);
-  padding-left: 25px;
-}
+.static-dropdown { 
+  position: static !important; 
+  height: 100% !important; 
+  display: flex !important; 
+  align-items: center !important; 
+} 
 
-.nav-item-dropdown:hover .dropdown-content {
-  display: block;
-  animation: navFadeUp 0.3s ease;
-}
+.static-dropdown > a { 
+  display: flex !important; 
+  align-items: center !important; 
+  height: 100% !important; 
+  color: #334155 !important; 
+  text-decoration: none !important; 
+  font-weight: 600 !important; 
+  font-size: 0.95rem !important; 
+  padding: 0 4px !important; 
+  transition: color 0.15s ease; 
+} 
 
-.static-dropdown {
-  position: static !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.static-dropdown > a {
-  display: flex !important;
-  align-items: center !important;
-  height: 100% !important;
-  color: #334155 !important;
-  text-decoration: none !important;
-  font-weight: 600 !important;
-  font-size: 0.95rem !important;
-  padding: 0 4px !important;
-  transition: color 0.15s ease;
-}
-
-.static-dropdown:hover > a {
-  color: #10b981 !important;
-}
+.static-dropdown:hover > a { 
+  color: #10b981 !important; 
+} 
 
 .dropdown-content.mega-panel-two-col, 
-.dropdown-content.mega-panel-three-col {
-  position: absolute !important;
-  top: 70px !important;
-  left: 40px !important;
-  width: calc(100% - 80px) !important;
-  background: #ffffff !important;
-  box-sizing: border-box !important;
-  border-top: 3px solid #10b981 !important;
-  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1) !important;
-  border-radius: 0 0 8px 8px !important;
-  padding: 40px 60px !important;
-  gap: 50px !important;
-  display: none !important;
-  z-index: 100000 !important;
-}
+.dropdown-content.mega-panel-three-col { 
+  position: absolute !important; 
+  top: 70px !important; 
+  left: 6% !important; /* MATCHED BOUNDARY: Formats mega-menu grid container edges directly to logo guides */
+  width: 88% !important; 
+  background: #ffffff !important; 
+  box-sizing: border-box !important; 
+  border-top: 3px solid #10b981 !important; 
+  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1) !important; 
+  border-radius: 0 0 8px 8px !important; 
+  padding: 30px 40px !important; 
+  gap: 40px !important; 
+  display: none !important; 
+  z-index: 100000 !important; 
+} 
 
-.dropdown-content.mega-panel-two-col {
-  grid-template-columns: repeat(2, 1fr) !important;
-}
+.dropdown-content.mega-panel-two-col { 
+  grid-template-columns: repeat(2, 1fr) !important; 
+} 
 
-.dropdown-content.mega-panel-three-col {
-  grid-template-columns: repeat(3, 1fr) !important;
-}
+.dropdown-content.mega-panel-three-col { 
+  grid-template-columns: repeat(3, 1fr) !important; 
+} 
 
 .static-dropdown:hover .dropdown-content.mega-panel-two-col, 
-.static-dropdown:hover .dropdown-content.mega-panel-three-col {
-  display: grid !important;
-}
+.static-dropdown:hover .dropdown-content.mega-panel-three-col { 
+  display: grid !important; 
+} 
 
-.mega-column {
-  display: flex !important;
-  flex-direction: column !important;
-}
+.mega-column { 
+  display: flex !important; 
+  flex-direction: column !important; 
+} 
 
-.mega-column .column-title {
-  font-size: 0.75rem !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  color: #10b981 !important;
-  letter-spacing: 0.5px !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  padding-bottom: 8px !important;
-  margin-bottom: 12px !important;
-}
+.mega-column .column-title { 
+  font-size: 0.75rem !important; 
+  font-weight: 700 !important; 
+  text-transform: uppercase !important; 
+  color: #10b981 !important; 
+  letter-spacing: 0.5px !important; 
+  border-bottom: 1px solid #f1f5f9 !important; 
+  padding-bottom: 8px !important; 
+  margin-bottom: 12px !important; 
+} 
 
-.mega-column a {
-  color: #475569 !important;
-  padding: 6px 0 !important;
-  font-size: 0.9rem !important;
-  font-weight: 500 !important;
-  text-align: left !important;
-  text-decoration: none !important;
-  transition: var(--transition);
-}
+.mega-column a { 
+  color: #475569 !important; 
+  padding: 6px 0 !important; 
+  font-size: 0.9rem !important; 
+  font-weight: 500 !important; 
+  text-align: left !important; 
+  text-decoration: none !important; 
+  transition: var(--transition); 
+} 
 
-.mega-column a:hover {
-  color: #10b981 !important;
-}
+.mega-column a:hover { 
+  color: #10b981 !important; 
+} 
 
-.btn-client-portal {
-  background: var(--navy);
-  color: var(--white) !important;
-  padding: 10px 24px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  transition: var(--transition);
-}
+.btn-client-portal { 
+  background: var(--navy); 
+  color: var(--white) !important; 
+  padding: 10px 24px; 
+  border-radius: 4px; 
+  font-size: 0.85rem; 
+  font-weight: 700; 
+  text-transform: uppercase; 
+  transition: var(--transition); 
+} 
 
-.btn-client-portal:hover {
-  background: var(--emerald);
-}
+.btn-client-portal:hover { 
+  background: var(--emerald); 
+} 
 
-/* Hides Mobile Fragments Everywhere on Desktop Viewports */
-nav button, nav .mobile-toggle-btn, .mobile-toggle-btn, [class*="toggle"], [id*="toggle"], [class*="burger"], [id*="burger"], [class*="trigger"], [id*="trigger"], [class*="mobile-menu"], [id*="mobile-menu"], [class*="navPanel"], [id*="navPanel"], [class*="navButton"], [id*="navButton"], .mobile-menu-trigger {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-  position: absolute !important;
-  pointer-events: none !important;
-}
+/* Hard Hiding All Native/Custom Mobile Toggle Fragments on Desktop Layouts */ 
+nav button, nav .mobile-toggle-btn, .mobile-toggle-btn, [class*="toggle"], [id*="toggle"], [class*="burger"], [id*="burger"], [class*="trigger"], [id*="trigger"], [class*="mobile-menu"], [id*="mobile-menu"], [class*="navPanel"], [id*="navPanel"], [class*="navButton"], [id*="navButton"], .mobile-menu-trigger { 
+  display: none !important; 
+  visibility: hidden !important; 
+  opacity: 0 !important; 
+  width: 0 !important; 
+  height: 0 !important; 
+  position: absolute !important; 
+  pointer-events: none !important; 
+} 
 
-/* --- 4. HERO SECTION WIDESCREEN MATRIX --- */
-/* --- 4. HERO SECTION ALIGNMENT TRACKS --- */
+/* --- 4. STRUCTURAL CONTENT AREA HERO CONTAINER GRIDS --- */ 
 .page-container, main.page-container { 
   padding: 120px 6% 40px 6% !important; /* MATCHED BOUNDARY: Pulls top hero contents inward safely */
   width: 100% !important; 
@@ -299,325 +292,321 @@ nav button, nav .mobile-toggle-btn, .mobile-toggle-btn, [class*="toggle"], [id*=
   transform: none !important; 
   left: 0 !important; 
   flex: 0 0 auto !important; 
+} 
+
+.service-grid { 
+  display: grid !important; 
+  grid-template-columns: 1.1fr 1.3fr !important; 
+  gap: 60px !important; 
+  align-items: flex-start !important; 
+  width: 100% !important; 
+  max-width: 100% !important; 
 }
 
-/* WIDESCREEN UPGRADE: Adjusted column allocations so things sit beautifully wide */
-.service-grid {
-  display: grid !important;
-  grid-template-columns: 1.2fr 1fr !important;
-  gap: 80px !important;
-  align-items: center !important;
-  width: 100% !important;
-  max-width: 100% !important;
-}
 
-.hero-tag {
-  color: var(--emerald);
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-  display: block;
-}
+/** * ========================================================================== * 🖥️ FILINGS4U PRODUCTION DESKTOP COMPONENTS & CONTENT STRUCTURAL ENGINE * FILE LOCATION: assets/css/desktop-components.css * ========================================================================== */ 
 
-/* WIDESCREEN UPGRADE: Enlarged hero headings to pull across canvas space */
-.content-area h1 {
-  font-size: 4rem;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  margin: 0 0 20px 0;
-  font-weight: 800;
-}
-
-/* WIDESCREEN UPGRADE: Removed restrictive 600px width bottlenecks */
-.content-area p {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-  margin-bottom: 35px;
-  max-width: 850px;
-}
-
-/* WIDESCREEN UPGRADE: Upgraded hero image dimensions */
-.hero-image-container {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: 460px !important;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(10,31,68,0.1);
-}
-
-.hero-image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/** * ========================================================================== * 🖥️ FILINGS4U PRODUCTION DESKTOP COMPONENTS & CONTENT STRUCTURAL ENGINE * FILE LOCATION: assets/css/desktop-components.css * ========================================================================== */
-
-/* --- 1. COMPONENT SECTIONS & CONTROLS --- */
-h1.section-title {
-  width: 100%;
-  margin: 0 auto 60px auto;
-  font-size: 3.5rem;
-  line-height: 1;
-  color: var(--navy);
-  font-weight: 800;
-  text-align: center;
-}
-
-section, 
-.feature-section, 
-.pricing-section, 
-.resource-section, 
-.faq-section {
-  padding: 60px 4% !important; /* WIDENED: Balanced inner safety gutters */
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.bg-navy, 
-.feature-section {
-  background: var(--navy) !important;
-  color: var(--white);
-}
-
-.bg-navy h2, 
-.bg-navy h4, 
-.feature-section h2 {
-  color: var(--white);
-}
-
-.bg-ice, 
-.pricing-section, 
-.resource-section {
-  background: var(--ice) !important;
-}
-
-.bg-white, 
-.faq-section {
-  background: var(--white) !important;
-}
-
-/* --- 2. THE CORE WIZARD & DATA GRID PLATFORMS --- */
-.wizard-container, 
-main.wizard-container {
-  max-width: 100% !important; /* STRETCHED: Form intake frames scale perfectly wide */
-  width: 100% !important;
-  padding-left: 4% !important;
-  padding-right: 4% !important;
-  box-sizing: border-box !important;
-}
-
-.wizard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); /* WIDENED: Upgraded minimum card density scales up */
-  gap: 30px;
-  width: 100%;
-}
-
-.wizard-card {
-  background: var(--white);
-  padding: 45px;
-  border-radius: 24px;
-  border: 1px solid #eef2f6;
-  box-shadow: 0 20px 40px rgba(10, 31, 68, 0.06);
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 340px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.wizard-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 30px 60px rgba(10, 31, 68, 0.12);
-}
-
-.wizard-card h3 {
-  font-size: 1.3rem;
-  margin: 0 0 15px 0;
-  color: var(--navy);
-  font-weight: 800;
-}
-
-.wizard-card p {
-  font-size: 0.95rem;
-  color: #64748b;
-  line-height: 1.6;
-  margin: 0 0 30px 0;
-}
-
-.card-label {
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: var(--navy);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-  display: block;
-  opacity: 0.6;
-}
-
-.sidebar-card {
-  background: var(--white);
-  padding: 40px;
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  box-shadow: 0 20px 40px rgba(10, 31, 68, 0.05);
-  position: sticky;
-  top: 100px;
-}
-
-.step-pane-intake, 
-#step-pane-intake, 
-#step-pane-upsells, 
-#step-pane-summary {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* --- 3. INFRASTRUCTURE BUTTON MATRICES --- */
-.btn-main {
-  background: var(--emerald);
-  color: white;
-  padding: 16px 40px;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: var(--transition);
-  display: inline-block;
-  text-align: center;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-main:hover {
-  background: #0e9f6e;
-  transform: translateY(-2px);
-}
-
-/* --- 4. ICON BLOCK LAYOUT CONSTRUCTS --- */
-.icon-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 30px !important;
-  margin-top: 30px !important;
-  width: 100% !important;
-}
-
-.icon-box {
-  padding: 30px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  transition: var(--transition);
-  background: var(--white);
-}
-
-.bg-navy .icon-box, 
-.feature-section .icon-box {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 30px;
-  border-radius: 16px;
-}
-
-.bg-navy .icon-box h4, 
-.feature-section .icon-box h4 { 
+/* --- 1. HERO INFRASTRUCTURE TEXT BLOCKS --- */
+.hero-tag { 
   color: var(--emerald); 
-}
+  font-size: 0.75rem; 
+  font-weight: 800; 
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+  margin-bottom: 12px; 
+  display: block; 
+} 
 
-.bg-navy .icon-box p, 
-.feature-section .icon-box p { 
+.content-area h1 { 
+  font-size: 3.2rem; 
+  line-height: 1.05; 
+  letter-spacing: -0.04em; 
+  margin: 0 0 15px 0; 
+  font-weight: 800; 
+} 
+
+.content-area p { 
+  font-size: 1.1rem; 
+  color: var(--text-muted); 
+  margin-bottom: 25px; 
+  max-width: 600px; 
+} 
+
+.hero-image-container { 
+  width: 100% !important; 
+  max-width: 100% !important; 
+  height: 380px !important; 
+  border-radius: 20px; 
+  overflow: hidden; 
+  box-shadow: 0 20px 40px rgba(10,31,68,0.1); 
+  margin-top: 10px; 
+} 
+
+.hero-image-container img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+} 
+
+/* --- 2. COMPONENT SECTIONS & CONTROLS --- */ 
+h1.section-title { 
+  width: 100%; 
+  margin: 0 auto 60px auto; 
+  font-size: 3.5rem; 
+  line-height: 1; 
+  color: var(--navy); 
+  font-weight: 800; 
+  text-align: center;
+} 
+
+section, .feature-section, .pricing-section, .resource-section, .faq-section { 
+  padding: 80px 6% !important; /* MATCHED BOUNDARY: Pulls sections in from monitor frames cleanly */
+  width: 100% !important; 
+  max-width: 100% !important; 
+  box-sizing: border-box !important; 
+} 
+
+.bg-navy, .feature-section { 
+  background: var(--navy) !important; 
+  color: var(--white); 
+} 
+
+.bg-navy h2, .bg-navy h4, .feature-section h2 { 
+  color: var(--white); 
+} 
+
+.bg-ice, .pricing-section, .resource-section { 
+  background: var(--ice) !important; 
+} 
+
+.bg-white, .faq-section { 
+  background: var(--white) !important; 
+} 
+
+/* --- 3. THE CORE WIZARD & DATA GRID PLATFORMS --- */ 
+.wizard-container, main.wizard-container { 
+  max-width: 100% !important; 
+  width: 100% !important; 
+  padding-left: 6% !important; /* MATCHED BOUNDARY: Aligns dynamic wizards with page layout tracks */
+  padding-right: 6% !important; 
+  box-sizing: border-box !important; 
+} 
+
+.wizard-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+  gap: 30px; 
+  width: 100%; 
+} 
+
+.wizard-card { 
+  background: var(--white); 
+  padding: 45px; 
+  border-radius: 24px; 
+  border: 1px solid #eef2f6; 
+  box-shadow: 0 20px 40px rgba(10, 31, 68, 0.06); 
+  text-decoration: none; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+  min-height: 340px; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+} 
+
+.wizard-card:hover { 
+  transform: translateY(-10px); 
+  box-shadow: 0 30px 60px rgba(10, 31, 68, 0.12); 
+} 
+
+.wizard-card h3 { 
+  font-size: 1.3rem; 
+  margin: 0 0 15px 0; 
+  color: var(--navy); 
+  font-weight: 800; 
+} 
+
+.wizard-card p { 
+  font-size: 0.95rem; 
+  color: #64748b; 
+  line-height: 1.6; 
+  margin: 0 0 30px 0; 
+} 
+
+.card-label { 
+  font-size: 0.75rem; 
+  font-weight: 800; 
+  color: var(--navy); 
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+  margin-bottom: 10px; 
+  display: block; 
+  opacity: 0.6; 
+} 
+
+.sidebar-card { 
+  background: var(--white); 
+  padding: 40px; 
+  border-radius: 24px; 
+  border: 1px solid var(--border); 
+  box-shadow: 0 20px 40px rgba(10,31,68,0.05); 
+  position: sticky; 
+  top: 100px; 
+} 
+
+.step-pane-intake, #step-pane-intake, #step-pane-upsells, #step-pane-summary { 
+  width: 100% !important; 
+  max-width: 100% !important; 
+} 
+
+/* --- 4. INFRASTRUCTURE BUTTON MATRICES --- */ 
+.btn-main { 
+  background: var(--emerald); 
+  color: white; 
+  padding: 16px 40px; 
+  border-radius: 4px; 
+  font-size: 0.95rem; 
+  font-weight: 700; 
+  text-decoration: none; 
+  transition: var(--transition); 
+  display: inline-block; 
+  text-align: center; 
+  border: none; 
+  cursor: pointer; 
+} 
+
+.btn-main:hover { 
+  background: #0e9f6e; 
+  transform: translateY(-2px); 
+} 
+
+/* --- 5. ICON BLOCK LAYOUT CONSTRUCTS --- */ 
+.icon-grid { 
+  display: grid !important; 
+  grid-template-columns: repeat(3, 1fr) !important; 
+  gap: 30px !important; 
+  margin-top: 30px !important; 
+  width: 100% !important; 
+} 
+
+.icon-box { 
+  padding: 30px; 
+  border-radius: 16px; 
+  border: 1px solid var(--border); 
+  transition: var(--transition); 
+  background: var(--white); 
+} 
+
+.bg-navy .icon-box, .feature-section .icon-box { 
+  background: rgba(255, 255, 255, 0.03); 
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  padding: 30px; 
+  border-radius: 16px; 
+} 
+
+.bg-navy .icon-box h4, .feature-section .icon-box h4 { 
+  color: var(--emerald); 
+} 
+
+.bg-navy .icon-box p, .feature-section .icon-box p { 
   color: rgba(255, 255, 255, 0.7); 
+} 
+
+/* --- 6. SYSTEM DATA STATUS DESKTOP TRACK --- */ 
+.stats-grid { 
+  display: grid !important; 
+  grid-template-columns: repeat(3, 1fr) !important; 
+  gap: 30px !important; 
+  margin-top: 30px !important; 
+  width: 100% !important; 
+} 
+
+.stats-card { 
+  padding: 30px; 
+  border-radius: 16px; 
+  border: 1px solid var(--border, #e2e8f0); 
+  background: var(--white, #ffffff); 
+  transition: var(--transition, all 0.3s ease); 
+} 
+
+.stats-card.featured { 
+  border: 2.5px solid var(--emerald, #10b981); 
+  transform: scale(1.03); 
+} 
+
+.amount { 
+  font-size: 1rem !important; 
+  font-weight: 800 !important; 
+  color: #0a1f44 !important; 
+  line-height: 1.1 !important; 
+  margin-bottom: 10px !important; 
+  display: block !important; 
+} 
+
+/* --- 7. SECURE BUSINESS COMPLIANCE TABLES --- */ 
+.compliance-table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  margin: 25px 0; 
+  background: white; 
+  border-radius: 12px; 
+  overflow: hidden; 
+  border: 1px solid var(--border); 
+} 
+
+.compliance-table th { 
+  background: var(--navy); 
+  color: white; 
+  padding: 15px; 
+  text-align: left; 
+  font-size: 0.8rem; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+} 
+
+.compliance-table td { 
+  padding: 15px; 
+  border-bottom: 1px solid var(--border); 
+  font-size: 0.9rem; 
+  color: var(--navy); 
+} 
+
+.compliance-table tr:last-child td { 
+  border-bottom: none; 
+} 
+
+.compliance-table strong { 
+  color: var(--emerald); 
+} 
+
+@keyframes navFadeUp { 
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  } 
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  } 
 }
 
-/* --- 5. SYSTEM DATA STATUS DESKTOP TRACK --- */
-.stats-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 30px !important;
-  margin-top: 30px !important;
-  width: 100% !important;
-}
 
-.stats-card {
-  padding: 30px;
-  border-radius: 16px;
-  border: 1px solid var(--border, #e2e8f0);
-  background: var(--white, #ffffff);
-  transition: var(--transition, all 0.3s ease);
-}
+/** * ========================================================================== * 🖥️ FILINGS4U PRODUCTION DESKTOP PRICING SUITE, CONTENT HUB & FOOTER MATRIX * FILE LOCATION: assets/css/desktop-content.css * ========================================================================== */
 
-.stats-card.featured {
-  border: 2.5px solid var(--emerald, #10b981);
-  transform: scale(1.03);
-}
-
-.amount {
-  font-size: 1rem !important;
-  font-weight: 800 !important;
-  color: #0a1f44 !important;
-  line-height: 1.1 !important;
-  margin-bottom: 10px !important;
-  display: block !important;
-}
-
-/* --- 6. SECURE BUSINESS COMPLIANCE TABLES --- */
-.compliance-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 25px 0;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.compliance-table th {
-  background: var(--navy);
-  color: white;
-  padding: 15px;
-  text-align: left;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.compliance-table td {
-  padding: 15px;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.9rem;
-  color: var(--navy);
-}
-
-.compliance-table tr:last-child td {
-  border-bottom: none;
-}
-
-.compliance-table strong {
-  color: var(--emerald);
-}
-
-/* --- 7. CORE DESKTOP PRICING PLATFORM --- */
+/* --- 1. CORE DESKTOP PRICING PLATFORM --- */
 .pricing-grid {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 30px !important;
   margin-top: 30px !important;
-  align-items: stretch !important; /* Preserves matching equal card heights */
+  align-items: stretch !important;
   width: 100% !important;
 }
 
 .price-card {
-  min-height: 520px !important; /* Forces uniform vertical framework room */
+  min-height: 520px !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important; /* Securely pins checkout button to bottom edge */
+  justify-content: space-between !important;
   padding: 40px 30px !important;
   background: var(--white) !important;
   border: 1px solid var(--border) !important;
@@ -662,7 +651,7 @@ main.wizard-container {
 .price-features {
   list-style: none !important;
   padding: 0 !important;
-  margin: 20px 0 auto 0 !important; /* Evenly pushes feature text up */
+  margin: 20px 0 auto 0 !important;
   text-align: left !important;
 }
 
@@ -670,7 +659,7 @@ main.wizard-container {
   margin-bottom: 14px !important;
   font-size: 0.95rem !important;
   color: var(--navy) !important;
-  display: list-item !important; /* Maintains clean list tracking lines */
+  display: list-item !important;
 }
 
 .price-badge {
@@ -689,7 +678,7 @@ main.wizard-container {
 }
 
 .price-card:hover {
-  transform: translateY(-8px) !important; /* Lifts card upward fluidly */
+  transform: translateY(-8px) !important;
   box-shadow: 0 20px 40px rgba(10, 31, 68, 0.12) !important;
   border-color: #cbd5e1 !important;
 }
@@ -705,26 +694,12 @@ main.wizard-container {
   box-shadow: 0 25px 50px rgba(16, 185, 129, 0.25) !important;
 }
 
-@keyframes navFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-/** * ========================================================================== * 🖥️ FILINGS4U PRODUCTION DESKTOP CONTENT & CONTACT HUB * FILE LOCATION: assets/css/desktop-content.css * ========================================================================== */
-
-/* --- 1. UNIVERSAL ARTICLES & CANVAS STRUCTURES --- */
+/* --- 2. UNIVERSAL ARTICLES & CANVAS STRUCTURES --- */
 .blog-wrapper-canvas {
-  width: 100% !important; /* STRETCHED: Removed 1200px max-width ceiling */
+  width: 100% !important;
   max-width: 100% !important;
   margin: 0 auto !important;
-  padding: 0 4%;
+  padding: 0 6% !important; /* MATCHED BOUNDARY: Pulls blog section track lines into 6% guides */
   box-sizing: border-box;
   flex: 1 0 auto !important;
 }
@@ -739,7 +714,6 @@ main.wizard-container {
   width: 100% !important;
 }
 
-/* --- 2. CARD STRUCTURAL PARAMETERS --- */
 .blog-card {
   display: flex !important;
   flex-direction: column !important;
@@ -933,9 +907,9 @@ ul.horizontal-category-links li a.active-filter-tier {
 
 /* --- 4. ARTICLE DYNAMIC VIEWPORTS --- */
 .article-view-container {
-  max-width: 1000px; /* WIDENED: Upgraded canvas readability limits */
+  max-width: 1000px;
   margin: 60px auto;
-  padding: 0 4%;
+  padding: 0 6% !important; /* MATCHED BOUNDARY: Pulls single blog reading sheets into baseline grid alignment */
   box-sizing: border-box;
 }
 
@@ -952,7 +926,7 @@ ul.horizontal-category-links li a.active-filter-tier {
 
 .article-hero-image {
   width: 100%;
-  height: 440px; /* SCALED: Proportional layout lift */
+  height: 440px;
   object-fit: cover;
   border-radius: 12px;
   margin-bottom: 30px;
@@ -976,7 +950,7 @@ ul.horizontal-category-links li a.active-filter-tier {
 
 .article-view-container h1 {
   color: #0a1f44;
-  font-size: 2.8rem; /* SCALED: Clean screen presentation hierarchy */
+  font-size: 2.8rem;
   line-height: 1.2;
   margin: 0 0 25px 0;
   font-weight: 700;
@@ -1005,12 +979,12 @@ ul.horizontal-category-links li a.active-filter-tier {
 /* --- 5. CONTACT CONTEXT LAYOUT LAYERS --- */
 .contact-layout-grid {
   display: grid;
-  grid-template-columns: 1fr 1.2fr; /* OPTIMIZED: Weighted space alignment */
+  grid-template-columns: 1fr 1.2fr;
   gap: 50px;
-  width: 100% !important; /* STRETCHED: Drops the old 1200px block restriction */
+  width: 100% !important;
   max-width: 100% !important;
   margin: 60px auto;
-  padding: 0 4%;
+  padding: 0 6% !important; /* MATCHED BOUNDARY: Pulls contact page columns into baseline alignments */
   box-sizing: border-box;
   align-items: start;
 }
@@ -1187,7 +1161,7 @@ ul.horizontal-category-links li a.active-filter-tier {
   margin-top: 40px !important;
 }
 
-/** * ========================================================================== * 🖥️ FILINGS4U PRODUCTION DESKTOP FOOTER FRAMEWORK * FILE LOCATION: assets/css/desktop-footer.css * ========================================================================== */
+/* --- 7. PRODUCTION DESKTOP FOOTER FRAMEWORK --- */
 footer.site-footer, 
 .site-footer {
   display: block !important;
@@ -1201,7 +1175,7 @@ footer.site-footer,
   background: var(--navy) !important;
   color: #94a3b8 !important;
   box-sizing: border-box !important;
-  padding: 60px 4% 40px 4% !important; /* STRETCHED: Safe structural padding limits track page edges cleanly */
+  padding: 60px 6% 40px 6% !important; /* MATCHED BOUNDARY: Footer content boxes start exactly below logo edges */
   flex-shrink: 0;
   margin-top: 40px !important;
 }
@@ -1211,12 +1185,12 @@ footer .footer-container,
 .footer-container {
   display: flex !important;
   flex-direction: row !important;
-  justify-content: space-between !important; /* STRETCHED: Stretches outer column boxes cleanly across widescreen canvas margins */
+  justify-content: space-between !important;
   align-items: flex-start !important;
   gap: 30px !important;
   padding-left: 0% !important;
   padding-right: 0% !important;
-  max-width: 100% !important; /* STRETCHED: Removed 1300px desktop grid width layout caps */
+  max-width: 100% !important;
   width: 100% !important;
   margin: 0 auto !important;
   box-sizing: border-box !important;
@@ -1285,7 +1259,6 @@ footer .footer-container,
   padding-left: 5px;
 }
 
-/* Aligning the final column elements neatly flush against the right margin */
 .footer-container .footer-col:last-child {
   text-align: right !important;
 }
@@ -1305,10 +1278,9 @@ footer .footer-container,
   padding-right: 5px !important;
 }
 
-/* Lower Split Layout Information Row */
 .site-footer .footer-bottom {
   width: 100% !important;
-  max-width: 100% !important; /* STRETCHED: Removed 1300px block width constraint */
+  max-width: 100% !important;
   margin: 60px auto 0 auto !important;
   display: flex !important;
   flex-direction: row !important;
