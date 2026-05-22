@@ -28,7 +28,19 @@
     </a> 
     
 <!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
-<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="toggleMobileMenu()">☰</button>
+<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
+        onclick="
+          const body = document.body;
+          const menu = document.querySelector('.nav-links');
+          
+          body.classList.toggle('nav-open');
+          if(menu) { menu.classList.toggle('active'); }
+          
+          const isOpen = body.classList.contains('nav-open');
+          this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          
+          console.log('Inline click successful! Menu active state:', isOpen);
+        ">☰</button>
     
     <div class="nav-links"> 
       <!-- FORMATIONS DROPDOWN --> 
