@@ -150,26 +150,26 @@ async function fetchHomepageArticles(container) {
 }
 
 /**
- * 🔄 MOBILE ACCORDION COMPONENT HELPER TRIGGER
- * Fires directly via your HTML inline 'onclick' parameters on smartphone screens
+ * 📱 MOBILE HEADER NAVIGATION SLIDEOUT CONTROL
+ * Activates display transitions on navigation link menus natively via click paths.
  */
-function toggleMobileDropdown(event, anchorElement) {
-    if (window.innerWidth < 992) {
+$(document).ready(function() {
+    // Unbind prior listeners to eliminate execution loops across active sheets
+    $('.mobile-toggle-btn').off('click').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
         
-        // Find the parent dropdown box wrapper container
-        const targetDropdown = anchorElement.closest(".nav-item-dropdown");
-        if (targetDropdown) {
-            // Force-close all OTHER open mobile menus to prevent layouts overlaying
-            document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
-                if (item !== targetDropdown) {
-                    item.classList.remove("active-toggle");
-                }
-            });
-            // Toggle the current element's open layout drawer state
-            targetDropdown.classList.toggle("active-toggle");
-            console.log("📱 Mobile dropdown accordion toggled state changed.");
+        // Triggers the dropdown layout container smoothly 
+        $('.nav-links').slideToggle(250);
+        console.log("📱 Mobile core navigation links system drawer toggled.");
+    });
+
+    // Close menu automatically if a user clicks anywhere outside the links panel
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('nav').length) {
+            if ($('.nav-links').is(':visible') && $(window).width() <= 768) {
+                $('.nav-links').slideUp(200);
+            }
         }
-    }
-}
+    });
+});
