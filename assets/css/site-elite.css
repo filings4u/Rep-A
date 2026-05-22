@@ -125,7 +125,7 @@ header, .site-header {
   text-decoration: none;
   color: var(--navy);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.90rem;
   transition: var(--transition);
 }
 
@@ -338,7 +338,7 @@ nav button, nav .mobile-toggle-btn, .mobile-toggle-btn, [class*="toggle"], [id*=
 .hero-image-container {
   width: 100% !important;
   max-width: 100% !important;
-  height: 480px !important;
+  height: 460px !important;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(10,31,68,0.1);
