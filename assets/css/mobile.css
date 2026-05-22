@@ -268,44 +268,47 @@
     display: block !important; 
     transform: none !important; 
     left: 0 !important; 
-    box-sizing: border-box !important; 
+    box-sizing: border-box !important;
   } 
   footer.site-footer .footer-container { 
     display: grid !important; 
-    grid-template-columns: 1fr !important; 
-    gap: 35px 20px !important; 
+    grid-template-columns: repeat(2, 1fr) !important; /* FIXED: Forces links to stay side-by-side on mobile */
+    gap: 30px 15px !important; 
   } 
   .site-footer .footer-brand { 
     grid-column: 1 / -1 !important; 
-    text-align: center !important; 
+    text-align: left !important; /* FIXED: Keeps branding block left aligned for split layout row consistency */
   } 
   .site-footer .footer-brand img { 
-    height: 30px !important; 
+    height: 28px !important; /* FIXED: Force locks image sizing on mobile layout pages */
     width: auto !important; 
-    max-width: 140px !important; 
+    max-width: 130px !important; 
     object-fit: contain !important; 
-    display: inline-block !important; 
-    margin: 0 auto 12px auto !important; 
+    display: block !important; 
+    margin: 0 0 12px 0 !important; 
   } 
   .site-footer .footer-brand p { 
     color: #94a3b8 !important; 
-    text-align: center !important; 
+    text-align: left !important; 
   } 
   .site-footer .footer-brand div[style*="display: flex"] { 
-    justify-content: center !important; 
+    justify-content: flex-start !important; 
   } 
   .site-footer .footer-col { 
-    text-align: center !important; 
+    text-align: left !important; /* FIXED: Columns align clean to left edge side-by-side */
   } 
   .footer-col h4 { 
     color: var(--white) !important; 
     margin: 0 0 12px 0 !important; 
-    font-size: 0.9rem !important; 
+    font-size: 0.85rem !important; 
+    white-space: nowrap !important; /* FIXED: Prevents heading words from shifting layout cells */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   } 
   .site-footer .footer-col ul { 
     display: flex !important; 
     flex-direction: column !important; 
-    align-items: center !important; 
+    align-items: flex-start !important; 
     list-style: none !important; 
     padding: 0 !important; 
     margin: 0 !important; 
@@ -314,13 +317,14 @@
     color: #94a3b8 !important; 
     display: inline-block !important; 
     padding: 6px 0 !important; 
+    font-size: 0.85rem !important; /* FIXED: Compact text fitting for side-by-side presentation columns */
   } 
   .site-footer .footer-bottom { 
     display: flex !important; 
     flex-direction: column !important; 
     align-items: center !important; 
-    gap: 20px !important; 
-    padding: 25px 0 0 0 !important; /* FIXED: Removed the bad dot shorthand syntax error */ 
+    gap: 15px !important; 
+    padding: 25px 0 0 0 !important; 
     border-top: 1px solid rgba(255, 255, 255, 0.1) !important; 
   } 
   .site-footer .footer-bottom div p { 
@@ -333,7 +337,8 @@
   } 
   .site-footer .legal-links { 
     display: flex !important; 
-    gap: 12px 20px !important; 
+    gap: 12px 16px !important; 
     justify-content: center !important; 
-  } 
+  }
+
 }
