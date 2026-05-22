@@ -20,17 +20,18 @@
 </head>
 <body>
 
-<!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
+ <!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
 <nav>
     <div class="nav-content-wrapper">
         <a href="index.html" class="logo-link">
             <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
         </a>
-        <button class="mobile-toggle-btn" aria-label="Toggle Navigation">☰</button> 
+        <button class="mobile-toggle-btn" onclick="toggleMobileMenu()">☰</button>
         
         <div class="nav-links">
             <!-- FORMATIONS DROPDOWN -->
             <div class="nav-item-dropdown static-dropdown">
+                <a href="#" onclick="toggleMobileDropdown(event, this)">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
                 <div class="dropdown-content mega-panel-two-col">
                     <div class="mega-column">
                         <span class="column-title">Popular Formations</span>
@@ -48,6 +49,7 @@
 
             <!-- COMPLIANCE DROPDOWN -->
             <div class="nav-item-dropdown static-dropdown">
+                <a href="#" onclick="toggleMobileDropdown(event, this)">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
                 <div class="dropdown-content mega-panel-two-col">
                     <div class="mega-column">
                         <span class="column-title">Entity Health</span>
@@ -66,6 +68,7 @@
 
             <!-- TAX FILINGS DROPDOWN -->
             <div class="nav-item-dropdown static-dropdown">
+                <a href="#" onclick="toggleMobileDropdown(event, this)">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
                 <div class="dropdown-content mega-panel-two-col">
                     <div class="mega-column">
                         <span class="column-title">Income & Operations</span>
@@ -84,6 +87,7 @@
 
             <!-- DOT & FLEET DROPDOWN -->
             <div class="nav-item-dropdown static-dropdown">
+                <a href="#" onclick="toggleMobileDropdown(event, this)">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
                 <div class="dropdown-content mega-panel-three-col">
                     <div class="mega-column">
                         <span class="column-title">Authority Setup</span>
@@ -112,7 +116,7 @@
             <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Secure Portal</a>
         </div>
     </div>
-</nav>s
+</nav>
 
     <!-- SECTION 1: HERO CONTAINER -->
     <main class="page-container">
