@@ -342,3 +342,38 @@
   }
 
 }
+
+/* ==========================================
+   📱 MOBILE 2x2 FOOTER COMPACT ALIGNMENT OVERRIDE
+   ========================================== */
+@media screen and (max-width: 980px) {
+  footer.site-footer .footer-container {
+    gap: 20px 15px !important; /* FORCES TIGHTNESS: Pulls layout rows vertically closer together */
+  }
+
+  .site-footer .footer-brand p {
+    margin-top: 8px !important;
+    margin-bottom: 5px !important;
+    line-height: 1.4 !important;
+    font-size: 0.85rem !important;
+  }
+
+  .footer-col h4 {
+    margin: 0 0 6px 0 !important; /* Closes empty void under column header tags */
+    font-size: 0.85rem !important;
+  }
+
+  .site-footer .footer-col ul li {
+    margin-bottom: 6px !important; /* Prevents text elements from feeling too spaced out */
+  }
+
+  .site-footer .footer-col ul li a {
+    padding: 2px 0 !important; /* Collapses line buffers inside your links grid layout */
+    font-size: 0.82rem !important;
+  }
+
+  .site-footer .footer-bottom {
+    margin-top: 25px !important; /* Brings the lower legal section closer to the 2x2 columns */
+    padding-top: 15px !important;
+  }
+}
