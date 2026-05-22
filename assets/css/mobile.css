@@ -1,9 +1,5 @@
 /* ==========================================================================
-   UPDATED MOBILE OVERRIDE SPECIFICATION
-   - Slide-in panel menu going from right to left
-   - White menu background with Navy X close button
-   - Side-by-side 2x2 footer layout with left-aligned brand text
-   - Stacked section structures with hero image on top
+   ACTUAL FIXED MOBILE OVERRIDE SPECIFICATION
    ========================================================================== */
 
 @media screen and (max-width: 768px) {
