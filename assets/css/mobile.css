@@ -136,27 +136,24 @@
     margin: 0 !important; 
   } 
   
-  .nav-links { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    align-items: center !important; 
-    justify-content: flex-start !important; 
-    position: fixed !important; 
-    top: 70px !important; 
-    left: auto !important; 
-    right: -100vw !important; /* FIXED: Positioned off-screen to the right */ 
-    width: 100vw !important; 
-    height: calc(100vh - 70px) !important; 
-    background: var(--white) !important; /* FIXED: White background menu drop down */ 
-    box-shadow: -10px 10px 30px rgba(10, 31, 68, 0.1) !important; 
-    gap: 8px !important; 
-    padding: 20px !important; 
-    box-sizing: border-box !important; 
-    opacity: 0 !important; 
-    visibility: hidden !important; 
-    transition: var(--transition) !important; 
-    z-index: 100000 !important; 
-    overflow-y: auto !important; 
+ /* --- DYNAMIC CLOSE BUTTON POSITIONING --- */
+  .nav-links .mobile-close-btn {
+    position: absolute !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 44px !important;
+    height: 44px !important;
+    background: transparent !important;
+    border: none !important;
+    font-size: 2rem !important;
+    color: var(--navy) !important; /* Matches your core typography scheme */
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: 100002 !important;
   } 
   
   body.nav-open .nav-links { 
