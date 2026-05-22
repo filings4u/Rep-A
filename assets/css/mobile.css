@@ -158,13 +158,11 @@
   overflow-y: auto !important;
 }
 
-/* Slide Left open-state triggers via class targets */
-body.nav-open .nav-links, .nav-links.active {
+body.nav-open .nav-links, 
+.nav-links.active {
   opacity: 1 !important;
   visibility: visible !important;
-  
-  /* CHANGE HERE: Pull into view on the LEFT side */
-  left: 0 !important; 
+  left: 0 !important; /* Pull drawer container completely into screen window view */
   right: auto !important;
 }
 
