@@ -119,6 +119,7 @@
     display: inline-block !important; 
   } 
   
+/* --- MOBILE NAVIGATION TOGGLE BUTTON FIX --- */
   nav button.mobile-toggle-btn, .mobile-toggle-btn { 
     display: flex !important; 
     align-items: center !important; 
@@ -128,7 +129,7 @@
     background: transparent !important; 
     border: none !important; 
     font-size: 2rem !important; 
-    color: var(--white) !important; /* FIXED: Button text color is now white */ 
+    color: var(--navy) !important; /* FIXED: Changed to navy so it is visible on the white header */ 
     cursor: pointer !important; 
     z-index: 100001 !important; 
     padding: 0 !important; 
@@ -235,9 +236,10 @@
     text-align: center !important; 
   } 
   
-  .btn-client-portal { 
+ /* --- LINK & PORTAL BUTTON TEXT FIX --- */
+  .btn-client-portal, .nav-links button, .nav-links .btn { 
     background: var(--navy) !important; 
-    color: var(--white) !important; /* FIXED: Button text is white */ 
+    color: var(--white) !important; /* FIXED: Keeps button text inside the menu pure white */ 
     width: 100% !important; 
     padding: 14px 0 !important; 
     border-radius: 8px !important; 
@@ -245,7 +247,7 @@
     text-align: center !important; 
     display: block !important; 
     font-weight: 700 !important; 
-  } 
+  }
   
   /* --- DISPLAY GRIDS STACKERS --- */ 
   .icon-grid, .pricing-grid, .stats-grid, .contact-layout-grid, .faq-grid, .resource-grid, #public-homepage-blog-grid-target { 
