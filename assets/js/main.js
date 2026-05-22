@@ -154,22 +154,19 @@ async function fetchHomepageArticles(container) {
  * Activates display transitions on navigation link menus natively via click paths.
  */
 $(document).ready(function() {
-    // Unbind prior listeners to eliminate execution loops across active sheets
     $('.mobile-toggle-btn').off('click').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
         
-        // Triggers the dropdown layout container smoothly 
-        $('.nav-links').slideToggle(250);
-        console.log("📱 Mobile core navigation links system drawer toggled.");
-    });
-
-    // Close menu automatically if a user clicks anywhere outside the links panel
-    $(document).on('click', function(event) {
-        if (!$(event.target).closest('nav').length) {
-            if ($('.nav-links').is(':visible') && $(window).width() <= 768) {
-                $('.nav-links').slideUp(200);
-            }
+        // Target your nav links panel element
+        const menuDrawer = $('.nav-links');
+        
+        if (menuDrawer.is(':visible')) {
+            // Smoothly tucks the navigation window away
+            menuDrawer.attr('style', 'display: none !important;');
+        } else {
+            // Forces the menu block open and displays links underneath the logo bar
+            menuDrawer.attr('style', 'display: flex !important;');
         }
     });
 });
