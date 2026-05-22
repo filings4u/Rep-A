@@ -679,3 +679,55 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
     color: #ffffff !important; /* Visual Anchor: Forces crisp white text visibility over dark background buttons */
   }
 }
+
+
+/* --- SUB-PAGE HERO REPAIR --- */
+@media (max-width: 991px) {
+  
+  /* Reset the container holding the image on sub-pages */
+  .hero-image-container, 
+  aside[class*="image"],
+  main aside,
+  .service-grid + aside {
+    height: auto !important; /* Overrides fixed desktop heights */
+    min-height: 0 !important;
+    max-height: 300px !important; /* Prevents long vertical stretching */
+    overflow: hidden !important;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* Force the image itself to maintain its correct shape and size */
+  .hero-image-container img, 
+  aside[class*="image"] img,
+  main aside img,
+  main img {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important; /* Crops cleanly instead of squishing or stretching */
+    max-height: 300px !important;
+  }
+}
+
+
+@media (max-width: 991px) {
+  /* Basic state for mobile links layout container drawer */
+  .nav-links {
+    position: fixed !important;
+    top: 0 !important;
+    left: -100vw !important; /* Starts hidden on the far left side */
+    right: auto !important;
+    width: 85vw !important;
+    max-width: 340px !important;
+    height: 100vh !important;
+    z-index: 999999 !important;
+    transition: left 0.3s ease-in-out !important; /* Animates the slide position */
+  }
+
+  /* When active or nav-open body hook is added by the javascript */
+  body.nav-open .nav-links,
+  .nav-links.active {
+    left: 0 !important; /* Slides out perfectly into view */
+    right: auto !important;
+  }
+}

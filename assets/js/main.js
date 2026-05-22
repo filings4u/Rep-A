@@ -4,32 +4,8 @@
  * ========================================================================== 
  */ 
 
-const supabaseUrl = 'https://lrbimrlbskjweynxlgas.supabase.co'; 
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; 
-
-if (typeof supabase !== 'undefined' && supabase.createClient) { 
-  window.supabase = supabase.createClient(supabaseUrl, supabaseKey); 
-} 
-
-document.addEventListener("DOMContentLoaded", () => { 
-  // Injects close button automatically if missing
-  const navLinksDrawer = document.querySelector(".nav-links");
-  if (navLinksDrawer && !document.querySelector(".mobile-close-btn")) { 
-    const closeBtn = document.createElement("button"); 
-    closeBtn.className = "mobile-close-btn"; 
-    closeBtn.innerHTML = "✕"; 
-    closeBtn.setAttribute("aria-label", "Close Menu"); 
-    closeBtn.setAttribute("onclick", "toggleMobileMenu()"); // Hooks directly into unified function
-    navLinksDrawer.insertBefore(closeBtn, navLinksDrawer.firstChild); 
-  }
-  
-  initDynamicBlogSync(); 
-}); 
-
-/** 
- * 1. UNIFIED GLOBAL NAVIGATION HANDLERS (EXPLICIT HTML HOOKS)
- */ 
-function toggleMobileMenu() {
+// 1. GLOBAL SCOPE DIRECT SYSTEM HOOKS (Ensures HTML onclick attributes can always execute)
+window.toggleMobileMenu = function() {
   const navLinksDrawer = document.querySelector(".nav-links");
   const toggleBtn = document.querySelector(".mobile-toggle-btn");
   
@@ -42,49 +18,72 @@ function toggleMobileMenu() {
   if (toggleBtn) {
     toggleBtn.setAttribute("aria-expanded", isCurrentlyOpen ? "true" : "false");
   }
-  console.log("📱 Mobile menu toggled. State open:", isCurrentlyOpen);
-}
+  console.log("📱 Global Mobile Menu Triggered. Active Open State:", isCurrentlyOpen);
+};
 
-function toggleMobileDropdown(event, anchorElement) {
+window.toggleMobileDropdown = function(event, anchorElement) {
   if (window.innerWidth < 992) {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     
     const parentDropdown = anchorElement.closest(".nav-item-dropdown");
     if (parentDropdown) {
-      // Collapse other active accordion menus
+      // Collapse other active accordion elements
       document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
         if (item !== parentDropdown) {
           item.classList.remove("active-toggle");
         }
       });
-      // Toggle current accordion selection
+      // Toggle current accordion state selection
       parentDropdown.classList.toggle("active-toggle");
-      console.log("📂 Dropdown submenu toggled.");
+      console.log("📂 Accordion sub-menu toggled.");
     }
   }
-}
+};
 
-// Global click-away dismission listener
-document.addEventListener("click", (event) => {
-  if (document.body.classList.contains("nav-open")) {
-    const navLinksDrawer = document.querySelector(".nav-links");
-    const toggleBtn = document.querySelector(".mobile-toggle-btn");
-    
-    const clickedInsideMenu = navLinksDrawer && navLinksDrawer.contains(event.target);
-    const clickedToggleButton = toggleBtn && toggleBtn.contains(event.target);
-    
-    if (!clickedInsideMenu && !clickedToggleButton) {
-      document.body.classList.remove("nav-open");
-      if (navLinksDrawer) navLinksDrawer.classList.remove("active");
-      if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
-      console.log("📱 Clicked outside. Menu dismissed.");
-    }
+// 2. BACKEND API STORAGE REFS
+const supabaseUrl = 'https://lrbimrlbskjweynxlgas.supabase.co'; 
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; 
+
+if (typeof supabase !== 'undefined' && supabase.createClient) { 
+  window.supabase = supabase.createClient(supabaseUrl, supabaseKey); 
+} 
+
+// 3. INITIALIZATION ON SYSTEM READY
+document.addEventListener("DOMContentLoaded", () => { 
+  // Automatically insert close button inside mobile container layout if missing
+  const navLinksDrawer = document.querySelector(".nav-links");
+  if (navLinksDrawer && !document.querySelector(".mobile-close-btn")) { 
+    const closeBtn = document.createElement("button"); 
+    closeBtn.className = "mobile-close-btn"; 
+    closeBtn.innerHTML = "✕"; 
+    closeBtn.setAttribute("aria-label", "Close Menu"); 
+    closeBtn.setAttribute("onclick", "toggleMobileMenu()");
+    navLinksDrawer.insertBefore(closeBtn, navLinksDrawer.firstChild); 
   }
-});
+  
+  // Set up click-away background dim overlay handler
+  document.addEventListener("click", (event) => {
+    if (document.body.classList.contains("nav-open")) {
+      const drawer = document.querySelector(".nav-links");
+      const toggleBtn = document.querySelector(".mobile-toggle-btn");
+      
+      const clickedInsideMenu = drawer && drawer.contains(event.target);
+      const clickedToggleButton = toggleBtn && toggleBtn.contains(event.target);
+      
+      if (!clickedInsideMenu && !clickedToggleButton) {
+        window.toggleMobileMenu();
+      }
+    }
+  });
+
+  initDynamicBlogSync(); 
+}); 
 
 /** 
- * 2. INITIALIZE SUPABASE DATA CONNECTION CHANNELS 
+ * 4. ASYNCHRONOUS INITIALIZER FOR BLOG CHANNEL
  */ 
 async function initDynamicBlogSync() { 
   const targetContainer = document.getElementById("public-homepage-blog-grid-target"); 
@@ -100,7 +99,7 @@ async function initDynamicBlogSync() {
 } 
 
 /** 
- * 3. ASYNCHRONOUS ENGINE FOR BLOG LAYOUT HOOK INJECTION 
+ * 5. FETCH BLOG CARDS ENGINE
  */ 
 async function fetchHomepageArticles(container) { 
   try { 
