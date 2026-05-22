@@ -731,3 +731,13 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
     right: auto !important;
   }
 }
+
+/* --- MOBILE HERO TEXT ALIGNMENT OVERRIDE --- */
+@media (max-width: 991px) {
+  .content-area,
+  .content-area *,
+  main article,
+  main article * {
+    text-align: left !important;
+  }
+}
