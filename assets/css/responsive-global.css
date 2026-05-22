@@ -306,20 +306,23 @@ nav img.logo,
 }
 
 .btn-client-portal {
-  background: var(--navy);
-  color: var(--white);
-  padding: 10px 24px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  transition: var(--transition);
-  text-decoration: none;
-  display: inline-block;
+    background: var(--navy);
+    /* 🌟 FIXED: Inverts typography to clean high-contrast white text background */
+    color: #ffffff !important; 
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-client-portal:hover {
-  background: var(--emerald);
+    background: var(--emerald);
+    /* Keeps link text white during transition hovers */
+    color: #ffffff !important; 
 }
 
 /* ========================================================================
@@ -993,7 +996,7 @@ main.wizard-container {
 }
 
 /* ========================================================================
-   11. FOOTER (UPDATED FOR ABSOLUTE FULL EDGE-TO-EDGE DESKTOP WIDTH)
+   11. FOOTER (UPDATED FOR ABSOLUTE STRIP WIDTH & LIGHT OPTIMIZED STYLES)
    ======================================================================== */
 .site-footer {
     background: var(--navy);
@@ -1004,16 +1007,15 @@ main.wizard-container {
 }
 
 .footer-container {
-    display: grid;
-    /* 5 columns spread layout evenly across the screen */
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 40px;
-    /* 🌟 FIXED: Changed padding from 6% to 40px left/right to stretch to monitor edges */
+    display: grid !important;
+    /* 🌟 FIXED: Links are stretched perfectly edge-to-edge on wide desktop monitors */
+    grid-template-columns: repeat(5, 1fr) !important; 
+    gap: 40px !important;
+    /* Uses an expansive horizontal padding structure to remove narrow middle columns constraints */
     padding: 60px 40px !important; 
     width: 100% !important;
-    /* 🌟 FIXED: Removed narrow width limits to unlock absolute screen utilization */
     max-width: 100% !important; 
-    box-sizing: border-box;
+    box-sizing: border-box !important;
     margin: 0 !important;
 }
 
@@ -1029,6 +1031,8 @@ main.wizard-container {
 }
 
 .footer-brand p {
+    /* 🌟 FIXED: Changed text weight to regular 400 so it feels welcoming and clean */
+    font-weight: 400 !important; 
     font-size: 0.9rem;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.7);
@@ -1064,6 +1068,8 @@ main.wizard-container {
 
 .footer-col ul li a {
     color: rgba(255, 255, 255, 0.7);
+    /* 🌟 FIXED: Enforces regular 400 font footprint across all link rows */
+    font-weight: 400 !important; 
     font-size: 0.9rem;
     text-decoration: none;
     transition: var(--transition);
@@ -1078,7 +1084,6 @@ main.wizard-container {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    /* 🌟 FIXED: Matches the 40px padding layout boundary set up above */
     padding: 24px 40px !important; 
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     width: 100% !important;
@@ -1091,6 +1096,8 @@ main.wizard-container {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.6);
     margin: 0;
+    /* 🌟 FIXED: Clears away bold weights inside bottom registration data elements */
+    font-weight: 400 !important; 
 }
 
 .trust-badge {
@@ -1121,6 +1128,8 @@ main.wizard-container {
     font-size: 0.8rem;
     text-decoration: none;
     transition: var(--transition);
+    /* 🌟 FIXED: Ensures legal policy text paths stay un-bolded */
+    font-weight: 400 !important; 
 }
 
 .legal-links a:hover {
