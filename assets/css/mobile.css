@@ -303,3 +303,20 @@
     font-size: 0.75rem !important;
   }
 }
+
+/* ==========================================
+   📱 MOBILE CLIENT PORTAL BUTTON TEXT FIX
+   ========================================== */
+@media screen and (max-width: 980px) {
+  a.btn-client-portal,
+  .nav-links a.btn-client-portal,
+  .btn-client-portal {
+    color: var(--white) !important; /* FORCES WHITE TEXT: Overrides the global emerald link rule */
+    background: var(--navy) !important;
+  }
+  
+  a.btn-client-portal:hover,
+  .btn-client-portal:hover {
+    color: var(--white) !important;
+  }
+}
