@@ -421,3 +421,55 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
   visibility: visible !important;
   opacity: 1 !important;
 }
+
+/* --- BUTTON SCREEN DISPATCHER --- */
+
+/* 💻 Desktop Configuration (Screens wider than 991px) */
+@media (min-width: 992px) {
+  .mobile-toggle-btn,
+  nav button.mobile-toggle-btn,
+  .mobile-close-btn {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
+/* 📱 Mobile Configuration (Screens 991px and narrower) */
+@media (max-width: 991px) {
+  .mobile-toggle-btn,
+  nav button.mobile-toggle-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-left: auto !important; /* Pushes the toggle to the right side of the nav bar */
+  }
+}
+
+/* --- RESPONSIVE SECTION CONFIGURATOR --- */
+@media (max-width: 991px) {
+  
+  /* Class to STACK elements vertically on mobile */
+  .section-stacked {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  /* Class to KEEP elements side-by-side (horizontal scrolling) on mobile */
+  .section-horizontal {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important; /* Allows swiping left and right */
+    gap: 15px !important;
+    padding-bottom: 10px; /* Space for the mobile scroll scrollbar */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+
+  /* Prevents the cards inside the horizontal row from shrinking */
+  .section-horizontal > * {
+    flex: 0 0 75% !important; /* Each item takes up 75% of the screen width */
+    max-width: 280px !important;
+  }
+}
