@@ -473,3 +473,61 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
     max-width: 280px !important;
   }
 }
+
+/* --- RESPONSIVE MOBILE SECTION CONTROLS --- */
+@media (max-width: 991px) {
+  
+  /* SECTION 1: STACKED (Hero content stacks above the image) */
+  .service-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 30px !important;
+  }
+  .hero-image-container {
+    width: 100% !important;
+    text-align: center;
+  }
+  .hero-image-container img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* SECTION 2 & 3: HORIZONTAL ROW (Features & Stats swipe left/right, NO stacking) */
+  .icon-grid, 
+  .stats-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important; /* Enable side swiping */
+    gap: 15px !important;
+    padding: 10px 20px 20px 20px !important;
+    margin: 0 -20px !important; /* Bleeds edge-to-edge for premium swipe feel */
+    -webkit-overflow-scrolling: touch; /* Smooth scroll momentum on iOS */
+    scroll-snap-type: x mandatory;
+  }
+
+  /* Keeps the card widths consistent inside the horizontal row so they don't squash */
+  .icon-box, 
+  .stats-card {
+    flex: 0 0 75% !important; /* Card occupies 75% of screen width */
+    max-width: 290px !important;
+    scroll-snap-align: start;
+    box-sizing: border-box !important;
+  }
+
+  /* Hide messy horizontal desktop scrollbars on mobile UI */
+  .icon-grid::-webkit-scrollbar,
+  .stats-grid::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* SECTION 4 & 5: DOUBLE-COLUMN STACKED GRID (FAQs & Blog articles) */
+  .faq-grid, 
+  .resource-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important; /* Stacks nicely into 1 column */
+    gap: 16px !important;
+  }
+}
