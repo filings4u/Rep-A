@@ -1,112 +1,150 @@
 /* ==========================================================================
-   GLOBAL MOBILE RESPONSIVE DESIGN SYSTEM
-   Applies to all platform pages using standard structural layouts.
+   FORCE TRUE MOBILE RESPONSIVENESS OVERRIDE
    ========================================================================== */
 
-/* --- 1. GLOBAL LAYOUT & CONTAINER FIXES --- */
-@media (max-width: 768px) {
-    body {
-        overflow-x: hidden;
+@media screen and (max-width: 768px) {
+    /* 1. FORCE ELEMENT LAYOUT STACKING CONTROL */
+    html, body {
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
     }
     
-    .unified-site-section, 
-    .page-container,
-    section {
-        padding: 40px 16px !important;
+    main, section, header, footer, div, article, aside {
+        box-sizing: border-box !important;
     }
 
-    /* --- 2. GLOBAL NAVIGATION TOGGLE CORE --- */
+    .unified-site-section, 
+    .page-container, 
+    section, 
+    #system-stats {
+        padding: 40px 16px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    /* 2. THE ABSOLUTE MOBILE NAVIGATION NAVIGATION TOGGLE */
+    nav {
+        background: #ffffff !important;
+        position: relative !important;
+        width: 100% !important;
+        display: block !important;
+        border-bottom: 1px solid var(--border) !important;
+    }
+
+    .nav-content-wrapper {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: 12px 16px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Pull mobile navigation button out of desktop hiding */
     .mobile-toggle-btn {
         display: block !important;
-        background: none;
-        border: none;
-        font-size: 1.6rem;
-        color: var(--navy);
-        cursor: pointer;
-        padding: 8px;
-        line-height: 1;
+        visibility: visible !important;
+        background: transparent !important;
+        border: none !important;
+        font-size: 1.75rem !important;
+        color: var(--navy) !important;
+        cursor: pointer !important;
+        padding: 4px 8px !important;
+        order: 2 !important; /* Forces toggle to stay on right side */
     }
 
+    /* Hide desktop array and make it an absolute drop drawer */
     .nav-links {
-        display: none; /* Controlled via jQuery slideToggle */
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: var(--white);
-        border-bottom: 1px solid var(--border);
-        padding: 24px;
-        box-sizing: border-box;
-        gap: 16px;
-        align-items: stretch;
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        display: none; /* Controlled dynamically by jQuery toggle script */
+        flex-direction: column !important;
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        width: 100% !important;
+        background: #ffffff !important;
+        border-bottom: 2px solid var(--border) !important;
+        padding: 24px 16px !important;
+        box-sizing: border-box !important;
+        gap: 16px !important;
+        z-index: 99999 !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
     }
 
-    /* Mobile Dropdown Specific Behavior */
     .nav-item-dropdown {
-        width: 100%;
+        width: 100% !important;
     }
 
     .nav-item-dropdown > a {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid var(--border);
-        width: 100%;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 12px 0 !important;
+        border-bottom: 1px solid var(--border) !important;
+        width: 100% !important;
+        color: var(--navy) !important;
     }
 
     .nav-item-dropdown .dropdown-content {
         position: static !important;
-        display: none; /* Toggled via click event */
+        display: none; /* Interactive sub menus */
         box-shadow: none !important;
-        padding: 12px 0 4px 16px !important;
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
+        padding: 12px 0 4px 12px !important;
         background: transparent !important;
         border: none !important;
+        width: 100% !important;
+    }
+    
+    .mega-panel-two-col, .mega-panel-three-col {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
     }
 
     .mega-column {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
         padding: 0 !important;
-        margin-bottom: 16px;
-    }
-
-    .mega-column:last-child {
-        margin-bottom: 0;
     }
 
     .btn-client-portal {
         display: block !important;
-        text-align: center;
-        margin-top: 12px;
+        text-align: center !important;
+        width: 100% !important;
+        margin-top: 16px !important;
         padding: 14px !important;
-        width: 100%;
-        box-sizing: border-box;
+        box-sizing: border-box !important;
     }
 
-    /* --- 3. HERO REVERSAL: IMAGE ON TOP, WORDS AT BOTTOM --- */
+    /* 3. HERO LAYER REVERSAL (IMAGE TOP / TITLE BOTTOM) */
     .service-grid {
         display: flex !important;
-        flex-direction: column-reverse !important;
+        flex-direction: column-reverse !important; /* Hard flips alignment flow */
         gap: 32px !important;
+        width: 100% !important;
     }
 
     .hero-image-container {
         width: 100% !important;
-        max-width: 100% !important;
+        display: block !important;
     }
 
     .hero-image-container img {
-        height: 260px !important;
+        height: 240px !important;
         width: 100% !important;
+        max-width: 100% !important;
         object-fit: cover !important;
         border-radius: 12px !important;
     }
 
     .content-area {
         text-align: center !important;
+        width: 100% !important;
+    }
+    
+    .content-area h1 {
+        font-size: 2.25rem !important;
+        line-height: 1.2 !important;
     }
 
     .active-sync-badge-wrapper {
@@ -114,64 +152,70 @@
         margin: 16px auto !important;
     }
 
-    /* --- 4. STRUCTURAL GRID ELEMENT STACKING --- */
+    /* 4. SECTIONS BLOCKS FORCE VERTICAL STACKING */
     .icon-grid, 
     .stats-grid, 
     .faq-grid, 
-    .resource-grid,
-    .responsive-stack-grid {
-        grid-template-columns: 1fr !important;
+    .resource-grid {
         display: flex !important;
-        flex-direction: column !important;
-        gap: 20px !important;
+        flex-direction: column !important; /* Destroys horizontal desktop columns */
+        gap: 16px !important;
         width: 100% !important;
     }
 
-    /* Individual elements scale cleanly */
     .stats-card, 
     .icon-box, 
     .faq-item {
         width: 100% !important;
+        max-width: 100% !important;
         box-sizing: border-box !important;
-        padding: 24px !important;
+        margin: 0 !important;
     }
 
-    /* --- 5. 2x2 FOOTER SYSTEM OVERRIDE --- */
+    /* 5. BALANCED 2x2 FOOTER LINK CONFIGURATION */
     .footer-container {
         display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 36px 20px !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* Locks columns into a true side-by-side split pair */
+        gap: 32px 16px !important;
+        width: 100% !important;
         padding: 40px 16px !important;
     }
 
-    /* Brand Block takes full width over the columns */
+    /* Brand paragraph spans clean across header boundaries */
     .footer-brand {
-        grid-column: span 2 !important;
+        grid-column: span 2 !important; /* Allocates full horizontal width for brand descriptor text */
         text-align: center !important;
-        max-width: 100% !important;
-        margin-bottom: 12px;
+        width: 100% !important;
+        margin-bottom: 12px !important;
     }
 
     .footer-brand p {
         margin: 12px auto 0 auto !important;
-        max-width: 450px;
+        max-width: 400px !important;
     }
 
     .footer-brand div {
-        justify-content: center !important;
+        justify-content: center !important; /* Centers brand social array coordinates */
     }
 
     .footer-col {
-        min-width: 0 !important; /* Prevents overflow inside grid nodes */
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+    
+    .footer-col h4 {
+        margin-top: 0 !important;
+        margin-bottom: 12px !important;
     }
 
-    /* Footer Bottom Section Adjustments */
+    /* Footer Bottom Metadata Cluster */
     .footer-bottom {
         flex-direction: column !important;
         gap: 24px !important;
         text-align: center !important;
         padding: 24px 16px !important;
         margin-top: 32px !important;
+        width: 100% !important;
     }
 
     .footer-bottom p {
@@ -182,11 +226,12 @@
     .trust-badge {
         margin: 0 auto !important;
         display: inline-block !important;
-        width: max-content;
+        width: max-content !important;
     }
 
     .legal-links {
         justify-content: center !important;
-        gap: 20px !important;
+        gap: 24px !important;
+        width: 100% !important;
     }
 }
