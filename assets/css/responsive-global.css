@@ -994,135 +994,139 @@ main.wizard-container {
 }
 
 /* ========================================================================
-   11. FOOTER
+   11. FOOTER (UPDATED FOR FULL DESKTOP WIDTH & 5 COLUMNS)
    ======================================================================== */
 .site-footer {
-  background: var(--navy);
-  color: var(--white);
-  margin-top: auto;
-  width: 100%;
-  max-width: 100%;
+    background: var(--navy);
+    color: var(--white);
+    margin-top: auto;
+    width: 100%;
+    max-width: 100%;
 }
 
 .footer-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
-  padding: 60px 6%;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin: 0 auto;
+    display: grid;
+    /* 🌟 FIXED: Changed to 5 columns so all 5 blocks sit side-by-side without overlapping */
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 30px;
+    /* 🌟 FIXED: Changed 6% padding to a small 24px margin to stretch to monitor edges */
+    padding: 60px 24px; 
+    width: 100%;
+    max-width: 100%; 
+    box-sizing: border-box;
+    margin: 0;
 }
 
 .footer-brand {
-  grid-column: span 1;
+    grid-column: span 1;
 }
 
 .footer-brand img {
-  height: 48px;
-  width: auto;
-  object-fit: contain;
-  margin-bottom: 15px;
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 15px;
 }
 
 .footer-brand p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 20px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
 }
 
 .footer-brand a {
-  text-decoration: none;
-  transition: opacity 0.2s ease;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
 }
 
 .footer-brand a:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 .footer-col h4 {
-  color: var(--white);
-  font-size: 1rem;
-  margin-bottom: 20px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+    color: var(--white);
+    font-size: 1rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .footer-col ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .footer-col ul li a {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: var(--transition);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition);
 }
 
 .footer-col ul li a:hover {
-  color: var(--emerald);
+    color: var(--emerald);
 }
 
 .footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 24px 6%;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    /* 🌟 FIXED: Stretched to edges to match the container above */
+    padding: 24px 24px; 
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
 }
 
 .footer-bottom p {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
 }
 
 .trust-badge {
-  display: block;
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-  position: relative;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.85rem;
-  font-weight: 600;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
 .trust-badge span {
-  color: var(--emerald);
-  font-weight: 800;
-  margin-right: 8px;
+    color: var(--emerald);
+    font-weight: 800;
+    margin-right: 8px;
 }
 
 .legal-links {
-  display: flex;
-  gap: 20px;
+    display: flex;
+    gap: 20px;
 }
 
 .legal-links a {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.8rem;
-  text-decoration: none;
-  transition: var(--transition);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: var(--transition);
 }
 
 .legal-links a:hover {
-  color: var(--emerald);
+    color: var(--emerald);
 }
+
 
 /* ========================================================================
    12. ANIMATIONS
@@ -1190,338 +1194,251 @@ main.wizard-container {
 
 /* --- MOBILE ADJUSTMENTS (768px and below) --- */
 @media screen and (max-width: 768px) {
-  :root {
-    --nav-height: 60px;
-  }
+    :root {
+        --nav-height: 60px;
+    }
 
-  /* --- GLOBAL MOBILE LAYOUT --- */
-  html, body {
-    max-width: 100vw;
-    overflow-x: hidden;
-  }
+    /* --- GLOBAL MOBILE LAYOUT --- */
+    html, body {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
 
-  .unified-site-section,
-  .page-container,
-  section,
-  .faq-section,
-  .blog-section,
-  #system-stats {
-    padding: 40px 16px;
-  }
+    .unified-site-section, .page-container, section, .faq-section, .blog-section, #system-stats {
+        padding: 40px 16px;
+    }
 
-  /* --- MOBILE NAVIGATION --- */
-  nav {
-    height: 60px;
-    position: relative;
-    width: 100%;
-    display: block;
-    border-bottom: 1px solid var(--border);
-  }
+    /* --- MOBILE NAVIGATION --- */
+    nav {
+        height: 60px;
+        position: relative;
+        width: 100%;
+        display: block;
+        border-bottom: 1px solid var(--border);
+    }
 
-  .nav-content-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 12px 16px;
-    box-sizing: border-box;
-  }
+    .nav-content-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 12px 16px;
+        box-sizing: border-box;
+    }
 
-  .logo-link img {
-    height: 30px;
-    max-width: 120px;
-  }
+    /* 🌟 FIXED: Locks branding link to position 1 on the far left */
+    .logo-link {
+        order: 1 !important;
+    }
 
-  /* Mobile Toggle Button - NOW VISIBLE */
-  .mobile-toggle-btn {
-    display: block !important;
-    visibility: visible !important;
-    background: transparent !important;
-    border: none !important;
-    font-size: 1.8rem !important;
-    color: var(--navy) !important;
-    cursor: pointer !important;
-    padding: 4px !important;
-    line-height: 1 !important;
-    width: auto !important;
-    height: auto !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
+    .logo-link img {
+        height: 30px;
+        max-width: 120px;
+    }
 
-  /* Mobile Navigation Links */
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: var(--white);
-    border-bottom: 2px solid var(--border);
-    padding: 24px 16px;
-    box-sizing: border-box;
-    gap: 16px;
-    z-index: 99999;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
+    /* Mobile Toggle Button - NOW VISIBLE & ALIGNED TO RIGHT */
+    .mobile-toggle-btn {
+        display: block !important;
+        visibility: visible !important;
+        background: transparent !important;
+        border: none !important;
+        font-size: 1.8rem !important;
+        color: var(--navy) !important;
+        cursor: pointer !important;
+        padding: 4px !important;
+        line-height: 1 !important;
+        width: auto !important;
+        height: auto !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        /* 🌟 FIXED: Automatically slides the toggle character icon over to the right margin */
+        order: 2 !important; 
+    }
 
-  .nav-item-dropdown {
-    width: 100%;
-  }
+    /* Mobile Navigation Links */
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        border-bottom: 2px solid var(--border);
+        padding: 24px 16px;
+        box-sizing: border-box;
+        gap: 16px;
+        z-index: 99999;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
 
-  .nav-item-dropdown > a {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-    width: 100%;
-    color: var(--navy);
-  }
+    .nav-item-dropdown {
+        width: 100%;
+    }
 
-  .nav-item-dropdown .dropdown-content {
-    position: static;
-    display: none;
-    box-shadow: none;
-    padding: 12px 0 4px 12px;
-    background: transparent;
-    border: none;
-    width: 100%;
-  }
+    .nav-item-dropdown > a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+        width: 100%;
+        color: var(--navy);
+    }
 
-  .btn-client-portal {
-    display: block;
-    text-align: center;
-    width: 100%;
-    margin-top: 16px;
-    padding: 14px;
-    box-sizing: border-box;
-  }
+    /* Class indicators when footer headers get clicked */
+    .footer-col.active-toggle h4::after {
+        transform: translateY(-50%) rotate(-180deg) !important;
+    }
 
-  /* --- MOBILE HERO SECTION --- */
-  .page-container {
-    padding: 80px 16px 40px 16px;
-  }
+    .footer-col.active-toggle ul {
+        display: flex !important;
+    }
 
-  .service-grid {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 32px;
-    width: 100%;
-  }
+    .nav-item-dropdown .dropdown-content {
+        position: static;
+        display: none;
+        box-shadow: none;
+        padding: 12px 0 4px 12px;
+        background: transparent;
+        border: none;
+        width: 100%;
+    }
 
-  .hero-image-container {
-    height: 240px;
-    border-radius: 12px;
-  }
+    .btn-client-portal {
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin-top: 16px;
+        padding: 14px;
+        box-sizing: border-box;
+    }
 
-  .hero-image-container img {
-    height: 240px;
-    object-fit: cover;
-    border-radius: 12px;
-  }
+    /* --- MOBILE HERO SECTION --- */
+    .page-container {
+        padding: 80px 16px 40px 16px;
+    }
 
-  .content-area {
-    text-align: center;
-    width: 100%;
-  }
+    .service-grid {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 32px;
+        width: 100%;
+    }
 
-  .content-area h1 {
-    font-size: 2rem;
-    line-height: 1.2;
-    margin-bottom: 15px;
-  }
+    .hero-image-container {
+        height: 240px;
+        border-radius: 12px;
+    }
 
-  .content-area p {
-    font-size: 1rem;
-    max-width: 100%;
-  }
+    .hero-image-container img {
+        height: 240px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
 
-  /* --- MOBILE GRIDS --- */
-  .icon-grid,
-  .stats-grid,
-  .faq-grid,
-  .resource-grid,
-  .pricing-grid,
-  #dynamicBlogPostsContainer,
-  #public-homepage-blog-grid-target {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
-  }
+    .content-area {
+        text-align: center;
+        width: 100%;
+    }
 
-  .icon-box,
-  .stats-card,
-  .faq-item,
-  .price-card {
-    padding: 20px;
-    min-height: auto;
-  }
+    .content-area h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+        margin-bottom: 15px;
+    }
 
-  .content-area h1,
-  section h2,
-  h1.section-title {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-  }
+    .content-area p {
+        font-size: 1rem;
+        max-width: 100%;
+    }
 
-  .stat-amount {
-    font-size: 2.5rem;
-  }
+    /* --- MOBILE GRIDS --- */
+    .icon-grid, .stats-grid, .faq-grid, .resource-grid, .pricing-grid, #dynamicBlogPostsContainer, #public-homepage-blog-grid-target {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
 
-  .price-card .amount {
-    font-size: 2rem;
-  }
+    .icon-box, .stats-card, .faq-item, .price-card {
+        padding: 20px;
+        min-height: auto;
+    }
 
-  .wizard-grid {
-    grid-template-columns: 1fr;
-  }
+    .content-area h1, section h2, h1.section-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
 
-  /* --- MOBILE FOOTER --- */
-  .footer-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px 16px;
-    padding: 40px 16px;
-  }
+    .stat-amount {
+        font-size: 2.5rem;
+    }
 
-  .footer-brand {
-    grid-column: span 2;
-    text-align: center;
-  }
+    .price-card .amount {
+        font-size: 2rem;
+    }
 
-  .footer-brand div {
-    justify-content: center;
-  }
+    .wizard-grid {
+        grid-template-columns: 1fr;
+    }
 
-  .footer-col {
-    width: 100%;
-    min-width: 0;
-    display: block;
-  }
+    /* --- MOBILE FOOTER --- */
+    .footer-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px 16px;
+        padding: 40px 16px;
+    }
 
-  .footer-col h4 {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-  }
+    .footer-brand {
+        grid-column: span 2;
+        text-align: center;
+    }
 
-  .footer-col ul {
-    gap: 10px;
-  }
+    .footer-brand div {
+        justify-content: center;
+    }
 
-  .footer-bottom {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-    padding: 24px 16px;
-    margin-top: 32px;
-  }
+    .footer-col {
+        width: 100%;
+        min-width: 0;
+        display: block;
+    }
 
-  .trust-badge {
-    margin: 0 auto;
-    display: inline-block;
-  }
+    .footer-col h4 {
+        margin-top: 0;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+        /* 🌟 FIXED: Retains categories side-by-side on a single un-wrapped line */
+        white-space: nowrap !important; 
+    }
 
-  .legal-links {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
+    .footer-col ul {
+        gap: 10px;
+    }
 
-  /* --- MOBILE TYPOGRAPHY --- */
-  .hero-tag {
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-  }
+    .footer-col ul li a {
+        /* 🌟 FIXED: Freezes individual text strings to completely prevent vertical text wrapping */
+        white-space: nowrap !important; 
+    }
 
-  .blog-body h4 {
-    font-size: 1rem;
-  }
-}
+    .footer-bottom {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+        padding: 24px 16px;
+        margin-top: 32px;
+    }
 
-/* --- SMALL MOBILE (up to 480px) --- */
-@media screen and (max-width: 480px) {
-  .content-area h1 {
-    font-size: 1.5rem;
-  }
+    .trust-badge {
+        margin: 0 auto;
+        display: inline-block;
+    }
 
-  section h2,
-  h1.section-title {
-    font-size: 1.5rem;
-  }
-
-  .icon-box,
-  .stats-card,
-  .faq-item {
-    padding: 16px;
-  }
-
-  .wizard-card {
-    padding: 24px;
-    min-height: 280px;
-  }
-
-  .footer-container {
-    grid-template-columns: 1fr;
-    gap: 24px 16px;
-  }
-
-  .footer-brand {
-    grid-column: span 1;
-  }
-
-  .legal-links {
-    flex-direction: column;
-    gap: 12px;
-  }
-}
-
-/* ========================================================================
-   UTILITY CLASSES
-   ======================================================================== */
-.text-center {
-  text-align: center;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.mt-1 { margin-top: 8px; }
-.mt-2 { margin-top: 16px; }
-.mt-3 { margin-top: 24px; }
-.mt-4 { margin-top: 32px; }
-
-.mb-1 { margin-bottom: 8px; }
-.mb-2 { margin-bottom: 16px; }
-.mb-3 { margin-bottom: 24px; }
-.mb-4 { margin-bottom: 32px; }
-
-.px-1 { padding-left: 8px; padding-right: 8px; }
-.px-2 { padding-left: 16px; padding-right: 16px; }
-
-.hidden {
-  display: none !important;
-}
-
-.visible {
-  display: block !important;
-}
-
-/* --- MOBILE TOGGLE BUTTON (HIDDEN BY DEFAULT FOR DESKTOP VIEW) --- */
-.mobile-toggle-btn {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    position: absolute !important;
-    pointer-events: none !important;
+    .legal-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
 }
