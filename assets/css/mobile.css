@@ -1,5 +1,9 @@
 /* ==========================================================================
-   ACTUAL FIXED MOBILE OVERRIDE SPECIFICATION
+   UPDATED MOBILE OVERRIDE SPECIFICATION
+   - Slide-in panel menu going from right to left
+   - White menu background with Navy X close button
+   - Side-by-side 2x2 footer layout with left-aligned brand text
+   - Stacked section structures with hero image on top
    ========================================================================== */
 
 @media screen and (max-width: 768px) {
@@ -7,26 +11,23 @@
   html, body {
     max-width: 100vw !important;
     overflow-x: hidden !important;
-    position: relative !important;
-  }
-
-  /* Universal border-box reset to stop width padding blowouts */
-  *, *:before, *:after {
-    box-sizing: border-box !important;
+    position: relative; /* Prevents off-screen drawer breaking viewport width */
   }
 
   .unified-site-section, .page-container, section, #system-stats {
     padding: 40px 16px !important;
     width: 100% !important;
+    box-sizing: border-box !important; /* Forces padding inside the 100% width */
   }
 
-  /* --- 2. HEADER: FIXED RIGHT TOGGLE & DRIFT REMOVAL --- */
+  /* --- 2. HEADER: RIGHT TOGGLE & SLIDE-IN PANEL --- */
   nav {
     background: #ffffff !important;
     position: relative !important;
     width: 100% !important;
     display: block !important;
     border-bottom: 1px solid var(--border) !important;
+    box-sizing: border-box !important;
   }
 
   .nav-content-wrapper {
@@ -35,9 +36,10 @@
     align-items: center !important;
     width: 100% !important;
     padding: 12px 16px !important;
+    box-sizing: border-box !important;
   }
 
-  /* FIX: Absolute positioning container constraints prevent left overflow */
+  /* Toggle button positioned right */
   .mobile-toggle-btn {
     display: block !important;
     visibility: visible !important;
@@ -47,46 +49,38 @@
     color: var(--navy) !important;
     cursor: pointer !important;
     padding: 4px !important;
-    width: auto !important;
-    height: auto !important;
-    
-    /* Hard snap to the right edge of nav-content-wrapper */
-    margin-left: auto !important; 
-    margin-right: 0 !important;
-    position: relative !important;
-    left: 0 !important; /* Overrides any rogue left alignment values */
+    line-height: 1 !important;
+    margin-left: auto !important; /* Forces toggle hard to the right */
   }
 
-  /* FIX: Added left: auto to stop viewport breaking on old WebKit engines */
+  /* Right-to-Left Slide-In White Panel Menu */
   .nav-links {
-    display: flex !important;
+    display: flex !important; 
     flex-direction: column !important;
-    position: fixed !important;
+    position: fixed !important; 
     top: 0 !important;
-    right: 0 !important;
-    left: auto !important; /* Crucial: stops the menu from stretching across screen */
-    width: 80% !important;
+    right: 0 !important; 
+    width: 80% !important; 
     max-width: 320px !important;
     height: 100vh !important;
-    background: #ffffff !important;
-    padding: 80px 24px 24px 24px !important;
+    background: #ffffff !important; 
+    padding: 80px 24px 24px 24px !important; 
+    box-sizing: border-box !important;
     gap: 16px !important;
     z-index: 99999 !important;
-    box-shadow: -10px 0 20px rgba(0,0,0,0.1) !important;
+    box-shadow: -10px 0 20px rgba(0,0,0,0.1) !important; 
     
-    /* Pure CSS clip to completely hide it from document flow until active */
-    transform: translateX(100%) !important;
+    /* Animation Fix: Hides panel fully off-screen until clicked */
+    transform: translateX(105%) !important; 
     transition: transform 0.3s ease-in-out !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
   }
 
+  /* Target active state explicitly */
   .nav-links.active {
     transform: translateX(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
   }
 
+  /* Navy Close Button 'X' styling inside the drawer */
   .mobile-close-btn {
     display: block !important;
     position: absolute !important;
@@ -95,21 +89,54 @@
     background: transparent !important;
     border: none !important;
     font-size: 2rem !important;
-    color: var(--navy) !important;
+    color: var(--navy) !important; 
     cursor: pointer !important;
     line-height: 1 !important;
   }
 
-  /* --- 3. HERO LAYER --- */
+  .nav-item-dropdown {
+    width: 100% !important;
+  }
+
+  .nav-item-dropdown > a {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+    width: 100% !important;
+    color: var(--navy) !important;
+  }
+
+  .nav-item-dropdown .dropdown-content {
+    position: static !important;
+    display: none;
+    box-shadow: none !important;
+    padding: 12px 0 4px 12px !important;
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+  }
+
+  .btn-client-portal {
+    display: block !important;
+    text-align: center !important;
+    width: 100% !important;
+    margin-top: 16px !important;
+    padding: 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* --- 3. HERO LAYER REVERSAL: IMAGE ON TOP, TEXT ON BOTTOM --- */
   .service-grid {
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: column !important; 
     gap: 32px !important;
     width: 100% !important;
   }
 
   .hero-image-container {
-    order: 1 !important;
+    order: 1 !important; 
     width: 100% !important;
   }
 
@@ -121,12 +148,12 @@
   }
 
   .content-area {
-    order: 2 !important;
-    text-align: left !important;
+    order: 2 !important; 
+    text-align: left !important; 
     width: 100% !important;
   }
 
-  /* --- 4. BODY CARD SECTIONS --- */
+  /* --- 4. BODY CARD SECTION SECTIONS BALANCED STACKING --- */
   .icon-grid, .stats-grid, .faq-grid, .resource-grid {
     display: flex !important;
     flex-direction: column !important;
@@ -134,36 +161,32 @@
     width: 100% !important;
   }
 
-  /* --- 5. STRICT FIXED 2x2 FOOTER MATRIX --- */
-  /* FIX: Clear display:block or flex from parent HTML tags */
-  footer, .footer-container {
+  /* --- 5. STRICT FIXED 2x2 FOOTER MATRIX WITH LEFT ALIGNMENT --- */
+  .footer-container {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important; /* Strict two columns */
-    width: 100% !important;
-    max-width: 100vw !important;
+    grid-template-columns: 1fr 1fr !important; /* Force true 50/50 split */
     gap: 32px 16px !important;
+    width: 100% !important;
     padding: 40px 16px !important;
+    box-sizing: border-box !important;
   }
 
-  /* FIX: Forces branding to explicitly cross column lines without breaking */
   .footer-brand {
-    grid-column: 1 / span 2 !important;
-    text-align: left !important;
+    grid-column: span 2 !important; /* Forces header across full width */
+    text-align: left !important; 
     width: 100% !important;
   }
 
   .footer-brand div, .footer-logo-container, .footer-social-icons {
     display: flex !important;
-    justify-content: flex-start !important;
+    justify-content: flex-start !important; 
     text-align: left !important;
   }
 
-  /* FIX: Force block elements to respect grid cells instead of stacking */
   .footer-col {
-    grid-column: span 1 !important; 
-    width: 100% !important;
-    display: block !important;
-    text-align: left !important;
+    width: auto !important; /* Drop explicit 100% width causing stacking */
+    min-width: 0 !important; 
+    text-align: left !important; 
   }
 
   .footer-col h4 {
@@ -181,16 +204,16 @@
     align-items: flex-start !important;
   }
 
-  /* Footer Bottom Panel */
+  /* Footer Bottom Meta Panel */
   .footer-bottom {
-    grid-column: 1 / span 2 !important; /* Keeps bottom bar in layout limits */
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
+    grid-template-columns: 1fr 1fr !important; 
     gap: 20px !important;
     text-align: left !important;
     padding: 24px 16px !important;
     margin-top: 32px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .trust-badge {
