@@ -130,57 +130,44 @@
     display: inline-block !important; 
   } 
   
-  /* --- 3. HAMBURGER TOGGLE BUTTON VISIBILITY FIX --- */ 
-  nav button.mobile-toggle-btn, .mobile-toggle-btn { 
-    display: flex !important; 
-    align-items: center !important; 
-    justify-content: center !important; 
-    width: 44px !important; 
-    height: 44px !important; 
-    background: transparent !important; 
-    border: none !important; 
-    font-size: 2.2rem !important; 
-    color: var(--navy) !important; /* FIXED: Visible navy blue color over white bar */ 
-    cursor: pointer !important; 
-    z-index: 100001 !important; 
-    padding: 0 !important; 
-    margin: 0 !important; 
-    visibility: visible !important;
-    opacity: 1 !important;
-  } 
+/* --- DROPDOWN DRAWER SLIDES LEFT ON OPEN --- */
+.nav-links {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  position: fixed !important;
+  top: 0 !important; 
   
-  /* --- DROPDOWN DRAWER SLIDES LEFT ON OPEN --- */
-  .nav-links { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    align-items: center !important; 
-    justify-content: flex-start !important; 
-    position: fixed !important; 
-    top: 0 !important; /* Starts full height from header top */
-    left: auto !important; 
-    right: -100vw !important; /* FIXED: Hidden off-screen right edge */ 
-    width: 85vw !important; /* Premium drawer width presentation */
-    max-width: 340px !important;
-    height: 100vh !important; 
-    background: var(--white) !important; 
-    box-shadow: -10px 0 30px rgba(10, 31, 68, 0.15) !important; 
-    gap: 8px !important; 
-    padding: 80px 20px 20px 20px !important; /* Higher top padding to avoid close icon overlap */
-    box-sizing: border-box !important; 
-    opacity: 0 !important; 
-    visibility: hidden !important; 
-    transition: var(--transition) !important; 
-    z-index: 100000 !important; 
-    overflow-y: auto !important; 
-  } 
+  /* CHANGE HERE: Position off-screen to the LEFT */
+  left: -100vw !important; 
+  right: auto !important;
   
-  /* Slide Left open-state triggers via class targets */
-  body.nav-open .nav-links,
-  .nav-links.active { 
-    opacity: 1 !important; 
-    visibility: visible !important; 
-    right: 0 !important; /* FIXED: Slides inside from right-to-left onto screen */ 
-  }
+  width: 85vw !important; 
+  max-width: 340px !important;
+  height: 100vh !important;
+  background: var(--white, #ffffff) !important; /* Fallback added */
+  box-shadow: 10px 0 30px rgba(10, 31, 68, 0.15) !important; /* Flipped shadow direction */
+  gap: 8px !important;
+  padding: 80px 20px 20px 20px !important; 
+  box-sizing: border-box !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: var(--transition, 0.3s ease-in-out) !important; /* Fallback added */
+  z-index: 100000 !important;
+  overflow-y: auto !important;
+}
+
+/* Slide Left open-state triggers via class targets */
+body.nav-open .nav-links, .nav-links.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  
+  /* CHANGE HERE: Pull into view on the LEFT side */
+  left: 0 !important; 
+  right: auto !important;
+}
+
 
   /* Dynamically generated X close button styling inside the panel */
   .nav-links .mobile-close-btn {
@@ -414,3 +401,24 @@ gap: 6px 12px !important;
 }
 } 
 
+nav button.mobile-toggle-btn, .mobile-toggle-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  /* Add explicit structural baselines */
+  min-width: 44px !important;
+  min-height: 44px !important;
+  position: relative !important; 
+  
+  background: transparent !important;
+  border: none !important;
+  font-size: 2.2rem !important;
+  color: var(--navy, #0a1f44) !important; /* Fallback added in case variable fails */
+  cursor: pointer !important;
+  z-index: 100001 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
