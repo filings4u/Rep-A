@@ -77,28 +77,27 @@
   } 
 
   /* FORCE HAMBURGER TRIGGER TO SHOW EXPLICITLY */
-  nav button.mobile-toggle-btn,
-  .nav-content-wrapper .mobile-toggle-btn,
-  .mobile-toggle-btn { 
-    display: flex !important; 
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: relative !important;
-    pointer-events: auto !important;
-    align-items: center !important; 
-    justify-content: center !important; 
-    width: 44px !important; 
-    height: 44px !important; 
-    background: #f1f5f9 !important; /* Visual badge background to confirm it's loading */
-    border: none !important; 
-    border-radius: 8px !important;
-    font-size: 1.6rem !important; 
-    color: var(--navy) !important; 
-    cursor: pointer !important; 
-    z-index: 100002 !important; 
-    padding: 0 !important; 
-    margin: 0 !important; 
-  } 
+  nav button, 
+  nav .mobile-toggle-btn, 
+  .mobile-toggle-btn, 
+  [class*="toggle"], 
+  [id*="toggle"], 
+  [class*="burger"], 
+  [id*="burger"], 
+  [class*="trigger"], 
+  [id*="trigger"], 
+  [class*="mobile-menu"], 
+  [id*="mobile-menu"], 
+  .mobile-menu-trigger { 
+    display: none !important; 
+    visibility: hidden !important; 
+    opacity: 0 !important; 
+    width: 0 !important; 
+    height: 0 !important; 
+    position: absolute !important; 
+    pointer-events: none !important; 
+  }
+
 
   /* --- 3. SLIDE OUT FULLSCREEN LAYOUT DRAWER --- */
   .nav-links { 
@@ -304,4 +303,13 @@
   .site-footer .legal-links a {
     font-size: 0.75rem !important;
   }
-}
+
+   .service-grid { 
+    display: grid !important; 
+    grid-template-columns: 1.1fr 1.3fr !important; 
+    gap: 60px !important; 
+    align-items: flex-start !important; 
+    width: 100% !important; 
+    max-width: 100% !important; 
+  }
+} /* <--- THIS CLOSES THE SECOND GRID OVERRIDE LAYER */
