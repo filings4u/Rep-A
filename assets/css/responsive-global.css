@@ -158,23 +158,26 @@ nav img.logo,
   color: var(--emerald);
 }
 
-/* --- MOBILE TOGGLE BUTTON (HIDDEN ON DESKTOP) --- */
+/* --- MOBILE TOGGLE BUTTON (ENABLED FOR DEVICE VIEWPORTS) --- */
 .mobile-toggle-btn {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-  position: absolute !important;
-  pointer-events: none !important;
-  background: transparent;
-  border: none;
-  font-size: 1.8rem;
-  color: var(--navy);
-  cursor: pointer;
-  padding: 4px;
-  line-height: 1;
-}
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: auto !important;
+  height: auto !important;
+  pointer-events: auto !important;
+  position: relative !important; /* Clears absolute position constraints */
+  order: 2 !important; /* Dynamically pushes the button to the far right side */
+        
+  background: transparent !important;
+  border: none !important;
+  font-size: 1.8rem !important;
+  color: var(--navy) !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  line-height: 1 !important;
+  }
+
 
 /* --- DESKTOP NAVIGATION DROPDOWNS --- */
 .nav-item-dropdown {
