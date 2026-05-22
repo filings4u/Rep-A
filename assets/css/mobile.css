@@ -540,3 +540,59 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
     box-sizing: border-box !important;
   }
 }
+
+/* --- GLOBAL SITE-WIDE MOBILE FIXES --- */
+@media (max-width: 991px) {
+  
+  /* 1. FLIP HERO IMAGE TO THE TOP ON ALL PAGES */
+  /* This catches .service-grid and any other main page grid/flex wrappers */
+  .service-grid, 
+  .page-container > div,
+  main > div[class*="grid"] {
+    display: flex !important;
+    flex-direction: column-reverse !important; /* Forces image up, text down */
+    gap: 24px !important;
+  }
+
+  /* Ensure the image container scales beautifully at the top */
+  .hero-image-container, 
+  aside[class*="image"] {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  .hero-image-container img,
+  aside[class*="image"] img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* 2. UN-SMASH FAQS AND BLOG GRIDS COMPLETELY */
+  /* Forces grid layout items into an absolute single-column vertical stack */
+  .faq-grid, 
+  .faq-section div[class*="grid"],
+  .resource-grid,
+  #public-homepage-blog-grid-target {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 16px !important;
+  }
+
+  /* Overrides any desktop flex-basis or widths causing them to squeeze side-by-side */
+  .faq-item, 
+  .faq-grid > *,
+  .blog-card {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 3. FORCE MAIN BUTTON TEXT TO WHITE */
+  .btn-main,
+  a.btn-main,
+  button.btn-main,
+  [class*="btn-"] {
+    color: #ffffff !important; /* Visual Anchor: Bright white text over dark background button colors */
+  }
+}
