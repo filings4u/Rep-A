@@ -1,28 +1,24 @@
 /* ==========================================================================
-   FORCE TRUE MOBILE RESPONSIVENESS OVERRIDE
+   FINAL MINIMALIST MOBILE OVERRIDE SPECIFICATION
+   Removes text labels to leave ONLY the toggle icon, and locks footer side-by-side.
    ========================================================================== */
 
 @media screen and (max-width: 768px) {
-    /* 1. FORCE ELEMENT LAYOUT STACKING CONTROL */
+    /* --- 1. GLOBAL LAYOUT FRAMEWORKS --- */
     html, body {
         max-width: 100vw !important;
         overflow-x: hidden !important;
     }
     
-    main, section, header, footer, div, article, aside {
-        box-sizing: border-box !important;
-    }
-
     .unified-site-section, 
     .page-container, 
     section, 
     #system-stats {
         padding: 40px 16px !important;
         width: 100% !important;
-        min-width: 0 !important;
     }
 
-    /* 2. THE ABSOLUTE MOBILE NAVIGATION NAVIGATION TOGGLE */
+    /* --- 2. HEADER: TOGGLE ICON ONLY (NO TEXT) --- */
     nav {
         background: #ffffff !important;
         position: relative !important;
@@ -40,22 +36,24 @@
         box-sizing: border-box !important;
     }
 
-    /* Pull mobile navigation button out of desktop hiding */
+    /* Force button visible, keep ONLY the clean ☰ icon character code active */
     .mobile-toggle-btn {
         display: block !important;
         visibility: visible !important;
         background: transparent !important;
         border: none !important;
-        font-size: 1.75rem !important;
+        font-size: 1.8rem !important;
         color: var(--navy) !important;
         cursor: pointer !important;
-        padding: 4px 8px !important;
-        order: 2 !important; /* Forces toggle to stay on right side */
+        padding: 4px !important;
+        line-height: 1 !important;
+        width: auto !important;
+        height: auto !important;
     }
 
-    /* Hide desktop array and make it an absolute drop drawer */
+    /* Absolute dropdown drawer configuration */
     .nav-links {
-        display: none; /* Controlled dynamically by jQuery toggle script */
+        display: none; /* Controlled dynamically via jQuery slideToggle */
         flex-direction: column !important;
         position: absolute !important;
         top: 100% !important;
@@ -86,25 +84,12 @@
 
     .nav-item-dropdown .dropdown-content {
         position: static !important;
-        display: none; /* Interactive sub menus */
+        display: none;
         box-shadow: none !important;
         padding: 12px 0 4px 12px !important;
         background: transparent !important;
         border: none !important;
         width: 100% !important;
-    }
-    
-    .mega-panel-two-col, .mega-panel-three-col {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 16px !important;
-    }
-
-    .mega-column {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 10px !important;
-        padding: 0 !important;
     }
 
     .btn-client-portal {
@@ -116,23 +101,17 @@
         box-sizing: border-box !important;
     }
 
-    /* 3. HERO LAYER REVERSAL (IMAGE TOP / TITLE BOTTOM) */
+    /* --- 3. HERO LAYER REVERSAL --- */
     .service-grid {
         display: flex !important;
-        flex-direction: column-reverse !important; /* Hard flips alignment flow */
+        flex-direction: column-reverse !important;
         gap: 32px !important;
         width: 100% !important;
-    }
-
-    .hero-image-container {
-        width: 100% !important;
-        display: block !important;
     }
 
     .hero-image-container img {
         height: 240px !important;
         width: 100% !important;
-        max-width: 100% !important;
         object-fit: cover !important;
         border-radius: 12px !important;
     }
@@ -141,114 +120,75 @@
         text-align: center !important;
         width: 100% !important;
     }
-    
-    .content-area h1 {
-        font-size: 2.25rem !important;
-        line-height: 1.2 !important;
-    }
 
-    .active-sync-badge-wrapper {
-        justify-content: center !important;
-        margin: 16px auto !important;
-    }
-
-    /* 4. SECTIONS BLOCKS FORCE VERTICAL STACKING */
+    /* --- 4. BODY CARD SECTION SECTIONS BALANCED STACKING --- */
     .icon-grid, 
     .stats-grid, 
     .faq-grid, 
     .resource-grid {
         display: flex !important;
-        flex-direction: column !important; /* Destroys horizontal desktop columns */
+        flex-direction: column !important;
         gap: 16px !important;
         width: 100% !important;
     }
 
-    .stats-card, 
-    .icon-box, 
-    .faq-item {
+    /* --- 5. STRICT FIXED 2x2 SIDE-BY-SIDE FOOTER MATRIX --- */
+    .footer-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* Locks structural links perfectly side-by-side */
+        gap: 32px 16px !important;
         width: 100% !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
+        padding: 40px 16px !important;
+    }
+
+    .footer-brand {
+        grid-column: span 2 !important; /* Brand data summary retains absolute horizontal layout row */
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .footer-brand div {
+        justify-content: center !important;
+    }
+
+    /* Enforce strict side-by-side block parameters without stacking */
+    .footer-col {
+        width: 100% !important;
+        min-width: 0 !important;
+        display: block !important;
+    }
+
+    .footer-col h4 {
+        margin-top: 0 !important;
+        margin-bottom: 12px !important;
+        font-size: 0.95rem !important;
+    }
+
+    .footer-col ul {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 0 !important;
         margin: 0 !important;
     }
 
-  /* ==========================================================================
-  5. OPTIMIZED 2x2 FOOTER SYSTEM OVERRIDE
-   ========================================================================== */
-  .footer-container {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Establishes balanced side-by-side columns */
-    gap: 28px 16px !important; /* Compact cross-axis tracking blocks overlapping text values */
-    width: 100% !important;
-    padding: 40px 16px !important;
+    /* Footer Bottom Meta Panel */
+    .footer-bottom {
+        flex-direction: column !important;
+        gap: 20px !important;
+        text-align: center !important;
+        padding: 24px 16px !important;
+        margin-top: 32px !important;
+        width: 100% !important;
     }
 
-/* Brand paragraph spans clean across header boundaries */
-  .footer-brand {
-    grid-column: span 2 !important; /* Allocates full layout width to decouple summary descriptions */
-    text-align: center !important;
-    width: 100% !important;
-    margin-bottom: 8px !important;
-}
+    .trust-badge {
+        margin: 0 auto !important;
+        display: inline-block !important;
+    }
 
-.footer-brand p {
-    margin: 12px auto 0 auto !important;
-    max-width: 400px !important;
-    line-height: 1.5 !important;
-}
-
-.footer-brand div {
-    justify-content: center !important; /* Centers inline icon layout blocks */
-}
-
-/* Precise Column Row Break Overrides */
-.footer-col {
-  width: 100% !important;
-  min-width: 0 !important; /* Prevents text bounds from causing layout shifts */
-}
-    
-.footer-col h4 {
-  margin-top: 0 !important;
-  margin-bottom: 12px !important;
-  font-size: 1rem !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-   padding-bottom: 6px !important;
-}
-
-.footer-col ul {
-  display: flex !important;
-  flex-direction: column !important; /* Enforces strict downward stacking of link paths */
-  gap: 10px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-/* Footer Bottom Metadata Cluster */
-.footer-bottom {
-  display: flex !important;
-  flex-direction: column !important; /* Stacks safety indicators, licensing summaries, and terms strings vertically */
-  gap: 20px !important;
-  text-align: center !important;
-  padding: 24px 16px !important;
-  margin-top: 24px !important;
-  width: 100% !important;
-}
-
-.footer-bottom p {
-  max-width: 100% !important;
-  margin: 0 auto !important;
-}
-
-.trust-badge {
-  margin: 0 auto !important;
-  display: inline-block !important;
-  width: max-content !important;
-}
-
-.legal-links {
-  justify-content: center !important;
-  gap: 20px !important;
-  width: 100% !important;
-}
-
+    .legal-links {
+        justify-content: center !important;
+        gap: 20px !important;
+    }
 }
