@@ -142,7 +142,8 @@ nav img.logo,
 }
 
 @media screen and (max-width: 768px) {
-    /* --- RESTORE & OVERRIDE TOGGLE INTERACTION FOR MOBILE --- */
+    
+    /* --- RESTORE INTERACTION ONLY FOR MOBILE TOUCH DEVICES --- */
     .mobile-toggle-btn {
         display: block !important;
         visibility: visible !important;
@@ -162,6 +163,7 @@ nav img.logo,
         line-height: 1 !important;
     }
 }
+
 
 
 /* --- DESKTOP NAVIGATION DROPDOWNS --- */
