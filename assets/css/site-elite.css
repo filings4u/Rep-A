@@ -76,19 +76,19 @@ header, .site-header {
   width: 100% !important;
 }
 
-/* WIDESCREEN UPGRADE: Extended navigation area layout to use more space */
+/* --- 2. HEADER FULL-SPAN ALIGNMENT OVERRIDES --- */
 .nav-content-wrapper {
-  max-width: 1750px !important;
-  height: 100% !important;
-  margin: 0 auto !important;
-  padding: 0 40px !important;
-  box-sizing: border-box !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  position: relative !important;
-  float: none !important;
+  max-width: 100% !important; /* Lifts static max-width cap to allow grid binding */
+  height: 100% !important; 
+  margin: 0 auto !important; 
+  padding: 0 6% !important; /* MATCHED BOUNDARY: Locks header edges directly to section tracks */
+  box-sizing: border-box !important; 
+  display: flex !important; 
+  flex-direction: row !important; 
+  align-items: center !important; 
+  justify-content: space-between !important; 
+  position: relative !important; 
+  float: none !important; 
 }
 
 /* --- GLOBAL DESKTOP LOGO SIZING LOCK --- */
@@ -288,17 +288,17 @@ nav button, nav .mobile-toggle-btn, .mobile-toggle-btn, [class*="toggle"], [id*=
 }
 
 /* --- 4. HERO SECTION WIDESCREEN MATRIX --- */
-/* WIDESCREEN UPGRADE: Extended main canvas to max-width 1750px */
-.page-container, main.page-container {
-  padding: 120px 40px 40px !important;
-  width: 100% !important;
-  max-width: 1750px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  box-sizing: border-box !important;
-  transform: none !important;
-  left: 0 !important;
-  flex: 0 0 auto !important;
+/* --- 4. HERO SECTION ALIGNMENT TRACKS --- */
+.page-container, main.page-container { 
+  padding: 120px 6% 40px 6% !important; /* MATCHED BOUNDARY: Pulls top hero contents inward safely */
+  width: 100% !important; 
+  max-width: 100% !important; 
+  margin-left: auto !important; 
+  margin-right: auto !important; 
+  box-sizing: border-box !important; 
+  transform: none !important; 
+  left: 0 !important; 
+  flex: 0 0 auto !important; 
 }
 
 /* WIDESCREEN UPGRADE: Adjusted column allocations so things sit beautifully wide */
