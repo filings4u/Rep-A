@@ -10,6 +10,7 @@
 } 
 
 @media screen and (max-width: 980px) { 
+  /* --- 1. GLOBAL MOBILE FORCE SYSTEM RESETS --- */
   html, body { 
     width: 100% !important; 
     max-width: 100% !important; 
@@ -31,57 +32,25 @@
   section, .unified-site-section, .feature-section, .pricing-section, .resource-section, .faq-section, .blog-section { 
     width: 100% !important; 
     max-width: 100% !important; 
-    padding: 40px 20px !important; 
+    padding: 30px 16px !important; 
     box-sizing: border-box !important; 
     display: block !important; 
   } 
-  .bg-ice, .resource-section, #system-stats { 
-    background-color: var(--ice) !important; 
-  } 
-  .bg-navy, .feature-section { 
-    background-color: var(--navy) !important; 
-    color: var(--white) !important; 
-  } 
-  .bg-white, .faq-section, .blog-section { 
-    background-color: var(--white) !important; 
-  } 
   .page-container, main.page-container { 
-    padding-top: 95px !important; 
-    padding-left: 0 !important; 
-    padding-right: 0 !important; 
+    padding-top: 85px !important; 
+    padding-left: 16px !important; 
+    padding-right: 16px !important; 
     width: 100% !important; 
     box-sizing: border-box !important; 
   } 
 
-  /* --- HERO DISPLAY LAYOUT --- */ 
-  .service-grid { 
-    display: flex !important; 
-    flex-direction: column-reverse !important; 
-    gap: 30px !important; 
-    width: 100% !important; 
-    padding: 0 20px !important; 
-    box-sizing: border-box !important; 
-  } 
-  .content-area h1 { 
-    font-size: 2.4rem !important; 
-    line-height: 1.15 !important; 
-    color: var(--navy) !important; 
-    font-weight: 800 !important; 
-    text-align: center !important; 
-  } 
-  .content-area p { 
-    font-size: 1.1rem !important; 
-    color: var(--text-muted) !important; 
-    text-align: center !important; 
-  } 
-
-  /* --- MOBILE NAVIGATION ASSEMBLY --- */ 
+  /* --- 2. MOBILE NAVIGATION HAMBURGER FORCE REVEAL --- */ 
   nav { 
     position: fixed !important; 
     top: 0 !important; 
     left: 0 !important; 
     width: 100% !important; 
-    height: 70px !important; 
+    height: 65px !important; 
     background: var(--white) !important; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important; 
     z-index: 99999 !important; 
@@ -92,45 +61,56 @@
     justify-content: space-between !important; 
     align-items: center !important; 
     height: 100% !important; 
-    padding: 0 20px !important; 
-    box-sizing: border-box !important; 
+    padding: 0 16px !important; 
+    box-sizing: border-box !important;
   } 
-  .logo-link, nav a.logo-link { 
+  .logo-link { 
     display: flex !important; 
     align-items: center !important; 
   } 
   .logo-link img, nav img.logo { 
-    height: 28px !important; 
+    height: 26px !important; 
     width: auto !important; 
-    max-width: 130px !important; 
+    max-width: 120px !important; 
     object-fit: contain !important; 
     display: inline-block !important; 
   } 
-  nav button.mobile-toggle-btn, .mobile-toggle-btn { 
+
+  /* FORCE HAMBURGER TRIGGER TO SHOW EXPLICITLY */
+  nav button.mobile-toggle-btn,
+  .nav-content-wrapper .mobile-toggle-btn,
+  .mobile-toggle-btn { 
     display: flex !important; 
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    pointer-events: auto !important;
     align-items: center !important; 
     justify-content: center !important; 
     width: 44px !important; 
     height: 44px !important; 
-    background: transparent !important; 
+    background: #f1f5f9 !important; /* Visual badge background to confirm it's loading */
     border: none !important; 
-    font-size: 2rem !important; 
+    border-radius: 8px !important;
+    font-size: 1.6rem !important; 
     color: var(--navy) !important; 
     cursor: pointer !important; 
-    z-index: 100001 !important; 
+    z-index: 100002 !important; 
     padding: 0 !important; 
     margin: 0 !important; 
   } 
+
+  /* --- 3. SLIDE OUT FULLSCREEN LAYOUT DRAWER --- */
   .nav-links { 
     display: flex !important; 
     flex-direction: column !important; 
     align-items: center !important; 
     justify-content: flex-start !important; 
     position: fixed !important; 
-    top: 70px !important; 
+    top: 65px !important; 
     left: 0 !important; 
     width: 100vw !important; 
-    height: calc(100vh - 70px) !important; 
+    height: calc(100vh - 65px) !important; 
     background: var(--white) !important; 
     box-shadow: 0 10px 30px rgba(10, 31, 68, 0.1) !important; 
     gap: 8px !important; 
@@ -158,7 +138,7 @@
     padding: 10px 0 !important; 
   } 
 
-  /* --- MOBILE DROPDOWN ACCORDIONS --- */ 
+  /* --- 4. ACCORDIONS AND BUTTON CONTROLS --- */
   .nav-item-dropdown { 
     width: 100% !important; 
     display: block !important; 
@@ -202,7 +182,6 @@
     font-weight: 700 !important; 
     text-transform: uppercase !important; 
     color: var(--text-muted) !important; 
-    letter-spacing: 0.05em !important; 
     text-align: center !important; 
     margin-bottom: 5px !important; 
     display: block !important; 
@@ -214,7 +193,6 @@
     padding: 8px 0 !important; 
     text-align: center !important; 
   } 
-
   .btn-client-portal { 
     background: var(--navy) !important; 
     color: var(--white) !important; 
@@ -227,83 +205,59 @@
     font-weight: 700 !important; 
   } 
 
-  /* --- DISPLAY GRIDS STACKERS --- */ 
-  .icon-grid, .pricing-grid, .stats-grid, .contact-layout-grid, .faq-grid, .resource-grid, #public-homepage-blog-grid-target { 
-    display: grid !important; 
-    grid-template-columns: 1fr !important; 
-    gap: 24px !important; 
-    width: 100% !important; 
-  } 
-  .wizard-card, .icon-box, .price-card, .stats-card, .faq-item, .blog-card, .form-panel-card, .info-panel-card { 
-    width: 100% !important; 
-    min-height: auto !important; 
-    background: var(--white) !important; 
-    border: 1px solid var(--border) !important; 
-    border-radius: 16px !important; 
-    box-sizing: border-box !important; 
-    text-align: left !important; 
-    box-shadow: 0 10px 25px rgba(10, 31, 68, 0.04) !important; 
-    overflow: hidden !important; 
-  } 
-  a.blog-card { 
-    padding: 0 !important; 
-    display: block !important; 
-  } 
-  .icon-box h4, .price-card h3, .stats-card h3, .faq-item h4, .blog-card h3, .stat-amount { 
-    color: var(--navy) !important; 
-    font-size: 1.25rem !important; 
-    font-weight: 700 !important; 
-  } 
-  .icon-box p, .price-card p, .stats-card p, .faq-item p, .blog-card p { 
-    color: var(--text-muted) !important; 
-  } 
-
-  /* --- 2x2 FOOTER LAYOUT CONTROLS --- */ 
+  /* --- 5. COMPACT 2x2 FOOTER CONSOLIDATION ENGINE --- */ 
   footer.site-footer, .site-footer { 
     width: 100% !important; 
     max-width: 100% !important; 
-    margin: 40px 0 0 0 !important; 
-    padding: 40px 20px !important; 
+    margin: 30px 0 0 0 !important; 
+    padding: 30px 16px !important; 
     background: var(--navy) !important; 
     display: block !important; 
-    transform: none !important; 
-    left: 0 !important; 
-    box-sizing: border-box !important;
+    box-sizing: border-box !important; 
   } 
-  footer.site-footer .footer-container { 
+  footer.site-footer .footer-container,
+  .site-footer .footer-container { 
     display: grid !important; 
-    grid-template-columns: repeat(2, 1fr) !important; /* FIXED: Forces links to stay side-by-side on mobile */
-    gap: 30px 15px !important; 
+    grid-template-columns: repeat(2, 1fr) !important; /* Forms flat horizontal 2-column sets */
+    gap: 15px 12px !important; /* Compresses empty margins */
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
   } 
   .site-footer .footer-brand { 
-    grid-column: 1 / -1 !important; 
-    text-align: left !important; /* FIXED: Keeps branding block left aligned for split layout row consistency */
+    grid-column: 1 / -1 !important; /* Brand title spans entire row width */
+    text-align: left !important; 
   } 
   .site-footer .footer-brand img { 
-    height: 28px !important; /* FIXED: Force locks image sizing on mobile layout pages */
+    height: 26px !important; 
     width: auto !important; 
-    max-width: 130px !important; 
-    object-fit: contain !important; 
+    max-width: 120px !important; 
     display: block !important; 
-    margin: 0 0 12px 0 !important; 
+    margin: 0 0 6px 0 !important; 
   } 
   .site-footer .footer-brand p { 
     color: #94a3b8 !important; 
     text-align: left !important; 
-  } 
-  .site-footer .footer-brand div[style*="display: flex"] { 
-    justify-content: flex-start !important; 
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
+    margin: 4px 0 !important;
   } 
   .site-footer .footer-col { 
-    text-align: left !important; /* FIXED: Columns align clean to left edge side-by-side */
+    text-align: left !important; 
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    margin: 0 !important;
   } 
   .footer-col h4 { 
     color: var(--white) !important; 
-    margin: 0 0 12px 0 !important; 
-    font-size: 0.85rem !important; 
-    white-space: nowrap !important; /* FIXED: Prevents heading words from shifting layout cells */
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    margin: 0 0 6px 0 !important; 
+    font-size: 0.8rem !important; 
+    line-height: 1.2 !important;
+    white-space: nowrap !important; 
+    overflow: hidden !important; 
+    text-overflow: ellipsis !important; 
   } 
   .site-footer .footer-col ul { 
     display: flex !important; 
@@ -313,67 +267,41 @@
     padding: 0 !important; 
     margin: 0 !important; 
   } 
+  .site-footer .footer-col ul li {
+    width: 100% !important;
+    margin-bottom: 4px !important;
+    padding: 0 !important;
+  }
   .site-footer .footer-col ul li a { 
     color: #94a3b8 !important; 
-    display: inline-block !important; 
-    padding: 6px 0 !important; 
-    font-size: 0.85rem !important; /* FIXED: Compact text fitting for side-by-side presentation columns */
+    display: block !important; 
+    padding: 3px 0 !important; 
+    font-size: 0.8rem !important; 
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   } 
   .site-footer .footer-bottom { 
     display: flex !important; 
     flex-direction: column !important; 
     align-items: center !important; 
-    gap: 15px !important; 
-    padding: 25px 0 0 0 !important; 
+    gap: 12px !important; 
+    margin-top: 20px !important;
+    padding: 15px 0 0 0 !important; 
     border-top: 1px solid rgba(255, 255, 255, 0.1) !important; 
   } 
   .site-footer .footer-bottom div p { 
     color: #94a3b8 !important; 
     text-align: center !important; 
-  } 
-  .site-footer .trust-badge { 
-    background: rgba(255, 255, 255, 0.05) !important; 
-    color: var(--white) !important; 
+    font-size: 0.75rem !important;
   } 
   .site-footer .legal-links { 
     display: flex !important; 
     gap: 12px 16px !important; 
     justify-content: center !important; 
   }
-
-}
-
-/* ==========================================
-   📱 MOBILE 2x2 FOOTER COMPACT ALIGNMENT OVERRIDE
-   ========================================== */
-@media screen and (max-width: 980px) {
-  footer.site-footer .footer-container {
-    gap: 20px 15px !important; /* FORCES TIGHTNESS: Pulls layout rows vertically closer together */
-  }
-
-  .site-footer .footer-brand p {
-    margin-top: 8px !important;
-    margin-bottom: 5px !important;
-    line-height: 1.4 !important;
-    font-size: 0.85rem !important;
-  }
-
-  .footer-col h4 {
-    margin: 0 0 6px 0 !important; /* Closes empty void under column header tags */
-    font-size: 0.85rem !important;
-  }
-
-  .site-footer .footer-col ul li {
-    margin-bottom: 6px !important; /* Prevents text elements from feeling too spaced out */
-  }
-
-  .site-footer .footer-col ul li a {
-    padding: 2px 0 !important; /* Collapses line buffers inside your links grid layout */
-    font-size: 0.82rem !important;
-  }
-
-  .site-footer .footer-bottom {
-    margin-top: 25px !important; /* Brings the lower legal section closer to the 2x2 columns */
-    padding-top: 15px !important;
+  .site-footer .legal-links a {
+    font-size: 0.75rem !important;
   }
 }
