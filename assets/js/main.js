@@ -20,90 +20,85 @@ document.addEventListener("DOMContentLoaded", () => {
  * 1. NAVIGATION DRAWER & ACCORDION ACTION HANDLERS 
  */ 
 function initNavigationEngine() { 
-  // Dynamic element generation logic
-  const checkDrawerAndInjectClose = () => {
-    const navLinksDrawer = document.querySelector(".nav-links"); 
+  const navLinksDrawer = document.querySelector(".nav-links"); 
+
+  // Injects the clean close button icon into your menu drawer structure
+  const verifyAndInjectCloseBtn = () => {
     if (navLinksDrawer && !document.querySelector(".mobile-close-btn")) { 
       const closeBtn = document.createElement("button"); 
       closeBtn.className = "mobile-close-btn"; 
       closeBtn.innerHTML = "✕"; 
       closeBtn.setAttribute("aria-label", "Close Menu"); 
-      navLinksDrawer.appendChild(closeBtn); 
+      navLinksDrawer.insertBefore(closeBtn, navLinksDrawer.firstChild); 
     }
   };
 
-  // Run initial check for close button
-  checkDrawerAndInjectClose();
+  verifyAndInjectCloseBtn();
 
-  // Unified helper function to close the menu cleanly 
   function closeMobileMenu() { 
     document.body.classList.remove("nav-open"); 
-    const drawer = document.querySelector(".nav-links");
-    const toggle = document.querySelector(".mobile-toggle-btn");
-    
-    if (drawer) drawer.classList.remove("active"); 
+    const toggle = document.getElementById("mobile-menu-trigger");
+    if (navLinksDrawer) navLinksDrawer.classList.remove("active"); 
     if (toggle) toggle.setAttribute("aria-expanded", "false"); 
-    console.log("📱 Mobile navigation slide-drawer menu hidden."); 
+    console.log("📱 Mobile navigation menu collapsed."); 
   } 
 
-  // REAL-TIME EVENT DELEGATOR: Handles clicks for dynamically rendered elements
+  // EVENT DELEGATOR: Intercepts actions natively
   document.addEventListener("click", (event) => {
-    const toggleBtn = event.target.closest(".mobile-toggle-btn");
+    const toggleBtn = event.target.closest("#mobile-menu-trigger");
     const closeBtn = event.target.closest(".mobile-close-btn");
     const dropdownTrigger = event.target.closest(".nav-item-dropdown > a");
-    const navLinksDrawer = document.querySelector(".nav-links");
 
-    // Fix drawer close icon missing on dynamic rendering updates
-    checkDrawerAndInjectClose();
-
-    // HANDLE TOGGLE BUTTON CLICK
+    // TOGGLE MENU ACTIONS
     if (toggleBtn) {
-      event.preventDefault(); 
-      event.stopPropagation(); 
+      event.preventDefault();
+      event.stopPropagation();
       
-      document.body.classList.toggle("nav-open"); 
-      if (navLinksDrawer) {
-        navLinksDrawer.classList.toggle("active"); 
-      }
+      document.body.classList.toggle("nav-open");
+      if (navLinksDrawer) navLinksDrawer.classList.toggle("active");
       
-      const isOpen = document.body.classList.contains("nav-open");
-      toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false"); 
-      console.log("📱 Toggle button clicked. Drawer open state:", isOpen);
+      const isCurrentlyOpen = document.body.classList.contains("nav-open");
+      toggleBtn.setAttribute("aria-expanded", isCurrentlyOpen ? "true" : "false");
+      console.log("📱 Toggle clicked. Drawer active:", isCurrentlyOpen);
       return;
     }
 
-    // HANDLE NAVY '✕' CLOSE BUTTON CLICK
+    // CLOSE BUTTON ACTIONS
     if (closeBtn) {
-      event.preventDefault(); 
-      event.stopPropagation(); 
+      event.preventDefault();
+      event.stopPropagation();
       closeMobileMenu();
       return;
     }
 
-    // HANDLE DROPDOWN ACCORDIONS
-    if (dropdownTrigger && window.innerWidth < 992) {
-      event.preventDefault(); 
-      event.stopPropagation(); 
-      const targetDropdown = dropdownTrigger.closest(".nav-item-dropdown"); 
-      if (targetDropdown) { 
-        document.querySelectorAll(".nav-item-dropdown").forEach((item) => { 
-          if (item !== targetDropdown) { 
-            item.classList.remove("active-toggle"); 
-          } 
-        }); 
-        targetDropdown.classList.toggle("active-toggle"); 
-      } 
+    // SUB-LEVEL ACCORDION TOGGLES
+    if (dropdownTrigger) {
+      // Only capture click behavior on mobile viewpoints
+      if (window.innerWidth < 992) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const parentElement = dropdownTrigger.closest(".nav-item-dropdown");
+        if (parentElement) {
+          // Close other open accordions
+          document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
+            if (item !== parentElement) item.classList.remove("active-toggle");
+          });
+          parentElement.classList.toggle("active-toggle");
+          console.log("📂 Accordion sub-menu item state toggled.");
+        }
+      }
       return;
     }
 
-    // GLOBAL DISMISS TAP OUTSIDE
-    if (document.body.classList.contains("nav-open")) { 
-      const isClickInsideMenu = navLinksDrawer && navLinksDrawer.contains(event.target); 
-      if (!isClickInsideMenu) { 
-        closeMobileMenu(); 
-      } 
-    } 
-  }); 
+    // DISMISS ON CLICKING OUTSIDE BOUNDS
+    if (document.body.classList.contains("nav-open")) {
+      const isInsideMenu = navLinksDrawer && navLinksDrawer.contains(event.target);
+      if (!isInsideMenu) {
+        closeMobileMenu();
+      }
+    }
+  });
 } 
 
 /** 
