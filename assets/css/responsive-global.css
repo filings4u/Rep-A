@@ -158,25 +158,27 @@ nav img.logo,
   color: var(--emerald);
 }
 
-/* --- MOBILE TOGGLE BUTTON (ENABLED FOR DEVICE VIEWPORTS) --- */
-.mobile-toggle-btn {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  width: auto !important;
-  height: auto !important;
-  pointer-events: auto !important;
-  position: relative !important; /* Clears absolute position constraints */
-  order: 2 !important; /* Dynamically pushes the button to the far right side */
+@media screen and (max-width: 768px) {
+    /* --- RESTORE & OVERRIDE TOGGLE INTERACTION FOR MOBILE --- */
+    .mobile-toggle-btn {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: auto !important;
+        height: auto !important;
+        pointer-events: auto !important;
+        position: relative !important; 
+        order: 2 !important; /* Forces the icon character to the far right margin */
         
-  background: transparent !important;
-  border: none !important;
-  font-size: 1.8rem !important;
-  color: var(--navy) !important;
-  cursor: pointer !important;
-  padding: 4px !important;
-  line-height: 1 !important;
-  }
+        background: transparent !important;
+        border: none !important;
+        font-size: 1.8rem !important;
+        color: var(--navy) !important;
+        cursor: pointer !important;
+        padding: 4px !important;
+        line-height: 1 !important;
+    }
+}
 
 
 /* --- DESKTOP NAVIGATION DROPDOWNS --- */
@@ -1511,4 +1513,15 @@ main.wizard-container {
 
 .visible {
   display: block !important;
+}
+
+/* --- MOBILE TOGGLE BUTTON (HIDDEN BY DEFAULT FOR DESKTOP VIEW) --- */
+.mobile-toggle-btn {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    pointer-events: none !important;
 }
