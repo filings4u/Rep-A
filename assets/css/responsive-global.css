@@ -158,6 +158,24 @@ nav img.logo,
   color: var(--emerald);
 }
 
+/* --- MOBILE TOGGLE BUTTON (HIDDEN ON DESKTOP) --- */
+.mobile-toggle-btn {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  pointer-events: none !important;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--navy);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
 /* --- DESKTOP NAVIGATION DROPDOWNS --- */
 .nav-item-dropdown {
   position: relative;
@@ -298,27 +316,6 @@ nav img.logo,
 
 .btn-client-portal:hover {
   background: var(--emerald);
-}
-
-/* Hide mobile toggle on desktop */
-nav button,
-nav .mobile-toggle-btn,
-.mobile-toggle-btn,
-[class*="toggle"],
-[id*="toggle"],
-[class*="burger"],
-[id*="burger"],
-[class*="trigger"],
-[id*="trigger"],
-[class*="mobile-menu"],
-[id*="mobile-menu"] {
-  display: none;
-  visibility: hidden;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  position: absolute;
-  pointer-events: none;
 }
 
 /* ========================================================================
@@ -999,6 +996,7 @@ main.wizard-container {
   color: var(--white);
   margin-top: auto;
   width: 100%;
+  max-width: 100%;
 }
 
 .footer-container {
@@ -1009,6 +1007,7 @@ main.wizard-container {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .footer-brand {
@@ -1077,6 +1076,7 @@ main.wizard-container {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .footer-bottom p {
@@ -1201,7 +1201,7 @@ main.wizard-container {
   .faq-section,
   .blog-section,
   #system-stats {
-    padding: var(--section-padding-mobile);
+    padding: 40px 16px;
   }
 
   /* --- MOBILE NAVIGATION --- */
@@ -1227,7 +1227,7 @@ main.wizard-container {
     max-width: 120px;
   }
 
-  /* Mobile Toggle Button */
+  /* Mobile Toggle Button - NOW VISIBLE */
   .mobile-toggle-btn {
     display: block !important;
     visibility: visible !important;
@@ -1240,6 +1240,8 @@ main.wizard-container {
     line-height: 1 !important;
     width: auto !important;
     height: auto !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
   /* Mobile Navigation Links */
