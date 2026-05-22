@@ -11,11 +11,13 @@
   html, body {
     max-width: 100vw !important;
     overflow-x: hidden !important;
+    position: relative !important;
   }
-  
+
   .unified-site-section, .page-container, section, #system-stats {
     padding: 40px 16px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* --- 2. HEADER: RIGHT TOGGLE & SLIDE-IN LEFT DRAWER --- */
@@ -25,6 +27,7 @@
     width: 100% !important;
     display: block !important;
     border-bottom: 1px solid var(--border) !important;
+    box-sizing: border-box !important;
   }
 
   .nav-content-wrapper {
@@ -36,7 +39,7 @@
     box-sizing: border-box !important;
   }
 
-  /* Toggle button positioned right (handled by flex justify-between) */
+  /* Toggle button positioned right */
   .mobile-toggle-btn {
     display: block !important;
     visibility: visible !important;
@@ -50,11 +53,13 @@
     width: auto !important;
     height: auto !important;
     margin-left: auto !important; /* Forces toggle hard to the right */
+    position: relative !important;
+    z-index: 1000 !important;
   }
 
   /* Right-to-Left Slide-In White Panel Menu */
   .nav-links {
-    display: flex !important; /* Change from none to flex to manage drawer layout */
+    display: flex !important; 
     flex-direction: column !important;
     position: fixed !important; /* Fixed viewport trapping for modal behavior */
     top: 0 !important;
@@ -62,21 +67,23 @@
     width: 80% !important; /* Pops in going left, occupying 80% width */
     max-width: 320px !important;
     height: 100vh !important;
-    background: #ffffff !important; /* Pure white drop down background */
-    padding: 80px 24px 24px 24px !important; /* Extra top padding to clear close button */
+    background: #ffffff !important; 
+    padding: 80px 24px 24px 24px !important; 
     box-sizing: border-box !important;
     gap: 16px !important;
     z-index: 99999 !important;
-    box-shadow: -10px 0 20px rgba(0,0,0,0.1) !important; /* Shadow on the left edge */
+    box-shadow: -10px 0 20px rgba(0,0,0,0.1) !important; 
     
-    /* Animation Framework: Initial State (Hidden to the Right) */
-    transform: translateX(100%);
+    /* Animation Framework: Fixed Overflow and Initial Hidden State */
+    transform: translate3d(100%, 0, 0) !important;
     transition: transform 0.3s ease-in-out !important;
+    visibility: hidden; /* Prevents focus/overflow while hidden */
   }
 
   /* Class to trigger with your JavaScript/jQuery toggle: .nav-links.active */
   .nav-links.active {
-    transform: translateX(0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    visibility: visible !important;
   }
 
   /* Navy Close Button 'X' styling inside the drawer */
@@ -88,7 +95,7 @@
     background: transparent !important;
     border: none !important;
     font-size: 2rem !important;
-    color: var(--navy) !important; /* Custom deep navy color requirement */
+    color: var(--navy) !important; 
     cursor: pointer !important;
     line-height: 1 !important;
   }
@@ -126,17 +133,17 @@
     box-sizing: border-box !important;
   }
 
-  /* --- 3. HERO LAYER REVERSAL: IMAGE ON TOP, TEXT ON BOTTOM --- */
+  /* --- 3. HERO LAYER REVERSAL --- */
   .service-grid {
     display: flex !important;
-    flex-direction: column !important; /* Removed reverse to put original HTML layout on top */
+    flex-direction: column !important; 
     gap: 32px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  /* Ensure image block is targeted/rendered above the text block */
   .hero-image-container {
-    order: 1 !important; /* Explicit layer rendering sequence */
+    order: 1 !important; 
     width: 100% !important;
   }
 
@@ -148,49 +155,49 @@
   }
 
   .content-area {
-    order: 2 !important; /* Text block scales underneath the image element */
-    text-align: left !important; /* Switched from center to clean left align */
+    order: 2 !important; 
+    text-align: left !important; 
     width: 100% !important;
   }
 
-  /* --- 4. BODY CARD SECTION SECTIONS BALANCED STACKING --- */
+  /* --- 4. BODY CARD SECTION SECTIONS --- */
   .icon-grid, .stats-grid, .faq-grid, .resource-grid {
     display: flex !important;
     flex-direction: column !important;
     gap: 16px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  /* --- 5. STRICT FIXED 2x2 FOOTER MATRIX WITH LEFT ALIGNMENT --- */
+  /* --- 5. STRICT FIXED 2x2 FOOTER MATRIX --- */
   .footer-container {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Forces 2 columns side-by-side */
+    grid-template-columns: repeat(2, 1fr) !important; 
+    grid-template-rows: auto auto !important; /* Forces row explicit rendering */
     gap: 32px 16px !important;
     width: 100% !important;
     padding: 40px 16px !important;
+    box-sizing: border-box !important;
   }
 
-  /* Footer Brand block setups */
   .footer-brand {
-    grid-column: span 2 !important; /* Takes full width of the first row grid row */
-    text-align: left !important; /* Forced branding labels left */
+    grid-column: 1 / span 2 !important; /* Explicit placement declaration */
+    text-align: left !important; 
     width: 100% !important;
   }
 
-  /* Targets logos, text lines, and brand container rows inside the footer */
-  .footer-brand div, 
-  .footer-logo-container,
-  .footer-social-icons {
-    justify-content: flex-start !important; /* Snaps icon matrices and logos left */
+  .footer-brand div, .footer-logo-container, .footer-social-icons {
+    display: flex !important;
+    justify-content: flex-start !important; 
     text-align: left !important;
   }
 
-  /* Enforce strict side-by-side block parameters without stacking */
   .footer-col {
+    grid-column: span 1 !important; /* Explicitly targets 1 element per grid block slot */
     width: 100% !important;
     min-width: 0 !important;
     display: block !important;
-    text-align: left !important; /* Left aligns link category elements */
+    text-align: left !important; 
   }
 
   .footer-col h4 {
@@ -211,12 +218,13 @@
   /* Footer Bottom Meta Panel */
   .footer-bottom {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Continues the 2x2 grid layout style */
+    grid-template-columns: repeat(2, 1fr) !important; 
     gap: 20px !important;
     text-align: left !important;
     padding: 24px 16px !important;
     margin-top: 32px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .trust-badge {
@@ -226,6 +234,7 @@
   }
 
   .legal-links {
+    display: flex !important;
     justify-content: flex-start !important;
     flex-direction: column !important;
     gap: 10px !important;
