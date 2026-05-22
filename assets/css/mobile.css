@@ -476,21 +476,6 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
 
 /* --- RESPONSIVE MOBILE SECTION CONTROLS --- */
 @media (max-width: 991px) {
-  
-  /* SECTION 1: STACKED (Hero content stacks above the image) */
-  .service-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 30px !important;
-  }
-  .hero-image-container {
-    width: 100% !important;
-    text-align: center;
-  }
-  .hero-image-container img {
-    max-width: 100% !important;
-    height: auto !important;
-  }
 
   /* SECTION 2 & 3: HORIZONTAL ROW (Features & Stats swipe left/right, NO stacking) */
   .icon-grid, 
@@ -529,5 +514,29 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
     display: grid !important;
     grid-template-columns: 1fr !important; /* Stacks nicely into 1 column */
     gap: 16px !important;
+  }
+}
+
+/* --- CRITICAL RESPONSIVE MOBILE OVERRIDES --- */
+@media (max-width: 991px) {
+  
+  /* Force the FAQs container to stack vertically instead of squeezing side-by-side */
+  .faq-grid, 
+  nav .nav-links .dropdown-content,
+  .dropdown-content,
+  .mega-panel-two-col,
+  .mega-panel-three-col {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    gap: 16px !important;
+  }
+
+  /* Remove any forced horizontal flexing on the inner FAQ items */
+  .faq-item {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 }

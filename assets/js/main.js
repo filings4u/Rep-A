@@ -12,94 +12,76 @@ if (typeof supabase !== 'undefined' && supabase.createClient) {
 } 
 
 document.addEventListener("DOMContentLoaded", () => { 
-  initNavigationEngine(); 
+  // Injects close button automatically if missing
+  const navLinksDrawer = document.querySelector(".nav-links");
+  if (navLinksDrawer && !document.querySelector(".mobile-close-btn")) { 
+    const closeBtn = document.createElement("button"); 
+    closeBtn.className = "mobile-close-btn"; 
+    closeBtn.innerHTML = "✕"; 
+    closeBtn.setAttribute("aria-label", "Close Menu"); 
+    closeBtn.setAttribute("onclick", "toggleMobileMenu()"); // Hooks directly into unified function
+    navLinksDrawer.insertBefore(closeBtn, navLinksDrawer.firstChild); 
+  }
+  
   initDynamicBlogSync(); 
 }); 
 
 /** 
- * 1. NAVIGATION DRAWER & ACCORDION ACTION HANDLERS 
+ * 1. UNIFIED GLOBAL NAVIGATION HANDLERS (EXPLICIT HTML HOOKS)
  */ 
-function initNavigationEngine() { 
-  const navLinksDrawer = document.querySelector(".nav-links"); 
+function toggleMobileMenu() {
+  const navLinksDrawer = document.querySelector(".nav-links");
+  const toggleBtn = document.querySelector(".mobile-toggle-btn");
+  
+  document.body.classList.toggle("nav-open");
+  if (navLinksDrawer) {
+    navLinksDrawer.classList.toggle("active");
+  }
+  
+  const isCurrentlyOpen = document.body.classList.contains("nav-open");
+  if (toggleBtn) {
+    toggleBtn.setAttribute("aria-expanded", isCurrentlyOpen ? "true" : "false");
+  }
+  console.log("📱 Mobile menu toggled. State open:", isCurrentlyOpen);
+}
 
-  // Injects the clean close button icon into your menu drawer structure
-  const verifyAndInjectCloseBtn = () => {
-    if (navLinksDrawer && !document.querySelector(".mobile-close-btn")) { 
-      const closeBtn = document.createElement("button"); 
-      closeBtn.className = "mobile-close-btn"; 
-      closeBtn.innerHTML = "✕"; 
-      closeBtn.setAttribute("aria-label", "Close Menu"); 
-      navLinksDrawer.insertBefore(closeBtn, navLinksDrawer.firstChild); 
-    }
-  };
-
-  verifyAndInjectCloseBtn();
-
-  function closeMobileMenu() { 
-    document.body.classList.remove("nav-open"); 
-    const toggle = document.getElementById("mobile-menu-trigger");
-    if (navLinksDrawer) navLinksDrawer.classList.remove("active"); 
-    if (toggle) toggle.setAttribute("aria-expanded", "false"); 
-    console.log("📱 Mobile navigation menu collapsed."); 
-  } 
-
-  // EVENT DELEGATOR: Intercepts actions natively
-  document.addEventListener("click", (event) => {
-    const toggleBtn = event.target.closest("#mobile-menu-trigger");
-    const closeBtn = event.target.closest(".mobile-close-btn");
-    const dropdownTrigger = event.target.closest(".nav-item-dropdown > a");
-
-    // TOGGLE MENU ACTIONS
-    if (toggleBtn) {
-      event.preventDefault();
-      event.stopPropagation();
-      
-      document.body.classList.toggle("nav-open");
-      if (navLinksDrawer) navLinksDrawer.classList.toggle("active");
-      
-      const isCurrentlyOpen = document.body.classList.contains("nav-open");
-      toggleBtn.setAttribute("aria-expanded", isCurrentlyOpen ? "true" : "false");
-      console.log("📱 Toggle clicked. Drawer active:", isCurrentlyOpen);
-      return;
-    }
-
-    // CLOSE BUTTON ACTIONS
-    if (closeBtn) {
-      event.preventDefault();
-      event.stopPropagation();
-      closeMobileMenu();
-      return;
-    }
-
-    // SUB-LEVEL ACCORDION TOGGLES
-    if (dropdownTrigger) {
-      // Only capture click behavior on mobile viewpoints
-      if (window.innerWidth < 992) {
-        event.preventDefault();
-        event.stopPropagation();
-        
-        const parentElement = dropdownTrigger.closest(".nav-item-dropdown");
-        if (parentElement) {
-          // Close other open accordions
-          document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
-            if (item !== parentElement) item.classList.remove("active-toggle");
-          });
-          parentElement.classList.toggle("active-toggle");
-          console.log("📂 Accordion sub-menu item state toggled.");
+function toggleMobileDropdown(event, anchorElement) {
+  if (window.innerWidth < 992) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const parentDropdown = anchorElement.closest(".nav-item-dropdown");
+    if (parentDropdown) {
+      // Collapse other active accordion menus
+      document.querySelectorAll(".nav-item-dropdown").forEach((item) => {
+        if (item !== parentDropdown) {
+          item.classList.remove("active-toggle");
         }
-      }
-      return;
+      });
+      // Toggle current accordion selection
+      parentDropdown.classList.toggle("active-toggle");
+      console.log("📂 Dropdown submenu toggled.");
     }
+  }
+}
 
-    // DISMISS ON CLICKING OUTSIDE BOUNDS
-    if (document.body.classList.contains("nav-open")) {
-      const isInsideMenu = navLinksDrawer && navLinksDrawer.contains(event.target);
-      if (!isInsideMenu) {
-        closeMobileMenu();
-      }
+// Global click-away dismission listener
+document.addEventListener("click", (event) => {
+  if (document.body.classList.contains("nav-open")) {
+    const navLinksDrawer = document.querySelector(".nav-links");
+    const toggleBtn = document.querySelector(".mobile-toggle-btn");
+    
+    const clickedInsideMenu = navLinksDrawer && navLinksDrawer.contains(event.target);
+    const clickedToggleButton = toggleBtn && toggleBtn.contains(event.target);
+    
+    if (!clickedInsideMenu && !clickedToggleButton) {
+      document.body.classList.remove("nav-open");
+      if (navLinksDrawer) navLinksDrawer.classList.remove("active");
+      if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+      console.log("📱 Clicked outside. Menu dismissed.");
     }
-  });
-} 
+  }
+});
 
 /** 
  * 2. INITIALIZE SUPABASE DATA CONNECTION CHANNELS 
