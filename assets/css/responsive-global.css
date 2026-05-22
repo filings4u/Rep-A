@@ -993,27 +993,28 @@ main.wizard-container {
 }
 
 /* ========================================================================
-   11. FOOTER (UPDATED FOR FULL DESKTOP WIDTH & 5 COLUMNS)
+   11. FOOTER (UPDATED FOR ABSOLUTE FULL EDGE-TO-EDGE DESKTOP WIDTH)
    ======================================================================== */
 .site-footer {
     background: var(--navy);
     color: var(--white);
     margin-top: auto;
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 .footer-container {
     display: grid;
-    /* 🌟 FIXED: Changed to 5 columns so all 5 blocks sit side-by-side without overlapping */
+    /* 5 columns spread layout evenly across the screen */
     grid-template-columns: repeat(5, 1fr); 
-    gap: 30px;
-    /* 🌟 FIXED: Changed 6% padding to a small 24px margin to stretch to monitor edges */
-    padding: 60px 24px; 
-    width: 80%;
-    max-width: 100%; 
+    gap: 40px;
+    /* 🌟 FIXED: Changed padding from 6% to 40px left/right to stretch to monitor edges */
+    padding: 60px 40px !important; 
+    width: 100% !important;
+    /* 🌟 FIXED: Removed narrow width limits to unlock absolute screen utilization */
+    max-width: 100% !important; 
     box-sizing: border-box;
-    margin: 0;
+    margin: 0 !important;
 }
 
 .footer-brand {
@@ -1077,13 +1078,13 @@ main.wizard-container {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    /* 🌟 FIXED: Stretched to edges to match the container above */
-    padding: 24px 24px; 
+    /* 🌟 FIXED: Matches the 40px padding layout boundary set up above */
+    padding: 24px 40px !important; 
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box;
-    margin: 0;
+    margin: 0 !important;
 }
 
 .footer-bottom p {
@@ -1125,7 +1126,6 @@ main.wizard-container {
 .legal-links a:hover {
     color: var(--emerald);
 }
-
 
 /* ========================================================================
    12. ANIMATIONS
