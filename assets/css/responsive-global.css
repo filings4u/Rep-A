@@ -1262,49 +1262,62 @@ main.wizard-container {
         line-height: 1 !important;
     }
 
-    /* 🌟 FIXED: Absolutely hides desktop links on mobile, transforming it into a hidden drop drawer */
-    .nav-links {
-        display: none !important; /* Overrides the desktop display:flex rule natively */
-        flex-direction: column !important;
-        position: absolute !important;
-        top: 60px !important; /* Drops cleanly below the nav bar header height line */
-        left: 0 !important;
-        width: 100% !important;
-        background: var(--white) !important;
-        border-bottom: 2px solid var(--border) !important;
-        padding: 24px 16px !important;
-        box-sizing: border-box !important;
-        gap: 16px !important;
-        z-index: 999999 !important;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-        margin: 0 !important;
-    }
+ /* 🌟 FIXED: Default resting state hides links on mobile, allowing JS class manipulation */
+.nav-links {
+    display: none; /* Removed !important to let our body classes manipulate visibility */
+    flex-direction: column !important;
+    position: absolute !important;
+    top: 60px !important; /* Drops cleanly below the nav bar header height line */
+    left: 0 !important;
+    width: 100% !important;
+    background: var(--white) !important;
+    border-bottom: 2px solid var(--border) !important;
+    padding: 24px 16px !important;
+    box-sizing: border-box !important;
+    gap: 16px !important;
+    z-index: 999999 !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    margin: 0 !important;
+}
 
-    /* Keep individual mobile dropdown paths full-width inside drawer layout */
-    .nav-item-dropdown {
-        width: 100% !important;
-        display: block !important;
-    }
+/* 🌟 FIXED: High-priority trigger rules bind directly to your existing body toggle script */
+body.nav-open .nav-links {
+    display: flex !important; /* Dynamically deploys your layout links folder array on user taps */
+}
 
-    .nav-item-dropdown > a {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 12px 0 !important;
-        border-bottom: 1px solid var(--border) !important;
-        width: 100% !important;
-        color: var(--navy) !important;
-    }
+/* Keep individual mobile dropdown paths full-width inside drawer layout */
+.nav-item-dropdown {
+    width: 100% !important;
+    display: block !important;
+}
 
-    .nav-item-dropdown .dropdown-content {
-        position: static !important;
-        display: none !important; /* Managed smoothly by your click handler function */
-        box-shadow: none !important;
-        padding: 12px 0 4px 12px !important;
-        background: transparent !important;
-        border: none !important;
-        width: 100% !important;
-    }
+.nav-item-dropdown > a {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+    width: 100% !important;
+    color: var(--navy) !important;
+}
+
+.nav-item-dropdown .dropdown-content {
+    position: static !important;
+    display: none !important; /* Managed smoothly by your active-toggle click handler function */
+    box-shadow: none !important;
+    padding: 12px 0 4px 12px !important;
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+}
+
+/* 🌟 FIXED: Reveals internal sub-menu options when category headers are tapped */
+.nav-item-dropdown.active-toggle .dropdown-content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
 
     .btn-client-portal {
         display: block !important;
