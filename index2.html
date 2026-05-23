@@ -51,20 +51,22 @@
     <button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none z-50 relative" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="
       const drawer = document.getElementById('nav-links-drawer');
       const backdrop = document.getElementById('drawer-backdrop');
+      
       drawer.classList.toggle('-translate-x-full');
+      drawer.classList.toggle('invisible');
       backdrop.classList.toggle('hidden');
+      
       const isMenuOpen = !drawer.classList.contains('-translate-x-full');
       this.innerHTML = isMenuOpen ? '✕' : '☰';
       this.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
     ">☰</button>
 
-    <!-- MOBILE DRAWER BACKDROP (Darkens screen content when menu is open) -->
+    <!-- MOBILE DRAWER BACKDROP -->
     <div id="drawer-backdrop" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="document.getElementById('mobile-menu-trigger').click()"></div>
 
-    <!-- LINK MAIN DRAWER CONTAINER (Slides smoothly from Left side on Mobile) --> 
-    <div id="nav-links-drawer" class="fixed lg:relative top-0 lg:top-auto left-0 lg:left-auto w-[290px] lg:w-auto h-screen lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-r lg:border-none border-gray-100 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out box-border overflow-y-auto lg:overflow-visible flex flex-col lg:flex-row gap-6 lg:gap-10 items-start lg:items-center"> 
+    <!-- LINK MAIN DRAWER CONTAINER (Corrected Transition Pipeline) --> 
+    <div id="nav-links-drawer" class="fixed lg:relative top-0 lg:top-auto left-0 lg:left-auto w-[290px] lg:w-auto h-screen lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-r lg:border-none border-gray-100 z-40 transform -translate-x-full invisible lg:visible lg:translate-x-0 transition-all duration-300 ease-in-out box-border overflow-y-auto lg:overflow-visible flex flex-col lg:flex-row gap-6 lg:gap-10 items-start lg:items-center"> 
       
-      <!-- Spacing block to push menu links down past fixed logo line on mobile views -->
       <div class="h-12 w-full block lg:hidden flex-shrink-0"></div>
       <!-- FORMATIONS DROPDOWN --> 
       <div class="relative group w-full lg:w-auto flex-shrink-0"> 
@@ -159,7 +161,7 @@
 
       <!-- SECURE PORTAL BUTTON --> 
       <div class="w-full lg:w-auto pt-4 lg:pt-0 border-t lg:border-none border-gray-100 mt-2 lg:mt-0 flex-shrink-0">
-        <a href="https://filings4u.com" class="w-full lg:w-auto text-center bg-[#0a1f44] text-white text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded hover:bg-[#10b981] transition-colors block lg:inline-block whitespace-nowrap">
+        <a href="https://portal.filings4u.com/portal-login.html" class="w-full lg:w-auto text-center bg-[#0a1f44] text-white text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded hover:bg-[#10b981] transition-colors block lg:inline-block whitespace-nowrap">
           Secure Portal
         </a> 
       </div>
