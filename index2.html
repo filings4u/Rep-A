@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#10b981">
+    <title>filings4u | Professional Compliance Dashboard</title>
+    <link rel="icon" type="image/png" href="images/fav.png">
+    
+    <!-- Tailwind CSS Live Compiler Framework -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <!-- Production jQuery Library Engine -->
+    <script src="https://googleapis.com"></script>
+    <!-- Supabase Production Data Engine CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/main.js?v=14"></script>
+
+    <!-- 🌐 GLOBAL PLATFORM EDGE-TO-EDGE RESET LAYOUT -->
+<style>
+    html, body {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important; /* Kills any lingering horizontal scrollbars */
+    }
+    
+    /* Forces your navigation and page containers to use the entire screen width */
+    nav, main, section, footer {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+</style>
+
+</head>
+<body class="bg-white text-[#0a1f44] font-sans antialiased min-h-screen flex flex-col">
+
+<!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
+<nav class="fixed top-0 right-0 w-full h-[70px] bg-white border-b border-gray-200 shadow-sm z-50 px-[6%] flex justify-between items-center">
+<div class="w-full flex justify-between items-center relative">
+        
+        <a href="index.html" class="flex items-center">
+            <img src="images/logo.png" alt="filings4u" class="h-10 w-auto object-contain">
+        </a>
+
+        <!-- FIXED TOGGLE BUTTON: Visible on mobile, hidden on desktop -->
+        <button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
+                onclick="document.getElementById('nav-links-drawer').classList.toggle('hidden'); document.body.classList.toggle('overflow-hidden');">☰</button>
+
+        <!-- THE NAV LINKS CONTAINER (Desktop: Horizontal Row | Mobile: Hidden Drawer Overlay) -->
+        <div id="nav-links-drawer" class="hidden lg:flex flex-col lg:flex-row absolute lg:relative top-[50px] lg:top-auto left-0 w-full lg:w-auto bg-white lg:bg-transparent shadow-lg lg:shadow-none p-6 lg:p-0 border border-gray-100 lg:border-none rounded-xl lg:rounded-none z-50 gap-6 lg:gap-7 items-start lg:items-center">
+            
+            <!-- FORMATIONS DROPDOWN -->
+            <div class="relative group w-full lg:w-auto">
+                <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2">Formations <span class="text-[0.7rem]">▼</span></a>
+                <!-- Dropdown Panel -->
+                <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[280px] lg:w-[480px] z-50">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Popular Formations</span>
+                            <a href="limited-liability-company.html" class="text-sm text-gray-600 hover:text-[#10b981]">LLC Formation</a>
+                            <a href="corporations.html" class="text-sm text-gray-600 hover:text-[#10b981]">Corporations (C/S-Corp)</a>
+                            <a href="sole-proprietorship.html" class="text-sm text-gray-600 hover:text-[#10b981]">Sole Proprietorship</a>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Specialty Structures</span>
+                            <a href="doing-business-as-dba.html" class="text-sm text-gray-600 hover:text-[#10b981]">DBA Registration</a>
+                            <a href="nonprofits.html" class="text-sm text-gray-600 hover:text-[#10b981]">Nonprofit Organization</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLIANCE DROPDOWN -->
+            <div class="relative group w-full lg:w-auto">
+                <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2">Compliance <span class="text-[0.7rem]">▼</span></a>
+                <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[280px] lg:w-[480px] z-50">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Entity Health</span>
+                            <a href="annual-reports.html" class="text-sm text-gray-600 hover:text-[#10b981]">Annual Reports</a>
+                            <a href="operating-agreement.html" class="text-sm text-gray-600 hover:text-[#10b981]">Operating Agreement</a>
+                            <a href="registered-agent.html" class="text-sm text-gray-600 hover:text-[#10b981]">Registered Agent</a>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Licensing & Exit</span>
+                            <a href="business-licenses.html" class="text-sm text-gray-600 hover:text-[#10b981]">Business Licenses</a>
+                            <a href="employer-identification-number-ein.html" class="text-sm text-gray-600 hover:text-[#10b981]">Employer ID (EIN)</a>
+                            <a href="dissolution.html" class="text-sm text-gray-600 hover:text-[#10b981]">Entity Dissolution</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAX FILINGS DROPDOWN -->
+            <div class="relative group w-full lg:w-auto">
+                <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2">Tax Filings <span class="text-[0.7rem]">▼</span></a>
+                <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[280px] lg:w-[480px] z-50">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Income & Operations</span>
+                            <a href="federal-income-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">Federal Income Tax</a>
+                            <a href="state-income-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">State Income Tax</a>
+                            <a href="franchise-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">Franchise Tax Filing</a>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Sales & Payroll</span>
+                            <a href="sales-tax-registration.html" class="text-sm text-gray-600 hover:text-[#10b981]">Sales Tax Registration</a>
+                            <a href="payroll-tax-940-941.html" class="text-sm text-gray-600 hover:text-[#10b981]">Payroll Tax (940/941)</a>
+                            <a href="heavy-use-tax-2290.html" class="text-sm text-gray-600 hover:text-[#10b981]">Heavy Use Tax (2290)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    
+      <!-- DOT & FLEET DROPDOWN (FIXED RIGHT-ALIGNMENT SECTOR) -->
+<div class="relative group w-full lg:w-auto">
+    <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2">DOT & Fleet <span class="text-[0.7rem]">▼</span></a>
+    
+    <!-- FIXED: Added 'lg:right-0 lg:left-auto' so the final menu panels anchor inward and stay inside the screen frames -->
+    <div class="hidden group-hover:block lg:absolute top-full lg:right-0 lg:left-auto bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[280px] lg:w-[640px] z-50">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="flex flex-col gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Authority Setup</span>
+                <a href="owner-operators.html" class="text-sm text-gray-600 hover:text-[#10b981]">Owner Operators</a>
+                <a href="trucker-authority.html" class="text-sm text-gray-600 hover:text-[#10b981]">Trucker Authority</a>
+                <a href="broker-authority.html" class="text-sm text-gray-600 hover:text-[#10b981]">Broker Authority</a>
+                <a href="ucr-registration.html" class="text-sm text-gray-600 hover:text-[#10b981]">UCR Registration</a>
+            </div>
+            <div class="flex flex-col gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Compliance & Regs</span>
+                <a href="dot-consortium.html" class="text-sm text-gray-600 hover:text-[#10b981]">DOT Consortium</a>
+                <a href="driver-qualification-file.html" class="text-sm text-gray-600 hover:text-[#10b981]">Driver Qualification File</a>
+                <a href="process-agents-boc-3.html" class="text-sm text-gray-600 hover:text-[#10b981]">Process Agent (BOC-3)</a>
+                <a href="international-fuel-tax-agreement-ifta.html" class="text-sm text-gray-600 hover:text-[#10b981]">IFTA Registration</a>
+            </div>
+            <div class="flex flex-col gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Insurance & Risk</span>
+                <a href="licenses-permits.html" class="text-sm text-gray-600 hover:text-[#10b981]">Licenses & Permits</a>
+                <a href="trucker-insurance.html" class="text-sm text-gray-600 hover:text-[#10b981]">Trucker Insurance</a>
+                <a href="broker-insurance.html" class="text-sm text-gray-600 hover:text-[#10b981]">Broker Insurance</a>
+                <a href="new-entrant-audit.html" class="text-sm text-gray-600 hover:text-[#10b981]">New Entrant Audit</a>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="https://portal.filings4u.com/portal-login.html" class="w-full lg:w-auto text-center bg-[#0a1f44] text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded hover:bg-[#10b981] transition-colors mt-2 lg:mt-0 block lg:inline-block">Secure Portal</a>
+
+    </div>
+  </div>
+</nav>
+
+
+    <!-- 📱 MOBILE SIDEBAR DRAWER OVERLAY -->
+    <div id="mobile-drawer-overlay" class="hidden fixed top-[70px] left-0 w-full h-[calc(100vh-70px)] bg-white z-40 p-6 flex flex-col gap-4 overflow-y-auto lg:hidden">
+        <a href="limited-liability-company.html" class="text-base py-2 border-b border-gray-100 text-[#0a1f44]">LLC Formation</a>
+        <a href="trucker-authority.html" class="text-base py-2 border-b border-gray-100 text-[#0a1f44]">Trucker Authority</a>
+        <a href="annual-reports.html" class="text-base py-2 border-b border-gray-100 text-[#0a1f44]">Annual Reports</a>
+        <a href="federal-income-tax.html" class="text-base py-2 border-b border-gray-100 text-[#0a1f44]">Federal Income Tax</a>
+        <a href="https://filings4u.com" class="w-full text-center bg-[#0a1f44] text-white py-3 rounded mt-4 text-sm font-bold uppercase tracking-wider">Secure Portal</a>
+    </div>
+
+   <!-- REPLACES MAIN HERO WRAPPER TO STRETCH EDGE-TO-EDGE -->
+<main class="pt-[120px] pb-10 px-[4%] w-full">
+    <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-[60px] items-start">
+            <article class="text-left flex flex-col items-start">
+                <span class="text-[#10b981] text-[0.75rem] font-extrabold uppercase tracking-[2px] block mb-3">Enterprise Ecosystem</span>
+                <h1 class="text-4xl lg:text-[3.2rem] leading-[1.05] tracking-[-0.04em] font-extrabold text-[#0a1f44] mb-[15px]">The Hub for <br>Total Compliance.</h1>
+                <p class="text-[1.1rem] text-[#64748b] max-w-[600px] mb-[25px]">Automate your corporate structures and DOT authorities from one single dashboard. We provide the technical handshake between you and state, federal, and local jurisdictions.</p>
+                <div class="flex gap-[15px] align-items-center mb-[50px]">
+                    <div class="h-[2px] w-[30px] bg-[#10b981] self-center"></div>
+                    <span class="font-bold text-[0.8rem] text-[#0a1f44] uppercase tracking-wider">Active Entity Sync: 10,000+ Verified</span>
+                </div>
+                <a href="get-started.html" class="bg-[#10b981] hover:bg-[#0e9f6e] text-white text-[0.95rem] font-bold px-[40px] py-[16px] rounded-[4px] shadow-sm transition-all hover:-translate-y-0.5 inline-block text-center">Get Started →</a>
+            </article>
+            <aside class="w-full max-w-full h-[380px] rounded-[20px] overflow-hidden shadow-xl shadow-blue-950/5">
+                <img src="images/hero-image.jpg" alt="Compliance Dashboard Preview" class="w-full h-full object-cover">
+            </aside>
+        </div>
+    </main>
+
+    <!-- SECTION 2: THE HUB (NAVY INTERFACES) -->
+    <section class="bg-[#0a1f44] text-white px-[6%] py-20 w-full">
+<div class="w-full text-left">
+            <span class="text-[#10b981] text-[0.75rem] font-extrabold uppercase tracking-[2px] block mb-3">Specialized Infrastructure</span>
+            <h2 class="text-3xl font-extrabold text-white mb-10">Tailored for your industry.</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-[30px] w-full">
+                <div class="bg-white/5 border border-white/10 p-[30px] rounded-2xl flex flex-col gap-3">
+                    <h4 class="text-[#10b981] font-bold text-lg">Corporate Suite</h4>
+                    <p class="text-white/70 text-sm leading-relaxed">Entity formation, EIN acquisition, and custom Operating Agreements for modern startups.</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-[30px] rounded-2xl flex flex-col gap-3">
+                    <h4 class="text-[#10b981] font-bold text-lg">Logistics Suite</h4>
+                    <p class="text-white/70 text-sm leading-relaxed">DOT/MC authority, UCR registration, and IFTA management for fleets and owner-operators.</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-[30px] rounded-2xl flex flex-col gap-3">
+                    <h4 class="text-[#10b981] font-bold text-lg">Tax Suite</h4>
+                    <p class="text-white/70 text-sm leading-relaxed">Federal Income, State Nexus, and Payroll Tax (940/941) filings powered by IRS direct sync.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- SECTION 3: CORE STATS (ICE CORES) -->
+    <section id="system-stats" class="bg-[#f4f7fa] px-[6%] py-20 w-full">
+<div class="w-full text-left">
+            <span class="text-[#10b981] text-[0.75rem] font-extrabold uppercase tracking-[2px] block mb-3">System Advantage</span>
+            <h2 class="text-3xl font-extrabold text-[#0a1f44] mb-10">Performance by the numbers.</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-[30px] w-full">
+                <div class="bg-white text-center p-[30px] rounded-2xl border border-[#e2e8f0] shadow-sm">
+                    <div class="text-[3.5rem] font-extrabold text-[#0a1f44] mb-2">24h</div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-[#64748b]">Avg. Processing</p>
+                </div>
+                <div class="bg-white text-center p-[30px] rounded-2xl border border-[#e2e8f0] shadow-sm">
+                    <div class="text-[3.5rem] font-extrabold text-[#0a1f44] mb-2">100%</div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-[#64748b]">Audit Success</p>
+                </div>
+                <div class="bg-white text-center p-[30px] rounded-2xl border border-[#e2e8f0] shadow-sm">
+                    <div class="text-[3.5rem] font-extrabold text-[#0a1f44] mb-2">256bit</div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-[#64748b]">AES Encryption</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: KNOWLEDGE BASE (FAQs) -->
+    <section class="bg-white px-[6%] py-20 w-full">
+<div class="w-full text-left">
+            <span class="text-[#10b981] text-[0.75rem] font-extrabold uppercase tracking-[2px] block mb-3">Knowledge Base</span>
+            <h2 class="text-3xl font-extrabold text-[#0a1f44] mb-10">Common Questions</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-[30px] w-full">
+                <div class="bg-white p-[35px] rounded-2xl border border-[#eef2f6] shadow-sm flex flex-col gap-3">
+                    <h4 class="text-[#0a1f44] font-bold text-[1.2rem]">How does filings4u automate my business?</h4>
+                    <p class="text-[#64748b] text-[0.95rem] leading-relaxed">We use direct API handshakes with Secretary of State, IRS, and FMCSA systems to process your data without manual data entry errors.</p>
+                </div>
+                <div class="bg-white p-[35px] rounded-2xl border border-[#eef2f6] shadow-sm flex flex-col gap-3">
+                    <h4 class="text-[#0a1f44] font-bold text-[1.2rem]">Can I manage multiple fleets?</h4>
+                    <p class="text-[#64748b] text-[0.95rem] leading-relaxed">Yes, our dashboard allows you to toggle between different EINs and MC numbers from a single secure login.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- SECTION 5: LATEST INSIGHTS (BLOG PAYLOAD MATRICES) -->
+    <section class="bg-white px-[6%] py-20 w-full border-b border-gray-100">
+<div class="w-full text-left">
+            <span class="text-[#10b981] text-[0.75rem] font-extrabold uppercase tracking-[2px] block mb-3">Latest Insights</span>
+            <h2 class="text-3xl font-extrabold text-[#0a1f44] mb-10">Recent Compliance Updates</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-[30px] w-full" id="public-homepage-blog-grid-target">
+                <div id="blog-loading-spinner" class="col-span-1 md:col-span-3 text-center py-10 text-[#64748b] font-medium flex flex-col items-center gap-3">
+                    <div class="w-8 h-8 border-4 border-[#10b981] border-t-transparent rounded-full animate-spin"></div>
+                    <span>Gathering latest articles...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+<footer class="bg-[#0a1f44] text-[#94a3b8] py-16 text-left font-normal text-sm tracking-normal block clear-both w-full border-t border-transparent" style="padding-left: 6% !important; padding-right: 6% !important; box-sizing: border-box !important;"> 
+    
+    <!-- MAIN COLUMNS MATRIX --> 
+    <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-start font-normal" style="box-sizing: border-box !important;"> 
+        
+        <!-- BRANDING SEGMENT --> 
+        <div class="col-span-2 md:col-span-3 lg:col-span-1 flex flex-col gap-4 font-normal flex-shrink-0"> 
+            <a href="index.html" class="inline-block transition-opacity hover:opacity-85"> 
+                <img src="images/logo-white.png" alt="filings4u" class="h-12 w-auto object-contain"> 
+            </a> 
+            <p class="leading-relaxed font-normal text-[#94a3b8] text-sm w-full">Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.</p> 
+            
+            <!-- SOCIAL MEDIA CHANNELS STACK --> 
+            <div class="mt-2 flex gap-[15px]"> 
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center transition-colors hover:bg-[#10b981]"> 
+                    <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg> 
+                </a> 
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center transition-colors hover:bg-[#10b981]"> 
+                    <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg> 
+                </a> 
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-7 h-7 bg-white/10 rounded-full flex items-center justify-center transition-colors hover:bg-[#10b981]"> 
+                    <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg> 
+                </a> 
+            </div> 
+        </div> 
+
+        <!-- FORMATIONS COLUMN --> 
+        <div class="flex flex-col font-normal"> 
+            <h4 class="text-white text-xs uppercase tracking-[2px] mb-6 font-normal">Formations</h4> 
+            <ul class="flex flex-col gap-3 font-normal"> 
+                <li><a href="limited-liability-company.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">LLC Formation</a></li> 
+                <li><a href="corporations.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Corporations</a></li> 
+                <li><a href="nonprofits.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Non-Profits</a></li> 
+                <li><a href="registered-agent.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Registered Agent</a></li> 
+                <li><a href="employer-identification-number-ein.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Tax ID (EIN)</a></li> 
+            </ul> 
+        </div>
+
+        <!-- FLEET & DOT COLUMN --> 
+        <div class="flex flex-col font-normal"> 
+            <h4 class="text-white text-xs uppercase tracking-[2px] mb-6 font-normal">Fleet & DOT</h4> 
+            <ul class="flex flex-col gap-3 font-normal"> 
+                <li><a href="ucr-registration.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">UCR Registration</a></li> 
+                <li><a href="international-fuel-tax-agreement-ifta.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">IFTA Filings</a></li> 
+                <li><a href="trucker-authority.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">DOT Authority</a></li> 
+                <li><a href="process-agents-boc-3.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">BOC-3 Filing</a></li> 
+                <li><a href="heavy-use-tax-2290.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Form 2290</a></li> 
+            </ul> 
+        </div> 
+
+        <!-- TAX & FILINGS COLUMN --> 
+        <div class="flex flex-col font-normal"> 
+            <h4 class="text-white text-xs uppercase tracking-[2px] mb-6 font-normal">Tax & Filings</h4> 
+            <ul class="flex flex-col gap-3 font-normal"> 
+                <li><a href="federal-income-tax.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Federal Income Tax</a></li> 
+                <li><a href="state-income-tax.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">State Income Tax</a></li> 
+                <li><a href="sales-tax-registration.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Sales Tax Registration</a></li> 
+                <li><a href="payroll-tax-940-941.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Payroll Tax (940/941)</a></li> 
+                <li><a href="franchise-tax.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Franchise Tax Filing</a></li> 
+            </ul> 
+        </div> 
+
+        <!-- SUPPORT COLUMN --> 
+        <div class="flex flex-col font-normal"> 
+            <h4 class="text-white text-xs uppercase tracking-[2px] mb-6 font-normal">Support</h4> 
+            <ul class="flex flex-col gap-3 font-normal"> 
+                <li><a href="https://filings4u.com" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Client Portal</a></li> 
+                <li><a href="compliance.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Compliance Hub</a></li> 
+                <li><a href="contact.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Contact Experts</a></li> 
+                <li><a href="annual-reports.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Annual Reports</a></li> 
+                <li><a href="blog.html" class="text-[#94a3b8] hover:text-[#10b981] transition-colors font-normal">Resource Library</a></li> 
+            </ul> 
+        </div> 
+    </div> 
+
+    <!-- FOOTER LOWER TRACK --> 
+    <div class="w-full border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-normal text-left" style="box-sizing: border-box !important;"> 
+        <div> 
+            <p class="font-normal text-[#94a3b8] max-w-[300px] leading-relaxed break-words"> 
+                &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" class="text-[#c15254] font-bold hover:underline">Roseland Companies, LLC</a> 
+            </p> 
+        </div> 
+        
+        <div class="bg-white/5 px-5 py-2 rounded-lg text-xs text-white flex items-center font-normal tracking-wide"> 
+            <span class="text-[#10b981] font-extrabold mr-2">SECURE</span> 256-bit SSL Encrypted Connection 
+        </div> 
+        
+        <div class="flex gap-6 font-normal text-[#94a3b8]"> 
+            <a href="privacy-policy.html" class="hover:text-[#10b981] font-normal transition-colors">Privacy Policy</a> 
+            <a href="terms-of-service.html" class="hover:text-[#10b981] font-normal transition-colors">Terms of Service</a> 
+            <a href="refund-policy.html" class="hover:text-[#10b981] font-normal transition-colors">Refund Policy</a> 
+        </div> 
+    </div> 
+</footer>
+
+        <!-- ========================================================================== 
+       🧠 AUTOMATED BACKEND REALTIME DATA REPOSITORY TRACKING 
+       ========================================================================== -->
+    <script>
+        (function() {
+            window.addEventListener('DOMContentLoaded', () => {
+                const checkInterval = setInterval(() => {
+                    if (window.supabase) {
+                        clearInterval(checkInterval);
+                        initializeHomepageFeed();
+                    }
+                }, 100);
+                setTimeout(() => clearInterval(checkInterval), 4000);
+            });
+
+            async function initializeHomepageFeed() {
+                const targetContainer = document.getElementById('public-homepage-blog-grid-target');
+                if (!targetContainer) return;
+                try {
+                    const clientInstance = window.supabase;
+                    const { data: articles, error } = await clientInstance
+                        .from('blog_posts')
+                        .select('*')
+                        .order('created_at', { ascending: false })
+                        .limit(3);
+
+                    if (error) throw error;
+                    if (!articles || articles.length === 0) {
+                        targetContainer.innerHTML = '<div class="col-span-3 text-center text-[#64748b] font-semibold py-5">No articles found.</div>';
+                        return;
+                    }
+                    targetContainer.innerHTML = '';
+
+                    articles.forEach(item => {
+                        const dateFormatted = new Date(item.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                        const postAnchor = document.createElement('a');
+                        postAnchor.href = `article.html?slug=${item.slug}`;
+                        postAnchor.className = "bg-white border border-[#e2e8f0] rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-[#10b981] transition-all flex flex-col text-inherit text-decoration-none";
+                        postAnchor.innerHTML = `
+                            <div style="height:180px; width:100%; background:url('${item.image_url || 'images/blog-fallback.jpg'}') center/cover no-repeat;" class="bg-gray-100 block"></div>
+                            <div class="p-6 text-left flex flex-col box-sizing-border">
+                                <div class="flex justify-between items-center mb-4 gap-2 text-xs">
+                                    <span class="bg-[#10b981] text-white font-bold uppercase tracking-wider px-2 py-0.5 rounded text-[10px]">${item.category}</span>
+                                    <span class="text-[#94a3b8] font-semibold">${dateFormatted}</span>
+                                </div>
+                                <h3 class="text-[#0a1f44] font-bold text-lg leading-snug mb-2 text-left">${item.title}</h3>
+                                <p class="text-[#64748b] text-sm leading-relaxed text-left">${item.summary || 'Click to view full insight data analysis report...'}</p>
+                            </div>`;
+                        targetContainer.appendChild(postAnchor);
+                    });
+                } catch (err) {
+                    console.error("Database streaming failure caught:", err);
+                    targetContainer.innerHTML = '<div class="col-span-3 text-center text-red-500 font-semibold py-5">Unable to load updates.</div>';
+                }
+            }
+        })();
+
+        function toggleMobileMenu() {
+  const trigger = document.getElementById('mobile-menu-trigger');
+  const navLinks = document.getElementById('nav-links-container');
+  const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+  
+  trigger.setAttribute('aria-expanded', !isExpanded);
+  navLinks.classList.toggle('mobile-active');
+}
+
+</script>
+
+<!-- Native Interaction Toggle Layer Driver Track -->
+    <script src="assets/js/toggle.js"></script>
+
+    
+</body>
+</html>
