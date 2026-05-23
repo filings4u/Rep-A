@@ -1305,12 +1305,84 @@ footer .footer-container,
   gap: 30px !important;
 }
 
-/* REMOVE ALL FOOTER BOLDNESS */
+/* ==========================================================================
+   🧱 GLOBAL RESPONSIVE SITE FOOTER MATRIX STYLE BLOCKS
+   ========================================================================== */
+
+/* 1. Base Setup Layout Configuration */
+.site-footer {
+    width: 100% !important;
+    background: #0a1f44 !important; /* Matches your master interface color profile */
+    padding: 60px 20px 30px 20px !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. Mobile Configuration Layout: Two-Column Side-By-Side Layout Display Grid */
+.footer-container {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* Forces side-by-side alignment */
+    gap: 30px 15px !important;
+}
+
+/* Make the brand summary block span the full width top on tiny viewport windows */
+.footer-brand {
+    grid-column: span 2 !important;
+    text-align: left !important;
+}
+
+/* 3. Desktop Configuration Override Layout: Stretched Full-Width Matrix Block Row */
+@media (min-width: 992px) {
+    .footer-container {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important; /* Spreads components out completely */
+        align-items: flex-start !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+    }
+    
+    .footer-brand {
+        grid-column: auto !important; /* Resets structural column bindings */
+        max-width: 300px !important;
+    }
+}
+
+/* 4. Typography Clean Reset Block: Regular weight configuration, NO BOLDING */
 .site-footer,
 .site-footer h4,
-.site-footer ul li a,
+.site-footer ul,
+.site-footer li,
+.site-footer a,
 .site-footer p,
-.site-footer div,
-.site-footer span {
-    font-weight: 400 !important; /* Forces standard regular native typography display styling */
+.site-footer span,
+.trust-badge {
+    font-weight: 400 !important; /* Removes all baseline native text thickness */
+    text-decoration: none !important;
+}
+
+.site-footer h4 {
+    margin: 0 0 15px 0 !important;
+    font-size: 1.1rem !important;
+    color: #ffffff !important;
+}
+
+.site-footer ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.site-footer ul li {
+    margin-bottom: 10px !important;
+}
+
+.site-footer ul li a {
+    color: #94a3b8 !important;
+    font-size: 0.9rem !important;
+    transition: color 0.2s ease !important;
+}
+
+.site-footer ul li a:hover {
+    color: #10b981 !important; /* Emerald clean accent interaction look */
 }
