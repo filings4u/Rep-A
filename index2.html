@@ -38,128 +38,136 @@
 </head>
 <body class="bg-white text-[#0a1f44] font-sans antialiased min-h-screen flex flex-col">
 
-<!-- 🌐 SITE-WIDE NAVIGATION HEADER (PART 1) -->
-<nav class="fixed top-0 left-0 w-full h-[70px] bg-white border-b border-gray-200 shadow-sm z-50 px-[4%] lg:px-[6%] flex justify-between items-center box-border">
-    <div class="w-full flex justify-between items-center relative">
-        
-        <!-- LOGO BRAND PANEL -->
-        <a href="index.html" class="flex items-center flex-shrink-0">
-            <img src="images/logo.png" alt="filings4u" class="h-10 w-auto object-contain">
-        </a>
+<!-- 🌐 SITE-WIDE NAVIGATION HEADER (PART 1) --> 
+<nav class="fixed top-0 left-0 w-full h-[70px] bg-white border-b border-gray-200 shadow-sm z-50 px-[4%] lg:px-[6%] flex justify-between items-center box-border"> 
+  <div class="w-full flex justify-between items-center relative"> 
+    
+    <!-- LOGO BRAND PANEL --> 
+    <a href="index.html" class="flex items-center flex-shrink-0"> 
+      <img src="images/logo.png" alt="filings4u" class="h-10 w-auto object-contain"> 
+    </a> 
 
-     <!-- FIXED TRIGGER: Forces the mobile panel to change states cleanly on click -->
-<button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
-        onclick="
-            const drawer = document.getElementById('nav-links-drawer');
-            drawer.classList.toggle('hidden');
-            
-            // Updates button icon appearance instantly
-            const isMenuOpen = !drawer.classList.contains('hidden');
-            this.innerHTML = isMenuOpen ? '✕' : '☰';
-            this.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
-        ">☰</button>
+    <!-- FIXED TRIGGER: Handles the left slide-in drawer state smoothly --> 
+    <button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none z-50 relative" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="
+      const drawer = document.getElementById('nav-links-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      drawer.classList.toggle('-translate-x-full');
+      backdrop.classList.toggle('hidden');
+      const isMenuOpen = !drawer.classList.contains('-translate-x-full');
+      this.innerHTML = isMenuOpen ? '✕' : '☰';
+      this.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
+    ">☰</button>
 
+    <!-- MOBILE DRAWER BACKDROP (Darkens screen content when menu is open) -->
+    <div id="drawer-backdrop" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="document.getElementById('mobile-menu-trigger').click()"></div>
 
-        <!-- LINK MAIN DRAWER CONTAINER -->
-<div id="nav-links-drawer" class="hidden lg:flex flex-col lg:flex-row absolute lg:relative top-[70px] lg:top-auto right-0 left-auto w-full lg:w-auto h-[calc(100vh-70px)] lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-b lg:border-none border-gray-100 z-50 gap-6 lg:gap-10 items-start lg:items-center box-border overflow-y-auto lg:overflow-visible flex-nowrap">
-            
-            <!-- FORMATIONS DROPDOWN -->
-            <div class="relative group w-full lg:w-auto flex-shrink-0">
-                <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Formations <span class="text-[0.7rem] opacity-60">▼</span></a>
-                <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[280px] lg:w-[480px] z-50">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Popular Formations</span>
-                            <a href="limited-liability-company.html" class="text-sm text-gray-600 hover:text-[#10b981]">LLC Formation</a>
-                            <a href="corporations.html" class="text-sm text-gray-600 hover:text-[#10b981]">Corporations (C/S-Corp)</a>
-                            <a href="sole-proprietorship.html" class="text-sm text-gray-600 hover:text-[#10b981]">Sole Proprietorship</a>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Specialty Structures</span>
-                            <a href="doing-business-as-dba.html" class="text-sm text-gray-600 hover:text-[#10b981]">DBA Registration</a>
-                            <a href="nonprofits.html" class="text-sm text-gray-600 hover:text-[#10b981]">Nonprofit Organization</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- LINK MAIN DRAWER CONTAINER (Slides smoothly from Left side on Mobile) --> 
+    <div id="nav-links-drawer" class="fixed lg:relative top-0 lg:top-auto left-0 lg:left-auto w-[290px] lg:w-auto h-screen lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-r lg:border-none border-gray-100 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out box-border overflow-y-auto lg:overflow-visible flex flex-col lg:flex-row gap-6 lg:gap-10 items-start lg:items-center"> 
+      
+      <!-- Spacing block to push menu links down past fixed logo line on mobile views -->
+      <div class="h-12 w-full block lg:hidden flex-shrink-0"></div>
+      <!-- FORMATIONS DROPDOWN --> 
+      <div class="relative group w-full lg:w-auto flex-shrink-0"> 
+        <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Formations <span class="text-[0.7rem] opacity-60">▼</span></a> 
+        <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Popular Formations</span> 
+              <a href="limited-liability-company.html" class="text-sm text-gray-600 hover:text-[#10b981]">LLC Formation</a> 
+              <a href="corporations.html" class="text-sm text-gray-600 hover:text-[#10b981]">Corporations (C/S-Corp)</a> 
+              <a href="sole-proprietorship.html" class="text-sm text-gray-600 hover:text-[#10b981]">Sole Proprietorship</a> 
+            </div> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Specialty Structures</span> 
+              <a href="doing-business-as-dba.html" class="text-sm text-gray-600 hover:text-[#10b981]">DBA Registration</a> 
+              <a href="nonprofits.html" class="text-sm text-gray-600 hover:text-[#10b981]">Nonprofit Organization</a> 
+            </div> 
+          </div> 
+        </div> 
+      </div> 
 
-                        <!-- COMPLIANCE DROPDOWN (PART 2) -->
-            <div class="relative group w-full lg:w-auto flex-shrink-0">
-                <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Compliance <span class="text-[0.7rem] opacity-60">▼</span></a>
-                <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[280px] lg:w-[480px] z-50">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Entity Health</span>
-                            <a href="annual-reports.html" class="text-sm text-gray-600 hover:text-[#10b981]">Annual Reports</a>
-                            <a href="operating-agreement.html" class="text-sm text-gray-600 hover:text-[#10b981]">Operating Agreement</a>
-                            <a href="registered-agent.html" class="text-sm text-gray-600 hover:text-[#10b981]">Registered Agent</a>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Licensing & Exit</span>
-                            <a href="business-licenses.html" class="text-sm text-gray-600 hover:text-[#10b981]">Business Licenses</a>
-                            <a href="employer-identification-number-ein.html" class="text-sm text-gray-600 hover:text-[#10b981]">Employer ID (EIN)</a>
-                            <a href="dissolution.html" class="text-sm text-gray-600 hover:text-[#10b981]">Entity Dissolution</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- COMPLIANCE DROPDOWN --> 
+      <div class="relative group w-full lg:w-auto flex-shrink-0"> 
+        <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Compliance <span class="text-[0.7rem] opacity-60">▼</span></a> 
+        <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Entity Health</span> 
+              <a href="annual-reports.html" class="text-sm text-gray-600 hover:text-[#10b981]">Annual Reports</a> 
+              <a href="operating-agreement.html" class="text-sm text-gray-600 hover:text-[#10b981]">Operating Agreement</a> 
+              <a href="registered-agent.html" class="text-sm text-gray-600 hover:text-[#10b981]">Registered Agent</a> 
+            </div> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Licensing & Exit</span> 
+              <a href="business-licenses.html" class="text-sm text-gray-600 hover:text-[#10b981]">Business Licenses</a> 
+              <a href="employer-identification-number-ein.html" class="text-sm text-gray-600 hover:text-[#10b981]">Employer ID (EIN)</a> 
+              <a href="dissolution.html" class="text-sm text-gray-600 hover:text-[#10b981]">Entity Dissolution</a> 
+            </div> 
+          </div> 
+        </div> 
+      </div> 
 
-            <!-- TAX FILINGS DROPDOWN -->
-            <div class="relative group w-full lg:w-auto flex-shrink-0">
-                <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Tax Filings <span class="text-[0.7rem ] opacity-60">▼</span></a>
-                <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[280px] lg:w-[480px] z-50">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Income & Operations</span>
-                            <a href="federal-income-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">Federal Income Tax</a>
-                            <a href="state-income-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">State Income Tax</a>
-                            <a href="franchise-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">Franchise Tax Filing</a>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Sales & Payroll</span>
-                            <a href="sales-tax-registration.html" class="text-sm text-gray-600 hover:text-[#10b981]">Sales Tax Registration</a>
-                            <a href="payroll-tax-940-941.html" class="text-sm text-gray-600 hover:text-[#10b981]">Payroll Tax (940/941)</a>
-                            <a href="heavy-use-tax-2290.html" class="text-sm text-gray-600 hover:text-[#10b981]">Heavy Use Tax (2290)</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- TAX FILINGS DROPDOWN --> 
+      <div class="relative group w-full lg:w-auto flex-shrink-0"> 
+        <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Tax Filings <span class="text-[0.7rem] opacity-60">▼</span></a> 
+        <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Income & Operations</span> 
+              <a href="federal-income-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">Federal Income Tax</a> 
+              <a href="state-income-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">State Income Tax</a> 
+              <a href="franchise-tax.html" class="text-sm text-gray-600 hover:text-[#10b981]">Franchise Tax Filing</a> 
+            </div> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Sales & Payroll</span> 
+              <a href="sales-tax-registration.html" class="text-sm text-gray-600 hover:text-[#10b981]">Sales Tax Registration</a> 
+              <a href="payroll-tax-940-941.html" class="text-sm text-gray-600 hover:text-[#10b981]">Payroll Tax (940/941)</a> 
+              <a href="heavy-use-tax-2290.html" class="text-sm text-gray-600 hover:text-[#10b981]">Heavy Use Tax (2290)</a> 
+            </div> 
+          </div> 
+        </div> 
+      </div>
+      <!-- DOT & FLEET DROPDOWN --> 
+      <div class="relative group w-full lg:w-auto flex-shrink-0"> 
+        <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">DOT & Fleet <span class="text-[0.7rem] opacity-60">▼</span></a> 
+        <div class="hidden group-hover:block lg:absolute top-full lg:right-0 lg:left-auto bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[640px] z-50"> 
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Authority Setup</span> 
+              <a href="owner-operators.html" class="text-sm text-gray-600 hover:text-[#10b981]">Owner Operators</a> 
+              <a href="trucker-authority.html" class="text-sm text-gray-600 hover:text-[#10b981]">Trucker Authority</a> 
+              <a href="broker-authority.html" class="text-sm text-gray-600 hover:text-[#10b981]">Broker Authority</a> 
+              <a href="ucr-registration.html" class="text-sm text-gray-600 hover:text-[#10b981]">UCR Registration</a> 
+            </div> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Compliance & Regs</span> 
+              <a href="dot-consortium.html" class="text-sm text-gray-600 hover:text-[#10b981]">DOT Consortium</a> 
+              <a href="driver-qualification-file.html" class="text-sm text-gray-600 hover:text-[#10b981]">Driver Qualification File</a> 
+              <a href="process-agents-boc-3.html" class="text-sm text-gray-600 hover:text-[#10b981]">Process Agent (BOC-3)</a> 
+              <a href="international-fuel-tax-agreement-ifta.html" class="text-sm text-gray-600 hover:text-[#10b981]">IFTA Registration</a> 
+            </div> 
+            <div class="flex flex-col gap-2"> 
+              <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Insurance & Risk</span> 
+              <a href="licenses-permits.html" class="text-sm text-gray-600 hover:text-[#10b981]">Licenses & Permits</a> 
+              <a href="trucker-insurance.html" class="text-sm text-gray-600 hover:text-[#10b981]">Trucker Insurance</a> 
+              <a href="broker-insurance.html" class="text-sm text-gray-600 hover:text-[#10b981]">Broker Insurance</a> 
+              <a href="new-entrant-audit.html" class="text-sm text-gray-600 hover:text-[#10b981]">New Entrant Audit</a> 
+            </div> 
+          </div> 
+        </div> 
+      </div> 
 
-                        <!-- DOT & FLEET DROPDOWN (PART 3 - RIGHT PINNED WITH ALL LINKS RESCUED) -->
-            <div class="relative group w-full lg:w-auto flex-shrink-0">
-                <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">DOT & Fleet <span class="text-[0.7rem] opacity-60">▼</span></a>
-                <div class="hidden group-hover:block lg:absolute top-full lg:right-0 lg:left-auto bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[280px] lg:w-[640px] z-50">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Authority Setup</span>
-                            <a href="owner-operators.html" class="text-sm text-gray-600 hover:text-[#10b981]">Owner Operators</a>
-                            <a href="trucker-authority.html" class="text-sm text-gray-600 hover:text-[#10b981]">Trucker Authority</a>
-                            <a href="broker-authority.html" class="text-sm text-gray-600 hover:text-[#10b981]">Broker Authority</a>
-                            <a href="ucr-registration.html" class="text-sm text-gray-600 hover:text-[#10b981]">UCR Registration</a>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Compliance & Regs</span>
-                            <a href="dot-consortium.html" class="text-sm text-gray-600 hover:text-[#10b981]">DOT Consortium</a>
-                            <a href="driver-qualification-file.html" class="text-sm text-gray-600 hover:text-[#10b981]">Driver Qualification File</a>
-                            <a href="process-agents-boc-3.html" class="text-sm text-gray-600 hover:text-[#10b981]">Process Agent (BOC-3)</a>
-                            <a href="international-fuel-tax-agreement-ifta.html" class="text-sm text-gray-600 hover:text-[#10b981]">IFTA Registration</a>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Insurance & Risk</span>
-                            <a href="licenses-permits.html" class="text-sm text-gray-600 hover:text-[#10b981]">Licenses & Permits</a>
-                            <a href="trucker-insurance.html" class="text-sm text-gray-600 hover:text-[#10b981]">Trucker Insurance</a>
-                            <a href="broker-insurance.html" class="text-sm text-gray-600 hover:text-[#10b981]">Broker Insurance</a>
-                            <a href="new-entrant-audit.html" class="text-sm text-gray-600 hover:text-[#10b981]">New Entrant Audit</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- SECURE PORTAL BUTTON --> 
+      <div class="w-full lg:w-auto pt-4 lg:pt-0 border-t lg:border-none border-gray-100 mt-2 lg:mt-0 flex-shrink-0">
+        <a href="https://filings4u.com" class="w-full lg:w-auto text-center bg-[#0a1f44] text-white text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded hover:bg-[#10b981] transition-colors block lg:inline-block whitespace-nowrap">
+          Secure Portal
+        </a> 
+      </div>
 
-            <!-- PORTAL LINK CONTAINER -->
-            <a href="https://portal.filings4u.com/portal-login.html" class="w-full lg:w-auto text-center bg-[#0a1f44] text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded hover:bg-[#10b981] transition-colors mt-2 lg:mt-0 block lg:inline-block flex-shrink-0 whitespace-nowrap">Secure Portal</a>
-        </div>
-    </div>
+    </div> 
+  </div> 
 </nav>
+
 
 
 
