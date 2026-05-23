@@ -47,16 +47,16 @@
       <img src="images/logo.png" alt="filings4u" class="h-10 w-auto object-contain"> 
     </a> 
 
-    <!-- FIXED TRIGGER: Handles the left slide-in drawer state smoothly --> 
+    <!-- FIXED TRIGGER: Handles the right-to-left slide-in drawer state smoothly --> 
     <button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none z-50 relative" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="
       const drawer = document.getElementById('nav-links-drawer');
       const backdrop = document.getElementById('drawer-backdrop');
       
-      drawer.classList.toggle('-translate-x-full');
+      drawer.classList.toggle('translate-x-full');
       drawer.classList.toggle('invisible');
       backdrop.classList.toggle('hidden');
       
-      const isMenuOpen = !drawer.classList.contains('-translate-x-full');
+      const isMenuOpen = !drawer.classList.contains('translate-x-full');
       this.innerHTML = isMenuOpen ? '✕' : '☰';
       this.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
     ">☰</button>
@@ -64,9 +64,10 @@
     <!-- MOBILE DRAWER BACKDROP -->
     <div id="drawer-backdrop" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="document.getElementById('mobile-menu-trigger').click()"></div>
 
-    <!-- LINK MAIN DRAWER CONTAINER (Corrected Transition Pipeline) --> 
-    <div id="nav-links-drawer" class="fixed lg:relative top-0 lg:top-auto left-0 lg:left-auto w-[290px] lg:w-auto h-screen lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-r lg:border-none border-gray-100 z-40 transform -translate-x-full invisible lg:visible lg:translate-x-0 transition-all duration-300 ease-in-out box-border overflow-y-auto lg:overflow-visible flex flex-col lg:flex-row gap-6 lg:gap-10 items-start lg:items-center"> 
+    <!-- LINK MAIN DRAWER CONTAINER (Corrected Right Edge Slide Configuration) --> 
+    <div id="nav-links-drawer" class="fixed lg:relative top-0 lg:top-auto right-0 left-auto lg:right-auto lg:left-auto w-[290px] lg:w-auto h-screen lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-l lg:border-none border-gray-100 z-40 transform translate-x-full invisible lg:visible lg:translate-x-0 transition-all duration-300 ease-in-out box-border overflow-y-auto lg:overflow-visible flex flex-col lg:flex-row gap-6 lg:gap-10 items-start lg:items-center"> 
       
+      <!-- Spacing block to push menu links down past fixed logo line on mobile views -->
       <div class="h-12 w-full block lg:hidden flex-shrink-0"></div>
       <!-- FORMATIONS DROPDOWN --> 
       <div class="relative group w-full lg:w-auto flex-shrink-0"> 
@@ -169,6 +170,7 @@
     </div> 
   </div> 
 </nav>
+
 
 
 
