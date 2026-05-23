@@ -47,8 +47,17 @@
         </a>
 
         <!-- FIXED TOGGLE BUTTON: Visible on mobile, hidden on desktop -->
-        <button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
-                onclick="document.getElementById('nav-links-drawer').classList.toggle('hidden'); document.body.classList.toggle('overflow-hidden');">☰</button>
+       <!-- FIXED TRIGGER: Toggles a custom 'translate-x-0' utility wrapper state instead of an instant hidden parameter block -->
+<button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 relative z-[100000]" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
+        onclick="
+            const drawer = document.getElementById('nav-links-drawer');
+            drawer.classList.toggle('translate-x-full');
+            
+            // Updates button icon text presentation state automatically
+            const isOpen = !drawer.classList.contains('translate-x-full');
+            this.innerHTML = isOpen ? '✕' : '☰';
+            this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        ">☰</button>
 
         <!-- THE NAV LINKS CONTAINER (Desktop: Horizontal Row | Mobile: Hidden Drawer Overlay) -->
         <div id="nav-links-drawer" class="hidden lg:flex flex-col lg:flex-row absolute lg:relative top-[50px] lg:top-auto left-0 w-full lg:w-auto bg-white lg:bg-transparent shadow-lg lg:shadow-none p-6 lg:p-0 border border-gray-100 lg:border-none rounded-xl lg:rounded-none z-50 gap-6 lg:gap-7 items-start lg:items-center">
@@ -164,24 +173,26 @@
         <a href="https://filings4u.com" class="w-full text-center bg-[#0a1f44] text-white py-3 rounded mt-4 text-sm font-bold uppercase tracking-wider">Secure Portal</a>
     </div>
 
-   <!-- REPLACES MAIN HERO WRAPPER TO STRETCH EDGE-TO-EDGE -->
-<main class="pt-[120px] pb-10 px-[4%] w-full">
-    <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-[60px] items-start">
-            <article class="text-left flex flex-col items-start">
-                <span class="text-[#10b981] text-[0.75rem] font-extrabold uppercase tracking-[2px] block mb-3">Enterprise Ecosystem</span>
-                <h1 class="text-4xl lg:text-[3.2rem] leading-[1.05] tracking-[-0.04em] font-extrabold text-[#0a1f44] mb-[15px]">The Hub for <br>Total Compliance.</h1>
-                <p class="text-[1.1rem] text-[#64748b] max-w-[600px] mb-[25px]">Automate your corporate structures and DOT authorities from one single dashboard. We provide the technical handshake between you and state, federal, and local jurisdictions.</p>
-                <div class="flex gap-[15px] align-items-center mb-[50px]">
-                    <div class="h-[2px] w-[30px] bg-[#10b981] self-center"></div>
-                    <span class="font-bold text-[0.8rem] text-[#0a1f44] uppercase tracking-wider">Active Entity Sync: 10,000+ Verified</span>
-                </div>
-                <a href="get-started.html" class="bg-[#10b981] hover:bg-[#0e9f6e] text-white text-[0.95rem] font-bold px-[40px] py-[16px] rounded-[4px] shadow-sm transition-all hover:-translate-y-0.5 inline-block text-center">Get Started →</a>
-            </article>
-            <aside class="w-full max-w-full h-[380px] rounded-[20px] overflow-hidden shadow-xl shadow-blue-950/5">
-                <img src="images/hero-image.jpg" alt="Compliance Dashboard Preview" class="w-full h-full object-cover">
-            </aside>
-        </div>
-    </main>
+<!-- SECTION 1: HERO CONTAINER (Image Top on Mobile, Left-Aligned Text Bottom) -->
+<main class="pt-[120px] pb-12 w-full box-border">
+    <!-- FIXED: Added 'flex flex-col-reverse lg:grid lg:grid-cols-2' to flip the stack order natively on mobile views -->
+    <div class="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-12 items-center w-full box-border">
+        
+        <article class="text-left flex flex-col items-start mt-8 lg:mt-0">
+            <span class="text-[#10b981] text-xs font-extrabold uppercase tracking-widest block mb-3">Enterprise Ecosystem</span>
+            <h1 class="text-4xl lg:text-[3.2rem] leading-[1.1] font-extrabold text-[#0a1f44] mb-4">The Hub for <br>Total Compliance.</h1>
+            <p class="text-base text-[#64748b] mb-6 max-w-[550px]">Automate your corporate structures and DOT authorities from one single dashboard. We provide the technical handshake between you and state, federal, and local jurisdictions.</p>
+            <a href="get-started.html" class="bg-[#10b981] hover:bg-[#0e9f6e] text-white font-bold px-10 py-4 rounded transition-transform hover:-translate-y-0.5">Get Started →</a>
+        </article>
+        
+        <!-- Image element naturally sits on top inside the mobile vertical flex engine stack -->
+        <aside class="w-full h-[300px] lg:h-[360px] rounded-2xl overflow-hidden shadow-md">
+            <img src="images/hero-image.jpg" alt="Dashboard Preview" class="w-full h-full object-cover">
+        </aside>
+        
+    </div>
+</main>
+
 
     <!-- SECTION 2: THE HUB (NAVY INTERFACES) -->
     <section class="bg-[#0a1f44] text-white px-[6%] py-20 w-full">
