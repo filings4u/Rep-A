@@ -30,17 +30,21 @@
 <!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
 <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
         onclick="
-          const body = document.body;
           const menu = document.querySelector('.nav-links');
-          
-          body.classList.toggle('nav-open');
-          if(menu) { menu.classList.toggle('active'); }
-          
-          const isOpen = body.classList.contains('nav-open');
-          this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-          
-          console.log('Inline click successful! Menu active state:', isOpen);
-        ">☰</button>
+          if (menu) {
+            const isHidden = menu.style.display === 'none' || menu.style.display === '';
+            menu.style.setProperty('display', isHidden ? 'flex' : 'none', 'important');
+            menu.style.setProperty('position', 'fixed', 'important');
+            menu.style.setProperty('top', '60px', 'important');
+            menu.style.setProperty('left', '0', 'important');
+            menu.style.setProperty('width', '100%', 'important');
+            menu.style.setProperty('background', '#ffffff', 'important');
+            menu.style.setProperty('z-index', '99998', 'important');
+            console.log('Forced visibility layout applied.');
+          }
+        " 
+        style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
+
     
     <div class="nav-links"> 
       <!-- FORMATIONS DROPDOWN --> 
