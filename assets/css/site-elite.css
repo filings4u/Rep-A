@@ -306,47 +306,53 @@ nav button, nav .mobile-toggle-btn, .mobile-toggle-btn, [class*="toggle"], [id*=
 
 /** * ========================================================================== * 🖥️ FILINGS4U PRODUCTION DESKTOP COMPONENTS & CONTENT STRUCTURAL ENGINE * FILE LOCATION: assets/css/desktop-components.css * ========================================================================== */ 
 
-/* --- 1. HERO INFRASTRUCTURE TEXT BLOCKS --- */
+/* --- 1. HERO INFRASTRUCTURE TEXT BLOCKS --- */ 
 .hero-tag { 
-  color: var(--emerald); 
-  font-size: 0.75rem; 
-  font-weight: 800; 
-  text-transform: uppercase; 
-  letter-spacing: 2px; 
-  margin-bottom: 12px; 
-  display: block; 
+    color: var(--emerald); 
+    font-size: 0.75rem; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+    margin-bottom: 12px; 
+    display: block; 
+    text-align: left !important; /* LEFT ALIGNED */
 } 
 
 .content-area h1 { 
-  font-size: 3.2rem; 
-  line-height: 1.05; 
-  letter-spacing: -0.04em; 
-  margin: 0 0 15px 0; 
-  font-weight: 800; 
+    font-size: 3.2rem; 
+    line-height: 1.05; 
+    letter-spacing: -0.04em; 
+    margin: 0 0 15px 0; 
+    font-weight: 800; 
+    text-align: left !important; /* LEFT ALIGNED */
 } 
 
 .content-area p { 
-  font-size: 1.1rem; 
-  color: var(--text-muted); 
-  margin-bottom: 25px; 
-  max-width: 600px; 
+    font-size: 1.1rem; 
+    color: var(--text-muted); 
+    margin-bottom: 25px; 
+    max-width: 600px; 
+    text-align: left !important; /* LEFT ALIGNED */
 } 
 
 .hero-image-container { 
-  width: 100% !important; 
-  max-width: 100% !important; 
-  height: 380px !important; 
-  border-radius: 20px; 
-  overflow: hidden; 
-  box-shadow: 0 20px 40px rgba(10,31,68,0.1); 
-  margin-top: 10px; 
+    width: 100% !important; 
+    max-width: 100% !important; 
+    height: 380px !important; 
+    border-radius: 20px; 
+    overflow: hidden; 
+    box-shadow: 0 20px 40px rgba(10,31,68,0.1); 
+    margin-top: 10px; 
+    margin-left: 0 !important; /* FORCES HOUSING TO THE LEFT */
+    margin-right: auto !important; 
 } 
 
 .hero-image-container img { 
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; 
-} 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
 
 /* --- 2. COMPONENT SECTIONS & CONTROLS --- */ 
 h1.section-title { 
@@ -1299,3 +1305,12 @@ footer .footer-container,
   gap: 30px !important;
 }
 
+/* REMOVE ALL FOOTER BOLDNESS */
+.site-footer,
+.site-footer h4,
+.site-footer ul li a,
+.site-footer p,
+.site-footer div,
+.site-footer span {
+    font-weight: 400 !important; /* Forces standard regular native typography display styling */
+}
