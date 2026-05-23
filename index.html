@@ -14,7 +14,7 @@
     
     <link rel="icon" type="image/png" href="images/fav.png">
     
-<script src="https://jquery.com"></script>
+    <script src="https://googleapis.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
 </head>
@@ -28,24 +28,8 @@
     </a> 
     
 <!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
-<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
-        onclick="
-          const menu = document.querySelector('.nav-links');
-          if (menu) {
-            const isHidden = menu.style.display === 'none' || menu.style.display === '';
-            menu.style.setProperty('display', isHidden ? 'flex' : 'none', 'important');
-            menu.style.setProperty('position', 'fixed', 'important');
-            menu.style.setProperty('top', '60px', 'important');
-            menu.style.setProperty('left', '0', 'important');
-            menu.style.setProperty('width', '100%', 'important');
-            menu.style.setProperty('background', '#ffffff', 'important');
-            menu.style.setProperty('z-index', '99998', 'important');
-            console.log('Forced visibility layout applied.');
-          }
-        " 
-        style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
+<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
 
-    
     <div class="nav-links"> 
       <!-- FORMATIONS DROPDOWN --> 
       <div class="nav-item-dropdown static-dropdown"> 
@@ -327,6 +311,6 @@
     </div> 
 </footer>
 
-
+<script src="assets/js/toggle.js"></script>
 </body>
 </html>
