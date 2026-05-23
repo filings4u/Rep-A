@@ -47,15 +47,13 @@
       <img src="images/logo.png" alt="filings4u" class="h-10 w-auto object-contain"> 
     </a> 
 
-    <!-- FIXED TRIGGER: Handles the right-to-left slide-in drawer state smoothly --> 
+    <!-- FIXED TRIGGER: Toggles right-to-left slide smoothly --> 
     <button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none z-50 relative" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="
       const drawer = document.getElementById('nav-links-drawer');
       const backdrop = document.getElementById('drawer-backdrop');
-      
       drawer.classList.toggle('translate-x-full');
       drawer.classList.toggle('invisible');
       backdrop.classList.toggle('hidden');
-      
       const isMenuOpen = !drawer.classList.contains('translate-x-full');
       this.innerHTML = isMenuOpen ? '✕' : '☰';
       this.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
@@ -64,15 +62,18 @@
     <!-- MOBILE DRAWER BACKDROP -->
     <div id="drawer-backdrop" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="document.getElementById('mobile-menu-trigger').click()"></div>
 
-    <!-- LINK MAIN DRAWER CONTAINER (Corrected Right Edge Slide Configuration) --> 
+    <!-- LINK MAIN DRAWER CONTAINER (Slides leftward from the right side) --> 
     <div id="nav-links-drawer" class="fixed lg:relative top-0 lg:top-auto right-0 left-auto lg:right-auto lg:left-auto w-[290px] lg:w-auto h-screen lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-l lg:border-none border-gray-100 z-40 transform translate-x-full invisible lg:visible lg:translate-x-0 transition-all duration-300 ease-in-out box-border overflow-y-auto lg:overflow-visible flex flex-col lg:flex-row gap-6 lg:gap-10 items-start lg:items-center"> 
       
-      <!-- Spacing block to push menu links down past fixed logo line on mobile views -->
+      <!-- Spacing block for clear branding alignment on mobile -->
       <div class="h-12 w-full block lg:hidden flex-shrink-0"></div>
+
       <!-- FORMATIONS DROPDOWN --> 
       <div class="relative group w-full lg:w-auto flex-shrink-0"> 
-        <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Formations <span class="text-[0.7rem] opacity-60">▼</span></a> 
-        <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
+        <a href="#" onclick="if(window.innerWidth < 1024) { event.preventDefault(); this.nextElementSibling.classList.toggle('hidden'); }" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center justify-between lg:justify-start gap-1 py-2 transition-colors whitespace-nowrap w-full">
+          <span>Formations</span> <span class="text-[0.7rem] opacity-60">▼</span>
+        </a> 
+        <div class="hidden lg:group-hover:block mobile-dropdown lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"> 
             <div class="flex flex-col gap-2"> 
               <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Popular Formations</span> 
@@ -91,8 +92,10 @@
 
       <!-- COMPLIANCE DROPDOWN --> 
       <div class="relative group w-full lg:w-auto flex-shrink-0"> 
-        <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Compliance <span class="text-[0.7rem] opacity-60">▼</span></a> 
-        <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
+        <a href="#" onclick="if(window.innerWidth < 1024) { event.preventDefault(); this.nextElementSibling.classList.toggle('hidden'); }" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center justify-between lg:justify-start gap-1 py-2 transition-colors whitespace-nowrap w-full">
+          <span>Compliance</span> <span class="text-[0.7rem] opacity-60">▼</span>
+        </a> 
+        <div class="hidden lg:group-hover:block mobile-dropdown lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"> 
             <div class="flex flex-col gap-2"> 
               <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Entity Health</span> 
@@ -108,12 +111,13 @@
             </div> 
           </div> 
         </div> 
-      </div> 
-
+      </div>
       <!-- TAX FILINGS DROPDOWN --> 
       <div class="relative group w-full lg:w-auto flex-shrink-0"> 
-        <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">Tax Filings <span class="text-[0.7rem] opacity-60">▼</span></a> 
-        <div class="hidden group-hover:block lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
+        <a href="#" onclick="if(window.innerWidth < 1024) { event.preventDefault(); this.nextElementSibling.classList.toggle('hidden'); }" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center justify-between lg:justify-start gap-1 py-2 transition-colors whitespace-nowrap w-full">
+          <span>Tax Filings</span> <span class="text-[0.7rem] opacity-60">▼</span>
+        </a> 
+        <div class="hidden lg:group-hover:block mobile-dropdown lg:absolute top-full left-0 bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[480px] z-50"> 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"> 
             <div class="flex flex-col gap-2"> 
               <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Income & Operations</span> 
@@ -130,10 +134,13 @@
           </div> 
         </div> 
       </div>
+
       <!-- DOT & FLEET DROPDOWN --> 
       <div class="relative group w-full lg:w-auto flex-shrink-0"> 
-        <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2 transition-colors whitespace-nowrap">DOT & Fleet <span class="text-[0.7rem] opacity-60">▼</span></a> 
-        <div class="hidden group-hover:block lg:absolute top-full lg:right-0 lg:left-auto bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[640px] z-50"> 
+        <a href="#" onclick="if(window.innerWidth < 1024) { event.preventDefault(); this.nextElementSibling.classList.toggle('hidden'); }" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center justify-between lg:justify-start gap-1 py-2 transition-colors whitespace-nowrap w-full">
+          <span>DOT & Fleet</span> <span class="text-[0.7rem] opacity-60">▼</span>
+        </a> 
+        <div class="hidden lg:group-hover:block mobile-dropdown lg:absolute top-full lg:right-0 lg:left-auto bg-white border border-gray-100 lg:shadow-xl lg:rounded-xl p-4 lg:p-6 min-w-[240px] lg:w-[640px] z-50"> 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"> 
             <div class="flex flex-col gap-2"> 
               <span class="text-xs font-bold uppercase tracking-wider text-[#10b981] border-b border-gray-100 pb-1 mb-1">Authority Setup</span> 
@@ -171,19 +178,21 @@
   </div> 
 </nav>
 
+<!-- Clean up logic: Accordion behavior script to close open menus on mobile click -->
+<script>
+  document.querySelectorAll('#nav-links-drawer > div > a').forEach(triggerLink => {
+    triggerLink.addEventListener('click', function(e) {
+      if(window.innerWidth >= 1024) return;
+      const currentDropdown = this.nextElementSibling;
+      document.querySelectorAll('.mobile-dropdown').forEach(dropdown => {
+        if(dropdown !== currentDropdown) {
+          dropdown.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
 
-
-
-
-
-    <!-- 📱 MOBILE SIDEBAR DRAWER OVERLAY -->
-    <div id="mobile-drawer-overlay" class="hidden fixed top-[70px] left-0 w-full h-[calc(100vh-70px)] bg-white z-40 p-6 flex flex-col gap-4 overflow-y-auto lg:hidden">
-        <a href="limited-liability-company.html" class="text-base py-2 border-b border-gray-100 text-[#0a1f44]">LLC Formation</a>
-        <a href="trucker-authority.html" class="text-base py-2 border-b border-gray-100 text-[#0a1f44]">Trucker Authority</a>
-        <a href="annual-reports.html" class="text-base py-2 border-b border-gray-100 text-[#0a1f44]">Annual Reports</a>
-        <a href="federal-income-tax.html" class="text-base py-2 border-b border-gray-100 text-[#0a1f44]">Federal Income Tax</a>
-        <a href="https://filings4u.com" class="w-full text-center bg-[#0a1f44] text-white py-3 rounded mt-4 text-sm font-bold uppercase tracking-wider">Secure Portal</a>
-    </div>
 
 <!-- SECTION 1: HERO CONTAINER (Fixed Mobile Padding & Image Bounds) -->
 <main class="pt-[100px] pb-12 w-full box-border px-4 md:px-[6%]">
