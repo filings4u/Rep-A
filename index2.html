@@ -471,6 +471,33 @@
   </svg>
 </button>
 
+<script>
+  (function() {
+    const topButton = document.getElementById('back-to-top-btn');
+    if (!topButton) return;
+
+    // Track user scrolling behavior
+    window.addEventListener('scroll', function() {
+      // Reveal button after user scrolls down 400 pixels
+      if (window.scrollY > 400) {
+        topButton.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        topButton.classList.add('translate-y-0', 'opacity-100');
+      } else {
+        topButton.classList.remove('translate-y-0', 'opacity-100');
+        topButton.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }
+    }, { passive: true }); // Passive event listener optimizes mobile scroll framerates
+
+    // Execute native hardware-accelerated smooth scroll to top view on click
+    topButton.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  })();
+</script>
+
 
     
 </body>
