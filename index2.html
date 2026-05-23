@@ -60,8 +60,7 @@
         ">☰</button>
 
         <!-- THE NAV LINKS CONTAINER (Desktop: Horizontal Row | Mobile: Hidden Drawer Overlay) -->
-        <div id="nav-links-drawer" class="hidden lg:flex flex-col lg:flex-row absolute lg:relative top-[50px] lg:top-auto left-0 w-full lg:w-auto bg-white lg:bg-transparent shadow-lg lg:shadow-none p-6 lg:p-0 border border-gray-100 lg:border-none rounded-xl lg:rounded-none z-50 gap-6 lg:gap-7 items-start lg:items-center">
-            
+<div id="nav-links-drawer" class="fixed lg:relative top-[70px] lg:top-auto right-0 left-auto w-[80%] max-w-[320px] lg:w-auto h-[calc(100vh-70px)] lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-l border-gray-100 lg:border-none z-50 flex flex-col lg:flex-row gap-6 lg:gap-7 items-start lg:items-center transform translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out box-border overflow-y-auto lg:overflow-visible">            
             <!-- FORMATIONS DROPDOWN -->
             <div class="relative group w-full lg:w-auto">
                 <a href="#" class="font-semibold text-sm text-[#0a1f44] hover:text-[#10b981] flex items-center gap-1 py-2">Formations <span class="text-[0.7rem]">▼</span></a>
@@ -173,26 +172,26 @@
         <a href="https://filings4u.com" class="w-full text-center bg-[#0a1f44] text-white py-3 rounded mt-4 text-sm font-bold uppercase tracking-wider">Secure Portal</a>
     </div>
 
-<!-- SECTION 1: HERO CONTAINER (Image Top on Mobile, Left-Aligned Text Bottom) -->
-<main class="pt-[120px] pb-12 w-full box-border">
-    <!-- FIXED: Added 'flex flex-col-reverse lg:grid lg:grid-cols-2' to flip the stack order natively on mobile views -->
-    <div class="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-12 items-center w-full box-border">
+<!-- SECTION 1: HERO CONTAINER (Fixed Mobile Padding & Image Bounds) -->
+<main class="pt-[100px] pb-12 w-full box-border px-4 md:px-[6%]">
+    <!-- Fluid container wrapper stacks vertically on mobile, locks grid side-by-side on desktop screens -->
+    <div class="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full box-border">
         
-        <article class="text-left flex flex-col items-start mt-8 lg:mt-0">
-            <span class="text-[#10b981] text-xs font-extrabold uppercase tracking-widest block mb-3">Enterprise Ecosystem</span>
-            <h1 class="text-4xl lg:text-[3.2rem] leading-[1.1] font-extrabold text-[#0a1f44] mb-4">The Hub for <br>Total Compliance.</h1>
-            <p class="text-base text-[#64748b] mb-6 max-w-[550px]">Automate your corporate structures and DOT authorities from one single dashboard. We provide the technical handshake between you and state, federal, and local jurisdictions.</p>
-            <a href="get-started.html" class="bg-[#10b981] hover:bg-[#0e9f6e] text-white font-bold px-10 py-4 rounded transition-transform hover:-translate-y-0.5">Get Started →</a>
+        <!-- TEXT TRACK: Indented away from margins cleanly -->
+        <article class="text-left flex flex-col items-start w-full box-border px-2 md:px-0">
+            <span class="text-[#10b981] text-xs font-extrabold uppercase tracking-widest block mb-2">Enterprise Ecosystem</span>
+            <h1 class="text-3xl lg:text-[3.2rem] leading-[1.1] font-extrabold text-[#0a1f44] mb-3">The Hub for <br>Total Compliance.</h1>
+            <p class="text-sm md:text-base text-[#64748b] mb-6 max-w-[550px] leading-relaxed">Automate your corporate structures and DOT authorities from one single dashboard. We provide the technical handshake between you and state, federal, and local jurisdictions.</p>
+            <a href="get-started.html" class="bg-[#10b981] hover:bg-[#0e9f6e] text-white font-bold px-8 py-3.5 rounded text-sm tracking-wide transition-transform hover:-translate-y-0.5 inline-block text-center">Get Started →</a>
         </article>
         
-        <!-- Image element naturally sits on top inside the mobile vertical flex engine stack -->
-        <aside class="w-full h-[300px] lg:h-[360px] rounded-2xl overflow-hidden shadow-md">
-            <img src="images/hero-image.jpg" alt="Dashboard Preview" class="w-full h-full object-cover">
+        <!-- IMAGE TRACK: Capped height ensures it stays safely within the smartphone viewport -->
+        <aside class="w-full h-[220px] sm:h-[280px] lg:h-[360px] rounded-2xl overflow-hidden shadow-md box-border">
+            <img src="images/hero-image.jpg" alt="Compliance Dashboard Preview" class="w-full h-full object-cover">
         </aside>
         
     </div>
 </main>
-
 
     <!-- SECTION 2: THE HUB (NAVY INTERFACES) -->
     <section class="bg-[#0a1f44] text-white px-[6%] py-20 w-full">
