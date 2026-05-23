@@ -47,18 +47,21 @@
             <img src="images/logo.png" alt="filings4u" class="h-10 w-auto object-contain">
         </a>
 
-        <!-- MOBILE TRIGGER BUTTON -->
-        <button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
-                onclick="
-                    const drawer = document.getElementById('nav-links-drawer');
-                    drawer.classList.toggle('translate-x-full');
-                    const isOpen = !drawer.classList.contains('translate-x-full');
-                    this.innerHTML = isOpen ? '✕' : '☰';
-                    this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                ">☰</button>
+     <!-- FIXED TRIGGER: Forces the mobile panel to change states cleanly on click -->
+<button class="block lg:hidden text-2xl text-[#0a1f44] cursor-pointer p-2 focus:outline-none" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" 
+        onclick="
+            const drawer = document.getElementById('nav-links-drawer');
+            drawer.classList.toggle('hidden');
+            
+            // Updates button icon appearance instantly
+            const isMenuOpen = !drawer.classList.contains('hidden');
+            this.innerHTML = isMenuOpen ? '✕' : '☰';
+            this.setAttribute('aria-expanded', isMenuOpen ? 'true' : 'false');
+        ">☰</button>
+
 
         <!-- LINK MAIN DRAWER CONTAINER -->
-        <div id="nav-links-drawer" class="hidden lg:flex flex-col lg:flex-row absolute lg:relative top-[70px] lg:top-auto right-0 left-auto w-[80%] max-w-[320px] lg:max-w-none lg:w-auto h-[calc(100vh-70px)] lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-l lg:border-none border-gray-100 z-50 gap-6 lg:gap-10 items-start lg:items-center transform translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out box-border overflow-y-auto lg:overflow-visible flex-nowrap">
+<div id="nav-links-drawer" class="hidden lg:flex flex-col lg:flex-row absolute lg:relative top-[70px] lg:top-auto right-0 left-auto w-full lg:w-auto h-[calc(100vh-70px)] lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-6 lg:p-0 border-b lg:border-none border-gray-100 z-50 gap-6 lg:gap-10 items-start lg:items-center box-border overflow-y-auto lg:overflow-visible flex-nowrap">
             
             <!-- FORMATIONS DROPDOWN -->
             <div class="relative group w-full lg:w-auto flex-shrink-0">
