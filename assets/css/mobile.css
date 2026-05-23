@@ -741,3 +741,41 @@ nav button.mobile-toggle-btn, .mobile-toggle-btn {
     text-align: left !important;
   }
 }
+
+
+/* ========================================================================== 
+   📱 MOBILE DRAWER VISIBILITY MATRIX 
+   ========================================================================== */
+@media (max-width: 991px) {
+    /* Hide the mobile menu off-screen by default */
+    .nav-links {
+        display: flex !important;
+        flex-direction: column !important;
+        position: fixed !important;
+        top: 60px !important;
+        right: -100% !important; /* Pushed completely off-screen to the right */
+        width: 80% !important;
+        max-width: 320px !important;
+        height: calc(100vh - 60px) !important;
+        background: #ffffff !important;
+        z-index: 99998 !important;
+        overflow-y: auto !important;
+        padding: 20px !important;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1) !important;
+        transition: right 0.3s ease-in-out !important; /* Smooth sliding slide-in effect */
+    }
+
+    /* CRITICAL FIX: When jQuery adds the .active class, slide the menu into view! */
+    .nav-links.active {
+        right: 0 !important; /* Slides out onto the viewport screen */
+    }
+
+    /* Optional: Show your navigation link text stack clearly inside the mobile drawer */
+    .nav-links a {
+        color: #0a1f44 !important;
+        padding: 12px 0 !important;
+        display: block !important;
+        font-size: 1.1rem !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+    }
+}
