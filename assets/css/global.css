@@ -55,3 +55,14 @@ footer li {
   transform-style: preserve-3d;
   will-change: transform, opacity;
 }
+
+/* ── 6. GLOBAL FOOTER LINK TEXT SIZE CONTROL ── */
+footer ul li a {
+  /* 🎛️ TWEAK THIS VALUE TO CONTROL LINK SIZES SITE-WIDE:
+     - Use 13px or 14px for a compact, clean look.
+     - Use 15px or 16px (standard size) to make it larger and easier to read. */
+  font-size: 14px !important;
+  
+  /* Adds weight so the links look crisp on dark backgrounds */
+  font-weight: 400 !important; 
+}
