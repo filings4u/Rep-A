@@ -773,3 +773,26 @@
   .site-footer h4 {
     color: #ffffff !important; /* Retains your bright white column header titles so they stand out */
   }
+
+    /* 1. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
+  .logo-link img, 
+  nav img.logo, 
+  .nav-content-wrapper .logo {
+    height: 38px !important;       /* Increased from 28px for better mobile brand visibility */
+    max-width: 170px !important;   /* Expanded container lock area width space */
+    width: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* 2. DECREASE FOOTER CONTAINER AND BOTTOM COMPACT GAP AREA */
+  footer.site-footer, 
+  .site-footer {
+    padding-top: 40px !important;  
+    padding-bottom: 15px !important; /* Cut down to tighten the extreme bottom screen boundary spacing */
+    margin-top: 30px !important;
+  }
+
+  .site-footer .footer-bottom {
+    margin-top: 25px !important;    /* Pulled upward closer to the menu navigation columns */
+    padding-top: 15px !important;
+  }
