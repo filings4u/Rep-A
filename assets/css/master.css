@@ -1296,3 +1296,70 @@ footer a[href*="roselandcompanies.com"] {
   font-weight: 700 !important;
 }
 
+/* ==========================================================================
+   🖥️ DESKTOP MEGA-MENU HORIZONTAL SHRINK & TEXT LINK MATCHING PROFILES
+   ========================================================================== */
+@media (min-width: 992px) {
+  
+  /* 1. LOCK DROPDOWN RELATIONSHIPS: Forces EVERY dropdown box to track its actual link text position */
+  .nav-links .nav-item-dropdown,
+  .nav-item-dropdown.static-dropdown {
+    position: relative !important; /* Establishes direct structural alignment hooks */
+    height: 100% !important;
+  }
+
+  /* 2. SHRINK-WRAP THE LAYOUT PANELS: Drops the massive 88% screen width, fits snugly to content columns */
+  nav .dropdown-content.mega-panel-two-col,
+  nav .dropdown-content.mega-panel-three-col,
+  .dropdown-content.mega-panel-two-col,
+  .dropdown-content.mega-panel-three-col {
+    display: none !important;
+    position: absolute !important;
+    top: 100% !important;         /* Drops right down from header tracking line */
+    
+    /* POSITION LOCK: Drops the box straight down from the left edge of your trigger text link */
+    left: 0 !important;            
+    transform: none !important;    /* Removes global centering shifting offsets */
+    right: auto !important;
+    
+    width: max-content !important; /* Instantly snaps width to wrap tightly around your content lists */
+    background: #ffffff !important;
+    border-top: 3px solid #10b981 !important;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08) !important;
+    border-radius: 0 0 12px 12px !important;
+    
+    /* COMPACT SPACE: Tightened margins to pull columns close together horizontally */
+    padding: 24px 28px !important;    
+    gap: 28px !important;          /* Snug horizontal gap space between link columns */
+    z-index: 100000 !important;
+  }
+
+  /* 3. CONVERT CONFLICTING LAYOUTS TO CRISP HORIZONTAL SIDE-BY-SIDE COLUMNS */
+  .static-dropdown:hover .dropdown-content.mega-panel-two-col,
+  .static-dropdown:hover .dropdown-content.mega-panel-three-col {
+    display: grid !important; /* Fires modern flexbox micro grid layouts on desktop hover */
+  }
+
+  nav .dropdown-content.mega-panel-two-col {
+    grid-template-columns: repeat(2, minmax(160px, max-content)) !important;
+  }
+
+  nav .dropdown-content.mega-panel-three-col {
+    grid-template-columns: repeat(3, minmax(160px, max-content)) !important;
+  }
+
+  /* 4. OPTIMIZE INTERNAL ASSET PROFILES: Pulls tracks together to reduce total width footprint */
+  .mega-column {
+    flex: 0 0 auto !important;
+    width: max-content !important;
+    min-width: 160px !important;
+    max-width: 200px !important;
+  }
+
+  /* 5. SPECIFIC EXCEPTION RULES: Handles the 4th dropdown parent (DOT & Fleet) on the far right edge */
+  .nav-links .nav-item-dropdown:nth-child(4) .dropdown-content.mega-panel-three-col {
+    left: auto !important;         /* Cancels left drop to prevent menu overflowing off monitor frame */
+    right: 0 !important;           /* Snaps the right-hand container boundary flush underneath text edge */
+    gap: 20px !important;          
+  }
+}
