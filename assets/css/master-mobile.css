@@ -875,4 +875,44 @@
     font-weight: 700 !important;
   }
 
-} /* ================== 📱 END OF THE MOBILE MEDIA QUERY WINDOW EDGE BLOCK ================== */
+} 
+
+/* target mobile screens only */
+@media screen and (max-width: 991px) {
+
+    /* 1. Force the active dropdown panel to calculate its height naturally */
+    .nav-item-dropdown.active-toggle .dropdown-content, 
+    .nav-item-dropdown.active-toggle .mega-panel-two-col, 
+    .nav-item-dropdown.active-toggle .mega-panel-three-col { 
+        display: block !important; 
+        height: auto !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        overflow: visible !important;
+    } 
+
+    /* 2. Force the sub-link columns to stack vertically instead of side-by-side */
+    .mega-column { 
+        display: block !important; 
+        width: 100% !important; 
+        height: auto !important;
+        clear: both !important;
+    } 
+
+    /* 3. Force each individual link onto its own separate line */
+    .mega-column a { 
+        display: block !important;
+        width: 100% !important;
+        position: relative !important;
+        float: none !important;
+        clear: both !important;
+    } 
+    
+    /* 4. Ensure the client portal button gets pushed down cleanly */
+    .nav-links .btn-client-portal {
+        display: block !important;
+        position: relative !important;
+        clear: both !important;
+        margin-top: 20px !important;
+    }
+}
