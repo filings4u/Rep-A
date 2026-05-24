@@ -854,4 +854,37 @@
 } /* ================== 📱 END OF THE MOBILE MEDIA QUERY WINDOW EDGE BLOCK ================== */
 
 
+/* ==========================================================================
+   🖥️ DESKTOP-ONLY STYLES AREA (RESTS SAFELY OUTSIDE OF MOBILE VIEW BREAKPOINTS)
+   ========================================================================== */
+@media (min-width: 992px) {
+  
+  /* BASE BUTTON CONFIGURATION: Ensures resting state is Navy only on Desktop */
+  .nav-links .btn-client-portal, 
+  nav .btn-client-portal, 
+  a.btn-client-portal {
+    background-color: #0a1f44 !important;
+    color: #ffffff !important;
+    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* HIGH-PRIORITY HOVER TRIGGER FOR SECURE PORTAL OVER TAG RULES */
+  .nav-links .btn-client-portal:hover, 
+  nav .btn-client-portal:hover, 
+  a.btn-client-portal:hover,
+  .nav-links .btn-client-portal.desktop-portal-hover, 
+  nav .btn-client-portal.desktop-portal-hover, 
+  a.btn-client-portal.desktop-portal-hover {
+    background: #10b981 !important; 
+    background-color: #10b981 !important; /* Forces Emerald to reveal over resting states */
+    color: #ffffff !important; 
+  }
+
+  /* DESKTOP BRAND FOOTER LINK DECORATION ARCHITECTURE */
+  .site-footer a[href*="roselandcompanies.com"], 
+  footer a[href*="roselandcompanies.com"] {
+    color: #c15254 !important; 
+    font-weight: 700 !important;
+  }
+}
 
