@@ -851,3 +851,20 @@
     color: #c15254 !important; /* Forces your custom red color profile on phone screens */
     font-weight: 700 !important;
   }
+
+  /* --- HIGH-PRIORITY HOVER TRACKER FOR SECURE PORTAL --- */
+.nav-links .btn-client-portal.desktop-portal-hover,
+nav .btn-client-portal.desktop-portal-hover,
+a.btn-client-portal.desktop-portal-hover {
+  background: #10b981 !important;    /* Forces Emerald background on mouse hover */
+  background-color: #10b981 !important;
+  color: #ffffff !important;           /* Clear white text display */
+  transition: all 0.25s ease-in-out !important;
+}
+
+/* --- SITE-WIDE BRANDING FOOTER LINK COLOR --- */
+.site-footer a[href*="roselandcompanies.com"],
+footer a[href*="roselandcompanies.com"] {
+  color: #c15254 !important;
+  font-weight: 700 !important;
+}

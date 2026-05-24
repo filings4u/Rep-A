@@ -37,8 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-// 3. SECURE PORTAL BUTTON DYNAMIC MOBILE CLASS SWITCHER
-    // FIX: Uses clean classes instead of rigid inline styles to prevent CSS hover locks
+    // 3. SECURE PORTAL BUTTON DYNAMIC MOBILE CLASS & HOVER SWITCHER
     const portalButton = document.querySelector('.btn-client-portal');
     if (portalButton) {
         function enforcePortalMobileStyles() {
@@ -49,9 +48,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
+        // JAVASCRIPT DESKTOP HOVER INJECTION: Bypasses stubborn template inline styles
+        portalButton.addEventListener('mouseenter', function() {
+            if (window.innerWidth > 991) {
+                this.classList.add('desktop-portal-hover');
+            }
+        });
+        
+        portalButton.addEventListener('mouseleave', function() {
+            this.classList.remove('desktop-portal-hover');
+        });
+        
         enforcePortalMobileStyles();
         window.addEventListener('resize', enforcePortalMobileStyles);
     }
+
 
     // 4. MOBILE DROPDOWN ACCORDION HANDLING (CLICK TRAPS)
     const dropdownTriggers = document.querySelectorAll('.static-dropdown > a');
