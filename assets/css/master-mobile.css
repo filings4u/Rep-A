@@ -668,6 +668,30 @@
     text-align: left;
   }
 
+  /* --- 3. REVISED RIGHT-TO-LEFT DRAWER SYSTEM (MAXIMUM STRETCH WIDE) --- */
+  .nav-links {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 70px !important;
+    
+    /* ANIMATION ANCHOR: Stays hidden completely off-screen to the right */
+    right: -100% !important; 
+    left: auto !important;
+    
+    /* MAXIMUM SCREEN STRETCH: Expanded container to take up exactly 85% of viewport display screens */
+    width: 85vw !important; 
+    max-width: 85vw !important; 
+    
+    height: calc(100vh - 70px) !important;
+    background: #ffffff !important; /* Clean white drop-down background matrix */
+    z-index: 99999 !important;
+    overflow-y: auto !important;
+    padding: 24px 20px !important;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; /* Enhanced shadow depth gradient */
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Smooth right-to-left slide */
+  }
+
   /* When JS adds 'active' or 'nav-open', change right position to 0 to slide it left into view */
   body.nav-open .nav-links,
   .nav-links.active {
@@ -852,39 +876,3 @@
   }
 
 } /* ================== 📱 END OF THE MOBILE MEDIA QUERY WINDOW EDGE BLOCK ================== */
-
-
-/* ==========================================================================
-   🖥️ DESKTOP-ONLY STYLES AREA (RESTS SAFELY OUTSIDE OF MOBILE VIEW BREAKPOINTS)
-   ========================================================================== */
-@media (min-width: 992px) {
-  
-  /* BASE BUTTON CONFIGURATION: Ensures resting state is Navy only on Desktop */
-  .nav-links .btn-client-portal, 
-  nav .btn-client-portal, 
-  a.btn-client-portal {
-    background-color: #0a1f44 !important;
-    color: #ffffff !important;
-    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-
-  /* HIGH-PRIORITY HOVER TRIGGER FOR SECURE PORTAL OVER TAG RULES */
-  .nav-links .btn-client-portal:hover, 
-  nav .btn-client-portal:hover, 
-  a.btn-client-portal:hover,
-  .nav-links .btn-client-portal.desktop-portal-hover, 
-  nav .btn-client-portal.desktop-portal-hover, 
-  a.btn-client-portal.desktop-portal-hover {
-    background: #10b981 !important; 
-    background-color: #10b981 !important; /* Forces Emerald to reveal over resting states */
-    color: #ffffff !important; 
-  }
-
-  /* DESKTOP BRAND FOOTER LINK DECORATION ARCHITECTURE */
-  .site-footer a[href*="roselandcompanies.com"], 
-  footer a[href*="roselandcompanies.com"] {
-    color: #c15254 !important; 
-    font-weight: 700 !important;
-  }
-}
-
