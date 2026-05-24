@@ -823,30 +823,30 @@
     object-fit: contain !important;
   }
 
-  /* 3. TIGHTEN COMPACT MOBILE FOOTER MATRIX SPACING PANELS */
+    /* --- 3. TIGHTEN COMPACT MOBILE FOOTER MATRIX SPACING PANELS --- */
   footer.site-footer, 
   .site-footer {
-    padding-top: 30px !important;  
+    padding-top: 30px !important; 
     padding-bottom: 20px !important; 
     margin-top: 30px !important;
   }
-
-  .site-footer .footer-container {
-    gap: 15px 15px !important;       
+  
+  .site-footer .footer-container { 
+    gap: 15px 15px !important; 
   }
-
-  .site-footer .footer-col ul li {
-    margin-bottom: 6px !important;   
+  
+  .site-footer .footer-col ul li { 
+    margin-bottom: 6px !important; 
   }
-
-  .site-footer h4,
-  .footer-col h4 {
-    margin-bottom: 12px !important;  
+  
+  .site-footer h4, 
+  .footer-col h4 { 
+    margin-bottom: 12px !important; 
   }
-
-  .site-footer .footer-bottom {
-    margin-top: 25px !important;    
-    padding-top: 15px !important;
+  
+  .site-footer .footer-bottom { 
+    margin-top: 25px !important; 
+    padding-top: 15px !important; 
   }
 
   /* --- COMPACT MATRIX FOOTER TEXT BALANCING GRAPHICS --- */
@@ -858,27 +858,37 @@
     color: #94a3b8 !important; 
   }
   
-  .site-footer h4 {
+  .site-footer h4 { 
     color: #ffffff !important; 
   }
 
   /* 4. MOBILE HERO TYPOGRAPHY LEFT ALIGNMENT TRACKERS */
   .content-area h1, 
   main .content-area h1, 
-  .page-container h1 {
-    text-align: left !important;  
+  .page-container h1 { 
+    text-align: left !important; 
   }
-
+  
   .content-area p, 
   main .content-area p, 
-  .page-container p {
-    text-align: left !important;  
-    margin-left: 0 !important;    
-    margin-right: auto !important;
+  .page-container p { 
+    text-align: left !important; 
+    margin-left: 0 !important; 
+    margin-right: auto !important; 
+  }
+  
+  .content-area { 
+    align-items: flex-start !important; 
   }
 
-  .content-area {
-    align-items: flex-start !important; 
+  /* 5. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
+  .logo-link img, 
+  nav img.logo, 
+  .nav-content-wrapper .logo { 
+    height: 38px !important; 
+    max-width: 170px !important; 
+    width: auto !important; 
+    object-fit: contain !important; 
   }
 
   /* --- HARD-LOCKED FIXED SITE-WIDE BRANDING RED FOOTER OVERRIDES --- */
@@ -895,122 +905,32 @@
    🖥️ DESKTOP-ONLY STYLES AREA (RESTS SAFELY OUTSIDE OF MOBILE VIEW BREAKPOINTS)
    ========================================================================== */
 @media (min-width: 992px) {
-  /* --- HIGH-PRIORITY HOVER TRACKER FOR DESKTOP MONITORS --- */
+  
+  /* BASE BUTTON CONFIGURATION: Ensures resting state is Navy only on Desktop */
+  .nav-links .btn-client-portal, 
+  nav .btn-client-portal, 
+  a.btn-client-portal {
+    background-color: #0a1f44 !important;
+    color: #ffffff !important;
+    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* HIGH-PRIORITY HOVER TRIGGER FOR SECURE PORTAL OVER TAG RULES */
+  .nav-links .btn-client-portal:hover, 
+  nav .btn-client-portal:hover, 
+  a.btn-client-portal:hover,
   .nav-links .btn-client-portal.desktop-portal-hover, 
   nav .btn-client-portal.desktop-portal-hover, 
   a.btn-client-portal.desktop-portal-hover {
-    background: #10b981 !important;    
-    background-color: #10b981 !important;
-    color: #ffffff !important;           
-    transition: all 0.25s ease-in-out !important;
+    background: #10b981 !important; 
+    background-color: #10b981 !important; /* Forces Emerald to reveal over resting states */
+    color: #ffffff !important; 
   }
 
+  /* DESKTOP BRAND FOOTER LINK DECORATION ARCHITECTURE */
   .site-footer a[href*="roselandcompanies.com"], 
   footer a[href*="roselandcompanies.com"] {
     color: #c15254 !important; 
     font-weight: 700 !important;
   }
 }
-
-
-  /* 1. SECURE PORTAL BUTTON - VISUAL ANCHOR TEXT COLOR FIXED */
-  .nav-links .btn-client-portal, 
-  nav .btn-client-portal,
-  a.btn-client-portal {
-    color: #ffffff !important;           /* Forces crisp white text visibility over the navy background */
-    background-color: #0a1f44 !important; /* Locks corporate navy branding background */
-  }
-
-   /* --- MOBILE COMPACT FOOTER COLOR BALANCING --- */
-  .site-footer, 
-  .site-footer p, 
-  .site-footer span, 
-  .site-footer ul li a,
-  .site-footer .footer-brand p {
-    color: #94a3b8 !important; /* Standard Slate Gray */
-  }
-  
-  .site-footer h4 {
-    color: #ffffff !important; /* Bright White Titles */
-  }
-
-  /* HARD-LOCKED MOBILE BRAND OVERRIDE */
-  .site-footer a[href*="roselandcompanies.com"],
-  footer a[href*="roselandcompanies.com"] {
-    color: #c15254 !important; /* Forces your brand color on phone screens */
-    font-weight: 700 !important;
-  }
-
-    /* 1. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
-  .logo-link img, 
-  nav img.logo, 
-  .nav-content-wrapper .logo {
-    height: 38px !important;       /* Increased from 28px for better mobile brand visibility */
-    max-width: 170px !important;   /* Expanded container lock area width space */
-    width: auto !important;
-    object-fit: contain !important;
-  }
-
-  /* 2. DECREASE FOOTER CONTAINER AND BOTTOM COMPACT GAP AREA */
-  footer.site-footer, 
-  .site-footer {
-    padding-top: 40px !important;  
-    padding-bottom: 15px !important; /* Cut down to tighten the extreme bottom screen boundary spacing */
-    margin-top: 30px !important;
-  }
-
-  .site-footer .footer-bottom {
-    margin-top: 25px !important;    /* Pulled upward closer to the menu navigation columns */
-    padding-top: 15px !important;
-  }
-
-    /* --- MOBILE HERO TYPOGRAPHY LEFT ALIGNMENT OVERRIDE --- */
-  .content-area h1,
-  main .content-area h1,
-  .page-container h1 {
-    text-align: left !important;  /* Forces headline to align cleanly to the left frame */
-  }
-
-  .content-area p,
-  main .content-area p,
-  .page-container p {
-    text-align: left !important;  /* Forces supporting paragraph text to align left */
-    margin-left: 0 !important;    /* Resets any accidental center margins */
-    margin-right: auto !important;
-  }
-  
-  .content-area {
-    align-items: flex-start !important; /* Aligns your CTA buttons and badge wrappers to the left */
-  }
-
-  /* --- MOBILE PORTAL STATE LOCK & BRANDING TRANSFORMS --- */
-  .nav-links .btn-client-portal.mobile-portal-lock,
-  .btn-client-portal.mobile-portal-lock {
-    background-color: #0a1f44 !important; /* Safe mobile navy lock */
-    color: #ffffff !important;           /* Clear white button text lock */
-  }
-
-  /* HARD-LOCKED MOBILE PARENT FIRM BRAND OVERRIDE */
-  .site-footer a[href*="roselandcompanies.com"],
-  footer a[href*="roselandcompanies.com"] {
-    color: #c15254 !important; /* Forces your custom red color profile on phone screens */
-    font-weight: 700 !important;
-  }
-
-  /* --- HIGH-PRIORITY HOVER TRACKER FOR SECURE PORTAL --- */
-.nav-links .btn-client-portal.desktop-portal-hover,
-nav .btn-client-portal.desktop-portal-hover,
-a.btn-client-portal.desktop-portal-hover {
-  background: #10b981 !important;    /* Forces Emerald background on mouse hover */
-  background-color: #10b981 !important;
-  color: #ffffff !important;           /* Clear white text display */
-  transition: all 0.25s ease-in-out !important;
-}
-
-/* --- SITE-WIDE BRANDING FOOTER LINK COLOR --- */
-.site-footer a[href*="roselandcompanies.com"],
-footer a[href*="roselandcompanies.com"] {
-  color: #c15254 !important;
-  font-weight: 700 !important;
-}
-
