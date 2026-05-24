@@ -202,100 +202,120 @@
 
 
 
-@media screen and (max-width: 980px) {
+/* --- FIXED: REMOVE CONTAINER BOXES FROM MAIN MOBILE TITLES --- */
+@media screen and (max-width: 991px) {
 
-  /* --- REMOVE CONTAINER BOXES FROM MAIN MOBILE TITLES --- */
+  /* 1. STRIP CONTAINER BOX MARGINS FROM HEADERS */
   .nav-item-dropdown > a,
   nav .nav-item-dropdown > a,
+  .nav-links .nav-item-dropdown > a,
   body.nav-open .nav-item-dropdown > a {
-    background: transparent !important; /* Strips the box background color fill */
+    background: transparent !important;      /* Removes the light-gray container background fill */
     background-color: transparent !important;
-    border: none !important;            /* Strips the gray box borders */
-    padding: 12px 10px !important;      /* Restores clean vertical list spacing */
+    border: none !important;                 /* Removes the rigid gray block container borders */
+    padding: 14px 10px !important;           /* Structural list row spatial boundary metrics padding */
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     width: 100% !important;
-    box-shadow: none !important;        /* Strips any accidental shadows */
+    box-shadow: none !important;
     border-radius: 0 !important;
-    color: #0a1f44 !important;          /* Keeps text standard corporate Navy */
+    color: #0a1f44 !important;               /* Hard-locks the main titles text to corporate Navy */
+    font-weight: 700 !important;
+    text-decoration: none !important;
   }
 
-  /* Adjust spacing for the arrow indicator icon to sit nicely on the right edge */
+  /* Formats the arrow indicator icon span loop inside the link text */
   .nav-item-dropdown > a span {
     margin-left: auto !important;
-    color: #64748b !important;          /* Subtle gray color for the dropdown arrow */
+    color: #0a1f44 !important;               /* Matches arrow indicator seamlessly to main text navy style */
+    font-size: 0.75rem !important;
+    display: inline-block !important;
   }
 
-
-  .dropdown-content, 
-  .mega-panel-two-col, 
-  .mega-panel-three-col {
-    display: none;
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    box-shadow: none;
-    background: #ffffff;
-    padding: 10px 0 0 0;
-    max-height: 0;
-    overflow: hidden;
+  /* 2. REGULAR DYNAMIC MOBILE LIST ACCORDION DROPDOWN ENGINE */
+  .nav-item-dropdown .dropdown-content, 
+  .nav-item-dropdown .mega-panel-two-col, 
+  .nav-item-dropdown .mega-panel-three-col {
+    display: none !important;                /* Hidden by default until toggle class triggers */
+    position: relative !important;           /* FIX: Forces relative streaming flow so items push layout downward naturally */
+    top: 0 !important;
+    left: 0 !important;
+    max-height: none !important;            /* FIXED: Erased the max-height limit to keep links fully visible */
+    overflow: visible !important;           /* FIXED: Erased overflow boundaries to show inner link list text */
+    background: transparent !important;      /* Flat, clean transparent layout appearance block profiles */
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* Active Open State Class for Navigation Drawer Links */
+  /* Active Open State Class: Opens the sub-links in a clean single vertical column stream on user tap */
   .nav-item-dropdown.active-toggle .dropdown-content, 
   .nav-item-dropdown.active-toggle .mega-panel-two-col, 
   .nav-item-dropdown.active-toggle .mega-panel-three-col {
-    display: block;
-    max-height: none;
-    overflow: visible;
-    visibility: visible;
-    opacity: 1;
+    display: flex !important;
+    flex-direction: column !important;       /* Re-aligns template grids into a standard vertical flow link path */
+    grid-template-columns: none !important;  /* Wipes out desktop horizontal column layouts completely */
+    padding: 0 0 10px 15px !important;       /* Indents your inner lists slightly for clean hierarchy */
+    margin-top: 5px !important;
   }
 
+  /* Sub-links layout container adjustments */
   .mega-column {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 0;
-    margin-bottom: 15px;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
+  /* Flat column subheadings inside mobile dropdown lists (e.g. "Popular Formations") */
   .mega-column .column-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-    text-align: center;
-    margin-bottom: 5px;
-    display: block;
+    font-size: 0.75rem !important;
+    color: #0a1f44 !important;               /* Clean corporate Navy for text uniformity */
+    text-align: left !important;
+    margin-top: 12px !important;
+    padding: 4px 0 !important;
+    border-bottom: none !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    display: block !important;
   }
 
+  /* Regular Inner Mobile Dropdown Links - Flat Vertical Flow System */
   .mega-column a {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--emerald);
-    padding: 8px 0;
-    text-align: center;
+    color: #0a1f44 !important;               /* Solid theme Navy list item look */
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    padding: 10px 0 !important;              /* Expand vertical tapping areas for mobile screens */
+    text-align: left !important;
+    border-bottom: none !important;          /* Cleans up and deletes generic line divides rules */
+    display: block !important;
+    width: 100% !important;
   }
 
-  /* Portal Actions Interface Buttons Block Rules */
-  .btn-client-portal, 
-  .nav-links .btn-main {
-    background: var(--navy);
-    color: var(--white);
-    width: 100%;
-    padding: 14px 0;
-    border-radius: 8px;
-    margin: 15px 0 0 0;
-    text-align: center;
-    display: block;
-    font-weight: 700;
-    text-transform: uppercase;
+  /* 3. PORTAL ACCESS LINK BUTTON MATRIX FIXES */
+  .nav-links .btn-client-portal, 
+  nav .btn-client-portal, 
+  a.btn-client-portal,
+  .btn-client-portal.mobile-portal-lock {
+    color: #ffffff !important;               /* Clear crisp white text representation over navy block surfaces */
+    background-color: #0a1f44 !important;     /* Hard locks corporate branding color scheme variables */
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 25px !important;             /* Safely pushes button down past your link listings */
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
   }
 }
+
 
 
 @media screen and (max-width: 980px) {
