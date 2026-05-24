@@ -864,3 +864,37 @@ footer a[href*="roselandcompanies.com"] {
   color: #c15254 !important;
   font-weight: 700 !important;
 }
+
+  /* --- MOBILE COMPACT FOOTER OVERRIDES --- */
+  footer.site-footer, 
+  .site-footer {
+    padding-top: 30px !important;    /* Pulled closer to the content section above */
+    padding-bottom: 20px !important; /* Decreased space at the absolute bottom */
+    margin-top: 20px !important;
+  }
+
+  /* Tighten spacing between footer columns */
+  footer.site-footer .footer-container {
+    gap: 15px 15px !important;       /* Reduced vertical row gap from 20px to 15px */
+  }
+
+  /* Tighten space below column titles (e.g. "Formations") */
+  .site-footer h4,
+  .footer-col h4 {
+    margin-bottom: 12px !important;  /* Cut margin in half from 25px */
+  }
+
+  /* Tighten individual vertical list rows */
+  .site-footer .footer-col ul {
+    gap: 0px !important;             /* Removed internal flex gaps */
+  }
+
+  .site-footer .footer-col ul li {
+    margin-bottom: 6px !important;   /* Tightened spacing between text links */
+  }
+
+  /* Tighten the bottom copyright divider area */
+  .site-footer .footer-bottom {
+    margin-top: 25px !important;     /* Pulled copyright up closer to link lists */
+    padding-top: 15px !important;
+  }
