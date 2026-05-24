@@ -703,16 +703,17 @@
     width: 100% !important;
   }
 
-  /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
-  /* REMOVED: Background fills and borders to make it a flat, clean dropdown list */
+    /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
   .nav-item-dropdown .dropdown-content, 
   .nav-item-dropdown .mega-panel-two-col, 
   .nav-item-dropdown .mega-panel-three-col {
     display: none !important;
-    position: relative !important;
+    position: relative !important; 
+    top: 0 !important;
+    left: 0 !important;
     max-height: none !important; 
     overflow: visible !important; 
-    background: transparent !important; /* Flat transparent background */
+    background: transparent !important; 
     width: 100% !important;
     border: none !important;
     box-shadow: none !important;
@@ -720,18 +721,18 @@
     margin: 0 !important;
   }
 
-  /* Force elements into an absolute single vertical column list stream */
+  /* Force open sub-menus to expand naturally downward and push elements safely below them */
   .nav-item-dropdown.active-toggle .dropdown-content, 
   .nav-item-dropdown.active-toggle .mega-panel-two-col, 
   .nav-item-dropdown.active-toggle .mega-panel-three-col {
     display: flex !important;
     flex-direction: column !important; 
     grid-template-columns: none !important; 
-    padding: 0 0 10px 15px !important; /* Indents the entire inner link block slightly */
+    padding: 0 0 10px 15px !important; 
     margin-top: 5px !important;
   }
 
-  /* Sub-Links column adjustments */
+  /* Sub-Links columns structural repair container tracker */
   .mega-column {
     display: flex !important;
     flex-direction: column !important;
@@ -739,10 +740,10 @@
     gap: 0 !important;
   }
 
-  /* Flat column subheadings inside regular menu (e.g. "Popular Formations") */
+  /* Clean up internal header spacing metrics (e.g. "Popular Formations") */
   .mega-column .column-title {
     font-size: 0.75rem !important;
-    color: #64748b !important; 
+    color: #0a1f44 !important; 
     text-align: left !important;
     margin-top: 15px !important;
     padding: 0 0 5px 0 !important;
@@ -752,37 +753,131 @@
     letter-spacing: 0.5px !important;
   }
 
-  /* Regular Inner Mobile Dropdown Links - Flat List Style */
+  /* Regular Inner Mobile Dropdown Links - Flat Vertical Flow */
   .mega-column a {
     color: #0a1f44 !important; 
     font-size: 0.95rem !important;
     font-weight: 600 !important;
-    padding: 10px 0 !important; /* Vertical spacing for tapping easily */
+    padding: 10px 0 !important; 
     text-align: left !important;
-    border-bottom: none !important; /* Removed separate border lines */
+    border-bottom: none !important; 
     width: 100% !important;
   }
+
+  /* 1. SECURE PORTAL BUTTON - MOBILE STYLING ENFORCEMENT LOOP */
+  .nav-links .btn-client-portal, 
+  nav .btn-client-portal, 
+  a.btn-client-portal,
+  .btn-client-portal.mobile-portal-lock {
+    color: #ffffff !important;           
+    background-color: #0a1f44 !important; 
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 20px !important;
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+  }
+
+  /* 2. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
+  .logo-link img, 
+  nav img.logo, 
+  .nav-content-wrapper .logo {
+    height: 38px !important;       
+    max-width: 170px !important;   
+    width: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* 3. TIGHTEN COMPACT MOBILE FOOTER MATRIX SPACING PANELS */
+  footer.site-footer, 
+  .site-footer {
+    padding-top: 30px !important;  
+    padding-bottom: 20px !important; 
+    margin-top: 30px !important;
+  }
+
+  .site-footer .footer-container {
+    gap: 15px 15px !important;       
+  }
+
+  .site-footer .footer-col ul li {
+    margin-bottom: 6px !important;   
+  }
+
+  .site-footer h4,
+  .footer-col h4 {
+    margin-bottom: 12px !important;  
+  }
+
+  .site-footer .footer-bottom {
+    margin-top: 25px !important;    
+    padding-top: 15px !important;
+  }
+
+  /* --- COMPACT MATRIX FOOTER TEXT BALANCING GRAPHICS --- */
+  .site-footer, 
+  .site-footer p, 
+  .site-footer span, 
+  .site-footer ul li a, 
+  .site-footer .footer-brand p {
+    color: #94a3b8 !important; 
+  }
+  
+  .site-footer h4 {
+    color: #ffffff !important; 
+  }
+
+  /* 4. MOBILE HERO TYPOGRAPHY LEFT ALIGNMENT TRACKERS */
+  .content-area h1, 
+  main .content-area h1, 
+  .page-container h1 {
+    text-align: left !important;  
+  }
+
+  .content-area p, 
+  main .content-area p, 
+  .page-container p {
+    text-align: left !important;  
+    margin-left: 0 !important;    
+    margin-right: auto !important;
+  }
+
+  .content-area {
+    align-items: flex-start !important; 
+  }
+
+  /* --- HARD-LOCKED FIXED SITE-WIDE BRANDING RED FOOTER OVERRIDES --- */
+  .site-footer a[href*="roselandcompanies.com"], 
+  footer a[href*="roselandcompanies.com"] {
+    color: #c15254 !important; 
+    font-weight: 700 !important;
+  }
+
+} /* ================== 📱 END OF THE MOBILE MEDIA QUERY WINDOW EDGE BLOCK ================== */
+
+
+/* ==========================================================================
+   🖥️ DESKTOP-ONLY STYLES AREA (RESTS SAFELY OUTSIDE OF MOBILE VIEW BREAKPOINTS)
+   ========================================================================== */
+@media (min-width: 992px) {
+  /* --- HIGH-PRIORITY HOVER TRACKER FOR DESKTOP MONITORS --- */
+  .nav-links .btn-client-portal.desktop-portal-hover, 
+  nav .btn-client-portal.desktop-portal-hover, 
+  a.btn-client-portal.desktop-portal-hover {
+    background: #10b981 !important;    
+    background-color: #10b981 !important;
+    color: #ffffff !important;           
+    transition: all 0.25s ease-in-out !important;
+  }
+
+  .site-footer a[href*="roselandcompanies.com"], 
+  footer a[href*="roselandcompanies.com"] {
+    color: #c15254 !important; 
+    font-weight: 700 !important;
+  }
 }
-  /* --- MOBILE NAVIGATION PANEL TEXT NAVY ENFORCEMENT --- */
-  .nav-links,
-  .nav-links a,
-  .nav-links a:visited,
-  .nav-links .mega-column a,
-  .nav-links .mega-column .column-title {
-    color: #0a1f44 !important; /* Hard-locks everything inside the mobile menu drawer to Navy */
-  }
-
-  /* Keep your inner accordion category titles styled in Navy */
-  .nav-item-dropdown.active-toggle > a,
-  .nav-item-dropdown > a {
-    color: #0a1f44 !important;
-  }
-
-  /* EXCEPTION CHECK: Ensure your main Secure Portal action button retains its white text look */
-  .nav-links .btn-client-portal,
-  .nav-links .mobile-portal-lock {
-    color: #ffffff !important; /* Protects white text over the navy background block */
-  }
 
 
   /* 1. SECURE PORTAL BUTTON - VISUAL ANCHOR TEXT COLOR FIXED */
@@ -886,36 +981,3 @@ footer a[href*="roselandcompanies.com"] {
   font-weight: 700 !important;
 }
 
-  /* --- MOBILE COMPACT FOOTER OVERRIDES --- */
-  footer.site-footer, 
-  .site-footer {
-    padding-top: 30px !important;    /* Pulled closer to the content section above */
-    padding-bottom: 20px !important; /* Decreased space at the absolute bottom */
-    margin-top: 20px !important;
-  }
-
-  /* Tighten spacing between footer columns */
-  footer.site-footer .footer-container {
-    gap: 15px 15px !important;       /* Reduced vertical row gap from 20px to 15px */
-  }
-
-  /* Tighten space below column titles (e.g. "Formations") */
-  .site-footer h4,
-  .footer-col h4 {
-    margin-bottom: 12px !important;  /* Cut margin in half from 25px */
-  }
-
-  /* Tighten individual vertical list rows */
-  .site-footer .footer-col ul {
-    gap: 0px !important;             /* Removed internal flex gaps */
-  }
-
-  .site-footer .footer-col ul li {
-    margin-bottom: 6px !important;   /* Tightened spacing between text links */
-  }
-
-  /* Tighten the bottom copyright divider area */
-  .site-footer .footer-bottom {
-    margin-top: 25px !important;     /* Pulled copyright up closer to link lists */
-    padding-top: 15px !important;
-  }
