@@ -1363,3 +1363,119 @@ footer a[href*="roselandcompanies.com"] {
     gap: 20px !important;          
   }
 }
+
+/* ==========================================================================
+   🖥️ DESKTOP HERO IMAGE RESIZE & FOOTER HOVER ENHANCEMENTS
+   ========================================================================== */
+@media (min-width: 992px) {
+  
+  /* 1. HERO IMAGE REPAIR: Caps the massive vertical desktop layout stretch */
+  .hero-image-container,
+  aside.hero-image-container,
+  main .hero-image-container {
+    height: 480px !important;       /* Hard limits the excessive desktop container height */
+    max-height: 380px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+  }
+
+  /* Force the image inside to scale cleanly and crop instead of elongating */
+  .hero-image-container img,
+  main .hero-image-container img {
+    width: 100% !important;
+    height: 100% !important;
+    
+    object-fit: cover !important;   /* Smart-crops the asset cleanly into the 480px window */
+    object-position: center !important;
+  }
+
+  /* 2. FOOTER TEXT EMERALD HOVER EFFECT */
+  .site-footer ul li a,
+  .site-footer .legal-links a {
+    transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Smooth color fade */
+  }
+
+  /* Targets all standard list and policy links inside the dark footer area */
+  .site-footer ul li a:hover,
+  .site-footer .legal-links a:hover,
+  footer .footer-col ul li a:hover {
+    color: #10b981 !important;      /* Transforms link text to your brand Emerald on hover */
+  }
+}
+
+/* ==========================================================================
+   🖥️ DESKTOP HERO CONTAINER HEIGHT REDUCTION OVERRIDE
+   ========================================================================== */
+@media (min-width: 992px) {
+  
+  /* 1. TIGHTEN MAIN CONTAINER: Cut the huge padding in half to pull everything up */
+  .page-container, 
+  main.page-container {
+    padding-top: 30px !important;    /* Reduced from 120px to remove massive empty top gap */
+    padding-bottom: 30px !important; /* Tightens space right above your feature blocks */
+    margin-top: 70px !important;     /* Safely clears space for your fixed top navigation bar */
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* 2. GRID ADJUSTMENT: Lock the structural grid tracks together */
+  .service-grid {
+    gap: 40px !important;            /* Reduces horizontal space between text column and image */
+    align-items: center !important;  /* Centers your text columns perfectly with your image layout box */
+  }
+
+  /* 3. TEXT COLUMNS PACKING: Compress header margins to save container space */
+  .content-area {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .content-area h1 {
+    font-size: 3.2rem !important;
+    line-height: 1.1 !important;     /* Snugs headline rows tight together */
+    margin-bottom: 12px !important;  /* Reduces gap before the supporting summary text */
+  }
+
+  .content-area p {
+    font-size: 1.05rem !important;
+    margin-bottom: 20px !important;  /* Reduces space right above your action links or buttons */
+  }
+
+  .active-sync-badge-wrapper {
+    margin-bottom: 15px !important;  /* Tightens spacing around your verification badges loop */
+  }
+}
+
+/* ==========================================================================
+   🖥️ DESKTOP HERO IMAGE ZOOM-OUT ENGINE OVERRIDE
+   ========================================================================== */
+@media (min-width: 992px) {
+  
+  /* 1. RESET CONTAINER: Ensure it has a solid background color if the image shrinks */
+  .hero-image-container,
+  aside.hero-image-container,
+  main .hero-image-container {
+    background-color: #f8fafc !important; /* Soft light backdrop color to look clean */
+    overflow: hidden !important;          /* Locks asset edges cleanly inside your rounded corners */
+  }
+
+  /* 2. ZOOM OUT SYSTEM: Scales the graphic down so more content fits in the container frame */
+  .hero-image-container img,
+  main .hero-image-container img {
+    position: relative !important;
+    top: 0 !important;                    /* Resets previous vertical position shifts */
+    width: 100% !important;
+    height: 100% !important;
+    
+    /* THE ZOOM FIX: Changes from 'cover' to 'contain' to pull the entire image into full view */
+    object-fit: contain !important;       
+    
+    /* ALIGNMENT LOCK: Centers the graphic asset perfectly inside your desktop container box */
+    object-position: center center !important; 
+    
+    /* OPTIONAL MICRO-SCALE: Scales it down to exactly 90% size for an extra zoom-out buffer */
+    transform: scale(1.3) !important; 
+    transition: transform 0.3s ease !important;
+  }
+}
