@@ -619,3 +619,133 @@
     color: #ffffff;
   }
 }
+
+/* ==========================================================================
+   17. SUB-PAGE RESPONSIVE WORKSPACES & RIGHT-TO-LEFT SLIDE DRAWER FIXED
+   ========================================================================== */
+@media (max-width: 991px) {
+  
+  /* --- 1. SUB-PAGE HERO REPAIR & SCALING --- */
+  .hero-image-container, 
+  aside[class*="image"], 
+  main aside, 
+  .service-grid + aside {
+    height: auto;
+    min-height: 0;
+    max-height: 300px;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+  }
+
+  .hero-image-container img, 
+  aside[class*="image"] img, 
+  main aside img, 
+  main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-height: 300px;
+  }
+
+  /* --- 2. MOBILE HERO TEXT REALIGNMENT --- */
+  .content-area, 
+  .content-area *, 
+  main article, 
+  main article * {
+    text-align: left;
+  }
+
+  /* --- 3. FIX: RIGHT-TO-LEFT DRAWER SYSTEM & LINK VISIBILITY --- */
+  .nav-links {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 70px !important;
+    
+    /* ANIMATION DEFIANCE: Lock it onto the far right off-screen, ready to slide LEFT */
+    right: -100% !important; 
+    left: auto !important;
+    
+    width: 80% !important;
+    max-width: 320px !important;
+    height: calc(100vh - 70px) !important;
+    background: #ffffff !important; /* Clean white drop-down panel background */
+    z-index: 99999 !important;
+    overflow-y: auto !important;
+    padding: 24px !important;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1) !important;
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Smooth right-to-left slide */
+  }
+
+  /* When JS adds 'active' or 'nav-open', change right position to 0 to slide it left into view */
+  body.nav-open .nav-links,
+  .nav-links.active {
+    right: 0 !important;
+    left: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Main Level Mobile Links Text Display */
+  .nav-links a {
+    color: #0a1f44 !important; /* Clean Navy Links Text color */
+    padding: 14px 10px !important;
+    display: block !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  /* --- 4. ACCORDION PANELS OPEN LINK OVERRIDES --- */
+  /* This un-hides your sub-menus (LLC, Corporations, etc.) when clicking the parent category */
+  .nav-item-dropdown .dropdown-content,
+  .nav-item-dropdown .mega-panel-two-col,
+  .nav-item-dropdown .mega-panel-three-col {
+    display: none !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    background: #f8fafc !important; /* Light accent background for sub-links row */
+    width: 100% !important;
+  }
+
+  /* Show sub-links cleanly when accordion is activated */
+  .nav-item-dropdown.active-toggle .dropdown-content,
+  .nav-item-dropdown.active-toggle .mega-panel-two-col,
+  .nav-item-dropdown.active-toggle .mega-panel-three-col {
+    display: flex !important;
+    flex-direction: column !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 10px 15px !important;
+    margin-top: 5px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Sub-Links inside the Accordions text adjustments */
+  .mega-column {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 4px !important;
+  }
+
+  .mega-column .column-title {
+    font-size: 0.75rem !important;
+    color: #64748b !important; /* Gray sub-titles */
+    text-align: left !important;
+    margin-top: 10px !important;
+    border-bottom: none !important;
+  }
+
+  .mega-column a {
+    color: #10b981 !important; /* Vibrant Emerald for sub-links */
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    padding: 8px 0 !important;
+    text-align: left !important;
+    border-bottom: none !important;
+  }
+}
