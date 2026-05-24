@@ -763,6 +763,27 @@
     width: 100% !important;
   }
 }
+  /* --- MOBILE NAVIGATION PANEL TEXT NAVY ENFORCEMENT --- */
+  .nav-links,
+  .nav-links a,
+  .nav-links a:visited,
+  .nav-links .mega-column a,
+  .nav-links .mega-column .column-title {
+    color: #0a1f44 !important; /* Hard-locks everything inside the mobile menu drawer to Navy */
+  }
+
+  /* Keep your inner accordion category titles styled in Navy */
+  .nav-item-dropdown.active-toggle > a,
+  .nav-item-dropdown > a {
+    color: #0a1f44 !important;
+  }
+
+  /* EXCEPTION CHECK: Ensure your main Secure Portal action button retains its white text look */
+  .nav-links .btn-client-portal,
+  .nav-links .mobile-portal-lock {
+    color: #ffffff !important; /* Protects white text over the navy background block */
+  }
+
 
   /* 1. SECURE PORTAL BUTTON - VISUAL ANCHOR TEXT COLOR FIXED */
   .nav-links .btn-client-portal, 
