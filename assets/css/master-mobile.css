@@ -704,36 +704,34 @@
   }
 
   /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
+  /* REMOVED: Background fills and borders to make it a flat, clean dropdown list */
   .nav-item-dropdown .dropdown-content, 
   .nav-item-dropdown .mega-panel-two-col, 
   .nav-item-dropdown .mega-panel-three-col {
     display: none !important;
     position: relative !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
-    background: #f8fafc !important; /* Soft gray behind sub-dropdown area list rows */
+    max-height: none !important; 
+    overflow: visible !important; 
+    background: transparent !important; /* Flat transparent background */
     width: 100% !important;
-    border-top: none !important;
-    border-radius: 8px !important;
+    border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
   }
 
-  /* CRITICAL FORCE OVERRIDE: Destroys desktop grid patterns and locks inner items into an absolute regular column */
+  /* Force elements into an absolute single vertical column list stream */
   .nav-item-dropdown.active-toggle .dropdown-content, 
   .nav-item-dropdown.active-toggle .mega-panel-two-col, 
   .nav-item-dropdown.active-toggle .mega-panel-three-col {
     display: flex !important;
-    flex-direction: column !important; /* Forces items down in a normal stream */
-    grid-template-columns: none !important; /* Wipes template desktop grid parameters */
-    max-height: none !important;
-    overflow: visible !important;
-    padding: 10px 15px !important;
+    flex-direction: column !important; 
+    grid-template-columns: none !important; 
+    padding: 0 0 10px 15px !important; /* Indents the entire inner link block slightly */
     margin-top: 5px !important;
   }
 
-  /* Sub-Links columns framework cleanup */
+  /* Sub-Links column adjustments */
   .mega-column {
     display: flex !important;
     flex-direction: column !important;
@@ -741,30 +739,28 @@
     gap: 0 !important;
   }
 
-  /* Small subheaders inside regular list tracker (e.g. "Popular Formations") */
+  /* Flat column subheadings inside regular menu (e.g. "Popular Formations") */
   .mega-column .column-title {
     font-size: 0.75rem !important;
     color: #64748b !important; 
     text-align: left !important;
-    margin-top: 10px !important;
-    padding: 5px 0 !important;
+    margin-top: 15px !important;
+    padding: 0 0 5px 0 !important;
     border-bottom: none !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
   }
 
-  /* Regular Inner Mobile Dropdown Links */
+  /* Regular Inner Mobile Dropdown Links - Flat List Style */
   .mega-column a {
-    color: #0a1f44 !important; /* Changed from Emerald to Navy for standard mobile styling links link feel */
+    color: #0a1f44 !important; 
     font-size: 0.95rem !important;
     font-weight: 600 !important;
-    padding: 10px 0 10px 12px !important; /* Indents text so it sits neatly inside the gray block */
+    padding: 10px 0 !important; /* Vertical spacing for tapping easily */
     text-align: left !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important; /* Delicate link divide baseline */
-  }
-
-  .mega-column a:last-child {
-    border-bottom: none !important; /* Cleans up border on bottom items loop */
+    border-bottom: none !important; /* Removed separate border lines */
+    width: 100% !important;
   }
 }
 
