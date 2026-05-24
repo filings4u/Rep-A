@@ -1,51 +1,93 @@
-$(document).ready(function () {
+/**
+ * ==========================================================================
+ * 📱 FILINGS4U INTERACTIVE NAVIGATION CORE ENGINE
+ * FILE LOCATION: assets/js/toggle.js
+ * DESCRIPTION: Handles Right-to-Left slide-out drawer, white background dropdown loops,
+ *              and mobile accordion sub-menus.
+ * ==========================================================================
+ */
 
-    // 1. Mobile Menu Toggle Click Handler
-    $('.mobile-toggle-btn').on('click', function (event) {
-        event.stopPropagation(); // Prevents the body click listener from closing it instantly
-        
-        $('body').toggleClass('nav-open');
-        $('.nav-links').toggleClass('active');
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. SELECT CORE ELEMENT INTERFACES
+    const menuTrigger = document.getElementById('mobile-menu-trigger');
+    const navLinksDrawer = document.querySelector('.nav-links');
+    const bodyNode = document.body;
 
-        var isMenuOpen = $('body').hasClass('nav-open');
-        $(this).attr('aria-expanded', isMenuOpen ? 'true' : 'false');
+    // 2. CREATE ACTIVE DRAWER TOGGLE UTILITY
+    function toggleMobileMenu() {
+        // Toggle classes to fire your Right-to-Left slide-out CSS transitions
+        const isMenuOpening = !navLinksDrawer.classList.contains('active');
         
-        console.log('📱 Mobile menu toggled via jQuery. Open state:', isMenuOpen);
+        navLinksDrawer.classList.toggle('active');
+        bodyNode.classList.toggle('nav-open');
+
+        // Manage accessibility state attributes
+        if (menuTrigger) {
+            menuTrigger.setAttribute('aria-expanded', isMenuOpening);
+            // Dynamic switch indicator icon text
+            menuTrigger.innerHTML = isMenuOpening ? '✕' : '☰';
+        }
+    }
+
+    // Bind event tracking actions directly to the trigger button element
+    if (menuTrigger) {
+        menuTrigger.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevents instant bubbling layout triggers
+            toggleMobileMenu();
+        });
+    }
+
+    // 3. SECURE PORTAL BUTTON DYNAMIC MOBILE STYLING
+    // Hard locks the white text and navy background on mobile viewport channels
+    const portalButton = document.querySelector('.btn-client-portal');
+    if (portalButton) {
+        function enforcePortalMobileStyles() {
+            if (window.innerWidth <= 991) {
+                portalButton.style.backgroundColor = '#0a1f44'; // Navy
+                portalButton.style.color = '#ffffff';           // Solid White
+            } else {
+                // Revert completely to desktop master.css styles
+                portalButton.style.backgroundColor = '';
+                portalButton.style.color = '';
+            }
+        }
+        
+        // Fire logic on initial window load and resize triggers
+        enforcePortalMobileStyles();
+        window.addEventListener('resize', enforcePortalMobileStyles);
+    }
+
+    // 4. MOBILE DROPDOWN ACCORDION HANDLING (CLICK TRAPS)
+    const dropdownTriggers = document.querySelectorAll('.static-dropdown > a');
+
+    dropdownTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            // Only capture clicks if the screen is inside the mobile viewport breakpoint
+            if (window.innerWidth <= 991) {
+                e.preventDefault(); // Stop native redirect link action loops
+                
+                const parentDropdown = this.parentElement;
+                
+                // Toggle active visibility states for current target container
+                parentDropdown.classList.toggle('active-toggle');
+                
+                // Smoothly close any other active menus to prevent text layout clutter
+                document.querySelectorAll('.static-dropdown').forEach(item => {
+                    if (item !== parentDropdown) {
+                        item.classList.remove('active-toggle');
+                    }
+                });
+            }
+        });
     });
 
-    // 2. Click-Away Background Dim Overlay Handler
-    $(document).on('click', function (event) {
-        if ($('body').hasClass('nav-open')) {
-            var $drawer = $('.nav-links');
-            var $toggleBtn = $('.mobile-toggle-btn');
-
-            // If the user clicks outside both the menu drawer and the toggle button
-            if (!$drawer.is(event.target) && $drawer.has(event.target).length === 0 && !$toggleBtn.is(event.target) && $toggleBtn.has(event.target).length === 0) {
-                $('body').removeClass('nav-open');
-                $('.nav-links').removeClass('active');
-                $('.mobile-toggle-btn').attr('aria-expanded', 'false');
-                
-                console.log('🔄 Menu closed automatically by clicking outside.');
+    // 5. EXTERNAL INTERACT LOGIC OVERRIDES
+    // Closes mobile menus instantly if user taps background viewport canvas rows
+    document.addEventListener('click', function(e) {
+        if (navLinksDrawer && navLinksDrawer.classList.contains('active')) {
+            if (!navLinksDrawer.contains(e.target) && e.target !== menuTrigger) {
+                toggleMobileMenu();
             }
         }
     });
-
-    // 3. Mobile Sub-Menu Dropdown Accordion Toggle
-    $('.nav-item-dropdown > a').on('click', function (event) {
-        if (window.innerWidth < 992) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            var $currentDropdown = $(this).parent('.nav-item-dropdown');
-
-            // Collapse any other open dropdown accordions
-            $('.nav-item-dropdown').not($currentDropdown).removeClass('active-toggle');
-
-            // Toggle the clicked dropdown accordion layout view
-            $currentDropdown.toggleClass('active-toggle');
-            
-            console.log('📂 Accordion sub-menu toggled.');
-        }
-    });
-
 });

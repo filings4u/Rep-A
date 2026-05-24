@@ -1,0 +1,621 @@
+/** 
+ * ========================================================================== 
+ * FILINGS4U COMPREHENSIVE PRODUCTION MOBILE ENGINE
+ * FILE LOCATION: assets/css/master-mobile.css
+ * ========================================================================== 
+ */
+
+@media screen and (max-width: 980px) {
+  
+  /* --- 1. RESET & BODY RESPONSIVE UTILITIES --- */
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  /* --- 2. GLOBAL COLUMN LAYOUT STACKING SUITE --- */
+  section, 
+  .unified-site-section, 
+  .feature-section, 
+  .pricing-section, 
+  .resource-section, 
+  .faq-section, 
+  .blog-section {
+    width: 100%;
+    max-width: 100%;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  /* Clean Section Modifier States */
+  .bg-ice, 
+  .resource-section, 
+  #system-stats {
+    background-color: var(--ice);
+  }
+  
+  .bg-navy, 
+  .feature-section {
+    background-color: var(--navy);
+    color: var(--white);
+  }
+  
+  .bg-navy h2, 
+  .bg-navy h4, 
+  .feature-section h2, 
+  .feature-section h4 {
+    color: var(--white);
+  }
+  
+  .bg-white, 
+  .faq-section, 
+  .blog-section {
+    background-color: var(--white);
+  }
+  
+  .page-container, 
+  main.page-container {
+    padding-top: 95px;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* --- 3. MOBILE HERO ELEMENT STACKING ARCHITECTURE --- */
+  .service-grid {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 30px;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  
+  .content-area h1 {
+    font-size: 2.4rem;
+    line-height: 1.15;
+    color: var(--navy);
+    font-weight: 800;
+    text-align: center;
+  }
+  
+  .content-area p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 980px) {
+  
+  /* --- 4. FIXED HEADER SHELL TRACK --- */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: var(--white);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    z-index: 9999;
+  }
+  
+  nav .nav-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  
+  .logo-link, 
+  nav a.logo-link {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-link img, 
+  nav img.logo {
+    height: 28px;
+    width: auto;
+    max-width: 130px;
+    object-fit: contain;
+    display: inline-block;
+  }
+  
+  /* --- 5. MOBILE SLIDE-OUT LINKS PANEL DRAWER --- */
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: fixed;
+    top: 0;
+    left: -100vw; /* Position off-screen to the left by default */
+    width: 85vw;
+    max-width: 340px;
+    height: 100vh;
+    background: var(--white);
+    box-shadow: 10px 0 30px rgba(10, 31, 68, 0.15);
+    gap: 8px;
+    padding: 80px 20px 20px 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 10000;
+    overflow-y: auto;
+  }
+  
+  /* Navigation Active Trigger State Classes */
+  body.nav-open .nav-links, 
+  .nav-links.active {
+    opacity: 1;
+    visibility: visible;
+    left: 0;
+  }
+  
+  /* Close Button Interactivity Element */
+  .nav-links .mobile-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--navy);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10002;
+  }
+  
+  .nav-links a {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--navy);
+    width: 100%;
+    text-align: center;
+    display: block;
+    padding: 10px 0;
+  }
+  
+  .nav-item-dropdown {
+    width: 100%;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 980px) {
+
+  /* --- 6. NAV TRIGGER LINKS ACCORDION SYSTEMS --- */
+  .nav-item-dropdown > a {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .dropdown-content, 
+  .mega-panel-two-col, 
+  .mega-panel-three-col {
+    display: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: none;
+    background: #ffffff;
+    padding: 10px 0 0 0;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  /* Active Open State Class for Navigation Drawer Links */
+  .nav-item-dropdown.active-toggle .dropdown-content, 
+  .nav-item-dropdown.active-toggle .mega-panel-two-col, 
+  .nav-item-dropdown.active-toggle .mega-panel-three-col {
+    display: block;
+    max-height: none;
+    overflow: visible;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .mega-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 15px;
+  }
+
+  .mega-column .column-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-align: center;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .mega-column a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--emerald);
+    padding: 8px 0;
+    text-align: center;
+  }
+
+  /* Portal Actions Interface Buttons Block Rules */
+  .btn-client-portal, 
+  .nav-links .btn-main {
+    background: var(--navy);
+    color: var(--white);
+    width: 100%;
+    padding: 14px 0;
+    border-radius: 8px;
+    margin: 15px 0 0 0;
+    text-align: center;
+    display: block;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}
+
+
+@media screen and (max-width: 980px) {
+
+  /* --- 7. DYNAMIC DISPLAY BLOCK COMPACT ROW STRIPS --- */
+  .icon-grid, 
+  .pricing-grid, 
+  .stats-grid, 
+  .contact-layout-grid, 
+  .faq-grid, 
+  .resource-grid, 
+  #public-homepage-blog-grid-target {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .wizard-card, 
+  .icon-box, 
+  .price-card, 
+  .stats-card, 
+  .faq-item, 
+  .blog-card, 
+  .form-panel-card {
+    width: 100%;
+    min-height: auto;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-sizing: border-box;
+    text-align: left;
+    box-shadow: 0 10px 25px rgba(10, 31, 68, 0.04);
+    overflow: hidden;
+  }
+
+  /* Deep nested card variations background correction rules */
+  .wizard-card, .icon-box, .price-card, .stats-card, .faq-item, .blog-card, .form-panel-card {
+    background-color: var(--white);
+  }
+
+  a.blog-card {
+    padding: 0;
+    display: block;
+  }
+
+  .icon-box h4, 
+  .price-card h3, 
+  .stats-card h3, 
+  .faq-item h4, 
+  .blog-card h3, 
+  .stats-card .stat-value {
+    color: var(--navy);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .icon-box p, 
+  .price-card p, 
+  .stats-card p, 
+  .faq-item p, 
+  .blog-card p {
+    color: var(--text-muted);
+  }
+}
+
+@media screen and (max-width: 980px) {
+
+  /* --- 8. MOBILE SYSTEM FOOTER REDUCTION MATRIX --- */
+  footer.site-footer, 
+  .site-footer {
+    width: 100%;
+    margin: 40px 0 0 0;
+    padding: 40px 20px;
+    background: var(--navy);
+    display: block;
+    box-sizing: border-box;
+  }
+
+  footer.site-footer .footer-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 15px;
+  }
+
+  .site-footer .footer-brand {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  .site-footer .footer-brand img {
+    height: 28px;
+    width: auto;
+    max-width: 130px;
+    object-fit: contain;
+    display: block;
+    margin: 0 0 8px 0;
+  }
+
+  .site-footer .footer-brand p {
+    color: #94a3b8;
+    text-align: left;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .site-footer .footer-col {
+    text-align: left;
+  }
+
+  .footer-col h4 {
+    color: var(--white);
+    margin: 0 0 10px 0;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .site-footer .footer-col ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 6px;
+  }
+
+  .site-footer .footer-col ul li a {
+    color: #94a3b8;
+    display: inline-block;
+    padding: 2px 0;
+    font-size: 0.85rem;
+  }
+
+  .site-footer .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 30px;
+  }
+
+  .site-footer .footer-bottom div p {
+    color: #94a3b8;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .site-footer .trust-badge {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .site-footer .legal-links {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+
+/* ==========================================================================
+   14. SYSTEM HAMBURGER INTERFACE TOGGLE CONTROLS (GLOBAL SYSTEM ROUTERS)
+   ========================================================================== */
+.mobile-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  position: relative;
+  background: transparent;
+  border: none;
+  font-size: 2.2rem;
+  color: var(--navy, #0a1f44);
+  cursor: pointer;
+  z-index: 10001;
+  padding: 0;
+  margin: 0 0 0 auto;
+}
+
+/* --- RESPONSIVE HAMBURGER VIEWPORT DISPATCHER --- */
+@media (min-width: 992px) {
+  .mobile-toggle-btn, 
+  .mobile-close-btn {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .mobile-toggle-btn {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+
+/* ==========================================================================
+   15. FLEXIBLE SWIPE LAYOUT CONFIGURATORS & UTILITY TRACKS
+   ========================================================================== */
+@media (max-width: 991px) {
+  
+  /* Class to STACK elements vertically on mobile */
+  .section-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Class to KEEP elements side-by-side (allows mobile swipe loops) */
+  .section-horizontal {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 15px;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch; /* Smooth iOS momentum */
+  }
+  
+  .section-horizontal > * {
+    flex: 0 0 75%;
+    max-width: 280px;
+  }
+
+  /* PREMIUM TOUCH INTERACTION: Allows features & stats to swipe left/right natively */
+  .icon-grid, 
+  .stats-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 10px 20px 20px 20px;
+    margin: 0 -20px; /* Bleeds container edge-to-edge for true full-width feel */
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  /* Prevents cards from squishing or altering dimensions when swiped */
+  .icon-box, 
+  .stats-card {
+    flex: 0 0 75%;
+    max-width: 290px;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+  }
+
+  /* Hide raw, ugly native desktop scrollbars on touch screens */
+  .icon-grid::-webkit-scrollbar, 
+  .stats-grid::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+/* ==========================================================================
+   16. IMAGE REVERSAL STACKERS & OVERRIDE CONTROLS
+   ========================================================================== */
+@media (max-width: 991px) {
+
+  /* 1. LAYOUT REVERSAL SYSTEM: Forces hero images to the top, text content below */
+  .service-grid, 
+  .page-container > div, 
+  main div[class*="-grid"], 
+  main div[class*="grid-"], 
+  main .grid {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 24px;
+  }
+
+  /* Expand hidden padding or columns to fill standard container footprints */
+  .content-area, 
+  .hero-image-container, 
+  main aside, 
+  main article {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .hero-image-container img, 
+  main aside img, 
+  main img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* 2. INFRASTRUCTURE LIST STRIPPER: Un-squeezes FAQ clusters and articles */
+  .faq-grid, 
+  .faq-section div[class*="grid"], 
+  .resource-grid, 
+  #public-homepage-blog-grid-target,
+  nav .nav-links .dropdown-content, 
+  .dropdown-content, 
+  .mega-panel-two-col, 
+  .mega-panel-three-col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    gap: 16px;
+  }
+
+  .faq-item, 
+  .faq-grid > *, 
+  .blog-card, 
+  #public-homepage-blog-grid-target > * {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* 3. VISUAL ANCHOR TEXT LOCK: Forces crystal-clear button text colors over dark backgrounds */
+  .btn-main, 
+  a.btn-main, 
+  button.btn-main, 
+  main a[class*="btn"], 
+  main button[class*="btn"],
+  [class*="btn-"] {
+    color: #ffffff;
+  }
+}
