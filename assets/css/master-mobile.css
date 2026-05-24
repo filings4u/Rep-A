@@ -200,6 +200,8 @@
   }
 }
 
+
+
 @media screen and (max-width: 980px) {
 
   /* --- 6. NAV TRIGGER LINKS ACCORDION SYSTEMS --- */
@@ -656,24 +658,27 @@
     text-align: left;
   }
 
-    /* --- 3. FIXED RIGHT-TO-LEFT HALF-SCREEN DRAWER SYSTEM --- */
+  /* --- 3. REVISED RIGHT-TO-LEFT DRAWER SYSTEM (MAXIMUM STRETCH WIDE) --- */
   .nav-links {
     display: flex !important;
     flex-direction: column !important;
     position: fixed !important;
     top: 70px !important;
+    
     /* ANIMATION ANCHOR: Stays hidden completely off-screen to the right */
     right: -100% !important; 
     left: auto !important;
-    /* HALF-SCREEN CALIBRATION: Forces container box to take up exactly 50% of screen width */
-    width: 50vw !important; 
-    max-width: 50vw !important; 
+    
+    /* MAXIMUM SCREEN STRETCH: Expanded container to take up exactly 85% of viewport display screens */
+    width: 85vw !important; 
+    max-width: 85vw !important; 
+    
     height: calc(100vh - 70px) !important;
     background: #ffffff !important; /* Clean white drop-down background matrix */
     z-index: 99999 !important;
     overflow-y: auto !important;
-    padding: 24px !important;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1) !important;
+    padding: 24px 20px !important;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; /* Enhanced shadow depth gradient */
     transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Smooth right-to-left slide */
   }
 
