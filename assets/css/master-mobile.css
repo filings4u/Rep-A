@@ -204,16 +204,29 @@
 
 @media screen and (max-width: 980px) {
 
-  /* --- 6. NAV TRIGGER LINKS ACCORDION SYSTEMS --- */
-  .nav-item-dropdown > a {
-    background: #f8fafc;
-    border-radius: 8px;
-    padding: 12px;
-    border: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  /* --- REMOVE CONTAINER BOXES FROM MAIN MOBILE TITLES --- */
+  .nav-item-dropdown > a,
+  nav .nav-item-dropdown > a,
+  body.nav-open .nav-item-dropdown > a {
+    background: transparent !important; /* Strips the box background color fill */
+    background-color: transparent !important;
+    border: none !important;            /* Strips the gray box borders */
+    padding: 12px 10px !important;      /* Restores clean vertical list spacing */
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    box-shadow: none !important;        /* Strips any accidental shadows */
+    border-radius: 0 !important;
+    color: #0a1f44 !important;          /* Keeps text standard corporate Navy */
   }
+
+  /* Adjust spacing for the arrow indicator icon to sit nicely on the right edge */
+  .nav-item-dropdown > a span {
+    margin-left: auto !important;
+    color: #64748b !important;          /* Subtle gray color for the dropdown arrow */
+  }
+
 
   .dropdown-content, 
   .mega-panel-two-col, 
