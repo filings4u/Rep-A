@@ -752,3 +752,24 @@
     border-bottom: none !important;
   }
 }
+
+  /* 1. SECURE PORTAL BUTTON - VISUAL ANCHOR TEXT COLOR FIXED */
+  .nav-links .btn-client-portal, 
+  nav .btn-client-portal,
+  a.btn-client-portal {
+    color: #ffffff !important;           /* Forces crisp white text visibility over the navy background */
+    background-color: #0a1f44 !important; /* Locks corporate navy branding background */
+  }
+
+  /* 2. COMPACT MATRIX FOOTER TEXT - REUSABLE COLOR MATCHED FIXED */
+  .site-footer, 
+  .site-footer p, 
+  .site-footer span, 
+  .site-footer ul li a,
+  .site-footer .footer-brand p {
+    color: #94a3b8 !important; /* Matches the exact theme slate-gray color scale used across your desktop template layout sheets */
+  }
+  
+  .site-footer h4 {
+    color: #ffffff !important; /* Retains your bright white column header titles so they stand out */
+  }
