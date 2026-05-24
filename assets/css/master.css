@@ -1448,34 +1448,35 @@ footer a[href*="roselandcompanies.com"] {
 }
 
 /* ==========================================================================
-   🖥️ DESKTOP HERO IMAGE ZOOM-OUT ENGINE OVERRIDE
+   🖥️ DESKTOP-ONLY STYLES AREA (RESTS SAFELY OUTSIDE OF MOBILE VIEW BREAKPOINTS)
    ========================================================================== */
 @media (min-width: 992px) {
   
-  /* 1. RESET CONTAINER: Ensure it has a solid background color if the image shrinks */
-  .hero-image-container,
-  aside.hero-image-container,
-  main .hero-image-container {
-    background-color: #f8fafc !important; /* Soft light backdrop color to look clean */
-    overflow: hidden !important;          /* Locks asset edges cleanly inside your rounded corners */
+  /* BASE BUTTON CONFIGURATION: Ensures resting state is Navy only on Desktop */
+  .nav-links .btn-client-portal, 
+  nav .btn-client-portal, 
+  a.btn-client-portal {
+    background-color: #0a1f44 !important;
+    color: #ffffff !important;
+    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 
-  /* 2. ZOOM OUT SYSTEM: Scales the graphic down so more content fits in the container frame */
-  .hero-image-container img,
-  main .hero-image-container img {
-    position: relative !important;
-    top: 0 !important;                    /* Resets previous vertical position shifts */
-    width: 100% !important;
-    height: 100% !important;
-    
-    /* THE ZOOM FIX: Changes from 'cover' to 'contain' to pull the entire image into full view */
-    object-fit: contain !important;       
-    
-    /* ALIGNMENT LOCK: Centers the graphic asset perfectly inside your desktop container box */
-    object-position: center center !important; 
-    
-    /* OPTIONAL MICRO-SCALE: Scales it down to exactly 90% size for an extra zoom-out buffer */
-    transform: scale(1.3) !important; 
-    transition: transform 0.3s ease !important;
+  /* HIGH-PRIORITY HOVER TRIGGER FOR SECURE PORTAL OVER TAG RULES */
+  .nav-links .btn-client-portal:hover, 
+  nav .btn-client-portal:hover, 
+  a.btn-client-portal:hover,
+  .nav-links .btn-client-portal.desktop-portal-hover, 
+  nav .btn-client-portal.desktop-portal-hover, 
+  a.btn-client-portal.desktop-portal-hover {
+    background: #10b981 !important; 
+    background-color: #10b981 !important; /* Forces Emerald to reveal over resting states */
+    color: #ffffff !important; 
+  }
+
+  /* DESKTOP BRAND FOOTER LINK DECORATION ARCHITECTURE */
+  .site-footer a[href*="roselandcompanies.com"], 
+  footer a[href*="roselandcompanies.com"] {
+    color: #c15254 !important; 
+    font-weight: 700 !important;
   }
 }

@@ -182,33 +182,33 @@
 /* --- FIXED: REMOVE CONTAINER BOXES FROM MAIN MOBILE TITLES --- */
 @media screen and (max-width: 991px) {
 
-   /* --- REMOVE CONTAINER BOXES FROM MAIN MOBILE TITLES --- */
+  /* 1. STRIP CONTAINER BOX MARGINS FROM HEADERS */
   .nav-item-dropdown > a,
   nav .nav-item-dropdown > a,
   .nav-links .nav-item-dropdown > a,
   body.nav-open .nav-item-dropdown > a {
-    background: transparent !important; 
+    background: transparent !important;      /* Removes the light-gray container background fill */
     background-color: transparent !important;
-    border: none !important;            
-    padding: 14px 10px !important;       
+    border: none !important;                 /* Removes the rigid gray block container borders */
+    padding: 14px 10px !important;           /* Structural list row spatial boundary metrics padding */
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     width: 100% !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    color: #0a1f44 !important; /* Hard-locks top level items text color to clean Navy */
+    color: #0a1f44 !important;               /* Hard-locks the main titles text to corporate Navy */
     font-weight: 700 !important;
     text-decoration: none !important;
   }
 
+  /* Formats the arrow indicator icon span loop inside the link text */
   .nav-item-dropdown > a span {
     margin-left: auto !important;
-    color: #0a1f44 !important; /* Force arrow markers to match navy text layout profile */
+    color: #0a1f44 !important;               /* Matches arrow indicator seamlessly to main text navy style */
     font-size: 0.75rem !important;
     display: inline-block !important;
   }
-
 
   /* 2. REGULAR DYNAMIC MOBILE LIST ACCORDION DROPDOWN ENGINE */
   .nav-item-dropdown .dropdown-content, 
@@ -677,9 +677,9 @@
     opacity: 1 !important;
   }
 
- /* Main Level Mobile Links Text Display */
+  /* Main Level Mobile Links Text Display */
   .nav-links a {
-    color: #0a1f44 !important; /* Erases accidental emerald leaks on main text items */
+    color: #0a1f44 !important; /* Clean Navy Links Text color */
     padding: 14px 10px !important;
     display: block !important;
     font-size: 1.1rem !important;
@@ -689,17 +689,17 @@
     width: 100% !important;
   }
 
-  /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
+    /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
   .nav-item-dropdown .dropdown-content, 
   .nav-item-dropdown .mega-panel-two-col, 
   .nav-item-dropdown .mega-panel-three-col {
     display: none !important;
-    position: relative !important; /* Forces layout rows to drop downwards naturally instead of overlapping */
+    position: relative !important; 
     top: 0 !important;
     left: 0 !important;
     max-height: none !important; 
     overflow: visible !important; 
-    background: transparent !important; /* Removes inner background containers */
+    background: transparent !important; 
     width: 100% !important;
     border: none !important;
     box-shadow: none !important;
@@ -707,68 +707,63 @@
     margin: 0 !important;
   }
 
-  /* Expand accordion sub-links rows directly down on user tap */
+  /* Force open sub-menus to expand naturally downward and push elements safely below them */
   .nav-item-dropdown.active-toggle .dropdown-content, 
   .nav-item-dropdown.active-toggle .mega-panel-two-col, 
   .nav-item-dropdown.active-toggle .mega-panel-three-col {
     display: flex !important;
-    flex-direction: column !important; /* Breaks template desktop grid column streams */
+    flex-direction: column !important; 
     grid-template-columns: none !important; 
-    padding: 0 0 10px 15px !important; /* Indents inner item tracks slightly */
+    padding: 0 0 10px 15px !important; 
     margin-top: 5px !important;
   }
 
+  /* Sub-Links columns structural repair container tracker */
   .mega-column {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
     gap: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
   }
 
-  /* Regular subheaders (e.g. "Popular Formations") inside the mobile list */
+  /* Clean up internal header spacing metrics (e.g. "Popular Formations") */
   .mega-column .column-title {
     font-size: 0.75rem !important;
-    color: #0a1f44 !important; /* Hard-locks sub-titles inside drawer to Navy */
+    color: #0a1f44 !important; 
     text-align: left !important;
-    margin-top: 12px !important;
-    padding: 4px 0 !important;
+    margin-top: 15px !important;
+    padding: 0 0 5px 0 !important;
     border-bottom: none !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
-    display: block !important;
   }
 
-  /* Regular Mobile Sub-Links - Flat Vertical Flow */
+  /* Regular Inner Mobile Dropdown Links - Flat Vertical Flow */
   .mega-column a {
-    color: #0a1f44 !important; /* Hard-locks inner links to standard Navy text */
+    color: #0a1f44 !important; 
     font-size: 0.95rem !important;
     font-weight: 600 !important;
-    padding: 10px 0 !important; /* Spacious tapping area spacing for phones */
+    padding: 10px 0 !important; 
     text-align: left !important;
     border-bottom: none !important; 
-    display: block !important;
     width: 100% !important;
   }
 
-
   /* 1. SECURE PORTAL BUTTON - MOBILE STYLING ENFORCEMENT LOOP */
- .nav-links .btn-client-portal, 
+  .nav-links .btn-client-portal, 
   nav .btn-client-portal, 
   a.btn-client-portal,
   .btn-client-portal.mobile-portal-lock {
-    color: #ffffff !important; /* Hard locks white button text over navy background block */
+    color: #ffffff !important;           
     background-color: #0a1f44 !important; 
     display: block !important;
     width: 100% !important;
     text-align: center !important;
-    margin-top: 25px !important; /* Pushes action button safely down below layout links tracking tracks */
+    margin-top: 20px !important;
     padding: 14px 0 !important;
     border-radius: 8px !important;
     font-weight: 700 !important;
-    text-transform: uppercase !important;
   }
 
   /* 2. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
@@ -859,64 +854,4 @@
 } /* ================== 📱 END OF THE MOBILE MEDIA QUERY WINDOW EDGE BLOCK ================== */
 
 
-/* ==========================================================================
-   🖥️ DESKTOP-ONLY STYLES AREA (RESTS SAFELY OUTSIDE OF MOBILE VIEW BREAKPOINTS)
-   ========================================================================== */
-@media (min-width: 992px) {
-  
-  /* BASE BUTTON CONFIGURATION: Ensures resting state is Navy only on Desktop */
-  .nav-links .btn-client-portal, 
-  nav .btn-client-portal, 
-  a.btn-client-portal {
-    background-color: #0a1f44 !important;
-    color: #ffffff !important;
-    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
 
-  /* HIGH-PRIORITY HOVER TRIGGER FOR SECURE PORTAL OVER TAG RULES */
-  .nav-links .btn-client-portal:hover, 
-  nav .btn-client-portal:hover, 
-  a.btn-client-portal:hover,
-  .nav-links .btn-client-portal.desktop-portal-hover, 
-  nav .btn-client-portal.desktop-portal-hover, 
-  a.btn-client-portal.desktop-portal-hover {
-    background: #10b981 !important; 
-    background-color: #10b981 !important; /* Forces Emerald to reveal over resting states */
-    color: #ffffff !important; 
-  }
-
-  /* DESKTOP BRAND FOOTER LINK DECORATION ARCHITECTURE */
-  .site-footer a[href*="roselandcompanies.com"], 
-  footer a[href*="roselandcompanies.com"] {
-    color: #c15254 !important; 
-    font-weight: 700 !important;
-  }
-}
-
-  /* --- 3. REVISED RIGHT-TO-LEFT DRAWER SYSTEM --- */
-  .nav-links {
-    display: flex !important;
-    flex-direction: column !important;
-    position: fixed !important;
-    top: 70px !important;
-    right: -100% !important; /* Start completely hidden off-screen to the right */
-    left: auto !important;
-    width: 85vw !important;  /* Stretches wide to give text breathing room */
-    max-width: 85vw !important; 
-    height: calc(100vh - 70px) !important;
-    background: #ffffff !important; /* Solid clean white dropdown canvas background */
-    z-index: 99999 !important;
-    overflow-y: auto !important;
-    padding: 24px 20px !important;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Smooth slide left animation */
-  }
-
-  /* When JS adds 'active' or 'nav-open', snap right position to 0 to slide it into view */
-  body.nav-open .nav-links,
-  .nav-links.active {
-    right: 0 !important;
-    left: auto !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
