@@ -877,42 +877,62 @@
 
 } 
 
-/* target mobile screens only */
+/* ==========================================================================
+   🎯 TOTAL ISOLATION MOBILE MENUS ACCORDION OVERLAP REPAIR
+   ========================================================================== */
 @media screen and (max-width: 991px) {
 
-    /* 1. Force the active dropdown panel to calculate its height naturally */
+    /* FORCE CONTAINER TO BREAK OUT OF GLOBAL ROW FLOW */
+    .nav-item-dropdown {
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+    }
+
+    /* DEACTIVATE DESKTOP GRID/ROW MECHANICS ON ACTIVE PANELS */
     .nav-item-dropdown.active-toggle .dropdown-content, 
     .nav-item-dropdown.active-toggle .mega-panel-two-col, 
     .nav-item-dropdown.active-toggle .mega-panel-three-col { 
-        display: block !important; 
+        display: block !important; /* Overrides any hidden flex alignment rules */
+        position: relative !important;
+        width: 100% !important;
         height: auto !important;
         visibility: visible !important;
         opacity: 1 !important;
         overflow: visible !important;
-    } 
+        float: none !important;
+    }
 
-    /* 2. Force the sub-link columns to stack vertically instead of side-by-side */
-    .mega-column { 
-        display: block !important; 
-        width: 100% !important; 
+    /* UNLINK COLUMNS AND FORCE INDEPENDENT STACKING */
+    .mega-column {
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
         height: auto !important;
-        clear: both !important;
-    } 
+        position: relative !important;
+        margin-bottom: 10px !important;
+    }
 
-    /* 3. Force each individual link onto its own separate line */
-    .mega-column a { 
+    /* ENSURE ALL LINK METRICS POP ONTO INDEPENDENT BLOCK LINES */
+    .mega-column a, 
+    .mega-column .column-title {
+        display: block !important;
+        width: 100% !important;
+        float: none !important;
+        position: relative !important;
+        clear: both !important; /* Prevents text elements from floating next to each other */
+        box-sizing: border-box !important;
+    }
+
+    /* SOLID BLOCK RE-ENFORCEMENT FOR THE PORTAL FLOOR BUTTON */
+    .nav-links .btn-client-portal,
+    a.btn-client-portal {
         display: block !important;
         width: 100% !important;
         position: relative !important;
-        float: none !important;
-        clear: both !important;
-    } 
-    
-    /* 4. Ensure the client portal button gets pushed down cleanly */
-    .nav-links .btn-client-portal {
-        display: block !important;
-        position: relative !important;
-        clear: both !important;
-        margin-top: 20px !important;
+        clear: both !important; /* Guarantees the button falls below ALL text links above it */
+        margin-top: 30px !important;
     }
 }
