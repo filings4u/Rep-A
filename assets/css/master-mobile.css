@@ -771,17 +771,24 @@
     background-color: #0a1f44 !important; /* Locks corporate navy branding background */
   }
 
-  /* 2. COMPACT MATRIX FOOTER TEXT - REUSABLE COLOR MATCHED FIXED */
+   /* --- MOBILE COMPACT FOOTER COLOR BALANCING --- */
   .site-footer, 
   .site-footer p, 
   .site-footer span, 
   .site-footer ul li a,
   .site-footer .footer-brand p {
-    color: #94a3b8 !important; /* Matches the exact theme slate-gray color scale used across your desktop template layout sheets */
+    color: #94a3b8 !important; /* Standard Slate Gray */
   }
   
   .site-footer h4 {
-    color: #ffffff !important; /* Retains your bright white column header titles so they stand out */
+    color: #ffffff !important; /* Bright White Titles */
+  }
+
+  /* HARD-LOCKED MOBILE BRAND OVERRIDE */
+  .site-footer a[href*="roselandcompanies.com"],
+  footer a[href*="roselandcompanies.com"] {
+    color: #c15254 !important; /* Forces your brand color on phone screens */
+    font-weight: 700 !important;
   }
 
     /* 1. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
