@@ -139,29 +139,6 @@
     display: inline-block;
   }
   
-  /* --- 5. MOBILE SLIDE-OUT LINKS PANEL DRAWER --- */
-  .nav-links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    position: fixed;
-    top: 0;
-    left: -100vw; /* Position off-screen to the left by default */
-    width: 85vw;
-    max-width: 340px;
-    height: 100vh;
-    background: var(--white);
-    box-shadow: 10px 0 30px rgba(10, 31, 68, 0.15);
-    gap: 8px;
-    padding: 80px 20px 20px 20px;
-    box-sizing: border-box;
-    opacity: 0;
-    visibility: hidden;
-    transition: var(--transition);
-    z-index: 10000;
-    overflow-y: auto;
-  }
   
   /* Navigation Active Trigger State Classes */
   body.nav-open .nav-links, 
@@ -205,33 +182,33 @@
 /* --- FIXED: REMOVE CONTAINER BOXES FROM MAIN MOBILE TITLES --- */
 @media screen and (max-width: 991px) {
 
-  /* 1. STRIP CONTAINER BOX MARGINS FROM HEADERS */
+   /* --- REMOVE CONTAINER BOXES FROM MAIN MOBILE TITLES --- */
   .nav-item-dropdown > a,
   nav .nav-item-dropdown > a,
   .nav-links .nav-item-dropdown > a,
   body.nav-open .nav-item-dropdown > a {
-    background: transparent !important;      /* Removes the light-gray container background fill */
+    background: transparent !important; 
     background-color: transparent !important;
-    border: none !important;                 /* Removes the rigid gray block container borders */
-    padding: 14px 10px !important;           /* Structural list row spatial boundary metrics padding */
+    border: none !important;            
+    padding: 14px 10px !important;       
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     width: 100% !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    color: #0a1f44 !important;               /* Hard-locks the main titles text to corporate Navy */
+    color: #0a1f44 !important; /* Hard-locks top level items text color to clean Navy */
     font-weight: 700 !important;
     text-decoration: none !important;
   }
 
-  /* Formats the arrow indicator icon span loop inside the link text */
   .nav-item-dropdown > a span {
     margin-left: auto !important;
-    color: #0a1f44 !important;               /* Matches arrow indicator seamlessly to main text navy style */
+    color: #0a1f44 !important; /* Force arrow markers to match navy text layout profile */
     font-size: 0.75rem !important;
     display: inline-block !important;
   }
+
 
   /* 2. REGULAR DYNAMIC MOBILE LIST ACCORDION DROPDOWN ENGINE */
   .nav-item-dropdown .dropdown-content, 
@@ -691,30 +668,6 @@
     text-align: left;
   }
 
-  /* --- 3. REVISED RIGHT-TO-LEFT DRAWER SYSTEM (MAXIMUM STRETCH WIDE) --- */
-  .nav-links {
-    display: flex !important;
-    flex-direction: column !important;
-    position: fixed !important;
-    top: 70px !important;
-    
-    /* ANIMATION ANCHOR: Stays hidden completely off-screen to the right */
-    right: -100% !important; 
-    left: auto !important;
-    
-    /* MAXIMUM SCREEN STRETCH: Expanded container to take up exactly 85% of viewport display screens */
-    width: 85vw !important; 
-    max-width: 85vw !important; 
-    
-    height: calc(100vh - 70px) !important;
-    background: #ffffff !important; /* Clean white drop-down background matrix */
-    z-index: 99999 !important;
-    overflow-y: auto !important;
-    padding: 24px 20px !important;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; /* Enhanced shadow depth gradient */
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Smooth right-to-left slide */
-  }
-
   /* When JS adds 'active' or 'nav-open', change right position to 0 to slide it left into view */
   body.nav-open .nav-links,
   .nav-links.active {
@@ -724,9 +677,9 @@
     opacity: 1 !important;
   }
 
-  /* Main Level Mobile Links Text Display */
+ /* Main Level Mobile Links Text Display */
   .nav-links a {
-    color: #0a1f44 !important; /* Clean Navy Links Text color */
+    color: #0a1f44 !important; /* Erases accidental emerald leaks on main text items */
     padding: 14px 10px !important;
     display: block !important;
     font-size: 1.1rem !important;
@@ -736,17 +689,17 @@
     width: 100% !important;
   }
 
-    /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
+  /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
   .nav-item-dropdown .dropdown-content, 
   .nav-item-dropdown .mega-panel-two-col, 
   .nav-item-dropdown .mega-panel-three-col {
     display: none !important;
-    position: relative !important; 
+    position: relative !important; /* Forces layout rows to drop downwards naturally instead of overlapping */
     top: 0 !important;
     left: 0 !important;
     max-height: none !important; 
     overflow: visible !important; 
-    background: transparent !important; 
+    background: transparent !important; /* Removes inner background containers */
     width: 100% !important;
     border: none !important;
     box-shadow: none !important;
@@ -754,63 +707,68 @@
     margin: 0 !important;
   }
 
-  /* Force open sub-menus to expand naturally downward and push elements safely below them */
+  /* Expand accordion sub-links rows directly down on user tap */
   .nav-item-dropdown.active-toggle .dropdown-content, 
   .nav-item-dropdown.active-toggle .mega-panel-two-col, 
   .nav-item-dropdown.active-toggle .mega-panel-three-col {
     display: flex !important;
-    flex-direction: column !important; 
+    flex-direction: column !important; /* Breaks template desktop grid column streams */
     grid-template-columns: none !important; 
-    padding: 0 0 10px 15px !important; 
+    padding: 0 0 10px 15px !important; /* Indents inner item tracks slightly */
     margin-top: 5px !important;
   }
 
-  /* Sub-Links columns structural repair container tracker */
   .mega-column {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
     gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* Clean up internal header spacing metrics (e.g. "Popular Formations") */
+  /* Regular subheaders (e.g. "Popular Formations") inside the mobile list */
   .mega-column .column-title {
     font-size: 0.75rem !important;
-    color: #0a1f44 !important; 
+    color: #0a1f44 !important; /* Hard-locks sub-titles inside drawer to Navy */
     text-align: left !important;
-    margin-top: 15px !important;
-    padding: 0 0 5px 0 !important;
+    margin-top: 12px !important;
+    padding: 4px 0 !important;
     border-bottom: none !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
+    display: block !important;
   }
 
-  /* Regular Inner Mobile Dropdown Links - Flat Vertical Flow */
+  /* Regular Mobile Sub-Links - Flat Vertical Flow */
   .mega-column a {
-    color: #0a1f44 !important; 
+    color: #0a1f44 !important; /* Hard-locks inner links to standard Navy text */
     font-size: 0.95rem !important;
     font-weight: 600 !important;
-    padding: 10px 0 !important; 
+    padding: 10px 0 !important; /* Spacious tapping area spacing for phones */
     text-align: left !important;
     border-bottom: none !important; 
+    display: block !important;
     width: 100% !important;
   }
 
+
   /* 1. SECURE PORTAL BUTTON - MOBILE STYLING ENFORCEMENT LOOP */
-  .nav-links .btn-client-portal, 
+ .nav-links .btn-client-portal, 
   nav .btn-client-portal, 
   a.btn-client-portal,
   .btn-client-portal.mobile-portal-lock {
-    color: #ffffff !important;           
+    color: #ffffff !important; /* Hard locks white button text over navy background block */
     background-color: #0a1f44 !important; 
     display: block !important;
     width: 100% !important;
     text-align: center !important;
-    margin-top: 20px !important;
+    margin-top: 25px !important; /* Pushes action button safely down below layout links tracking tracks */
     padding: 14px 0 !important;
     border-radius: 8px !important;
     font-weight: 700 !important;
+    text-transform: uppercase !important;
   }
 
   /* 2. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
@@ -934,3 +892,31 @@
     font-weight: 700 !important;
   }
 }
+
+  /* --- 3. REVISED RIGHT-TO-LEFT DRAWER SYSTEM --- */
+  .nav-links {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 70px !important;
+    right: -100% !important; /* Start completely hidden off-screen to the right */
+    left: auto !important;
+    width: 85vw !important;  /* Stretches wide to give text breathing room */
+    max-width: 85vw !important; 
+    height: calc(100vh - 70px) !important;
+    background: #ffffff !important; /* Solid clean white dropdown canvas background */
+    z-index: 99999 !important;
+    overflow-y: auto !important;
+    padding: 24px 20px !important;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Smooth slide left animation */
+  }
+
+  /* When JS adds 'active' or 'nav-open', snap right position to 0 to slide it into view */
+  body.nav-open .nav-links,
+  .nav-links.active {
+    right: 0 !important;
+    left: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
