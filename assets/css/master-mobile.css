@@ -837,3 +837,17 @@
   .content-area {
     align-items: flex-start !important; /* Aligns your CTA buttons and badge wrappers to the left */
   }
+
+  /* --- MOBILE PORTAL STATE LOCK & BRANDING TRANSFORMS --- */
+  .nav-links .btn-client-portal.mobile-portal-lock,
+  .btn-client-portal.mobile-portal-lock {
+    background-color: #0a1f44 !important; /* Safe mobile navy lock */
+    color: #ffffff !important;           /* Clear white button text lock */
+  }
+
+  /* HARD-LOCKED MOBILE PARENT FIRM BRAND OVERRIDE */
+  .site-footer a[href*="roselandcompanies.com"],
+  footer a[href*="roselandcompanies.com"] {
+    color: #c15254 !important; /* Forces your custom red color profile on phone screens */
+    font-weight: 700 !important;
+  }
