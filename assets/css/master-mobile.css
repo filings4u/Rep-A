@@ -691,14 +691,24 @@
 
 /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */ 
 
-/* Force the parent dropdown item to stack its contents vertically and adapt to dynamic heights */
+/* Ensure the main dropdown item handles vertical stacking correctly */
 .nav-item-dropdown {
     display: flex !important;
     flex-direction: column !important;
+    width: 100% !important;
     height: auto !important;
     position: relative !important;
 }
 
+/* Force the initial main dropdown link to act as a proper block element */
+.nav-item-dropdown > a {
+    display: block !important;
+    width: 100% !important;
+    padding: 12px 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Base structural hidden state for sub-menu panels */
 .nav-item-dropdown .dropdown-content, 
 .nav-item-dropdown .mega-panel-two-col, 
 .nav-item-dropdown .mega-panel-three-col { 
@@ -714,30 +724,35 @@
     box-shadow: none !important; 
     padding: 0 !important; 
     margin: 0 !important; 
+    box-sizing: border-box !important;
 } 
 
-/* Force open sub-menus to expand naturally downward and push elements safely below them */ 
+/* Force active sub-menus to expand downward and safely push down items below them */ 
 .nav-item-dropdown.active-toggle .dropdown-content, 
 .nav-item-dropdown.active-toggle .mega-panel-two-col, 
 .nav-item-dropdown.active-toggle .mega-panel-three-col { 
     display: flex !important; 
-    flex-direction: column !important; 
-    padding: 0 0 10px 15px !important; 
+    flex-direction: column !important; /* Stack mega columns vertically */
+    padding: 0 0 15px 15px !important; 
     margin-top: 5px !important; 
-    height: auto !important; /* Ensures the container resizes with content */
+    height: auto !important;
+    width: 100% !important;
 } 
 
-/* Sub-Links columns structural repair container tracker */ 
+/* Sub-Links columns structural flow repair */ 
 .mega-column { 
     display: flex !important; 
     flex-direction: column !important; 
     width: 100% !important; 
     gap: 0 !important; 
-    position: relative !important; /* Keeps links locked to the document flow */
+    position: relative !important;
+    height: auto !important;
 } 
 
 /* Clean up internal header spacing metrics (e.g. "Popular Formations") */ 
 .mega-column .column-title { 
+    display: block !important;
+    width: 100% !important;
     font-size: 0.75rem !important; 
     color: #0a1f44 !important; 
     text-align: left !important; 
@@ -747,20 +762,20 @@
     font-weight: 700 !important; 
     text-transform: uppercase !important; 
     letter-spacing: 0.5px !important; 
-    display: block !important; /* Prevents text from collapsing or wrapping weirdly */
 } 
 
 /* Regular Inner Mobile Dropdown Links - Flat Vertical Flow */ 
 .mega-column a { 
+    display: block !important;
+    width: 100% !important;
     color: #0a1f44 !important; 
     font-size: 0.95rem !important; 
     font-weight: 600 !important; 
     padding: 10px 0 !important; 
     text-align: left !important; 
     border-bottom: none !important; 
-    width: 100% !important; 
-    display: block !important; /* Forces each link onto its own new line */
-    position: relative !important; /* Prevents absolute stacking overlaps */
+    position: relative !important;
+    box-sizing: border-box !important;
 } 
 
 /* 1. SECURE PORTAL BUTTON - MOBILE STYLING ENFORCEMENT LOOP */ 
@@ -773,13 +788,15 @@ a.btn-client-portal,
     display: block !important; 
     width: 100% !important; 
     text-align: center !important; 
-    margin-top: 20px !important; 
+    margin-top: 25px !important; /* Space away from the links stack */
     padding: 14px 0 !important; 
     border-radius: 8px !important; 
     font-weight: 700 !important; 
-    position: relative !important; /* Required for z-index to work */
-    z-index: 10 !important; /* Pushes the button visually above any rogue menu items */
+    position: relative !important; 
+    z-index: 10 !important; /* Visual floor layer absolute block protection */
+    box-sizing: border-box !important;
 }
+
 
 
   /* 2. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
