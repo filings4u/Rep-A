@@ -1275,3 +1275,18 @@ footer.site-footer,
   }
 }
 
+/* --- RESTORE DESKTOP SECURE PORTAL EMERALD HOVER --- */
+@media (min-width: 992px) {
+  .btn-client-portal:hover {
+    background-color: var(--emerald, #10b981) !important;
+    color: #ffffff !important;
+  }
+}
+
+/* --- SITE-WIDE BRANDING FOOTER LINK COLOR --- */
+.site-footer a[href*="roselandcompanies.com"],
+footer a[href*="roselandcompanies.com"] {
+  color: #c15254 !important;
+  font-weight: 700 !important;
+}
+
