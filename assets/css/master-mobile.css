@@ -656,21 +656,18 @@
     text-align: left;
   }
 
-   /* --- 3. FIXED RIGHT-TO-LEFT HALF-SCREEN DRAWER SYSTEM --- */
+    /* --- 3. FIXED RIGHT-TO-LEFT HALF-SCREEN DRAWER SYSTEM --- */
   .nav-links {
     display: flex !important;
     flex-direction: column !important;
     position: fixed !important;
     top: 70px !important;
-    
     /* ANIMATION ANCHOR: Stays hidden completely off-screen to the right */
     right: -100% !important; 
     left: auto !important;
-    
     /* HALF-SCREEN CALIBRATION: Forces container box to take up exactly 50% of screen width */
     width: 50vw !important; 
     max-width: 50vw !important; 
-    
     height: calc(100vh - 70px) !important;
     background: #ffffff !important; /* Clean white drop-down background matrix */
     z-index: 99999 !important;
@@ -689,7 +686,6 @@
     opacity: 1 !important;
   }
 
-
   /* Main Level Mobile Links Text Display */
   .nav-links a {
     color: #0a1f44 !important; /* Clean Navy Links Text color */
@@ -702,54 +698,68 @@
     width: 100% !important;
   }
 
-  /* --- 4. ACCORDION PANELS OPEN LINK OVERRIDES --- */
-  /* This un-hides your sub-menus (LLC, Corporations, etc.) when clicking the parent category */
-  .nav-item-dropdown .dropdown-content,
-  .nav-item-dropdown .mega-panel-two-col,
+  /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
+  .nav-item-dropdown .dropdown-content, 
+  .nav-item-dropdown .mega-panel-two-col, 
   .nav-item-dropdown .mega-panel-three-col {
     display: none !important;
+    position: relative !important;
     max-height: 0 !important;
     overflow: hidden !important;
-    background: #f8fafc !important; /* Light accent background for sub-links row */
+    background: #f8fafc !important; /* Soft gray behind sub-dropdown area list rows */
     width: 100% !important;
+    border-top: none !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* Show sub-links cleanly when accordion is activated */
-  .nav-item-dropdown.active-toggle .dropdown-content,
-  .nav-item-dropdown.active-toggle .mega-panel-two-col,
+  /* CRITICAL FORCE OVERRIDE: Destroys desktop grid patterns and locks inner items into an absolute regular column */
+  .nav-item-dropdown.active-toggle .dropdown-content, 
+  .nav-item-dropdown.active-toggle .mega-panel-two-col, 
   .nav-item-dropdown.active-toggle .mega-panel-three-col {
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: column !important; /* Forces items down in a normal stream */
+    grid-template-columns: none !important; /* Wipes template desktop grid parameters */
     max-height: none !important;
     overflow: visible !important;
     padding: 10px 15px !important;
     margin-top: 5px !important;
-    border-radius: 8px !important;
   }
 
-  /* Sub-Links inside the Accordions text adjustments */
+  /* Sub-Links columns framework cleanup */
   .mega-column {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
-    gap: 4px !important;
+    gap: 0 !important;
   }
 
+  /* Small subheaders inside regular list tracker (e.g. "Popular Formations") */
   .mega-column .column-title {
     font-size: 0.75rem !important;
-    color: #64748b !important; /* Gray sub-titles */
+    color: #64748b !important; 
     text-align: left !important;
     margin-top: 10px !important;
+    padding: 5px 0 !important;
     border-bottom: none !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
   }
 
+  /* Regular Inner Mobile Dropdown Links */
   .mega-column a {
-    color: #10b981 !important; /* Vibrant Emerald for sub-links */
+    color: #0a1f44 !important; /* Changed from Emerald to Navy for standard mobile styling links link feel */
     font-size: 0.95rem !important;
     font-weight: 600 !important;
-    padding: 8px 0 !important;
+    padding: 10px 0 10px 12px !important; /* Indents text so it sits neatly inside the gray block */
     text-align: left !important;
-    border-bottom: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important; /* Delicate link divide baseline */
+  }
+
+  .mega-column a:last-child {
+    border-bottom: none !important; /* Cleans up border on bottom items loop */
   }
 }
 
