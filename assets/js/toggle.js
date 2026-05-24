@@ -37,22 +37,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 3. SECURE PORTAL BUTTON DYNAMIC MOBILE STYLING
-    // Hard locks the white text and navy background on mobile viewport channels
+// 3. SECURE PORTAL BUTTON DYNAMIC MOBILE CLASS SWITCHER
+    // FIX: Uses clean classes instead of rigid inline styles to prevent CSS hover locks
     const portalButton = document.querySelector('.btn-client-portal');
     if (portalButton) {
         function enforcePortalMobileStyles() {
             if (window.innerWidth <= 991) {
-                portalButton.style.backgroundColor = '#0a1f44'; // Navy
-                portalButton.style.color = '#ffffff';           // Solid White
+                portalButton.classList.add('mobile-portal-lock');
             } else {
-                // Revert completely to desktop master.css styles
-                portalButton.style.backgroundColor = '';
-                portalButton.style.color = '';
+                portalButton.classList.remove('mobile-portal-lock');
             }
         }
         
-        // Fire logic on initial window load and resize triggers
         enforcePortalMobileStyles();
         window.addEventListener('resize', enforcePortalMobileStyles);
     }
