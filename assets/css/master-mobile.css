@@ -681,7 +681,7 @@
     /* FORCE CLOSE THE VERTICAL GAP USING NEGATIVE MARGIN */
     margin-top: -25px !important; /* Increase this to -20px or -25px if you want it even closer to the toggle icon */
 
-    right: -100% !important; 
+    right: -50% !important; 
     left: auto !important; 
     width: 85vw !important; 
     max-width: 85vw !important; 
