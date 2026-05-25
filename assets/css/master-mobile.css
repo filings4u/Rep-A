@@ -729,7 +729,7 @@
     flex-direction: column !important; /* Stacks links vertically */ 
     width: 100% !important; /* Forces it to break onto its own full horizontal line */ 
     order: 3 !important; /* Explicitly pushes it down to the last position in the box layout */ 
-    margin-top: 15px !important; /* Adds breathing room between the toggle and the menu items */ 
+    margin-top: -5px !important; /* Adds breathing room between the toggle and the menu items */ 
     box-sizing: border-box !important; 
 } 
 
