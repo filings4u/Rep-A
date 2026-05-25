@@ -668,25 +668,29 @@
     text-align: left;
   }
 
-     /* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */
-    .nav-links {
-        display: none !important; /* FIXED: Hidden completely when closed to stop corner white lines */
-        flex-direction: column !important;
-        position: fixed !important;
-        top: 70px !important; /* Aligns perfectly right below your header bar line */
-        right: -100% !important; /* Hidden off-screen to the right side */
-        left: auto !important;
-        width: 85vw !important; /* Custom width layout spec */
-        max-width: 85vw !important;
-        height: calc(100vh - 70px) !important;
-        background: #ffffff !important;
-        z-index: 99999 !important;
-        overflow-y: auto !important; /* Allows internal scrolling for long link items */
-        padding: 24px 20px !important;
-        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
-        transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        box-sizing: border-box !important;
-    }
+  /* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */
+.nav-links {
+    display: none !important; 
+    flex-direction: column !important;
+    position: fixed !important;
+    
+    /* 🌟 ADJUST THESE TWO LINES TO PULL THE MENU UP COMFORTABLY CLOSE */
+    top: 52px !important; /* Decreased from 70px to snap tight to the header baseline */
+    height: calc(100vh - 52px) !important; /* Must match the top number to fill the screen correctly */
+    
+    right: -100% !important; 
+    left: auto !important;
+    width: 85vw !important; 
+    max-width: 85vw !important;
+    background: #ffffff !important;
+    z-index: 99999 !important;
+    overflow-y: auto !important; 
+    padding: 24px 20px !important;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-sizing: border-box !important;
+}
+
 
     /* ACTIVE SLIDE-IN STATE: Triggered cleanly by your toggle.js script */
     body.nav-open .nav-links, 
