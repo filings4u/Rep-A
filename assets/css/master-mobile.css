@@ -668,266 +668,202 @@
     text-align: left;
   }
 
-  /* --- 3. REVISED RIGHT-TO-LEFT DRAWER SYSTEM (MAXIMUM STRETCH WIDE) --- */
-  .nav-links {
-    display: flex !important;
-    flex-direction: column !important;
-    position: fixed !important;
-    top: 70px !important;
-    
-    /* ANIMATION ANCHOR: Stays hidden completely off-screen to the right */
-    right: -100% !important; 
-    left: auto !important;
-    
-    /* MAXIMUM SCREEN STRETCH: Expanded container to take up exactly 85% of viewport display screens */
-    width: 85vw !important; 
-    max-width: 85vw !important; 
-    
-    height: calc(100vh - 70px) !important;
-    background: #ffffff !important; /* Clean white drop-down background matrix */
-    z-index: 99999 !important;
-    overflow-y: auto !important;
-    padding: 24px 20px !important;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; /* Enhanced shadow depth gradient */
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; /* Smooth right-to-left slide */
-  }
+     /* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */
+    .nav-links {
+        display: none !important; /* FIXED: Hidden completely when closed to stop corner white lines */
+        flex-direction: column !important;
+        position: fixed !important;
+        top: 70px !important; /* Aligns perfectly right below your header bar line */
+        right: -100% !important; /* Hidden off-screen to the right side */
+        left: auto !important;
+        width: 85vw !important; /* Custom width layout spec */
+        max-width: 85vw !important;
+        height: calc(100vh - 70px) !important;
+        background: #ffffff !important;
+        z-index: 99999 !important;
+        overflow-y: auto !important; /* Allows internal scrolling for long link items */
+        padding: 24px 20px !important;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
+        transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-sizing: border-box !important;
+    }
 
-  /* When JS adds 'active' or 'nav-open', change right position to 0 to slide it left into view */
-  body.nav-open .nav-links,
-  .nav-links.active {
-    right: 0 !important;
-    left: auto !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
+    /* ACTIVE SLIDE-IN STATE: Triggered cleanly by your toggle.js script */
+    body.nav-open .nav-links, 
+    .nav-links.active {
+        display: flex !important; /* Switches on only when the menu button is tapped */
+        right: 0 !important;
+        left: auto !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
 
-  /* Main Level Mobile Links Text Display */
-  .nav-links a {
-    color: #0a1f44 !important; /* Clean Navy Links Text color */
-    padding: 14px 10px !important;
-    display: block !important;
-    font-size: 1.1rem !important;
-    font-weight: 700 !important;
-    border-bottom: 1px solid #f1f5f9 !important;
-    text-align: left !important;
-    width: 100% !important;
-  }
+    /* Main Level Mobile Navigation Links */
+    .nav-links a {
+        color: #0a1f44 !important;
+        padding: 14px 10px !important;
+        display: block !important;
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        text-align: left !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
 
- /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */ 
+    /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
+    .nav-content-wrapper {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
 
-.nav-content-wrapper { 
-    display: flex !important; 
-    flex-wrap: wrap !important; /* Allows .nav-links to drop below the toggle line */ 
-    justify-content: space-between !important; 
-    align-items: center !important; 
-    width: 100% !important; 
-} 
+    /* Ensure parent title blocks grow dynamically to push elements below them */
+    .nav-item-dropdown {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: auto !important;
+    }
 
-/* 2. Force the links container to take up the full width and break down */ 
-.nav-links { 
-    /* FIXED: Hide the menu completely when closed to destroy the white line artifact */
-    display: none !important; 
-    
-    width: 100% !important; /* Forces it to break onto its own full horizontal line */ 
-    order: 3 !important; /* Explicitly pushes it down to the last position in the box layout */ 
-    
-    /* FIXED: Changed from 15px to 0px to instantly eliminate the large empty gap */
-    margin-top: 0px !important; 
-    
-    box-sizing: border-box !important; 
-} 
+    /* Initial hidden configuration state for inner dropdown grids */
+    .nav-item-dropdown .dropdown-content,
+    .nav-item-dropdown .mega-panel-two-col,
+    .nav-item-dropdown .mega-panel-three-col {
+        display: none !important;
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        background: transparent !important;
+        width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 
-/* FIXED: Re-enables the menu ONLY when toggle.js injects the active class */
-.nav-links.active {
-    display: flex !important;
-    flex-direction: column !important; /* Stacks links vertically */ 
-}
+    /* ACCORDION OPEN STATE: Forces inner columns to stack and pushes the portal button down */
+    .nav-item-dropdown.active-toggle .dropdown-content,
+    .nav-item-dropdown.active-toggle .mega-panel-two-col,
+    .nav-item-dropdown.active-toggle .mega-panel-three-col {
+        display: flex !important;
+        flex-direction: column !important;
+        grid-template-columns: none !important;
+        padding: 0 0 10px 15px !important;
+        margin-top: 5px !important;
+        height: auto !important;
+    }
 
-/* 3. Keep the toggle button on the right side of the logo line */ 
-.mobile-toggle-btn { 
-    order: 2 !important; 
-} 
+    /* Clean vertical sorting for sub-columns */
+    .mega-column {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0 !important;
+        height: auto !important;
+    }
 
-.logo-link { 
-    order: 1 !important; 
-}
+    .mega-column .column-title {
+        display: block !important;
+        font-size: 0.75rem !important;
+        color: #0a1f44 !important;
+        text-align: left !important;
+        margin-top: 15px !important;
+        padding: 0 0 5px 0 !important;
+        border-bottom: none !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
 
-/* FIX INJECTION: Forces each parent title container to stack vertically and grow naturally */
-.nav-item-dropdown {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    height: auto !important;
-}
+    /* Inner sub-links vertical stack flow stabilization */
+    .mega-column a {
+        display: block !important;
+        color: #0a1f44 !important;
+        font-size: 0.95rem !important;
+        font-weight: 600 !important;
+        padding: 10px 0 !important;
+        text-align: left !important;
+        border-bottom: none !important;
+        width: 100% !important;
+    }
 
-.nav-item-dropdown .dropdown-content, 
-.nav-item-dropdown .mega-panel-two-col, 
-.nav-item-dropdown .mega-panel-three-col { 
-    display: none !important; 
-    position: relative !important; 
-    top: 0 !important; 
-    left: 0 !important; 
-    max-height: none !important; 
-    overflow: visible !important; 
-    background: transparent !important; 
-    width: 100% !important; 
-    border: none !important; 
-    box-shadow: none !important; 
-    padding: 0 !important; 
-    margin: 0 !important; 
-} 
+    /* 1. SECURE PORTAL BUTTON - PUSHED TO THE TRUE BOTTOM OF THE STACK */
+    .nav-links .btn-client-portal,
+    nav .btn-client-portal,
+    a.btn-client-portal,
+    .btn-client-portal.mobile-portal-lock {
+        color: #ffffff !important;
+        background-color: #0a1f44 !important;
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        margin-top: 25px !important; /* Adds padding separation space above the floor button */
+        padding: 14px 0 !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        position: relative !important;
+    }
 
-/* Force open sub-menus to expand naturally downward and push elements safely below them */ 
-.nav-item-dropdown.active-toggle .dropdown-content, 
-.nav-item-dropdown.active-toggle .mega-panel-two-col, 
-.nav-item-dropdown.active-toggle .mega-panel-three-col { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    grid-template-columns: none !important; 
-    padding: 0 0 10px 15px !important; 
-    margin-top: 5px !important; 
-    height: auto !important; /* FIX INJECTION: Mandates the opened box tells the browser its true dynamic size */
-} 
-
-/* Sub-Links columns structural repair container tracker */ 
-.mega-column { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    width: 100% !important; 
-    gap: 0 !important; 
-} 
-
-/* Clean up internal header spacing metrics (e.g. "Popular Formations") */ 
-.mega-column .column-title { 
-    display: block !important; /* FIX INJECTION: Prevents text lines from horizontal squishing */
-    font-size: 0.75rem !important; 
-    color: #0a1f44 !important; 
-    text-align: left !important; 
-    margin-top: 15px !important; 
-    padding: 0 0 5px 0 !important; 
-    border-bottom: none !important; 
-    font-weight: 700 !important; 
-    text-transform: uppercase !important; 
-    letter-spacing: 0.5px !important; 
-} 
-
-/* Regular Inner Mobile Dropdown Links - Flat Vertical Flow */ 
-.mega-column a { 
-    display: block !important; /* FIX INJECTION: Forces text links to stack instead of merging text */
-    color: #0a1f44 !important; 
-    font-size: 0.95rem !important; 
-    font-weight: 600 !important; 
-    padding: 10px 0 !important; 
-    text-align: left !important; 
-    border-bottom: none !important; 
-    width: 100% !important; 
-} 
-
-/* 1. SECURE PORTAL BUTTON - MOBILE STYLING ENFORCEMENT LOOP */ 
-.nav-links .btn-client-portal, 
-nav .btn-client-portal, 
-a.btn-client-portal, 
-.btn-client-portal.mobile-portal-lock { 
-    color: #ffffff !important; 
-    background-color: #0a1f44 !important; 
-    display: block !important; 
-    width: 100% !important; 
-    text-align: center !important; 
-    margin-top: 20px !important; 
-    padding: 14px 0 !important; 
-    border-radius: 8px !important; 
-    font-weight: 700 !important; 
-    position: relative !important; /* FIX INJECTION: Preps the button layer flow positioning */
-}
-
-
-
-  /* 2. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
-  .logo-link img, 
-  nav img.logo, 
-  .nav-content-wrapper .logo {
-    height: 38px !important;       
-    max-width: 170px !important;   
-    width: auto !important;
-    object-fit: contain !important;
-  }
+    /* 2. LOGO SIZING PROTECTION */
+    .logo-link img, nav img.logo, .nav-content-wrapper .logo {
+        height: 38px !important;
+        max-width: 170px !important;
+        width: auto !important;
+        object-fit: contain !important;
+    }
 
     /* --- 3. TIGHTEN COMPACT MOBILE FOOTER MATRIX SPACING PANELS --- */
-  footer.site-footer, 
-  .site-footer {
-    padding-top: 30px !important; 
-    padding-bottom: 20px !important; 
-    margin-top: 30px !important;
-  }
-  
-  .site-footer .footer-container { 
-    gap: 15px 15px !important; 
-  }
-  
-  .site-footer .footer-col ul li { 
-    margin-bottom: 6px !important; 
-  }
-  
-  .site-footer h4, 
-  .footer-col h4 { 
-    margin-bottom: 12px !important; 
-  }
-  
-  .site-footer .footer-bottom { 
-    margin-top: 25px !important; 
-    padding-top: 15px !important; 
-  }
+    footer.site-footer, .site-footer {
+        padding-top: 30px !important;
+        padding-bottom: 20px !important;
+        margin-top: 30px !important;
+    }
+    .site-footer .footer-container {
+        gap: 15px 15px !important;
+    }
+    .site-footer .footer-col ul li {
+        margin-bottom: 6px !important;
+    }
+    .site-footer h4, .footer-col h4 {
+        margin-bottom: 12px !important;
+    }
+    .site-footer .footer-bottom {
+        margin-top: 25px !important;
+        padding-top: 15px !important;
+    }
 
-  /* --- COMPACT MATRIX FOOTER TEXT BALANCING GRAPHICS --- */
-  .site-footer, 
-  .site-footer p, 
-  .site-footer span, 
-  .site-footer ul li a, 
-  .site-footer .footer-brand p {
-    color: #94a3b8 !important; 
-  }
-  
-  .site-footer h4 { 
-    color: #ffffff !important; 
-  }
+    /* --- COMPACT MATRIX FOOTER TEXT BALANCING GRAPHICS --- */
+    .site-footer, .site-footer p, .site-footer span, .site-footer ul li a, .site-footer .footer-brand p {
+        color: #94a3b8 !important;
+    }
+    .site-footer h4 {
+        color: #ffffff !important;
+    }
 
-  /* 4. MOBILE HERO TYPOGRAPHY LEFT ALIGNMENT TRACKERS */
-  .content-area h1, 
-  main .content-area h1, 
-  .page-container h1 { 
-    text-align: left !important; 
-  }
-  
-  .content-area p, 
-  main .content-area p, 
-  .page-container p { 
-    text-align: left !important; 
-    margin-left: 0 !important; 
-    margin-right: auto !important; 
-  }
-  
-  .content-area { 
-    align-items: flex-start !important; 
-  }
+    /* 4. MOBILE HERO TYPOGRAPHY LEFT ALIGNMENT TRACKERS */
+    .content-area h1, main .content-area h1, .page-container h1 {
+        text-align: left !important;
+    }
+    .content-area p, main .content-area p, .page-container p {
+        text-align: left !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+    .content-area {
+        align-items: flex-start !important;
+    }
 
-  /* 5. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
-  .logo-link img, 
-  nav img.logo, 
-  .nav-content-wrapper .logo { 
-    height: 38px !important; 
-    max-width: 170px !important; 
-    width: auto !important; 
-    object-fit: contain !important; 
-  }
+    /* --- HARD-LOCKED FIXED SITE-WIDE BRANDING RED FOOTER OVERRIDES --- */
+    .site-footer a[href*="roselandcompanies.com"], footer a[href*="roselandcompanies.com"] {
+        color: #c15254 !important;
+        font-weight: 700 !important;
+    }
+}
 
-  /* --- HARD-LOCKED FIXED SITE-WIDE BRANDING RED FOOTER OVERRIDES --- */
-  .site-footer a[href*="roselandcompanies.com"], 
-  footer a[href*="roselandcompanies.com"] {
-    color: #c15254 !important; 
-    font-weight: 700 !important;
-  }
-
-} 
 
 /* ==========================================================================
    📱 MOBILE RESPONSIVE LAYOUT ENGINE FORFLOW FIXED RESET
