@@ -928,3 +928,34 @@
     } 
 }
 }
+
+/* ==========================================================================
+   🔒 MOBILE-ONLY SECURE PORTAL DRAWING BOX OVERRIDE
+   ========================================================================== */
+
+/* 1. FIRST RESETS: Force the desktop header link button back into its normal track layout position */
+@media (min-width: 992px) {
+    nav .btn-client-portal, a.btn-client-portal {
+        order: initial !important;       /* Removes the top flex-ordering rule from desktop */
+        margin-top: 0 !important;         /* Cleans up any inherited mobile margins */
+        margin-bottom: 0 !important;      /* Cleans up any inherited mobile margins */
+        display: inline-block !important; /* Restores traditional desktop alignment flow */
+    }
+}
+
+/* 2. ENFORCEMENT: Apply the top-stack rule strictly inside the mobile menu drawer container viewport */
+@media (max-width: 991px) {
+    /* Focuses the layout shifts ONLY on the button nested inside the .nav-links drawer */
+    .nav-links .btn-client-portal {
+        display: block !important; 
+        width: 100% !important; 
+        text-align: center !important; 
+        margin-top: 0 !important;
+        margin-bottom: 25px !important;  /* Pushes the lower list items safely down */ 
+        padding: 14px 0 !important; 
+        border-radius: 8px !important; 
+        font-weight: 700 !important; 
+        position: relative !important; 
+        order: -1 !important;            /* Moves it up inside the mobile menu flex frame */
+    }
+}
