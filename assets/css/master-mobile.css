@@ -959,3 +959,29 @@
         order: 9999 !important;          /* FIXED: Forces the button to render at the absolute bottom of the stack */
     }
 }
+
+/* ==========================================
+   TARGETED MOBILE RESIZE FOR FOOTER BOTTOM ONLY
+   ========================================== */
+@media screen and (max-width: 768px) {
+    /* Forces the bottom-most bar row container to stack vertically */
+    .site-footer .footer-bottom, 
+    footer .footer-bottom {
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        gap: 12px !important;
+    }
+
+    /* Centers any inner text blocks, links, or copyright lines */
+    .site-footer .footer-bottom div,
+    .site-footer .footer-bottom p,
+    .site-footer .footer-bottom span,
+    .site-footer .footer-bottom a {
+        text-align: center !important;
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
