@@ -6,124 +6,122 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#10b981">
-
-    <title>Licenses & Permits | filings4u Professional Compliance</title>
+    <title>Professional Compliance Dashboard | filings4u</title>
     
-    <link rel="stylesheet" href="assets/css/site-elite.css?v=12">
-    <link rel="stylesheet" href="assets/css/mobile.css?v=12">
-
-   <link rel="icon" type="image/png" href="images/fav.png">
-
-   <!-- 1. The jQuery library MUST load absolutely first -->
-<script src="https://jquery.com"></script>
-
-<!-- 2. The Supabase data engine loads second -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- 3. Your custom main dashboard script executes LAST -->
-<script src="assets/js/main.js?v=14"></script>
-
-
+    <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
+     <link rel="stylesheet" href="assets/css/master.css">
+    <link rel="stylesheet" href="assets/css/master-mobile.css">
+    <link rel="icon" type="image/png" href="images/fav.png">
+    
+    <!-- 🔍 VERIFIED FULL JQUERY CDN URL PATH -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <!-- Supabase Production Library Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-<!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
-<nav>
-    <div class="nav-content-wrapper">
-        <a href="index.html" class="logo-link">
-            <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
-        </a>
-        <button class="mobile-toggle-btn" onclick="toggleMobileMenu()">☰</button>
-        
-        <div class="nav-links">
-            <!-- FORMATIONS DROPDOWN -->
-            <div class="nav-item-dropdown static-dropdown">
-                <a href="#" onclick="toggleMobileDropdown(event, this)">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                <div class="dropdown-content mega-panel-two-col">
-                    <div class="mega-column">
-                        <span class="column-title">Popular Formations</span>
-                        <a href="limited-liability-company.html">LLC Formation</a>
-                        <a href="corporations.html">Corporations (C/S-Corp)</a>
-                        <a href="sole-proprietorship.html">Sole Proprietorship</a>
-                    </div>
-                    <div class="mega-column">
-                        <span class="column-title">Specialty Structures</span>
-                        <a href="doing-business-as-dba.html">DBA Registration</a>
-                        <a href="nonprofits.html">Nonprofit Organization</a>
-                    </div>
-                </div>
-            </div>
+<!-- 🌐 SITE-WIDE NAVIGATION HEADER --> 
+<nav> 
+  <div class="nav-content-wrapper"> 
+    <a href="index.html" class="logo-link"> 
+      <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;"> 
+    </a> 
+    
+<!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
+<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
 
-            <!-- COMPLIANCE DROPDOWN -->
-            <div class="nav-item-dropdown static-dropdown">
-                <a href="#" onclick="toggleMobileDropdown(event, this)">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                <div class="dropdown-content mega-panel-two-col">
-                    <div class="mega-column">
-                        <span class="column-title">Entity Health</span>
-                        <a href="annual-reports.html">Annual Reports</a>
-                        <a href="operating-agreement.html">Operating Agreement</a>
-                        <a href="registered-agent.html">Registered Agent</a>
-                    </div>
-                    <div class="mega-column">
-                        <span class="column-title">Licensing & Exit</span>
-                        <a href="business-licenses.html">Business Licenses</a>
-                        <a href="employer-identification-number-ein.html">Employer ID (EIN)</a>
-                        <a href="dissolution.html">Entity Dissolution</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAX FILINGS DROPDOWN -->
-            <div class="nav-item-dropdown static-dropdown">
-                <a href="#" onclick="toggleMobileDropdown(event, this)">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                <div class="dropdown-content mega-panel-two-col">
-                    <div class="mega-column">
-                        <span class="column-title">Income & Operations</span>
-                        <a href="federal-income-tax.html">Federal Income Tax</a>
-                        <a href="state-income-tax.html">State Income Tax</a>
-                        <a href="franchise-tax.html">Franchise Tax Filing</a>
-                    </div>
-                    <div class="mega-column">
-                        <span class="column-title">Sales & Payroll</span>
-                        <a href="sales-tax-registration.html">Sales Tax Registration</a>
-                        <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a>
-                        <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DOT & FLEET DROPDOWN -->
-            <div class="nav-item-dropdown static-dropdown">
-                <a href="#" onclick="toggleMobileDropdown(event, this)">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                <div class="dropdown-content mega-panel-three-col">
-                    <div class="mega-column">
-                        <span class="column-title">Authority Setup</span>
-                        <a href="owner-operators.html">Owner Operators</a>
-                        <a href="trucker-authority.html">Trucker Authority</a>
-                        <a href="broker-authority.html">Broker Authority</a>
-                        <a href="ucr-registration.html">UCR Registration</a>
-                    </div>
-                    <div class="mega-column">
-                        <span class="column-title">Compliance & Regs</span>
-                        <a href="dot-consortium.html">DOT Consortium</a>
-                        <a href="driver-qualification-file.html">Driver Qualification File</a>
-                        <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
-                        <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a>
-                    </div>
-                    <div class="mega-column">
-                        <span class="column-title">Insurance & Risk</span>
-                        <a href="licenses-permits.html">Licenses & Permits</a>
-                        <a href="trucker-insurance.html">Trucker Insurance</a>
-                        <a href="broker-insurance.html">Broker Insurance</a>
-                        <a href="new-entrant-audit.html">New Entrant Audit</a>
-                    </div>
-                </div>
-            </div>
-
-            <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Secure Portal</a>
-        </div>
-    </div>
+    <div class="nav-links"> 
+      <!-- FORMATIONS DROPDOWN --> 
+      <div class="nav-item-dropdown static-dropdown"> 
+        <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
+        <div class="dropdown-content mega-panel-two-col"> 
+          <div class="mega-column"> 
+            <span class="column-title">Popular Formations</span> 
+            <a href="limited-liability-company.html">LLC Formation</a> 
+            <a href="corporations.html">Corporations (C/S-Corp)</a> 
+            <a href="sole-proprietorship.html">Sole Proprietorship</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Specialty Structures</span> 
+            <a href="doing-business-as-dba.html">DBA Registration</a> 
+            <a href="nonprofits.html">Nonprofit Organization</a> 
+            <a href="series-llc.html">Series LLC</a> 
+          </div> 
+        </div> 
+      </div> 
+      
+      <!-- COMPLIANCE DROPDOWN --> 
+      <div class="nav-item-dropdown static-dropdown"> 
+        <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
+        <div class="dropdown-content mega-panel-two-col"> 
+          <div class="mega-column"> 
+            <span class="column-title">Entity Health</span> 
+            <a href="annual-reports.html">Annual Reports</a> 
+            <a href="operating-agreement.html">Operating Agreement</a> 
+            <a href="registered-agent.html">Registered Agent</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Licensing & Exit</span> 
+            <a href="business-licenses.html">Business Licenses</a> 
+            <a href="employer-identification-number-ein.html">Employer ID (EIN)</a> 
+            <a href="dissolution.html">Entity Dissolution</a> 
+          </div> 
+        </div> 
+      </div> 
+      
+      <!-- TAX FILINGS DROPDOWN --> 
+      <div class="nav-item-dropdown static-dropdown"> 
+        <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
+        <div class="dropdown-content mega-panel-two-col"> 
+          <div class="mega-column"> 
+            <span class="column-title">Income & Operations</span> 
+            <a href="federal-income-tax.html">Federal Income Tax</a> 
+            <a href="state-income-tax.html">State Income Tax</a> 
+            <a href="franchise-tax.html">Franchise Tax Filing</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Sales & Payroll</span> 
+            <a href="sales-tax-registration.html">Sales Tax Registration</a> 
+            <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a> 
+            <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a> 
+          </div> 
+        </div> 
+      </div> 
+      
+      <!-- DOT & FLEET DROPDOWN --> 
+      <div class="nav-item-dropdown static-dropdown"> 
+        <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
+        <div class="dropdown-content mega-panel-three-col"> 
+          <div class="mega-column"> 
+            <span class="column-title">Authority Setup</span> 
+            <a href="owner-operators.html">Owner Operators</a> 
+            <a href="trucker-authority.html">Trucker Authority</a> 
+            <a href="broker-authority.html">Broker Authority</a> 
+            <a href="ucr-registration.html">UCR Registration</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Compliance & Regs</span> 
+            <a href="dot-consortium.html">DOT Consortium</a> 
+            <a href="driver-qualification-file.html">Driver Qualification File</a> 
+            <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a> 
+            <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Insurance & Risk</span> 
+            <a href="licenses-permits.html">Licenses & Permits</a> 
+            <a href="trucker-insurance.html">Trucker Insurance</a> 
+            <a href="broker-insurance.html">Broker Insurance</a> 
+            <a href="new-entrant-audit.html">New Entrant Audit</a> 
+          </div> 
+        </div> 
+      </div> 
+      
+      <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Secure Portal</a> 
+    </div> 
+  </div> 
 </nav>
+
 
 <!-- SECTION 1: COMPACT HERO WITH IMAGE -->
 <main class="page-container">
@@ -261,8 +259,7 @@
 </section>
 
 
-
-  <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+ <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
 <footer class="site-footer"> 
     <div class="footer-container"> 
         <div class="footer-brand"> 
@@ -350,113 +347,15 @@
     </div> 
 </footer>
 
+<script src="assets/js/toggle.js"></script>
+<script src="assets/js/master.js"></script>
 
-      <!-- 🚀 FIXED: jQuery core library MUST load first to initialize layout elements -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    
-
-<!-- 2. Securely bind your project public anonymous credentials to the window scope -->
-<script>
-  (function() {
-    const supabaseUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
-    // 🚀 ACTION REQUIRED: Replace the placeholder string below with your actual project Anon API Key
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; 
-    
-    if (typeof supabaseJs !== 'undefined') {
-        window.supabase = supabaseJs.createClient(supabaseUrl, supabaseAnonKey);
-        console.log("📰 Supabase connection layer initialized for automated blog mapping.");
-    } else {
-        console.error("Critical: Supabase library failed to inject into canvas window.");
-    }
-  })();
-</script>
-
-<!-- 3. Your custom main file runs last, instantly picking up the database link -->
-<script src="assets/js/main.js?v=9"></script>
-
-
-<script>
-    // Safe initialization that avoids global namespace pollution
-    (function() {
-        window.addEventListener('DOMContentLoaded', () => {
-            // Check if Supabase is already initialized by your main layout scripts
-            const checkInterval = setInterval(() => {
-                if (window.supabase) {
-                    clearInterval(checkInterval);
-                    initializeHomepageFeed();
-                }
-            }, 100);
-            
-            // Safety timeout: stops searching after 4 seconds to prevent endless loops
-            setTimeout(() => clearInterval(checkInterval), 4000);
-        });
-
-        async function initializeHomepageFeed() {
-            const targetContainer = document.getElementById('public-homepage-blog-grid-target');
-            if (!targetContainer) return;
-
-            try {
-                // Connect to your live database table repository instantly
-                const clientInstance = window.supabase.createClient(
-                    'https://lrbimrlbskjweynxlgas.supabase.co',
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
-                );
-
-                // Fetch the top 3 rows sorted chronologically
-                const { data: articles, error } = await clientInstance
-                    .from('blog_posts')
-                    .select('*')
-                    .order('created_at', { ascending: false })
-                    .limit(3);
-
-                if (error) throw error;
-                if (!articles || articles.length === 0) {
-                    targetContainer.innerHTML = '<div style="grid-column:span 3;text-align:center;color:#64748b;font-weight:600;padding:20px;">No articles found.</div>';
-                    return;
-                }
-
-                targetContainer.innerHTML = '';
-
-                // Build isolated text fragments to prevent CSS leakage into your footer elements
-                articles.forEach(item => {
-                    const dateFormatted = new Date(item.created_at).toLocaleDateString('en-US', {
-                        year: 'numeric', month: 'short', day: 'numeric'
-                    });
-
-                    const postAnchor = document.createElement('a');
-                    postAnchor.href = `article.html?slug=${item.slug}`;
-                    postAnchor.style.cssText = "display:block!important;text-decoration:none!important;background:#ffffff!important;border:1px solid #e2e8f0!important;border-radius:12px!important;overflow:hidden!important;box-shadow:0 4px 12px rgba(10,31,68,0.01)!important;";
-                    
-                    postAnchor.innerHTML = `
-                        <div style="height:180px;width:100%;background:url('${item.image_url || 'images/blog-fallback.jpg'}') center/cover no-repeat;background-color:#f1f5f9;display:block;"></div>
-                        <div style="padding:24px!important;text-align:left!important;display:block!important;box-sizing:border-box!important;">
-                            <div style="display:flex!important;justify-content:space-between!important;align-items:center!important;margin-bottom:16px!important;gap:10px!important;">
-                                <span style="font-size:0.68rem;padding:4px 8px;border-radius:4px;background:#10b981;color:#ffffff;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap!important;display:inline-block!important;">${item.category}</span>
-                                <span style="font-size:0.75rem;color:#94a3b8;font-weight:600;white-space:nowrap!important;display:inline-block!important;">${dateFormatted}</span>
-                            </div>
-                            <div style="margin:0 0 12px 0!important;padding:0!important;display:block!important;">
-                                <h3 style="margin:0!important;padding:0!important;font-size:1.2rem!important;color:#0a1f44!important;font-weight:700;line-height:1.4!important;text-transform:none!important;text-align:left!important;display:block!important;">${item.title}</h3>
-                            </div>
-                            <div style="margin:0!important;padding:0!important;display:block!important;">
-                                <p style="margin:0!important;padding:0!important;color:#64748b!important;font-size:0.88rem!important;line-height:1.6!important;text-transform:none!important;text-align:left!important;display:block!important;">${item.summary || 'Click to view full insight data analysis report...'}</p>
-                            </div>
-                        </div>`;
-                    
-                    targetContainer.appendChild(postAnchor);
-                });
-
-            } catch (err) {
-                console.error("Homepage safe database injection track broken:", err);
-                targetContainer.innerHTML = '<div style="grid-column:span 3;text-align:center;color:#ef4444;font-weight:600;padding:20px;">Unable to display recent updates.</div>';
-            }
-        }
-    })();
-</script>
+<!-- 🔼 SCROLL TO TOP FLOATING INTERFACE -->
+<button id="scrollToTopBtn" aria-label="Scroll to top" class="scroll-to-top-btn">
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+    </svg>
+</button>
 
 
 </body>
