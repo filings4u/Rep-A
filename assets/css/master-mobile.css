@@ -11,7 +11,7 @@
   html, body {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden !important;
+    overflow-x: hidden;
     padding: 0;
     margin: 0;
   }
@@ -731,7 +731,6 @@
     order: 3 !important; /* Explicitly pushes it down to the last position in the box layout */ 
     margin-top: -5px !important; /* Adds breathing room between the toggle and the menu items */ 
     box-sizing: border-box !important; 
-    overflow-x: hidden !important;
 } 
 
 /* 3. Keep the toggle button on the right side of the logo line */ 
@@ -786,7 +785,6 @@
     flex-direction: column !important; 
     width: 100% !important; 
     gap: 0 !important; 
-    overflow: hidden !important;
 } 
 
 /* Clean up internal header spacing metrics (e.g. "Popular Formations") */ 
@@ -980,4 +978,30 @@ a.btn-client-portal,
         margin-top: auto !important; /* Automatically anchors to the true bottom of the layout stack */
         position: relative !important;
     }
+}
+
+/* --- 5. ELIMINATE MOBILE MENU CORNER WHITE ARTIFACT LINES --- */
+
+/* Prevent hidden elements from bleeding horizontally out of the main layout */
+.nav-links {
+    overflow-x: hidden !important;
+}
+
+/* Force the active dropdown blocks to clip any rogue sub-element text scaling errors */
+.nav-item-dropdown.active-toggle .dropdown-content, 
+.nav-item-dropdown.active-toggle .mega-panel-two-col, 
+.nav-item-dropdown.active-toggle .mega-panel-three-col { 
+    overflow-x: hidden !important;
+}
+
+/* Stop the interior link rows from calculating wider than the viewport container */
+.mega-column {
+    max-width: 100% !important;
+    overflow: hidden !important;
+}
+
+/* Global mobile safe-guard: Kills page shifting and clipping artifacts sitewide */
+html, body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
 }
