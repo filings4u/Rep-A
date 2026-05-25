@@ -1489,3 +1489,92 @@ footer.site-footer, .site-footer {
         text-align: right !important;
     }
 }
+
+/* ==========================================================================
+   🔼 FLOATING SCROLL TO TOP ICON SUITE
+   ========================================================================== */
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+    width: 46px;
+    height: 46px;
+    background-color: var(--emerald, #10b981);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(10, 31, 68, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover action state for desktop users */
+.scroll-to-top-btn:hover {
+    background-color: #0e9f6e; /* Deepens the emerald shade */
+    transform: translateY(-4px);
+}
+
+/* Active reveal toggle class applied via JavaScript */
+.scroll-to-top-btn.reveal-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Responsive adjustment specifically for compact mobile frames */
+@media screen and (max-width: 991px) {
+    .scroll-to-top-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 42px;
+        height: 42px;
+        box-shadow: 0 3px 10px rgba(10, 31, 68, 0.2);
+    }
+}
+
+/* ==========================================================================
+   🔼 UPGRADED SCROLL TO TOP SIZE & BORDER SYSTEM
+   ========================================================================== */
+.scroll-to-top-btn {
+    width: 54px !important;              /* Increased size for better visibility */
+    height: 54px !important;
+    background-color: #10b981 !important; /* Premium brand Emerald */
+    border: 3px solid #0a1f44 !important; /* Thick corporate Navy outer frame border ring */
+    box-shadow: 0 6px 20px rgba(10, 31, 68, 0.25) !important; /* Enhanced shadow depth */
+}
+
+/* Make the geometric arrow inside larger */
+.scroll-to-top-btn .pure-css-arrow {
+    width: 13px !important;               /* Expanded dimensions */
+    height: 13px !important;
+    border-top: 3.5px solid #ffffff !important;  /* Thicker, sharper white line paths */
+    border-left: 3.5px solid #ffffff !important;
+    margin-top: 6px !important;           /* Repositioned for optimal optical center */
+}
+
+/* Hover adjustments for desktop viewports */
+.scroll-to-top-btn:hover {
+    background-color: #0a1f44 !important; /* Inverts on hover: Background turns Navy */
+    border-color: #10b981 !important;     /* Inverts on hover: Border ring turns Emerald */
+}
+
+/* Compact responsive sizing rules for smaller mobile screens */
+@media screen and (max-width: 991px) {
+    .scroll-to-top-btn {
+        width: 48px !important;           /* Balanced handheld touchscreen proportions */
+        height: 48px !important;
+        border: 2.5px solid #0a1f44 !important;
+    }
+    .scroll-to-top-btn .pure-css-arrow {
+        width: 10px !important;
+        height: 10px !important;
+        border-top: 3px solid #ffffff !important;
+        border-left: 3px solid #ffffff !important;
+        margin-top: 4px !important;
+    }
+}
