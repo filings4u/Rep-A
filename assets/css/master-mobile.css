@@ -985,3 +985,41 @@
         margin-right: auto !important;
     }
 }
+
+
+/* ==========================================
+   TARGETED MOBILE RESIZE FOR FOOTER BOTTOM
+   ========================================== */
+@media screen and (max-width: 768px) {
+    /* Forces the main bottom bar elements to stack vertically */
+    .site-footer .footer-bottom, 
+    footer .footer-bottom {
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        gap: 15px !important;
+    }
+
+    /* Target the legal links container specifically */
+    /* Keeps links together on one horizontal row */
+    .site-footer .footer-bottom .footer-legal-links,
+    .site-footer .footer-bottom div:has(a) {
+        display: inline-flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 12px !important; /* Space between links */
+        width: auto !important;
+    }
+
+    /* Ensure individual links don't stretch or break lines */
+    .site-footer .footer-bottom .footer-legal-links a,
+    .site-footer .footer-bottom a {
+        display: inline-block !important;
+        width: auto !important;
+        white-space: nowrap !important; /* Prevents text wrapping */
+        text-align: center !important;
+    }
+}
