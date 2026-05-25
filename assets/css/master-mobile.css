@@ -670,41 +670,41 @@
 
 /* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */ 
 .nav-links { 
-    display: none !important; 
+    display: none !important; /* Forces the box to completely unload when closed */
     flex-direction: column !important; 
     position: fixed !important; 
 
-    /* FIXED: Lock the frame coordinate right below a standard mobile bar */
-    top: 50px !important; 
-    height: calc(100vh - 50px) !important; 
-
-    /* FORCE CLOSE THE VERTICAL GAP USING NEGATIVE MARGIN */
-    margin-top: -75px !important; /* Increase this to -20px or -25px if you want it even closer to the toggle icon */
-
-    right: -50% !important; 
-    left: auto !important; 
+    /* FIXED LOCK COORDINATES: Sits right below the screen status bar line */
+    top: 55px !important; 
+    left: auto !important;
+    
+    /* 🌟 THE COUPLING FIX: Hardware accelerated right screen slide offset configuration */
+    right: 0 !important;
+    transform: translate3d(100%, 0, 0) !important; /* Keeps the menu floating entirely off-screen to the right */
+    
     width: 85vw !important; 
     max-width: 85vw !important; 
+    height: calc(100vh - 55px) !important; 
     background: #ffffff !important; 
     z-index: 99999 !important; 
     overflow-y: auto !important; 
     padding: 24px 20px !important; 
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; 
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; 
     box-sizing: border-box !important; 
+
+    /* Smooth translation rendering engine tracking speeds */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; 
 }
 
+/* ACTIVE SLIDE-IN STATE: Hooked into your toggle.js class assignments */
+body.nav-open .nav-links, 
+.nav-links.active { 
+    display: flex !important; 
+    transform: translate3d(0, 0, 0) !important; /* Slides smoothly over the page content area */
+    visibility: visible !important;
+    opacity: 1 !important;
+}
 
-
-    /* ACTIVE SLIDE-IN STATE: Triggered cleanly by your toggle.js script */
-    body.nav-open .nav-links, 
-    .nav-links.active {
-        display: flex !important; /* Switches on only when the menu button is tapped */
-        right: 0 !important;
-        left: auto !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
 
     /* Main Level Mobile Navigation Links */
     .nav-links a {
