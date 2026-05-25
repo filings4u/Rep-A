@@ -725,7 +725,7 @@
 
 /* 2. Force the links container to take up the full width and break down */ 
 .nav-links { 
-    display: flex !important; 
+    display: none !important; 
     flex-direction: column !important; /* Stacks links vertically */ 
     width: 100% !important; /* Forces it to break onto its own full horizontal line */ 
     order: 3 !important; /* Explicitly pushes it down to the last position in the box layout */ 
