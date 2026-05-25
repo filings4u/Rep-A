@@ -713,82 +713,123 @@
     width: 100% !important;
   }
 
-    /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
-  .nav-item-dropdown .dropdown-content, 
-  .nav-item-dropdown .mega-panel-two-col, 
-  .nav-item-dropdown .mega-panel-three-col {
-    display: none !important;
-    position: relative !important; 
-    top: 0 !important;
-    left: 0 !important;
-    max-height: none !important; 
-    overflow: visible !important; 
-    background: transparent !important; 
-    width: 100% !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
+ /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */ 
 
-  /* Force open sub-menus to expand naturally downward and push elements safely below them */
-  .nav-item-dropdown.active-toggle .dropdown-content, 
-  .nav-item-dropdown.active-toggle .mega-panel-two-col, 
-  .nav-item-dropdown.active-toggle .mega-panel-three-col {
-    display: flex !important;
-    flex-direction: column !important; 
-    grid-template-columns: none !important; 
-    padding: 0 0 10px 15px !important; 
-    margin-top: 5px !important;
-  }
+.nav-content-wrapper { 
+    display: flex !important; 
+    flex-wrap: wrap !important; /* Allows .nav-links to drop below the toggle line */ 
+    justify-content: space-between !important; 
+    align-items: center !important; 
+    width: 100% !important; 
+} 
 
-  /* Sub-Links columns structural repair container tracker */
-  .mega-column {
+/* 2. Force the links container to take up the full width and break down */ 
+.nav-links { 
+    display: flex !important; 
+    flex-direction: column !important; /* Stacks links vertically */ 
+    width: 100% !important; /* Forces it to break onto its own full horizontal line */ 
+    order: 3 !important; /* Explicitly pushes it down to the last position in the box layout */ 
+    margin-top: 15px !important; /* Adds breathing room between the toggle and the menu items */ 
+    box-sizing: border-box !important; 
+} 
+
+/* 3. Keep the toggle button on the right side of the logo line */ 
+.mobile-toggle-btn { 
+    order: 2 !important; 
+} 
+
+.logo-link { 
+    order: 1 !important; 
+}
+
+/* FIX INJECTION: Forces each parent title container to stack vertically and grow naturally */
+.nav-item-dropdown {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
-    gap: 0 !important;
-  }
+    height: auto !important;
+}
 
-  /* Clean up internal header spacing metrics (e.g. "Popular Formations") */
-  .mega-column .column-title {
-    font-size: 0.75rem !important;
-    color: #0a1f44 !important; 
-    text-align: left !important;
-    margin-top: 15px !important;
-    padding: 0 0 5px 0 !important;
-    border-bottom: none !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-  }
+.nav-item-dropdown .dropdown-content, 
+.nav-item-dropdown .mega-panel-two-col, 
+.nav-item-dropdown .mega-panel-three-col { 
+    display: none !important; 
+    position: relative !important; 
+    top: 0 !important; 
+    left: 0 !important; 
+    max-height: none !important; 
+    overflow: visible !important; 
+    background: transparent !important; 
+    width: 100% !important; 
+    border: none !important; 
+    box-shadow: none !important; 
+    padding: 0 !important; 
+    margin: 0 !important; 
+} 
 
-  /* Regular Inner Mobile Dropdown Links - Flat Vertical Flow */
-  .mega-column a {
+/* Force open sub-menus to expand naturally downward and push elements safely below them */ 
+.nav-item-dropdown.active-toggle .dropdown-content, 
+.nav-item-dropdown.active-toggle .mega-panel-two-col, 
+.nav-item-dropdown.active-toggle .mega-panel-three-col { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    grid-template-columns: none !important; 
+    padding: 0 0 10px 15px !important; 
+    margin-top: 5px !important; 
+    height: auto !important; /* FIX INJECTION: Mandates the opened box tells the browser its true dynamic size */
+} 
+
+/* Sub-Links columns structural repair container tracker */ 
+.mega-column { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    width: 100% !important; 
+    gap: 0 !important; 
+} 
+
+/* Clean up internal header spacing metrics (e.g. "Popular Formations") */ 
+.mega-column .column-title { 
+    display: block !important; /* FIX INJECTION: Prevents text lines from horizontal squishing */
+    font-size: 0.75rem !important; 
     color: #0a1f44 !important; 
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-    padding: 10px 0 !important; 
-    text-align: left !important;
+    text-align: left !important; 
+    margin-top: 15px !important; 
+    padding: 0 0 5px 0 !important; 
     border-bottom: none !important; 
-    width: 100% !important;
-  }
+    font-weight: 700 !important; 
+    text-transform: uppercase !important; 
+    letter-spacing: 0.5px !important; 
+} 
 
-  /* 1. SECURE PORTAL BUTTON - MOBILE STYLING ENFORCEMENT LOOP */
-  .nav-links .btn-client-portal, 
-  nav .btn-client-portal, 
-  a.btn-client-portal,
-  .btn-client-portal.mobile-portal-lock {
-    color: #ffffff !important;           
+/* Regular Inner Mobile Dropdown Links - Flat Vertical Flow */ 
+.mega-column a { 
+    display: block !important; /* FIX INJECTION: Forces text links to stack instead of merging text */
+    color: #0a1f44 !important; 
+    font-size: 0.95rem !important; 
+    font-weight: 600 !important; 
+    padding: 10px 0 !important; 
+    text-align: left !important; 
+    border-bottom: none !important; 
+    width: 100% !important; 
+} 
+
+/* 1. SECURE PORTAL BUTTON - MOBILE STYLING ENFORCEMENT LOOP */ 
+.nav-links .btn-client-portal, 
+nav .btn-client-portal, 
+a.btn-client-portal, 
+.btn-client-portal.mobile-portal-lock { 
+    color: #ffffff !important; 
     background-color: #0a1f44 !important; 
-    display: block !important;
-    width: 100% !important;
-    text-align: center !important;
-    margin-top: 20px !important;
-    padding: 14px 0 !important;
-    border-radius: 8px !important;
-    font-weight: 700 !important;
-  }
+    display: block !important; 
+    width: 100% !important; 
+    text-align: center !important; 
+    margin-top: 20px !important; 
+    padding: 14px 0 !important; 
+    border-radius: 8px !important; 
+    font-weight: 700 !important; 
+    position: relative !important; /* FIX INJECTION: Preps the button layer flow positioning */
+}
+
 
   /* 2. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
   .logo-link img, 
