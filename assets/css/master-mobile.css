@@ -725,13 +725,23 @@
 
 /* 2. Force the links container to take up the full width and break down */ 
 .nav-links { 
-    display: flex !important; 
-    flex-direction: column !important; /* Stacks links vertically */ 
+    /* FIXED: Hide the menu completely when closed to destroy the white line artifact */
+    display: none !important; 
+    
     width: 100% !important; /* Forces it to break onto its own full horizontal line */ 
     order: 3 !important; /* Explicitly pushes it down to the last position in the box layout */ 
-    margin-top: 15px !important; /* Adds breathing room between the toggle and the menu items */ 
+    
+    /* FIXED: Changed from 15px to 0px to instantly eliminate the large empty gap */
+    margin-top: 0px !important; 
+    
     box-sizing: border-box !important; 
 } 
+
+/* FIXED: Re-enables the menu ONLY when toggle.js injects the active class */
+.nav-links.active {
+    display: flex !important;
+    flex-direction: column !important; /* Stacks links vertically */ 
+}
 
 /* 3. Keep the toggle button on the right side of the logo line */ 
 .mobile-toggle-btn { 
@@ -829,6 +839,7 @@ a.btn-client-portal,
     font-weight: 700 !important; 
     position: relative !important; /* FIX INJECTION: Preps the button layer flow positioning */
 }
+
 
 
   /* 2. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
