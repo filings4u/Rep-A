@@ -1146,155 +1146,131 @@ ul.horizontal-category-links li a.active-filter-tier {
   margin-top: 40px;
 }
 
-/* ==========================================================================
-   13. DYNAMIC REUSABLE CORPORATE SITE FOOTER MATRIX
-   ========================================================================== */
-footer.site-footer, 
-.site-footer {
-  display: block;
-  position: relative;
-  width: 100%;
-  background: var(--navy);
-  color: #94a3b8;
-  box-sizing: border-box;
-  padding: 60px 6% 40px 6%;
-  flex-shrink: 0;
-  margin-top: 40px;
+/* ========================================================================== 13. DYNAMIC REUSABLE CORPORATE SITE FOOTER MATRIX ========================================================================== */ 
+footer.site-footer, .site-footer { 
+    display: block !important; 
+    position: relative !important; 
+    width: 100% !important; 
+    background: var(--navy) !important; 
+    color: #94a3b8 !important; 
+    box-sizing: border-box !important; 
+    padding: 60px 6% 40px 6% !important; /* Uses the same 6% padding as your sections for edge alignment */
+    flex-shrink: 0 !important; 
+    margin-top: 40px !important; 
+} 
+
+/* Base Grid Layout Engine */ 
+.footer-container { 
+    width: 100% !important; 
+    display: grid !important; 
+    grid-template-columns: repeat(2, 1fr) !important; 
+    gap: 30px 15px !important; 
+    max-width: 1200px !important; /* Locks width to your site's standard content ceiling */
+    margin: 0 auto !important; /* Centers the container on the page */
+} 
+
+/* Brand columns span full width on small layouts */ 
+.footer-brand { 
+    grid-column: span 2 !important; 
+    text-align: left !important; 
+    display: block !important; 
+} 
+
+.site-footer .footer-brand p { 
+    max-width: 320px !important; 
+    margin-top: 15px !important; 
+    line-height: 1.5 !important; 
+} 
+
+.site-footer .footer-col { 
+    text-align: left !important; 
+    display: block !important; 
+} 
+
+.site-footer h4, .footer-col h4 { 
+    color: var(--white) !important; 
+    font-size: 0.8rem !important; 
+    text-transform: uppercase !important; 
+    letter-spacing: 2px !important; 
+    margin: 0 0 25px 0 !important; 
+    font-weight: 800 !important; 
+} 
+
+.site-footer ul, .footer-col ul { 
+    list-style: none !important; 
+    padding: 0 !important; 
+    margin: 0 !important; 
+    display: block !important; 
+} 
+
+.site-footer ul li, .footer-col ul li { 
+    margin-bottom: 12px !important; 
+    text-align: left !important; 
+    display: block !important; 
+} 
+
+.site-footer ul li a, .footer-col ul li a, .footer-col ul li a:visited, .legal-links a, .legal-links a:visited { 
+    color: #94a3b8 !important; 
+    text-decoration: none !important; 
+    font-size: 0.9rem !important; 
+    transition: all 0.2s ease !important; 
+} 
+
+/* Bottom Bar Utility Element Area */ 
+.site-footer .footer-bottom { 
+    width: 100% !important; 
+    max-width: 1200px !important; /* Aligns the bottom row with the link sections above */
+    margin-top: 30px !important; 
+    display: flex !important; 
+    flex-direction: row !important; 
+    justify-content: space-between !important; 
+    align-items: center !important; 
+    box-sizing: border-box !important; 
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important; 
+    padding-top: 20px !important; 
+} 
+
+.site-footer .legal-links { 
+    display: flex !important; 
+    flex-direction: row !important; 
+    gap: 30px !important; 
+} 
+
+/* --- 🖥️ ENTERPRISE DESKTOP GRID MEDIA OVERRIDES --- */ 
+@media (min-width: 992px) { 
+    .footer-container { 
+        /* FIXED: Replaces the loose flex layout with an explicit layout grid */
+        display: grid !important; 
+        /* 5-Column Matrix: 2 fractions for the wide logo/brand block, 1 fraction for each link column */
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr !important; 
+        gap: 40px !important; /* Balanced gap spacing for widescreen assets */
+    } 
+
+    .footer-brand { 
+        grid-column: auto !important; /* Releases mobile full-width spanning */
+        max-width: 300px !important; 
+    } 
+} 
+
+/* --- RESTORE DESKTOP SECURE PORTAL EMERALD HOVER --- */ 
+@media (min-width: 992px) { 
+    .btn-client-portal { 
+        background-color: var(--navy, #0a1f44) !important; 
+        color: #ffffff !important; 
+        transition: all 0.25s ease-in-out !important; 
+    } 
+    .btn-client-portal:hover { 
+        background-color: #10b981 !important; 
+        color: #ffffff !important; 
+    } 
+} 
+
+/* --- SITE-WIDE BRANDING FOOTER LINK COLOR --- */ 
+.site-footer a[href*="roselandcompanies.com"], footer a[href*="roselandcompanies.com"] { 
+    color: #c15254 !important; 
+    font-weight: 700 !important; 
 }
 
-/* Base Setup Layout: Grid Displays Side-By-Side Clean on Small Viewports */
-.footer-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px 15px;
-  max-width: 100%;
-  margin: 0 auto;
-}
-
-/* Brand statement columns span full workspace width on tiny mobile frames */
-.footer-brand {
-  grid-column: span 2;
-  text-align: left;
-  display: block;
-}
-
-.site-footer .footer-brand p {
-  max-width: 320px;
-  margin-top: 15px;
-  line-height: 1.5;
-}
-
-.footer-container .footer-brand, 
-.footer-container .footer-col {
-  flex: 0 1 auto;
-}
-
-.site-footer .footer-col {
-  text-align: left;
-  display: block;
-}
-
-.site-footer h4,
-.footer-col h4 {
-  color: var(--white);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin: 0 0 25px 0;
-  font-weight: 800;
-}
-
-.site-footer ul,
-.footer-col ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: block;
-}
-
-.site-footer ul li,
-.footer-col ul li {
-  margin-bottom: 12px;
-  text-align: left;
-  display: block;
-}
-
-.site-footer ul li a, 
-.footer-col ul li a, 
-.footer-col ul li a:visited, 
-.legal-links a, 
-.legal-links a:visited {
-  color: #94a3b8;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-}
-
-.site-footer ul li a:hover, 
-.footer-col ul li a:hover, 
-.legal-links a:hover {
-  color: var(--emerald);
-}
-
-/* Bottom Bar Utility Element Rules Area */
-.site-footer .footer-bottom {
-  width: 100%;
-  max-width: 100%;
-  margin: 60px auto 0 auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 30px;
-}
-
-.site-footer .legal-links {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-}
-
-/* --- DESKTOP VIEWPORT MEDIA OVERRIDES TRACK --- */
-@media (min-width: 992px) {
-  .footer-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 30px;
-  }
-  
-  .footer-brand {
-    grid-column: auto;
-    max-width: 300px;
-  }
-}
-
-/* --- RESTORE DESKTOP SECURE PORTAL EMERALD HOVER --- */
-@media (min-width: 992px) {
-  .btn-client-portal {
-    background-color: var(--navy, #0a1f44);
-    color: #ffffff;
-    transition: all 0.25s ease-in-out;
-  }
-  
-  .btn-client-portal:hover {
-    background-color: #10b981 !important; /* Restores the emerald transformation glow */
-    color: #ffffff !important;
-  }
-}
-
-/* --- SITE-WIDE BRANDING FOOTER LINK COLOR --- */
-.site-footer a[href*="roselandcompanies.com"],
-footer a[href*="roselandcompanies.com"] {
-  color: #c15254 !important;
-  font-weight: 700 !important;
-}
 
 /* ==========================================================================
    🖥️ DESKTOP MEGA-MENU HORIZONTAL SHRINK & TEXT LINK MATCHING PROFILES
@@ -1481,3 +1457,35 @@ footer a[href*="roselandcompanies.com"] {
   }
 }
 
+/* ==========================================================================
+   🧱 DESKTOP FOOTER DYNAMIC STRETCH HARMONIZER
+   ========================================================================== */
+@media (min-width: 992px) {
+    /* 1. Remove the rigid 1200px ceiling from the link grid container */
+    .site-footer .footer-container {
+        max-width: 100% !important; /* Erases the hard block boundary */
+        width: 100% !important;     /* Instructs the grid to fill the full 88% width track */
+    }
+
+    /* 2. Remove the rigid 1200px ceiling from the bottom copyright strip */
+    .site-footer .footer-bottom {
+        max-width: 100% !important; /* Erases the hard block boundary */
+        width: 100% !important;     /* Snaps the legal text flush to the outer section lines */
+    }
+}
+
+/* ==========================================================================
+   🎯 DESKTOP FOOTER FAR-RIGHT GRID ALIGNMENT OVERRIDE
+   ========================================================================== */
+@media (min-width: 992px) {
+    /* 1. Target the 5th column (Support) and align its internal contents to the right */
+    .site-footer .footer-container .footer-col:nth-child(5) {
+        align-items: flex-end !important; /* Flushes the list container right */
+        text-align: right !important;      /* Aligns the heading text right */
+    }
+
+    /* 2. Force the individual links inside the Support column to align right */
+    .site-footer .footer-container .footer-col:nth-child(5) ul li {
+        text-align: right !important;
+    }
+}
