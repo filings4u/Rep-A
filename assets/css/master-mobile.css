@@ -236,7 +236,7 @@
     flex-direction: column !important;       /* Re-aligns template grids into a standard vertical flow link path */
     grid-template-columns: none !important;  /* Wipes out desktop horizontal column layouts completely */
     padding: 0 0 10px 15px !important;       /* Indents your inner lists slightly for clean hierarchy */
-    margin-top: 5px !important;
+    margin-top: -50px !important;
   }
 
   /* Sub-links layout container adjustments */
