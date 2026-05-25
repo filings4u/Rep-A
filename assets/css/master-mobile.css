@@ -865,21 +865,16 @@
 }
 
 
-/* ==========================================================================
-   📱 MOBILE RESPONSIVE LAYOUT ENGINE FORFLOW FIXED RESET
-   ========================================================================== */
+/* ========================================================================== 📱 MOBILE RESPONSIVE LAYOUT ENGINE FORFLOW FIXED RESET ========================================================================== */ 
 @media screen and (max-width: 991px) {
-
-    /* 1. FORCE MAIN MENUBAR CONTAINER TO ADJUST DYNAMICALLY */
-    .nav-links {
+    /* 1. KEEP NAV-LINKS STABLE AS A SLIDE DRAWER */
+    body.nav-open .nav-links, .nav-links.active {
         display: flex !important;
-        flex-direction: column !important; /* Stack menu items in a responsive vertical line */
-        height: auto !important; /* Allow the overall wrapper to grow and shrink */
-        align-items: stretch !important; /* Force all child items to take full width */
-        position: relative !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
     }
 
-    /* 2. FORCE INDIVIDUAL DROPDOWNS TO GROW NATURAL VERTICAL HEIGTH */
+    /* 2. FORCE INDIVIDUAL DROPDOWNS TO GROW NATURAL VERTICAL HEIGHT */
     .nav-item-dropdown {
         display: flex !important;
         flex-direction: column !important; /* Stacks the title link above the hidden sub-menu box */
@@ -891,7 +886,7 @@
     /* 3. ENSURE SUB-MENU CONTENT OPENS AND EXPANDS INTERNALLY */
     .nav-item-dropdown.active-toggle .dropdown-content, 
     .nav-item-dropdown.active-toggle .mega-panel-two-col, 
-    .nav-item-dropdown.active-toggle .mega-panel-three-col { 
+    .nav-item-dropdown.active-toggle .mega-panel-three-col {
         display: flex !important;
         flex-direction: column !important; /* Stack sub-columns vertically */
         position: relative !important; /* Drops out of absolute desktop tracking mode */
@@ -910,16 +905,14 @@
     }
 
     /* 5. INDIVIDUAL LINK ENFORCEMENT RULES */
-    .mega-column a, 
-    .mega-column .column-title {
+    .mega-column a, .mega-column .column-title {
         display: block !important;
         width: 100% !important;
         height: auto !important;
     }
 
     /* 6. SECURE PORTAL BUTTON RESPONSIVE PUSH-DOWN */
-    .nav-links .btn-client-portal,
-    a.btn-client-portal {
+    .nav-links .btn-client-portal, a.btn-client-portal {
         display: block !important;
         width: 100% !important;
         margin-top: auto !important; /* Automatically anchors to the true bottom of the layout stack */
