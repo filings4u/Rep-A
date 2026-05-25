@@ -729,12 +729,13 @@
 /* 2. Force the links container to take up the full width and break down */ 
 .nav-links { 
     display: none !important; 
-    flex-direction: column !important; /* Stacks links vertically */ 
-    width: 100% !important; /* Forces it to break onto its own full horizontal line */ 
-    order: 3 !important; /* Explicitly pushes it down to the last position in the box layout */ 
-    margin-top: -5px !important; /* Adds breathing room between the toggle and the menu items */ 
+    width: 100% !important; 
+    order: 3 !important; 
     box-sizing: border-box !important; 
-} 
+    margin-top: 0 !important;
+    padding: 15px !important;
+    background: #ffffff !important; /* Ensure the menu background matches your design */
+}
 
 /* 3. Keep the toggle button on the right side of the logo line */ 
 .mobile-toggle-btn { 
