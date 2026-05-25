@@ -679,7 +679,7 @@
     height: calc(100vh - 50px) !important; 
 
     /* FORCE CLOSE THE VERTICAL GAP USING NEGATIVE MARGIN */
-    margin-top: -25px !important; /* Increase this to -20px or -25px if you want it even closer to the toggle icon */
+    margin-top: -75px !important; /* Increase this to -20px or -25px if you want it even closer to the toggle icon */
 
     right: -50% !important; 
     left: auto !important; 
