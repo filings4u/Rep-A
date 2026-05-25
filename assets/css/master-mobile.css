@@ -979,29 +979,3 @@ a.btn-client-portal,
         position: relative !important;
     }
 }
-
-/* --- 5. ELIMINATE MOBILE MENU CORNER WHITE ARTIFACT LINES --- */
-
-/* Prevent hidden elements from bleeding horizontally out of the main layout */
-.nav-links {
-    overflow-x: hidden !important;
-}
-
-/* Force the active dropdown blocks to clip any rogue sub-element text scaling errors */
-.nav-item-dropdown.active-toggle .dropdown-content, 
-.nav-item-dropdown.active-toggle .mega-panel-two-col, 
-.nav-item-dropdown.active-toggle .mega-panel-three-col { 
-    overflow-x: hidden !important;
-}
-
-/* Stop the interior link rows from calculating wider than the viewport container */
-.mega-column {
-    max-width: 100% !important;
-    overflow: hidden !important;
-}
-
-/* Global mobile safe-guard: Kills page shifting and clipping artifacts sitewide */
-html, body {
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-}
