@@ -668,254 +668,258 @@
     text-align: left;
   }
 
-     /* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */
-    .nav-links {
-        display: none !important; /* FIXED: Hidden completely when closed to stop corner white lines */
-        flex-direction: column !important;
-        position: fixed !important;
-        top: 20px !important; /* Aligns perfectly right below your header bar line */
-        right: -100% !important; /* Hidden off-screen to the right side */
-        left: auto !important;
-        width: 85vw !important; /* Custom width layout spec */
-        max-width: 85vw !important;
-        height: calc(100vh - 70px) !important;
-        background: #ffffff !important;
-        z-index: 99999 !important;
-        overflow-y: auto !important; /* Allows internal scrolling for long link items */
-        padding: 24px 20px !important;
-        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
-        transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        box-sizing: border-box !important;
-    }
+    /* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */ 
+@media (max-width: 991px) {
+    .nav-links { 
+        display: none !important; 
+        flex-direction: column !important; 
+        position: fixed !important; 
+        top: 70px !important; /* FIXED: Pushes drawer down directly below your 70px navigation header */ 
+        right: -100% !important; 
+        left: auto !important; 
+        width: 85vw !important; 
+        max-width: 85vw !important; 
+        height: calc(100vh - 70px) !important; 
+        background: #ffffff !important; 
+        z-index: 99999 !important; 
+        overflow-y: auto !important; 
+        padding: 24px 20px !important; 
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; 
+        transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; 
+        box-sizing: border-box !important; 
+    } 
 
-    /* ACTIVE SLIDE-IN STATE: Triggered cleanly by your toggle.js script */
-    body.nav-open .nav-links, 
-    .nav-links.active {
-        display: flex !important; /* Switches on only when the menu button is tapped */
-        right: 0 !important;
-        left: auto !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
+    /* ACTIVE SLIDE-IN STATE: Triggered cleanly by your toggle.js script */ 
+    body.nav-open .nav-links, .nav-links.active { 
+        display: flex !important; 
+        right: 0 !important; 
+        left: auto !important; 
+        visibility: visible !important; 
+        opacity: 1 !important; 
+    } 
 
-    /* Main Level Mobile Navigation Links */
-    .nav-links a {
-        color: #0a1f44 !important;
-        padding: 14px 10px !important;
-        display: block !important;
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
-        border-bottom: 1px solid #f1f5f9 !important;
-        text-align: left !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
+    /* Main Level Mobile Navigation Links */ 
+    .nav-links a { 
+        color: #0a1f44 !important; 
+        padding: 14px 10px !important; 
+        display: block !important; 
+        font-size: 1.1rem !important; 
+        font-weight: 700 !important; 
+        border-bottom: 1px solid #f1f5f9 !important; 
+        text-align: left !important; 
+        width: 100% !important; 
+        box-sizing: border-box !important; 
+    } 
 
-    /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */
-    .nav-content-wrapper {
+    /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */ 
+    .nav-content-wrapper { 
+        display: flex !important; 
+        justify-content: space-between !important; 
+        align-items: center !important; 
+        width: 100% !important; 
+    } 
+
+    /* HARD LOCK: Forces the hamburger toggle icon to the absolute far right edge of the screen */
+    .mobile-toggle-btn {
+        margin-left: auto !important;
         display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        width: 100% !important;
     }
 
-    /* Ensure parent title blocks grow dynamically to push elements below them */
-    .nav-item-dropdown {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        height: auto !important;
-    }
+    /* Ensure parent title blocks grow dynamically to push elements below them */ 
+    .nav-item-dropdown { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        width: 100% !important; 
+        height: auto !important; 
+    } 
 
-    /* Initial hidden configuration state for inner dropdown grids */
-    .nav-item-dropdown .dropdown-content,
-    .nav-item-dropdown .mega-panel-two-col,
-    .nav-item-dropdown .mega-panel-three-col {
-        display: none !important;
-        position: relative !important;
-        top: 0 !important;
-        left: 0 !important;
-        max-height: none !important;
-        overflow: visible !important;
-        background: transparent !important;
-        width: 100% !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
+    /* Initial hidden configuration state for inner dropdown grids */ 
+    .nav-item-dropdown .dropdown-content, .nav-item-dropdown .mega-panel-two-col, .nav-item-dropdown .mega-panel-three-col { 
+        display: none !important; 
+        position: relative !important; 
+        top: 0 !important; 
+        left: 0 !important; 
+        max-height: none !important; 
+        overflow: visible !important; 
+        background: transparent !important; 
+        width: 100% !important; 
+        border: none !important; 
+        box-shadow: none !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+    } 
 
-    /* ACCORDION OPEN STATE: Forces inner columns to stack and pushes the portal button down */
-    .nav-item-dropdown.active-toggle .dropdown-content,
-    .nav-item-dropdown.active-toggle .mega-panel-two-col,
-    .nav-item-dropdown.active-toggle .mega-panel-three-col {
-        display: flex !important;
-        flex-direction: column !important;
-        grid-template-columns: none !important;
-        padding: 0 0 10px 15px !important;
-        margin-top: 5px !important;
-        height: auto !important;
-    }
+    /* ACCORDION OPEN STATE */ 
+    .nav-item-dropdown.active-toggle .dropdown-content, .nav-item-dropdown.active-toggle .mega-panel-two-col, .nav-item-dropdown.active-toggle .mega-panel-three-col { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        grid-template-columns: none !important; 
+        padding: 0 0 10px 15px !important; 
+        margin-top: 5px !important; 
+        height: auto !important; 
+    } 
 
-    /* Clean vertical sorting for sub-columns */
-    .mega-column {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        gap: 0 !important;
-        height: auto !important;
-    }
+    /* Clean vertical sorting for sub-columns */ 
+    .mega-column { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        width: 100% !important; 
+        gap: 0 !important; 
+        height: auto !important; 
+    } 
 
-    .mega-column .column-title {
-        display: block !important;
-        font-size: 0.75rem !important;
-        color: #0a1f44 !important;
-        text-align: left !important;
-        margin-top: 15px !important;
-        padding: 0 0 5px 0 !important;
-        border-bottom: none !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
-    }
+    .mega-column .column-title { 
+        display: block !important; 
+        font-size: 0.75rem !important; 
+        color: #0a1f44 !important; 
+        text-align: left !important; 
+        margin-top: 15px !important; 
+        padding: 0 0 5px 0 !important; 
+        border-bottom: none !important; 
+        font-weight: 700 !important; 
+        text-transform: uppercase !important; 
+        letter-spacing: 0.5px !important; 
+    } 
 
-    /* Inner sub-links vertical stack flow stabilization */
-    .mega-column a {
-        display: block !important;
-        color: #0a1f44 !important;
-        font-size: 0.95rem !important;
-        font-weight: 600 !important;
-        padding: 10px 0 !important;
-        text-align: left !important;
-        border-bottom: none !important;
-        width: 100% !important;
-    }
+    /* Inner sub-links vertical stack flow stabilization */ 
+    .mega-column a { 
+        display: block !important; 
+        color: #0a1f44 !important; 
+        font-size: 0.95rem !important; 
+        font-weight: 600 !important; 
+        padding: 10px 0 !important; 
+        text-align: left !important; 
+        border-bottom: none !important; 
+        width: 100% !important; 
+    } 
 
-    /* 1. SECURE PORTAL BUTTON - PUSHED TO THE TRUE BOTTOM OF THE STACK */
-    .nav-links .btn-client-portal,
-    nav .btn-client-portal,
-    a.btn-client-portal,
-    .btn-client-portal.mobile-portal-lock {
-        color: #ffffff !important;
-        background-color: #0a1f44 !important;
-        display: block !important;
-        width: 100% !important;
-        text-align: center !important;
-        margin-top: 25px !important; /* Adds padding separation space above the floor button */
-        padding: 14px 0 !important;
-        border-radius: 8px !important;
-        font-weight: 700 !important;
-        position: relative !important;
-    }
+    /* 1. SECURE PORTAL BUTTON - PUSHED TO THE TRUE BOTTOM OF THE STACK */ 
+    .nav-links .btn-client-portal, nav .btn-client-portal, a.btn-client-portal, .btn-client-portal.mobile-portal-lock { 
+        color: #ffffff !important; 
+        background-color: #0a1f44 !important; 
+        display: block !important; 
+        width: 100% !important; 
+        text-align: center !important; 
+        margin-top: 25px !important; 
+        padding: 14px 0 !important; 
+        border-radius: 8px !important; 
+        font-weight: 700 !important; 
+        position: relative !important; 
+    } 
 
-    /* 2. LOGO SIZING PROTECTION */
-    .logo-link img, nav img.logo, .nav-content-wrapper .logo {
-        height: 38px !important;
-        max-width: 170px !important;
-        width: auto !important;
-        object-fit: contain !important;
-    }
+    /* 2. LOGO SIZING PROTECTION */ 
+    .logo-link img, nav img.logo, .nav-content-wrapper .logo { 
+        height: 38px !important; 
+        max-width: 170px !important; 
+        width: auto !important; 
+        object-fit: contain !important; 
+    } 
 
-    /* --- 3. TIGHTEN COMPACT MOBILE FOOTER MATRIX SPACING PANELS --- */
-    footer.site-footer, .site-footer {
-        padding-top: 30px !important;
-        padding-bottom: 20px !important;
-        margin-top: 30px !important;
-    }
-    .site-footer .footer-container {
-        gap: 15px 15px !important;
-    }
-    .site-footer .footer-col ul li {
-        margin-bottom: 6px !important;
-    }
-    .site-footer h4, .footer-col h4 {
-        margin-bottom: 12px !important;
-    }
-    .site-footer .footer-bottom {
-        margin-top: 25px !important;
-        padding-top: 15px !important;
-    }
+    /* --- 3. TIGHTEN COMPACT MOBILE FOOTER MATRIX SPACING PANELS --- */ 
+    footer.site-footer, .site-footer { 
+        padding-top: 30px !important; 
+        padding-bottom: 20px !important; 
+        margin-top: 30px !important; 
+    } 
 
-    /* --- COMPACT MATRIX FOOTER TEXT BALANCING GRAPHICS --- */
-    .site-footer, .site-footer p, .site-footer span, .site-footer ul li a, .site-footer .footer-brand p {
-        color: #94a3b8 !important;
-    }
-    .site-footer h4 {
-        color: #ffffff !important;
-    }
+    .site-footer .footer-container { 
+        gap: 15px 15px !important; 
+    } 
 
-    /* 4. MOBILE HERO TYPOGRAPHY LEFT ALIGNMENT TRACKERS */
-    .content-area h1, main .content-area h1, .page-container h1 {
-        text-align: left !important;
-    }
-    .content-area p, main .content-area p, .page-container p {
-        text-align: left !important;
-        margin-left: 0 !important;
-        margin-right: auto !important;
-    }
-    .content-area {
-        align-items: flex-start !important;
-    }
+    .site-footer .footer-col ul li { 
+        margin-bottom: 6px !important; 
+    } 
 
-    /* --- HARD-LOCKED FIXED SITE-WIDE BRANDING RED FOOTER OVERRIDES --- */
-    .site-footer a[href*="roselandcompanies.com"], footer a[href*="roselandcompanies.com"] {
-        color: #c15254 !important;
-        font-weight: 700 !important;
-    }
-}
+    .site-footer h4, .footer-col h4 { 
+        margin-bottom: 12px !important; 
+    } 
 
+    .site-footer .footer-bottom { 
+        margin-top: 25px !important; 
+        padding-top: 15px !important; 
+    } 
+
+    /* --- COMPACT MATRIX FOOTER TEXT BALANCING GRAPHICS --- */ 
+    .site-footer, .site-footer p, .site-footer span, .site-footer ul li a, .site-footer .footer-brand p { 
+        color: #94a3b8 !important; 
+    } 
+
+    .site-footer h4 { 
+        color: #ffffff !important; 
+    } 
+
+    /* 4. MOBILE HERO TYPOGRAPHY LEFT ALIGNMENT TRACKERS */ 
+    .content-area h1, main .content-area h1, .page-container h1 { 
+        text-align: left !important; 
+    } 
+
+    .content-area p, main .content-area p, .page-container p { 
+        text-align: left !important; 
+        margin-left: 0 !important; 
+        margin-right: auto !important; 
+    } 
+
+    .content-area { 
+        align-items: flex-start !important; 
+    } 
+
+    /* --- HARD-LOCKED FIXED SITE-WIDE BRANDING RED FOOTER OVERRIDES --- */ 
+    .site-footer a[href*="roselandcompanies.com"], footer a[href*="roselandcompanies.com"] { 
+        color: #c15254 !important; 
+        font-weight: 700 !important; 
+    } 
+} 
 
 /* ========================================================================== 📱 MOBILE RESPONSIVE LAYOUT ENGINE FORFLOW FIXED RESET ========================================================================== */ 
-@media screen and (max-width: 991px) {
-    /* 1. KEEP NAV-LINKS STABLE AS A SLIDE DRAWER */
-    body.nav-open .nav-links, .nav-links.active {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-    }
+@media screen and (max-width: 991px) { 
+    /* 1. KEEP NAV-LINKS STABLE AS A SLIDE DRAWER */ 
+    body.nav-open .nav-links, .nav-links.active { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        align-items: stretch !important; 
+    } 
 
-    /* 2. FORCE INDIVIDUAL DROPDOWNS TO GROW NATURAL VERTICAL HEIGHT */
-    .nav-item-dropdown {
-        display: flex !important;
-        flex-direction: column !important; /* Stacks the title link above the hidden sub-menu box */
-        width: 100% !important;
-        height: auto !important;
-        position: relative !important;
-    }
+    /* 2. FORCE INDIVIDUAL DROPDOWNS TO GROW NATURAL VERTICAL HEIGHT */ 
+    .nav-item-dropdown { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        width: 100% !important; 
+        height: auto !important; 
+        position: relative !important; 
+    } 
 
-    /* 3. ENSURE SUB-MENU CONTENT OPENS AND EXPANDS INTERNALLY */
-    .nav-item-dropdown.active-toggle .dropdown-content, 
-    .nav-item-dropdown.active-toggle .mega-panel-two-col, 
-    .nav-item-dropdown.active-toggle .mega-panel-three-col {
-        display: flex !important;
-        flex-direction: column !important; /* Stack sub-columns vertically */
-        position: relative !important; /* Drops out of absolute desktop tracking mode */
-        width: 100% !important;
-        height: auto !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
+    /* 3. ENSURE SUB-MENU CONTENT OPENS AND EXPANDS INTERNALLY */ 
+    .nav-item-dropdown.active-toggle .dropdown-content, .nav-item-dropdown.active-toggle .mega-panel-two-col, .nav-item-dropdown.active-toggle .mega-panel-three-col { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        position: relative !important; 
+        width: 100% !important; 
+        height: auto !important; 
+        visibility: visible !important; 
+        opacity: 1 !important; 
+    } 
 
-    /* 4. FORCE THE INTERIOR MEGA-COLUMNS TO STACK ON NEW LINES */
-    .mega-column {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        height: auto !important;
-    }
+    /* 4. FORCE THE INTERIOR MEGA-COLUMNS TO STACK ON NEW LINES */ 
+    .mega-column { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        width: 100% !important; 
+        height: auto !important; 
+    } 
 
-    /* 5. INDIVIDUAL LINK ENFORCEMENT RULES */
-    .mega-column a, .mega-column .column-title {
-        display: block !important;
-        width: 100% !important;
-        height: auto !important;
-    }
+    /* 5. INDIVIDUAL LINK ENFORCEMENT RULES */ 
+    .mega-column a, .mega-column .column-title { 
+        display: block !important; 
+        width: 100% !important; 
+        height: auto !important; 
+    } 
 
-    /* 6. SECURE PORTAL BUTTON RESPONSIVE PUSH-DOWN */
-    .nav-links .btn-client-portal, a.btn-client-portal {
-        display: block !important;
-        width: 100% !important;
-        margin-top: auto !important; /* Automatically anchors to the true bottom of the layout stack */
-        position: relative !important;
-    }
+    /* 6. SECURE PORTAL BUTTON RESPONSIVE PUSH-DOWN */ 
+    .nav-links .btn-client-portal, a.btn-client-portal { 
+        display: block !important; 
+        width: 100% !important; 
+        margin-top: auto !important; 
+        position: relative !important; 
+    } 
+}
 }
