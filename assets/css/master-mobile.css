@@ -751,12 +751,15 @@
 
     /* ACCORDION OPEN STATE */ 
     .nav-item-dropdown.active-toggle .dropdown-content, .nav-item-dropdown.active-toggle .mega-panel-two-col, .nav-item-dropdown.active-toggle .mega-panel-three-col { 
-        display: flex !important; 
+    display: flex !important; 
         flex-direction: column !important; 
         grid-template-columns: none !important; 
-        padding: 0 0 10px 15px !important; 
+        padding: 15px !important; /* Balanced internal breathing space */
         margin-top: 5px !important; 
         height: auto !important; 
+        background: #f8fafc !important; /* Optional: Soft background tint to make the rounded panel stand out */
+        border-bottom-left-radius: 24px !important; /* Rounds the bottom left edge */
+        border-bottom-right-radius: 24px !important; /* Rounds the bottom right edge */
     } 
 
     /* Clean vertical sorting for sub-columns */ 
@@ -795,17 +798,19 @@
 
     /* 1. SECURE PORTAL BUTTON - PUSHED TO THE TRUE BOTTOM OF THE STACK */ 
     .nav-links .btn-client-portal, nav .btn-client-portal, a.btn-client-portal, .btn-client-portal.mobile-portal-lock { 
-        color: #ffffff !important; 
+     color: #ffffff !important; 
         background-color: #0a1f44 !important; 
         display: block !important; 
         width: 100% !important; 
         text-align: center !important; 
-        margin-top: 25px !important; 
+        margin-top: 0 !important;
+        margin-bottom: 25px !important; /* Pushes the menu link items below it down */ 
         padding: 14px 0 !important; 
         border-radius: 8px !important; 
         font-weight: 700 !important; 
         position: relative !important; 
-    } 
+        order: -1 !important; /* Forces the flexbox engine to render this element first */
+    }
 
     /* 2. LOGO SIZING PROTECTION */ 
     .logo-link img, nav img.logo, .nav-content-wrapper .logo { 
