@@ -122,9 +122,6 @@
     height: 100%;
     padding: 0 20px;
     box-sizing: border-box;
-    padding-bottom: 0px !important;
-    margin-bottom: 0px !important;
-    height: auto !important;
   }
   
   .logo-link, 
@@ -718,26 +715,18 @@
 
  /* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */ 
 
+/* 1. Header Layout Alignment Setup */
 .nav-content-wrapper { 
     display: flex !important; 
-    flex-wrap: wrap !important; /* Allows .nav-links to drop below the toggle line */ 
+    flex-wrap: wrap !important; /* Allows menu box to break down below logo */ 
     justify-content: space-between !important; 
     align-items: center !important; 
     width: 100% !important; 
+    padding-bottom: 0px !important; /* Squeezes out empty space below toggle */
+    margin-bottom: 0px !important;
 } 
 
-/* 2. Force the links container to take up the full width and break down */ 
-.nav-links { 
-    display: none !important; 
-    width: 100% !important; 
-    order: 3 !important; 
-    box-sizing: border-box !important; 
-    margin-top: 0 !important;
-    padding: 15px !important;
-    background: #ffffff !important; /* Ensure the menu background matches your design */
-}
-
-/* 3. Keep the toggle button on the right side of the logo line */ 
+/* 2. Mobile Trigger Configuration */
 .mobile-toggle-btn { 
     order: 2 !important; 
 } 
@@ -746,7 +735,34 @@
     order: 1 !important; 
 }
 
-/* FIX INJECTION: Forces each parent title container to stack vertically and grow naturally */
+/* 3. The Main Links Container (Matches toggle.js Logic) */ 
+.nav-links { 
+    /* BASE CLOSED STATE: Turn completely off to fix the corner white line */
+    display: none !important; 
+    visibility: hidden !important;
+    opacity: 0 !important;
+    
+    width: 100% !important; 
+    order: 3 !important; /* Forces it to break down onto a new line under toggle */ 
+    box-sizing: border-box !important; 
+    padding: 15px !important;
+    background: #ffffff !important;
+    
+    /* PULLS THE MENU BOX DIRECTLY UP AGAINST THE TOGGLE BUTTON */
+    margin-top: 0px !important;
+    position: relative !important;
+    top: -5px !important; /* Adjust this value up or down to change proximity to the button */
+} 
+
+/* ACTIVE STATE (Triggered when toggle.js applies the .active class) */
+.nav-links.active { 
+    display: flex !important; 
+    flex-direction: column !important; /* Stacks menu titles vertically */ 
+    visibility: visible !important;
+    opacity: 1 !important;
+} 
+
+/* 4. Dropdown Accordion Item Logic */
 .nav-item-dropdown {
     display: flex !important;
     flex-direction: column !important;
@@ -771,7 +787,7 @@
     margin: 0 !important; 
 } 
 
-/* Force open sub-menus to expand naturally downward and push elements safely below them */ 
+/* Expanded sub-menus push elements below down safely */ 
 .nav-item-dropdown.active-toggle .dropdown-content, 
 .nav-item-dropdown.active-toggle .mega-panel-two-col, 
 .nav-item-dropdown.active-toggle .mega-panel-three-col { 
@@ -780,10 +796,10 @@
     grid-template-columns: none !important; 
     padding: 0 0 10px 15px !important; 
     margin-top: 5px !important; 
-    height: auto !important; /* FIX INJECTION: Mandates the opened box tells the browser its true dynamic size */
+    height: auto !important;
 } 
 
-/* Sub-Links columns structural repair container tracker */ 
+/* Sub-Links Columns Structural Alignment */ 
 .mega-column { 
     display: flex !important; 
     flex-direction: column !important; 
@@ -791,9 +807,9 @@
     gap: 0 !important; 
 } 
 
-/* Clean up internal header spacing metrics (e.g. "Popular Formations") */ 
+/* Spacing and Block enforcement for links and titles to stop text smashing */
 .mega-column .column-title { 
-    display: block !important; /* FIX INJECTION: Prevents text lines from horizontal squishing */
+    display: block !important;
     font-size: 0.75rem !important; 
     color: #0a1f44 !important; 
     text-align: left !important; 
@@ -805,9 +821,8 @@
     letter-spacing: 0.5px !important; 
 } 
 
-/* Regular Inner Mobile Dropdown Links - Flat Vertical Flow */ 
 .mega-column a { 
-    display: block !important; /* FIX INJECTION: Forces text links to stack instead of merging text */
+    display: block !important;
     color: #0a1f44 !important; 
     font-size: 0.95rem !important; 
     font-weight: 600 !important; 
@@ -817,7 +832,7 @@
     width: 100% !important; 
 } 
 
-/* 1. SECURE PORTAL BUTTON - MOBILE STYLING ENFORCEMENT LOOP */ 
+/* 5. SECURE PORTAL BUTTON */ 
 .nav-links .btn-client-portal, 
 nav .btn-client-portal, 
 a.btn-client-portal, 
@@ -831,8 +846,9 @@ a.btn-client-portal,
     padding: 14px 0 !important; 
     border-radius: 8px !important; 
     font-weight: 700 !important; 
-    position: relative !important; /* FIX INJECTION: Preps the button layer flow positioning */
+    position: relative !important;
 }
+
 
 
   /* 2. INCREASE MOBILE LOGO WIDTH AND SIZING PROFILE */
