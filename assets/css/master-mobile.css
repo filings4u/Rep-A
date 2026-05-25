@@ -668,28 +668,32 @@
     text-align: left;
   }
 
-  /* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */
-.nav-links {
+/* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */ 
+.nav-links { 
     display: none !important; 
-    flex-direction: column !important;
-    position: fixed !important;
-    
-    /* 🌟 ADJUST THESE TWO LINES TO PULL THE MENU UP COMFORTABLY CLOSE */
-    top: -10px !important; /* Decreased from 70px to snap tight to the header baseline */
-    height: calc(100vh - -10px) !important; /* Must match the top number to fill the screen correctly */
-    
+    flex-direction: column !important; 
+    position: fixed !important; 
+
+    /* FIXED: Lock the frame coordinate right below a standard mobile bar */
+    top: 50px !important; 
+    height: calc(100vh - 50px) !important; 
+
+    /* FORCE CLOSE THE VERTICAL GAP USING NEGATIVE MARGIN */
+    margin-top: -25px !important; /* Increase this to -20px or -25px if you want it even closer to the toggle icon */
+
     right: -100% !important; 
-    left: auto !important;
+    left: auto !important; 
     width: 85vw !important; 
-    max-width: 85vw !important;
-    background: #ffffff !important;
-    z-index: 99999 !important;
+    max-width: 85vw !important; 
+    background: #ffffff !important; 
+    z-index: 99999 !important; 
     overflow-y: auto !important; 
-    padding: 24px 20px !important;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    box-sizing: border-box !important;
+    padding: 24px 20px !important; 
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; 
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; 
+    box-sizing: border-box !important; 
 }
+
 
 
     /* ACTIVE SLIDE-IN STATE: Triggered cleanly by your toggle.js script */
