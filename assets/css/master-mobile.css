@@ -675,8 +675,8 @@
     position: fixed !important;
     
     /* 🌟 ADJUST THESE TWO LINES TO PULL THE MENU UP COMFORTABLY CLOSE */
-    top: 40px !important; /* Decreased from 70px to snap tight to the header baseline */
-    height: calc(100vh - 40px) !important; /* Must match the top number to fill the screen correctly */
+    top: 10px !important; /* Decreased from 70px to snap tight to the header baseline */
+    height: calc(100vh - 10px) !important; /* Must match the top number to fill the screen correctly */
     
     right: -100% !important; 
     left: auto !important;
