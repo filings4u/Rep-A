@@ -878,61 +878,63 @@
 } 
 
 /* ==========================================================================
-   🎯 TOTAL ISOLATION MOBILE MENUS ACCORDION OVERLAP REPAIR
+   📱 MOBILE RESPONSIVE LAYOUT ENGINE FORFLOW FIXED RESET
    ========================================================================== */
 @media screen and (max-width: 991px) {
 
-    /* FORCE CONTAINER TO BREAK OUT OF GLOBAL ROW FLOW */
+    /* 1. FORCE MAIN MENUBAR CONTAINER TO ADJUST DYNAMICALLY */
+    .nav-links {
+        display: flex !important;
+        flex-direction: column !important; /* Stack menu items in a responsive vertical line */
+        height: auto !important; /* Allow the overall wrapper to grow and shrink */
+        align-items: stretch !important; /* Force all child items to take full width */
+        position: relative !important;
+    }
+
+    /* 2. FORCE INDIVIDUAL DROPDOWNS TO GROW NATURAL VERTICAL HEIGTH */
     .nav-item-dropdown {
-        display: block !important;
-        float: none !important;
+        display: flex !important;
+        flex-direction: column !important; /* Stacks the title link above the hidden sub-menu box */
         width: 100% !important;
         height: auto !important;
         position: relative !important;
     }
 
-    /* DEACTIVATE DESKTOP GRID/ROW MECHANICS ON ACTIVE PANELS */
+    /* 3. ENSURE SUB-MENU CONTENT OPENS AND EXPANDS INTERNALLY */
     .nav-item-dropdown.active-toggle .dropdown-content, 
     .nav-item-dropdown.active-toggle .mega-panel-two-col, 
     .nav-item-dropdown.active-toggle .mega-panel-three-col { 
-        display: block !important; /* Overrides any hidden flex alignment rules */
-        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important; /* Stack sub-columns vertically */
+        position: relative !important; /* Drops out of absolute desktop tracking mode */
         width: 100% !important;
         height: auto !important;
         visibility: visible !important;
         opacity: 1 !important;
-        overflow: visible !important;
-        float: none !important;
     }
 
-    /* UNLINK COLUMNS AND FORCE INDEPENDENT STACKING */
+    /* 4. FORCE THE INTERIOR MEGA-COLUMNS TO STACK ON NEW LINES */
     .mega-column {
-        display: block !important;
-        float: none !important;
+        display: flex !important;
+        flex-direction: column !important;
         width: 100% !important;
         height: auto !important;
-        position: relative !important;
-        margin-bottom: 10px !important;
     }
 
-    /* ENSURE ALL LINK METRICS POP ONTO INDEPENDENT BLOCK LINES */
+    /* 5. INDIVIDUAL LINK ENFORCEMENT RULES */
     .mega-column a, 
     .mega-column .column-title {
         display: block !important;
         width: 100% !important;
-        float: none !important;
-        position: relative !important;
-        clear: both !important; /* Prevents text elements from floating next to each other */
-        box-sizing: border-box !important;
+        height: auto !important;
     }
 
-    /* SOLID BLOCK RE-ENFORCEMENT FOR THE PORTAL FLOOR BUTTON */
+    /* 6. SECURE PORTAL BUTTON RESPONSIVE PUSH-DOWN */
     .nav-links .btn-client-portal,
     a.btn-client-portal {
         display: block !important;
         width: 100% !important;
+        margin-top: auto !important; /* Automatically anchors to the true bottom of the layout stack */
         position: relative !important;
-        clear: both !important; /* Guarantees the button falls below ALL text links above it */
-        margin-top: 30px !important;
     }
 }
