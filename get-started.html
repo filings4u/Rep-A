@@ -126,49 +126,49 @@
 
 </body>
     
-<section>
-<!-- 🚀 PREMIUM LEFT-ALIGNED DARK HERO BLOCK -->
-<div class="hero-premium-block">
-    
-    <!-- Background Design Layers -->
-    <div class="hero-glow-effect"></div>
+<section> 
+    <!-- 🚫 NO RESULTS DISPLAY BOX --> 
+    <div id="no-results-box" style="display: none; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 20px; text-align: center; max-width: 500px; margin: 40px auto; font-family: system-ui, -apple-system, sans-serif; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);"> 
+        <div style="font-size: 2.5rem; margin-bottom: 15px;">🔍</div> 
+        <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 10px 0;">Service Module Not Found</h3> 
+        <p style="font-size: 0.95rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;">We couldn't find a track matching "<span id="missing-keyword-text" style="color: #0a1f44; font-weight: 700;"></span>". Our logistics compliance desk has been notified.</p> 
+        <a href="contact.html" class="wizard-btn-link">Speak to an Expert</a> 
+    </div> 
 
-    <!-- Left Column: Content Area -->
-    <article style="z-index: 2; text-align: left;">
-        <div class="hero-pill-badge">
-            <span class="hero-pill-dot"></span>
-            <span class="hero-pill-text">Filing Wizard Launcher v2.6</span>
-        </div>
-
-        <h1>
-            Automate Your Corporate <br>& <span style="color: #10b981; background: linear-gradient(to right, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Logistics Compliance</span>
-        </h1>
+    <!-- 🚀 PREMIUM LEFT-ALIGNED DARK HERO BLOCK --> 
+    <div class="hero-premium-block"> 
+        <!-- Background Design Layers --> 
+        <div class="hero-glow-effect"></div> 
         
-        <p>
-            Select from our 30 specialized state and federal modules below to initiate your digital application wizard instantly.
-        </p>
-
-        <!-- Quick Search Sub-Module -->
-        <div class="hero-search-wrapper">
-            <div class="hero-search-input-zone">
-                <svg width="16" height="16" fill="none" stroke="#64748b" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <input type="text" placeholder="Search across 30 compliance tracks...">
-            </div>
-            <button class="hero-search-btn">
-                Explore
-            </button>
-        </div>
-    </article>
-
-    <!-- Right Column: Image Container -->
-    <aside style="z-index: 2;">
-        <div class="hero-image-placeholder-frame">
-            <img src="images/get-started.jpg" alt="Service Track Selection Engine">
-        </div>
-    </aside>
-
-</div>
+        <!-- Left Column: Content Area --> 
+        <article style="z-index: 2; text-align: left;"> 
+            <div class="hero-pill-badge"> 
+                <span class="hero-pill-dot"></span> 
+                <span class="hero-pill-text">Filing Wizard Launcher v2.6</span> 
+            </div> 
+            <h1> Automate Your Corporate <br>&amp; <span style="color: #10b981; background: linear-gradient(to right, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Logistics Compliance</span> </h1> 
+            <p> Select from our 30 specialized state and federal modules below to initiate your digital application wizard instantly. </p> 
+            
+            <!-- Quick Search Sub-Module --> 
+            <div class="hero-search-wrapper"> 
+                <div class="hero-search-input-zone"> 
+                    <svg width="16" height="16" fill="none" stroke="#64748b" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg> 
+                    <!-- FIXED: Added safe class name and input listener overrides to run filtering smoothly -->
+                    <input type="text" class="hero-search-input" placeholder="Search across 30 compliance tracks..." onkeypress="if(event.keyCode===13){return false;}"> 
+                </div> 
+                <button class="hero-search-btn" onclick="return false;"> Explore </button> 
+            </div> 
+        </article> 
+        
+        <!-- Right Column: Image Container --> 
+        <aside style="z-index: 2;"> 
+            <div class="hero-image-placeholder-frame"> 
+                <img src="images/get-started.jpg" alt="Service Track Selection Engine"> 
+            </div> 
+        </aside> 
+    </div> 
 </section>
+
 
 <!-- 📊 SECTION 1: BUSINESS FORMATION & STRUCTURE -->
 <section class="compliance-track-wrapper">
@@ -599,6 +599,124 @@
         <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
     </svg>
 </button>
+
+<!-- 🔍 FIXED LIVE SEARCH CARD FILTER + BACKEND FALLBACK LOGGING -->
+<!-- 🔍 LIVE SEARCH FILTER + VISUAL FALLBACK FIX -->
+<script>
+// Prevent re-declaring if supabase variable has been configured by master scripts
+const trackingUrl = 'YOUR_SUPABASE_PROJECT_URL'; 
+const trackingKey = 'YOUR_SUPABASE_ANON_KEY';   
+
+if (typeof supabase === 'undefined' || supabase === null) {
+    if (trackingUrl !== 'YOUR_SUPABASE_PROJECT_URL' && trackingKey !== 'YOUR_SUPABASE_ANON_KEY') {
+        try {
+            supabase = supabaseJs.createClient(trackingUrl, trackingKey);
+        } catch (e) {
+            console.warn("Supabase initialization bypass:", e);
+        }
+    }
+}
+
+$(document).ready(function() {
+    let loggingTimeout = null;
+
+    function processLiveSearch(inputElement) {
+        var value = $(inputElement).val().toLowerCase().replace(/\s+/g, ' ').trim();
+        var totalCards = $('.service-card-item').length;
+        var hiddenCards = 0;
+        
+        // 1. Reset state instantly if search input is completely cleared
+        if (value === "") {
+            $('.service-card-item').show();
+            $('.compliance-track-wrapper').show();
+            
+            // Restore Section 5 back to its original title
+            var sec5Header = $('.compliance-track-wrapper').last().find('.track-header-indicator');
+            sec5Header.html('<span>Track 05</span><h2>Fleet Compliance & Safety</h2>');
+            return;
+        }
+
+        // 2. Scan and evaluate matches across all 30 card layers
+        $('.service-card-item').each(function() {
+            var cardTitle = $(this).find('h3').text().toLowerCase();
+            var cardDesc = $(this).find('p').text().toLowerCase();
+            
+            if (cardTitle.indexOf(value) > -1 || cardDesc.indexOf(value) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+                hiddenCards++;
+            }
+        });
+        
+        // 3. Manage Section Wrapper visibilities cleanly
+        $('.compliance-track-wrapper').each(function() {
+            var visibleCards = $(this).find('.service-card-item:visible').length;
+            if (visibleCards === 0) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+
+        // 4. Handle "No Results Found" scenario (e.g. typing "bend")
+        if (hiddenCards === totalCards) {
+            // Target your last section wrapper block to act as your fallback layout frame
+            var fallbackTrack = $('.compliance-track-wrapper').last();
+            var fallbackHeader = fallbackTrack.find('.track-header-indicator');
+            
+            // Rewrite the internal markup to convert it into a beautiful notice element card block
+            fallbackHeader.html(
+                '<div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 35px 20px; text-align: center; max-width: 480px; margin: 20px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.03); font-family: inherit;">' +
+                    '<div style="font-size: 2.2rem; margin-bottom: 12px;">🔍</div>' +
+                    '<h3 style="font-size: 1.35rem; font-weight: 700; color: #0a1f44; margin: 0 0 8px 0;">Compliance Track Not Found</h3>' +
+                    '<p style="font-size: 0.95rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;">We could not locate an active module for "<span style="color: #10b981; font-weight: 700;">' + $(inputElement).val().trim() + '</span>". Our logistics desk has been alerted.</p>' +
+                    '<a href="contact.html" class="wizard-btn-link" style="display: inline-flex; align-items: center; justify-content: center; background: #0a1f44; color: #ffffff; text-decoration: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">Consult Compliance Expert</a>' +
+                '</div>'
+            );
+            
+            fallbackTrack.show(); // Force the container row to display on screen
+
+            // 5. Submit database telemetry metrics payload safely
+            clearTimeout(loggingTimeout);
+            loggingTimeout = setTimeout(async function() {
+                var failedTerm = $(inputElement).val().trim();
+                if (failedTerm.length > 3 && typeof supabase !== 'undefined' && supabase) {
+                    try {
+                        await supabase
+                            .from('missing_services')
+                            .insert([{ searched_term: failedTerm }]);
+                    } catch(err) {
+                        console.error('Logging failed:', err);
+                    }
+                }
+            }, 1500);
+        } else {
+            clearTimeout(loggingTimeout);
+        }
+    }
+
+    // Bind event handlers securely across all user interaction vectors
+    $('.hero-search-input').on('keyup input change', function() {
+        processLiveSearch(this);
+    });
+
+    $('.hero-search-input').on('keydown', function(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            processLiveSearch(this);
+            return false;
+        }
+    });
+
+    $('.hero-search-btn').on('click', function(e) {
+        e.preventDefault();
+        processLiveSearch('.hero-search-input');
+        return false;
+    });
+});
+</script>
+
 
 
 </body>
