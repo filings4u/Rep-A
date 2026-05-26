@@ -601,42 +601,44 @@
 </button>
 
 <!-- 🔍 FIXED LIVE SEARCH CARD FILTER + BACKEND FALLBACK LOGGING -->
-<!-- 🔍 LIVE SEARCH FILTER + VISUAL FALLBACK FIX -->
+<!-- 🔍 LIVE SEARCH CARD FILTER + FIXED ISOLATED LOGGING ENGINE -->
 <script>
-// Prevent re-declaring if supabase variable has been configured by master scripts
-const trackingUrl = 'YOUR_SUPABASE_PROJECT_URL'; 
-const trackingKey = 'YOUR_SUPABASE_ANON_KEY';   
-
-if (typeof supabase === 'undefined' || supabase === null) {
-    if (trackingUrl !== 'YOUR_SUPABASE_PROJECT_URL' && trackingKey !== 'YOUR_SUPABASE_ANON_KEY') {
-        try {
-            supabase = supabaseJs.createClient(trackingUrl, trackingKey);
-        } catch (e) {
-            console.warn("Supabase initialization bypass:", e);
-        }
-    }
-}
-
 $(document).ready(function() {
     let loggingTimeout = null;
+    let filingsDb = null; // Isolated database client variable to prevent collisions
+
+    // Configure your actual public client credentials here
+    const trackingUrl = 'YOUR_SUPABASE_PROJECT_URL'; // <-- Paste your Supabase project URL
+    const trackingKey = 'YOUR_SUPABASE_ANON_KEY';   // <-- Paste your Supabase Anon API Key
+
+    try {
+        // Initialize an isolated connection using the Supabase library loaded in your header
+        if (typeof supabaseJs !== 'undefined') {
+            filingsDb = supabaseJs.createClient(trackingUrl, trackingKey);
+        } else if (window['@supabase/supabase-js']) {
+            const spModule = window['@supabase/supabase-js'];
+            filingsDb = spModule.createClient(trackingUrl, trackingKey);
+        } else if (typeof supabase !== 'undefined' && supabase.createClient) {
+            filingsDb = supabase.createClient(trackingUrl, trackingKey);
+        }
+    } catch(err) {
+        console.error("Database connection initialization failed:", err);
+    }
 
     function processLiveSearch(inputElement) {
         var value = $(inputElement).val().toLowerCase().replace(/\s+/g, ' ').trim();
         var totalCards = $('.service-card-item').length;
         var hiddenCards = 0;
         
-        // 1. Reset state instantly if search input is completely cleared
         if (value === "") {
             $('.service-card-item').show();
             $('.compliance-track-wrapper').show();
-            
-            // Restore Section 5 back to its original title
             var sec5Header = $('.compliance-track-wrapper').last().find('.track-header-indicator');
             sec5Header.html('<span>Track 05</span><h2>Fleet Compliance & Safety</h2>');
             return;
         }
 
-        // 2. Scan and evaluate matches across all 30 card layers
+        // Filter cards matching titles or descriptions
         $('.service-card-item').each(function() {
             var cardTitle = $(this).find('h3').text().toLowerCase();
             var cardDesc = $(this).find('p').text().toLowerCase();
@@ -649,7 +651,6 @@ $(document).ready(function() {
             }
         });
         
-        // 3. Manage Section Wrapper visibilities cleanly
         $('.compliance-track-wrapper').each(function() {
             var visibleCards = $(this).find('.service-card-item:visible').length;
             if (visibleCards === 0) {
@@ -659,13 +660,11 @@ $(document).ready(function() {
             }
         });
 
-        // 4. Handle "No Results Found" scenario (e.g. typing "bend")
+        // Toggle No Results View Panel
         if (hiddenCards === totalCards) {
-            // Target your last section wrapper block to act as your fallback layout frame
             var fallbackTrack = $('.compliance-track-wrapper').last();
             var fallbackHeader = fallbackTrack.find('.track-header-indicator');
             
-            // Rewrite the internal markup to convert it into a beautiful notice element card block
             fallbackHeader.html(
                 '<div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 35px 20px; text-align: center; max-width: 480px; margin: 20px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.03); font-family: inherit;">' +
                     '<div style="font-size: 2.2rem; margin-bottom: 12px;">🔍</div>' +
@@ -675,19 +674,22 @@ $(document).ready(function() {
                 '</div>'
             );
             
-            fallbackTrack.show(); // Force the container row to display on screen
+            fallbackTrack.show();
 
-            // 5. Submit database telemetry metrics payload safely
+            // Run Logging Matrix Engine
             clearTimeout(loggingTimeout);
             loggingTimeout = setTimeout(async function() {
                 var failedTerm = $(inputElement).val().trim();
-                if (failedTerm.length > 3 && typeof supabase !== 'undefined' && supabase) {
+                
+                // Frontend verification check: require 3+ letters and a working client connection
+                if (failedTerm.length >= 3 && filingsDb) {
                     try {
-                        await supabase
+                        await filingsDb
                             .from('missing_services')
                             .insert([{ searched_term: failedTerm }]);
-                    } catch(err) {
-                        console.error('Logging failed:', err);
+                        console.log('✅ Success! Search metrics captured safely using isolated database pointer: ' + failedTerm);
+                    } catch(dbErr) {
+                        console.error('Database payload transmission failed:', dbErr);
                     }
                 }
             }, 1500);
@@ -696,7 +698,7 @@ $(document).ready(function() {
         }
     }
 
-    // Bind event handlers securely across all user interaction vectors
+    // Secure all event vectors
     $('.hero-search-input').on('keyup input change', function() {
         processLiveSearch(this);
     });
