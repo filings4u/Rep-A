@@ -78,76 +78,130 @@ $(document).ready(function() {
 
 /**
  * ==========================================================================
- * 📊 AUTOMATED HOME BLOG GRID RENDERING ENGINE
- * Dispatches matching card arrays and resolves the loading flicker loop instantly
+ * 📊 DYNAMIC CLOUD BLOG GRID RENDERING ENGINE (MAX 4 ITEMS)
+ * Pulls live published items from Supabase by matching current URL keywords
  * ==========================================================================
  */
-function initializeHomepageBlogFeeds() {
-    const gridTarget = document.getElementById('public-homepage-blog-grid-target');
-    if (!gridTarget) return;
+async function initializeHomepageBlogFeeds() {
+  const gridTarget = document.getElementById('public-homepage-blog-grid-target');
+  if (!gridTarget) return;
 
-    // Guard Gate Check: If items are already rendered, stop execution immediately
-    if (gridTarget.querySelectorAll('.resource-card-item').length > 0) {
-        return;
+  // Guard Gate Check: If items are already rendered, stop execution immediately
+  if (gridTarget.querySelectorAll('.resource-card-item').length > 0) {
+    return;
+  }
+
+  // 📡 Project Connection Core Configurations
+  const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
+  const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bwebm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+  
+  let dbInstance = null;
+  try {
+    if (typeof window.supabase !== 'undefined') {
+      dbInstance = window.supabase.createClient(dbUrl, dbKey);
+    } else {
+      console.warn("Blog Engine Core: Supabase core missing.");
+      return;
     }
+  } catch (e) {
+    return;
+  }
 
-    const articlePool = [
-        {
-            title: "Understanding FMCSA New Entrant Audits",
-            slug: "understanding-fmcsa-new-entrant-audits",
-            desc: "Learn what logs, driver qualification sheets, and maintenance data profiles are evaluated during your initial 12-month compliance window.",
-            date: "May 20, 2026"
-        },
-        {
-            title: "Mastering Multi-State Sales Tax Nexus Rules",
-            slug: "mastering-multi-state-sales-tax-nexus-rules",
-            desc: "A breakdown of threshold limits that require logistics firms and remote sales structures to secure state filing permits.",
-            date: "May 12, 2026"
-        },
-        {
-            title: "The Ultimate Guide to Heavy Use Tax Form 2290",
-            slug: "the-ultimate-guide-to-heavy-use-tax-form-2290",
-            desc: "How to quickly secure your stamped Schedule 1 watermarks without causing structural delays inside your freight network logs.",
-            date: "April 28, 2026"
-        }
-    ];
+  const currentUrl = window.location.href.toLowerCase();
+  const MAXIMUM_BLOG_DISPLAY_CAP = 4; // 🚀 HARD CAP: Stops loading once 4 cards print cleanly
+
+  try {
+    // 1. Download active server record arrays straight from your database
+    const { data: allPosts, error } = await dbInstance
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error("Supabase API connection rejected:", error.message);
+      return;
+    }
 
     // Clear loading spinner text cleanly
     gridTarget.innerHTML = "";
 
-    // Loop over articles and append cards
-    articlePool.forEach((article, index) => {
+    if (!allPosts || allPosts.length === 0) {
+      gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`;
+      return;
+    }
+
+    let displayedCount = 0;
+
+    // 2. Loop, match by route keywords, and display articles cleanly
+    for (let i = 0; i < allPosts.length; i++) {
+      if (displayedCount >= MAXIMUM_BLOG_DISPLAY_CAP) {
+        break; // Stop rendering loops once we hit your requested max cap of 4 items
+      }
+
+      const item = allPosts[i];
+      const dbSlug = (item.service_slug || 'global').toLowerCase();
+      const slugTokens = dbSlug.split(/[-_\s]+/);
+      
+      const isGlobal = (dbSlug === 'global');
+      const isUrlMatch = slugTokens.some(token => token.length > 1 && currentUrl.includes(token));
+
+      if (isGlobal || isUrlMatch) {
         const card = document.createElement('article');
         card.className = "resource-card-item";
-        
-        card.style.cssText = "background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);";
-        
-        // FIXED: Backslashes removed entirely so the text strings load flawlessly
+        card.style.cssText = "background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); opacity: 0; transform: translateY(10px); transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);";
+
+        // Format system time variables cleanly
+        const postDate = new Date(item.created_at).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+
         card.innerHTML = `
-            <div>
-                <span style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${article.date}</span>
-                <h3 style="font-size: 1.2rem; font-weight: 800; color: #0a1f44; margin: 8px 0 10px 0; line-height: 1.3;">${article.title}</h3>
-                <p style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;">${article.desc}</p>
-            </div>
-            <a href="blog/${article.slug}.html" style="color: #0a1f44; font-weight: 700; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#0a1f44'">
-                Read Article &rarr;
-            </a>
+          <div>
+            <span style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${postDate}</span>
+            <h3 class="blog-live-title" style="font-size: 1.2rem; font-weight: 800; color: #0a1f44; margin: 8px 0 10px 0; line-height: 1.3;"></h3>
+            <p class="blog-live-desc" style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;"></p>
+          </div>
+          <!-- 🚀 ROUTING: Seamlessly passes slug string variables into your article.html template reader page -->
+          <a href="article.html?slug=${item.slug}" style="color: #0a1f44; font-weight: 700; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#0a1f44'">
+            Read Article &rarr;
+          </a>
         `;
+
+        // 🛡️ SECURITY SAFEGUARDS: textContent forces special characters to render safely as raw text strings
+        card.querySelector('.blog-live-title').textContent = item.title;
+        card.querySelector('.blog-live-desc').textContent = item.summary || '';
+
         gridTarget.appendChild(card);
 
-        // 🎬 STAGGERED REVEAL: Automatically fade-in each card with an incremental delay loop
+        // 🎬 STAGGERED REVEAL: Blends clean timing delays with your existing style layout configurations
         setTimeout(() => {
-            card.classList.add('reveal-animated');
-        }, (index * 80) + 150); 
-    });
+          card.style.opacity = "1";
+          card.style.transform = "translateY(0)";
+          card.classList.add('reveal-animated');
+        }, (displayedCount * 80) + 150);
+
+        displayedCount++;
+      }
+    }
+
+    if (displayedCount === 0) {
+      gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`;
+    }
+
+  } catch (err) {
+    console.error("Cloud insights stream transmission failure:", err);
+  }
 }
 
 // Safely mount the execution listener
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeHomepageBlogFeeds);
+  document.addEventListener('DOMContentLoaded', initializeHomepageBlogFeeds);
 } else {
-    initializeHomepageBlogFeeds();
+  initializeHomepageBlogFeeds();
 }
+
 
 /**
  * ==========================================================================
