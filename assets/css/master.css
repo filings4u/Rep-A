@@ -1838,3 +1838,16 @@ footer.site-footer, .site-footer {
     padding-left: 15px;
 }
 
+/* Dynamic Highlights for your .price-card classes */
+.price-card.active-highlight-plan {
+    border: 2px solid #10b981 !important; /* Glows your core brand green color */
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.25) !important;
+    transform: scale(1.03) translateY(-5px);
+    position: relative;
+    z-index: 5;
+}
+
+.price-card.standard-dim {
+    opacity: 0.65;
+    filter: grayscale(15%);
+}
