@@ -1578,3 +1578,263 @@ footer.site-footer, .site-footer {
         margin-top: 4px !important;
     }
 }
+
+/* ==========================================================================
+   GET STARTED MODULE COMPONENTS (HIGH-DENSITY COMPRESSED MATRIX)
+   ========================================================================== */
+
+/* Hero Premium Block Layout */
+.hero-premium-block {
+    background: linear-gradient(135deg, #0f172a 0%, #0a1f44 100%);
+    margin-top: 50px !important;
+    padding: 40px; /* Trimmed header padding down slightly */
+    border-radius: 20px;
+    color: #ffffff;
+    margin-bottom: 35px !important; /* Brought hero down much closer to Track 01 */
+    font-family: system-ui, -apple-system, sans-serif;
+    box-shadow: 0 20px 40px -15px rgba(10,31,68,0.3);
+    border: 1px solid rgba(255,255,255,0.05);
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-glow-effect {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(16, 185, 129, 0.06);
+    filter: blur(80px);
+    top: -50px;
+    left: -50px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 6px 14px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+}
+
+.hero-pill-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    box-shadow: 0 0 8px #10b981;
+}
+
+.hero-pill-text {
+    color: #10b981;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-premium-block h1 {
+    font-size: 2.8rem; /* Scaled down slightly to fit the tighter layout grid */
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    margin: 0 0 15px 0;
+}
+
+.hero-premium-block p {
+    font-size: 1.05rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin: 0 0 25px 0;
+    max-width: 580px;
+}
+
+/* Hero Search Console */
+.hero-search-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 5px 5px 5px 15px;
+    border-radius: 50px;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+}
+
+.hero-search-input-zone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.hero-search-input-zone input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 0.9rem;
+    width: 100%;
+    font-family: inherit;
+}
+
+.hero-search-btn {
+    background: #10b981;
+    color: #0a1f44;
+    border: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.hero-search-btn:hover {
+    background: #34d399;
+}
+
+.hero-image-placeholder-frame {
+    width: 100%;
+    height: 340px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px -10px rgba(0,0,0,0.5);
+    background: #1e293b;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-sizing: border-box;
+}
+
+.hero-image-placeholder-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Global Service Tracks & Density Grids */
+.compliance-track-wrapper {
+    margin-bottom: 24px !important; /* UPDATED: Slashed section separation space by half */
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.track-header-indicator {
+    margin-bottom: 12px !important; /* UPDATED: Slashed vertical whitespace below tracker title */
+    border-left: 4px solid #10b981;
+    padding-left: 15px;
+}
+
+.track-header-indicator span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #10b981;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.track-header-indicator h2 {
+    font-size: 1.75rem; /* Trimmed track heading scale to complement compressed gaps */
+    font-weight: 800;
+    color: #0a1f44;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+/* High Density Grid Spacing Configuration */
+.cards-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px !important; /* UPDATED: Compressed item boundaries down tightly to 12px layout grid */
+    box-sizing: border-box;
+}
+
+.service-card-item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px !important; /* UPDATED: Trimmed interior box padding down for high screen density */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.service-card-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.06);
+    border-color: #10b981;
+}
+
+.service-card-item h3 {
+    font-size: 1.15rem !important; /* Balanced font asset weight */
+    font-weight: 700;
+    color: #0a1f44;
+    margin: 0 0 6px 0 !important;
+}
+
+.service-card-item p {
+    font-size: 0.9rem !important; /* Tightened paragraph tracking */
+    color: #64748b;
+    line-height: 1.4;
+    margin: 0 0 12px 0 !important;
+}
+
+.wizard-btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a1f44;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 16px; /* Trimmed button bounds slightly */
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.wizard-btn-link:hover {
+    background: #10b981;
+}
+
+/* ==========================================================================
+   FORCE PACKING RESET (OVERRIDES GLOBAL THEME SECTIONS)
+   ========================================================================== */
+
+/* Forcefully strip all hidden theme padding/margins on these specific sections */
+/* Global Service Tracks Wrapper - Tightest Section Compression */
+.compliance-track-wrapper {
+    margin-top: 0px !important;
+    margin-bottom: 80px !important; /* Reduces space between entire tracking blocks to 8px */
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Section Header Spacing - Tightest Padding */
+.track-header-indicator {
+    margin-top: -30px !important;
+    margin-bottom: 36px !important; /* Pulls the section header directly up to its grid cards */
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    border-left: 4px solid #10b981;
+    padding-left: 15px;
+}
+

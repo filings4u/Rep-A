@@ -1023,3 +1023,87 @@
         text-align: center !important;
     }
 }
+
+/* ==========================================================================
+   GET STARTED MODULE COMPONENTS - HIGH-DENSITY MOBILE RESPONSIVE OVERRIDES
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* Compress the Hero Presentation Box on Mobile Screens */
+    .hero-premium-block {
+        margin-top: 20px !important;
+        margin-bottom: 25px !important; /* Pulls Track 01 closer to the header */
+        padding: 30px 20px;
+        grid-template-columns: 1fr;
+        gap: 20px; /* Reduces spacing between content and the image box */
+        text-align: left;
+    }
+
+    .hero-premium-block h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-premium-block p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    /* Stack the Search Input and Button for Easier Tap Targets */
+    .hero-search-wrapper {
+        flex-direction: column;
+        border-radius: 16px;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .hero-search-btn {
+        width: 100%;
+        border-radius: 12px;
+        padding: 12px;
+    }
+
+    .hero-image-placeholder-frame {
+        height: 220px; /* Fits neatly on standard mobile display heights */
+    }
+
+    /* Tighten Track Categories */
+    .compliance-track-wrapper {
+        margin-bottom: 16px !important; /* Snaps sections close together horizontally */
+    }
+
+    .track-header-indicator {
+        margin-bottom: 10px !important;
+        padding-left: 10px;
+    }
+
+    .track-header-indicator h2 {
+        font-size: 1.5rem;
+    }
+
+    /* Stack Cards Fluidly with Tighter Inter-card Spacing */
+    .cards-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 10px !important; /* Shrunk spacing between individual card borders */
+    }
+
+    .service-card-item {
+        padding: 15px !important; /* Minimizes extra framework cushion space inside cards */
+        border-radius: 10px;
+    }
+    
+    .service-card-item h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .service-card-item p {
+        font-size: 0.85rem !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    main.page-container .track-header-indicator {
+        margin-bottom: 18px !important; /* Tighter separation gap for mobile viewports */
+        margin-top: 18px !important;
+    }
+}
