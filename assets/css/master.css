@@ -1851,3 +1851,18 @@ footer.site-footer, .site-footer {
     opacity: 0.65;
     filter: grayscale(15%);
 }
+
+/* Standardizing search list drops */
+input[list]::-webkit-calendar-picker-indicator {
+    display: inline-block !important;
+    color: #64748b;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    padding: 2px;
+}
+
+input[list]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    color: #10b981; /* Brand green indicator change on pointer hover */
+}
