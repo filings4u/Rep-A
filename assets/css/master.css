@@ -1969,3 +1969,88 @@ section.faq-section .faq-grid {
     margin-bottom: 0px !important;
     padding-bottom: 0px !important;
 }
+
+/* 🌀 DYNAMIC FAQ MATRIX LOADING SPINNER ANIMATION RULES */
+@keyframes faq-spin-loop {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-animation-circle {
+  display: block;
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   🧱 RESPONSIVE AUTOMATED FAQ INTERFACE GRID SYSTEM
+   ========================================================================== */
+.faq-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+  gap: 24px !important;
+  margin-top: 30px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 🚀 ANIMATED CARD CONTAINER HOVER MATRIX */
+.faq-item {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+  
+  /* Smooth hardware-accelerated rendering transitions */
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  will-change: transform;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Dynamic Entrance Accent Border Effect on Hover */
+.faq-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #10b981; /* Brand operational compliance green */
+  opacity: 0;
+  transition: opacity 0.2s ease !important;
+}
+
+/* Smooth Lift Animation & Depth Expansion */
+.faq-item:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.04) !important;
+  border-color: #cbd5e1 !important;
+}
+
+.faq-item:hover::before {
+  opacity: 1;
+}
+
+/* 🎯 INTERIOR STRUCTURAL CONTENT TYPOGRAPHY */
+.faq-item h4 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important; /* Dark Slate Title */
+  margin: 0 0 12px 0 !important;
+  line-height: 1.4 !important;
+}
+
+.faq-item p {
+  font-size: 0.9rem !important;
+  color: #475569 !important; /* Muted Charcoal Body */
+  margin: 0 !important;
+  line-height: 1.6 !important;
+}
+

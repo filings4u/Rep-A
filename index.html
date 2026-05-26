@@ -185,19 +185,20 @@
 
 <!-- SECTION 4: DYNAMIC KNOWLEDGE BASE (FAQs) --> 
 <section class="faq-section unified-site-section bg-white"> 
-    <div class="section-alignment-wrapper"> 
-        <div class="hero-tag">Knowledge Base</div> 
-        <h2>Common Questions</h2> 
-        
-        <!-- 🔄 DYNAMIC RENDERING TARGET CONTAINER -->
-        <div class="faq-grid" id="public-homepage-faq-grid-target"> 
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b; font-family: system-ui, sans-serif;">
-                <div class="spinner-animation-circle" style="margin: 0 auto 10px auto; width: 24px; height: 24px; border: 3px solid #e2e8f0; border-top-color: #10b981; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <span>Retrieving fresh regulatory answers...</span>
-            </div>
-        </div> 
+  <div class="section-alignment-wrapper"> 
+    <div class="hero-tag">Knowledge Base</div> 
+    <h2>Common Questions</h2> 
+    
+    <!-- 🔄 DYNAMIC RENDERING TARGET CONTAINER --> 
+    <div class="faq-grid" id="public-homepage-faq-grid-target"> 
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b; font-family: system-ui, sans-serif;"> 
+        <div class="spinner-animation-circle" style="margin: 0 auto 10px auto; width: 24px; height: 24px; border: 3px solid #e2e8f0; border-top-color: #10b981; border-radius: 50%; animation: faq-spin-loop 1s linear infinite;"></div> 
+        <span>Retrieving fresh regulatory answers...</span> 
+      </div> 
     </div> 
+  </div> 
 </section>
+
 
 <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 

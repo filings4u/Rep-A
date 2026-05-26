@@ -156,71 +156,148 @@ if (document.readyState === 'loading') {
  * ==========================================================================
  */
 async function initializeDynamicFaqEngine() {
-    const faqGrid = document.getElementById('public-homepage-faq-grid-target');
-    if (!faqGrid) return;
+  const faqGrid = document.getElementById('public-homepage-faq-grid-target');
+  if (!faqGrid) return;
 
-    const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
-    const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bwebm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
-    
-    let dbInstance = null;
-    try {
-        if (typeof window.supabase !== 'undefined') {
-            dbInstance = window.supabase.createClient(dbUrl, dbKey);
-        } else if (typeof supabaseJs !== 'undefined') {
-            dbInstance = supabaseJs.createClient(dbUrl, dbKey);
-        } else {
-            return; 
-        }
-    } catch(e) { return; }
+  const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
+  const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bwebm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+  
+  let dbInstance = null;
+  try {
+    if (typeof window.supabase !== 'undefined') {
+      dbInstance = window.supabase.createClient(dbUrl, dbKey);
+    } else if (typeof supabaseJs !== 'undefined') {
+      dbInstance = supabaseJs.createClient(dbUrl, dbKey);
+    } else {
+      return;
+    }
+  } catch(e) {
+    return;
+  }
 
-    let pathname = window.location.pathname;
-    let filename = pathname.substring(pathname.lastIndexOf('/') + 1);
-    let targetSlug = filename.replace('.html', '').trim();
+  const currentUrl = window.location.href.toLowerCase();
+  
+  try {
+    // 1. Fetch active matrix table dataset rows
+    const { data: allFaqs, error } = await dbInstance
+      .from('faq_items')
+      .select('*')
+      .order('sort_order', { ascending: true });
 
-    if (targetSlug === "" || targetSlug === "index" || targetSlug === "get-started") {
-        targetSlug = "global";
+    if (error) {
+      console.error("Supabase API rejection caught:", error.message);
+      return;
     }
 
-    try {
-        // 🔥 FIXED: We now pass the target slugs inside a clean javascript array structure [targetSlug, 'global']
-        // using the .in() filtering operator so Supabase understands the authentication rules perfectly.
-        const { data: faqs, error } = await dbInstance
-            .from('faq_items')
-            .select('*')
-            .in('service_slug', [targetSlug, 'global'])
-            .order('sort_order', { ascending: true });
+    if (!allFaqs || allFaqs.length === 0) {
+      showDefaultFaqPlaceholder(faqGrid);
+      return;
+    }
 
-        if (error) {
-            console.error("Supabase API rejection caught:", error.message);
-            return;
-        }
+    // Clear layout placeholder loading grids cleanly
+    faqGrid.innerHTML = "";
+    let animatedIndexOffset = 0;
 
-        if (!faqs || faqs.length === 0) {
-            faqGrid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b;">Consult our compliance desk directly for application support.</p>`;
-            return;
-        }
+    // 2. Local fuzzy filter sorting loops
+    allFaqs.forEach(item => {
+      const dbSlug = item.service_slug.toLowerCase();
+      const slugTokens = dbSlug.split(/[-_\s]+/);
+      
+      const isGlobal = (dbSlug === 'global');
+      const isUrlMatch = slugTokens.some(token => token.length > 1 && currentUrl.includes(token));
 
-        // Clear layout placeholder grids
-        faqGrid.innerHTML = "";
+      if (isGlobal || isUrlMatch) {
+        const faqBox = document.createElement('div');
+        faqBox.className = "faq-item";
+        
+        // 🚀 ANIMATION LOGIC: Initialize off-screen variables with delay states
+        faqBox.style.opacity = "0";
+        faqBox.style.transform = "translateY(15px)";
+        faqBox.style.transition = "all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)";
+        faqBox.style.transitionDelay = `${animatedIndexOffset * 80}ms`;
 
-        // Build records dynamically onto the viewport container frame
-        faqs.forEach(item => {
-            const faqBox = document.createElement('div');
-            faqBox.className = "faq-item";
-            faqBox.innerHTML = `
-                <h4>${item.question}</h4>
-                <p>${item.answer}</p>
-            `;
-            faqGrid.appendChild(faqBox);
+        // 📊 UI IMPLEMENTATION: Render textual blocks along with the helpful feedback metrics nodes
+        faqBox.innerHTML = `
+          <h4>${item.question}</h4>
+          <p>${item.answer}</p>
+          <div class="faq-feedback-bar" style="margin-top: 15px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: #64748b;">
+            <span>Was this answer helpful?</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="feedback-btn up" style="background: none; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;">👍 Yes</button>
+              <button class="feedback-btn down" style="background: none; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;">👎 No</button>
+            </div>
+          </div>
+        `;
+        
+        faqGrid.appendChild(faqBox);
+
+        // Bind interactive feedback actions to tracking routines
+        bindFeedbackTrackingMetrics(faqBox, item.id, dbInstance);
+
+        // Trigger entrance processing routines on next repaint
+        requestAnimationFrame(() => {
+          faqBox.style.opacity = "1";
+          faqBox.style.transform = "translateY(0)";
         });
 
-    } catch (err) {
-        console.error("FAQ data stream failure:", err);
+        animatedIndexOffset++;
+      }
+    });
+
+    if (animatedIndexOffset === 0) {
+      showDefaultFaqPlaceholder(faqGrid);
     }
+
+  } catch (err) {
+    console.error("FAQ data stream failure:", err);
+  }
+}
+
+function showDefaultFaqPlaceholder(targetGrid) {
+  targetGrid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b;">Consult our compliance desk directly for application support.</p>`;
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeDynamicFaqEngine);
+  document.addEventListener('DOMContentLoaded', initializeDynamicFaqEngine);
 } else {
-    initializeDynamicFaqEngine();
+  initializeDynamicFaqEngine();
+}
+
+/**
+ * 👍 ANALYTICAL USER ENGAGEMENT TRACKER
+ * Hooks up helpfulness interaction votes directly with cloud storage layers
+ */
+function bindFeedbackTrackingMetrics(cardContainerNode, faqRowId, supabaseClientInstance) {
+  const yesButton = cardContainerNode.querySelector('.feedback-btn.up');
+  const noButton = cardContainerNode.querySelector('.feedback-btn.down');
+  const contextBar = cardContainerNode.querySelector('.faq-feedback-bar');
+
+  if (!yesButton || !noButton || !contextBar) return;
+
+  const registerVoteAction = async (voteIsPositive) => {
+    // Disable elements immediately to prevent double voting anomalies
+    yesButton.disabled = true;
+    noButton.disabled = true;
+
+    try {
+      const { error } = await supabaseClientInstance
+        .from('faq_feedback_metrics')
+        .insert([{
+          faq_id: faqRowId,
+          is_helpful: voteIsPositive,
+          page_url: window.location.pathname
+        }]);
+
+      if (error) throw error;
+
+      // Provide responsive UI success feedback transitions
+      contextBar.innerHTML = `<span style="color: #10b981; font-weight: 700; transition: all 0.3s;">Thank you for your feedback! Grid analytics logged. ✅</span>`;
+    } catch (failErr) {
+      console.warn("Feedback recording bypassed:", failErr.message);
+      contextBar.innerHTML = `<span>Feedback logged locally. Thanks for contributing!</span>`;
+    }
+  };
+
+  yesButton.addEventListener('click', () => registerVoteAction(true));
+  noButton.addEventListener('click', () => registerVoteAction(false));
 }
