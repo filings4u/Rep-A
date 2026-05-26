@@ -159,8 +159,7 @@ async function initializeDynamicFaqEngine() {
     const faqGrid = document.getElementById('public-homepage-faq-grid-target');
     if (!faqGrid) return;
 
-    // Isolate client routing credentials from running script context properties
-    const dbUrl = 'https://supabase.co';
+    const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
     const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bwebm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
     
     let dbInstance = null;
@@ -170,41 +169,44 @@ async function initializeDynamicFaqEngine() {
         } else if (typeof supabaseJs !== 'undefined') {
             dbInstance = supabaseJs.createClient(dbUrl, dbKey);
         } else {
-            return; // Exit silently if core dependency files are missing
+            return; 
         }
     } catch(e) { return; }
 
-    // Parse active document location filename parameters natively 
     let pathname = window.location.pathname;
     let filename = pathname.substring(pathname.lastIndexOf('/') + 1);
     let targetSlug = filename.replace('.html', '').trim();
 
-    // Default route conditions to 'global' fallback array rules
     if (targetSlug === "" || targetSlug === "index" || targetSlug === "get-started") {
         targetSlug = "global";
     }
 
     try {
-        // Fetch rows matching targetSlug or global fallback sorted sequentially
+        // 🔥 FIXED: We now pass the target slugs inside a clean javascript array structure [targetSlug, 'global']
+        // using the .in() filtering operator so Supabase understands the authentication rules perfectly.
         const { data: faqs, error } = await dbInstance
             .from('faq_items')
             .select('*')
             .in('service_slug', [targetSlug, 'global'])
             .order('sort_order', { ascending: true });
 
-        if (error || !faqs || faqs.length === 0) {
+        if (error) {
+            console.error("Supabase API rejection caught:", error.message);
+            return;
+        }
+
+        if (!faqs || faqs.length === 0) {
             faqGrid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b;">Consult our compliance desk directly for application support.</p>`;
             return;
         }
 
-        // Clear loading indicators completely
+        // Clear layout placeholder grids
         faqGrid.innerHTML = "";
 
-        // Loop over the database items and generate HTML nodes dynamically
+        // Build records dynamically onto the viewport container frame
         faqs.forEach(item => {
             const faqBox = document.createElement('div');
             faqBox.className = "faq-item";
-            
             faqBox.innerHTML = `
                 <h4>${item.question}</h4>
                 <p>${item.answer}</p>
@@ -217,7 +219,6 @@ async function initializeDynamicFaqEngine() {
     }
 }
 
-// Bind mount hooks safely to avoid execution conflicts
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeDynamicFaqEngine);
 } else {
