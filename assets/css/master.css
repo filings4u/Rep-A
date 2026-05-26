@@ -1894,3 +1894,78 @@ section.blog-section,
 .blog-section.unified-site-section {
     background: var(--ice) !important;
 }
+
+/* ==========================================================================
+   BLOG SECTION TOP BUFFER RESET
+   ========================================================================== */
+
+/* Forces a safe padding cushion to separate the text cleanly from the white section above */
+section.blog-section,
+.blog-section.unified-site-section {
+    padding-top: 50px !important;
+}
+
+/* ==========================================================================
+   🎬 PREMIUM BLOG CARD ANIMATION SYSTEM
+   ========================================================================== */
+
+/* Starting base position: hidden, shifted down 20px, and zero opacity */
+.resource-card-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.25s ease,
+                border-color 0.25s ease !important;
+}
+
+/* Active animated reveal class triggered by JavaScript scroll tracking */
+.resource-card-item.reveal-animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Micro-interaction layout hover enhancement frame */
+.resource-card-item:hover {
+    transform: translateY(-4px) !important;
+    border-color: #10b981 !important; /* Brand green edge highlight */
+    box-shadow: 0 12px 24px -10px rgba(10, 31, 68, 0.08) !important;
+}
+
+/* ==========================================================================
+   SECTION INTERFACE CLOSURE GAP REDUCTION
+   ========================================================================== */
+
+/* 1. Pull the blog section box directly up cleanly */
+section.blog-section {
+    margin-top: -30px !important;
+}
+
+/* 2. Target the main site section containers and trim their bottom padding */
+.unified-site-section {
+    padding-bottom: 40px !important;
+    margin-bottom: 0px !important;
+}
+
+/* 3. Ensure the inner layout wrappers don't force extra hidden margins */
+.section-alignment-wrapper {
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+/* ==========================================================================
+   FAQ SECTION GAP COMPRESSION
+   ========================================================================= */
+
+/* Shrings the excessive padding footprint below the FAQ grid layout */
+section.faq-section,
+.faq-section.unified-site-section {
+    padding-bottom: 20px !important;
+    margin-bottom: 80px !important;
+}
+
+/* Prevents the inner grid columns from pushing out extra empty space */
+section.faq-section .faq-grid {
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}

@@ -183,31 +183,24 @@
     </section>
 
 
-    <!-- SECTION 4: KNOWLEDGE BASE (FAQs) -->
-    <section class="faq-section unified-site-section bg-white">
-        <div class="section-alignment-wrapper">
-            <div class="hero-tag">Knowledge Base</div>
-            <h2>Common Questions</h2>
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <h4>What is an LLC?</h4>
-                    <p>A Limited Liability Company protects your personal assets from business debts and lawsuits by creating a separate legal entity.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Do I need an EIN?</h4>
-                    <p>Yes, an Employer Identification Number is required to open a business bank account and hire employees. We include this in our Elite and Enterprise plans.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>What is a Registered Agent?</h4>
-                    <p>A Registered Agent is a designated individual or entity that receives official legal documents on behalf of your business.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>How long does formation take?</h4>
-                    <p>State processing times vary, but most LLCs are approved within 3-5 business days. Expedited options are available in most states.</p>
-                </div>
+<!-- SECTION 4: DYNAMIC KNOWLEDGE BASE (FAQs) --> 
+<section class="faq-section unified-site-section bg-white"> 
+    <div class="section-alignment-wrapper"> 
+        <div class="hero-tag">Knowledge Base</div> 
+        <h2>Common Questions</h2> 
+        
+        <!-- 🔄 DYNAMIC RENDERING TARGET CONTAINER -->
+        <div class="faq-grid" id="public-homepage-faq-grid-target"> 
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b; font-family: system-ui, sans-serif;">
+                <div class="spinner-animation-circle" style="margin: 0 auto 10px auto; width: 24px; height: 24px; border: 3px solid #e2e8f0; border-top-color: #10b981; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <span>Retrieving fresh regulatory answers...</span>
             </div>
-        </div>
-    </section>
+        </div> 
+    </div> 
+</section>
+
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+
 
       <!-- SECTION 5: LATEST INSIGHTS (BLOG SECTION) -->
     <section class="blog-section unified-site-section">

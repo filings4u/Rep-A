@@ -1117,3 +1117,28 @@
     }
 }
 
+@media (max-width: 768px) {
+    /* Slightly more compact padding buffer optimized for shorter mobile screens */
+    section.blog-section,
+    .blog-section.unified-site-section {
+        padding-top: 35px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Tight layout compression tracking for mobile viewports */
+    section.blog-section {
+        margin-top: -15px !important;
+    }
+    .unified-site-section {
+        padding-bottom: 25px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Tightens mobile scroll layouts so users hit the blog section faster */
+    section.faq-section,
+    .faq-section.unified-site-section {
+        padding-bottom: 15px !important;
+    }
+}

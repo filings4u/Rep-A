@@ -86,12 +86,11 @@ function initializeHomepageBlogFeeds() {
     const gridTarget = document.getElementById('public-homepage-blog-grid-target');
     if (!gridTarget) return;
 
-    // 1. Guard Gate Check: If items are already rendered, stop execution immediately
+    // Guard Gate Check: If items are already rendered, stop execution immediately
     if (gridTarget.querySelectorAll('.resource-card-item').length > 0) {
         return;
     }
 
-    // Curated articles pool matching your platform's tracking tracks
     const articlePool = [
         {
             title: "Understanding FMCSA New Entrant Audits",
@@ -113,17 +112,17 @@ function initializeHomepageBlogFeeds() {
         }
     ];
 
-    // 2. Clear out the loading spinner completely right before writing the clean elements
+    // Clear loading spinner text cleanly
     gridTarget.innerHTML = "";
 
-    // 3. Loop over the database items and safely append clean card wrappers
-    articlePool.forEach(article => {
+    // Loop over articles and append cards
+    articlePool.forEach((article, index) => {
         const card = document.createElement('article');
         card.className = "resource-card-item";
         
-        // Inherits native styles directly while applying structural padding alignment
         card.style.cssText = "background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);";
         
+        // FIXED: Backslashes removed entirely so the text strings load flawlessly
         card.innerHTML = `
             <div>
                 <span style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${article.date}</span>
@@ -135,12 +134,92 @@ function initializeHomepageBlogFeeds() {
             </a>
         `;
         gridTarget.appendChild(card);
+
+        // 🎬 STAGGERED REVEAL: Automatically fade-in each card with an incremental delay loop
+        setTimeout(() => {
+            card.classList.add('reveal-animated');
+        }, (index * 80) + 150); 
     });
 }
 
-// 4. Safely initialize the engine once the browser page has fully mounted
+// Safely mount the execution listener
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeHomepageBlogFeeds);
 } else {
     initializeHomepageBlogFeeds();
+}
+
+/**
+ * ==========================================================================
+ * 🗺️ DYNAMIC FAQ MATRIX DATA EXTRACTION LOADER ENGINE
+ * Fetches targeted question-answer rows out of Supabase in real-time
+ * ==========================================================================
+ */
+async function initializeDynamicFaqEngine() {
+    const faqGrid = document.getElementById('public-homepage-faq-grid-target');
+    if (!faqGrid) return;
+
+    // Isolate client routing credentials from running script context properties
+    const dbUrl = 'https://supabase.co';
+    const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bwebm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+    
+    let dbInstance = null;
+    try {
+        if (typeof window.supabase !== 'undefined') {
+            dbInstance = window.supabase.createClient(dbUrl, dbKey);
+        } else if (typeof supabaseJs !== 'undefined') {
+            dbInstance = supabaseJs.createClient(dbUrl, dbKey);
+        } else {
+            return; // Exit silently if core dependency files are missing
+        }
+    } catch(e) { return; }
+
+    // Parse active document location filename parameters natively 
+    let pathname = window.location.pathname;
+    let filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+    let targetSlug = filename.replace('.html', '').trim();
+
+    // Default route conditions to 'global' fallback array rules
+    if (targetSlug === "" || targetSlug === "index" || targetSlug === "get-started") {
+        targetSlug = "global";
+    }
+
+    try {
+        // Fetch rows matching targetSlug or global fallback sorted sequentially
+        const { data: faqs, error } = await dbInstance
+            .from('faq_items')
+            .select('*')
+            .in('service_slug', [targetSlug, 'global'])
+            .order('sort_order', { ascending: true });
+
+        if (error || !faqs || faqs.length === 0) {
+            faqGrid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b;">Consult our compliance desk directly for application support.</p>`;
+            return;
+        }
+
+        // Clear loading indicators completely
+        faqGrid.innerHTML = "";
+
+        // Loop over the database items and generate HTML nodes dynamically
+        faqs.forEach(item => {
+            const faqBox = document.createElement('div');
+            faqBox.className = "faq-item";
+            
+            faqBox.innerHTML = `
+                <h4>${item.question}</h4>
+                <p>${item.answer}</p>
+            `;
+            faqGrid.appendChild(faqBox);
+        });
+
+    } catch (err) {
+        console.error("FAQ data stream failure:", err);
+    }
+}
+
+// Bind mount hooks safely to avoid execution conflicts
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeDynamicFaqEngine);
+} else {
+    initializeDynamicFaqEngine();
 }
