@@ -128,7 +128,7 @@
     </div>
 
 
-    
+
 
 
  <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
@@ -229,94 +229,108 @@
     </svg>
 </button>
 
-    <!-- ==========================================================================
-       📰 DATA FEED AND DB HANDSHAKE DATABASE CONTROLLER SCRIPTS
-       ========================================================================== -->
-    <script>
-    let articleSupabaseInstance = null;
+<!-- ==========================================================================
+     📰 DATA FEED AND DB HANDSHAKE DATABASE CONTROLLER SCRIPTS
+     ========================================================================== -->
+<script>
+  let articleSupabaseInstance = null;
 
-    window.addEventListener('load', async () => {
-        if (typeof window.supabase === 'undefined') {
-            renderErrorState("System Setup Error: Core script libraries failed to load in head.");
-            return;
-        }
-
-        try {
-            articleSupabaseInstance = window.supabase.createClient(
-                'https://lrbimrlbskjweynxlgas.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
-            );
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const activeSlug = urlParams.get('slug');
-
-            if (!activeSlug) {
-                renderErrorState("Error: No valid article resource specified in URL parameters.");
-                return;
-            }
-
-            fetchArticleBodyPayload(activeSlug);
-        } catch (err) {
-            renderErrorState("Failed to establish server connection handshake.");
-        }
-    });
-
-   async function fetchArticleBodyPayload(slugString) {
-    const viewWrapper = document.getElementById('articleViewContentWrapper');
-    try {
-        const { data: posts, error } = await articleSupabaseInstance
-            .from('blog_posts')
-            .select('*')
-            .eq('slug', slugString);
-
-        if (error || !posts || posts.length === 0) {
-            renderErrorState("Article Not Found. The resource may have been deleted or archived by administrators.");
-            return;
-        }
-
-        // Destructure index item array [0] to match row schema properties directly
-        const activePost = posts[0];
-        const formattedDate = new Date(activePost.created_at).toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
-
-        // Parses raw line breaks cleanly out of the JSON string payload data
-        const parsedParagraphs = activePost.content ? 
-            activePost.content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('') : 
-            `<p>${activePost.summary || 'No summary overview text provided.'}</p>`;
-
-        // 🛠️ FIXED ERRONEOUS ELEMENT LOOP: Injected this.onerror=null execution parameter
-        viewWrapper.innerHTML = `
-            <a href="blog.html" class="btn-back-link">← Return to Insights Feed</a>
-            
-            <img 
-                src="${activePost.image_url || 'images/blog-fallback.jpg'}" 
-                alt="${activePost.title}" 
-                class="article-hero-image" 
-                onerror="this.onerror=null; this.src='images/logo-white.png'; this.style.padding='40px'; this.style.objectFit='contain'; this.style.background='#0a1f44'; this.style.maxHeight='300px';"
-            >
-            
-            <div class="article-header-meta">
-                <span class="category-tag">${activePost.category || 'Insights'}</span>
-                <span>•</span>
-                <span>Published: ${formattedDate}</span>
-            </div>
-            
-            <h1>${activePost.title}</h1>
-            
-            <div class="article-body-content">
-                ${parsedParagraphs}
-            </div>
-        `;
-
-    } catch (networkError) {
-        console.error("Reader transaction crash logged:", networkError);
-        renderErrorState("A structural network error interrupted data stream protocols.");
+  window.addEventListener('load', async () => {
+    if (typeof window.supabase === 'undefined') {
+      renderErrorState("System Setup Error: Core script libraries failed to load in head.");
+      return;
     }
-}
+    
+    try {
+      articleSupabaseInstance = window.supabase.createClient(
+        'https://lrbimrlbskjweynxlgas.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
+      );
 
-    </script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const activeSlug = urlParams.get('slug');
+
+      if (!activeSlug) {
+        renderErrorState("Error: No valid article resource specified in URL parameters.");
+        return;
+      }
+
+      fetchArticleBodyPayload(activeSlug);
+    } catch (err) {
+      renderErrorState("Failed to establish server connection handshake.");
+    }
+  });
+
+  async function fetchArticleBodyPayload(slugString) {
+    const viewWrapper = document.getElementById('articleViewContentWrapper');
+    if (!viewWrapper) return;
+
+    try {
+      const { data: posts, error } = await articleSupabaseInstance
+        .from('blog_posts')
+        .select('*')
+        .eq('slug', slugString);
+
+      if (error || !posts || posts.length === 0) {
+        renderErrorState("Article Not Found. The resource may have been deleted or archived by administrators.");
+        return;
+      }
+
+      // Destructure index item array [0] to match row schema properties directly
+      const activePost = posts[0];
+      const formattedDate = new Date(activePost.created_at).toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+
+      // Parses raw line breaks cleanly out of the JSON string payload data
+      const parsedParagraphs = activePost.content 
+        ? activePost.content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('') 
+        : `<p>${activePost.summary || 'No summary overview text provided.'}</p>`;
+
+      // 🛠️ FIXED ERRONEOUS ELEMENT LOOP: Injected this.onerror=null execution parameter
+      viewWrapper.innerHTML = `
+        <a href="blog.html" class="btn-back-link">← Return to Insights Feed</a>
+        <img src="${activePost.image_url || 'images/blog-fallback.jpg'}" alt="${activePost.title}" class="article-hero-image" onerror="this.onerror=null; this.src='images/logo-white.png'; this.style.padding='40px'; this.style.objectFit='contain'; this.style.background='#0a1f44'; this.style.maxHeight='300px';" >
+        <div class="article-header-meta">
+          <span class="category-tag">${activePost.category || 'Insights'}</span>
+          <span>•</span>
+          <span>Published: ${formattedDate}</span>
+        </div>
+        <h1>${activePost.title}</h1>
+        <div class="article-body-content">
+          ${parsedParagraphs}
+        </div>
+      `;
+    } catch (networkError) {
+      console.error("Reader transaction crash logged:", networkError);
+      renderErrorState("A structural network error interrupted data stream protocols.");
+    }
+  }
+
+  /**
+   * 🛠️ FIXED STRUCTURAL ERROR INTERACTION INTERFACE
+   * Gracefully prints database connection failures right inside the view wrapper skeleton
+   */
+  function renderErrorState(errorMessageText) {
+    const errorTargetGrid = document.getElementById('articleViewContentWrapper');
+    if (errorTargetGrid) {
+      errorTargetGrid.innerHTML = `
+        <div style="text-align: center !important; padding: 50px 20px !important; font-family: system-ui, sans-serif !important; max-width: 550px !important; margin: 40px auto !important; background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;">
+          <span style="font-size: 3.5rem !important; display: block !important; margin-bottom: 12px !important;">📰</span>
+          <h2 style="font-size: 1.35rem !important; font-weight: 800 !important; color: #0f172a !important; margin: 0 0 10px 0 !important;">Content Assembly Alert</h2>
+          <p style="font-size: 0.9rem !important; color: #64748b !important; line-height: 1.6 !important; margin: 0 0 24px 0 !important;">
+            ${errorMessageText}
+          </p>
+          <a href="blog.html" style="display: inline-block !important; background: #10b981 !important; color: #ffffff !important; font-weight: 700 !important; font-size: 0.85rem !important; text-decoration: none !important; padding: 12px 24px !important; border-radius: 6px !important; transition: background 0.15s !important;">← Back to Insights Hub</a>
+        </div>
+      `;
+    } else {
+      console.error("Critical rendering container wrapper missing out of DOM structure:", errorMessageText);
+    }
+  }
+</script>
+
 </body>
 </html>
