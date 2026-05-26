@@ -2054,3 +2054,40 @@ section.faq-section .faq-grid {
   line-height: 1.6 !important;
 }
 
+/* ==========================================================================
+   🧱 STANDARD 4-COLUMN FAQ INTERFACE GRID SYSTEM
+   ========================================================================== */
+.faq-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  margin-top: 30px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.faq-item {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+  flex: 1 1 calc(25% - 20px) !important; /* Forces 4 equal items across on desktop screens */
+  min-width: 250px !important; /* Wraps beautifully onto next lines on mobile screens */
+}
+
+.faq-item h4 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin: 0 0 12px 0 !important;
+  line-height: 1.4 !important;
+}
+
+.faq-item p {
+  font-size: 0.9rem !important;
+  color: #475569 !important;
+  margin: 0 !important;
+  line-height: 1.6 !important;
+}
