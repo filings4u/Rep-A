@@ -1107,3 +1107,13 @@
         margin-top: 18px !important;
     }
 }
+
+@media (max-width: 768px) {
+    /* Slightly smaller, comfortable gap depth optimized for mobile smartphone screen heights */
+    main.page-container #articleViewContentWrapper,
+    .article-view-container {
+        margin-top: 30px !important;
+        padding-top: 5px !important;
+    }
+}
+

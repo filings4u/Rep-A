@@ -1866,3 +1866,31 @@ input[list]::-webkit-calendar-picker-indicator:hover {
     opacity: 1;
     color: #10b981; /* Brand green indicator change on pointer hover */
 }
+
+/* ==========================================================================
+   ULTRA-COMPACT FOOTER ATTACHMENT COVERAGE (ELIMINATES WHITE SPACE)
+   ========================================================================== */
+
+/* Tighten the bottom space inside your dynamic article grid container views */
+.article-view-container, .blog-section {
+    margin-top: 80px !important;
+    padding-top: 0px !important;
+    padding-bottom: 45px !important;
+    margin-bottom: 0px !important;
+}
+
+/* Bring your global corporate footer tightly up to your content blocks */
+footer.site-footer {
+    margin-top: 0px !important;
+    border-top: 1px solid #e2e8f0; /* Optional: Adds a clean borderline separator */
+}
+
+/* ==========================================================================
+   GLOBAL BLOG SECTION ICE BACKGROUND OVERRIDE
+   ========================================================================== */
+
+/* Automatically sets the ice color token across all blog modules site-wide */
+section.blog-section,
+.blog-section.unified-site-section {
+    background: var(--ice) !important;
+}

@@ -75,3 +75,72 @@ $(document).ready(function() {
         }
     }
 });
+
+/**
+ * ==========================================================================
+ * 📊 AUTOMATED HOME BLOG GRID RENDERING ENGINE
+ * Dispatches matching card arrays and resolves the loading flicker loop instantly
+ * ==========================================================================
+ */
+function initializeHomepageBlogFeeds() {
+    const gridTarget = document.getElementById('public-homepage-blog-grid-target');
+    if (!gridTarget) return;
+
+    // 1. Guard Gate Check: If items are already rendered, stop execution immediately
+    if (gridTarget.querySelectorAll('.resource-card-item').length > 0) {
+        return;
+    }
+
+    // Curated articles pool matching your platform's tracking tracks
+    const articlePool = [
+        {
+            title: "Understanding FMCSA New Entrant Audits",
+            slug: "understanding-fmcsa-new-entrant-audits",
+            desc: "Learn what logs, driver qualification sheets, and maintenance data profiles are evaluated during your initial 12-month compliance window.",
+            date: "May 20, 2026"
+        },
+        {
+            title: "Mastering Multi-State Sales Tax Nexus Rules",
+            slug: "mastering-multi-state-sales-tax-nexus-rules",
+            desc: "A breakdown of threshold limits that require logistics firms and remote sales structures to secure state filing permits.",
+            date: "May 12, 2026"
+        },
+        {
+            title: "The Ultimate Guide to Heavy Use Tax Form 2290",
+            slug: "the-ultimate-guide-to-heavy-use-tax-form-2290",
+            desc: "How to quickly secure your stamped Schedule 1 watermarks without causing structural delays inside your freight network logs.",
+            date: "April 28, 2026"
+        }
+    ];
+
+    // 2. Clear out the loading spinner completely right before writing the clean elements
+    gridTarget.innerHTML = "";
+
+    // 3. Loop over the database items and safely append clean card wrappers
+    articlePool.forEach(article => {
+        const card = document.createElement('article');
+        card.className = "resource-card-item";
+        
+        // Inherits native styles directly while applying structural padding alignment
+        card.style.cssText = "background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);";
+        
+        card.innerHTML = `
+            <div>
+                <span style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${article.date}</span>
+                <h3 style="font-size: 1.2rem; font-weight: 800; color: #0a1f44; margin: 8px 0 10px 0; line-height: 1.3;">${article.title}</h3>
+                <p style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;">${article.desc}</p>
+            </div>
+            <a href="blog/${article.slug}.html" style="color: #0a1f44; font-weight: 700; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#0a1f44'">
+                Read Article &rarr;
+            </a>
+        `;
+        gridTarget.appendChild(card);
+    });
+}
+
+// 4. Safely initialize the engine once the browser page has fully mounted
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeHomepageBlogFeeds);
+} else {
+    initializeHomepageBlogFeeds();
+}

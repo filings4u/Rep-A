@@ -127,10 +127,8 @@
         <div class="article-loading-state">Fetching full context data from secure database node...</div>
     </div>
 
-    <!-- 🚀 FIXED SPACER: Margin buffer pushes reader cards cleanly above the footer block container -->
-    <div style="margin-bottom: 120px; clear: both;"></div>
 
-
+    
 
 
  <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
@@ -263,57 +261,62 @@
         }
     });
 
-    async function fetchArticleBodyPayload(slugString) {
-        const viewWrapper = document.getElementById('articleViewContentWrapper');
-        try {
-            const { data: posts, error } = await articleSupabaseInstance
-                .from('blog_posts')
-                .select('*')
-                .eq('slug', slugString);
+   async function fetchArticleBodyPayload(slugString) {
+    const viewWrapper = document.getElementById('articleViewContentWrapper');
+    try {
+        const { data: posts, error } = await articleSupabaseInstance
+            .from('blog_posts')
+            .select('*')
+            .eq('slug', slugString);
 
-            if (error || !posts || posts.length === 0) {
-                renderErrorState("Article Not Found. The resource may have been deleted or archived by administrators.");
-                return;
-            }
-
-            // 🚀 FIXED: Destructure index item array [0] to match row schema properties directly
-            const activePost = posts[0]; 
-            const formattedDate = new Date(activePost.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-            // Parses raw line breaks cleanly out of the JSON string payload data
-            const parsedParagraphs = activePost.content 
-                ? activePost.content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('') 
-                : `<p>${activePost.summary || 'No summary overview text provided.'}</p>`;
-
-            // Render output payload elements safely onto the template frame wrapper
-            viewWrapper.innerHTML = `
-                <a href="blog.html" class="btn-back-link">← Return to Insights Feed</a>
-                <img src="${activePost.image_url || 'images/blog-fallback.jpg'}" alt="${activePost.title}" class="article-hero-image" onerror="this.src='images/blog-fallback.jpg';">
-                <div class="article-header-meta">
-                    <span class="category-tag">${activePost.category || 'Insights'}</span>
-                    <span>•</span>
-                    <span>Published: ${formattedDate}</span>
-                </div>
-                <h1>${activePost.title}</h1>
-                <div class="article-body-content">
-                    ${parsedParagraphs}
-                </div>
-            `;
-        } catch (networkError) {
-            console.error("Reader transaction crash logged:", networkError);
-            renderErrorState("A structural network error interrupted data stream protocols.");
+        if (error || !posts || posts.length === 0) {
+            renderErrorState("Article Not Found. The resource may have been deleted or archived by administrators.");
+            return;
         }
-    }
 
-    function renderErrorState(messageText) {
-        const wrapper = document.getElementById('articleViewContentWrapper');
-        if (wrapper) {
-            wrapper.innerHTML = `
-                <a href="blog.html" class="btn-back-link">← Return to Insights Feed</a>
-                <div class="article-loading-state" style="color: #ef4444; font-weight:700; padding:60px 0;">${messageText}</div>
-            `;
-        }
+        // Destructure index item array [0] to match row schema properties directly
+        const activePost = posts[0];
+        const formattedDate = new Date(activePost.created_at).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Parses raw line breaks cleanly out of the JSON string payload data
+        const parsedParagraphs = activePost.content ? 
+            activePost.content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('') : 
+            `<p>${activePost.summary || 'No summary overview text provided.'}</p>`;
+
+        // 🛠️ FIXED ERRONEOUS ELEMENT LOOP: Injected this.onerror=null execution parameter
+        viewWrapper.innerHTML = `
+            <a href="blog.html" class="btn-back-link">← Return to Insights Feed</a>
+            
+            <img 
+                src="${activePost.image_url || 'images/blog-fallback.jpg'}" 
+                alt="${activePost.title}" 
+                class="article-hero-image" 
+                onerror="this.onerror=null; this.src='images/logo-white.png'; this.style.padding='40px'; this.style.objectFit='contain'; this.style.background='#0a1f44'; this.style.maxHeight='300px';"
+            >
+            
+            <div class="article-header-meta">
+                <span class="category-tag">${activePost.category || 'Insights'}</span>
+                <span>•</span>
+                <span>Published: ${formattedDate}</span>
+            </div>
+            
+            <h1>${activePost.title}</h1>
+            
+            <div class="article-body-content">
+                ${parsedParagraphs}
+            </div>
+        `;
+
+    } catch (networkError) {
+        console.error("Reader transaction crash logged:", networkError);
+        renderErrorState("A structural network error interrupted data stream protocols.");
     }
+}
+
     </script>
 </body>
 </html>
