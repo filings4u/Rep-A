@@ -1196,30 +1196,4 @@
     text-align: left !important;
     margin: 0 !important;
   }
-
-
-  /* 🚀 2. FORCE ALL OTHER DYNAMIC SECTIONS TO VERTICALLY FLEX STACK BELOW THE HERO */
-  .matrix-grid,
-  .faq-grid,
-  .unified-site-section,
-  div[class*="-grid"], 
-  div[class*="-wrapper"],
-  section:not(.site-footer) { /* Avoids selecting footer structures entirely */
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100% !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Force responsive FAQ matrix cards to equal full-width lines on mobile */
-  .faq-item {
-    flex: 1 1 100% !important;
-    width: 100% !important;
-    margin-bottom: 12px !important;
-    padding: 20px !important;
-    text-align: left !important;
-  }
 }
