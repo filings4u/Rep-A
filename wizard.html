@@ -1411,7 +1411,7 @@
         }
       });
 
-           const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
+      const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
 
       // Step 2: Initialize account credentials inside the secure database auth ledger
       let userIdUuid = null; 
@@ -1422,14 +1422,16 @@
           password: temporaryPasswordString 
         });
         
-        // 🎯 FIX: Only capture the ID if no error occurred and user was successfully created
-        if (!authError && authData && authData.user) {
+        // 🎯 DEFENSIVE FIX: Confirm BOTH that no error exists AND that user record data is returned cleanly
+        if (!authError && authData && authData.user && authData.user.id) {
           userIdUuid = authData.user.id;
-        } else if (authError) {
-          console.warn("Supabase Auth flagged an expected constraint bypass:", authError.message);
+        } else {
+          console.warn("Auth pipeline bypass: Supabase flagged an expected user creation constraint.");
+          userIdUuid = null; // Hard-enforced security cleaning drop
         }
       } catch (authCatchErr) {
-        console.warn("Auth pipeline bypass caught:", authCatchErr.message);
+        console.warn("Auth pipeline exception caught:", authCatchErr.message);
+        userIdUuid = null; // Hard-enforced security cleaning drop
       }
 
       // 📊 Construct the finalized database insert row object array data model
@@ -1447,6 +1449,8 @@
         poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
         created_at: new Date().toISOString()
       };
+
+    
       // 🎯 FIX: Only append user_id parameter tracking if it successfully maps onto an active auth.users profile
       if (userIdUuid && userIdUuid !== "00000000-0000-0000-0000-000000000000") {
         ordersPayloadRowObject.user_id = userIdUuid;
