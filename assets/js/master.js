@@ -78,6 +78,29 @@ $(document).ready(function() {
 
 /**
  * ==========================================================================
+ * 📊 GLOBAL CLIENT SYNCHRONIZATION MATRIX
+ * Shared singleton connection engine to prevent duplicate client initialization
+ * ==========================================================================
+ */
+let sharedDbInstance = null;
+
+function getSupabaseInstance() {
+  if (sharedDbInstance) return sharedDbInstance;
+
+  const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
+  const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+
+  if (typeof window.supabase !== 'undefined') {
+    sharedDbInstance = window.supabase.createClient(dbUrl, dbKey);
+    return sharedDbInstance;
+  } else {
+    console.warn("Blog/FAQ Engine Core: Supabase core missing from window scope.");
+    return null;
+  }
+}
+
+/**
+ * ==========================================================================
  * 📊 PART 1: DYNAMIC CLOUD BLOG GRID RENDERING ENGINE (MAX 4 ITEMS)
  * Pulls live published items from Supabase by matching current URL keywords
  * ==========================================================================
@@ -86,25 +109,10 @@ async function initializeHomepageBlogFeeds() {
   const gridTarget = document.getElementById('public-homepage-blog-grid-target');
   if (!gridTarget) return;
 
-  if (gridTarget.querySelectorAll('.resource-card-item').length > 0) {
-    return;
-  }
+  if (gridTarget.querySelectorAll('.resource-card-item').length > 0) return;
 
-  // 🚀 FIXED URL: Added your explicit project code prefix subdomain back to eliminate CORS network blocks
-  const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
-  const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
-  
-  let dbInstance = null;
-  try {
-    if (typeof window.supabase !== 'undefined') {
-      dbInstance = window.supabase.createClient(dbUrl, dbKey);
-    } else {
-      console.warn("Blog Engine Core: Supabase core missing.");
-      return;
-    }
-  } catch (e) {
-    return;
-  }
+  const dbInstance = getSupabaseInstance();
+  if (!dbInstance) return;
 
   const currentUrl = window.location.href.toLowerCase();
   const MAXIMUM_BLOG_DISPLAY_CAP = 4;
@@ -121,23 +129,18 @@ async function initializeHomepageBlogFeeds() {
     }
 
     gridTarget.innerHTML = "";
-
     if (!allPosts || allPosts.length === 0) {
       gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`;
       return;
     }
 
     let displayedCount = 0;
-
     for (let i = 0; i < allPosts.length; i++) {
-      if (displayedCount >= MAXIMUM_BLOG_DISPLAY_CAP) {
-        break;
-      }
+      if (displayedCount >= MAXIMUM_BLOG_DISPLAY_CAP) break;
 
       const item = allPosts[i];
       const dbSlug = (item.service_slug || 'global').toLowerCase();
       const slugTokens = dbSlug.split(/[-_\s]+/);
-      
       const isGlobal = (dbSlug === 'global');
       const isUrlMatch = slugTokens.some(token => token.length > 1 && currentUrl.includes(token));
 
@@ -145,13 +148,9 @@ async function initializeHomepageBlogFeeds() {
         const card = document.createElement('article');
         card.className = "resource-card-item";
         card.style.cssText = "background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); opacity: 0; transform: translateY(10px); transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);";
-
-        const postDate = new Date(item.created_at).toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
-        });
-
+        
+        const postDate = new Date(item.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        
         card.innerHTML = `
           <div>
             <span style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${postDate}</span>
@@ -162,10 +161,9 @@ async function initializeHomepageBlogFeeds() {
             Read Article &rarr;
           </a>
         `;
-
+        
         card.querySelector('.blog-live-title').textContent = item.title;
         card.querySelector('.blog-live-desc').textContent = item.summary || '';
-
         gridTarget.appendChild(card);
 
         (function(targetCard, offsetIndex) {
@@ -183,12 +181,10 @@ async function initializeHomepageBlogFeeds() {
     if (displayedCount === 0) {
       gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`;
     }
-
   } catch (err) {
     console.error("Cloud insights stream transmission failure:", err);
   }
 }
-
 
 /**
  * ==========================================================================
@@ -200,19 +196,8 @@ async function initializeDynamicFaqEngine() {
   const faqGrid = document.getElementById('public-homepage-faq-grid-target');
   if (!faqGrid) return;
 
-  const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
-  const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
-  
-  let dbInstance = null;
-  try {
-    if (typeof window.supabase !== 'undefined') {
-      dbInstance = window.supabase.createClient(dbUrl, dbKey);
-    } else {
-      return;
-    }
-  } catch(e) {
-    return;
-  }
+  const dbInstance = getSupabaseInstance();
+  if (!dbInstance) return;
 
   const currentUrl = window.location.href.toLowerCase();
   const MAXIMUM_FAQ_DISPLAY_CAP = 4;
@@ -258,10 +243,10 @@ async function initializeDynamicFaqEngine() {
             </div>
           </div>
         `;
-
         faqBox.querySelector('.faq-render-q').textContent = item.question;
         faqBox.querySelector('.faq-render-a').textContent = item.answer;
         faqGrid.appendChild(faqBox);
+        
         bindFeedbackTrackingMetrics(faqBox, item.id, dbInstance);
         displayedCount++;
       }
@@ -270,7 +255,6 @@ async function initializeDynamicFaqEngine() {
     if (displayedCount === 0) {
       showDefaultFaqPlaceholder(faqGrid);
     }
-
   } catch (err) {
     console.error("FAQ data stream failure:", err);
   }
@@ -290,15 +274,10 @@ function bindFeedbackTrackingMetrics(cardContainerNode, faqRowId, supabaseClient
   const registerVoteAction = async (voteIsPositive) => {
     yesButton.disabled = true;
     noButton.disabled = true;
-
     try {
       const { error } = await supabaseClientInstance
         .from('faq_feedback_metrics')
-        .insert([{
-          faq_id: faqRowId,
-          is_helpful: voteIsPositive,
-          page_url: window.location.pathname
-        }]);
+        .insert([{ faq_id: faqRowId, is_helpful: voteIsPositive, page_url: window.location.pathname }]);
 
       if (error) throw error;
       contextBar.innerHTML = `<span style="color: #10b981; font-weight: 700;">Thank you for your feedback! ✅</span>`;
