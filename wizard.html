@@ -1330,8 +1330,11 @@
 
 
   // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER
+   // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER
   async function handleWizardFormStepNavigation(event) {
     event.preventDefault();
+    
+    // 🎯 FIX: Explicitly map your verified window database object instance
     const client = window.supabaseClient || window.supabase;
     const feedback = document.getElementById("wizardFeedbackTray");
     const nextBtn = document.getElementById("wizNextBtn");
@@ -1339,16 +1342,17 @@
 
     const totalStepsCountMap = activeServiceData.stepsCount + 5;
     
-    // 🎯 If we are on an intermediate step, advance forward normally
+    // If we are on an intermediate step, advance forward normally
     if (activeWizardStepIndex < totalStepsCountMap) {
       navigateWizardStepsCounter(1);
       return;
     }
 
     // 🛡️ STEP 6 SUBMISSION processing (Secure Checkout Gateway Endpoint)
-    if (!client) {
+    // 🎯 FIX: Confirm client features the required data lookup methods
+    if (!client || typeof client.from !== "function") {
       feedback.style.color = "#c15254";
-      feedback.textContent = "Database Error: Supabase connection keys are currently uninitialized.";
+      feedback.textContent = "Database Error: Supabase client is not fully initialized. Check your URL and Anon Key variables.";
       return;
     }
 
@@ -1364,7 +1368,7 @@
     feedback.textContent = "Verifying credit instrument credentials with merchant bank channels...";
 
     try {
-      // 1. Trigger live token serialization directly with Stripe core processing networks
+      // Trigger live token serialization directly with Stripe core processing networks
       const { token, error: stripeError } = await stripeInstance.createToken(stripeCardElementInstance, {
         name: `${wizardCollectedFormPayloadData["wiz_client_firstname"] || ''} ${wizardCollectedFormPayloadData["wiz_client_lastname"] || ''}`.trim(),
         email: wizardCollectedFormPayloadData["wiz_client_email"] || ""
@@ -1380,6 +1384,7 @@
       wizardCollectedFormPayloadData["stripe_card_last_four_digits"] = token.card.last4;
 
       feedback.textContent = "Funds secured. Initializing secure database customer file synchronization...";
+
 
 
       // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR
