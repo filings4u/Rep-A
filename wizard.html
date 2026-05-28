@@ -1327,32 +1327,81 @@
     synchronizeWizardStepUILayout();
   }
 
+      // Generate automatic temporary passcode credentials array
+      const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
+
+      // Step 2: Initialize account credentials inside the secure database auth ledger
+      let userIdUuid = null; 
+      try {
+        const { data: authData, error: authError } = await client.auth.signUp({ 
+          email: clientEmail, 
+          password: temporaryPasswordString 
+        });
+        
+        if (authData && authData.user) {
+          userIdUuid = authData.user.id;
+        }
+      } catch (authCatchErr) {
+        console.warn("Auth pipeline bypass (Account already exists or email confirmation required):", authCatchErr.message);
+      }
+
+      // 📊 Construct the finalized database insert row object array data model
+      const ordersPayloadRowObject = {
+        company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
+        service_key: activeServiceName.replace(/\s+/g, '_').toLowerCase(),
+        service_title: activeServiceName,
+        plan_tier: selectedTierName,
+        total_fee: runningTotalAccumulator,
+        status: 'Fulfillment Lane',
+        tax_id_status: 'Fulfillment Lane',
+        collected_payload_metadata: wizardCollectedFormPayloadData,
+        poa_signed_state: true,
+        poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
+        created_at: new Date().toISOString()
+      };
+
+      // Only append user_id parameter tracking if it successfully maps onto an active auth.users profile
+      if (userIdUuid) {
+        ordersPayloadRowObject.user_id = userIdUuid;
+      }
+
+      // Step 3: Push audited records to master database orders matrix table
+      const { error: dbError } = await client
+        .from('orders')
+        .insert(ordersPayloadRowObject);
+
+      if (dbError) throw dbError;
+
+      // Step 4: Clear workspace to display clean success layout view
+      renderPremiumInteractiveReceiptPage(temporaryPasswordString);
+      
+    } catch (err) {
+      console.error("Fulfillment engine checkout failure:", err.message);
+      feedback.style.color = "#c15254";
+      feedback.textContent = "Transaction Aborted: " + err.message;
+      nextBtn.disabled = false;
+    }
+  }
 
 
-  // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER
-   // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER
+
+    // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH SYNTAX CORRECTIONS
   async function handleWizardFormStepNavigation(event) {
     event.preventDefault();
-    
-    // 🎯 FIX: Explicitly map your verified window database object instance
     const client = window.supabaseClient || window.supabase;
     const feedback = document.getElementById("wizardFeedbackTray");
     const nextBtn = document.getElementById("wizNextBtn");
     if (!feedback || !nextBtn) return;
 
     const totalStepsCountMap = activeServiceData.stepsCount + 5;
-    
-    // If we are on an intermediate step, advance forward normally
     if (activeWizardStepIndex < totalStepsCountMap) {
       navigateWizardStepsCounter(1);
       return;
     }
 
-    // 🛡️ STEP 6 SUBMISSION processing (Secure Checkout Gateway Endpoint)
-    // 🎯 FIX: Confirm client features the required data lookup methods
     if (!client || typeof client.from !== "function") {
       feedback.style.color = "#c15254";
-      feedback.textContent = "Database Error: Supabase client is not fully initialized. Check your URL and Anon Key variables.";
+      feedback.textContent = "Database Error: Supabase client is not fully initialized.";
       return;
     }
 
@@ -1363,31 +1412,15 @@
     }
 
     nextBtn.disabled = true;
-    nextBtn.textContent = "Authorizing Secured Funds Escrow...";
+    nextBtn.textContent = "Processing Secured Funds Escrow...";
     feedback.style.color = "var(--brand-navy)";
-    feedback.textContent = "Verifying credit instrument credentials with merchant bank channels...";
+    feedback.textContent = "Syncing transactional schemas across tracking dashboards...";
 
+    // 🎯 FIX: Explicitly open the master try block wrapper to preserve bracket balancing
     try {
-      // Trigger live token serialization directly with Stripe core processing networks
-      const { token, error: stripeError } = await stripeInstance.createToken(stripeCardElementInstance, {
-        name: `${wizardCollectedFormPayloadData["wiz_client_firstname"] || ''} ${wizardCollectedFormPayloadData["wiz_client_lastname"] || ''}`.trim(),
-        email: wizardCollectedFormPayloadData["wiz_client_email"] || ""
-      });
-
-      if (stripeError) {
-        throw new Error(`Stripe Validation Failed: ${stripeError.message}`);
-      }
-
-      // Append token safely to metadata cache for backend transaction tracking hooks
-      wizardCollectedFormPayloadData["stripe_payment_token_id"] = token.id;
-      wizardCollectedFormPayloadData["stripe_card_brand_type"] = token.card.brand;
-      wizardCollectedFormPayloadData["stripe_card_last_four_digits"] = token.card.last4;
-
-      feedback.textContent = "Funds secured. Initializing secure database customer file synchronization...";
-
-
-
-      // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR
+      const clientEmail = wizardCollectedFormPayloadData["wiz_client_email"] || "";
+      
+      // 📊 ACCURATE BACKEND PRICING CALCULATOR
       var selectedTierName = activeServicePlanTier || "starter";
       var localizedServiceMapPrices = activeServiceData.prices || { starter: 0.00, compliance: 0.00, enterprise: 0.00 };
       var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || localizedServiceMapPrices["starter"] || 0.00;
@@ -1413,38 +1446,65 @@
         }
       });
 
-      const clientEmail = wizardCollectedFormPayloadData["wiz_client_email"];
+      // Trigger live token serialization directly with Stripe core networks
+      const { token, error: stripeError } = await stripeInstance.createToken(stripeCardElementInstance, {
+        name: `${wizardCollectedFormPayloadData["wiz_client_firstname"] || ''} ${wizardCollectedFormPayloadData["wiz_client_lastname"] || ''}`.trim(),
+        email: clientEmail
+      });
+
+      if (stripeError) {
+        throw new Error(`Stripe Validation Failed: ${stripeError.message}`);
+      }
+
+      wizardCollectedFormPayloadData["stripe_payment_token_id"] = token.id;
+      wizardCollectedFormPayloadData["stripe_card_brand_type"] = token.card.brand;
+      wizardCollectedFormPayloadData["stripe_card_last_four_digits"] = token.card.last4;
+
       const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
 
       // Step 2: Initialize account credentials inside the secure database auth ledger
-      let userIdUuid = '00000000-0000-0000-0000-000000000000';
+      let userIdUuid = null;
       try {
-        const { data: authData } = await client.auth.signUp({ email: clientEmail, password: temporaryPasswordString });
-        if (authData && authData.user) userIdUuid = authData.user.id;
-      } catch (_) {}
+        const { data: authData } = await client.auth.signUp({ 
+          email: clientEmail, 
+          password: temporaryPasswordString 
+        });
+        if (authData && authData.user) {
+          userIdUuid = authData.user.id;
+        }
+      } catch (authCatchErr) {
+        console.warn("Auth pipeline bypass:", authCatchErr.message);
+      }
 
-      // Step 3: Push synchronized metrics to master order records table matrix
+      // 📊 Construct the finalized database insert row object array data model
+      const ordersPayloadRowObject = {
+        company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
+        service_key: activeServiceName.replace(/\s+/g, '_').toLowerCase(),
+        service_title: activeServiceName,
+        plan_tier: selectedTierName,
+        total_fee: runningTotalAccumulator,
+        status: 'Fulfillment Lane',
+        tax_id_status: 'Fulfillment Lane',
+        collected_payload_metadata: wizardCollectedFormPayloadData,
+        poa_signed_state: true,
+        poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
+        created_at: new Date().toISOString()
+      };
+
+      if (userIdUuid) {
+        ordersPayloadRowObject.user_id = userIdUuid;
+      }
+
+      // Step 3: Push audited records to master database orders matrix table
       const { error: dbError } = await client
         .from('orders')
-        .insert({
-          user_id: userIdUuid,
-          company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
-          service_key: activeServiceName.replace(/\s+/g, '_').toLowerCase(),
-          service_title: activeServiceName,
-          plan_tier: selectedTierName,
-          total_fee: runningTotalAccumulator,
-          status: 'Fulfillment Lane',
-          tax_id_status: 'Fulfillment Lane',
-          collected_payload_metadata: wizardCollectedFormPayloadData,
-          poa_signed_state: true,
-          poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
-          created_at: new Date().toISOString()
-        });
+        .insert(ordersPayloadRowObject);
 
       if (dbError) throw dbError;
 
-      // Step 4: Display clean completion view
+      // Step 4: Clear workspace to display clean success layout view
       renderPremiumInteractiveReceiptPage(temporaryPasswordString);
+      
     } catch (err) {
       console.error("Fulfillment engine checkout failure:", err.message);
       feedback.style.color = "#c15254";
@@ -1452,6 +1512,7 @@
       nextBtn.disabled = false;
     }
   }
+
 
 
   // 📜 DYNAMIC GENERATION FORMATTER FOR POA RECORDS
