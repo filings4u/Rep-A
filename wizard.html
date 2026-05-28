@@ -1411,38 +1411,57 @@
         }
       });
 
-      const clientEmail = wizardCollectedFormPayloadData["wiz_client_email"];
-      const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
+           const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
 
       // Step 2: Initialize account credentials inside the secure database auth ledger
-      let userIdUuid = '00000000-0000-0000-0000-000000000000';
+      let userIdUuid = null; 
+      
       try {
-        const { data: authData } = await client.auth.signUp({ email: clientEmail, password: temporaryPasswordString });
-        if (authData && authData.user) userIdUuid = authData.user.id;
-      } catch (_) {}
+        const { data: authData, error: authError } = await client.auth.signUp({ 
+          email: clientEmail, 
+          password: temporaryPasswordString 
+        });
+        
+        // 🎯 FIX: Only capture the ID if no error occurred and user was successfully created
+        if (!authError && authData && authData.user) {
+          userIdUuid = authData.user.id;
+        } else if (authError) {
+          console.warn("Supabase Auth flagged an expected constraint bypass:", authError.message);
+        }
+      } catch (authCatchErr) {
+        console.warn("Auth pipeline bypass caught:", authCatchErr.message);
+      }
 
-      // Step 3: Push synchronized metrics to master order records table matrix
+      // 📊 Construct the finalized database insert row object array data model
+      var selectedTierName = activeServicePlanTier || "starter";
+      const ordersPayloadRowObject = {
+        company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
+        service_key: activeServiceName.replace(/\s+/g, '_').toLowerCase(),
+        service_title: activeServiceName,
+        plan_tier: selectedTierName,
+        total_fee: runningTotalAccumulator,
+        status: 'Fulfillment Lane',
+        tax_id_status: 'Fulfillment Lane',
+        collected_payload_metadata: wizardCollectedFormPayloadData,
+        poa_signed_state: true,
+        poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
+        created_at: new Date().toISOString()
+      };
+      // 🎯 FIX: Only append user_id parameter tracking if it successfully maps onto an active auth.users profile
+      if (userIdUuid && userIdUuid !== "00000000-0000-0000-0000-000000000000") {
+        ordersPayloadRowObject.user_id = userIdUuid;
+      }
+
+      // Step 3: Push audited records to master database orders matrix table
       const { error: dbError } = await client
         .from('orders')
-        .insert({
-          user_id: userIdUuid,
-          company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
-          service_key: activeServiceName.replace(/\s+/g, '_').toLowerCase(),
-          service_title: activeServiceName,
-          plan_tier: selectedTierName,
-          total_fee: runningTotalAccumulator,
-          status: 'Fulfillment Lane',
-          tax_id_status: 'Fulfillment Lane',
-          collected_payload_metadata: wizardCollectedFormPayloadData,
-          poa_signed_state: true,
-          poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
-          created_at: new Date().toISOString()
-        });
+        .insert(ordersPayloadRowObject);
 
       if (dbError) throw dbError;
 
-      // Step 4: Display clean completion view
+      // Step 4: Clear workspace to display clean success layout view
       renderPremiumInteractiveReceiptPage(temporaryPasswordString);
+      
     } catch (err) {
       console.error("Fulfillment engine checkout failure:", err.message);
       feedback.style.color = "#c15254";
@@ -1450,7 +1469,6 @@
       nextBtn.disabled = false;
     }
   }
-
 
   // 📜 DYNAMIC GENERATION FORMATTER FOR POA RECORDS
   function generatePoaDocumentStringContent(payload) {
