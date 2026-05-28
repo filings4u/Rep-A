@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corporate Compliance Intake Wizard — Filings4U</title>
+  
+  <link rel="icon" type="image/png" href="images/fav.png">
+  
+  <!-- CDN Core External Dependencies Infrastructure -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+
+
+ <style>
+  :root {
+    --brand-navy: #0f172a;
+    --brand-emerald: #10b981;
+    --bg-slate: #f8fafc;
+    --border-gray: #e2e8f0;
+    --text-dark: #334155;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-dark);
+    background: var(--bg-slate);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .wizard-card-wrapper {
+    background: #ffffff;
+    width: 100%;
+    max-width: 950px;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(15,23,42,0.15);
+    border: 1px solid var(--border-gray);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+    min-height: 650px;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .wizard-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+
+  .wizard-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .wizard-input, .wizard-select {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border 0.15s;
+  }
+
+  .wizard-input:focus, .wizard-select:focus {
+    border-color: var(--brand-emerald);
+    outline: none;
+  }
+
+  .upsell-card {
+    border: 2px dashed #cbd5e1;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: all 0.2s;
+  }
+
+  .upsell-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+    cursor: pointer;
+    accent-color: var(--brand-emerald);
+  }
+
+  .summary-box {
+    background: var(--bg-slate);
+    border: 1px solid var(--border-gray);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: left;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-gray);
+    font-size: 0.95rem;
+  }
+
+  .summary-row:last-child {
+    border-bottom: 0;
+  }
+
+  /* 🎯 FIXED FLAT INTEGRATED STRIPE IFRAME STYLING WITH NO BORDER OR FRAME OUTLINES */
+  #stripe-card-element {
+    background: transparent;
+    padding: 12px 0;
+    border: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .signature-input-font {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 1.65rem !important;
+    color: #1e3a8a !important;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .wizard-helper-text {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+    line-height: 1.4;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .crm-btn {
+    transition: all 0.15s ease-in-out;
+    user-select: none;
+  }
+
+  .crm-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .crm-btn:active {
+    transform: translateY(0);
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+</style>
+</head>
+<body>
+
+<script>
+  // 📋 Complete US 50-State List Registry Index Array
+  const US_STATES_ALL_50 = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+
+    // 🛍️ Standardized High-Conversion Corporate Cross-Upsell Registry
+  const GLOBAL_UPSELLS_CATALOG = [
+    { id: "ein_registration", title: "Federal Employer Identification Number (EIN)", summary: "Obtain your official IRS tax registration ID to unlock business banking privileges, manage payroll allocations, and complete local tax compliance setups.", price: 75.00 },
+    { id: "operating_agreement", title: "Custom Corporate Operating Agreement", summary: "Establish formal internal legal operating management rules, membership protocols, and company governance parameters.", price: 99.00 },
+    { id: "corporate_bylaws", title: "Official Corporate Bylaws Documentation", summary: "Adopt statutory corporate bylaws required by financial lending institutes to establish internal corporate voting splits and management structures.", price: 99.00 },
+    { id: "corporate_resolutions", title: "Corporate Resolutions & Shareholder Action Framework", summary: "Acquire a structured regulatory baseline portfolio for document management splits, corporate meeting minutes, and corporate action logging.", price: 75.00 },
+    { id: "custom_brand_logo", title: "Professional Corporate Identity Logo Suite", summary: "Receive three distinct, high-resolution vector corporate emblem templates designed to align with your corporate branding system.", price: 149.00 },
+    { id: "custom_corporate_website", title: "Professional Website & Domain", summary: "Deploy a fully functional five-page professional website built to convert leads and push your brand, complete with custom security protocols and one year of business domain registration.", price: 699.00 }
+  ];
+
+
+   // ⏱️ Standard Fixed Service Base Pricing Structure Array Core
+  const CENTRAL_COMPLIANCE_SERVICES_REGISTRY = {
+    "LLC Formation": { 
+      basePrice: 0.00, 
+      stepsCount: 1, 
+      questions: [
+        { step: 1, type: "select", id: "wiz_formation_state", label: "State of Business Creation (Where you want to create the business) *", options: US_STATES_ALL_50, required: true },
+        { step: 1, type: "select", id: "wiz_operation_state", label: "State of Intended Operations (Where you plan to operate) *", options: US_STATES_ALL_50, required: true }
+      ] 
+    },
+    "Corporation Incorporation": { 
+      basePrice: 0.00, 
+      stepsCount: 1, 
+      questions: [
+        { step: 1, type: "select", id: "wiz_formation_state", label: "State of Business Creation (Where you want to create the business) *", options: US_STATES_ALL_50, required: true },
+        { step: 1, type: "select", id: "wiz_operation_state", label: "State of Intended Operations (Where you plan to operate) *", options: US_STATES_ALL_50, required: true },
+        { step: 1, type: "text", id: "wiz_share_count", label: "Initial Total Stock Authorized Shares Count *", placeholder: "e.g. 1500", required: true }
+      ] 
+    },
+    "Trucker Authority": { basePrice: 450.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_usdot_num", label: "Active USDOT ID Number (If existing)", placeholder: "e.g. 3991244", required: false }, { step: 1, type: "select", id: "wiz_truck_type", label: "Primary Fleet Class Specification *", options: ["Semi-Truck", "Box Truck", "Cargo Van"], required: true }] },
+    "Trademark Filing": { basePrice: 299.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_trademark_text", label: "Word Mark Name or Phrase String to Protect *", placeholder: "e.g. Filings4U", required: true }] },
+    "BOC-3 Filing": { basePrice: 95.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_mc_number", label: "Motor Carrier (MC) Number *", placeholder: "e.g. MC-000000", required: true }] },
+    "DOT Physical Exam Coordination": { basePrice: 85.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_preferred_city", label: "Preferred Medical Center Facility City Location *", placeholder: "e.g. Chicago", required: true }] },
+    "IER Registration": { basePrice: 120.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_fein_number", label: "Federal Employer Identification Number *", placeholder: "e.g. 12-3456789", required: true }] },
+    "SCAC Code Registration": { basePrice: 89.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_scac_letters", label: "Requested SCAC Letter Sequences (4 Alpha Characters) *", placeholder: "e.g. ABCD", required: true }] },
+    "UCR Registration": { basePrice: 75.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_ucr_fleet_size", label: "Total Fleet Power Units Operated Count *", placeholder: "e.g. 2", required: true }] },
+    "Drug & Alcohol Consortium Enrollment": { basePrice: 149.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_driver_count", label: "Total Commercial Drivers Covered Count *", placeholder: "e.g. 3", required: true }] },
+    "S-Corp Election (Form 2553)": { basePrice: 110.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_tax_year", label: "Effective Tax Calendar Starting Year *", placeholder: "e.g. 2026", required: true }] },
+    "DBA Registration": { basePrice: 99.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_dba_name", label: "Requested Fictitious Trade Operating Title Name *", placeholder: "e.g. Filings4U Logistics", required: true }] },
+    "Non-Profit 501c3 Status Exemption": { basePrice: 599.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_np_mission", label: "Primary Charitable or Educational Mission Context Summary *", placeholder: "Brief mission summary...", required: true }] },
+    "Registered Agent Annual Representation": { basePrice: 125.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_ra_state", label: "State Requesting Agent Address Representation *", placeholder: "e.g. DE", required: true }] },
+    "Corporate Dissolution Service": { basePrice: 175.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_dissolve_reason", label: "Official Reason For Statutory Corporate Wind Down *", placeholder: "e.g. Dissolution by unanimous consent", required: true }] },
+    "Foreign Qualification Certificate": { basePrice: 225.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_home_state", label: "Original Domestication Source Home Jurisdiction State *", placeholder: "e.g. WY", required: true }] },
+    "Annual Report Filing Compliance": { basePrice: 85.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_entity_id", label: "State Issued System Entity Registration Reference ID *", placeholder: "e.g. SOS-123456", required: true }] },
+    "Certificate of Good Standing Procurement": { basePrice: 75.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_cert_state", label: "Target State for Certificate Extract Extraction *", placeholder: "e.g. TX", required: true }] },
+    "Apostille Authentication Services": { basePrice: 195.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_dest_country", label: "Target Foreign Destination Nation Country Name *", placeholder: "e.g. United Kingdom", required: true }] },
+    "LLC Reinstatement Processing": { basePrice: 250.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_void_year", label: "Year Entity Lost Active Status Safe Harbor Standing *", placeholder: "e.g. 2024", required: true }] },
+    "Corporate Amendment Filings": { basePrice: 135.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_amend_desc", label: "Description of Articles Modifying Clauses Updates *", placeholder: "e.g. Changing business name", required: true }] },
+    "Sales Tax Nexus Registration": { basePrice: 115.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_nexus_state", label: "Target State Requesting Remote Sales Tax Account *", placeholder: "e.g. CA", required: true }] },
+    "Business License Research Portfolio": { basePrice: 165.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_city_county", label: "Target Operations Base Municipality City and County *", placeholder: "e.g. Austin, Travis County", required: true }] },
+    "DUNS Number Procurement Registration": { basePrice: 95.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_duns_trade", label: "Primary Line of Business Core Operational Trade Descriptor *", placeholder: "e.g. Supply Chain Distribution", required: true }] },
+    "SAM.gov Entity Registration": { basePrice: 399.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_cage_code", label: "Existing CAGE Code Token (Leave blank if registration new)", placeholder: "e.g. 1ABC2", required: false }] },
+    "FinCEN BOI Compliance Report": { basePrice: 75.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_beneficial_owners", label: "Total Count of Individual Beneficial Owners Holding > 25% Shares *", placeholder: "e.g. 2", required: true }] },
+    "Heavy Vehicle Use Tax (Form 2290)": { basePrice: 125.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_vin_number", label: "Primary Heavy Haul Vehicle Identification Number (VIN) *", placeholder: "17-character alphanumeric", required: true }] },
+    "HAZMAT Registration Procurement": { basePrice: 245.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_hm_class", label: "Primary Hazardous Material Handling Class Reference Code *", placeholder: "e.g. Class 3 Flammable Liquids", required: true }] },
+    "IFTA Tax Registration Entry": { basePrice: 135.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_ifta_account", label: "Base Jurisdiction IFTA Reference Fleet Account ID", placeholder: "If new leave blank", required: false }] },
+    "Custom Regulatory Legal Consulting": { basePrice: 350.00, stepsCount: 1, questions: [{ step: 1, type: "text", id: "wiz_consult_focus", label: "Primary Area of Core Operational Compliance Focus Question *", placeholder: "e.g. Inter-state freight liability structures", required: true }] }
+  };
+
+
+    // 🔄 Global Runtime Machine Context Tracking State
+  let activeServiceName = "LLC Formation";
+  let activeServiceData = CENTRAL_COMPLIANCE_SERVICES_REGISTRY["LLC Formation"];
+  let activeWizardStepIndex = 1;
+  let wizardCollectedFormPayloadData = {};
+  let stripeInstance = null;
+  let stripeCardElementInstance = null;
+
+  // 📦 Automated Base Service Processing Fee Configuration Mapping
+  const FILINGS4U_SERVICE_FEE = 149.00;
+
+  function resolveActiveServiceSelectionFromUrl() {
+    const urlParameters = new URLSearchParams(window.location.search);
+    const activeServiceToken = urlParameters.get("service");
+    return CENTRAL_COMPLIANCE_SERVICES_REGISTRY[activeServiceToken] ? activeServiceToken : "LLC Formation";
+  }
+
+  
+    // 🔄 MAIN RENDERING ROUTER — Generates workflow steps on the fly
+  function synchronizeWizardStepUILayout() {
+    var container = document.getElementById("dynamicWizardFieldsFormContainer");
+    var stepLabel = document.getElementById("wizardStepTextProgressLabel");
+    var percentLabel = document.getElementById("wizardPercentLabel");
+    var barTrack = document.getElementById("wizardLiveProgressBarTrack");
+    var prevBtn = document.getElementById("wizPrevBtn");
+    var nextBtn = document.getElementById("wizNextBtn");
+    var feedback = document.getElementById("wizardFeedbackTray");
+
+    if (!container) return;
+    feedback.textContent = "";
+    container.innerHTML = "";
+
+    var activeDbInstance = window.supabaseClient || window.supabase;
+    if (!activeDbInstance) {
+      var apiWarningNotice = document.createElement("div");
+      apiWarningNotice.style.cssText = "background:#fff1f2; border:1px solid #fecdd3; color:#9f1239; padding:12px 16px; border-radius:6px; font-size:0.82rem; font-weight:700; margin-bottom:10px; text-align:left;";
+      apiWarningNotice.textContent = "⚠️ Infrastructure Sync Warning: The wizard cannot locate connection keys. Please confirm your Supabase project initialization tokens are active.";
+      container.appendChild(apiWarningNotice);
+    }
+
+    // Dynamic Step Metrics Mapping System
+    var totalStepsCountMap = activeServiceData.stepsCount + 5;
+    var currentPercentage = Math.round(((activeWizardStepIndex - 1) / totalStepsCountMap) * 100);
+    percentLabel.textContent = currentPercentage + "%";
+    barTrack.style.width = currentPercentage + "%";
+    
+    
+    
+      // PHASE 1: STEP 1 — Universal Onboarding Intake Fields
+    if (activeWizardStepIndex === 1) {
+      stepLabel.textContent = "Step 1 of " + totalStepsCountMap + ": Primary Entity Profiling";
+      nextBtn.textContent = "Continue →";
+      
+      var industryOptionsHtml = "";
+      for (var i = 0; i < GLOBAL_PROFESSIONS_DIRECTORY.length; i++) {
+        var p = GLOBAL_PROFESSIONS_DIRECTORY[i];
+        var selected = wizardCollectedFormPayloadData['wiz_business_industry'] === p ? 'selected' : '';
+        industryOptionsHtml += '<option value="' + p + '" ' + selected + '>' + p + '</option>';
+      }
+
+      container.innerHTML = 
+        '<div class="wizard-field-group">' +
+          '<label class="wizard-label">Proposed Business Name *</label>' +
+          '<input type="text" id="wiz_company_name" class="wizard-input" placeholder="e.g. Blue Star Logistics LLC" required value="' + (wizardCollectedFormPayloadData['wiz_company_name'] || '') + '">' +
+        '</div>' +
+        '<div class="wizard-field-group">' +
+          '<label class="wizard-label">Primary Target Profession/Industry *</label>' +
+          '<select id="wiz_business_industry" class="wizard-select" required>' +
+            '<option value="">-- Choose One --</option>' +
+            industryOptionsHtml +
+          '</select>' +
+        '</div>' +
+        '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">' +
+          '<div class="wizard-field-group">' +
+            '<label class="wizard-label">First Name *</label>' +
+            '<input type="text" id="wiz_client_firstname" class="wizard-input" required value="' + (wizardCollectedFormPayloadData['wiz_client_firstname'] || '') + '">' +
+          '</div>' +
+          '<div class="wizard-field-group">' +
+            '<label class="wizard-label">Last Name *</label>' +
+            '<input type="text" id="wiz_client_lastname" class="wizard-input" required value="' + (wizardCollectedFormPayloadData['wiz_client_lastname'] || '') + '">' +
+          '</div>' +
+        '</div>' +
+        '<div class="wizard-field-group">' +
+          '<label class="wizard-label">Email Address *</label>' +
+          '<input type="email" id="wiz_client_email" class="wizard-input" placeholder="executive@domain.com" required value="' + (wizardCollectedFormPayloadData['wiz_client_email'] || '') + '">' +
+          '<span class="wizard-helper-text">⚠️ This email will secure your Client Dashboard access. You will configure an encrypted password on the final success milestone screen.</span>' +
+        '</div>' +
+        '<div class="wizard-field-group">' +
+          '<label class="wizard-label">Phone Number (Optional)</label>' +
+          '<input type="tel" id="wiz_client_phone" class="wizard-input" placeholder="e.g. 773-555-0199" value="' + (wizardCollectedFormPayloadData['wiz_client_phone'] || '') + '">' +
+        '</div>';
+    }
+
+
+      // PHASE 2: STEP 2 — Industry Specific Variable Injections (Dual State Option Loaded)
+    else if (activeWizardStepIndex > 1 && activeWizardStepIndex <= (activeServiceData.stepsCount + 1)) {
+      var innerServiceStepIdx = activeWizardStepIndex - 1;
+      stepLabel.textContent = "Step " + activeWizardStepIndex + " of " + totalStepsCountMap + ": " + activeServiceName + " Details";
+      nextBtn.textContent = "Continue →";
+      
+      var stepQuestions = activeServiceData.questions.filter(function(q) { 
+        return q.step === innerServiceStepIdx; 
+      });
+
+      stepQuestions.forEach(function(q) { 
+        var group = document.createElement("div"); 
+        group.className = "wizard-field-group"; 
+        
+        var label = document.createElement("label"); 
+        label.className = "wizard-label"; 
+        label.textContent = q.label + (q.required ? " *" : ""); 
+        group.appendChild(label); 
+        
+        var savedValue = wizardCollectedFormPayloadData[q.id] || ""; 
+        
+        if (q.type === "select") { 
+          var select = document.createElement("select"); 
+          select.id = q.id; 
+          select.className = "wizard-select"; 
+          select.required = q.required; 
+          
+          var defOpt = document.createElement("option"); 
+          defOpt.value = ""; 
+          defOpt.textContent = "-- Choose Option --"; 
+          select.appendChild(defOpt); 
+          
+          q.options.forEach(function(opt) { 
+            var option = document.createElement("option"); 
+            option.value = opt; 
+            option.textContent = opt; 
+            if (opt === savedValue) option.selected = true; 
+            select.appendChild(option); 
+          }); 
+          group.appendChild(select); 
+        } else { 
+          var input = document.createElement("input"); 
+          input.id = q.id; 
+          input.type = q.type; 
+          input.className = "wizard-input"; 
+          input.placeholder = q.placeholder || ""; 
+          input.required = q.required; 
+          input.value = savedValue; 
+          group.appendChild(input); 
+        } 
+        container.appendChild(group); 
+      }); 
+    }
+
+      // PHASE 3: STEP 3 — Premium Cross-Upsell Marketplace Matrix (Rebranded 5-Page Package)
+    else if (activeWizardStepIndex === activeServiceData.stepsCount + 2) { 
+      stepLabel.textContent = "Step " + activeWizardStepIndex + " of " + totalStepsCountMap + ": Premium Corporate Upgrades"; 
+      nextBtn.textContent = "Review Legal Disclosures →"; 
+      
+      var upsellCardsHtml = ""; 
+      GLOBAL_UPSELLS_CATALOG.forEach(function(item) { 
+        var activeSelectState = wizardCollectedFormPayloadData["upsell_" + item.id] ? "checked" : ""; 
+        upsellCardsHtml += 
+          '<div class="upsell-card" onclick="document.getElementById(\'upsell_' + item.id + '\').click()">' + 
+            '<input type="checkbox" id="upsell_' + item.id + '" class="upsell-checkbox" ' + activeSelectState + ' ' + 
+              'onclick="event.stopPropagation(); wizardCollectedFormPayloadData[\'upsell_' + item.id + '\'] = this.checked; synchronizeWizardStepUILayout();">' + 
+            '<div style="flex:1; pointer-events:none;">' + 
+              '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:5px;">' + 
+                '<strong style="font-size:1.05rem; color:var(--brand-navy);">' + item.title + '</strong>' + 
+                '<span style="margin-left:auto; background:rgba(16,185,129,0.15); color:#047857; padding:2px 10px; border-radius:12px; font-weight:800; font-size:0.85rem;">+ $' + item.price.toFixed(2) + '</span>' + 
+              '</div>' + 
+              '<p style="margin:4px 0 0 0; font-size:0.88rem; color:#475569; line-height:1.4;">' + item.summary + '</p>' + 
+            '</div>' + 
+          '</div>'; 
+      }); 
+      
+      container.innerHTML = 
+        '<p style="margin:0 0 10px 0; font-size:0.95rem; color:#475569; font-weight:600;">Enhance your entity formation pipeline with mandatory compliance options:</p>' + 
+        '<div style="display:flex; flex-direction:column; gap:16px;">' + upsellCardsHtml + '</div>'; 
+    }
+
+      // PHASE 4: STEP 4 — Digital Power of Attorney Authorization 
+    else if (activeWizardStepIndex === activeServiceData.stepsCount + 3) { 
+      stepLabel.textContent = "Step " + activeWizardStepIndex + " of " + totalStepsCountMap + ": Limited Power of Attorney"; 
+      nextBtn.textContent = "Generate Invoice Summary →"; 
+      
+      var isSignedChecked = wizardCollectedFormPayloadData["poa_consent_checkbox"] ? "checked" : ""; 
+      var signatureText = wizardCollectedFormPayloadData["poa_signature_text"] || ""; 
+      
+      container.innerHTML = 
+        '<div style="border:1px solid var(--border-gray); padding:20px; border-radius:8px; background:#fff; box-shadow:inset 0 2px 4px rgba(0,0,0,0.02);">' + 
+          '<h4 style="margin:0 0 10px 0; color:var(--brand-navy); font-size:1.1rem; font-weight:800;">LIMITED POWER OF ATTORNEY MANDATE</h4>' + 
+          '<div style="height:140px; overflow-y:scroll; border:1px solid #cbd5e1; padding:12px; border-radius:6px; font-size:0.82rem; color:#475569; line-height:1.5; background:#fafafa; text-align:left;">' + 'The undersigned Client hereby appoints Filings4U and its authorized processing agents as true and lawful attorney-in-fact. This authority is strictly limited to executing, signing, translating, and submitting necessary state and federal organizing documentation, business license applications, federal employer identification registries, tax structures, corporate filings, and regulatory documentation before relevant departments. This authorization terminates dynamically upon formal acceptance and registration of the entities by state or federal authorities. By ticking the validation prompt below and typing your full name, you establish a binding electronic signature under federal ESIGN protocols.' + '</div>' + 
+          '<div style="margin-top:15px; display:flex; align-items:flex-start; gap:10px; text-align:left;">' + 
+            '<input type="checkbox" id="poa_consent_checkbox" ' + isSignedChecked + ' style="width:18px; height:18px; margin-top:2px; accent-color:var(--brand-emerald);" onclick="wizardCollectedFormPayloadData[\'poa_consent_checkbox\'] = this.checked;">' + 
+            '<label for="poa_consent_checkbox" style="font-size:0.85rem; font-weight:700; color:var(--text-dark); cursor:pointer;">' + 'I explicitly authorize and sign this Limited Power of Attorney Mandate to expedite my processing lane.' + '</label>' + 
+          '</div>' + 
+          '<div class="wizard-field-group" style="margin-top:20px;">' + 
+            '<label class="wizard-label">Type Legal Name (Electronic Signature Verification) *</label>' + 
+            '<input type="text" id="poa_signature_text" class="signature-input-font" placeholder="First and Last Name" required value="' + signatureText + '" oninput="wizardCollectedFormPayloadData[\'poa_signature_text\'] = this.value;">' + 
+          '</div>' + 
+        '</div>'; 
+    }
+
+      // PHASE 5: STEP 5 — Invoice Order Summary Ledger (With Calculated Service Processing Fee)
+    else if (activeWizardStepIndex === (activeServiceData.stepsCount + 4)) { 
+      stepLabel.textContent = "Step " + activeWizardStepIndex + " of " + totalStepsCountMap + ": Review Summary Ledger"; 
+      nextBtn.textContent = "Proceed to Secure Checkout →"; 
+      
+      var summaryRowsHtml = 
+        '<div class="summary-row">' + 
+          '<div>' + 
+            '<strong style="color:var(--brand-navy); font-size:0.95rem;">' + activeServiceName + ' Fulfillment Baseline</strong>' + 
+            '<div style="font-size:0.78rem; color:#64748b; margin-top:2px;">Target Entity: ' + (wizardCollectedFormPayloadData['wiz_company_name'] || 'Pending') + '</div>' + 
+          '</div>' + 
+          '<span style="font-weight:700; color:var(--brand-navy); font-family:monospace;">$' + activeServiceData.basePrice.toFixed(2) + '</span>' + 
+        '</div>'; 
+        
+      var runningTotalAccumulator = activeServiceData.basePrice; 
+
+      // 📦 Standardized Dynamic Line Item Injection for Filings4U Fee
+      runningTotalAccumulator += FILINGS4U_SERVICE_FEE;
+      summaryRowsHtml += 
+        '<div class="summary-row">' + 
+          '<div>' + 
+            '<strong style="color:var(--brand-navy); font-size:0.95rem;">Filings4U Service Processing Fee</strong>' + 
+            '<div style="font-size:0.78rem; color:#64748b; margin-top:2px;">$149 fixed baseline rate + applicable state or federal regulatory agency filing costs</div>' + 
+          '</div>' + 
+          '<span style="font-weight:700; color:var(--brand-navy); font-family:monospace;">$' + FILINGS4U_SERVICE_FEE.toFixed(2) + '</span>' + 
+        '</div>';
+        
+      GLOBAL_UPSELLS_CATALOG.forEach(function(item) { 
+        if (wizardCollectedFormPayloadData["upsell_" + item.id]) { 
+          runningTotalAccumulator += item.price; 
+          summaryRowsHtml += 
+            '<div class="summary-row">' + 
+              '<div>' + 
+                '<strong style="color:var(--brand-navy); font-size:0.95rem;">＋ ' + item.title + '</strong>' + 
+                '<div style="font-size:0.78rem; color:#64748b; margin-top:2px;">Dashboards Core Integration Asset</div>' + 
+              '</div>' + 
+              '<span style="font-weight:700; color:#047857; font-family:monospace;">$' + item.price.toFixed(2) + '</span>' + 
+            '</div>'; 
+        } 
+      }); 
+      
+      container.innerHTML = 
+        '<div class="summary-box">' + 
+          '<h3 style="margin:0 0 15px 0; color:var(--brand-navy); font-size:1.2rem; font-weight:900; border-bottom:2px solid var(--brand-emerald); padding-bottom:6px;">Order Statement Ledger</h3>' + 
+          summaryRowsHtml + 
+          '<div class="summary-row" style="border-top:2px solid var(--brand-navy); font-weight:900; font-size:1.15rem; margin-top:15px; background:rgba(15,23,42,0.02); padding:12px 10px; border-radius:4px;">' + 
+            '<span style="color:var(--brand-navy);">Total Authorized Charge:</span>' + 
+            '<span style="color:var(--brand-emerald); font-family:monospace;">$' + runningTotalAccumulator.toFixed(2) + '</span>' + 
+          '</div>' + 
+        '</div>'; 
+    }
+
+        // PHASE 6: STEP 6 — Payment & Card Element Container (Flat Native Style Injection)
+    else if (activeWizardStepIndex === (activeServiceData.stepsCount + 5)) { 
+      stepLabel.textContent = "Step " + activeWizardStepIndex + " of " + totalStepsCountMap + ": Secure Payment Gateway"; 
+      nextBtn.textContent = "Submit Payment & Launch Account ➔"; 
+      
+      container.innerHTML = 
+        '<div style="display:flex; flex-direction:column; gap:16px;">' + 
+          '<div class="wizard-field-group">' + 
+            '<label class="wizard-label">Secure Credit Card Transaction *</label>' + 
+            '<div id="stripe-card-element"></div>' + 
+          '</div>' + 
+        '</div>'; 
+        
+      initializeStripeElementsObjectInstance(); 
+    } 
+
+    prevBtn.style.display = activeWizardStepIndex === 1 ? "none" : "block"; 
+  }
+
+
+    // 💳 STRIPE CONTROLLER LIFECYCLE MANAGEMENT
+  function initializeStripeElementsObjectInstance() {
+    if (typeof Stripe === "undefined") return;
+    if (!stripeInstance) stripeInstance = Stripe('pk_test_replace_with_your_actual_key');
+    
+    var elements = stripeInstance.elements();
+    
+    // 🎯 FLAT STYLE CONFIGURATION: Integrates natively without a boxed container frame
+    stripeCardElementInstance = elements.create('card', {
+      style: {
+        base: {
+          fontSize: '16px',
+          color: '#334155',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          '::placeholder': { color: '#94a3b8' }
+        }
+      }
+    });
+    
+    setTimeout(function() {
+      if (document.getElementById('stripe-card-element')) {
+        stripeCardElementInstance.mount('#stripe-card-element');
+      }
+    }, 50);
+  }
+
+  // 🕹️ NAVIGATIONAL CONTROL INTERFACE ENGINE
+  function navigateWizardStepsCounter(direction) {
+    var feedback = document.getElementById("wizardFeedbackTray");
+    if (!feedback) return;
+    feedback.textContent = "";
+
+    // Intercept and validate forward navigation choices
+    if (direction === 1) {
+      if (activeWizardStepIndex === 1) {
+        var comp = document.getElementById("wiz_company_name");
+        var ind = document.getElementById("wiz_business_industry");
+        var fn = document.getElementById("wiz_client_firstname");
+        var ln = document.getElementById("wiz_client_lastname");
+        var em = document.getElementById("wiz_client_email");
+
+        if (!comp || !comp.value.trim() || !ind || !ind.value || !fn || !fn.value.trim() || !ln || !ln.value.trim() || !em || !em.value.trim()) {
+          feedback.style.color = "#c15254";
+          feedback.textContent = "Required fields missing. Please review Step 1 inputs.";
+          return;
+        }
+
+        // Save validated values to the central dictionary cache
+        wizardCollectedFormPayloadData["wiz_company_name"] = comp.value.trim();
+        wizardCollectedFormPayloadData["wiz_business_industry"] = ind.value;
+        wizardCollectedFormPayloadData["wiz_client_firstname"] = fn.value.trim();
+        wizardCollectedFormPayloadData["wiz_client_lastname"] = ln.value.trim();
+        wizardCollectedFormPayloadData["wiz_client_email"] = em.value.trim();
+
+        var phoneEl = document.getElementById("wiz_client_phone");
+        if (phoneEl) wizardCollectedFormPayloadData["wiz_client_phone"] = phoneEl.value.trim();
+      } 
+      else if (activeWizardStepIndex > 1 && activeWizardStepIndex <= (activeServiceData.stepsCount + 1)) {
+        var innerServiceStepIdx = activeWizardStepIndex - 1;
+        var stepQuestions = activeServiceData.questions.filter(function(q) {
+          return q.step === innerServiceStepIdx;
+        });
+
+        for (var i = 0; i < stepQuestions.length; i++) {
+          var q = stepQuestions[i];
+          var el = document.getElementById(q.id);
+          if (el && q.required && !el.value.trim()) {
+            feedback.style.color = "#c15254";
+            feedback.textContent = 'Please enter a valid value for: "' + q.label + '"';
+            return;
+          }
+          if (el) wizardCollectedFormPayloadData[q.id] = el.value.trim();
+        }
+      } 
+      else if (activeWizardStepIndex === (activeServiceData.stepsCount + 3)) {
+        var consent = document.getElementById("poa_consent_checkbox");
+        var sig = document.getElementById("poa_signature_text");
+
+        if (!consent || !consent.checked || !sig || !sig.value.trim()) {
+          feedback.style.color = "#c15254";
+          feedback.textContent = "Legal signature missing. Please execute the Power of Attorney form.";
+          return;
+        }
+        wizardCollectedFormPayloadData["poa_consent_checkbox"] = true;
+        wizardCollectedFormPayloadData["poa_signature_text"] = sig.value.trim();
+      }
+    }
+
+    activeWizardStepIndex += direction;
+    synchronizeWizardStepUILayout();
+  }
+
+   // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE
+  async function handleWizardFormStepNavigation(event) {
+    event.preventDefault();
+    const client = window.supabaseClient || window.supabase;
+    const feedback = document.getElementById("wizardFeedbackTray");
+    const nextBtn = document.getElementById("wizNextBtn");
+    if (!feedback || !nextBtn) return;
+
+    // Step configuration routing loops
+    const totalStepsCountMap = activeServiceData.stepsCount + 5;
+    if (activeWizardStepIndex < totalStepsCountMap) {
+      navigateWizardStepsCounter(1);
+      return;
+    }
+
+    if (!client) {
+      feedback.style.color = "#c15254";
+      feedback.textContent = "Database Error: Supabase client connection unavailable.";
+      return;
+    }
+
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Processing Secured Funds Escrow...";
+    feedback.style.color = "var(--brand-navy)";
+    feedback.textContent = "Syncing transactional schemas across tracking dashboards...";
+
+    try {
+      const clientEmail = wizardCollectedFormPayloadData["wiz_client_email"];
+      
+      // 📦 PRICE ACCUMULATOR: Starts with Base Price + the added $149 Filings4U Service Fee
+      let runningTotalAccumulator = activeServiceData.basePrice + FILINGS4U_SERVICE_FEE;
+      
+      GLOBAL_UPSELLS_CATALOG.forEach(item => {
+        if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) {
+          runningTotalAccumulator += item.price;
+        }
+      });
+
+      // Generate automatic temporary passcode credentials array
+      const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
+
+      // Step 1: Initialize account schemas within the secure auth ledger
+      let userIdUuid = '00000000-0000-0000-0000-000000000000';
+      try {
+        const { data: authData } = await client.auth.signUp({ email: clientEmail, password: temporaryPasswordString });
+        if (authData && authData.user) userIdUuid = authData.user.id;
+      } catch (_) {}
+
+
+
+        // Step 2: Push sanitized records to master database orders matrix
+      const { error: dbError } = await client
+        .from('orders')
+        .insert({
+          user_id: userIdUuid,
+          company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
+          service: activeServiceName,
+          service_title: activeServiceName,
+          requirement_name: activeServiceName,
+          total_fee: runningTotalAccumulator,
+          status: 'Fulfillment Lane',
+          tax_id_status: 'Fulfillment Lane',
+          collected_payload_metadata: wizardCollectedFormPayloadData,
+          poa_signed_state: true,
+          poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
+          created_at: new Date().toISOString()
+        });
+
+      if (dbError) throw dbError;
+
+      // Step 3: Clear workspace to display clean success layout view
+      renderPremiumInteractiveReceiptPage(temporaryPasswordString);
+    } catch (err) {
+      console.error("Fulfillment engine checkout failure:", err.message);
+      feedback.style.color = "#c15254";
+      feedback.textContent = "Transaction Aborted: " + err.message;
+      nextBtn.disabled = false;
+    }
+  }
+
+  // 📜 DYNAMIC GENERATION FORMATTER FOR POA RECORDS
+  function generatePoaDocumentStringContent(payload) {
+    const currentYear = new Date().getFullYear();
+    const fullName = `${payload.wiz_client_firstname || ''} ${payload.wiz_client_lastname || ''}`.trim() || "Authorized Signatory";
+    const entityName = payload.wiz_company_name || "Proposed Corporate Entity";
+    const industryType = payload.wiz_business_industry || "General Commercial Operations";
+    const verificationSig = payload.poa_signature_text || "ELECTRONICALLY SIGNED";
+
+    return ` =================================================================== MANDATE: LIMITED POWER OF ATTORNEY =================================================================== Date of Execution: ${new Date().toLocaleDateString()} Principal Grantor: ${fullName} Designated Industry: ${industryType} Target Entity Name: ${entityName} By this dynamic instrument, the Principal Grantor explicitly appoints Filings4U and its designated compliance processing division as true and lawful attorney-in-fact. This delegation is strictly bounded and authorized to execute, modify, amend, sign, and submit necessary organizing documents, Articles of Organization, tax registrations, Employer Identification registrations, and operational permits. This mandate applies to all local, state, and federal regulatory bodies in connection with establishing the specified entity. This dynamic authorization expires automatically upon formal validation and issuance of the active charter by corporate regulatory divisions. ------------------------------------------------------------------- Principal Signature Verification: /s/ ${verificationSig} ESIGN Compliance Token ID: F4U-${Math.random().toString(36).slice(-6).toUpperCase()}-${currentYear} ===================================================================`;
+  }
+
+   // 📥 TRIGGER RAW TEXT DOCUMENT FILE EXPORT FOR CLIENT PORTAL ARCHIVES
+  function downloadExecutedPoaDocumentPacketFile() {
+    const dynamicContent = generatePoaDocumentStringContent(wizardCollectedFormPayloadData);
+    const fileBlob = new Blob([dynamicContent], { type: "text/plain;charset=utf-8" });
+    const temporaryAnchor = document.createElement("a");
+    temporaryAnchor.href = URL.createObjectURL(fileBlob);
+    temporaryAnchor.download = `FILINGS4U_SIGNED_POA_${wizardCollectedFormPayloadData.wiz_company_name.replace(/\s+/g, '_').toUpperCase()}.txt`;
+    document.body.appendChild(temporaryAnchor);
+    temporaryAnchor.click();
+    document.body.removeChild(temporaryAnchor);
+  }
+
+    // 📥 SUCCESS CONSOLE MARKUP ELEMENT BUILDER
+  function renderPremiumInteractiveReceiptPage(generatedPassCode) {
+    const displayContainer = document.getElementById("dynamicWizardFieldsFormContainer");
+    const prevBtn = document.getElementById("wizPrevBtn");
+    const nextBtn = document.getElementById("wizNextBtn");
+    const feedback = document.getElementById("wizardFeedbackTray");
+    const stripBar = document.getElementById("wizardLiveProgressBarTrack").parentElement.parentElement;
+    if (!displayContainer) return;
+    displayContainer.innerHTML = ` <div style="text-align:center; padding:20px 10px; display:flex; flex-direction:column; align-items:center; gap:16px; box-sizing:border-box;"> <span style="font-size:3.5rem;">🎉</span> <h2 style="margin:0; font-size:1.6rem; font-weight:900; color:var(--brand-emerald);">Order Successfully Authorized!</h2> <p style="margin:0; font-size:0.95rem; color:#475569; font-weight:500; max-width:600px; text-align:center;"> Thank you for choosing Filings4U. Your business profile maps have been synchronized across user dashboards and the administration portal. </p> <div style="background:#fffbeb; border:1px solid #fef3c7; border-radius:8px; padding:15px; width:100%; box-sizing:border-box; text-align:left;"> <strong style="color:#92400e; font-size:0.9rem; display:block; margin-bottom:4px;">🔑 Temporary Secure Password Generated:</strong> <code style="font-size:1.1rem; font-weight:800; color:#b45309; font-family:monospace; background:#fff; padding:4px 8px; border-radius:4px; border:1px solid #fde68a;">${generatedPassCode}</code> <span style="display:block; margin-top:6px; font-size:0.78rem; color:#b45309; font-weight:600;">Please save this credential and update it immediately upon accessing your profile panel dashboard.</span> </div> <div style="background:var(--bg-slate); border:1px solid var(--border-gray); border-radius:8px; padding:18px; width:100%; display:flex; justify-content:space-between; align-items:center; box-sizing:border-box; text-align:left;"> <div> <strong style="font-size:0.9rem; color:var(--brand-navy); display:block;">Executed Power of Attorney Mandate & Invoice Ledger</strong> <span style="font-size:0.75rem; color:#64748b; font-family:monospace;">FILINGS4U_LEDGER_SIGNED_POA.TXT</span> </div> <button type="button" class="crm-btn" style="background:var(--brand-navy); color:#fff; font-weight:700; font-size:0.8rem; padding:8px 14px; border:0; border-radius:4px; cursor:pointer;" onclick="downloadExecutedPoaDocumentPacketFile()">Download Packet 📥</button> </div> <a href="portal-login.html" class="crm-btn primary" style="width:100%; text-align:center; padding:14px; font-weight:800; border-radius:6px; box-sizing:border-box; margin-top:10px; text-decoration:none; display:block; background:var(--brand-emerald); color:#fff;">Access Dashboard Portal ➔</a> </div>`;
+    if (prevBtn) prevBtn.remove();
+    if (nextBtn) nextBtn.remove();
+    if (feedback) feedback.textContent = "";
+    if (stripBar) stripBar.style.display = "none";
+  }
+
+   // ⏱️ REAL-TIME MATRIX SYSTEM PORTAL CLOCK
+  function initializePremiumWizardClock() {
+    const cb = document.getElementById("wizard-portal-clock");
+    if (!cb) return;
+    setInterval(() => {
+      const n = new Date();
+      const d = String(n.getDate()).padStart(2, '0');
+      const m = String(n.getMonth() + 1).padStart(2, '0');
+      const y = n.getFullYear();
+      let hr = n.getHours();
+      const ampm = hr >= 12 ? 'PM' : 'AM';
+      hr = hr % 12;
+      hr = hr ? hr : 12;
+      const hrs = String(hr).padStart(2, '0');
+      const mins = String(n.getMinutes()).padStart(2, '0');
+      const secs = String(n.getSeconds()).padStart(2, '0');
+      cb.textContent = m + "/" + d + "/" + y + " | " + hrs + ":" + mins + ":" + secs + " " + ampm;
+    }, 1000);
+  }
+
+
+  // 🚀 MAIN APPLICATION ENGINE INITIALIZATION SYSTEM
+  window.addEventListener("DOMContentLoaded", () => {
+    activeServiceName = resolveActiveServiceSelectionFromUrl();
+    activeServiceData = CENTRAL_COMPLIANCE_SERVICES_REGISTRY[activeServiceName] || CENTRAL_COMPLIANCE_SERVICES_REGISTRY["LLC Formation"];
+    
+    var speedAnchor = document.getElementById("wizardSpeedDurationAnchor");
+    if (speedAnchor) {
+      speedAnchor.textContent = GLOBAL_PROCESSING_SPEEDS_MAPPING[activeServiceName] || "3-5 Business Days";
+    }
+    
+    initializePremiumWizardClock();
+    synchronizeWizardStepUILayout();
+  });
+
+  // 🔄 TOGGLE DRAWER VIEWPORTS
+  function toggleCustomSupportChatDrawer() {
+    const drawer = document.getElementById("wizCustomerChatDrawer");
+    if (!drawer) return;
+    if (drawer.style.right === "0px") {
+      drawer.style.right = "-380px";
+    } else {
+      drawer.style.right = "0px";
+      const step1Name = document.getElementById("wiz_client_firstname");
+      const step1Email = document.getElementById("wiz_client_email");
+      const chatName = document.getElementById("chat_user_name");
+      const chatEmail = document.getElementById("chat_user_email");
+      if (step1Name && step1Name.value.trim() && chatName && !chatName.value) {
+        const step1Last = document.getElementById("wiz_client_lastname");
+        chatName.value = step1Name.value.trim() + " " + (step1Last ? step1Last.value.trim() : "");
+      }
+      if (step1Email && step1Email.value.trim() && chatEmail && !chatEmail.value) {
+        chatEmail.value = step1Email.value.trim();
+      }
+    }
+  }
+
+  // 🚀 VERIFICATION ROUTING CONTROLLER
+  function handleSupportChatVerification(event) {
+    event.preventDefault();
+    const nameEl = document.getElementById("chat_user_name");
+    const emailEl = document.getElementById("chat_user_email");
+    const workspace = document.getElementById("wizChatWorkspaceBox");
+    if (!nameEl || !emailEl || !workspace) return;
+    const clientName = nameEl.value.trim();
+    const clientEmail = emailEl.value.trim();
+    if (!clientName || !clientEmail) return;
+    renderActiveSupportChatInterface(clientName);
+  }
+
+  // 🎨 RENDER OPERATIONAL LIVE CHAT INTERFACE WINDOW
+  function renderActiveSupportChatInterface(verifiedName) {
+    const workspace = document.getElementById("wizChatWorkspaceBox");
+    if (!workspace) return;
+    workspace.innerHTML = `
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between; height:100%; box-sizing:border-box;">
+        <div id="chatMessageHistoryContainer" style="flex:1; display:flex; flex-direction:column; gap:12px; overflow-y:auto; padding-bottom:15px;">
+          <div style="align-self:flex-start; background:#e2e8f0; color:var(--brand-navy); padding:10px 14px; border-radius:12px 12px 12px 0; max-width:85%; font-size:0.85rem; font-weight:500; line-height:1.4;">
+            Hello <strong>\${verifiedName}</strong>! Thanks for initializing support. A corporate integration agent is matching to your file reference. How can we help you complete your filing today?
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; border-top:1px solid var(--border-gray); padding-top:12px; background:var(--bg-slate);">
+          <input type="text" id="chatTerminalMessageInput" placeholder="Type a message..." style="flex:1; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.88rem;" onkeypress="if(event.key==='Enter') transmitChatMessageFromTerminal();">
+          <button type="button" style="background:var(--brand-navy); color:#fff; border:0; padding:0 14px; border-radius:6px; font-weight:700; font-size:0.85rem; cursor:pointer;" onclick="transmitChatMessageFromTerminal()">Send</button>
+        </div>
+      </div>
+    `;
+  }
+
+   // 📨 TRANSMIT CUSTOMER TERMINAL MESSAGES
+  function transmitChatMessageFromTerminal() {
+    const msgInput = document.getElementById("chatTerminalMessageInput");
+    const history = document.getElementById("chatMessageHistoryContainer");
+    if (!msgInput || !msgInput.value.trim() || !history) return;
+
+    const userText = msgInput.value.trim();
+    msgInput.value = "";
+
+    const userBubble = document.createElement("div");
+    userBubble.style.cssText = "align-self:flex-end; background:var(--brand-emerald); color:#fff; padding:10px 14px; border-radius:12px 12px 0 12px; max-width:85%; font-size:0.85rem; font-weight:600; line-height:1.4; word-break:break-word;";
+    userBubble.textContent = userText;
+    
+    history.appendChild(userBubble);
+    history.scrollTop = history.scrollHeight;
+  }
+</script>
+
+<!-- 💬 FLOATING CHAT DRAWER SUITE BUTTON & CONTAINER -->
+<button type="button" id="wizChatFloatingBtn" style="position:fixed; bottom:25px; right:25px; background:var(--brand-emerald); color:#fff; border:0; width:60px; height:60px; border-radius:50%; font-size:1.8rem; cursor:pointer; box-shadow:0 10px 25px -5px rgba(16,185,129,0.4); display:flex; align-items:center; justify-content:center; z-index:9999; transition:transform 0.2s;" onclick="toggleCustomSupportChatDrawer()">💬</button>
+
+<div id="wizCustomerChatDrawer" style="position:fixed; top:0; right:-380px; width:350px; height:100vh; background:#ffffff; box-shadow:-10px 0 30px rgba(15,23,42,0.15); z-index:10000; display:flex; flex-direction:column; transition:right 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-sizing:border-box; border-left:1px solid var(--border-gray);">
+  <!-- Header Title Bar Component -->
+  <div style="background:var(--brand-navy); padding:20px; color:#ffffff; display:flex; justify-content:space-between; align-items:center; border-bottom:4px solid var(--brand-emerald);">
+    <div>
+      <h4 style="margin:0; font-size:1.05rem; font-weight:800;">Corporate Support Desk</h4>
+      <span style="font-size:0.72rem; color:#94a3b8; font-weight:600;">Filings4U Agent Pipeline</span>
+    </div>
+    <button type="button" style="background:none; border:0; color:#fff; font-size:1.4rem; cursor:pointer;" onclick="toggleCustomSupportChatDrawer()">✕</button>
+  </div>
+  
+  <!-- Interactive Form Activation Area -->
+  <div id="wizChatWorkspaceBox" style="flex:1; padding:20px; overflow-y:auto; background:var(--bg-slate); display:flex; flex-direction:column; gap:15px; box-sizing:border-box;">
+    <form id="wizChatIntakeVerificationForm" onsubmit="handleSupportChatVerification(event)" style="display:flex; flex-direction:column; gap:14px; margin:0; width:100%;">
+      <p style="margin:0; font-size:0.88rem; color:#475569; font-weight:600; line-height:1.4;">Please verify your contact coordinates to connect with an operational fulfillment agent:</p>
+      <div class="wizard-field-group">
+        <label class="wizard-label">Full Name *</label>
+        <input type="text" id="chat_user_name" class="wizard-input" required placeholder="e.g. John Doe">
+      </div>
+      <div class="wizard-field-group">
+        <label class="wizard-label">Email Address *</label>
+        <input type="email" id="chat_user_email" class="wizard-input" required placeholder="executive@domain.com">
+      </div>
+      <button type="submit" style="background:var(--brand-emerald); color:#fff; border:0; padding:12px; font-weight:700; border-radius:6px; cursor:pointer; font-size:0.9rem; margin-top:5px;">Launch Live Support Channel ➔</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
