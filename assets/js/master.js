@@ -117,9 +117,11 @@ async function initializeHomepageBlogFeeds() {
   const MAXIMUM_BLOG_DISPLAY_CAP = 4; 
 
   try { 
+    // Only fetch posts where is_published is true
     const { data: allPosts, error } = await dbInstance 
       .from('blog_posts') 
       .select('*') 
+      .eq('is_published', true)
       .order('created_at', { ascending: false }); 
 
     if (error) { 
@@ -138,12 +140,15 @@ async function initializeHomepageBlogFeeds() {
       if (displayedCount >= MAXIMUM_BLOG_DISPLAY_CAP) break; 
 
       const item = allPosts[i]; 
-      const dbSlug = (item.service_slug || 'global').toLowerCase(); 
-      const slugTokens = dbSlug.split(/[-_\s]+/); 
-      const isGlobal = (dbSlug === 'global'); 
-      const isUrlMatch = slugTokens.some(token => token.length > 1 && currentUrl.includes(token)); 
-
-      // 🚀 FIXED LIVE HOME BYPASS: Forces all posts to appear on the main home landing paths
+      
+      // 🚀 FIXED PROPERTY mapping: Changed from service_slug to your actual column 'category'
+      const dbCategory = (item.category || 'global').toLowerCase(); 
+      const categoryTokens = dbCategory.split(/[-_\s]+/); 
+      
+      const isGlobal = (dbCategory === 'global'); 
+      const isUrlMatch = categoryTokens.some(token => token.length > 1 && currentUrl.includes(token)); 
+      
+      // Live homepage detection bypass rule
       const isHomepage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('index.html');
 
       if (isGlobal || isUrlMatch || isHomepage) { 
