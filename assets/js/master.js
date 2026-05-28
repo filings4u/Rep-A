@@ -99,92 +99,95 @@ function getSupabaseInstance() {
   }
 }
 
-/**
- * ==========================================================================
- * 📊 PART 1: DYNAMIC CLOUD BLOG GRID RENDERING ENGINE (MAX 4 ITEMS)
- * Pulls live published items from Supabase by matching current URL keywords
- * ==========================================================================
- */
-async function initializeHomepageBlogFeeds() {
-  const gridTarget = document.getElementById('public-homepage-blog-grid-target');
-  if (!gridTarget) return;
+/** 
+ * ========================================================================== 
+ * 📊 PART 1: DYNAMIC CLOUD BLOG GRID RENDERING ENGINE (MAX 4 ITEMS) 
+ * Pulls live published items from Supabase by matching current URL keywords 
+ * ========================================================================== 
+ */ 
+async function initializeHomepageBlogFeeds() { 
+  const gridTarget = document.getElementById('public-homepage-blog-grid-target'); 
+  if (!gridTarget) return; 
+  if (gridTarget.querySelectorAll('.resource-card-item').length > 0) return; 
 
-  if (gridTarget.querySelectorAll('.resource-card-item').length > 0) return;
+  const dbInstance = getSupabaseInstance(); 
+  if (!dbInstance) return; 
 
-  const dbInstance = getSupabaseInstance();
-  if (!dbInstance) return;
+  const currentUrl = window.location.href.toLowerCase(); 
+  const MAXIMUM_BLOG_DISPLAY_CAP = 4; 
 
-  const currentUrl = window.location.href.toLowerCase();
-  const MAXIMUM_BLOG_DISPLAY_CAP = 4;
+  try { 
+    const { data: allPosts, error } = await dbInstance 
+      .from('blog_posts') 
+      .select('*') 
+      .order('created_at', { ascending: false }); 
 
-  try {
-    const { data: allPosts, error } = await dbInstance
-      .from('blog_posts')
-      .select('*')
-      .order('created_at', { ascending: false });
+    if (error) { 
+      console.error("Supabase API connection rejected:", error.message); 
+      return; 
+    } 
 
-    if (error) {
-      console.error("Supabase API connection rejected:", error.message);
-      return;
-    }
+    gridTarget.innerHTML = ""; 
+    if (!allPosts || allPosts.length === 0) { 
+      gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`; 
+      return; 
+    } 
 
-    gridTarget.innerHTML = "";
-    if (!allPosts || allPosts.length === 0) {
-      gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`;
-      return;
-    }
+    let displayedCount = 0; 
+    for (let i = 0; i < allPosts.length; i++) { 
+      if (displayedCount >= MAXIMUM_BLOG_DISPLAY_CAP) break; 
 
-    let displayedCount = 0;
-    for (let i = 0; i < allPosts.length; i++) {
-      if (displayedCount >= MAXIMUM_BLOG_DISPLAY_CAP) break;
+      const item = allPosts[i]; 
+      const dbSlug = (item.service_slug || 'global').toLowerCase(); 
+      const slugTokens = dbSlug.split(/[-_\s]+/); 
+      const isGlobal = (dbSlug === 'global'); 
+      const isUrlMatch = slugTokens.some(token => token.length > 1 && currentUrl.includes(token)); 
 
-      const item = allPosts[i];
-      const dbSlug = (item.service_slug || 'global').toLowerCase();
-      const slugTokens = dbSlug.split(/[-_\s]+/);
-      const isGlobal = (dbSlug === 'global');
-      const isUrlMatch = slugTokens.some(token => token.length > 1 && currentUrl.includes(token));
+      // 🚀 FIXED LIVE HOME BYPASS: Forces all posts to appear on the main home landing paths
+      const isHomepage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('index.html');
 
-      if (isGlobal || isUrlMatch) {
-        const card = document.createElement('article');
-        card.className = "resource-card-item";
-        card.style.cssText = "background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); opacity: 0; transform: translateY(10px); transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);";
+      if (isGlobal || isUrlMatch || isHomepage) { 
+        const card = document.createElement('article'); 
+        card.className = "resource-card-item"; 
+        card.style.cssText = "background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); opacity: 0; transform: translateY(10px); transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);"; 
         
-        const postDate = new Date(item.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const postDate = new Date(item.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); 
         
-        card.innerHTML = `
-          <div>
-            <span style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${postDate}</span>
-            <h3 class="blog-live-title" style="font-size: 1.2rem; font-weight: 800; color: #0a1f44; margin: 8px 0 10px 0; line-height: 1.3;"></h3>
-            <p class="blog-live-desc" style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;"></p>
-          </div>
-          <a href="article.html?slug=${item.slug}" style="color: #0a1f44; font-weight: 700; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#0a1f44'">
-            Read Article &rarr;
-          </a>
-        `;
+        card.innerHTML = ` 
+          <div> 
+            <span style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${postDate}</span> 
+            <h3 class="blog-live-title" style="font-size: 1.2rem; font-weight: 800; color: #0a1f44; margin: 8px 0 10px 0; line-height: 1.3;"></h3> 
+            <p class="blog-live-desc" style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;"></p> 
+          </div> 
+          <a href="article.html?slug=${item.slug}" style="color: #0a1f44; font-weight: 700; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#0a1f44'"> 
+            Read Article &rarr; 
+          </a> 
+        `; 
         
-        card.querySelector('.blog-live-title').textContent = item.title;
-        card.querySelector('.blog-live-desc').textContent = item.summary || '';
-        gridTarget.appendChild(card);
+        card.querySelector('.blog-live-title').textContent = item.title; 
+        card.querySelector('.blog-live-desc').textContent = item.summary || ''; 
+        gridTarget.appendChild(card); 
 
-        (function(targetCard, offsetIndex) {
-          setTimeout(() => {
-            targetCard.style.opacity = "1";
-            targetCard.style.transform = "translateY(0)";
-            targetCard.classList.add('reveal-animated');
-          }, (offsetIndex * 80) + 150);
-        })(card, displayedCount);
+        (function(targetCard, offsetIndex) { 
+          setTimeout(() => { 
+            targetCard.style.opacity = "1"; 
+            targetCard.style.transform = "translateY(0)"; 
+            targetCard.classList.add('reveal-animated'); 
+          }, (offsetIndex * 80) + 150); 
+        })(card, displayedCount); 
+        
+        displayedCount++; 
+      } 
+    } 
 
-        displayedCount++;
-      }
-    }
-
-    if (displayedCount === 0) {
-      gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`;
-    }
-  } catch (err) {
-    console.error("Cloud insights stream transmission failure:", err);
-  }
+    if (displayedCount === 0) { 
+      gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`; 
+    } 
+  } catch (err) { 
+    console.error("Cloud insights stream transmission failure:", err); 
+  } 
 }
+
 
 /**
  * ==========================================================================
