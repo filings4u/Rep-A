@@ -279,14 +279,24 @@
     { id: "custom_corporate_website", title: "Professional Website & Domain", summary: "Deploy a fully functional five-page professional website built to convert leads and push your brand, complete with custom security protocols and one year of business domain registration.", price: 499.00 }
   ];
 
+  // 🔄 RE-ANCHOR LIVE SECURE SUPABASE CONNECTION INITIALIZATIONS
+  const SUPABASE_PROJECT_LANES_URL = "https://lrbimrlbskjweynxlgas.supabase.co";
+  const SUPABASE_ANON_PUBLIC_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";
+
+  // Safeguard initialization parameters to build a functional database client object instance
+  if (typeof supabase !== "undefined" && typeof window.supabaseClient === "undefined") {
+    window.supabaseClient = supabase.createClient(SUPABASE_PROJECT_LANES_URL, SUPABASE_ANON_PUBLIC_TOKEN);
+  }
+
   // 🔄 Global System Context Tracking State Machines
   let activeServiceName = "LLC Formation";
-  let activeServicePlanTier = "starter"; // Default layout fallback tier ('starter', 'compliance', 'enterprise')
+  let activeServicePlanTier = "starter"; 
   let activeServiceData = null;
   let activeWizardStepIndex = 1;
   let wizardCollectedFormPayloadData = {};
   let stripeInstance = null;
   let stripeCardElementInstance = null;
+
 
   // 📦 Fixed Processing Costs & Support Service Thresholds
   const FILINGS4U_SERVICE_FEE = 149.00;
