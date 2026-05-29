@@ -257,6 +257,11 @@
     border: none !important;
 }
 
+#stripe-embedded-checkout-mount-target {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+}
   </style>
 </head>
 
@@ -1252,17 +1257,19 @@
     }
 
 
-// 💳 SECURE LIVE STRIPE EMBEDDED CHECKOUT CLIENT INITIALIZATION 
+let globalStripeElementsInstance = null;
+
+// 💳 INITIALIZE THE NATIVE FLAT FIELD INPUTS WITH ZERO BORDERS
 async function initializeLiveStripeEmbeddedCheckoutSession() { 
     try {
         const feedback = document.getElementById("wizardFeedbackTray"); 
-        if (!feedback) return; 
+        if (feedback) {
+            feedback.style.color = "var(--brand-navy)";
+            feedback.textContent = "Loading secure card authorization gateway..."; 
+        }
 
-        feedback.style.color = "var(--brand-navy)"; 
-        feedback.textContent = "Securing live checkout session with merchant banks..."; 
-
-        // 🎯 FORCED INTEGRATION ROUTING PROVISIONS
-        const MY_ACTUAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; // Replace with your real anon key string
+        // 🎯 DEFINITIVE KEY AND URL PROVISIONING 
+        const MY_ACTUAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; // 👈 Paste your real long 'eyJ...' anon key here
         const MY_PROJECT_BASE_URL = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout';
 
         // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR 
@@ -1307,14 +1314,12 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                 created_at: new Date().toISOString() 
             }; 
 
-            // Explicitly force direct routing path to bypass global window.supabase.co bug
             const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'apikey': MY_ACTUAL_ANON_KEY,
-                    'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY,
-                    'Prefer': 'return=representation'
+                    'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY
                 },
                 body: JSON.stringify(ordersPayloadRowObject)
             });
@@ -1327,7 +1332,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
         } 
 
-        // 🚀 INITIALIZE FLAT SECURE STRIPE FORM WINDOW 
+        // 🚀 FETCH INSTANT PAYMENT INTENT DATA FROM YOUR NEW EDGE FUNCTION
         if (typeof Stripe === "undefined") { 
             throw new Error("Stripe secure network core library unavailable. Confirm CDN headers."); 
         } 
@@ -1339,7 +1344,9 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         const checkoutSessionResponse = await fetch(`${MY_PROJECT_BASE_URL}/functions/v1/stripe-checkout`, { 
             method: 'POST', 
             headers: { 
-                'Content-Type': 'application/json', 'apikey': MY_ACTUAL_ANON_KEY, 'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY 
+                'Content-Type': 'application/json', 
+                'apikey': MY_ACTUAL_ANON_KEY, 
+                'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY 
             }, 
             body: JSON.stringify({ 
                 order_id: targetGeneratedOrderId, 
@@ -1354,22 +1361,24 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             throw new Error(sessionDataPayload.error || "Failed to structure safe connection window."); 
         } 
 
-        // 🎯 THE STYLING ATTACHMENT: Removes boxed frames and handles scaling variables natively
-        const embeddedCheckoutInstance = await stripeInstance.initEmbeddedCheckout({ 
+        // 🎯 THE LOOK & FEEL FIX: Uses the flat appearance theme to strip card borders, frames, and shadows completely
+        globalStripeElementsInstance = stripeInstance.elements({ 
             clientSecret: sessionDataPayload.clientSecret,
             appearance: {
-                theme: 'stripe',
-                variables: {
-                    colorBackground: 'transparent', // Strips the floating gray/white container card look
-                    borderWidth: '1px',
-                    borderRadius: '4px',
-                    spacingUnit: '4px' // Flattens field height to look natural in a desktop form
+                theme: 'flat', 
+                variables: { 
+                    colorBackground: 'transparent', 
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    spacingUnit: '4px'
                 }
             }
         }); 
+
+        const paymentElement = globalStripeElementsInstance.create('payment', { layout: 'accordion' });
+        if (feedback) feedback.textContent = ""; 
         
-        feedback.textContent = ""; 
-        embeddedCheckoutInstance.mount('#stripe-embedded-checkout-mount-target'); 
+        // Mounts straight into your layout box—expanding full width automatically with no frame borders
+        paymentElement.mount('#stripe-embedded-checkout-mount-target'); 
 
     } catch (err) { 
         console.error("Stripe portal load failure:", err.message); 
@@ -1384,6 +1393,33 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     if (prevBtn && typeof activeWizardStepIndex !== "undefined") { 
         prevBtn.style.display = activeWizardStepIndex === 1 ? "none" : "block"; 
     } 
+}
+
+// 💳 THIS IS THE ACTION ATTACHED TO YOUR AUTHORIZE BUTTON THAT INSTANTLY CHARGES THE CARD NOW
+async function handleInlinePaymentSubmission() {
+    const feedback = document.getElementById("wizardFeedbackTray");
+    if (!globalStripeElementsInstance) return;
+
+    if (feedback) {
+        feedback.style.color = "var(--brand-navy)";
+        feedback.textContent = "Authorizing transaction and collecting live funds instantly...";
+    }
+
+    // 🚀 THIS LINE TELLS STRIPE TO INSTANTLY CHARGE THE CARD RIGHT NOW
+    const { error } = await stripeInstance.confirmPayment({
+        elements: globalStripeElementsInstance,
+        confirmParams: {
+            // Once the transaction succeeds, loop straight back to the wizard running step 7
+            return_url: `${window.location.origin}${window.location.pathname}?step=7`,
+        },
+    });
+
+    if (error) {
+        if (feedback) {
+            feedback.style.color = "#c15254";
+            feedback.textContent = error.message; // Displays to user if card is declined/expired
+        }
+    }
 }
 
 
