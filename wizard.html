@@ -246,6 +246,99 @@
     max-width: 100% !important;
     box-sizing: border-box !important;
 }
+
+@media screen and (max-width: 768px) {
+    /* 1️⃣ UN-SMASH CONTAINER: Strip global narrow margins & pad out fields */
+    .wizard-container, 
+    #dynamicWizardFieldsFormContainer, 
+    .form-step-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Force input text fields to take up full available horizontal width */
+    input[type="text"], input[type="email"], input[type="tel"], select {
+        width: 100% !important;
+        max-width: 100% !important;
+        font-size: 16px !important; /* Prevents iOS Safari from auto-zooming and distorting layout */
+    }
+
+    /* Stop text headings/labels from wrapping awkwardly */
+    label, h1, h2, h3, .step-title {
+        white-space: normal !important;
+        word-break: keep-all !important;
+        font-size: 1.15rem !important; /* Scales typography down slightly so it fits beautifully */
+    }
+
+    /* 2️⃣ SINGLE ROW HEADER SYSTEM: Logo Left, Clock Middle, Phone Far Right */
+    .wizard-header-wrapper, 
+    header, 
+    .top-bar {
+        display: flex !important;
+        flex-direction: row !important; /* Strictly blocks vertical stacking on mobile */
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: 8px 12px !important;
+    }
+
+    /* Force your Logo to align neatly left */
+    .wizard-logo, header img {
+        max-height: 35px !important;
+        width: auto !important;
+        margin: 0 !important;
+    }
+
+    /* Force your Countdown Timer/Clock into the exact center */
+    #premiumWizardClockContainer, .wizard-timer {
+        font-size: 0.85rem !important;
+        font-weight: 700 !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+
+    /* Force your Phone Number element to snap cleanly to the far right */
+    .wizard-phone-link, .header-phone {
+        font-size: 0.85rem !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important; /* Keeps the phone digits locked onto one single row */
+        margin: 0 !important;
+    }
+
+    /* 3️⃣ NAVIGATION NAVIGATION ROW: Fits Buttons onto the same row */
+    .wizard-action-footer, 
+    .button-tray-wrapper {
+        display: flex !important;
+        flex-direction: row !important; /* Keeps button containers next to each other */
+        gap: 10px !important;
+        justify-content: center !important;
+        width: 100% !important;
+        margin-top: 20px !important;
+    }
+
+    /* Auto-scale buttons to sit cleanly side-by-side without overflowing */
+    #wizPrevBtn, #wizNextBtn, .nav-btn {
+        flex: 1 !important; /* Shares available horizontal grid space evenly */
+        max-width: 160px !important; /* Restricts them from ballooning out too large */
+        padding: 10px 14px !important;
+        font-size: 0.9rem !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    /* 4️⃣ FOOTER FOOTPRINT SHIFT: Pushes trust badges down to the absolute base */
+    .trust-badge-container, 
+    .security-seals {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-top: 40px !important; /* Generates padding space below your main workflow boxes */
+        width: 100% !important;
+    }
+}
   </style>
 </head>
 
