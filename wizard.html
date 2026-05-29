@@ -1339,7 +1339,7 @@ let globalStripeElementsInstance = null;
 
 
 // 💳 SECURE LIVE STRIPE NATIVE INLINE INITIALIZATION
-async function initializeLiveStripeEmbeddedCheckoutSession() { 
+window.initializeLiveStripeEmbeddedCheckoutSession = async function() {
     try {
         const feedback = document.getElementById("wizardFeedbackTray"); 
         if (feedback) {
