@@ -1217,8 +1217,8 @@
       
       // Inject a completely flat container with no background, borders, or margins
       container.innerHTML = 
-        '<div style="width:100%; min-height:450px; background:transparent; border:0; margin:0; padding:0; box-sizing:border-box;">' +
-          '<div id="stripe-embedded-checkout-mount-target" style="width:100%; border:0; margin:0; padding:0;"></div>' +
+        '<div class="stripe-workflow-wrapper" style="width: 100%; max-width: 100%; margin: 20px 0; padding: 0; border: none; box-shadow: none;">' +
+          '<div id="stripe-embedded-checkout-mount-target" style="width: 100%; min-width: 100%; border: none;"></div>' +
         '</div>'; 
         
       // Trigger the background connection to initialize the live billing form
@@ -1327,9 +1327,11 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             throw new Error(sessionDataPayload.error || "Failed to structure safe connection window."); 
         } 
 
-        const embeddedCheckoutInstance = await stripeInstance.initEmbeddedCheckout({ 
-            clientSecret: sessionDataPayload.clientSecret 
-        }); 
+      const embeddedCheckoutInstance = await stripeInstance.initEmbeddedCheckout({ 
+    clientSecret: sessionDataPayload.clientSecret,
+    // Formats the inputs as a seamless, flat list of fields rather than boxed cards [1, 2]
+    layout: 'accordion' 
+}); 
         
         feedback.textContent = ""; 
         embeddedCheckoutInstance.mount('#stripe-embedded-checkout-mount-target'); 
