@@ -1241,44 +1241,25 @@
     }
 
 
+// Global variable token to track your inline input instance fields
 let globalStripeElementsInstance = null;
 
-// 💳 INITIALIZE THE NATIVE FLAT FIELD INPUTS WITH ZERO BORDERS
+// 💳 SECURE LIVE STRIPE NATIVE INLINE INITIALIZATION
 async function initializeLiveStripeEmbeddedCheckoutSession() { 
     try {
         const feedback = document.getElementById("wizardFeedbackTray"); 
         if (feedback) {
             feedback.style.color = "var(--brand-navy)";
-            feedback.textContent = "Loading secure card authorization gateway..."; 
+            feedback.textContent = "Loading secure payment vault fields..."; 
         }
 
-        // 🎯 DEFINITIVE KEY AND URL PROVISIONING 
-        const MY_ACTUAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; // 👈 Paste your real long 'eyJ...' anon key here
-        const MY_PROJECT_BASE_URL = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout';
+        // 🎯 DEFINITIVE ACCURATE ROUTING CONFIGURATION
+        const MY_ACTUAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; // 👈 Replace with your real anon public key string
+        const MY_PROJECT_BASE_URL = 'https://lrbimrlbskjweynxlgas.supabase.co';
 
-        // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR 
-        var selectedTierName = activeServicePlanTier || "starter"; 
-        var localizedServiceMapPrices = activeServiceData.prices || { starter: 0.00, compliance: 0.00, enterprise: 0.00 }; 
-        var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || localizedServiceMapPrices["starter"] || 0.00; 
-        var currentSelectedFormationState = wizardCollectedFormPayloadData["wiz_formation_state"] || ""; 
-        var applicableRegistryStateFee = US_STATES_FILING_FEES_REGISTRY[currentSelectedFormationState] || 0.00; 
-        
-        let runningTotalAccumulator = applicableRegistryStateFee > 0 ? applicableRegistryStateFee : baseTierPriceAmount; 
-        runningTotalAccumulator += FILINGS4U_SERVICE_FEE; 
-
-        if (wizardCollectedFormPayloadData["wiz_ra_choice"] === "yes") { 
-            runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE; 
-        } 
-        if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) { 
-            runningTotalAccumulator += 95.00; 
-        } 
-        if (typeof GLOBAL_UPSELLS_CATALOG !== "undefined" && GLOBAL_UPSELLS_CATALOG) {
-            GLOBAL_UPSELLS_CATALOG.forEach(item => { 
-                if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) { 
-                    runningTotalAccumulator += item.price; 
-                } 
-            }); 
-        }
+        // 📊 DYNAMIC PRICING AUDITOR WITH TEMPORARY LIVE TEST OVERRIDE
+        // Forces the charge amount to exactly $1.00 for our live browser transaction test
+        let runningTotalAccumulator = 1.00; 
 
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
 
@@ -1288,7 +1269,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                 company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
                 service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown", 
                 service_title: activeServiceName || "Trucker Authority", 
-                plan_tier: selectedTierName, 
+                plan_tier: activeServicePlanTier || "starter", 
                 total_fee: runningTotalAccumulator, 
                 status: 'Pending Payment Authorization', 
                 tax_id_status: 'Pending Payment Authorization', 
@@ -1298,6 +1279,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                 created_at: new Date().toISOString() 
             }; 
 
+            // 🎯 FIXED: Direct clean REST path to your orders table
             const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, {
                 method: 'POST',
                 headers: {
@@ -1316,7 +1298,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
         } 
 
-        // 🚀 FETCH INSTANT PAYMENT INTENT DATA FROM YOUR NEW EDGE FUNCTION
+        // 🚀 INITIALIZE FLAT SECURE STRIPE FORM WINDOW 
         if (typeof Stripe === "undefined") { 
             throw new Error("Stripe secure network core library unavailable. Confirm CDN headers."); 
         } 
@@ -1325,6 +1307,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4'); 
         }
 
+        // 🎯 FIXED: Points cleanly to your edge function endpoint path URL without string mutations
         const checkoutSessionResponse = await fetch(`${MY_PROJECT_BASE_URL}/functions/v1/stripe-checkout`, { 
             method: 'POST', 
             headers: { 
@@ -1345,7 +1328,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             throw new Error(sessionDataPayload.error || "Failed to structure safe connection window."); 
         } 
 
-        // 🎯 THE LOOK & FEEL FIX: Uses the flat appearance theme to strip card borders, frames, and shadows completely
+        // Initialize Stripe Elements with our flat theme setup configurations
         globalStripeElementsInstance = stripeInstance.elements({ 
             clientSecret: sessionDataPayload.clientSecret,
             appearance: {
@@ -1358,10 +1341,11 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             }
         }); 
 
-        const paymentElement = globalStripeElementsInstance.create('payment', { layout: 'accordion' });
-        if (feedback) feedback.textContent = ""; 
+        const paymentElement = globalStripeElementsInstance.create('payment', { 
+            layout: { type: 'tabs', defaultCollapsed: false } 
+        });
         
-        // Mounts straight into your layout box—expanding full width automatically with no frame borders
+        if (feedback) feedback.textContent = ""; 
         paymentElement.mount('#stripe-embedded-checkout-mount-target'); 
 
     } catch (err) { 
