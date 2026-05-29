@@ -1461,20 +1461,33 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
 }
 
 // 💳 THIS IS THE ACTION ATTACHED TO YOUR AUTHORIZE BUTTON THAT INSTANTLY CHARGES THE CARD NOW
+// 💳 THIS FUNCTION ACTUALLY PROCESSES THE INSTANT LIVE CARD CHARGE
 async function handleInlinePaymentSubmission() {
     const feedback = document.getElementById("wizardFeedbackTray");
-    if (!globalStripeElementsInstance) return;
+    
+    // 🎯 THE FIX: Read directly from the browser's master window layer
+    const activeElements = window.globalStripeElementsInstance;
+
+    if (!activeElements) {
+        console.error("Stripe Elements instance has not loaded on the window yet.");
+        if (feedback) {
+            feedback.style.color = "#c15254";
+            feedback.textContent = "Payment fields are still setting up. Please wait a moment.";
+        }
+        return;
+    }
 
     if (feedback) {
         feedback.style.color = "var(--brand-navy)";
         feedback.textContent = "Authorizing transaction and collecting live funds instantly...";
     }
 
-    // 🚀 THIS LINE TELLS STRIPE TO INSTANTLY CHARGE THE CARD RIGHT NOW
+    // 🚀 THIS LINE TELLS STRIPE TO CHARGE THE CARD IMMEDIATELY
     const { error } = await stripeInstance.confirmPayment({
-        elements: globalStripeElementsInstance,
+        // 🎯 PASS THE VALID WINDOW INSTANCE TO STRIPE
+        elements: activeElements,
         confirmParams: {
-            // Once the transaction succeeds, loop straight back to the wizard running step 7
+            // Once successful, loop straight to Step 7 (Success Page)
             return_url: `${window.location.origin}${window.location.pathname}?step=7`,
         },
     });
