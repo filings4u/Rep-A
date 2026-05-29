@@ -1495,36 +1495,36 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
   }
 
 
-   // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER
-  async function handleWizardFormStepNavigation(event) {
-    event.preventDefault();
+ // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER 
+async function handleWizardFormStepNavigation(event) { 
+    event.preventDefault(); 
     
-    // 🎯 FIX: Explicitly map your verified window database object instance
-    const client = window.supabaseClient || window.supabase;
-    const feedback = document.getElementById("wizardFeedbackTray");
-    const nextBtn = document.getElementById("wizNextBtn");
-    if (!feedback || !nextBtn) return;
+    // 🎯 FIX: Explicitly map your verified window database object instance 
+    const client = window.supabaseClient || window.supabase; 
+    const feedback = document.getElementById("wizardFeedbackTray"); 
+    const nextBtn = document.getElementById("wizNextBtn"); 
+    if (!feedback || !nextBtn) return; 
 
-    const totalStepsCountMap = activeServiceData.stepsCount + 5;
-    
-    // If we are on an intermediate step, advance forward normally
-    if (activeWizardStepIndex < totalStepsCountMap) {
-      navigateWizardStepsCounter(1);
-      return;
+    const totalStepsCountMap = activeServiceData.stepsCount + 5; 
+
+    // 🎯 THE INTEGRATED SECURE CHECKOUT INTERCEPTOR
+    // Replace the number '5' below with your actual checkout payment step index number
+    const CHECKOUT_PAYMENT_STEP_INDEX = 6; 
+
+    if (activeWizardStepIndex === CHECKOUT_PAYMENT_STEP_INDEX) {
+        // Stop the wizard from skipping forward and execute the real-time card charge
+        if (typeof handleInlinePaymentSubmission === "function") {
+            await handleInlinePaymentSubmission();
+        } else {
+            console.error("Critical: handleInlinePaymentSubmission function missing at bottom of file.");
+        }
+        return; // Prevent the step from changing until Stripe processes the transaction
     }
 
-    // 🛡️ STEP 6 SUBMISSION processing (Secure Checkout Gateway Endpoint)
-    // 🎯 FIX: Confirm client features the required data lookup methods
-    if (!client || typeof client.from !== "function") {
-      feedback.style.color = "#c15254";
-      feedback.textContent = "Database Error: Supabase client is not fully initialized. Check your URL and Anon Key variables.";
-      return;
-    }
-
-    if (!stripeInstance || !stripeCardElementInstance) {
-      feedback.style.color = "#c15254";
-      feedback.textContent = "Gateway Error: Payment infrastructure failed to initialize properly.";
-      return;
+    // If we are on an intermediate step, advance forward normally 
+    if (activeWizardStepIndex < totalStepsCountMap) { 
+        navigateWizardStepsCounter(1); 
+        return; 
     }
 
     nextBtn.disabled = true;
