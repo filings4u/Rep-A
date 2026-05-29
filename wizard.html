@@ -1163,21 +1163,120 @@
     }
 
     
-    // 🎯 STEP 6 — Secure Credit Card Transaction Gateway (Flat Native Style Injection)
+    // 🎯 STEP 6 — Secure Embedded Live Payment Gateway (Flat, Zero-Border Iframe Injection)
     else if (activeWizardStepIndex === 6) { 
-      stepLabel.textContent = "Step 6 of " + totalStepsCountMap + ": Secure Payment Gateway"; 
-      nextBtn.textContent = "Submit Payment & Launch Account ➔"; 
+      stepLabel.textContent = "Step 6 of " + totalStepsCountMap + ": Secure Embedded Checkout"; 
+      nextBtn.textContent = "Authorize Secured Live Funds ➔"; 
       
+      // Inject a completely flat container with no background, borders, or margins
       container.innerHTML = 
-        '<div style="display:flex; flex-direction:column; gap:16px;">' + 
-          '<div class="wizard-field-group">' + 
-            '<label class="wizard-label" for="stripe-card-element">Secure Credit Card Transaction *</label>' + 
-            '<div id="stripe-card-element"></div>' + 
-          '</div>' + 
+        '<div style="width:100%; min-height:450px; background:transparent; border:0; margin:0; padding:0; box-sizing:border-box;">' +
+          '<div id="stripe-embedded-checkout-mount-target" style="width:100%; border:0; margin:0; padding:0;"></div>' +
         '</div>'; 
         
-      initializeStripeElementsObjectInstance(); 
-    } 
+      // Trigger the background connection to initialize the live billing form
+      initializeLiveStripeEmbeddedCheckoutSession(); 
+    }
+
+
+      // 💳 SECURE LIVE STRIPE EMBEDDED CHECKOUT CLIENT INITIALIZATION 
+  async function initializeLiveStripeEmbeddedCheckoutSession() {
+    const client = window.supabaseClient || window.supabase;
+    const feedback = document.getElementById("wizardFeedbackTray");
+    if (!feedback) return;
+
+    feedback.style.color = "var(--brand-navy)";
+    feedback.textContent = "Securing live checkout session with merchant banks...";
+
+    // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR
+    var selectedTierName = activeServicePlanTier || "starter";
+    var localizedServiceMapPrices = activeServiceData.prices || { starter: 0.00, compliance: 0.00, enterprise: 0.00 };
+    var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || localizedServiceMapPrices["starter"] || 0.00;
+    
+    var currentSelectedFormationState = wizardCollectedFormPayloadData["wiz_formation_state"] || "";
+    var applicableRegistryStateFee = US_STATES_FILING_FEES_REGISTRY[currentSelectedFormationState] || 0.00;
+    
+    let runningTotalAccumulator = applicableRegistryStateFee > 0 ? applicableRegistryStateFee : baseTierPriceAmount;
+    runningTotalAccumulator += FILINGS4U_SERVICE_FEE;
+
+    if (wizardCollectedFormPayloadData["wiz_ra_choice"] === "yes") {
+      runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE;
+    }
+    if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) {
+      runningTotalAccumulator += 95.00;
+    }
+    GLOBAL_UPSELLS_CATALOG.forEach(item => {
+      if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) {
+        runningTotalAccumulator += item.price;
+      }
+    });
+
+    let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase();
+
+    // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE SO UNCOMPLETED CHECKOUTS CAN BE RECOVERED BY SALES
+    try {
+      const ordersPayloadRowObject = {
+        company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
+        service_key: activeServiceName.replace(/\s+/g, '_').toLowerCase(),
+        service_title: activeServiceName,
+        plan_tier: selectedTierName,
+        total_fee: runningTotalAccumulator,
+        status: 'Pending Payment Authorization',
+        tax_id_status: 'Pending Payment Authorization',
+        collected_payload_metadata: wizardCollectedFormPayloadData,
+        poa_signed_state: true,
+        poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
+        created_at: new Date().toISOString()
+      };
+
+      const { data: dbSavedData } = await client.from('orders').insert(ordersPayloadRowObject).select();
+      if (dbSavedData && dbSavedData[0]) targetGeneratedOrderId = dbSavedData[0].id;
+    } catch (e) {
+      console.warn("Pre-payment background lead capture database fallback activated:", e.message);
+    }
+
+    // 🚀 INITIALIZE FLAT SECURE STRIPE FORM WINDOW
+    try {
+      if (typeof Stripe === "undefined") {
+        throw new Error("Stripe secure network core library unavailable. Confirm CDN headers.");
+      }
+      
+      // Initialize with your live production key token
+      if (!stripeInstance) stripeInstance = Stripe('pk_live_YOUR_ACTUAL_STRIPE_LIVE_KEY_HERE');
+
+      // Calls your secure backend edge endpoint to create a flat iframe token session
+      const checkoutSessionResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          order_id: targetGeneratedOrderId,
+          charge_amount_cents: Math.round(runningTotalAccumulator * 100),
+          client_email: wizardCollectedFormPayloadData["wiz_client_email"] || "",
+          service_title: activeServiceName
+        })
+      });
+
+      const sessionDataPayload = await checkoutSessionResponse.json();
+      if (!checkoutSessionResponse.ok || !sessionDataPayload.clientSecret) {
+        throw new Error(sessionDataPayload.error || "Failed to structure safe connection window.");
+      }
+
+      // 🎯 FLAT STYLE MOUNT: Generates a perfectly integrated, zero-border payment form canvas
+      const embeddedCheckoutInstance = await stripeInstance.initEmbeddedCheckout({
+        clientSecret: sessionDataPayload.clientSecret
+      });
+
+      feedback.textContent = "";
+      embeddedCheckoutInstance.mount('#stripe-embedded-checkout-mount-target');
+
+    } catch (err) {
+      console.error("Stripe portal load failure:", err.message);
+      feedback.style.color = "#c15254";
+      feedback.textContent = "Billing Framework Interrupted: " + err.message;
+    }
+  }
+
+ 
 
     prevBtn.style.display = activeWizardStepIndex === 1 ? "none" : "block"; 
   }
