@@ -1226,12 +1226,9 @@
     }
 
 
-  // 💳 SECURE LIVE STRIPE EMBEDDED CHECKOUT CLIENT INITIALIZATION 
-  
 // 💳 SECURE LIVE STRIPE EMBEDDED CHECKOUT CLIENT INITIALIZATION 
 async function initializeLiveStripeEmbeddedCheckoutSession() { 
     try {
-        const client = window.supabaseClient || window.supabase; 
         const feedback = document.getElementById("wizardFeedbackTray"); 
         if (!feedback) return; 
 
@@ -1264,28 +1261,41 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
 
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
 
-        // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE
-        if (client && typeof client.from === "function") {
-            try { 
-                const ordersPayloadRowObject = { 
-                    company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
-                    service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown", 
-                    service_title: activeServiceName || "Trucker Authority", 
-                    plan_tier: selectedTierName, 
-                    total_fee: runningTotalAccumulator, 
-                    status: 'Pending Payment Authorization', 
-                    tax_id_status: 'Pending Payment Authorization', 
-                    collected_payload_metadata: wizardCollectedFormPayloadData, 
-                    poa_signed_state: true, 
-                    poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
-                    created_at: new Date().toISOString() 
-                }; 
-                const { data: dbSavedData } = await client.from('orders').insert(ordersPayloadRowObject).select(); 
-                if (dbSavedData && dbSavedData) targetGeneratedOrderId = dbSavedData.id; 
-            } catch (e) { 
-                console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
-            } 
-        }
+        // 📥 FIXED: Pre-save lead targeting your exact Supabase project Rest API endpoint URL directly
+        try { 
+            const ordersPayloadRowObject = { 
+                company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
+                service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown", 
+                service_title: activeServiceName || "Trucker Authority", 
+                plan_tier: selectedTierName, 
+                total_fee: runningTotalAccumulator, 
+                status: 'Pending Payment Authorization', 
+                tax_id_status: 'Pending Payment Authorization', 
+                collected_payload_metadata: wizardCollectedFormPayloadData, 
+                poa_signed_state: true, 
+                poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
+                created_at: new Date().toISOString() 
+            }; 
+
+            // Directly post payload to your database via standard HTTPS REST without using the broken window.supabase client
+            const dbResponse = await fetch('https://supabase.co', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_PUBLIC_TOKEN,
+                    'Authorization': 'Bearer ' + SUPABASE_ANON_PUBLIC_TOKEN,
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify(ordersPayloadRowObject)
+            });
+
+            if (dbResponse.ok) {
+                const dbSavedData = await dbResponse.json();
+                if (dbSavedData && dbSavedData[0]) targetGeneratedOrderId = dbSavedData[0].id; 
+            }
+        } catch (e) { 
+            console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
+        } 
 
         // 🚀 INITIALIZE FLAT SECURE STRIPE FORM WINDOW 
         if (typeof Stripe === "undefined") { 
@@ -1336,7 +1346,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     const prevBtn = document.getElementById("wizPrevBtn"); 
     if (prevBtn && typeof activeWizardStepIndex !== "undefined") { 
         prevBtn.style.display = activeWizardStepIndex === 1 ? "none" : "block"; 
-    } 
+    }  
 }
 
 
