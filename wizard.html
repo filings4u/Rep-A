@@ -1461,7 +1461,6 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
 }
 
 // 💳 THIS IS THE ACTION ATTACHED TO YOUR AUTHORIZE BUTTON THAT INSTANTLY CHARGES THE CARD NOW
-// 💳 THIS FUNCTION ACTUALLY PROCESSES THE INSTANT LIVE CARD CHARGE
 async function handleInlinePaymentSubmission() {
     const feedback = document.getElementById("wizardFeedbackTray");
     
@@ -1648,9 +1647,8 @@ async function handleInlinePaymentSubmission() {
 
 // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER 
 async function handleWizardFormStepNavigation(event) { 
-    event.preventDefault(); 
+    if (event) event.preventDefault(); // Securely halt standard browser form processing loops
     
-    // 🎯 FIX: Explicitly map your verified window database object instance 
     const client = window.supabaseClient || window.supabase; 
     const feedback = document.getElementById("wizardFeedbackTray"); 
     const nextBtn = document.getElementById("wizNextBtn"); 
@@ -1658,15 +1656,19 @@ async function handleWizardFormStepNavigation(event) {
 
     const totalStepsCountMap = activeServiceData.stepsCount + 5; 
 
-    // 🎯 TARGETING MATCH: Step 6 is the Checkout Payment screen
+    // 🎯 TARGET MATCH: If the customer is on Step 6 (The Checkout Screen), run the payment
     if (activeWizardStepIndex === 6) {
-        // Halt navigation and fire the secure direct credit card charge
+        console.log("Payment step detected on navigation click. Charging card...");
+        
+        // 🚀 FORCE CALL THE EXPLICIT MOVEMENT SCRIPT
         if (typeof handleInlinePaymentSubmission === "function") {
             await handleInlinePaymentSubmission();
         } else {
-            console.error("Critical error: handleInlinePaymentSubmission script missing.");
+            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing at the bottom of the file!");
+            feedback.style.color = "#c15254";
+            feedback.textContent = "Billing system connection interrupted. Please refresh the page.";
         }
-        return; // Block forward movement until Stripe gives the all-clear token
+        return; // 🔒 Stop here! Do not change screens until Stripe finishes processing the bank cards
     }
 
     // If we are on an intermediate step, advance forward normally 
