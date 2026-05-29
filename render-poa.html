@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executed Statutory Document Portal — Filings4U</title>
+  <style>
+    body {
+      background: #f1f5f9;
+      font-family: Georgia, serif;
+      color: #0f172a;
+      margin: 0;
+      padding: 40px 15px;
+    }
+    .document-page {
+      background: #ffffff;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      border: 1px solid #cbd5e1;
+      padding: 60px 50px;
+      box-sizing: border-box;
+      position: relative;
+    }
+    .header-branding {
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title-banner {
+      font-size: 1.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0;
+    }
+    .doc-meta {
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .legal-clause-para {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      text-align: justify;
+      margin-bottom: 25px;
+    }
+    .execution-block {
+      margin-top: 50px;
+      border-top: 1px dashed #94a3b8;
+      padding-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .sig-display-box {
+      font-family: 'Brush Script MT', cursive, sans-serif;
+      font-size: 2.2rem;
+      color: #1e3a8a;
+      border-bottom: 1px solid #0f172a;
+      padding: 5px 10px;
+      min-height: 50px;
+    }
+    .print-action-bar {
+      max-width: 800px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .print-btn {
+      background: #0f172a;
+      color: #ffffff;
+      border: 0;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-family: sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .document-page { border: 0; box-shadow: none; padding: 0; }
+      .print-action-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="print-action-bar">
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF 📄</button>
+  </div>
+
+  <div class="document-page">
+    <div class="header-branding">
+      <div>
+        <h1 class="title-banner">Limited Power of Attorney</h1>
+        <span style="font-family:sans-serif; font-size:0.75rem; font-weight:800; color:#10b981; uppercase;">Statutory Filing Mandate</span>
+      </div>
+      <div class="doc-meta" id="docDateAnchor">Date: --/--/----</div>
+    </div>
+
+    <p class="legal-clause-para">
+      <strong>KNOW ALL MEN BY THESE PRESENTS:</strong> That the undersigned Principal Grantor hereby constitutes and appoints Filings4U, along with its authorized corporate compliance representatives and processing divisions, as true and lawful attorney-in-fact.
+    </p>
+
+    <p class="legal-clause-para">
+      This mandate is granted strictly to act in the name, place, and stead of the Principal Grantor to execute, modify, amend, sign, and submit required formation certificates, Articles of Organization, employer registrations, tax filings, operator identification structures, and state or federal permits.
+    </p>
+
+    <p class="legal-clause-para">
+      This authority shall apply to all local, state, and federal regulatory agencies, including but not limited to individual State Secretaries, the IRS, the FMCSA, and SAM.gov. This grant remains active and valid until the entity formation and filing pipeline achieves formal verification, at which point this mandate expires automatically.
+    </p>
+
+    <div class="execution-block">
+      <div>
+        <label style="font-family:sans-serif; font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#64748b;">Target Corporate Entity Name</label>
+        <div style="font-size:1.15rem; font-weight:700; border-bottom:1px solid #0f172a; padding:10px 0;" id="docCompanyAnchor">Pending Assignment</div>
+      </div>
+      <div>
+        <label style="font-family:sans-serif; font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#64748b;">Principal Grantor Signature</label>
+        <div class="sig-display-box" id="docSignatureAnchor">/s/ Electronic Signature</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Extract dynamic verification details straight from URL parameters
+    window.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const signature = params.get("sig") || "Authorized Signatory";
+      const company = params.get("company") || "Proposed Entity Ledger File";
+      
+      document.getElementById("docSignatureAnchor").textContent = signature;
+      document.getElementById("docCompanyAnchor").textContent = company;
+      document.getElementById("docDateAnchor").textContent = "Date: " + new Date().toLocaleDateString();
+    });
+  </script>
+</body>
+</html>
