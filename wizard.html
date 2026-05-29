@@ -1260,7 +1260,10 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
 
         // 📊 DYNAMIC PRICING AUDITOR WITH TEMPORARY LIVE TEST OVERRIDE
         // Forces the charge amount to exactly $1.00 for our live browser transaction test
-        let runningTotalAccumulator = 1.00; 
+        //let runningTotalAccumulator = 1.00; 
+
+        let runningTotalAccumulator = applicableRegistryStateFee > 0 ? applicableRegistryStateFee : baseTierPriceAmount; 
+runningTotalAccumulator += FILINGS4U_SERVICE_FEE;
 
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
 
