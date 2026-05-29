@@ -1647,7 +1647,7 @@ async function handleInlinePaymentSubmission() {
 
 // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER 
 async function handleWizardFormStepNavigation(event) { 
-    if (event) event.preventDefault(); // Securely halt standard browser form processing loops
+    if (event) event.preventDefault(); // Securely halt standard browser form processing loops 
     
     const client = window.supabaseClient || window.supabase; 
     const feedback = document.getElementById("wizardFeedbackTray"); 
@@ -1656,26 +1656,26 @@ async function handleWizardFormStepNavigation(event) {
 
     const totalStepsCountMap = activeServiceData.stepsCount + 5; 
 
-    // 🎯 TARGET MATCH: If the customer is on Step 6 (The Checkout Screen), run the payment
-    if (activeWizardStepIndex === 6) {
-        console.log("Payment step detected on navigation click. Charging card...");
+    // 🎯 TARGET MATCH: If the customer is on Step 6 (The Checkout Screen), run the payment 
+    if (activeWizardStepIndex === 6) { 
+        console.log("Payment step detected on navigation click. Charging card..."); 
         
-        // 🚀 FORCE CALL THE EXPLICIT MOVEMENT SCRIPT
-        if (typeof handleInlinePaymentSubmission === "function") {
-            await handleInlinePaymentSubmission();
-        } else {
-            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing at the bottom of the file!");
-            feedback.style.color = "#c15254";
-            feedback.textContent = "Billing system connection interrupted. Please refresh the page.";
-        }
-        return; // 🔒 Stop here! Do not change screens until Stripe finishes processing the bank cards
-    }
+        // 🚀 FORCE CALL THE EXPLICIT MOVEMENT SCRIPT 
+        if (typeof handleInlinePaymentSubmission === "function") { 
+            await handleInlinePaymentSubmission(); 
+        } else { 
+            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing at the bottom of the file!"); 
+            feedback.style.color = "#c15254"; 
+            feedback.textContent = "Billing system connection interrupted. Please refresh the page."; 
+        } 
+        return; // 🔒 Stop here! Do not change screens until Stripe finishes processing the bank cards 
+    } 
 
     // If we are on an intermediate step, advance forward normally 
     if (activeWizardStepIndex < totalStepsCountMap) { 
         navigateWizardStepsCounter(1); 
         return; 
-    }
+    } 
 
     nextBtn.disabled = true;
     nextBtn.textContent = "Authorizing Secured Funds Escrow...";
