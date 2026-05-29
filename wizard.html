@@ -1612,18 +1612,10 @@
 
       // Step 4: Clear workspace to display clean success layout view
       renderPremiumInteractiveReceiptPage("");
-      
-    } catch (err) {
-      console.error("Fulfillment engine checkout failure:", err.message);
-      feedback.style.color = "#c15254";
-      feedback.textContent = "Transaction Aborted: " + err.message;
-      nextBtn.disabled = false;
     }
-  }
-
 
   // 📜 DYNAMIC GENERATION FORMATTER FOR POA RECORDS
-  function generatePoaDocumentStringContent(payload) {
+  catch { generatePoaDocumentStringContent(payload) ;
     const currentYear = new Date().getFullYear();
     const fullName = `${payload.wiz_client_firstname || ''} ${payload.wiz_client_lastname || ''}`.trim() || "Authorized Signatory";
     const entityName = payload.wiz_company_name || "Proposed Corporate Entity";
@@ -1883,6 +1875,9 @@
       </div>
       <button type="submit" style="background:var(--brand-emerald); color:#fff; border:0; padding:12px; font-weight:700; border-radius:6px; cursor:pointer; font-size:0.9rem; margin-top:5px;">Launch Live Support Channel ➔</button>
     </form>
+
+    
+
   </div>
 </div>
 

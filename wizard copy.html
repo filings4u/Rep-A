@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified Compliance Portal Engine — Filings4U</title>
+
+  <link rel="icon" type="image/png" href="images/fav.png">
+  
+  <!-- Core Structural CDNs -->
+  <script src="https://stripe.com"></script>
+  <script src="https://jsdelivr.net"></script>
+
+  <style>
+    :root {
+      --brand-navy: #0f172a;
+      --brand-emerald: #10b981;
+      --bg-slate: #f8fafc;
+      --border-gray: #e2e8f0;
+      --text-dark: #334155;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text-dark);
+      background: var(--bg-slate);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .wizard-card-wrapper {
+      background: #ffffff;
+      width: 100%;
+      max-width: 950px;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(15,23,42,0.15);
+      border: 1px solid var(--border-gray);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      margin: 20px auto;
+      min-height: 680px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .wizard-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .wizard-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--brand-navy);
+    }
+
+    .wizard-input, .wizard-select, .wizard-textarea {
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border 0.15s;
+      font-family: inherit;
+    }
+
+    .wizard-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .wizard-input:focus, .wizard-select:focus, .wizard-textarea:focus {
+      border-color: var(--brand-emerald);
+      outline: none;
+    }
+
+    .wizard-helper-text {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #64748b;
+      line-height: 1.4;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .info-card-panel {
+      background: #f0f9ff;
+      border: 1px solid #b9e6fe;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #0369a1;
+      text-align: left;
+      margin-bottom: 8px;
+    }
+
+    .upsell-card {
+      border: 2px dashed #cbd5e1;
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+
+    .upsell-checkbox {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      cursor: pointer;
+      accent-color: var(--brand-emerald);
+    }
+
+    .summary-box {
+      background: var(--bg-slate);
+      border: 1px solid var(--border-gray);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: left;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border-gray);
+      font-size: 0.95rem;
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+    }
+
+    #stripe-card-element {
+      background: transparent;
+      padding: 12px 0;
+      border: 0;
+      border-radius: 0;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .signature-input-font {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 1.65rem !important;
+      color: #1e3a8a !important;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: #fff;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .crm-btn {
+      transition: all 0.15s ease-in-out;
+      user-select: none;
+    }
+
+    .crm-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .crm-btn:active {
+      transform: translateY(0);
+    }
+
+    #wizChatFloatingBtn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: var(--brand-navy) !important;
+      color: #ffffff;
+      border: 0;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 1.8rem;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: transform 0.2s;
+    }
+
+    #wizChatFloatingBtn:hover {
+      transform: scale(1.05);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="wizard-card-wrapper">
+    <!-- Branding Header Strip Area -->
+    <div style="background:#ffffff; padding:20px 35px; border-bottom:4px solid var(--brand-emerald); text-align:left; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; box-sizing:border-box;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="images/logo.png" alt="Filings4U Logo" style="height:45px; width:auto; max-width:180px; object-fit:contain;">
+      </div>
+      <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+        <a href="tel:7732457009" style="color: var(--brand-navy); font-weight: 800; text-decoration: none; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">📞 773-245-7009</a>
+        <div style="background:rgba(15,23,42,0.04); border:1px solid rgba(15,23,42,0.1); padding:8px 16px; border-radius:30px; font-weight:700; font-size:0.85rem; color:var(--brand-navy); font-family:monospace;">
+          <span id="wizard-portal-clock">00/00/0000 | 00:00:00 AM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Percentage Progress Bar Strip Area -->
+    <div style="background: var(--bg-slate); padding:18px 35px; border-bottom:1px solid var(--border-gray); display:flex; flex-direction:column; gap:10px; box-sizing:border-box;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; width:100%;">
+        <div>
+          <span id="wizardStepTextProgressLabel" style="font-size:0.78rem; font-weight:800; text-transform:uppercase; color:var(--brand-navy); letter-spacing:0.5px;">Initializing Form Engine...</span>
+          <div style="font-size:0.75rem; font-weight:600; color:#64748b; margin-top:4px;">
+            ⏱️ Est. Processing Window: <span id="wizardSpeedDurationAnchor" style="color:var(--brand-emerald); font-weight:700;">Calculating...</span>
+          </div>
+        </div>
+        <span id="wizardPercentLabel" style="font-size:0.75rem; font-weight:800; color:var(--brand-emerald); font-family:monospace;">0%</span>
+      </div>
+      <div style="width:100%; height:8px; background:#e2e8f0; border-radius:10px; overflow:hidden;">
+        <div id="wizardLiveProgressBarTrack" style="width:0%; height:100%; background:linear-gradient(90deg, var(--brand-navy) 0%, var(--brand-emerald) 100%); transition:width 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius:10px;"></div>
+      </div>
+    </div>
+
+    <!-- Interactive Form Element Frame Container -->
+    <form id="publicCheckoutWizardForm" onsubmit="handleWizardFormStepNavigation(event)" style="padding:40px; display:flex; flex-direction:column; flex:1; margin:0; box-sizing:border-box; width:100%; justify-content:space-between;">
+      <div id="dynamicWizardFieldsFormContainer" style="width:100%; display:flex; flex-direction:column; gap:20px; box-sizing:border-box; min-height:300px;"></div>
+      <div id="wizardFeedbackTray" style="font-size:0.88rem; font-weight:700; min-height:1.5em; text-align:left; margin-top:10px;"></div>
+    </form>
+  </div>
+
+  <button id="wizChatFloatingBtn">💬</button>
+
+    <script>
+    // 📋 Complete US 50-State List Registry Index Array
+    const US_STATES_ALL_50 = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+
+    // 📋 Comprehensive US 50-State Filing Fees Mapping Database Index
+    const US_STATES_FILING_FEES_REGISTRY = { "AL": 200.00, "AK": 250.00, "AZ": 50.00, "AR": 45.00, "CA": 70.00, "CO": 50.00, "CT": 120.00, "DE": 90.00, "FL": 125.00, "GA": 100.00, "HI": 50.00, "ID": 100.00, "IL": 150.00, "IN": 95.00, "IA": 50.00, "KS": 160.00, "KY": 40.00, "LA": 100.00, "ME": 175.00, "MD": 100.00, "MA": 500.00, "MI": 50.00, "MN": 135.00, "MS": 50.00, "MO": 50.00, "MT": 35.00, "NE": 100.00, "NV": 75.00, "NH": 100.00, "NJ": 125.00, "NM": 50.00, "NY": 200.00, "NC": 125.00, "ND": 135.00, "OH": 99.00, "OK": 100.00, "OR": 100.00, "PA": 125.00, "RI": 150.00, "SC": 110.00, "SD": 150.00, "TN": 300.00, "TX": 300.00, "UT": 54.00, "VT": 125.00, "VA": 100.00, "WA": 200.00, "WV": 100.00, "WI": 130.00, "WY": 100.00 };
+
+    // 🛍️ Standardized High-Conversion Corporate Cross-Upsell Registry
+    const GLOBAL_UPSELLS_CATALOG = [
+      { id: "ein_registration", title: "Federal Employer Identification Number (EIN)", summary: "Obtain your official IRS tax registration ID to unlock business banking privileges, manage payroll allocations, and complete local tax compliance setups.", price: 75.00 },
+      { id: "operating_agreement", title: "Custom Corporate Operating Agreement", summary: "Establish formal internal legal operating management rules, membership protocols, and company governance parameters.", price: 49.00 },
+      { id: "corporate_bylaws", title: "Official Corporate Bylaws Documentation", summary: "Adopt statutory corporate bylaws required by financial lending institutes to establish internal corporate voting splits and management structures.", price: 49.00 },
+      { id: "corporate_resolutions", title: "Corporate Resolutions & Shareholder Action Framework", summary: "Acquire a structured regulatory baseline portfolio for document management splits, corporate meeting minutes, and corporate action logging.", price: 35.00 },
+      { id: "custom_brand_logo", title: "Professional Corporate Identity Logo Suite", summary: "Receive three distinct, high-resolution vector corporate emblem templates designed to align with your corporate branding system.", price: 149.00 },
+      { id: "custom_corporate_website", title: "Professional Website & Domain", summary: "Deploy a fully functional five-page professional website built to convert leads and push your brand, complete with custom security protocols and one year of business domain registration.", price: 499.00 }
+    ];
+
+    // 🏗️ Central Compliance Registry Mapping Object Instance (Lookup Fallback Node)
+    const CENTRAL_COMPLIANCE_SERVICES_REGISTRY = {
+      "llc-formation": { title: "LLC Formation", duration: "2-4 Business Days" },
+      "operating-agreement": { title: "Operating Agreement", duration: "1-2 Business Days" },
+      "registered-agent": { title: "Registered Agent Service", duration: "Immediate Access" }
+    };
+
+    // 🔄 RE-ANCHOR LIVE SECURE SUPABASE CONNECTION INITIALIZATIONS
+    const SUPABASE_PROJECT_LANES_URL = "https://lrbimrlbskjweynxlgas.supabase.co";
+    const SUPABASE_ANON_PUBLIC_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";
+
+    if (typeof supabase !== "undefined" && typeof window.supabaseClient === "undefined") {
+      window.supabaseClient = supabase.createClient(SUPABASE_PROJECT_LANES_URL, SUPABASE_ANON_PUBLIC_TOKEN);
+    }
+
+    // 🔄 Global System Context Tracking State Machines
+    let activeServiceName = "LLC Formation";
+    let activeServicePlanTier = "starter";
+    let activeWizardStepIndex = 1;
+    let wizardCollectedFormPayloadData = {};
+    let stripeInstance = null;
+    let stripeCardElementInstance = null;
+
+    const FILINGS4U_SERVICE_FEE = 149.00;
+    const FILINGS4U_REGISTERED_AGENT_PRICE = 84.95;
+
+    // 🕹️ URL PARAMETER EXTRACTION LIFECYCLE CONTROLLER
+    function resolveActiveServiceSelectionFromUrl() {
+      const urlParameters = new URLSearchParams(window.location.search);
+      const activeServiceToken = urlParameters.get("service");
+      const activePlanToken = urlParameters.get("plan");
+
+      if (activePlanToken) activeServicePlanTier = activePlanToken.toLowerCase().trim();
+      if (activeServiceToken && CENTRAL_COMPLIANCE_SERVICES_REGISTRY[activeServiceToken]) {
+        return CENTRAL_COMPLIANCE_SERVICES_REGISTRY[activeServiceToken].title;
+      }
+
+      // String routing map normalization switches
+      if (activeServiceToken === "llc-formation") return "LLC Formation";
+      if (activeServiceToken === "operating-agreement") return "Operating Agreement";
+      if (activeServiceToken === "registered-agent") return "Registered Agent";
+      return "LLC Formation";
+    }
+
+    function executePortalClockEngineRefresh() {
+      const clockElement = document.getElementById("wizard-portal-clock");
+      if (!clockElement) return;
+      setInterval(() => {
+        const now = new Date();
+        clockElement.innerText = now.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) + " | " + now.toLocaleTimeString('en-US');
+      }, 1000);
+    }
+
+    // 🏗️ Step Form Renderer Engine
+    function renderActiveWizardStepFormView() {
+      const targetContainer = document.getElementById("dynamicWizardFieldsFormContainer");
+      const stepLabel = document.getElementById("wizardStepTextProgressLabel");
+      const progressPercent = document.getElementById("wizardPercentLabel");
+      const progressTrack = document.getElementById("wizardLiveProgressBarTrack");
+      const speedAnchor = document.getElementById("wizardSpeedDurationAnchor");
+
+      if (!targetContainer) return;
+
+      if (activeWizardStepIndex === 1) {
+        stepLabel.innerText = `Step 1 of 3: Primary Business Data Profile (${activeServiceName})`;
+        progressPercent.innerText = "33%";
+        progressTrack.style.width = "33%";
+        speedAnchor.innerText = "Fast-Track Processing Enabled";
+
+        let stateOptions = US_STATES_ALL_50.map(st => `<option value="${st}" ${wizardCollectedFormPayloadData.targetState === st ? 'selected' : ''}>${st}</option>`).join("");
+        
+        targetContainer.innerHTML = `
+          <div class="info-card-panel">Configure your primary legal filing metrics. Selecting your core formation state will automatically compute statutory fees.</div>
+          <div class="wizard-field-group">
+            <label class="wizard-label">Filing State Registry Context</label>
+            <select id="field_target_state" class="wizard-select" onchange="captureInputStateFeeMatrix(this.value)">
+              <option value="">-- Choose Corporate Jurisdiction State --</option>
+              ${stateOptions}
+            </select>
+          </div>
+          <div class="wizard-field-group">
+            <label class="wizard-label">Proposed Company Name Registry</label>
+            <input type="text" id="field_company_name" class="wizard-input" placeholder="e.g. Acme Legal Solutions LLC" value="${wizardCollectedFormPayloadData.companyName || ''}">
+          </div>
+        `;
+      } 
+      else if (activeWizardStepIndex === 2) {
+        stepLabel.innerText = "Step 2 of 3: Premium Cross-Upsell Portfolio Optimization";
+        progressPercent.innerText = "66%";
+        progressTrack.style.width = "66%";
+
+        let stateSelected = wizardCollectedFormPayloadData.targetState || "WY";
+        let localStateFee = US_STATES_FILING_FEES_REGISTRY[stateSelected] || 100.00;
+
+        targetContainer.innerHTML = `
+          <div class="info-card-panel">Select supplementary high-conversion administrative add-ons to ensure bulletproof operations.</div>
+          <div class="summary-box" style="margin-bottom:15px;">
+            <div class="summary-row"><strong>Service:</strong> <span>${activeServiceName}</span></div>
+            <div class="summary-row"><strong>State Context Fee (${stateSelected}):</strong> <span>$${localStateFee.toFixed(2)}</span></div>
+            <div class="summary-row"><strong>Agency Setup Fee:</strong> <span>$${FILINGS4U_SERVICE_FEE.toFixed(2)}</span></div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            ${GLOBAL_UPSELLS_CATALOG.slice(0, 2).map(item => `
+              <div class="upsell-card" onclick="toggleUpsellComponentNode('${item.id}')">
+                <input type="checkbox" id="check_${item.id}" class="upsell-checkbox" ${wizardCollectedFormPayloadData[item.id] ? 'checked' : ''} onclick="event.stopPropagation(); toggleUpsellComponentNode('${item.id}');">
+                <div>
+                  <strong style="display:block; color:var(--brand-navy); font-size:0.95rem;">${item.title} (+$${item.price.toFixed(2)})</strong>
+                  <span class="wizard-helper-text">${item.summary}</span>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+      else if (activeWizardStepIndex === 3) {
+        stepLabel.innerText = "Step 3 of 3: Secure PCI-Compliant Settlement Engine";
+        progressPercent.innerText = "100%";
+        progressTrack.style.width = "100%";
+
+        targetContainer.innerHTML = `
+          <div class="info-card-panel">Review processing invoices. Financial data layers remain fully encrypted via safe client handshake gates.</div>
+          <div class="wizard-field-group">
+            <label class="wizard-label">Secure Credit Card Input Frame</label>
+            <div style="border:1px solid #cbd5e1; padding:12px; border-radius:6px; background:#fff;">
+              <div id="stripe-card-element"></div>
+            </div>
+          </div>
+          <div class="wizard-field-group" style="margin-top:10px;">
+            <label class="wizard-label">Digital Executive Signature</label>
+            <input type="text" class="signature-input-font" id="field_digital_signature" placeholder="Type name to sign document">
+          </div>
+        `;
+        initializeStripeFormElements();
+      }
+    }
+
+    window.handleWizardFormStepNavigation = function(event) {
+      if (event) event.preventDefault();
+      const feedback = document.getElementById("wizardFeedbackTray");
+      feedback.innerText = "";
+      feedback.style.color = "red";
+
+      if (activeWizardStepIndex === 1) {
+        const stateEl = document.getElementById("field_target_state");
+        const nameEl = document.getElementById("field_company_name");
+
+        if (!stateEl || !stateEl.value) { feedback.innerText = "⚠️ Missing required field: Target State Context."; return; }
+        if (!nameEl || !nameEl.value.trim().length < 3) { feedback.innerText = "⚠️ Missing required field: Valid Proposed Company Name."; return; }
+
+        wizardCollectedFormPayloadData.targetState = stateEl.value;
+        wizardCollectedFormPayloadData.companyName = nameEl.value.trim();
+        
+        activeWizardStepIndex = 2;
+        renderActiveWizardStepFormView();
+      } 
+      else if (activeWizardStepIndex === 2) {
+        activeWizardStepIndex = 3;
+        renderActiveWizardStepFormView();
+      } 
+      else if (activeWizardStepIndex === 3) {
+        const sigEl = document.getElementById("field_digital_signature");
+        if (!sigEl || !sigEl.value.trim()) {
+          feedback.innerText = "⚠️ Final compliance authorization signature is required.";
+          return;
+        }
+        feedback.style.color = "var(--brand-emerald)";
+        feedback.innerText = "🚀 Processing secure compliance entry payload registration... Please stand by.";
+        console.log("Final Entry Payload:", wizardCollectedFormPayloadData);
+      }
+    };
+
+    window.triggerWizardStepDecrementBackward = function() {
+      if (activeWizardStepIndex > 1) {
+        activeWizardStepIndex--;
+        renderActiveWizardStepFormView();
+      }
+    };
+
+    window.captureInputStateFeeMatrix = function(val) {
+      if (val) wizardCollectedFormPayloadData.targetState = val;
+    };
+
+    window.toggleUpsellComponentNode = function(id) {
+      const targetCheckbox = document.getElementById("check_" + id);
+      if (targetCheckbox) {
+        targetCheckbox.checked = !targetCheckbox.checked;
+        wizardCollectedFormPayloadData[id] = targetCheckbox.checked;
+      }
+    };
+
+    function initializeStripeFormElements() {
+      if (typeof Stripe !== "undefined") {
+        if (!stripeInstance) stripeInstance = Stripe('pk_test_placeholder_key_value');
+        const elements = stripeInstance.elements();
+        stripeCardElementInstance = elements.create('card', { style: { base: { fontSize: '16px', color: '#334155' } } });
+        stripeCardElementInstance.mount('#stripe-card-element');
+      } else {
+        document.getElementById('stripe-card-element').innerText = "Stripe CDN offline. Form presentation active.";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      activeServiceName = resolveActiveServiceSelectionFromUrl();
+      executePortalClockEngineRefresh();
+      renderActiveWizardStepFormView();
+
+      const formNode = document.getElementById("publicCheckoutWizardForm");
+      if (formNode) {
+        const actionNavTray = document.createElement("div");
+        actionNavTray.style.cssText = "display:flex; justify-content:space-between; align-items:center; margin-top:30px; border-top:1px solid var(--border-gray); padding-top:20px; box-sizing:border-box;";
+        actionNavTray.innerHTML = `
+          <button type="button" class="crm-btn" onclick="triggerWizardStepDecrementBackward()" style="background:#64748b; color:#fff; border:0; padding:12px 24px; border-radius:6px; font-weight:700; cursor:pointer;">Back</button>
+          <button type="submit" class="crm-btn" style="background:var(--brand-emerald); color:#fff; border:0; padding:12px 30px; border-radius:6px; font-weight:700; cursor:pointer;">Continue</button>
+        `; 
+        
+        formNode.appendChild(actionNavTray);}});
+
+        
