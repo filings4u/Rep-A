@@ -301,6 +301,10 @@
   </div>
 
   <script>
+let globalStripeElementsInstance = null; 
+
+
+
   // 📋 Complete US 50-State List Registry Index Array
   const US_STATES_ALL_50 = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
 
@@ -1241,9 +1245,6 @@
     }
 
 
-// Global variable token to track your inline input instance fields
-let globalStripeElementsInstance = null;
-
 // 💳 SECURE LIVE STRIPE NATIVE INLINE INITIALIZATION
 async function initializeLiveStripeEmbeddedCheckoutSession() { 
     try {
@@ -1263,7 +1264,6 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
 
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
 
-        // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE
         // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE
         try { 
             const ordersPayloadRowObject = { 
