@@ -1264,12 +1264,13 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
 
         // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE
+        // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE
         try { 
             const ordersPayloadRowObject = { 
                 company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
                 service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown", 
                 service_title: activeServiceName || "Trucker Authority", 
-                plan_tier: activeServicePlanTier || "starter", 
+                plan_tier: selectedTierName, 
                 total_fee: runningTotalAccumulator, 
                 status: 'Pending Payment Authorization', 
                 tax_id_status: 'Pending Payment Authorization', 
@@ -1279,24 +1280,34 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                 created_at: new Date().toISOString() 
             }; 
 
-            // 🎯 FIXED: Direct clean REST path to your orders table
+            // Clean REST path to your orders table
             const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'apikey': MY_ACTUAL_ANON_KEY,
-                    'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY
+                    'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY,
+                    // 🎯 THE FIX: Tell Supabase to return the saved row data explicitly
+                    'Prefer': 'return=representation' 
                 },
                 body: JSON.stringify(ordersPayloadRowObject)
             });
 
             if (dbResponse.ok) {
-                const dbSavedData = await dbResponse.json();
-                if (dbSavedData && dbSavedData) targetGeneratedOrderId = dbSavedData.id; 
+                // 🎯 THE FIX: Read the text first to prevent JSON engine parsing crashes
+                const responseText = await dbResponse.text();
+                if (responseText) {
+                    const dbSavedData = JSON.parse(responseText);
+                    // Handle array response layouts or singular objects defensively
+                    const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData;
+                    if (savedRecord && savedRecord.id) {
+                        targetGeneratedOrderId = savedRecord.id; 
+                    }
+                }
             }
         } catch (e) { 
             console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
-        } 
+        }  
 
         // 🚀 INITIALIZE FLAT SECURE STRIPE FORM WINDOW 
         if (typeof Stripe === "undefined") { 
