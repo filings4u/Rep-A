@@ -1495,7 +1495,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
   }
 
 
- // 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER 
+// 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER 
 async function handleWizardFormStepNavigation(event) { 
     event.preventDefault(); 
     
@@ -1507,18 +1507,15 @@ async function handleWizardFormStepNavigation(event) {
 
     const totalStepsCountMap = activeServiceData.stepsCount + 5; 
 
-    // 🎯 THE INTEGRATED SECURE CHECKOUT INTERCEPTOR
-    // Replace the number '5' below with your actual checkout payment step index number
-    const CHECKOUT_PAYMENT_STEP_INDEX = 6; 
-
-    if (activeWizardStepIndex === CHECKOUT_PAYMENT_STEP_INDEX) {
-        // Stop the wizard from skipping forward and execute the real-time card charge
+    // 🎯 TARGETING MATCH: Step 6 is the Checkout Payment screen
+    if (activeWizardStepIndex === 6) {
+        // Halt navigation and fire the secure direct credit card charge
         if (typeof handleInlinePaymentSubmission === "function") {
             await handleInlinePaymentSubmission();
         } else {
-            console.error("Critical: handleInlinePaymentSubmission function missing at bottom of file.");
+            console.error("Critical error: handleInlinePaymentSubmission script missing.");
         }
-        return; // Prevent the step from changing until Stripe processes the transaction
+        return; // Block forward movement until Stripe gives the all-clear token
     }
 
     // If we are on an intermediate step, advance forward normally 
