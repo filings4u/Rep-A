@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <script>
+    // DEFENSIVE INITIALIZATION SAFEGUARD
+    // Forces the global window context to use your exact project reference strings
+    if (!window.SUPABASE_URL || window.SUPABASE_URL.includes("supabase.co/")) {
+        window.SUPABASE_URL = "https://lrbimrlbskjweynxlgas.supabase.co";
+    }
+    
+    // Explicitly correct global client properties if they fallback onto root domains
+    if (window.supabase && typeof window.supabase.auth === "undefined") {
+        try {
+            // Overwrites the window-level client securely if it defaults out
+            window.supabaseClient = window.supabase.createClient(
+                "https://lrbimrlbskjweynxlgas.supabase.co", 
+                window.SUPABASE_ANON_PUBLIC_TOKEN || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU"
+            );
+        } catch(e) {
+            console.warn("Global instance redirect engaged");
+        }
+    }
+</script>
+
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unified Compliance Portal Engine — Filings4U</title>
@@ -1203,70 +1226,77 @@
     }
 
 
- // 💳 SECURE LIVE STRIPE EMBEDDED CHECKOUT CLIENT INITIALIZATION 
+  // 💳 SECURE LIVE STRIPE EMBEDDED CHECKOUT CLIENT INITIALIZATION 
+  
+// 💳 SECURE LIVE STRIPE EMBEDDED CHECKOUT CLIENT INITIALIZATION 
 async function initializeLiveStripeEmbeddedCheckoutSession() { 
-    const client = window.supabaseClient || window.supabase; 
-    const feedback = document.getElementById("wizardFeedbackTray"); 
-    if (!feedback) return; 
+    try {
+        const client = window.supabaseClient || window.supabase; 
+        const feedback = document.getElementById("wizardFeedbackTray"); 
+        if (!feedback) return; 
 
-    feedback.style.color = "var(--brand-navy)"; 
-    feedback.textContent = "Securing live checkout session with merchant banks..."; 
+        feedback.style.color = "var(--brand-navy)"; 
+        feedback.textContent = "Securing live checkout session with merchant banks..."; 
 
-    // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR 
-    var selectedTierName = activeServicePlanTier || "starter"; 
-    var localizedServiceMapPrices = activeServiceData.prices || { starter: 0.00, compliance: 0.00, enterprise: 0.00 }; 
-    var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || localizedServiceMapPrices["starter"] || 0.00; 
-    var currentSelectedFormationState = wizardCollectedFormPayloadData["wiz_formation_state"] || ""; 
-    var applicableRegistryStateFee = US_STATES_FILING_FEES_REGISTRY[currentSelectedFormationState] || 0.00; 
-    
-    let runningTotalAccumulator = applicableRegistryStateFee > 0 ? applicableRegistryStateFee : baseTierPriceAmount; 
-    runningTotalAccumulator += FILINGS4U_SERVICE_FEE; 
+        // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR 
+        var selectedTierName = activeServicePlanTier || "starter"; 
+        var localizedServiceMapPrices = activeServiceData.prices || { starter: 0.00, compliance: 0.00, enterprise: 0.00 }; 
+        var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || localizedServiceMapPrices["starter"] || 0.00; 
+        var currentSelectedFormationState = wizardCollectedFormPayloadData["wiz_formation_state"] || ""; 
+        var applicableRegistryStateFee = US_STATES_FILING_FEES_REGISTRY[currentSelectedFormationState] || 0.00; 
+        
+        let runningTotalAccumulator = applicableRegistryStateFee > 0 ? applicableRegistryStateFee : baseTierPriceAmount; 
+        runningTotalAccumulator += FILINGS4U_SERVICE_FEE; 
 
-    if (wizardCollectedFormPayloadData["wiz_ra_choice"] === "yes") { 
-        runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE; 
-    } 
-    if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) { 
-        runningTotalAccumulator += 95.00; 
-    } 
-    GLOBAL_UPSELLS_CATALOG.forEach(item => { 
-        if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) { 
-            runningTotalAccumulator += item.price; 
+        if (wizardCollectedFormPayloadData["wiz_ra_choice"] === "yes") { 
+            runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE; 
         } 
-    }); 
+        if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) { 
+            runningTotalAccumulator += 95.00; 
+        } 
+        if (typeof GLOBAL_UPSELLS_CATALOG !== "undefined" && GLOBAL_UPSELLS_CATALOG) {
+            GLOBAL_UPSELLS_CATALOG.forEach(item => { 
+                if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) { 
+                    runningTotalAccumulator += item.price; 
+                } 
+            }); 
+        }
 
-    let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
+        let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
 
-    // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE SO UNCOMPLETED CHECKOUTS CAN BE RECOVERED BY SALES 
-    try { 
-        const ordersPayloadRowObject = { 
-            company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
-            service_key: activeServiceName.replace(/\s+/g, '_').toLowerCase(), 
-            service_title: activeServiceName, 
-            plan_tier: selectedTierName, 
-            total_fee: runningTotalAccumulator, 
-            status: 'Pending Payment Authorization', 
-            tax_id_status: 'Pending Payment Authorization', 
-            collected_payload_metadata: wizardCollectedFormPayloadData, 
-            poa_signed_state: true, 
-            poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
-            created_at: new Date().toISOString() 
-        }; 
-        const { data: dbSavedData } = await client.from('orders').insert(ordersPayloadRowObject).select(); 
-        if (dbSavedData && dbSavedData[0]) targetGeneratedOrderId = dbSavedData[0].id; 
-    } catch (e) { 
-        console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
-    } 
+        // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE
+        if (client && typeof client.from === "function") {
+            try { 
+                const ordersPayloadRowObject = { 
+                    company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
+                    service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown", 
+                    service_title: activeServiceName || "Trucker Authority", 
+                    plan_tier: selectedTierName, 
+                    total_fee: runningTotalAccumulator, 
+                    status: 'Pending Payment Authorization', 
+                    tax_id_status: 'Pending Payment Authorization', 
+                    collected_payload_metadata: wizardCollectedFormPayloadData, 
+                    poa_signed_state: true, 
+                    poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
+                    created_at: new Date().toISOString() 
+                }; 
+                const { data: dbSavedData } = await client.from('orders').insert(ordersPayloadRowObject).select(); 
+                if (dbSavedData && dbSavedData) targetGeneratedOrderId = dbSavedData.id; 
+            } catch (e) { 
+                console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
+            } 
+        }
 
-    // 🚀 INITIALIZE FLAT SECURE STRIPE FORM WINDOW 
-    try { 
+        // 🚀 INITIALIZE FLAT SECURE STRIPE FORM WINDOW 
         if (typeof Stripe === "undefined") { 
             throw new Error("Stripe secure network core library unavailable. Confirm CDN headers."); 
         } 
         
-        if (!stripeInstance) stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4'); 
+        if (typeof stripeInstance === "undefined" || !stripeInstance) {
+            stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4'); 
+        }
 
-        // 🎯 FIXED: Points exactly to your live projects endpoint path with proper structural tokens
-        const checkoutSessionResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout', { 
+        const checkoutSessionResponse = await fetch('https://supabase.co', { 
             method: 'POST', 
             headers: { 
                 'Content-Type': 'application/json', 
@@ -1277,7 +1307,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                 order_id: targetGeneratedOrderId, 
                 charge_amount_cents: Math.round(runningTotalAccumulator * 100), 
                 client_email: wizardCollectedFormPayloadData["wiz_client_email"] || "", 
-                service_title: activeServiceName 
+                service_title: activeServiceName || "Trucker Authority"
             }) 
         }); 
 
@@ -1296,8 +1326,11 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
 
     } catch (err) { 
         console.error("Stripe portal load failure:", err.message); 
-        feedback.style.color = "#c15254"; 
-        feedback.textContent = "Billing Framework Interrupted: " + err.message; 
+        const feedbackTray = document.getElementById("wizardFeedbackTray");
+        if (feedbackTray) {
+            feedbackTray.style.color = "#c15254"; 
+            feedbackTray.textContent = "Billing Framework Interrupted: " + err.message; 
+        }
     } 
 
     const prevBtn = document.getElementById("wizPrevBtn"); 
@@ -1306,8 +1339,8 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     } 
 }
 
-    // 💳 STRIPE CONTROLLER LIFECYCLE MANAGEMENT
-  function initializeStripeElementsObjectInstance() {
+
+
     if (typeof Stripe === "undefined") return;
     if (!stripeInstance) stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
     
