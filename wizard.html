@@ -1863,91 +1863,134 @@ displayContainer.innerHTML = `
 }
 
 
-// 🚀 MAIN APPLICATION ENGINE INITIALIZATION SYSTEM
-window.addEventListener("DOMContentLoaded", () => {
-  activeServiceName = resolveActiveServiceSelectionFromUrl();
-  activeServiceData = CENTRAL_COMPLIANCE_SERVICES_REGISTRY[activeServiceName] || CENTRAL_COMPLIANCE_SERVICES_REGISTRY["LLC Formation"];
-  var speedAnchor = document.getElementById("wizardSpeedDurationAnchor");
-  if (speedAnchor) {
-    speedAnchor.textContent = GLOBAL_PROCESSING_SPEEDS_MAPPING[activeServiceName] || "3-5 Business Days";
-  }
-  initializePremiumWizardClock();
-  synchronizeWizardStepUILayout();
-});
+// 🚀 MAIN APPLICATION ENGINE INITIALIZATION SYSTEM 
+window.addEventListener("DOMContentLoaded", async () => { 
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetStep = urlParams.get('step');
+    const orderRef = urlParams.get('order_ref');
 
-// 🔄 TOGGLE DRAWER VIEWPORTS WITH AUTO-PREFILL FOR LEADS
-window.toggleCustomSupportChatDrawer = function() {
-  const drawer = document.getElementById("wizCustomerChatDrawer");
-  if (!drawer) return;
-  
-  if (drawer.style.right === "0px") {
-    drawer.style.right = "-380px";
-  } else {
-    drawer.style.right = "0px";
-    const step1Name = document.getElementById("wiz_client_firstname");
-    const step1Email = document.getElementById("wiz_client_email");
-    const chatName = document.getElementById("chat_user_name");
-    const chatEmail = document.getElementById("chat_user_email");
+    // 🎯 SUCCESS HANDLER INTERCEPTOR: Runs instantly if coming back from an authorized transaction
+    if (targetStep === '7' && orderRef) {
+        // Clear url parameters cleanly for a professional UX finish
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        const feedback = document.getElementById("wizardFeedbackTray");
+        if (feedback) feedback.textContent = "Loading your authorized transaction receipt...";
+
+        try {
+            // Fetch the completed purchase record directly from your Supabase DB using the URL reference token
+            // Swap 'YOUR_LONG_ANON_KEY_HERE' out for your actual 'eyJ...' text key string
+            const response = await fetch(`https://supabase.co{orderRef}`, {
+                method: 'GET',
+                headers: {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                // Supabase returns an array for select queries; extract the first record
+                const completedOrderRecord = Array.isArray(data) ? data[0] : data;
+
+                if (completedOrderRecord) {
+                    // Rehydrate matching global state values from the database row record metrics
+                    window.activeServicePlanTier = completedOrderRecord.plan_tier || "starter";
+                    window.activeServiceName = completedOrderRecord.service_title || "Trucker Authority";
+                    
+                    // Assign a temporary tracking token total balance fallback override variable
+                    window.overrideReceiptTotalAmount = completedOrderRecord.total_fee;
+                    
+                    // Override tracking indexes and launch Step 7 receipt dashboard on screen cleanly
+                    activeWizardStepIndex = 7;
+                    if (typeof renderPremiumInteractiveReceiptPage === "function") {
+                        renderPremiumInteractiveReceiptPage("");
+                    }
+                    return; // 🚀 STOP default step 1 execution loop completely!
+                }
+            }
+        } catch (err) {
+            console.error("Receipt fetching loop error:", err.message);
+        }
+    }
+
+    // ➡️ STANDARD INITIALIZATION SEQUENCE (Runs normally if no step 7 code is found)
+    activeServiceName = resolveActiveServiceSelectionFromUrl(); 
+    activeServiceData = CENTRAL_COMPLIANCE_SERVICES_REGISTRY[activeServiceName] || CENTRAL_COMPLIANCE_SERVICES_REGISTRY["LLC Formation"]; 
     
-    if (step1Name && step1Name.value.trim() && chatName && !chatName.value) {
-      const step1Last = document.getElementById("wiz_client_lastname");
-      chatName.value = step1Name.value.trim() + " " + (step1Last ? step1Last.value.trim() : "");
-    }
-    if (step1Email && step1Email.value.trim() && chatEmail && !chatEmail.value) {
-      chatEmail.value = step1Email.value.trim();
-    }
-  }
-};
+    var speedAnchor = document.getElementById("wizardSpeedDurationAnchor"); 
+    if (speedAnchor) { 
+        speedAnchor.textContent = GLOBAL_PROCESSING_SPEEDS_MAPPING[activeServiceName] || "3-5 Business Days"; 
+    } 
+    
+    initializePremiumWizardClock(); 
+    synchronizeWizardStepUILayout(); 
+}); 
 
-// 🚀 VERIFICATION ROUTING CONTROLLER
-window.handleSupportChatVerification = function(event) {
-  if (event) event.preventDefault();
-  const nameEl = document.getElementById("chat_user_name");
-  const emailEl = document.getElementById("chat_user_email");
-  if (!nameEl || !emailEl) return;
-  
-  const clientName = nameEl.value.trim();
-  const clientEmail = emailEl.value.trim();
-  if (!clientName || !clientEmail) return;
-  
-  renderActiveSupportChatInterface(clientName);
-};
+// 🔄 TOGGLE DRAWER VIEWPORTS WITH AUTO-PREFILL FOR LEADS 
+window.toggleCustomSupportChatDrawer = function() { 
+    const drawer = document.getElementById("wizCustomerChatDrawer"); 
+    if (!drawer) return; 
+    if (drawer.style.right === "0px") { 
+        drawer.style.right = "-380px"; 
+    } else { 
+        drawer.style.right = "0px"; 
+        const step1Name = document.getElementById("wiz_client_firstname"); 
+        const step1Email = document.getElementById("wiz_client_email"); 
+        const chatName = document.getElementById("chat_user_name"); 
+        const chatEmail = document.getElementById("chat_user_email"); 
+        if (step1Name && step1Name.value.trim() && chatName && !chatName.value) { 
+            const step1Last = document.getElementById("wiz_client_lastname"); 
+            chatName.value = step1Name.value.trim() + " " + (step1Last ? step1Last.value.trim() : ""); 
+        } 
+        if (step1Email && step1Email.value.trim() && chatEmail && !chatEmail.value) { 
+            chatEmail.value = step1Email.value.trim(); 
+        } 
+    } 
+}; 
 
-// 🎨 RENDER OPERATIONAL LIVE CHAT INTERFACE WINDOW
-window.renderActiveSupportChatInterface = function(verifiedName) {
-  const workspace = document.getElementById("wizChatWorkspaceBox");
-  if (!workspace) return;
-  
-  workspace.innerHTML = `
-    <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between; height:100%; box-sizing:border-box;">
-      <div id="chatMessageHistoryContainer" style="flex:1; display:flex; flex-direction:column; gap:12px; overflow-y:auto; padding-bottom:15px;">
-        <div style="align-self:flex-start; background:#e2e8f0; color:var(--brand-navy); padding:10px 14px; border-radius:12px 12px 12px 0; max-width:85%; font-size:0.85rem; font-weight:500; line-height:1.4;">
-          Hello <strong>${verifiedName}</strong>! Thanks for initializing support. A corporate integration agent is matching to your file reference. How can we help you complete your filing today?
-        </div>
-      </div>
-      <div style="display:flex; gap:8px; border-top:1px solid var(--border-gray); padding-top:12px; background:var(--bg-slate);">
-        <input type="text" id="chatTerminalMessageInput" placeholder="Type a message..." style="flex:1; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.88rem;" onkeypress="if(event.key==='Enter') transmitChatMessageFromTerminal();">
-        <button type="button" style="background:var(--brand-navy); color:#fff; border:0; padding:0 14px; border-radius:6px; font-weight:700; font-size:0.85rem; cursor:pointer;" onclick="transmitChatMessageFromTerminal()">Send</button>
-      </div>
-    </div>
-  `;
-};
+// 🚀 VERIFICATION ROUTING CONTROLLER 
+window.handleSupportChatVerification = function(event) { 
+    if (event) event.preventDefault(); 
+    const nameEl = document.getElementById("chat_user_name"); 
+    const emailEl = document.getElementById("chat_user_email"); 
+    if (!nameEl || !emailEl) return; 
+    const clientName = nameEl.value.trim(); 
+    const clientEmail = emailEl.value.trim(); 
+    if (!clientName || !clientEmail) return; 
+    renderActiveSupportChatInterface(clientName); 
+}; 
 
-// 📨 TRANSMIT CUSTOMER TERMINAL MESSAGES
-window.transmitChatMessageFromTerminal = function() {
-  const msgInput = document.getElementById("chatTerminalMessageInput");
-  const history = document.getElementById("chatMessageHistoryContainer");
-  if (!msgInput || !msgInput.value.trim() || !history) return;
-  
-  const userText = msgInput.value.trim();
-  msgInput.value = "";
-  
-  const userBubble = document.createElement("div");
-  userBubble.style.cssText = "align-self:flex-end; background:var(--brand-emerald); color:#fff; padding:10px 14px; border-radius:12px 12px 0 12px; max-width:85%; font-size:0.85rem; font-weight:600; line-height:1.4; word-break:break-word;";
-  userBubble.textContent = userText;
-  
-  history.appendChild(userBubble);
-  history.scrollTop = history.scrollHeight;
+// 🎨 RENDER OPERATIONAL LIVE CHAT INTERFACE WINDOW 
+window.renderActiveSupportChatInterface = function(verifiedName) { 
+    const workspace = document.getElementById("wizChatWorkspaceBox"); 
+    if (!workspace) return; 
+    workspace.innerHTML = ` 
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between; height:100%; box-sizing:border-box;"> 
+        <div id="chatMessageHistoryContainer" style="flex:1; display:flex; flex-direction:column; gap:12px; overflow-y:auto; padding-bottom:15px;"> 
+            <div style="align-self:flex-start; background:#e2e8f0; color:var(--brand-navy); padding:10px 14px; border-radius:12px 12px 12px 0; max-width:85%; font-size:0.85rem; font-weight:500; line-height:1.4;"> 
+                Hello <strong>${verifiedName}</strong>! Thanks for initializing support. A corporate integration agent is matching to your file reference. How can we help you complete your filing today? 
+            </div> 
+        </div> 
+        <div style="display:flex; gap:8px; border-top:1px solid var(--border-gray); padding-top:12px; background:var(--bg-slate);"> 
+            <input type="text" id="chatTerminalMessageInput" placeholder="Type a message..." style="flex:1; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.88rem;" onkeypress="if(event.key==='Enter') transmitChatMessageFromTerminal();"> 
+            <button type="button" style="background:var(--brand-navy); color:#fff; border:0; padding:0 14px; border-radius:6px; font-weight:700; font-size:0.85rem; cursor:pointer;" onclick="transmitChatMessageFromTerminal()">Send</button> 
+        </div> 
+    </div> `; 
+}; 
+
+// 📨 TRANSMIT CUSTOMER TERMINAL MESSAGES 
+window.transmitChatMessageFromTerminal = function() { 
+    const msgInput = document.getElementById("chatTerminalMessageInput"); 
+    const history = document.getElementById("chatMessageHistoryContainer"); 
+    if (!msgInput || !msgInput.value.trim() || !history) return; 
+    const userText = msgInput.value.trim(); 
+    msgInput.value = ""; 
+    const userBubble = document.createElement("div"); 
+    userBubble.style.cssText = "align-self:flex-end; background:var(--brand-emerald); color:#fff; padding:10px 14px; border-radius:12px 12px 0 12px; max-width:85%; font-size:0.85rem; font-weight:600; line-height:1.4; word-break:break-word;"; 
+    userBubble.textContent = userText; 
+    history.appendChild(userBubble); 
+    history.scrollTop = history.scrollHeight; 
 };
 
 // 💳 THIS IS THE ACTION THAT ACTUALLY CHARGES THE CARD
