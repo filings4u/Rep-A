@@ -1897,6 +1897,30 @@ window.transmitChatMessageFromTerminal = function() {
   history.appendChild(userBubble);
   history.scrollTop = history.scrollHeight;
 };
+
+// 💳 THIS IS THE ACTION THAT ACTUALLY CHARGES THE CARD
+async function handleInlinePaymentSubmission() {
+    const feedback = document.getElementById("wizardFeedbackTray");
+    if (!globalStripeElementsInstance) return;
+
+    feedback.style.color = "var(--brand-navy)";
+    feedback.textContent = "Processing secure credit card authorization...";
+
+    // 🚀 THIS LINE TELLS STRIPE TO CHARGE THE CARD RIGHT NOW
+    const { error } = await stripeInstance.confirmPayment({
+        elements: globalStripeElementsInstance,
+        confirmParams: {
+            // Loops right back to your page where our URL reader handles the success receipt step
+            return_url: `${window.location.origin}/wizard.html?session_id=verified`,
+        },
+    });
+
+    // If the card is declined, expired, or out of funds, show the error text here
+    if (error) {
+        feedback.style.color = "#c15254";
+        feedback.textContent = error.message;
+    }
+}
 </script>
 
 
