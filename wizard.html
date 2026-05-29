@@ -387,7 +387,7 @@
           <span style="font-size:0.7rem; color:#475569; font-weight:800; text-transform:uppercase; display:flex; align-items:center; gap:5px;"><span style="color:var(--brand-emerald); font-size:1rem;">🛡️</span> Secure 256-Bit SSL Intake Layer</span>
         </div>
         <div style="text-align:right;">
-          <button type="submit" class="crm-btn primary" id="wizNextBtn" style="padding:10px 24px; background:var(--brand-navy); color:#fff; border:0; border-radius:6px; font-weight:700; cursor:pointer; font-size:0.88rem; transition:background 0.15s; margin-left:auto;">Continue →</button>
+          <button type="button" class="crm-btn primary" id="wizNextBtn" style="padding:10px 24px; background:var(--brand-navy); color:#fff; border:0; border-radius:6px; font-weight:700; cursor:pointer; font-size:0.88rem; transition:background 0.15s; margin-left:auto;">Continue →</button>
         </div>
       </div>
     </form>
@@ -2092,28 +2092,58 @@ window.transmitChatMessageFromTerminal = function() {
 };
 
 // 💳 THIS IS THE ACTION THAT ACTUALLY CHARGES THE CARD
-async function handleInlinePaymentSubmission() {
-    const feedback = document.getElementById("wizardFeedbackTray");
-    if (!globalStripeElementsInstance) return;
+async function handleInlinePaymentSubmission() { 
+    const feedback = document.getElementById("wizardFeedbackTray"); 
+    
+    // 🎯 THE CONNECTION FIX: Pull the active elements directly from the window layer
+    const activeElements = window.globalStripeElementsInstance;
 
-    feedback.style.color = "var(--brand-navy)";
-    feedback.textContent = "Processing secure credit card authorization...";
-
-    // 🚀 THIS LINE TELLS STRIPE TO CHARGE THE CARD RIGHT NOW
-    const { error } = await stripeInstance.confirmPayment({
-        elements: globalStripeElementsInstance,
-        confirmParams: {
-            // Loops right back to your page where our URL reader handles the success receipt step
-            return_url: `${window.location.origin}/wizard.html?session_id=verified`,
-        },
-    });
-
-    // If the card is declined, expired, or out of funds, show the error text here
-    if (error) {
-        feedback.style.color = "#c15254";
-        feedback.textContent = error.message;
+    if (!activeElements) {
+        console.error("Stripe Elements instance has not loaded on the window yet.");
+        if (feedback) {
+            feedback.style.color = "#c15254";
+            feedback.textContent = "Payment fields are still setting up. Please wait a moment.";
+        }
+        return;
     }
-}
+
+    if (feedback) {
+        feedback.style.color = "var(--brand-navy)"; 
+        feedback.textContent = "Processing secure credit card authorization..."; 
+    }
+
+    try {
+        // 🎯 THE INSTANCE FIX: Re-declare a dedicated local stripe instance using your live key
+        if (typeof Stripe === "undefined") {
+            throw new Error("Stripe secure network core library unavailable. Confirm CDN headers.");
+        }
+        const localStripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
+
+        // 🚀 THIS LINE TELLS STRIPE TO INSTANTLY CHARGE THE CARD RIGHT NOW 
+        const { error } = await localStripeInstance.confirmPayment({ 
+            elements: activeElements, 
+            confirmParams: { 
+                // Loops right back to your page where our URL reader handles the success step 7 receipt
+                return_url: `${window.location.origin}${window.location.pathname}?step=7`, 
+            }, 
+        }); 
+
+        // If the card is declined, expired, or out of funds, show the error text here 
+        if (error) { 
+            console.warn("Card processing rejected:", error.message);
+            if (feedback) {
+                feedback.style.color = "#c15254"; 
+                feedback.textContent = error.message; 
+            }
+        } 
+    } catch (err) {
+        console.error("Submission processing crash:", err.message);
+        if (feedback) {
+            feedback.style.color = "#c15254";
+            feedback.textContent = "Processing Interrupt: " + err.message;
+        }
+    }
+} // 🎯 THE CORE FIX: The structural closing bracket is now securely closed here!
 </script>
 
 
