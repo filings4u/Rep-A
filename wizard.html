@@ -1306,7 +1306,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4'); 
         }
 
-        const checkoutSessionResponse = await fetch('https://supabase.co', { 
+        const checkoutSessionResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout', { 
             method: 'POST', 
             headers: { 
                 'Content-Type': 'application/json', 
