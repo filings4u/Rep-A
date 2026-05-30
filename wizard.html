@@ -381,13 +381,13 @@
       <!-- Nav Controls Control Strip Footer -->
       <div style="display:grid; grid-template-columns: 1fr 2fr 1fr; align-items:center; margin-top:30px; border-top:1px solid var(--border-gray); padding-top:22px; box-sizing:border-box; width:100%; gap:15px;">
         <div style="text-align:left;">
-          <button type="button" class="crm-btn" id="wizPrevBtn" style="background:#e2e8f0; color:#475569; display:none; padding:10px 20px; border-radius:6px; border:0; font-weight:700; cursor:pointer; font-size:0.85rem;" onclick="navigateWizardStepsCounter(-1)">← Back</button>
+          <button type="submit" class="crm-btn" id="wizPrevBtn" style="background:#e2e8f0; color:#475569; display:none; padding:10px 20px; border-radius:6px; border:0; font-weight:700; cursor:pointer; font-size:0.85rem;" onclick="navigateWizardStepsCounter(-1)">← Back</button>
         </div>
         <div style="display:flex; align-items:center; justify-content:center; background:var(--bg-slate); border:1px solid var(--border-gray); border-radius:30px; padding:6px 16px; margin:0 auto; white-space:nowrap; width:fit-content;">
           <span style="font-size:0.7rem; color:#475569; font-weight:800; text-transform:uppercase; display:flex; align-items:center; gap:5px;"><span style="color:var(--brand-emerald); font-size:1rem;">🛡️</span> Secure 256-Bit SSL Intake Layer</span>
         </div>
         <div style="text-align:right;">
-          <button type="button" class="crm-btn primary" id="wizNextBtn" style="padding:10px 24px; background:var(--brand-navy); color:#fff; border:0; border-radius:6px; font-weight:700; cursor:pointer; font-size:0.88rem; transition:background 0.15s; margin-left:auto;">Continue →</button>
+          <button type="submit" class="crm-btn primary" id="wizNextBtn" style="padding:10px 24px; background:var(--brand-navy); color:#fff; border:0; border-radius:6px; font-weight:700; cursor:pointer; font-size:0.88rem; transition:background 0.15s; margin-left:auto;">Continue →</button>
         </div>
       </div>
     </form>
@@ -1649,31 +1649,33 @@ async function handleInlinePaymentSubmission() {
 async function handleWizardFormStepNavigation(event) { 
     if (event) event.preventDefault(); // Securely halt standard browser form processing loops 
     
+    const client = window.supabaseClient || window.supabase; 
     const feedback = document.getElementById("wizardFeedbackTray"); 
     const nextBtn = document.getElementById("wizNextBtn"); 
     if (!feedback || !nextBtn) return; 
 
+    const totalStepsCountMap = activeServiceData.stepsCount + 5; 
+
     // 🎯 TARGET MATCH: If the customer is on Step 6 (The Checkout Screen), run the payment 
-    if (typeof activeWizardStepIndex !== "undefined" && activeWizardStepIndex === 6) { 
+    if (activeWizardStepIndex === 6) { 
         console.log("Payment step detected on navigation click. Charging card..."); 
         
-        // FORCE CALL THE EXPLICIT MOVEMENT SCRIPT 
+        // 🚀 FORCE CALL THE EXPLICIT MOVEMENT SCRIPT 
         if (typeof handleInlinePaymentSubmission === "function") { 
             await handleInlinePaymentSubmission(); 
         } else { 
-            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing!"); 
+            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing at the bottom of the file!"); 
             feedback.style.color = "#c15254"; 
             feedback.textContent = "Billing system connection interrupted. Please refresh the page."; 
         } 
         return; // 🔒 Stop here! Do not change screens until Stripe finishes processing the bank cards 
     } 
 
-    // ➡️ SELF-HEALING NAVIGATION: Safely advance standard steps without crashing
-    if (typeof navigateWizardStepsCounter === "function") { 
+    // If we are on an intermediate step, advance forward normally 
+    if (activeWizardStepIndex < totalStepsCountMap) { 
         navigateWizardStepsCounter(1); 
-    } else {
-        console.warn("navigateWizardStepsCounter function is not available in this scope.");
-    }
+        return; 
+    } 
 
     nextBtn.disabled = true;
     nextBtn.textContent = "Authorizing Secured Funds Escrow...";
@@ -2090,58 +2092,28 @@ window.transmitChatMessageFromTerminal = function() {
 };
 
 // 💳 THIS IS THE ACTION THAT ACTUALLY CHARGES THE CARD
-async function handleInlinePaymentSubmission() { 
-    const feedback = document.getElementById("wizardFeedbackTray"); 
-    
-    // 🎯 THE CONNECTION FIX: Pull the active elements directly from the window layer
-    const activeElements = window.globalStripeElementsInstance;
+async function handleInlinePaymentSubmission() {
+    const feedback = document.getElementById("wizardFeedbackTray");
+    if (!globalStripeElementsInstance) return;
 
-    if (!activeElements) {
-        console.error("Stripe Elements instance has not loaded on the window yet.");
-        if (feedback) {
-            feedback.style.color = "#c15254";
-            feedback.textContent = "Payment fields are still setting up. Please wait a moment.";
-        }
-        return;
+    feedback.style.color = "var(--brand-navy)";
+    feedback.textContent = "Processing secure credit card authorization...";
+
+    // 🚀 THIS LINE TELLS STRIPE TO CHARGE THE CARD RIGHT NOW
+    const { error } = await stripeInstance.confirmPayment({
+        elements: globalStripeElementsInstance,
+        confirmParams: {
+            // Loops right back to your page where our URL reader handles the success receipt step
+            return_url: `${window.location.origin}/wizard.html?session_id=verified`,
+        },
+    });
+
+    // If the card is declined, expired, or out of funds, show the error text here
+    if (error) {
+        feedback.style.color = "#c15254";
+        feedback.textContent = error.message;
     }
-
-    if (feedback) {
-        feedback.style.color = "var(--brand-navy)"; 
-        feedback.textContent = "Processing secure credit card authorization..."; 
-    }
-
-    try {
-        // 🎯 THE INSTANCE FIX: Re-declare a dedicated local stripe instance using your live key
-        if (typeof Stripe === "undefined") {
-            throw new Error("Stripe secure network core library unavailable. Confirm CDN headers.");
-        }
-        const localStripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
-
-        // 🚀 THIS LINE TELLS STRIPE TO INSTANTLY CHARGE THE CARD RIGHT NOW 
-        const { error } = await localStripeInstance.confirmPayment({ 
-            elements: activeElements, 
-            confirmParams: { 
-                // Loops right back to your page where our URL reader handles the success step 7 receipt
-                return_url: `${window.location.origin}${window.location.pathname}?step=7`, 
-            }, 
-        }); 
-
-        // If the card is declined, expired, or out of funds, show the error text here 
-        if (error) { 
-            console.warn("Card processing rejected:", error.message);
-            if (feedback) {
-                feedback.style.color = "#c15254"; 
-                feedback.textContent = error.message; 
-            }
-        } 
-    } catch (err) {
-        console.error("Submission processing crash:", err.message);
-        if (feedback) {
-            feedback.style.color = "#c15254";
-            feedback.textContent = "Processing Interrupt: " + err.message;
-        }
-    }
-} // 🎯 THE CORE FIX: The structural closing bracket is now securely closed here!
+}
 </script>
 
 
