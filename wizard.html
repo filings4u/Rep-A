@@ -1360,22 +1360,23 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         // 📊 DYNAMIC PRICING AUDITOR WITH TEMPORARY LIVE TEST OVERRIDE 
         let runningTotalAccumulator = 100; 
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
+        
+        // 🎯 SCOPE FIX: Explicitly derive tier fallback values to clear undefined crashes
+        const currentActivePlanTier = typeof activeServicePlanTier !== "undefined" ? activeServicePlanTier : "starter";
 
         // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE 
-              // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE 
         try { 
             const ordersPayloadRowObject = { 
                 company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
                 service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service", 
                 service_title: activeServiceName || "Trucker Authority Package", 
-                plan_tier: activeServicePlanTier || "starter", 
+                plan_tier: currentActivePlanTier, // 🎯 FIXED: Replaced undefined variable with active scope handler
                 total_fee: runningTotalAccumulator, 
                 status: 'Pending Payment Authorization', 
                 tax_id_status: 'Pending Payment Authorization', 
                 collected_payload_metadata: wizardCollectedFormPayloadData, 
                 poa_signed_state: true, 
                 poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
-                // 🎯 CRITICAL LIFE-CYCLE FIX: Use fresh instant date initialization to clear variable exception crash
                 created_at: new Date().toISOString() 
             }; 
 
@@ -1384,8 +1385,8 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                 headers: { 
                     'Content-Type': 'application/json', 
                     'apikey': MY_ACTUAL_ANON_KEY, 
-                    'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY,
-                    'Prefer': 'return=representation' // 🎯 CRITICAL FIX: Forces Supabase to return the generated record data containing the new ID
+                    'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY, 
+                    'Prefer': 'return=representation' 
                 }, 
                 body: JSON.stringify(ordersPayloadRowObject) 
             }); 
@@ -1397,8 +1398,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                     const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData; 
                     if (savedRecord && savedRecord.id) { 
                         targetGeneratedOrderId = savedRecord.id; 
-                        // Save order ID to global payload state for receipt generation mapping
-                        wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id;
+                        wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id; 
                     } 
                 } 
             } 
@@ -1435,7 +1435,6 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             throw new Error(sessionDataPayload.error || "Failed to structure safe connection window."); 
         } 
 
-        // Force write instance to the master browser window wrapper scope natively to ensure visibility 
         window.globalStripeElementsInstance = stripeInstance.elements({ 
             clientSecret: sessionDataPayload.clientSecret, 
             appearance: { 
@@ -1467,13 +1466,12 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         } 
     } 
 
-    // Clean up UI step layout parameters gracefully
     const prevBtn = document.getElementById("wizPrevBtn"); 
     if (prevBtn && typeof activeWizardStepIndex !== "undefined") { 
-        // Force hide the back button strictly on Step 6 checkout to prevent broken states
         prevBtn.style.display = activeWizardStepIndex === 6 ? "none" : (activeWizardStepIndex === 1 ? "none" : "block"); 
     } 
 }
+
 
 
 // 💳 THIS IS THE ACTION ATTACHED TO YOUR AUTHORIZE BUTTON THAT INSTANTLY CHARGES THE CARD NOW
