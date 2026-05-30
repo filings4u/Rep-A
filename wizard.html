@@ -1322,76 +1322,87 @@ let globalStripeElementsInstance = null;
     }
 
     
-    // 🎯 STEP 6 — Secure Embedded Live Payment Gateway (Flat, Zero-Border Iframe Injection)
-    else if (activeWizardStepIndex === 6) { 
-      stepLabel.textContent = "Step 6 of " + totalStepsCountMap + ": Secure Embedded Checkout"; 
-      nextBtn.textContent = "Authorize Secured Live Funds ➔"; 
-      
-      // Inject a completely flat container with no background, borders, or margins
-      container.innerHTML = 
-        '<div class="stripe-workflow-wrapper" style="width: 100%; max-width: 100%; margin: 20px 0; padding: 0; border: none; box-shadow: none;">' +
-          '<div id="stripe-embedded-checkout-mount-target" style="width: 100%; min-width: 100%; border: none;"></div>' +
-        '</div>'; 
-        
-      // Trigger the background connection to initialize the live billing form
-      initializeLiveStripeEmbeddedCheckoutSession(); 
-    }
+  // 🎯 STEP 6 — Secure Embedded Live Payment Gateway (Flat, Zero-Border Iframe Injection)
+else if (activeWizardStepIndex === 6) {
+    stepLabel.textContent = "Step 6 of " + totalStepsCountMap + ": Secure Embedded Checkout";
+    
+    // Change your wizard button to hint that operations are now handled in the frame below
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Please Complete Billing Below ➔";
+    if (prevBtn) prevBtn.style.display = "none"; // Clean layout flow
+
+    // Inject a completely flat container with no background, borders, or margins
+    container.innerHTML = `
+        <div class="stripe-workflow-wrapper" style="width: 100%; max-width: 100%; margin: 20px 0; padding: 0; border: none; box-shadow: none;">
+            <div id="stripe-embedded-checkout-mount-target" style="width: 100%; min-width: 100%; border: none;"></div>
+        </div>
+    `;
+
+    // Trigger the background connection to initialize the live billing form
+    initializeLiveStripeEmbeddedCheckoutSession();
+}
 
 
-// 💳 SECURE LIVE STRIPE EMBEDDED CHECKOUT CLIENT INITIALIZATION 
+
+// 💳 SECURE LIVE STRIPE ELEMENT CHECKOUT CLIENT INITIALIZATION 
 async function initializeLiveStripeEmbeddedCheckoutSession() { 
-    try {
+    try { 
         const feedback = document.getElementById("wizardFeedbackTray"); 
-        if (feedback) {
-            feedback.style.color = "var(--brand-navy)";
+        if (feedback) { 
+            feedback.style.color = "var(--brand-navy)"; 
             feedback.textContent = "Securing live checkout session with merchant banks..."; 
-        }
+        } 
 
-        // 🎯 DEFINITIVE ACCURATE ROUTING CONFIGURATION
-        // REPLACE THE PLACEHOLDER BELOW NATIVELY WITH YOUR ACTUAL LONG ANON KEY STRINGS
+        // 🎯 DEFINITIVE ACCURATE ROUTING CONFIGURATION 
         const MY_ACTUAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; 
-        const MY_PROJECT_BASE_URL = 'https://lrbimrlbskjweynxlgas.supabase.co';
+        const MY_PROJECT_BASE_URL = 'https://lrbimrlbskjweynxlgas.supabase.co'; 
 
-        // 📊 DYNAMIC PRICING AUDITOR WITH TEMPORARY LIVE TEST OVERRIDE
-        let runningTotalAccumulator = 1.00; 
+        // 📊 DYNAMIC PRICING AUDITOR WITH TEMPORARY LIVE TEST OVERRIDE 
+        let runningTotalAccumulator = 100; 
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
 
-        // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE
+        // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE 
         try { 
-            const ordersPayloadRowObject = { 
-                company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
-                service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown", 
-                service_title: activeServiceName || "Trucker Authority", 
-                plan_tier: activeServicePlanTier || "starter", 
-                total_fee: runningTotalAccumulator, 
-                status: 'Pending Payment Authorization', 
-                tax_id_status: 'Pending Payment Authorization', 
-                collected_payload_metadata: wizardCollectedFormPayloadData, 
-                poa_signed_state: true, 
-                poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
-                created_at: new Date().toISOString() 
-            }; 
+const ordersPayloadRowObject = { 
+    company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
+    service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service", 
+    service_title: activeServiceName || "Trucker Authority Package", 
+    plan_tier: selectedTierName, 
+    total_fee: runningTotalAccumulator, 
+    status: 'Fulfillment Lane', 
+    tax_id_status: 'Fulfillment Lane', 
+    collected_payload_metadata: wizardCollectedFormPayloadData, 
+    poa_signed_state: true, 
+    poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
+    // 🎯 CLEAN ARCHITECTURE OPTIMIZATION: 
+    // Non-existent 'poa_document_url' column removed completely. 
+    // The POA download is managed purely inside the client-side success screen!
+    created_at: currentSubmissionTimestamp.toISOString() 
+}; 
 
-            const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': MY_ACTUAL_ANON_KEY,
-                    'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
-                },
-                body: JSON.stringify(ordersPayloadRowObject)
-            });
+            const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, { 
+                method: 'POST', 
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'apikey': MY_ACTUAL_ANON_KEY, 
+                    'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY,
+                    'Prefer': 'return=representation' // 🎯 CRITICAL FIX: Forces Supabase to return the generated record data containing the new ID
+                }, 
+                body: JSON.stringify(ordersPayloadRowObject) 
+            }); 
 
-            if (dbResponse.ok) {
-                const responseText = await dbResponse.text();
-                if (responseText) {
-                    const dbSavedData = JSON.parse(responseText);
-                    const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData;
-                    if (savedRecord && savedRecord.id) {
+            if (dbResponse.ok) { 
+                const responseText = await dbResponse.text(); 
+                if (responseText) { 
+                    const dbSavedData = JSON.parse(responseText); 
+                    const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData; 
+                    if (savedRecord && savedRecord.id) { 
                         targetGeneratedOrderId = savedRecord.id; 
-                    }
-                }
-            }
+                        // Save order ID to global payload state for receipt generation mapping
+                        wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id;
+                    } 
+                } 
+            } 
         } catch (e) { 
             console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
         } 
@@ -1400,23 +1411,23 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         if (typeof Stripe === "undefined") { 
             throw new Error("Stripe secure network core library unavailable. Confirm CDN headers."); 
         } 
-        
-        if (typeof stripeInstance === "undefined" || !stripeInstance) {
+
+        if (typeof stripeInstance === "undefined" || !stripeInstance) { 
             stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4'); 
-        }
+        } 
 
         const checkoutSessionResponse = await fetch(`${MY_PROJECT_BASE_URL}/functions/v1/stripe-checkout`, { 
             method: 'POST', 
             headers: { 
                 'Content-Type': 'application/json', 
-                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU', 
-                'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
+                'apikey': MY_ACTUAL_ANON_KEY, 
+                'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY 
             }, 
             body: JSON.stringify({ 
                 order_id: targetGeneratedOrderId, 
                 charge_amount_cents: Math.round(runningTotalAccumulator * 100), 
                 client_email: wizardCollectedFormPayloadData["wiz_client_email"] || "", 
-                service_title: activeServiceName || "Trucker Authority"
+                service_title: activeServiceName || "Trucker Authority" 
             }) 
         }); 
 
@@ -1425,40 +1436,46 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             throw new Error(sessionDataPayload.error || "Failed to structure safe connection window."); 
         } 
 
-        // Force write instance to the master browser window wrapper scope natively to ensure visibility
+        // Force write instance to the master browser window wrapper scope natively to ensure visibility 
         window.globalStripeElementsInstance = stripeInstance.elements({ 
-            clientSecret: sessionDataPayload.clientSecret,
-            appearance: {
+            clientSecret: sessionDataPayload.clientSecret, 
+            appearance: { 
                 theme: 'flat', 
                 variables: { 
                     colorBackground: 'transparent', 
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                    spacingUnit: '4px'
-                }
-            }
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', 
+                    spacingUnit: '4px' 
+                } 
+            } 
         }); 
 
         const paymentElement = window.globalStripeElementsInstance.create('payment', { 
-            layout: { type: 'tabs', defaultCollapsed: false } 
-        });
-        
+            layout: { 
+                type: 'tabs', 
+                defaultCollapsed: false 
+            } 
+        }); 
+
         if (feedback) feedback.textContent = ""; 
         paymentElement.mount('#stripe-embedded-checkout-mount-target'); 
 
     } catch (err) { 
         console.error("Stripe portal load failure:", err.message); 
-        const feedbackTray = document.getElementById("wizardFeedbackTray");
-        if (feedbackTray) {
+        const feedbackTray = document.getElementById("wizardFeedbackTray"); 
+        if (feedbackTray) { 
             feedbackTray.style.color = "#c15254"; 
             feedbackTray.textContent = "Billing Framework Interrupted: " + err.message; 
-        }
+        } 
     } 
 
+    // Clean up UI step layout parameters gracefully
     const prevBtn = document.getElementById("wizPrevBtn"); 
     if (prevBtn && typeof activeWizardStepIndex !== "undefined") { 
-        prevBtn.style.display = activeWizardStepIndex === 1 ? "none" : "block"; 
+        // Force hide the back button strictly on Step 6 checkout to prevent broken states
+        prevBtn.style.display = activeWizardStepIndex === 6 ? "none" : (activeWizardStepIndex === 1 ? "none" : "block"); 
     } 
 }
+
 
 // 💳 THIS IS THE ACTION ATTACHED TO YOUR AUTHORIZE BUTTON THAT INSTANTLY CHARGES THE CARD NOW
 async function handleInlinePaymentSubmission() {
@@ -1645,190 +1662,243 @@ async function handleInlinePaymentSubmission() {
   }
 
 
-// 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER 
-async function handleWizardFormStepNavigation(event) { 
-    if (event) event.preventDefault(); // Securely halt standard browser form processing loops 
+// 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH SUPABASE LAYER
+async function handleWizardFormStepNavigation(event) {
+    if (event) event.preventDefault();
     
-    const client = window.supabaseClient || window.supabase; 
-    const feedback = document.getElementById("wizardFeedbackTray"); 
-    const nextBtn = document.getElementById("wizNextBtn"); 
-    if (!feedback || !nextBtn) return; 
+    const client = window.supabaseClient || window.supabase;
+    const feedback = document.getElementById("wizardFeedbackTray");
+    const nextBtn = document.getElementById("wizNextBtn");
+    if (!feedback || !nextBtn) return;
 
-    const totalStepsCountMap = activeServiceData.stepsCount + 5; 
+    const totalStepsCountMap = activeServiceData.stepsCount + 5;
 
-    // 🎯 TARGET MATCH: If the customer is on Step 6 (The Checkout Screen), run the payment 
-    if (activeWizardStepIndex === 6) { 
-        console.log("Payment step detected on navigation click. Charging card..."); 
+    // 🎯 STEP 6 CHECKOUT GATEWAY: Process payment inline right on click
+    if (activeWizardStepIndex === 6) {
+        console.log("Checkout screen navigation click captured.");
         
-        // 🚀 FORCE CALL THE EXPLICIT MOVEMENT SCRIPT 
-        if (typeof handleInlinePaymentSubmission === "function") { 
-            await handleInlinePaymentSubmission(); 
-        } else { 
-            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing at the bottom of the file!"); 
-            feedback.style.color = "#c15254"; 
-            feedback.textContent = "Billing system connection interrupted. Please refresh the page."; 
-        } 
-        return; // 🔒 Stop here! Do not change screens until Stripe finishes processing the bank cards 
-    } 
+        if (typeof handleInlinePaymentSubmission === "function") {
+            nextBtn.disabled = true;
+            nextBtn.textContent = "Authorizing Secured Funds Escrow...";
+            feedback.style.color = "var(--brand-navy)";
+            feedback.textContent = "Verifying credit credentials inline...";
 
-    // If we are on an intermediate step, advance forward normally 
-    if (activeWizardStepIndex < totalStepsCountMap) { 
-        navigateWizardStepsCounter(1); 
-        return; 
-    } 
+            // Await your payment completion function cleanly
+            const chargeSuccessful = await handleInlinePaymentSubmission();
 
-    nextBtn.disabled = true;
-    nextBtn.textContent = "Authorizing Secured Funds Escrow...";
-    feedback.style.color = "var(--brand-navy)";
-    feedback.textContent = "Verifying credit instrument credentials with merchant bank channels...";
+            if (!chargeSuccessful) {
+                nextBtn.disabled = false;
+                nextBtn.textContent = "Authorize Secured Live Funds ➔";
+                return; // 🔒 HARD STOP. Keeps unpaid users out of database.
+            }
 
-    try {
-      // Trigger live token serialization directly with Stripe core processing networks
-      const { token, error: stripeError } = await stripeInstance.createToken(stripeCardElementInstance, {
-        name: `${wizardCollectedFormPayloadData["wiz_client_firstname"] || ''} ${wizardCollectedFormPayloadData["wiz_client_lastname"] || ''}`.trim(),
-        email: wizardCollectedFormPayloadData["wiz_client_email"] || ""
-      });
-
-      if (stripeError) {
-        throw new Error(`Stripe Validation Failed: ${stripeError.message}`);
-      }
-
-      // Append token safely to metadata cache for backend transaction tracking hooks
-      wizardCollectedFormPayloadData["stripe_payment_token_id"] = token.id;
-      wizardCollectedFormPayloadData["stripe_card_brand_type"] = token.card.brand;
-      wizardCollectedFormPayloadData["stripe_card_last_four_digits"] = token.card.last4;
-
-      feedback.textContent = "Funds secured. Initializing secure database customer file synchronization...";
-
-
-
-      // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR
-      var selectedTierName = activeServicePlanTier || "starter";
-      var localizedServiceMapPrices = activeServiceData.prices || { starter: 0.00, compliance: 0.00, enterprise: 0.00 };
-      var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || localizedServiceMapPrices["starter"] || 0.00;
-      
-      var currentSelectedFormationState = wizardCollectedFormPayloadData["wiz_formation_state"] || "";
-      var applicableRegistryStateFee = US_STATES_FILING_FEES_REGISTRY[currentSelectedFormationState] || 0.00;
-      
-      let runningTotalAccumulator = applicableRegistryStateFee > 0 ? applicableRegistryStateFee : baseTierPriceAmount;
-      runningTotalAccumulator += FILINGS4U_SERVICE_FEE;
-
-      const currentAgentCoverageSelection = wizardCollectedFormPayloadData["wiz_ra_choice"] || "yes";
-      if (currentAgentCoverageSelection === "yes") {
-        runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE;
-      }
-
-      if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) {
-        runningTotalAccumulator += 95.00;
-      }
-      
-      GLOBAL_UPSELLS_CATALOG.forEach(item => {
-        if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) {
-          runningTotalAccumulator += item.price;
-        }
-      });
-
-      const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
-
-      // Step 2: Initialize account credentials inside the secure database auth ledger
-      let userIdUuid = null; 
-      
-      try {
-        const { data: authData, error: authError } = await client.auth.signUp({ 
-          email: clientEmail, 
-          password: temporaryPasswordString 
-        });
-        
-        // 🎯 DEFENSIVE FIX: Confirm BOTH that no error exists AND that user record data is returned cleanly
-        if (!authError && authData && authData.user && authData.user.id) {
-          userIdUuid = authData.user.id;
+            feedback.textContent = "Funds secured. Initializing profile sync...";
         } else {
-          console.warn("Auth pipeline bypass: Supabase flagged an expected user creation constraint.");
-          userIdUuid = null; // Hard-enforced security cleaning drop
+            console.error("Critical failure: handleInlinePaymentSubmission missing!");
+            feedback.style.color = "#c15254";
+            feedback.textContent = "System connection interrupted. Please refresh.";
+            return;
         }
-      } catch (authCatchErr) {
-        console.warn("Auth pipeline exception caught:", authCatchErr.message);
-        userIdUuid = null; // Hard-enforced security cleaning drop
-      }
-
-       // 📊 GENERATE STAMP RECORDS & UNIQUE CLIENT ID TRACKING HASHES
-      const currentSubmissionTimestamp = new Date();
-      const localizedDateString = currentSubmissionTimestamp.toLocaleDateString();
-      const localizedTimeString = currentSubmissionTimestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      
-      // Dynamic Client ID creation hash parameter string loop tracking logic
-      const dynamicClientIdToken = "F4U-" + currentSubmissionTimestamp.getFullYear() + Math.random().toString(36).slice(-5).toUpperCase();
-
-      // Cache elements straight onto the global collected payload dictionary matrix
-      wizardCollectedFormPayloadData["wiz_generated_client_id"] = dynamicClientIdToken;
-      wizardCollectedFormPayloadData["wiz_authorized_date_stamp"] = localizedDateString;
-      wizardCollectedFormPayloadData["wiz_authorized_time_stamp"] = localizedTimeString;
-
-      // 📊 Construct the finalized database insert row object data model
-      var selectedTierName = activeServicePlanTier || "starter";
-      const ordersPayloadRowObject = {
-        company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
-        service_key: activeServiceName.replace(/\s+/g, '_').toLowerCase(),
-        service_title: activeServiceName,
-        plan_tier: selectedTierName,
-        total_fee: runningTotalAccumulator,
-        status: 'Fulfillment Lane',
-        tax_id_status: 'Fulfillment Lane',
-        collected_payload_metadata: wizardCollectedFormPayloadData,
-        
-        // 📜 POWER OF ATTORNEY DIGITAL PORTAL PARAMETERS
-        poa_signed_state: true,
-        poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
-        poa_document_url: `https://filings4u.com{encodeURIComponent(wizardCollectedFormPayloadData["poa_signature_text"] || "SIGNATURE")}&company=${encodeURIComponent(wizardCollectedFormPayloadData["wiz_company_name"] || "ENTITY")}&client_id=${encodeURIComponent(dynamicClientIdToken)}&date=${encodeURIComponent(localizedDateString)}&time=${encodeURIComponent(localizedTimeString)}&name=${encodeURIComponent(((wizardCollectedFormPayloadData["wiz_client_firstname"] || "") + " " + (wizardCollectedFormPayloadData["wiz_client_lastname"] || "")).trim())}&phone=${encodeURIComponent(wizardCollectedFormPayloadData["wiz_client_phone"] || "N/A")}&email=${encodeURIComponent(wizardCollectedFormPayloadData["wiz_client_email"] || "N/A")}`,
-        
-        created_at: currentSubmissionTimestamp.toISOString()
-      };
-
-      if (userIdUuid) {
-        ordersPayloadRowObject.user_id = userIdUuid;
-      }
-
-      // Step 3: Push audited records to master database orders matrix table
-      const { data: dbInsertReturnRecord, error: dbError } = await client
-        .from('orders')
-        .insert(ordersPayloadRowObject)
-        .select();
-
-      if (dbError) throw dbError;
-
-      // Map dynamic receipts parameters straight onto payload cache matrices
-      if (dbInsertReturnRecord && dbInsertReturnRecord.length > 0) {
-        wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = dbInsertReturnRecord[0].id;
-      }
-
-      // Step 4: Clear workspace to display clean success layout view
-      renderPremiumInteractiveReceiptPage("");
     }
 
-  // 📜 DYNAMIC GENERATION FORMATTER FOR POA RECORDS
-  catch { generatePoaDocumentStringContent(payload) ;
+    // Open the single master try-catch block for database records
+    try {
+        // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR
+        var selectedTierName = activeServicePlanTier || "starter";
+        var localizedServiceMapPrices = activeServiceData.prices || 
+            { starter: 0.00, compliance: 0.00, enterprise: 0.00 };
+        var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || 
+            localizedServiceMapPrices["starter"] || 0.00;
+        var currentSelectedFormationState = 
+            wizardCollectedFormPayloadData["wiz_formation_state"] || "";
+        var applicableRegistryStateFee = 
+            US_STATES_FILING_FEES_REGISTRY[currentSelectedFormationState] || 0.00;
+
+        let runningTotalAccumulator = applicableRegistryStateFee > 0 ? 
+            applicableRegistryStateFee : baseTierPriceAmount;
+        runningTotalAccumulator += FILINGS4U_SERVICE_FEE;
+
+        const currentAgentCoverageSelection = 
+            wizardCollectedFormPayloadData["wiz_ra_choice"] || "yes";
+        if (currentAgentCoverageSelection === "yes") {
+            runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE;
+        }
+        if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) {
+            runningTotalAccumulator += 95.00;
+        }
+
+        GLOBAL_UPSELLS_CATALOG.forEach(item => {
+            if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) {
+                runningTotalAccumulator += item.price;
+            }
+        });
+
+        const temporaryPasswordString = "LAUNCH_PASS_" + 
+            Math.random().toString(36).slice(-8).toUpperCase();
+
+
+        // ------------------------------------------------------------
+        // Step 2: Initialize account credentials inside Supabase Auth
+        // ------------------------------------------------------------
+        let userIdUuid = null;
+        const targetCleanUserEmail = 
+            wizardCollectedFormPayloadData["wiz_client_email"] || "";
+
+        try {
+            const { data: authData, error: authError } = await client.auth.signUp({
+                email: targetCleanUserEmail,
+                password: temporaryPasswordString
+            });
+
+            if (!authError && authData && authData.user && authData.user.id) {
+                userIdUuid = authData.user.id;
+            } else if (authError && authError.status === 422) {
+                console.warn("Email already registered. Bypassing auth creation.");
+                userIdUuid = null; // Bypasses duplicate sign-up block safely
+            } else {
+                console.warn("Auth pipeline constraint flagged:", authError);
+                userIdUuid = null;
+            }
+        } catch (authCatchErr) {
+            console.warn("Auth exception caught:", authCatchErr.message);
+            userIdUuid = null;
+        }
+
+        // 📊 GENERATE STAMP RECORDS & ID HASHES
+        const currentSubmissionTimestamp = new Date();
+        const localizedDateString = currentSubmissionTimestamp.toLocaleDateString();
+        const localizedTimeString = currentSubmissionTimestamp.toLocaleTimeString([], 
+            { hour: '2-digit', minute: '2-digit' });
+        const dynamicClientIdToken = "F4U-" + currentSubmissionTimestamp.getFullYear() + 
+            Math.random().toString(36).slice(-5).toUpperCase();
+
+        wizardCollectedFormPayloadData["wiz_generated_client_id"] = dynamicClientIdToken;
+        wizardCollectedFormPayloadData["wiz_authorized_date_stamp"] = localizedDateString;
+        wizardCollectedFormPayloadData["wiz_authorized_time_stamp"] = localizedTimeString;
+
+        // 📊 Construct the finalized clean database rows data model
+        const ordersPayloadRowObject = {
+            company_name: wizardCollectedFormPayloadData["wiz_company_name"] || 
+                "Walk-In Corporate Lead",
+            service_key: activeServiceName ? 
+                activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service",
+            service_title: activeServiceName || "Trucker Authority Package",
+            plan_tier: selectedTierName,
+            total_fee: runningTotalAccumulator,
+            status: 'Fulfillment Lane',
+            tax_id_status: 'Fulfillment Lane',
+            collected_payload_metadata: wizardCollectedFormPayloadData,
+            poa_signed_state: true,
+            poa_signature_verification_string: 
+                wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
+            created_at: currentSubmissionTimestamp.toISOString()
+        };
+
+        if (userIdUuid) {
+            ordersPayloadRowObject.user_id = userIdUuid;
+        }
+
+
+        // ------------------------------------------------------------
+        // Step 3: Push audited records to master database orders table
+        // ------------------------------------------------------------
+        const requestHeaders = {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_PUBLIC_TOKEN,
+            'Authorization': 'Bearer ' + SUPABASE_ANON_PUBLIC_TOKEN,
+            'Prefer': 'return=representation'
+        };
+
+        const dbResponse = await fetch(`${SUPABASE_PROJECT_LANES_URL}/rest/v1/orders`, {
+            method: 'POST',
+            headers: requestHeaders,
+            body: JSON.stringify(ordersPayloadRowObject)
+        });
+
+        if (!dbResponse.ok) {
+            const errorDumpText = await dbResponse.text();
+            throw new Error(`Database Rejection: [${dbResponse.status}] ${errorDumpText}`);
+        }
+
+        const responseText = await dbResponse.text();
+        if (responseText) {
+            const dbSavedData = JSON.parse(responseText);
+            
+            // 🎯 SAFE ARRAY EXTRACTION FIX
+            let savedRecord = dbSavedData;
+            if (Array.isArray(dbSavedData) && dbSavedData.length > 0) {
+                savedRecord = dbSavedData[0];
+            }
+            
+            if (savedRecord && savedRecord.id) {
+                wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id;
+            }
+        }
+
+        // Step 4: Clear workspace to display clean success receipt view layout
+        renderPremiumInteractiveReceiptPage(temporaryPasswordString);
+
+    } catch (error) {
+        console.error("Master registration pipeline exception caught:", error);
+        feedback.style.color = "#c15254";
+        feedback.textContent = error.message ? 
+            `Registration Setup Failure: ${error.message}` : 
+            "Could not finalize registration setup. Please check your form data.";
+        
+        nextBtn.disabled = false;
+        nextBtn.textContent = "Try Finalizing Again";
+        return;
+    }
+
+
+// 📜 DYNAMIC GENERATION FORMATTER FOR POA RECORDS 
+function generatePoaDocumentStringContent(payload) {
     const currentYear = new Date().getFullYear();
     const fullName = `${payload.wiz_client_firstname || ''} ${payload.wiz_client_lastname || ''}`.trim() || "Authorized Signatory";
     const entityName = payload.wiz_company_name || "Proposed Corporate Entity";
     const industryType = payload.wiz_business_industry || "General Commercial Operations";
     const verificationSig = payload.poa_signature_text || "ELECTRONICALLY SIGNED";
 
-    return ` =================================================================== MANDATE: LIMITED POWER OF ATTORNEY =================================================================== Date of Execution: ${new Date().toLocaleDateString()} Principal Grantor: ${fullName} Designated Industry: ${industryType} Target Entity Name: ${entityName} By this dynamic instrument, the Principal Grantor explicitly appoints Filings4U and its designated compliance processing division as true and lawful attorney-in-fact. This delegation is strictly bounded and authorized to execute, modify, amend, sign, and submit necessary organizing documents, Articles of Organization, tax registrations, Employer Identification registrations, and operational permits. This mandate applies to all local, state, and federal regulatory bodies in connection with establishing the specified entity. This dynamic authorization expires automatically upon formal validation and issuance of the active charter by corporate regulatory divisions. ------------------------------------------------------------------- Principal Signature Verification: /s/ ${verificationSig} ESIGN Compliance Token ID: F4U-${Math.random().toString(36).slice(-6).toUpperCase()}-${currentYear} ===================================================================`;
-  }
+    return `
+===================================================================
+MANDATE: LIMITED POWER OF ATTORNEY
+===================================================================
+Date of Execution: ${new Date().toLocaleDateString()}
+Principal Grantor: ${fullName}
+Designated Industry: ${industryType}
+Target Entity Name: ${entityName}
 
-  // 📥 TRIGGER RAW TEXT DOCUMENT FILE EXPORT FOR CLIENT PORTAL ARCHIVES
-  function downloadExecutedPoaDocumentPacketFile() {
+By this dynamic instrument, the Principal Grantor explicitly appoints 
+Filings4U and its designated compliance processing division as true and 
+lawful attorney-in-fact. This delegation is strictly bounded and 
+authorized to execute, modify, amend, sign, and submit necessary 
+organizing documents, Articles of Organization, tax registrations, 
+Employer Identification registrations, and operational permits. 
+
+This mandate applies to all local, state, and federal regulatory 
+bodies in connection with establishing the specified entity. This 
+dynamic authorization expires automatically upon formal validation 
+and issuance of the active charter by corporate regulatory divisions.
+-------------------------------------------------------------------
+Principal Signature Verification: /s/ ${verificationSig}
+ESIGN Compliance Token ID: F4U-${Math.random().toString(36).slice(-6).toUpperCase()}-${currentYear}
+===================================================================`.trim();
+}
+
+// 📥 TRIGGER RAW TEXT DOCUMENT FILE EXPORT FOR CLIENT PORTAL ARCHIVES 
+function downloadExecutedPoaDocumentPacketFile() {
     const dynamicContent = generatePoaDocumentStringContent(wizardCollectedFormPayloadData);
     const fileBlob = new Blob([dynamicContent], { type: "text/plain;charset=utf-8" });
     const temporaryAnchor = document.createElement("a");
     temporaryAnchor.href = URL.createObjectURL(fileBlob);
-    temporaryAnchor.download = `FILINGS4U_SIGNED_POA_${wizardCollectedFormPayloadData.wiz_company_name.replace(/\s+/g, '_').toUpperCase()}.txt`;
+    temporaryAnchor.download = `FILINGS4U_SIGNED_POA_${(wizardCollectedFormPayloadData.wiz_company_name || 'ENTITY').replace(/\s+/g, '_').toUpperCase()}.txt`;
     document.body.appendChild(temporaryAnchor);
     temporaryAnchor.click();
     document.body.removeChild(temporaryAnchor);
-  }
+}
 
-// 📥 SUCCESS CONSOLE MARKUP — DYNAMIC INVOICE & RECEIPT GENERATOR
+
+// 📥 SUCCESS CONSOLE MARKUP — DYNAMIC INVOICE & RECEIPT GENERATOR 
 function renderPremiumInteractiveReceiptPage(temporaryPasswordString) { 
     const displayContainer = document.getElementById("dynamicWizardFieldsFormContainer"); 
     const prevBtn = document.getElementById("wizPrevBtn"); 
@@ -1850,114 +1920,108 @@ function renderPremiumInteractiveReceiptPage(temporaryPasswordString) {
 
     // Construct the live html items stream matching the active total balances 
     var summaryRowsHtml = ""; 
-    
     if (calculatedStateFee > 0) { 
         summaryRowsHtml += '<div class="summary-row">' + 
-            '<div><strong>Official State Filing Fee (' + selectedFormationState + ')</strong></div>' + 
-            '<span style="font-weight:700; font-family:monospace;">$' + calculatedStateFee.toFixed(2) + '</span>' + 
-            '</div>'; 
+                           '<div><strong>Official State Filing Fee (' + selectedFormationState + ')</strong></div>' + 
+                           '<span style="font-weight:700; font-family:monospace;">$' + calculatedStateFee.toFixed(2) + '</span>' + 
+                           '</div>'; 
     } else { 
         summaryRowsHtml += '<div class="summary-row">' + 
-            '<div><strong>' + activeServiceName + ' Base Registration Plan</strong></div>' + 
-            '<span style="font-weight:700; font-family:monospace;">$' + baseTierPriceAmount.toFixed(2) + '</span>' + 
-            '</div>'; 
+                           '<div><strong>' + activeServiceName + ' Base Registration Plan</strong></div>' + 
+                           '<span style="font-weight:700; font-family:monospace;">$' + baseTierPriceAmount.toFixed(2) + '</span>' + 
+                           '</div>'; 
     } 
 
     var runningTotalAccumulator = calculatedStateFee > 0 ? calculatedStateFee : baseTierPriceAmount; 
     runningTotalAccumulator += FILINGS4U_SERVICE_FEE; 
-
+    
     summaryRowsHtml += '<div class="summary-row">' + 
-        '<div><strong>Filings4U Service Processing Fee (' + selectedTierName.toUpperCase() + ' Tier)</strong></div>' + 
-        '<span style="font-weight:700; font-family:monospace;">$' + FILINGS4U_SERVICE_FEE.toFixed(2) + '</span>' + 
-        '</div>'; 
+                       '<div><strong>Filings4U Service Processing Fee (' + selectedTierName.toUpperCase() + ' Tier)</strong></div>' + 
+                       '<span style="font-weight:700; font-family:monospace;">$' + FILINGS4U_SERVICE_FEE.toFixed(2) + '</span>' + 
+                       '</div>'; 
 
     if (wizardCollectedFormPayloadData["wiz_ra_choice"] === "yes") { 
         runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE; 
         summaryRowsHtml += '<div class="summary-row">' + 
-            '<div><strong>Filings4U Registered Agent Representation</strong></div>' + 
-            '<span style="font-weight:700; color:#047857; font-family:monospace;">$' + FILINGS4U_REGISTERED_AGENT_PRICE.toFixed(2) + '</span>' + 
-            '</div>'; 
+                           '<div><strong>Filings4U Registered Agent Representation</strong></div>' + 
+                           '<span style="font-weight:700; color:#047857; font-family:monospace;">$' + FILINGS4U_REGISTERED_AGENT_PRICE.toFixed(2) + '</span>' + 
+                           '</div>'; 
     } 
 
     if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) { 
         runningTotalAccumulator += 95.00; 
         summaryRowsHtml += '<div class="summary-row">' + 
-            '<div><strong>BOC-3 Legal Process Agent Filing</strong></div>' + 
-            '<span style="font-weight:700; color:#047857; font-family:monospace;">$95.00</span>' + 
-            '</div>'; 
-    }
+                           '<div><strong>BOC-3 Legal Process Agent Filing</strong></div>' + 
+                           '<span style="font-weight:700; color:#047857; font-family:monospace;">$95.00</span>' + 
+                           '</div>'; 
+    } 
 
-    // Append Grand Total Row
-    summaryRowsHtml += '<hr style="margin: 15px 0; border: 0; border-top: 1px solid #e5e7eb;">' +
-        '<div class="summary-row grand-total" style="display:flex; justify-content:space-between; font-size:1.25rem; margin-top:10px;">' +
-        '<div><strong>Grand Total Paid</strong></div>' +
-        '<span style="font-weight:800; color:#111827; font-family:monospace;">$' + runningTotalAccumulator.toFixed(2) + '</span>' +
-        '</div>';
+    // ✅ FIX: Keep this inside the function scope to calculate the remaining catalog items cleanly
+    GLOBAL_UPSELLS_CATALOG.forEach(function(item) { 
+        if (wizardCollectedFormPayloadData["upsell_" + item.id]) { 
+            runningTotalAccumulator += item.price; 
+            summaryRowsHtml += '<div class="summary-row">' + 
+                               '<div><strong>＋ ' + item.title + '</strong></div>' + 
+                               '<span style="font-weight:700; color:#047857; font-family:monospace;">$' + item.price.toFixed(2) + '</span>' + 
+                               '</div>'; 
+        } 
+    }); 
 
-    // Inject temporary password notice if provided
-    if (temporaryPasswordString) {
-        summaryRowsHtml += '<div class="password-notice" style="background:#f3f4f6; padding:12px; margin-top:20px; border-radius:6px; font-size:0.875rem;">' +
-            '<strong>Account Created!</strong> Your temporary password is: <code style="background:#fff; padding:2px 6px; border:1px solid #d1d5db; border-radius:4px; font-family:monospace;">' + temporaryPasswordString + '</code>' +
-            '</div>';
-    }
+    // Append Grand Total Row 
+    summaryRowsHtml += '<hr style="margin: 15px 0; border: 0; border-top: 1px solid #e5e7eb;">' + 
+                       '<div class="summary-row grand-total" style="display:flex; justify-content:space-between; font-size:1.25rem; margin-top:10px; margin-bottom:15px;">' + 
+                       '<div><strong>Grand Total Paid</strong></div>' + 
+                       '<span style="font-weight:800; color:#111827; font-family:monospace;">$' + runningTotalAccumulator.toFixed(2) + '</span>' + 
+                       '</div>'; 
 
-    // Render elements to screen
-    displayContainer.innerHTML = '<div class="receipt-card" style="background:#fff; border:1px solid #e5e7eb; padding:24px; border-radius:8px;">' +
-        '<h3 style="margin-top:0; color:#111827;">Payment Receipt</h3>' +
-        summaryRowsHtml +
-        '</div>';
+    const liveSessionTokenId = wizardCollectedFormPayloadData["stripe_payment_token_id"] || "tok_live_processed"; 
+    const generatedInvoiceClientId = wizardCollectedFormPayloadData["wiz_generated_client_id"] || "F4U-PENDING"; 
+    const generatedInvoiceDate = wizardCollectedFormPayloadData["wiz_authorized_date_stamp"] || "Today"; 
+    const generatedInvoiceTime = wizardCollectedFormPayloadData["wiz_authorized_time_stamp"] || "Just Now"; 
+    
+    // Fallback optimization: Use the passed variable if available, otherwise read payload
+    const generatedPassCode = temporaryPasswordString || wizardCollectedFormPayloadData["wiz_generated_passcode"] || "A7x9_Fallback"; 
 
-    // UI State Management adjustments for the Success/Receipt step
-    if (prevBtn) prevBtn.style.display = "none"; 
-    if (nextBtn) nextBtn.innerText = "Go to Dashboard";
+    // Inject final unified authorization state layout template directly into the display container 
+    displayContainer.innerHTML = ` 
+        <div style="text-align:center; padding:20px 10px; display:flex; flex-direction:column; align-items:center; gap:16px; box-sizing:border-box;"> 
+            <span style="font-size:3.5rem;">🎉</span> 
+            <h2 style="margin:0; font-size:1.6rem; font-weight:900; color:var(--brand-emerald);">Order Successfully Authorized!</h2> 
+            <p style="margin:0; font-size:0.95rem; color:#475569; font-weight:500; max-width:600px; text-align:center;"> 
+                Thank you for choosing Filings4U. Your business profile maps have been synchronized across user dashboards and the administration portal. 
+            </p> 
+            
+            <div class="receipt-card" style="background:#fff; border:1px solid #e5e7eb; padding:24px; border-radius:8px; width:100%; box-sizing:border-box; text-align:left;">
+                <h3 style="margin-top:0; color:#111827; font-size:1.1rem; border-bottom:1px solid #f3f4f6; padding-bottom:8px;">Transaction Breakdown</h3>
+                ${summaryRowsHtml}
+                <div style="font-size:0.7rem; color:#94a3b8; font-family:monospace; margin-top:5px; text-align:right;">ID: ${generatedInvoiceClientId} | Gateway Ref: ${liveSessionTokenId}</div>
+            </div>
+
+            <div style="background:#fffbeb; border:1px solid #fef3c7; border-radius:8px; padding:15px; width:100%; box-sizing:border-box; text-align:left;"> 
+                <strong style="color:#92400e; font-size:0.9rem; display:block; margin-bottom:4px;">🔑 Temporary Secure Password Generated:</strong> 
+                <code style="font-size:1.1rem; font-weight:800; color:#b45309; font-family:monospace; background:#fff; padding:4px 8px; border-radius:4px; border:1px solid #fde68a;">${generatedPassCode}</code> 
+                <span style="display:block; margin-top:6px; font-size:0.78rem; color:#b45309; font-weight:600;">Please save this credential and update it immediately upon accessing your profile panel dashboard.</span> 
+            </div> 
+            
+            <div style="background:var(--bg-slate); border:1px solid var(--border-gray); border-radius:8px; padding:18px; width:100%; display:flex; justify-content:space-between; align-items:center; box-sizing:border-box; text-align:left;"> 
+                <div> 
+                    <strong style="font-size:0.9rem; color:var(--brand-navy); display:block;">Executed Power of Attorney Mandate & Invoice Ledger</strong> 
+                    <span style="font-size:0.75rem; color:#64748b; font-family:monospace;">FILINGS4U_LEDGER_SIGNED_POA.TXT</span> 
+                </div> 
+                <button type="button" class="crm-btn" style="background:var(--brand-navy); color:#fff; font-weight:700; font-size:0.8rem; padding:8px 14px; border:0; border-radius:4px; cursor:pointer;" onclick="downloadExecutedPoaDocumentPacketFile()">Download Packet 📥</button> 
+            </div> 
+            
+            <a href="portal-login.html" class="crm-btn primary" style="width:100%; text-align:center; padding:14px; font-weight:800; border-radius:6px; box-sizing:border-box; margin-top:10px; text-decoration:none; display:block; background:var(--brand-emerald); color:#fff;">Access Dashboard Portal ➔</a> 
+        </div> 
+    `; 
+
+    // Clean up navigation elements seamlessly
+    if (prevBtn) prevBtn.remove(); 
+    if (nextBtn) nextBtn.remove(); 
+    if (feedback) feedback.textContent = ""; 
     if (stripBar) stripBar.style.display = "none"; 
-    if (feedback) feedback.innerHTML = "";
-}
-      
-GLOBAL_UPSELLS_CATALOG.forEach(function(item) {
-  if (wizardCollectedFormPayloadData["upsell_" + item.id]) {
-    runningTotalAccumulator += item.price;
-    summaryRowsHtml += '<div class="summary-row">' + 
-      '<div><strong>＋ ' + item.title + '</strong></div>' + 
-      '<span style="font-weight:700; color:#047857; font-family:monospace;">$' + item.price.toFixed(2) + '</span>' + 
-      '</div>';
-  }
-});
+} // ✅ Proper function closure boundary
 
-const liveSessionTokenId = wizardCollectedFormPayloadData["stripe_payment_token_id"] || "tok_live_processed";
-const generatedInvoiceClientId = wizardCollectedFormPayloadData["wiz_generated_client_id"] || "F4U-PENDING";
-const generatedInvoiceDate = wizardCollectedFormPayloadData["wiz_authorized_date_stamp"] || "Today";
-const generatedInvoiceTime = wizardCollectedFormPayloadData["wiz_authorized_time_stamp"] || "Just Now";
-const generatedPassCode = wizardCollectedFormPayloadData["wiz_generated_passcode"] || "A7x9_Fallback";
-
-// Inject final unified authorization state layout template directly into the display container
-displayContainer.innerHTML = `
-  <div style="text-align:center; padding:20px 10px; display:flex; flex-direction:column; align-items:center; gap:16px; box-sizing:border-box;">
-    <span style="font-size:3.5rem;">🎉</span>
-    <h2 style="margin:0; font-size:1.6rem; font-weight:900; color:var(--brand-emerald);">Order Successfully Authorized!</h2>
-    <p style="margin:0; font-size:0.95rem; color:#475569; font-weight:500; max-width:600px; text-align:center;">
-      Thank you for choosing Filings4U. Your business profile maps have been synchronized across user dashboards and the administration portal.
-    </p>
-    <div style="background:#fffbeb; border:1px solid #fef3c7; border-radius:8px; padding:15px; width:100%; box-sizing:border-box; text-align:left;">
-      <strong style="color:#92400e; font-size:0.9rem; display:block; margin-bottom:4px;">🔑 Temporary Secure Password Generated:</strong>
-      <code style="font-size:1.1rem; font-weight:800; color:#b45309; font-family:monospace; background:#fff; padding:4px 8px; border-radius:4px; border:1px solid #fde68a;">${generatedPassCode}</code>
-      <span style="display:block; margin-top:6px; font-size:0.78rem; color:#b45309; font-weight:600;">Please save this credential and update it immediately upon accessing your profile panel dashboard.</span>
-    </div>
-    <div style="background:var(--bg-slate); border:1px solid var(--border-gray); border-radius:8px; padding:18px; width:100%; display:flex; justify-content:space-between; align-items:center; box-sizing:border-box; text-align:left;">
-      <div>
-        <strong style="font-size:0.9rem; color:var(--brand-navy); display:block;">Executed Power of Attorney Mandate & Invoice Ledger</strong>
-        <span style="font-size:0.75rem; color:#64748b; font-family:monospace;">FILINGS4U_LEDGER_SIGNED_POA.TXT</span>
-      </div>
-      <button type="button" class="crm-btn" style="background:var(--brand-navy); color:#fff; font-weight:700; font-size:0.8rem; padding:8px 14px; border:0; border-radius:4px; cursor:pointer;" onclick="downloadExecutedPoaDocumentPacketFile()">Download Packet 📥</button>
-    </div>
-    <a href="portal-login.html" class="crm-btn primary" style="width:100%; text-align:center; padding:14px; font-weight:800; border-radius:6px; box-sizing:border-box; margin-top:10px; text-decoration:none; display:block; background:var(--brand-emerald); color:#fff;">Access Dashboard Portal ➔</a>
-  </div>
-`;
-
-  if (prevBtn) prevBtn.remove();
-  if (nextBtn) nextBtn.remove();
-  if (feedback) feedback.textContent = "";
-  if (stripBar) stripBar.style.display = "none";
 }
 
 
@@ -2077,43 +2141,117 @@ window.renderActiveSupportChatInterface = function(verifiedName) {
     </div> `; 
 }; 
 
-// 📨 TRANSMIT CUSTOMER TERMINAL MESSAGES 
-window.transmitChatMessageFromTerminal = function() { 
-    const msgInput = document.getElementById("chatTerminalMessageInput"); 
-    const history = document.getElementById("chatMessageHistoryContainer"); 
-    if (!msgInput || !msgInput.value.trim() || !history) return; 
-    const userText = msgInput.value.trim(); 
-    msgInput.value = ""; 
-    const userBubble = document.createElement("div"); 
-    userBubble.style.cssText = "align-self:flex-end; background:var(--brand-emerald); color:#fff; padding:10px 14px; border-radius:12px 12px 0 12px; max-width:85%; font-size:0.85rem; font-weight:600; line-height:1.4; word-break:break-word;"; 
-    userBubble.textContent = userText; 
-    history.appendChild(userBubble); 
-    history.scrollTop = history.scrollHeight; 
+// 📨 TRANSMIT CUSTOMER TERMINAL MESSAGES & SIMULATE COMPLIANCE AGENT RESPONSES
+window.transmitChatMessageFromTerminal = function() {
+    const msgInput = document.getElementById("chatTerminalMessageInput");
+    const history = document.getElementById("chatMessageHistoryContainer");
+    if (!msgInput || !msgInput.value.trim() || !history) return;
+
+    const userText = msgInput.value.trim();
+    msgInput.value = ""; // Clear input immediately
+
+    // 1. Render User Chat Bubble
+    const userBubble = document.createElement("div");
+    userBubble.style.cssText = "align-self:flex-end; background:var(--brand-emerald); color:#fff; padding:10px 14px; border-radius:12px 12px 0 12px; max-width:85%; font-size:0.85rem; font-weight:600; line-height:1.4; word-break:break-word;";
+    userBubble.textContent = userText;
+    history.appendChild(userBubble);
+    history.scrollTop = history.scrollHeight;
+
+    // 2. Prevent concurrent typing animations
+    if (document.getElementById("chatSystemTypingIndicatorBubble")) return;
+
+    // 3. Render Agent Typing Indicator Dot-Stream
+    const typingBubble = document.createElement("div");
+    typingBubble.id = "chatSystemTypingIndicatorBubble";
+    typingBubble.style.cssText = "align-self:flex-start; background:#e2e8f0; color:#64748b; padding:10px 14px; border-radius:12px 12px 12px 0; max-width:85%; font-size:0.85rem; font-style:italic; font-weight:500;";
+    typingBubble.textContent = "Agent is typing...";
+    
+    // Simulate a natural delay before appending the indicator
+    setTimeout(() => {
+        history.appendChild(typingBubble);
+        history.scrollTop = history.scrollHeight;
+
+        // 4. Fire the Formal Agent Response String
+        setTimeout(() => {
+            // Remove the typing indicator cleanly
+            const targetIndicator = document.getElementById("chatSystemTypingIndicatorBubble");
+            if (targetIndicator) targetIndicator.remove();
+
+            const agentBubble = document.createElement("div");
+            agentBubble.style.cssText = "align-self:flex-start; background:#e2e8f0; color:var(--brand-navy); padding:10px 14px; border-radius:12px 12px 12px 0; max-width:85%; font-size:0.85rem; font-weight:500; line-height:1.4; word-break:break-word;";
+            
+            // Tailor the fallback agent scripts relative to context keywords
+            const simplifiedLowerInput = userText.toLowerCase();
+            if (simplifiedLowerInput.includes("error") || simplifiedLowerInput.includes("payment") || simplifiedLowerInput.includes("card")) {
+                agentBubble.innerHTML = "I am pulling up your checkout payment gateway reference trace right now. Please keep this session open—our secure terminal confirms data elements are locked and ready for verification.";
+            } else if (simplifiedLowerInput.includes("poa") || simplifiedLowerInput.includes("document") || simplifiedLowerInput.includes("download")) {
+                agentBubble.innerHTML = "Your Limited Power of Attorney document generation parameters are fully secured. Once the wizard checkout completes successfully, your localized data matrix will unlock your .TXT download links instantly.";
+            } else {
+                agentBubble.innerHTML = "Got it. I am actively reviewing your business profile metrics in our corporate filing lane logs. Let's finish the wizard fields form step so we can sync this submission data directly to the corporate registry.";
+            }
+
+            history.appendChild(agentBubble);
+            history.scrollTop = history.scrollHeight;
+        }, 1800); // 1.8 second delay for the response text to print
+    }, 400); // 0.4 second delay for the typing indicator to pop up
 };
 
-// 💳 THIS IS THE ACTION THAT ACTUALLY CHARGES THE CARD
+
+// 💳 CHARGE THE CARD IMMEDIATELY ON CLICK WITH NO REDIRECT
 async function handleInlinePaymentSubmission() {
     const feedback = document.getElementById("wizardFeedbackTray");
-    if (!globalStripeElementsInstance) return;
+    const paymentTargetDomElement = document.getElementById("stripe-embedded-checkout-mount-target");
 
-    feedback.style.color = "var(--brand-navy)";
-    feedback.textContent = "Processing secure credit card authorization...";
+    if (!window.globalStripeElementsInstance || !stripeInstance) {
+        console.error("Stripe gateway instances are uninitialized.");
+        return false;
+    }
 
-    // 🚀 THIS LINE TELLS STRIPE TO CHARGE THE CARD RIGHT NOW
-    const { error } = await stripeInstance.confirmPayment({
-        elements: globalStripeElementsInstance,
-        confirmParams: {
-            // Loops right back to your page where our URL reader handles the success receipt step
-            return_url: `${window.location.origin}/wizard.html?session_id=verified`,
-        },
-    });
-
-    // If the card is declined, expired, or out of funds, show the error text here
-    if (error) {
+    if (!paymentTargetDomElement || paymentTargetDomElement.offsetHeight === 0) {
+        console.error("Stripe Element container is unmounted or hidden.");
         feedback.style.color = "#c15254";
-        feedback.textContent = error.message;
+        feedback.textContent = "Payment field is not ready. Please try again.";
+        return false;
+    }
+
+    try {
+        const result = await stripeInstance.confirmPayment({
+            elements: window.globalStripeElementsInstance,
+            redirect: "if_required", 
+            confirmParams: {
+                return_url: `${window.location.origin}/wizard.html?fallback=true`,
+            },
+        });
+
+        // ❌ Check if Stripe explicitly rejected the card inputs
+        if (result.error) {
+            feedback.style.color = "#c15254";
+            feedback.textContent = result.error.message;
+            return false;
+        }
+
+        // ✅ 🎯 CRITICAL FIXED CHECK: If there is no error, the payment succeeded inline!
+        console.log("Stripe inline card evaluation completed successfully.");
+        
+        // Safely extract the intent reference token string if available
+        if (result.paymentIntent) {
+            wizardCollectedFormPayloadData["stripe_payment_token_id"] = result.paymentIntent.id;
+        } else {
+            wizardCollectedFormPayloadData["stripe_payment_token_id"] = "tok_inline_succeeded_" + Math.random().toString(36).slice(-6);
+        }
+        
+        return true; 
+
+    } catch (catchErr) {
+        console.error("Stripe payment capture exception:", catchErr);
+        feedback.style.color = "#c15254";
+        feedback.textContent = "Payment connection interrupted. Please try again.";
+        return false;
     }
 }
+
+
+
 </script>
 
 
