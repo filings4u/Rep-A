@@ -394,6 +394,9 @@
   </div>
 
   <script>
+    // 🌍 GLOBAL SCRIPT CONFIGURATION LAYER (Put this at the top of your JS file)
+var stripeInstance = typeof stripeInstance !== "undefined" ? stripeInstance : Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
+
 let globalStripeElementsInstance = null; 
 
 
@@ -1407,10 +1410,6 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
       console.warn("Pre-payment background lead capture database fallback activated:", e.message);
     }
 
-    // 🚀 INITIALIZE SECURE STRIPE ELEMENTS
-    if (typeof Stripe === "undefined") {
-      throw new Error("Stripe secure network core library unavailable. Confirm CDN headers.");
-    }
 
     if (typeof stripeInstance === "undefined" || !stripeInstance) {
       stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
