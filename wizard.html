@@ -1362,23 +1362,22 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
 
         // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE 
+              // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE 
         try { 
-const ordersPayloadRowObject = { 
-    company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
-    service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service", 
-    service_title: activeServiceName || "Trucker Authority Package", 
-    plan_tier: selectedTierName, 
-    total_fee: runningTotalAccumulator, 
-    status: 'Fulfillment Lane', 
-    tax_id_status: 'Fulfillment Lane', 
-    collected_payload_metadata: wizardCollectedFormPayloadData, 
-    poa_signed_state: true, 
-    poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
-    // 🎯 CLEAN ARCHITECTURE OPTIMIZATION: 
-    // Non-existent 'poa_document_url' column removed completely. 
-    // The POA download is managed purely inside the client-side success screen!
-    created_at: currentSubmissionTimestamp.toISOString() 
-}; 
+            const ordersPayloadRowObject = { 
+                company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
+                service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service", 
+                service_title: activeServiceName || "Trucker Authority Package", 
+                plan_tier: activeServicePlanTier || "starter", 
+                total_fee: runningTotalAccumulator, 
+                status: 'Pending Payment Authorization', 
+                tax_id_status: 'Pending Payment Authorization', 
+                collected_payload_metadata: wizardCollectedFormPayloadData, 
+                poa_signed_state: true, 
+                poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
+                // 🎯 CRITICAL LIFE-CYCLE FIX: Use fresh instant date initialization to clear variable exception crash
+                created_at: new Date().toISOString() 
+            }; 
 
             const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, { 
                 method: 'POST', 
