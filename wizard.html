@@ -1356,7 +1356,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     const MY_ACTUAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
     const MY_PROJECT_BASE_URL = 'https://lrbimrlbskjweynxlgas.supabase.co';
 
-    // 📊 DYNAMIC PRICING AUDITOR WITH TEMPORARY LIVE TEST OVERRIDE
+    // 📊 DYNAMIC PRICING AUDITOR
     let runningTotalAccumulator = 100;
     let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase();
     const currentActivePlanTier = typeof activeServicePlanTier !== "undefined" ? activeServicePlanTier : "starter";
@@ -1377,19 +1377,18 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         created_at: new Date().toISOString()
       };
 
-      // ✅ REST API HEADERS: Mandatorily requires BOTH apikey and Authorization bearer!
       const preSaveHeaders = {
         'Content-Type': 'application/json',
         'apikey': MY_ACTUAL_ANON_KEY,
-        'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY, // Fixed 401 Unauthorized block
+        'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY,
         'Prefer': 'return=representation'
       };
 
-      const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, {
-        method: 'POST',
-        headers: preSaveHeaders,
-        body: JSON.stringify(ordersPayloadRowObject)
-      });
+     const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, {
+  method: 'POST',
+  headers: preSaveHeaders,
+  body: JSON.stringify(ordersPayloadRowObject)
+});
 
       if (dbResponse.ok) {
         const responseText = await dbResponse.text();
@@ -1397,7 +1396,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
           const dbSavedData = JSON.parse(responseText);
           const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData;
           if (savedRecord && savedRecord.id) {
-            targetGeneratedOrderId = savedRecord.id;
+            targetGeneratedOrderId = savedRecord.id; // Sync tracking ID with DB UUID
             wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id;
           }
         }
@@ -1417,7 +1416,6 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
       stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
     }
 
-    // ✅ EDGE FUNCTIONS HEADERS: Requires BOTH the apikey and Authorization header!
     const edgeFunctionHeaders = {
       'Content-Type': 'application/json',
       'apikey': MY_ACTUAL_ANON_KEY,
@@ -1425,24 +1423,20 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     };
 
     const checkoutSessionResponse = await fetch(`${MY_PROJECT_BASE_URL}/functions/v1/stripe-checkout`, {
-      method: 'POST',
-      headers: edgeFunctionHeaders,
-      body: JSON.stringify({
-        order_id: targetGeneratedOrderId,
-        charge_amount_cents: Math.round(runningTotalAccumulator * 100),
-        client_email: wizardCollectedFormPayloadData["wiz_client_email"] || "",
-        service_title: activeServiceName || "Trucker Authority"
-      })
-    });
+  method: 'POST',
+  headers: edgeFunctionHeaders,
+  body: JSON.stringify({
+    order_id: targetGeneratedOrderId,
+    charge_amount_cents: Math.round(runningTotalAccumulator * 100),
+    client_email: wizardCollectedFormPayloadData["wiz_client_email"] || "",
+    service_title: activeServiceName || "Trucker Authority"
+  })
+});
 
     const sessionDataPayload = await checkoutSessionResponse.json();
-
-    // 🔍 ACCURATE DEBUGGING LOCATION: Safely prints the raw payload *after* it arrives
-    console.log("DEBUG - Full backend payload received:", sessionDataPayload);
-
-    // 🎯 SMART EXTRACTION FALLBACK: Evaluates both snake_case and camelCase values
+    
+    // Extract the 'pi_' token safely from the payload
     const finalClientSecret = sessionDataPayload.clientSecret || sessionDataPayload.client_secret;
-    console.log("DEBUG - Extracted target string token:", finalClientSecret);
 
     if (!checkoutSessionResponse.ok || !finalClientSecret) {
       throw new Error(sessionDataPayload.error || "Failed to structure safe connection window.");
@@ -1450,19 +1444,32 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
 
     if (feedback) feedback.textContent = "";
 
-    // 🛠️ MODERN COMPATIBILITY WRAPPER FOR STRIPE LIBRARIES
-    const checkoutMethod = stripeInstance.createEmbeddedCheckoutPage ? 'createEmbeddedCheckoutPage' : 'initEmbeddedCheckout';
-
-    // 1. Initialize the embedded checkout with the verified token string
-    const embeddedCheckoutInstance = await stripeInstance[checkoutMethod]({
-      clientSecret: finalClientSecret,
+    // ✅ FIXED: Initialize Stripe Elements (which supports the appearance API)
+    window.globalStripeElementsInstance = stripeInstance.elements({
+      clientSecret: finalClientSecret, // Accepts your 'pi_' token perfectly
+      appearance: {
+        theme: 'flat', // Applies flat styling
+        variables: {
+          colorBackground: 'transparent',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          spacingUnit: '4px'
+        },
+        rules: {
+          '.Block': {
+            border: 'none',
+            boxShadow: 'none',
+          }
+        }
+      }
     });
 
-    // 2. Mount it directly into your HTML target
-    embeddedCheckoutInstance.mount('#stripe-embedded-checkout-mount-target');
+    // Create the standard payment layout element
+    const paymentElement = window.globalStripeElementsInstance.create('payment', {
+      layout: { type: 'tabs', defaultCollapsed: false }
+    });
 
-    // 3. Keep a global reference to track the session status if needed
-    window.globalStripeCheckoutInstance = embeddedCheckoutInstance;
+    // Mount it directly into your HTML target layout slide
+    paymentElement.mount('#stripe-embedded-checkout-mount-target');
 
   } catch (err) {
     console.error("Stripe portal load failure:", err.message);
@@ -1478,6 +1485,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     prevBtn.style.display = activeWizardStepIndex === 6 ? "none" : (activeWizardStepIndex === 1 ? "none" : "block");
   }
 }
+
 
 
 // 🏁 AUTOMATIC RETURNING REDIRECT DETECTOR
