@@ -1649,33 +1649,31 @@ async function handleInlinePaymentSubmission() {
 async function handleWizardFormStepNavigation(event) { 
     if (event) event.preventDefault(); // Securely halt standard browser form processing loops 
     
-    const client = window.supabaseClient || window.supabase; 
     const feedback = document.getElementById("wizardFeedbackTray"); 
     const nextBtn = document.getElementById("wizNextBtn"); 
     if (!feedback || !nextBtn) return; 
 
-    const totalStepsCountMap = activeServiceData.stepsCount + 5; 
-
     // 🎯 TARGET MATCH: If the customer is on Step 6 (The Checkout Screen), run the payment 
-    if (activeWizardStepIndex === 6) { 
+    if (typeof activeWizardStepIndex !== "undefined" && activeWizardStepIndex === 6) { 
         console.log("Payment step detected on navigation click. Charging card..."); 
         
-        // 🚀 FORCE CALL THE EXPLICIT MOVEMENT SCRIPT 
+        // FORCE CALL THE EXPLICIT MOVEMENT SCRIPT 
         if (typeof handleInlinePaymentSubmission === "function") { 
             await handleInlinePaymentSubmission(); 
         } else { 
-            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing at the bottom of the file!"); 
+            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing!"); 
             feedback.style.color = "#c15254"; 
             feedback.textContent = "Billing system connection interrupted. Please refresh the page."; 
         } 
         return; // 🔒 Stop here! Do not change screens until Stripe finishes processing the bank cards 
     } 
 
-    // If we are on an intermediate step, advance forward normally 
-    if (activeWizardStepIndex < totalStepsCountMap) { 
+    // ➡️ SELF-HEALING NAVIGATION: Safely advance standard steps without crashing
+    if (typeof navigateWizardStepsCounter === "function") { 
         navigateWizardStepsCounter(1); 
-        return; 
-    } 
+    } else {
+        console.warn("navigateWizardStepsCounter function is not available in this scope.");
+    }
 
     nextBtn.disabled = true;
     nextBtn.textContent = "Authorizing Secured Funds Escrow...";
