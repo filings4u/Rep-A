@@ -1508,6 +1508,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// 💳 CLICK INTERCEPTOR FOR THE PAY/NEXT BUTTON
+document.addEventListener("click", async (event) => {
+  // 1. Target your wizard's "Next" or "Submit" button by its ID or class
+  // (Change 'wizNextBtn' to match the actual ID of your wizard's forward button)
+  if (event.target && event.target.id === "wizNextBtn") {
+    
+    // 2. Check if the payment form is actually on the screen right now
+    const paymentTarget = document.getElementById("stripe-embedded-checkout-mount-target");
+    
+    if (paymentTarget && paymentTarget.offsetHeight > 0) {
+      // We are on the payment slide! Stop the wizard from just skipping ahead.
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const feedback = document.getElementById("wizardFeedbackTray");
+      if (feedback) {
+        feedback.style.color = "var(--brand-navy)";
+        feedback.textContent = "Processing secure transaction with merchant bank...";
+      }
+
+      console.log("Wizard button intercepted. Triggering Stripe Elements card charge...");
+      
+      // 3. Execute the function you have in your file to charge the card
+      const paymentSuccess = await handleInlinePaymentSubmission();
+      
+      if (paymentSuccess) {
+        console.log("Payment approved! Advancing wizard to success screen.");
+        if (feedback) feedback.textContent = "";
+        
+        // 4. Move the wizard forward manually since we intercepted the click
+        if (typeof goToNextWizardSlide === "function") {
+          goToNextWizardSlide();
+        } else if (typeof advanceWizardStep === "function") {
+          advanceWizardStep();
+        }
+      } else {
+        console.warn("Payment rejected or failed. Halting wizard.");
+      }
+    }
+  }
+});
 
 
 
@@ -1696,188 +1737,202 @@ async function handleInlinePaymentSubmission() {
   }
 
 
-// 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER 
-async function handleWizardFormStepNavigation(event) { 
-    if (event) event.preventDefault(); // Securely halt standard browser form processing loops 
+// 🚀 ROUTING PIPELINE SUBMISSION INTERFACE WITH INTEGRATED STRIPE & SUPABASE LAYER
+async function handleWizardFormStepNavigation(event) {
+  if (event) event.preventDefault(); // Securely halt standard browser form processing loops
+  
+  const client = window.supabaseClient || window.supabase;
+  const feedback = document.getElementById("wizardFeedbackTray");
+  const nextBtn = document.getElementById("wizNextBtn");
+  if (!feedback || !nextBtn) return;
+
+  // ===================================================================
+  // 🛡️ INTERACTIVE INTERIM STEP GUARD: Pass through Steps 1 to 5 natively
+  // ===================================================================
+  // Since Step 6 (Checkout) is index 5, anything less than 5 just advances slides normally.
+  if (activeWizardStepIndex < 5) { 
+    console.log("Advancing normal wizard setup slide from intermediate screen index:", activeWizardStepIndex);
+    if (typeof navigateWizardStepsCounter === "function") {
+      navigateWizardStepsCounter(1);
+    } else if (typeof goToNextWizardSlide === "function") {
+      goToNextWizardSlide();
+    } else if (typeof advanceWizardStep === "function") {
+      advanceWizardStep();
+    }
+    return; // 🎯 HARD STOP: Bypasses payment and database logic on early steps
+  }
+
+  // ===================================================================
+  // 🎯 STEP 6 (INDEX 5): CHECKOUT GATEWAY - CHARGE THE CARD INLINE FIRST
+  // ===================================================================
+  if (activeWizardStepIndex === 5) { 
+    console.log("Payment step (Step 6) detected on navigation click. Charging card...");
     
-    const client = window.supabaseClient || window.supabase; 
-    const feedback = document.getElementById("wizardFeedbackTray"); 
-    const nextBtn = document.getElementById("wizNextBtn"); 
-    if (!feedback || !nextBtn) return; 
+    if (typeof handleInlinePaymentSubmission === "function") {
+      nextBtn.disabled = true;
+      nextBtn.textContent = "Authorizing Secured Funds Escrow...";
+      feedback.style.color = "var(--brand-navy)";
+      feedback.textContent = "Verifying credit instrument credentials with merchant bank channels...";
+      
+      // 🚀 Step A: Run your inline payment confirmation
+      const chargeSuccessful = await handleInlinePaymentSubmission();
+      
+      // ❌ Step B: Stop immediately if the payment fails or is declined
+      if (!chargeSuccessful) {
+        nextBtn.disabled = false;
+        nextBtn.textContent = "Authorize Secured Live Funds ➔";
+        return; // 🔒 HARD STOP: Protects database ledger from un-authorized entries.
+      }
+      
+      // ✅ Payment succeeded! Proceed down directly into the database registration pipeline
+      feedback.textContent = "Funds secured. Initializing secure database customer file synchronization...";
+    } else {
+      console.error("Critical connection failure: handleInlinePaymentSubmission function is missing!");
+      feedback.style.color = "#c15254";
+      feedback.textContent = "Billing system connection interrupted. Please refresh the page.";
+      return;
+    }
+  }
 
-    const totalStepsCountMap = activeServiceData.stepsCount + 5; 
+  // ===================================================================
+  // 📊 POST-PAYMENT REGISTRATION PIPELINE: Runs only after card clears
+  // ===================================================================
+  try {
+    // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR
+    var selectedTierName = activeServicePlanTier || "starter";
+    var localizedServiceMapPrices = activeServiceData.prices || { starter: 0.00, compliance: 0.00, enterprise: 0.00 };
+    var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || localizedServiceMapPrices["starter"] || 0.00;
+    
+    var currentSelectedFormationState = wizardCollectedFormPayloadData["wiz_formation_state"] || "";
+    var applicableRegistryStateFee = US_STATES_FILING_FEES_REGISTRY[currentSelectedFormationState] || 0.00;
+    
+    let runningTotalAccumulator = applicableRegistryStateFee > 0 ? applicableRegistryStateFee : baseTierPriceAmount;
+    runningTotalAccumulator += FILINGS4U_SERVICE_FEE;
+    
+    const currentAgentCoverageSelection = wizardCollectedFormPayloadData["wiz_ra_choice"] || "yes";
+    if (currentAgentCoverageSelection === "yes") {
+      runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE;
+    }
+    
+    if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) {
+      runningTotalAccumulator += 95.00;
+    }
+    
+    GLOBAL_UPSELLS_CATALOG.forEach(item => {
+      if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) {
+        runningTotalAccumulator += item.price;
+      }
+    });
 
-    // ===================================================================
-    // 🎯 IF THE CUSTOMER IS ON STEP 6 (THE CHECKOUT SCREEN), RUN THE PAYMENT
-    // ===================================================================
-    if (activeWizardStepIndex === 6) { 
-        console.log("Payment step detected on navigation click. Charging card..."); 
-        
-        if (typeof handleInlinePaymentSubmission === "function") { 
-            nextBtn.disabled = true; 
-            nextBtn.textContent = "Authorizing Secured Funds Escrow..."; 
-            feedback.style.color = "var(--brand-navy)"; 
-            feedback.textContent = "Verifying credit instrument credentials with merchant bank channels..."; 
+    const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase();
 
-            // 🚀 Step A: Run the inline payment confirmation
-            const chargeSuccessful = await handleInlinePaymentSubmission(); 
-
-            // ❌ Step B: Stop immediately if the payment fails or is declined 
-            if (!chargeSuccessful) { 
-                nextBtn.disabled = false; 
-                nextBtn.textContent = "Authorize Secured Live Funds ➔"; 
-                return; // 🔒 HARD STOP. Protects your pipeline from executing database modifications. 
-            } 
-
-            // ✅ Payment succeeded! Proceed down directly to database registration block below 
-            feedback.textContent = "Funds secured. Initializing secure database customer file synchronization..."; 
-        } else { 
-            console.error("Critical connection failure: handleInlinePaymentSubmission function is missing!"); 
-            feedback.style.color = "#c15254"; 
-            feedback.textContent = "Billing system connection interrupted. Please refresh the page."; 
-            return; 
-        } 
-    } 
-
-    // ===================================================================
-    // 🛡️ INTERACTIVE INTERIM STEP GUARD: Skip DB calls if we are on Steps 1 - 5
-    // ===================================================================
-    if (activeWizardStepIndex < 6) {
-        console.log("Advancing normal wizard setup slide from intermediate screen index:", activeWizardStepIndex);
-        navigateWizardStepsCounter(1);
-        return; // 🎯 THE CRITICAL FIX: Stops the code from running database logic on Step 1!
+    // Initialize account credentials inside the secure database auth ledger
+    let userIdUuid = null;
+    const targetCleanUserEmail = wizardCollectedFormPayloadData["wiz_client_email"] || "";
+    
+    try {
+      const { data: authData, error: authError } = await client.auth.signUp({ 
+        email: targetCleanUserEmail, 
+        password: temporaryPasswordString 
+      });
+      
+      if (!authError && authData && authData.user && authData.user.id) {
+        userIdUuid = authData.user.id;
+      } else if (authError && authError.status === 422) {
+        console.warn("Auth User Constraint: Email already registered. Bypassing auth creation safely to log order data.");
+        userIdUuid = null;
+      } else {
+        console.warn("Auth pipeline bypass: Supabase flagged an unexpected constraint.", authError ? authError.message : "");
+        userIdUuid = null;
+      }
+    } catch (authCatchErr) {
+      console.warn("Auth pipeline exception caught:", authCatchErr.message);
+      userIdUuid = null;
     }
 
-    // ===================================================================
-    // 📊 STEP 6 ENROLLMENT PIPELINE: Executes only AFTER Step 6 authorization succeeds
-    // ===================================================================
-    try { 
-        // 📊 DYNAMIC PRICING TIERS BALANCE AUDITOR 
-        var selectedTierName = activeServicePlanTier || "starter"; 
-        var localizedServiceMapPrices = activeServiceData.prices || { starter: 0.00, compliance: 0.00, enterprise: 0.00 }; 
-        var baseTierPriceAmount = localizedServiceMapPrices[selectedTierName] || localizedServiceMapPrices["starter"] || 0.00; 
-        var currentSelectedFormationState = wizardCollectedFormPayloadData["wiz_formation_state"] || ""; 
-        var applicableRegistryStateFee = US_STATES_FILING_FEES_REGISTRY[currentSelectedFormationState] || 0.00; 
-        
-        let runningTotalAccumulator = applicableRegistryStateFee > 0 ? applicableRegistryStateFee : baseTierPriceAmount; 
-        runningTotalAccumulator += FILINGS4U_SERVICE_FEE; 
-        
-        const currentAgentCoverageSelection = wizardCollectedFormPayloadData["wiz_ra_choice"] || "yes"; 
-        if (currentAgentCoverageSelection === "yes") { 
-            runningTotalAccumulator += FILINGS4U_REGISTERED_AGENT_PRICE; 
-        } 
-        if (wizardCollectedFormPayloadData["upsell_boc3_mandate"]) { 
-            runningTotalAccumulator += 95.00; 
-        } 
-        
-        GLOBAL_UPSELLS_CATALOG.forEach(item => { 
-            if (wizardCollectedFormPayloadData[`upsell_${item.id}`]) { 
-                runningTotalAccumulator += item.price; 
-            } 
-        }); 
-
-        const temporaryPasswordString = "LAUNCH_PASS_" + Math.random().toString(36).slice(-8).toUpperCase(); 
-
-        // Step 2: Initialize account credentials inside the secure database auth ledger 
-        let userIdUuid = null; 
-        const targetCleanUserEmail = wizardCollectedFormPayloadData["wiz_client_email"] || ""; 
-        
-        try { 
-            const { data: authData, error: authError } = await client.auth.signUp({ 
-                email: targetCleanUserEmail, 
-                password: temporaryPasswordString 
-            }); 
-            if (!authError && authData && authData.user && authData.user.id) { 
-                userIdUuid = authData.user.id; 
-            } else if (authError && authError.status === 422) { 
-                console.warn("Auth User Constraint: Email already registered. Bypassing auth creation safely to log order data."); 
-                userIdUuid = null; 
-            } else { 
-                console.warn("Auth pipeline bypass: Supabase flagged an unexpected constraint.", authError ? authError.message : ""); 
-                userIdUuid = null; 
-            } 
-        } catch (authCatchErr) { 
-            console.warn("Auth pipeline exception caught:", authCatchErr.message); 
-            userIdUuid = null; 
-        } 
-
-        // 📊 GENERATE STAMP RECORDS & UNIQUE CLIENT ID TRACKING HASHES 
-        const currentSubmissionTimestamp = new Date(); 
-        const localizedDateString = currentSubmissionTimestamp.toLocaleDateString(); 
-        const localizedTimeString = currentSubmissionTimestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); 
-        const dynamicClientIdToken = "F4U-" + currentSubmissionTimestamp.getFullYear() + Math.random().toString(36).slice(-5).toUpperCase(); 
-
-        wizardCollectedFormPayloadData["wiz_generated_client_id"] = dynamicClientIdToken; 
-        wizardCollectedFormPayloadData["wiz_authorized_date_stamp"] = localizedDateString; 
-        wizardCollectedFormPayloadData["wiz_authorized_time_stamp"] = localizedTimeString; 
-
-        // 📊 Construct the finalized database insert row object data model 
-        const ordersPayloadRowObject = { 
-            company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
-            service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service", 
-            service_title: activeServiceName || "Trucker Authority Package", 
-            plan_tier: selectedTierName, 
-            total_fee: runningTotalAccumulator, 
-            status: 'Fulfillment Lane', 
-            tax_id_status: 'Fulfillment Lane', 
-            collected_payload_metadata: wizardCollectedFormPayloadData, 
-            poa_signed_state: true, 
-            poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
-            created_at: currentSubmissionTimestamp.toISOString() 
-        }; 
-
-        if (userIdUuid) { 
-            ordersPayloadRowObject.user_id = userIdUuid; 
-        } 
-
-        // Step 3: Push audited records to master database orders matrix table 
-        const requestHeaders = {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_PUBLIC_TOKEN,
-            'Authorization': 'Bearer ' + SUPABASE_ANON_PUBLIC_TOKEN,
-            'Prefer': 'return=representation' // 🎯 CRITICAL: Requests itemized return arrays
-        };
-
-        const dbResponse = await fetch(`https://lrbimrlbskjweynxlgas.supabase.co/rest/v1/orders`, {
-            method: 'POST',
-            headers: requestHeaders,
-            body: JSON.stringify(ordersPayloadRowObject)
-        });
-
-        if (!dbResponse.ok) {
-            const errorDumpText = await dbResponse.text();
-            throw new Error(`Database Rejection: [${dbResponse.status}] ${errorDumpText}`);
-        }
-
-        const responseText = await dbResponse.text(); 
-if (responseText) { 
-  const dbSavedData = JSON.parse(responseText); 
-  // Grab the first element if it's an array, otherwise use the object directly
-  const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData; 
-  
-  if (savedRecord && savedRecord.id) { 
-    // 🎯 THE FIX: Update the tracking ID used by the subsequent Stripe fetch block!
-    targetGeneratedOrderId = savedRecord.id; 
+    // 📊 GENERATE STAMP RECORDS & UNIQUE CLIENT ID TRACKING HASHES
+    const currentSubmissionTimestamp = new Date();
+    const localizedDateString = currentSubmissionTimestamp.toLocaleDateString();
+    const localizedTimeString = currentSubmissionTimestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
-    // Save it to your global metadata payload object
-    wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id; 
-  } 
-}
+    const dynamicClientIdToken = "F4U-" + currentSubmissionTimestamp.getFullYear() + Math.random().toString(36).slice(-5).toUpperCase();
+    
+    wizardCollectedFormPayloadData["wiz_generated_client_id"] = dynamicClientIdToken;
+    wizardCollectedFormPayloadData["wiz_authorized_date_stamp"] = localizedDateString;
+    wizardCollectedFormPayloadData["wiz_authorized_time_stamp"] = localizedTimeString;
 
+    // 📊 Construct the finalized database insert row object data model
+    const ordersPayloadRowObject = {
+      company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
+      service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service",
+      service_title: activeServiceName || "Trucker Authority Package",
+      plan_tier: selectedTierName,
+      total_fee: runningTotalAccumulator,
+      status: 'Fulfillment Lane',
+      tax_id_status: 'Fulfillment Lane',
+      collected_payload_metadata: wizardCollectedFormPayloadData,
+      poa_signed_state: true,
+      poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
+      created_at: currentSubmissionTimestamp.toISOString()
+    };
 
-        // Step 4: Clear workspace to display clean success layout view 
-        renderPremiumInteractiveReceiptPage(temporaryPasswordString); 
+    if (userIdUuid) {
+      ordersPayloadRowObject.user_id = userIdUuid;
+    }
 
-    } catch (error) { 
-        console.error("Master registration pipeline exception caught:", error); 
-        feedback.style.color = "#c15254"; 
-        feedback.textContent = error.message ? `Registration Setup Failure: ${error.message}` : "Could not finalize registration setup. Please check your form data."; 
-        
-        // Re-enable button on database crash so they aren't stuck forever 
-        nextBtn.disabled = false; 
-        nextBtn.textContent = "Try Finalizing Again"; 
-        return; 
-    } 
+    // Push audited records to master database orders matrix table
+    const requestHeaders = {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_PUBLIC_TOKEN,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_PUBLIC_TOKEN,
+      'Prefer': 'return=representation'
+    };
+
+    const dbResponse = await fetch(`https://lrbimrlbskjweynxlgas.supabase.co/rest/v1/orders`, { 
+      method: 'POST', 
+      headers: requestHeaders, 
+      body: JSON.stringify(ordersPayloadRowObject) 
+    });
+
+    if (!dbResponse.ok) {
+      const errorDumpText = await dbResponse.text();
+      throw new Error(`Database Rejection: [${dbResponse.status}] ${errorDumpText}`);
+    }
+
+    // 🎯 FIXED: Read the response body text exactly ONCE to prevent stream consumption crashes
+    const responseText = await dbResponse.text(); 
+    if (responseText) {
+      const dbSavedData = JSON.parse(responseText);
+      const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData;
+      
+      if (savedRecord && savedRecord.id) {
+        // Fallback safety assignment for global namespace tracking
+        if (typeof targetGeneratedOrderId !== "undefined") {
+          targetGeneratedOrderId = savedRecord.id;
+        }
+        wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id;
+      }
+    }
+
+    // 🏁 Step 4: Clear workspace to display clean success layout view render
+    if (typeof renderPremiumInteractiveReceiptPage === "function") {
+      renderPremiumInteractiveReceiptPage(temporaryPasswordString);
+    } else {
+      console.log("Order complete, but renderPremiumInteractiveReceiptPage was not found. Advancing slide.");
+      if (typeof navigateWizardStepsCounter === "function") navigateWizardStepsCounter(1);
+    }
+
+  } catch (error) {
+    console.error("Master registration pipeline exception caught:", error);
+    feedback.style.color = "#c15254";
+    feedback.textContent = error.message ? `Registration Setup Failure: ${error.message}` : "Could not finalize registration setup. Please check your form data.";
+    
+    // Re-enable button on database crash so they aren't stuck forever
+    nextBtn.disabled = false;
+    nextBtn.textContent = "Try Finalizing Again";
+    return;
+  }
+ 
 
 
 // 📜 DYNAMIC GENERATION FORMATTER FOR POA RECORDS 
