@@ -1504,32 +1504,34 @@ async function handleWizardFormStepNavigation(event) {
     return; // 🎯 HARD STOP: Bypasses payment and database logic on early steps
   }
 
-  // ===================================================================
+ // ===================================================================
   // 🎯 STEP 6: CHECKOUT GATEWAY - CHARGE THE CARD INLINE FIRST
   // ===================================================================
   if (activeWizardStepIndex === 6) {
     console.log("Payment step (Step 6) detected on navigation click. Charging card...");
     
-    if (typeof handleInlinePaymentSubmission === "function") {
+    // 🎯 FIXED: Direct the check to look at window.handleInlinePaymentSubmission
+    if (typeof window.handleInlinePaymentSubmission === "function") {
       nextBtn.disabled = true;
       nextBtn.textContent = "Authorizing Secured Funds Escrow...";
       feedback.style.color = "var(--brand-navy)";
       feedback.textContent = "Verifying credit instrument credentials with merchant bank channels...";
 
-      // 🚀 Step A: Run your inline payment confirmation
-      const chargeSuccessful = await handleInlinePaymentSubmission();
+      // 🚀 Step A: Run your global inline payment confirmation
+      const chargeSuccessful = await window.handleInlinePaymentSubmission();
 
       // ❌ Step B: Stop immediately if the payment fails or is declined
       if (!chargeSuccessful) {
         nextBtn.disabled = false;
         nextBtn.textContent = "Authorize Secured Live Funds ➔";
-        return; // 🔒 HARD STOP: Protects database ledger from un-authorized entries.
+        return; // 🔒 HARD STOP: Protects database ledger from unauthorized entries.
       }
 
       // ✅ Payment succeeded! Proceed down directly into the database registration pipeline
       feedback.textContent = "Funds secured. Initializing secure database customer file synchronization...";
     } else {
-      console.error("Critical connection failure: handleInlinePaymentSubmission function is missing!");
+      // Emergency logging fallback to catch edge cases
+      console.error("Critical connection failure: handleInlinePaymentSubmission function is missing from window scope!");
       feedback.style.color = "#c15254";
       feedback.textContent = "Billing system connection interrupted. Please refresh the page.";
       return;
@@ -2211,7 +2213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 💳 SINGLE DEFINITIVE ACTION ATTACHED TO YOUR AUTHORIZE BUTTON THAT CHARGES THE CARD
-async function handleInlinePaymentSubmission() {
+window.handleInlinePaymentSubmission = async function() {
   const feedback = document.getElementById("wizardFeedbackTray");
   const activeElements = window.globalStripeElementsInstance;
   const currentStripe = window.stripe || stripeInstance;
