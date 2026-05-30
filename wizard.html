@@ -1447,20 +1447,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     // 1. Initialize the embedded checkout with the clientSecret sent by Supabase
     const embeddedCheckoutInstance = await stripeInstance[checkoutMethod]({
       clientSecret: sessionDataPayload.clientSecret,
-      appearance: {
-        theme: 'flat',
-        variables: {
-          componentBackground: 'transparent', // ✨ Strips white wrapper background out
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-          spacingUnit: '4px'
-        },
-        rules: {
-          '.Block': {
-            border: 'none',
-            boxShadow: 'none',
-          }
-        }
-      }
+
     });
 
     // 2. Mount it directly into your HTML target
