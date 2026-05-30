@@ -1343,7 +1343,6 @@ else if (activeWizardStepIndex === 6) {
 }
 
 
-
 // 💳 SECURE LIVE STRIPE ELEMENT CHECKOUT CLIENT INITIALIZATION
 async function initializeLiveStripeEmbeddedCheckoutSession() {
   try {
@@ -1378,14 +1377,15 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         created_at: new Date().toISOString()
       };
 
-      // ✅ REST API HEADERS: Uses the single key mapping (No Bearer string!)
+      // ✅ REST API HEADERS: Mandatorily requires BOTH apikey and Authorization bearer!
       const preSaveHeaders = {
         'Content-Type': 'application/json',
         'apikey': MY_ACTUAL_ANON_KEY,
+        'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY, // Fixed 401 Unauthorized block
         'Prefer': 'return=representation'
       };
 
-      const dbResponse = await fetch(`https://lrbimrlbskjweynxlgas.supabase.co/rest/v1/orders`, {
+      const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, {
         method: 'POST',
         headers: preSaveHeaders,
         body: JSON.stringify(ordersPayloadRowObject)
@@ -1401,6 +1401,8 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id;
           }
         }
+      } else {
+        console.warn("Database response error details:", await dbResponse.text());
       }
     } catch (e) {
       console.warn("Pre-payment background lead capture database fallback activated:", e.message);
@@ -1415,14 +1417,14 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
       stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
     }
 
-    // ✅ EDGE FUNCTIONS HEADERS: Mandatorily requires BOTH the apikey and Authorization header!
+    // ✅ EDGE FUNCTIONS HEADERS: Requires BOTH the apikey and Authorization header!
     const edgeFunctionHeaders = {
       'Content-Type': 'application/json',
       'apikey': MY_ACTUAL_ANON_KEY,
       'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY
     };
 
-    const checkoutSessionResponse = await fetch(`https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout`, {
+    const checkoutSessionResponse = await fetch(`${MY_PROJECT_BASE_URL}/functions/v1/stripe-checkout`, {
       method: 'POST',
       headers: edgeFunctionHeaders,
       body: JSON.stringify({
@@ -1435,7 +1437,14 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
 
     const sessionDataPayload = await checkoutSessionResponse.json();
 
-    if (!checkoutSessionResponse.ok || !sessionDataPayload.clientSecret) {
+    // 🔍 ACCURATE DEBUGGING LOCATION: Safely prints the raw payload *after* it arrives
+    console.log("DEBUG - Full backend payload received:", sessionDataPayload);
+
+    // 🎯 SMART EXTRACTION FALLBACK: Evaluates both snake_case and camelCase values
+    const finalClientSecret = sessionDataPayload.clientSecret || sessionDataPayload.client_secret;
+    console.log("DEBUG - Extracted target string token:", finalClientSecret);
+
+    if (!checkoutSessionResponse.ok || !finalClientSecret) {
       throw new Error(sessionDataPayload.error || "Failed to structure safe connection window.");
     }
 
@@ -1444,10 +1453,9 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     // 🛠️ MODERN COMPATIBILITY WRAPPER FOR STRIPE LIBRARIES
     const checkoutMethod = stripeInstance.createEmbeddedCheckoutPage ? 'createEmbeddedCheckoutPage' : 'initEmbeddedCheckout';
 
-    // 1. Initialize the embedded checkout with the clientSecret sent by Supabase
+    // 1. Initialize the embedded checkout with the verified token string
     const embeddedCheckoutInstance = await stripeInstance[checkoutMethod]({
-      clientSecret: sessionDataPayload.clientSecret,
-
+      clientSecret: finalClientSecret,
     });
 
     // 2. Mount it directly into your HTML target
@@ -1470,6 +1478,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     prevBtn.style.display = activeWizardStepIndex === 6 ? "none" : (activeWizardStepIndex === 1 ? "none" : "block");
   }
 }
+
 
 // 🏁 AUTOMATIC RETURNING REDIRECT DETECTOR
 // Place this execution listener right under the function block to slide the wizard forward when Stripe redirects back.
@@ -1832,14 +1841,21 @@ async function handleWizardFormStepNavigation(event) {
             throw new Error(`Database Rejection: [${dbResponse.status}] ${errorDumpText}`);
         }
 
-        const responseText = await dbResponse.text();
-        if (responseText) {
-            const dbSavedData = JSON.parse(responseText);
-            const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData;
-            if (savedRecord && savedRecord.id) {
-                wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id;
-            }
-        }
+        const responseText = await dbResponse.text(); 
+if (responseText) { 
+  const dbSavedData = JSON.parse(responseText); 
+  // Grab the first element if it's an array, otherwise use the object directly
+  const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData; 
+  
+  if (savedRecord && savedRecord.id) { 
+    // 🎯 THE FIX: Update the tracking ID used by the subsequent Stripe fetch block!
+    targetGeneratedOrderId = savedRecord.id; 
+    
+    // Save it to your global metadata payload object
+    wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id; 
+  } 
+}
+
 
         // Step 4: Clear workspace to display clean success layout view 
         renderPremiumInteractiveReceiptPage(temporaryPasswordString); 
