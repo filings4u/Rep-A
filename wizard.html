@@ -394,9 +394,6 @@
   </div>
 
   <script>
-    // 🌍 GLOBAL SCRIPT CONFIGURATION LAYER (Put this at the top of your JS file)
-var stripeInstance = typeof stripeInstance !== "undefined" ? stripeInstance : Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
-
 let globalStripeElementsInstance = null; 
 
 
@@ -1410,6 +1407,10 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
       console.warn("Pre-payment background lead capture database fallback activated:", e.message);
     }
 
+    // 🚀 INITIALIZE SECURE STRIPE ELEMENTS
+    if (typeof Stripe === "undefined") {
+      throw new Error("Stripe secure network core library unavailable. Confirm CDN headers.");
+    }
 
     if (typeof stripeInstance === "undefined" || !stripeInstance) {
       stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
@@ -1444,23 +1445,10 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
     if (feedback) feedback.textContent = "";
 
     // ✅ FIXED: Initialize Stripe Elements (which supports the appearance API)
-    window.globalStripeElementsInstance = stripeInstance.elements({
-      clientSecret: finalClientSecret, // Accepts your 'pi_' token perfectly
-      appearance: {
-        theme: 'flat', // Applies flat styling
-        variables: {
-          colorBackground: 'transparent',
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-          spacingUnit: '4px'
-        },
-        rules: {
-          '.Block': {
-            border: 'none',
-            boxShadow: 'none',
-          }
-        }
-      }
-    });
+window.globalStripeElementsInstance = stripeInstance.elements({
+  clientSecret: finalClientSecret, // Your pi_ secret token
+  appearance: { theme: 'flat' }
+});
 
     // Create the standard payment layout element
     const paymentElement = window.globalStripeElementsInstance.create('payment', {
@@ -2280,58 +2268,65 @@ window.transmitChatMessageFromTerminal = function() {
 };
 
 
-// 💳 CHARGE THE CARD IMMEDIATELY ON CLICK WITH NO REDIRECT
 async function handleInlinePaymentSubmission() {
-    const feedback = document.getElementById("wizardFeedbackTray");
-    const paymentTargetDomElement = document.getElementById("stripe-embedded-checkout-mount-target");
+  const feedback = document.getElementById("wizardFeedbackTray");
+  const paymentTargetDomElement = document.getElementById("stripe-embedded-checkout-mount-target");
 
-    if (!window.globalStripeElementsInstance || !stripeInstance) {
-        console.error("Stripe gateway instances are uninitialized.");
-        return false;
+  // 🎯 THE FIX: Read directly from the browser's master window layer
+  const activeElements = window.globalStripeElementsInstance;
+
+  // Verify both the global elements array and the local stripe configuration are fully alive
+  if (!activeElements || !stripeInstance) {
+    console.error("Stripe gateway instances are uninitialized on the global window scope.");
+    if (feedback) {
+      feedback.style.color = "#c15254";
+      feedback.textContent = "Payment system is still setting up. Please wait a moment.";
     }
+    return false;
+  }
 
-    if (!paymentTargetDomElement || paymentTargetDomElement.offsetHeight === 0) {
-        console.error("Stripe Element container is unmounted or hidden.");
+  if (!paymentTargetDomElement || paymentTargetDomElement.offsetHeight === 0) {
+    console.error("Stripe Element container is unmounted or hidden.");
+    if (feedback) {
+      feedback.style.color = "#c15254";
+      feedback.textContent = "Payment field is not ready. Please try again.";
+    }
+    return false;
+  }
+
+  // ===================================================================
+  // 🚀 EXECUTE LIVE CARD CHARGE TO STRIPE NETWORK
+  // ===================================================================
+  try {
+    const result = await stripeInstance.confirmPayment({
+      elements: activeElements, // 👈 Hand the verified global instance directly to Stripe
+      redirect: "if_required",  // Stops Stripe from forcing a page reload locally
+      confirmParams: {
+        return_url: `${window.location.origin}${window.location.pathname}?step=7`,
+      },
+    });
+
+    if (result.error) {
+      if (feedback) {
         feedback.style.color = "#c15254";
-        feedback.textContent = "Payment field is not ready. Please try again.";
-        return false;
+        feedback.textContent = result.error.message;
+      }
+      return false; 
     }
 
-    try {
-        const result = await stripeInstance.confirmPayment({
-            elements: window.globalStripeElementsInstance,
-            redirect: "if_required", 
-            confirmParams: {
-                return_url: `${window.location.origin}/wizard.html?fallback=true`,
-            },
-        });
+    console.log("Stripe inline card evaluation completed successfully.");
+    return true; // Unlocks the wizard and allows it to run your database pipeline!
 
-        // ❌ Check if Stripe explicitly rejected the card inputs
-        if (result.error) {
-            feedback.style.color = "#c15254";
-            feedback.textContent = result.error.message;
-            return false;
-        }
-
-        // ✅ 🎯 CRITICAL FIXED CHECK: If there is no error, the payment succeeded inline!
-        console.log("Stripe inline card evaluation completed successfully.");
-        
-        // Safely extract the intent reference token string if available
-        if (result.paymentIntent) {
-            wizardCollectedFormPayloadData["stripe_payment_token_id"] = result.paymentIntent.id;
-        } else {
-            wizardCollectedFormPayloadData["stripe_payment_token_id"] = "tok_inline_succeeded_" + Math.random().toString(36).slice(-6);
-        }
-        
-        return true; 
-
-    } catch (catchErr) {
-        console.error("Stripe payment capture exception:", catchErr);
-        feedback.style.color = "#c15254";
-        feedback.textContent = "Payment connection interrupted. Please try again.";
-        return false;
+  } catch (catchErr) {
+    console.error("Stripe payment capture exception:", catchErr);
+    if (feedback) {
+      feedback.style.color = "#c15254";
+      feedback.textContent = "Payment connection interrupted. Please try again.";
     }
+    return false;
+  }
 }
+
 
 
 
