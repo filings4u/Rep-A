@@ -2145,12 +2145,12 @@ window.initializeLiveStripeEmbeddedCheckoutSession = async function() {
 
     if (feedback) feedback.textContent = "";
 
+    // 🎯 SECURE LOOKUP: Cleaned up the appearance variables block to remove the 'transparent' warning crash
     window.globalStripeElementsInstance = stripeInstance.elements({
       clientSecret: finalClientSecret, 
       appearance: {
         theme: 'flat',
         variables: {
-          colorBackground: 'transparent',
           fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }
       }
