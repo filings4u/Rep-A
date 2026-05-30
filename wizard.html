@@ -1361,8 +1361,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         let runningTotalAccumulator = 100; 
         let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
         
-        // 🎯 SCOPE FIX: Explicitly derive tier fallback values to clear undefined crashes
-        const currentActivePlanTier = typeof activeServicePlanTier !== "undefined" ? activeServicePlanTier : "starter";
+        const currentActivePlanTier = typeof activeServicePlanTier !== "undefined" ? activeServicePlanTier : "starter"; 
 
         // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE 
         try { 
@@ -1370,7 +1369,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                 company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
                 service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service", 
                 service_title: activeServiceName || "Trucker Authority Package", 
-                plan_tier: currentActivePlanTier, // 🎯 FIXED: Replaced undefined variable with active scope handler
+                plan_tier: currentActivePlanTier, 
                 total_fee: runningTotalAccumulator, 
                 status: 'Pending Payment Authorization', 
                 tax_id_status: 'Pending Payment Authorization', 
@@ -1380,14 +1379,16 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
                 created_at: new Date().toISOString() 
             }; 
 
+            // 🎯 FIXED HEADERS: Authorization string removed completely to prevent 401 response blocks
+            const preSaveHeaders = {
+                'Content-Type': 'application/json',
+                'apikey': MY_ACTUAL_ANON_KEY,
+                'Prefer': 'return=representation'
+            };
+
             const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, { 
                 method: 'POST', 
-                headers: { 
-                    'Content-Type': 'application/json', 
-                    'apikey': MY_ACTUAL_ANON_KEY, 
-                    'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY, 
-                    'Prefer': 'return=representation' 
-                }, 
+                headers: preSaveHeaders, 
                 body: JSON.stringify(ordersPayloadRowObject) 
             }); 
 
@@ -1415,13 +1416,15 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
             stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4'); 
         } 
 
+        // 🎯 FIXED HEADERS: Removed Bearer key mapping here as well to clear Edge Function authorization locks
+        const edgeFunctionHeaders = {
+            'Content-Type': 'application/json',
+            'apikey': MY_ACTUAL_ANON_KEY
+        };
+
         const checkoutSessionResponse = await fetch(`${MY_PROJECT_BASE_URL}/functions/v1/stripe-checkout`, { 
             method: 'POST', 
-            headers: { 
-                'Content-Type': 'application/json', 
-                'apikey': MY_ACTUAL_ANON_KEY, 
-                'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY 
-            }, 
+            headers: edgeFunctionHeaders, 
             body: JSON.stringify({ 
                 order_id: targetGeneratedOrderId, 
                 charge_amount_cents: Math.round(runningTotalAccumulator * 100), 
@@ -1471,6 +1474,7 @@ async function initializeLiveStripeEmbeddedCheckoutSession() {
         prevBtn.style.display = activeWizardStepIndex === 6 ? "none" : (activeWizardStepIndex === 1 ? "none" : "block"); 
     } 
 }
+
 
 
 
