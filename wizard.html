@@ -14,7 +14,7 @@
     
     // Defensive check: Only initialize window.stripe if the script loaded successfully
     if (typeof Stripe !== 'undefined') {
-      window.stripe = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
+      window.stripe = Stripe('pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE');
     } else {
       console.error("Stripe network core CDN script was blocked or failed to load in the head section.");
     }
@@ -2113,7 +2113,7 @@ window.initializeLiveStripeEmbeddedCheckoutSession = async function() {
       if (window.stripe) {
         stripeInstance = window.stripe;
       } else {
-        stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
+        stripeInstance = Stripe('pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE');
         window.stripe = stripeInstance;
       }
     }
