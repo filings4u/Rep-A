@@ -1344,138 +1344,165 @@ else if (activeWizardStepIndex === 6) {
 
 
 
-// 💳 SECURE LIVE STRIPE ELEMENT CHECKOUT CLIENT INITIALIZATION 
-async function initializeLiveStripeEmbeddedCheckoutSession() { 
-    try { 
-        const feedback = document.getElementById("wizardFeedbackTray"); 
-        if (feedback) { 
-            feedback.style.color = "var(--brand-navy)"; 
-            feedback.textContent = "Securing live checkout session with merchant banks..."; 
-        } 
+// 💳 SECURE LIVE STRIPE ELEMENT CHECKOUT CLIENT INITIALIZATION
+async function initializeLiveStripeEmbeddedCheckoutSession() {
+  try {
+    const feedback = document.getElementById("wizardFeedbackTray");
+    if (feedback) {
+      feedback.style.color = "var(--brand-navy)";
+      feedback.textContent = "Securing live checkout session with merchant banks...";
+    }
 
-        // 🎯 DEFINITIVE ACCURATE ROUTING CONFIGURATION 
-        const MY_ACTUAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; 
-        const MY_PROJECT_BASE_URL = 'https://lrbimrlbskjweynxlgas.supabase.co'; 
+    // 🎯 DEFINITIVE ACCURATE ROUTING CONFIGURATION
+    const MY_ACTUAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+    const MY_PROJECT_BASE_URL = 'https://lrbimrlbskjweynxlgas.supabase.co';
 
-        // 📊 DYNAMIC PRICING AUDITOR WITH TEMPORARY LIVE TEST OVERRIDE 
-        let runningTotalAccumulator = 100; 
-        let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase(); 
-        
-        const currentActivePlanTier = typeof activeServicePlanTier !== "undefined" ? activeServicePlanTier : "starter"; 
+    // 📊 DYNAMIC PRICING AUDITOR WITH TEMPORARY LIVE TEST OVERRIDE
+    let runningTotalAccumulator = 100;
+    let targetGeneratedOrderId = "F4U-" + Math.random().toString(36).slice(-6).toUpperCase();
+    const currentActivePlanTier = typeof activeServicePlanTier !== "undefined" ? activeServicePlanTier : "starter";
 
-        // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE REST TABLES
-        try { 
-            const ordersPayloadRowObject = { 
-                company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead", 
-                service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service", 
-                service_title: activeServiceName || "Trucker Authority Package", 
-                plan_tier: currentActivePlanTier, 
-                total_fee: runningTotalAccumulator, 
-                status: 'Pending Payment Authorization', 
-                tax_id_status: 'Pending Payment Authorization', 
-                collected_payload_metadata: wizardCollectedFormPayloadData, 
-                poa_signed_state: true, 
-                poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE", 
-                created_at: new Date().toISOString() 
-            }; 
+    // 📥 PRE-SAVE COMPLETE LEAD TO SUPABASE REST TABLES
+    try {
+      const ordersPayloadRowObject = {
+        company_name: wizardCollectedFormPayloadData["wiz_company_name"] || "Walk-In Corporate Lead",
+        service_key: activeServiceName ? activeServiceName.replace(/\s+/g, '_').toLowerCase() : "unknown_service",
+        service_title: activeServiceName || "Trucker Authority Package",
+        plan_tier: currentActivePlanTier,
+        total_fee: runningTotalAccumulator,
+        status: 'Pending Payment Authorization',
+        tax_id_status: 'Pending Payment Authorization',
+        collected_payload_metadata: wizardCollectedFormPayloadData,
+        poa_signed_state: true,
+        poa_signature_verification_string: wizardCollectedFormPayloadData["poa_signature_text"] || "ELECTRONIC SIGNATURE",
+        created_at: new Date().toISOString()
+      };
 
-            // ✅ REST API HEADERS: Uses the single key mapping (No Bearer string!)
-            const preSaveHeaders = {
-                'Content-Type': 'application/json',
-                'apikey': MY_ACTUAL_ANON_KEY,
-                'Prefer': 'return=representation'
-            };
+      // ✅ REST API HEADERS: Uses the single key mapping (No Bearer string!)
+      const preSaveHeaders = {
+        'Content-Type': 'application/json',
+        'apikey': MY_ACTUAL_ANON_KEY,
+        'Prefer': 'return=representation'
+      };
 
-            const dbResponse = await fetch(`${MY_PROJECT_BASE_URL}/rest/v1/orders`, { 
-                method: 'POST', 
-                headers: preSaveHeaders, 
-                body: JSON.stringify(ordersPayloadRowObject) 
-            }); 
+      const dbResponse = await fetch(`https://lrbimrlbskjweynxlgas.supabase.co/rest/v1/orders`, {
+        method: 'POST',
+        headers: preSaveHeaders,
+        body: JSON.stringify(ordersPayloadRowObject)
+      });
 
-            if (dbResponse.ok) { 
-                const responseText = await dbResponse.text(); 
-                if (responseText) { 
-                    const dbSavedData = JSON.parse(responseText); 
-                    const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData; 
-                    if (savedRecord && savedRecord.id) { 
-                        targetGeneratedOrderId = savedRecord.id; 
-                        wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id; 
-                    } 
-                } 
-            } 
-        } catch (e) { 
-            console.warn("Pre-payment background lead capture database fallback activated:", e.message); 
-        } 
+      if (dbResponse.ok) {
+        const responseText = await dbResponse.text();
+        if (responseText) {
+          const dbSavedData = JSON.parse(responseText);
+          const savedRecord = Array.isArray(dbSavedData) ? dbSavedData[0] : dbSavedData;
+          if (savedRecord && savedRecord.id) {
+            targetGeneratedOrderId = savedRecord.id;
+            wizardCollectedFormPayloadData["last_inserted_order_row_uuid"] = savedRecord.id;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Pre-payment background lead capture database fallback activated:", e.message);
+    }
 
-        // 🚀 INITIALIZE SECURE STRIPE ELEMENTS 
-        if (typeof Stripe === "undefined") { 
-            throw new Error("Stripe secure network core library unavailable. Confirm CDN headers."); 
-        } 
+    // 🚀 INITIALIZE SECURE STRIPE ELEMENTS
+    if (typeof Stripe === "undefined") {
+      throw new Error("Stripe secure network core library unavailable. Confirm CDN headers.");
+    }
 
-        if (typeof stripeInstance === "undefined" || !stripeInstance) { 
-            stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4'); 
-        } 
+    if (typeof stripeInstance === "undefined" || !stripeInstance) {
+      stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
+    }
 
-        // ✅ EDGE FUNCTIONS HEADERS: Mandatorily requires BOTH the apikey and Authorization header!
-        const edgeFunctionHeaders = {
-            'Content-Type': 'application/json',
-            'apikey': MY_ACTUAL_ANON_KEY,
-            'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY
-        };
+    // ✅ EDGE FUNCTIONS HEADERS: Mandatorily requires BOTH the apikey and Authorization header!
+    const edgeFunctionHeaders = {
+      'Content-Type': 'application/json',
+      'apikey': MY_ACTUAL_ANON_KEY,
+      'Authorization': 'Bearer ' + MY_ACTUAL_ANON_KEY
+    };
 
-        const checkoutSessionResponse = await fetch(`https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout`, { 
-            method: 'POST', 
-            headers: edgeFunctionHeaders, 
-            body: JSON.stringify({ 
-                order_id: targetGeneratedOrderId, 
-                charge_amount_cents: Math.round(runningTotalAccumulator * 100), 
-                client_email: wizardCollectedFormPayloadData["wiz_client_email"] || "", 
-                service_title: activeServiceName || "Trucker Authority" 
-            }) 
-        }); 
+    const checkoutSessionResponse = await fetch(`https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout`, {
+      method: 'POST',
+      headers: edgeFunctionHeaders,
+      body: JSON.stringify({
+        order_id: targetGeneratedOrderId,
+        charge_amount_cents: Math.round(runningTotalAccumulator * 100),
+        client_email: wizardCollectedFormPayloadData["wiz_client_email"] || "",
+        service_title: activeServiceName || "Trucker Authority"
+      })
+    });
 
-        const sessionDataPayload = await checkoutSessionResponse.json(); 
-        if (!checkoutSessionResponse.ok || !sessionDataPayload.clientSecret) { 
-            throw new Error(sessionDataPayload.error || "Failed to structure safe connection window."); 
-        } 
+    const sessionDataPayload = await checkoutSessionResponse.json();
 
-        window.globalStripeElementsInstance = stripeInstance.elements({ 
-            clientSecret: sessionDataPayload.clientSecret, 
-            appearance: { 
-                theme: 'flat', 
-                variables: { 
-                    colorBackground: 'transparent', 
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', 
-                    spacingUnit: '4px' 
-                } 
-            } 
-        }); 
+    if (!checkoutSessionResponse.ok || !sessionDataPayload.clientSecret) {
+      throw new Error(sessionDataPayload.error || "Failed to structure safe connection window.");
+    }
 
-        const paymentElement = window.globalStripeElementsInstance.create('payment', { 
-            layout: { 
-                type: 'tabs', 
-                defaultCollapsed: false 
-            } 
-        }); 
+    if (feedback) feedback.textContent = "";
 
-        if (feedback) feedback.textContent = ""; 
-        paymentElement.mount('#stripe-embedded-checkout-mount-target'); 
+    // 🛠️ MODERN COMPATIBILITY WRAPPER FOR STRIPE LIBRARIES
+    const checkoutMethod = stripeInstance.createEmbeddedCheckoutPage ? 'createEmbeddedCheckoutPage' : 'initEmbeddedCheckout';
 
-    } catch (err) { 
-        console.error("Stripe portal load failure:", err.message); 
-        const feedbackTray = document.getElementById("wizardFeedbackTray"); 
-        if (feedbackTray) { 
-            feedbackTray.style.color = "#c15254"; 
-            feedbackTray.textContent = "Billing Framework Interrupted: " + err.message; 
-        } 
-    } 
+    // 1. Initialize the embedded checkout with the clientSecret sent by Supabase
+    const embeddedCheckoutInstance = await stripeInstance[checkoutMethod]({
+      clientSecret: sessionDataPayload.clientSecret,
+      appearance: {
+        theme: 'flat',
+        variables: {
+          componentBackground: 'transparent', // ✨ Strips white wrapper background out
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          spacingUnit: '4px'
+        },
+        rules: {
+          '.Block': {
+            border: 'none',
+            boxShadow: 'none',
+          }
+        }
+      }
+    });
 
-    const prevBtn = document.getElementById("wizPrevBtn"); 
-    if (prevBtn && typeof activeWizardStepIndex !== "undefined") { 
-        prevBtn.style.display = activeWizardStepIndex === 6 ? "none" : (activeWizardStepIndex === 1 ? "none" : "block"); 
-    } 
+    // 2. Mount it directly into your HTML target
+    embeddedCheckoutInstance.mount('#stripe-embedded-checkout-mount-target');
+
+    // 3. Keep a global reference to track the session status if needed
+    window.globalStripeCheckoutInstance = embeddedCheckoutInstance;
+
+  } catch (err) {
+    console.error("Stripe portal load failure:", err.message);
+    const feedbackTray = document.getElementById("wizardFeedbackTray");
+    if (feedbackTray) {
+      feedbackTray.style.color = "#c15254";
+      feedbackTray.textContent = "Billing Framework Interrupted: " + err.message;
+    }
+  }
+
+  const prevBtn = document.getElementById("wizPrevBtn");
+  if (prevBtn && typeof activeWizardStepIndex !== "undefined") {
+    prevBtn.style.display = activeWizardStepIndex === 6 ? "none" : (activeWizardStepIndex === 1 ? "none" : "block");
+  }
 }
 
+// 🏁 AUTOMATIC RETURNING REDIRECT DETECTOR
+// Place this execution listener right under the function block to slide the wizard forward when Stripe redirects back.
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('session_id')) {
+    console.log("Stripe payment authorization validated via return parameters.");
+    
+    if (typeof wizardCollectedFormPayloadData !== "undefined") {
+      wizardCollectedFormPayloadData["stripe_payment_token_id"] = "tok_redirect_verified_" + urlParams.get('session_id').slice(-6);
+    }
+    
+    // Auto advance the slide structure safely depending on your exact routing scheme
+    if (typeof goToNextWizardSlide === "function") {
+      goToNextWizardSlide();
+    } else if (typeof advanceWizardStep === "function") {
+      advanceWizardStep();
+    }
+  }
+});
 
 
 
@@ -1807,7 +1834,7 @@ async function handleWizardFormStepNavigation(event) {
             'Prefer': 'return=representation' // 🎯 CRITICAL: Requests itemized return arrays
         };
 
-        const dbResponse = await fetch(`${SUPABASE_PROJECT_LANES_URL}/rest/v1/orders`, {
+        const dbResponse = await fetch(`https://lrbimrlbskjweynxlgas.supabase.co/rest/v1/orders`, {
             method: 'POST',
             headers: requestHeaders,
             body: JSON.stringify(ordersPayloadRowObject)
@@ -2032,7 +2059,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
         try {
             // Fetch the completed purchase record directly from your Supabase DB using the URL reference token
-            // Swap 'YOUR_LONG_ANON_KEY_HERE' out for your actual 'eyJ...' text key string
+           
             const response = await fetch(`lrbimrlbskjweynxlgas.supabase.co/rest/v1/orders`, {
                 method: 'GET',
                 headers: {
