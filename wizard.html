@@ -18,6 +18,43 @@
     } else {
       console.error("Stripe network core CDN script was blocked or failed to load in the head section.");
     }
+
+    // ===================================================================
+// 🛡️ SECURITY LAYER A: BLOCK ACCIDENTALLY HITTING REFRESH / BACK
+// ===================================================================
+window.addEventListener('beforeunload', (event) => {
+  // If the user is on the final success screen (Step 7), let them leave normally
+  if (typeof activeWizardStepIndex !== "undefined" && activeWizardStepIndex === 7) {
+    return;
+  }
+  
+  // Standard modern browser warning trigger to cancel page refresh loops
+  event.preventDefault();
+  event.returnValue = 'Are you sure you want to exit? Your progress will be lost.';
+});
+
+// ===================================================================
+// 🛡️ SECURITY LAYER B: ENFORCE ABSOLUTE BASE RESET ON FRESH PAGE LOADS
+// ===================================================================
+window.addEventListener("load", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // If they are coming back from a real verified transaction redirect, skip reset
+  if (urlParams.get('step') === '7' && urlParams.get('order_ref')) {
+    console.log("Verified transaction return detected. Permitting receipt hydration...");
+    return;
+  }
+
+  // 🎯 THE HARD GUARD: Force the tracking index back to step 1 on any manual reload
+  console.log("Enforcing absolute structural baseline step state index reset...");
+  window.activeWizardStepIndex = 1;
+  
+  // Force your UI rendering engine to immediately draw Step 1 layout views 
+  if (typeof synchronizeWizardStepUILayout === "function") {
+    synchronizeWizardStepUILayout();
+  }
+});
+
   </script>
   <link rel="icon" type="image/png" href="images/fav.png">
 </head>
