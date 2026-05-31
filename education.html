@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#10b981">
-    <title>Professional Compliance Dashboard | filings4u</title>
-    
-    <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
+  <title>Compliance Learning Academy & Education Base — Filings4U</title>
+
+      <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
      <link rel="stylesheet" href="assets/css/master.css">
     <link rel="stylesheet" href="assets/css/master-mobile.css">
     <link rel="icon" type="image/png" href="images/fav.png">
@@ -18,10 +18,30 @@
     
     <!-- Supabase Production Library Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/master.js"></script>
+</head>
+
+  <style>
+    :root { --navy: #0c2340; --emerald: #047857; --slate: #f8fafc; --border: #e2e8f0; }
+    body { margin:0; padding:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--slate); color: #1e293b; }
+    .academy-wrapper { max-width: 1200px; margin: 0 auto; padding: 60px 20px; box-sizing: border-box; width:100%; }
+    .search-banner { background: var(--navy); border-radius: 12px; padding: 40px; text-align: center; color: #fff; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(12,35,64,0.15); }
+    .search-input { width: 100%; max-width: 500px; padding: 14px 20px; border: 0; border-radius: 8px; font-size: 1rem; font-weight: 500; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); outline: none; margin-top: 15px; }
+    .filter-tabs-row { display: flex; gap: 12px; margin-bottom: 40px; overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
+    .tab-btn { background: #fff; border: 1px solid var(--border); color: #475569; padding: 10px 20px; border-radius: 30px; font-weight: 700; font-size: 0.88rem; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+    .tab-btn.active, .tab-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .guide-card-matrix { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; }
+    .guide-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .guide-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px -5px rgba(0,0,0,0.05); }
+    .category-indicator { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--emerald); letter-spacing: 0.5px; margin-bottom: 8px; }
+    .guide-card h3 { margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 800; color: var(--navy); line-height: 1.3; }
+    .guide-card p { margin: 0 0 20px 0; font-size: 0.88rem; color: #64748b; line-height: 1.6; }
+    .read-link { font-size: 0.88rem; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 4px; text-decoration: none; }
+  </style>
 </head>
 <body>
 
-<!-- 🌐 SITE-WIDE NAVIGATION HEADER --> 
+  <!-- 🌐 SITE-WIDE NAVIGATION HEADER --> 
 <nav> 
   <div class="nav-content-wrapper"> 
     <a href="index.html" class="logo-link"> 
@@ -122,149 +142,97 @@
   </div> 
 </nav>
 
-
-<!-- SECTION 1: COMPACT HERO WITH IMAGE -->
-<main class="page-container">
-    <div class="service-grid">
-        <article class="content-area">
-            <span class="hero-tag">Safety Infrastructure</span>
-            <h1>DQ Files <br>& Driver Records.</h1>
-            <p>Maintain "Audit-Ready" driver qualification files for every operator in your fleet. We automate the collection of MVRs, medical cards, and employment histories to keep you FMCSA compliant.</p>
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 50px;">
-                <div style="height: 2px; width: 30px; background: var(--emerald);"></div>
-                <span style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Part 391 Audit Shield Active</span>
-            </div>
-            <a href="#pricing" class="btn-main">Build My DQ Files →</a>
-        </article>
-        <aside>
-            <div class="hero-image-container">
-                <img src="images/dq-hero.jpg" alt="Driver Qualification Files">
-            </div>
-        </aside>
+  <div class="academy-wrapper">
+    <!-- 🔍 Dynamic Search Section Hero Module Header Bar -->
+    <div class="search-banner">
+      <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #a5f3fc;">Corporate Knowledge Matrix</span>
+      <h2 style="margin: 8px 0 0 0; font-size: 1.85rem; font-weight: 900; letter-spacing: -0.5px;">Filing Compliance Learning Academy</h2>
+      <input type="text" id="academy-search-engine" class="search-input" placeholder="Search operational requirements, tax deadlines, truck parameters..." oninput="window.filterAcademyGuides()">
     </div>
-</main>
 
-<!-- SECTION 2: FEATURES (NAVY - 40px Padding) -->
-<section class="feature-section">
-    <div class="hero-tag">Infrastructure</div>
-    <h2 style="margin-bottom: 20px;">Record Management.</h2>
-    <div class="icon-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;">
-        <div class="icon-box">
-            <h4>MVR Integration</h4>
-            <p>Automated retrieval of Motor Vehicle Records to satisfy annual review mandates.</p>
-        </div>
-        <div class="icon-box">
-            <h4>Med-Card Sync</h4>
-            <p>Proactive tracking of medical examiner certificates to prevent driver disqualification.</p>
-        </div>
-        <div class="icon-box">
-            <h4>Digital Vault</h4>
-            <p>Every application and road test certificate is stored in a high-res, cloud-accessible format.</p>
-        </div>
+    <!-- 📊 Category Filtering System Tabs Row Container -->
+    <div class="filter-tabs-row">
+      <button class="tab-btn active" onclick="window.setAcademyCategoryFilter('all', this)">All Corporate Reference Manuals</button>
+      <button class="tab-btn" onclick="window.setAcademyCategoryFilter('governance', this)">Business Formations</button>
+      <button class="tab-btn" onclick="window.setAcademyCategoryFilter('taxation', this)">Taxation & EIN Protocols</button>
+      <button class="tab-btn" onclick="window.setAcademyCategoryFilter('logistics', this)">DOT Transit Compliance</button>
     </div>
-</section>
 
-<!-- SECTION 3: PRICING --> 
-<section id="pricing" class="pricing-section"> 
-    <span class="hero-tag">Deployment Tiers</span> 
-    <h2>Transparent formation pricing.</h2> 
-    <div class="pricing-grid"> 
-        
-        <!-- Standard / Starter Tier Card -->
-        <div class="price-card"> 
-            <h3>Standard</h3> 
-            <div class="amount">$89 <span>/ Driver</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Essential setup for a single operator.</p> 
-            <ul class="price-features"> 
-                <li>Part 391 DQ File Build</li> 
-                <li>MVR Procurement</li> 
-                <li>Medical Card Verification</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to wizard framework query parameters -->
-            <a href="wizard.html?service=driver-qualification-file&plan=starter" class="btn-main" style="width: 100%; text-align: center; background: var(--navy); text-decoration: none;">Select Standard</a> 
-        </div> 
-
-        <!-- Elite / Compliance Tier Card -->
-        <div class="price-card featured"> 
-            <div class="price-badge">Most Popular</div> 
-            <h3>Elite</h3> 
-            <div class="amount">$199 <span>/ Driver</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Full automation and annual review.</p> 
-            <ul class="price-features"> 
-                <li>Everything in Standard</li> 
-                <li><strong>Annual MVR Review</strong></li> 
-                <li>Violation Tracking Sync</li> 
-                <li>Priority Support</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to wizard framework query parameters -->
-            <a href="wizard.html?service=driver-qualification-file&plan=compliance" class="btn-main" style="width: 100%; text-align: center; text-decoration: none;">Select Elite</a> 
-        </div> 
-
-        <!-- Enterprise Tier Card -->
-        <div class="price-card"> 
-            <h3>Enterprise</h3> 
-            <div class="amount">$499 <span>/ Fleet</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Total multi-driver management.</p> 
-            <ul class="price-features"> 
-                <li>Everything in Elite</li> 
-                <li>Hiring Intake Handshake</li> 
-                <li>Dedicated Safety Lead</li> 
-                <li>Audit Defense Package</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to wizard framework query parameters -->
-            <a href="wizard.html?service=driver-qualification-file&plan=enterprise" class="btn-main" style="width: 100%; text-align: center; background: var(--navy); text-decoration: none;">Select Enterprise</a> 
-        </div> 
-        
-    </div> 
-</section>
-
-
-<!-- SECTION 4: KNOWLEDGE BASE (FAQs) -->
-<section class="faq-section unified-site-section"> 
-    <div class="hero-tag">Knowledge Base</div>
-    <h2 style="margin-bottom: 30px;">Common Questions</h2>
-    <div class="faq-grid">
-        <div class="faq-item">
-            <h4>What is an LLC?</h4>
-            <p>A Limited Liability Company protects your personal assets from business debts and lawsuits by creating a separate legal entity.</p>
-        </div>
-        <div class="faq-item">
-            <h4>Do I need an EIN?</h4>
-            <p>Yes, an Employer Identification Number is required to open a business bank account and hire employees. We include this in our Elite and Enterprise plans.</p>
-        </div>
-        <div class="faq-item">
-            <h4>What is a Registered Agent?</h4>
-            <p>A Registered Agent is a designated individual or entity that receives official legal documents on behalf of your business.</p>
-        </div>
-        <div class="faq-item">
-            <h4>How long does formation take?</h4>
-            <p>State processing times vary, but most LLCs are approved within 3-5 business days. Expedited options are available in most states.</p>
-        </div>
+    <!-- 📋 Display Target Matrix Layout Container -->
+    <div class="guide-card-matrix" id="academy-cards-display-target">
+      <!-- Cards will inject smoothly here via Javascript logic blocks -->
     </div>
-</section>
+  </div>
 
+  <!-- JavaScript Matrix Initialization Loops -->
+  <script>
+    // 🧠 CENTRAL MANUAL REGISTER DATABASE MATRIX (Completely Separate from Chronological Blogs)
+    window.ACADEMY_KNOWLEDGE_RECORDS = [
+      { id: "kb-01", category: "governance", title: "Corporate Transparency Act & BOI Guidelines", description: "Comprehensive breakdown of Beneficial Ownership Information (BOI) registration mandates under federal enforcement, including reporting exemptions and update filing timelines.", link: "wizard.html?service=BOI_Filing" },
+      { id: "kb-02", category: "governance", title: "LLC Operating Agreements vs Corporate Bylaws", description: "Structural auditing guide to defining internal share configurations, asset distribution models, and institutional signing limits for structural enterprise safety protocols.", link: "wizard.html?service=Operating_Agreement_Setup" },
+      { id: "kb-03", category: "taxation", title: "S-Corporation Tax Allocations & Election Form 2553", description: "Tax architecture manual regarding corporate dividend restructures to reduce self-employment tax obligations via active administrative pass-through options.", link: "wizard.html?service=S-Corp_Election" },
+      { id: "kb-04", category: "taxation", title: "State Sales Tax Registration Nexus Parameters", description: "Evaluating physical vs economic nexus criteria when dealing with state revenue collections to establish state sales tax processing license tunnels.", link: "wizard.html?service=Sales_Tax_License" },
+      { id: "kb-05", category: "logistics", title: "USDOT New Entrant Safety Audit Guidelines", description: "Compliance timeline procedures for passing federal safety program checks, vehicle service records tracking rules, and driver log maintenance logs.", link: "wizard.html?service=Safety_Audit_Prep" },
+      { id: "kb-06", category: "logistics", title: "IFTA Fuel Decal Recordkeeping Requirements", description: "Operational protocols for auditing distance mileage records and weight tax receipts across cross-border freight corridors to mitigate state auditor penalty fees.", link: "wizard.html?service=IFTA_Registration" }
+    ];
 
-<!-- SECTION 5: LATEST INSIGHTS (BLOG SECTION) --> 
-<section class="blog-section unified-site-section"> 
-  <div class="section-alignment-wrapper"> 
-    <div class="hero-tag">Latest Insights</div> 
-    <h2 style="margin-bottom: 40px;">Recent Compliance Updates</h2> 
-    
-    <!-- 🔄 FIXED FRAME: Re-synced formatting selectors with the CSS engines -->
-    <div class="resource-grid" id="public-homepage-blog-grid-target"> 
-      
-      <!-- 🌟 AUTOMATED SYNC HANDLER SPINNER (Targeted exactly by main.js) --> 
-      <div id="blog-loading-spinner" style="text-align: center; padding: 50px 0; width: 100%;"> 
-        <div style="margin: 0 auto 15px auto; width: 35px; height: 35px; border: 3px solid #f3f3f3; border-top: 3px solid #10b981; border-radius: 50%; animation: spin 1s linear infinite;"></div> 
-        <span style="color: #64748b; font-size: 0.95rem; font-weight: 500;">Gathering latest articles...</span> 
-      </div> 
-      
-    </div> 
-  </div> 
-</section>
+    window.currentActiveCategoryFilter = "all";
 
+    window.renderAcademyInterfaceCards = function() {
+      const target = document.getElementById("academy-cards-display-target");
+      const searchStr = document.getElementById("academy-search-engine")?.value.toLowerCase().trim() || "";
+      if (!target) return;
 
- <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+      let filteredArray = window.ACADEMY_KNOWLEDGE_RECORDS;
+
+      // Filter by top Category Tab choice
+      if (window.currentActiveCategoryFilter !== "all") {
+        filteredArray = filteredArray.filter(item => item.category === window.currentActiveCategoryFilter);
+      }
+
+      // Filter by real-time text input matching text criteria
+      if (searchStr) {
+        filteredArray = filteredArray.filter(item => 
+          item.title.toLowerCase().includes(searchStr) || 
+          item.description.toLowerCase().includes(searchStr)
+        );
+      }
+
+      if (filteredArray.length === 0) {
+        target.innerHTML = `<div style="grid-column:1/-1; padding:40px; text-align:center; color:#94a3b8; font-weight:600;">No manual filing guides matched your search parameters.</div>`;
+        return;
+      }
+
+      target.innerHTML = filteredArray.map(item => `
+        <div class="guide-card" onclick="window.location.href='${item.link}'">
+          <div>
+            <span class="category-indicator">${item.category === 'governance' ? 'Business Formations' : item.category === 'taxation' ? 'Taxation & Fiscal' : 'DOT Logistics'}</span>
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+          </div>
+          <div class="read-link">Initialize Application Framework ➔</div>
+        </div>
+      `).join('');
+    };
+
+    window.setAcademyCategoryFilter = function(category, element) {
+      window.currentActiveCategoryFilter = category;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+      window.renderAcademyInterfaceCards();
+    };
+
+    window.filterAcademyGuides = function() {
+      window.renderAcademyInterfaceCards();
+    };
+
+    // Run layout render loops immediately on load configurations
+    document.addEventListener("DOMContentLoaded", () => {
+      window.renderAcademyInterfaceCards();
+    });
+  </script>
+
+  <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
 <footer class="site-footer"> 
     <div class="footer-container"> 
         <div class="footer-brand"> 
@@ -353,7 +321,6 @@
 </footer>
 
 <script src="assets/js/toggle.js"></script>
-<script src="assets/js/master.js"></script>
 
 <!-- 🔼 SCROLL TO TOP FLOATING INTERFACE -->
 <button id="scrollToTopBtn" aria-label="Scroll to top" class="scroll-to-top-btn">
@@ -361,7 +328,5 @@
         <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
     </svg>
 </button>
-
-
 </body>
 </html>

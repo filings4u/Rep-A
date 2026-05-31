@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corporate Support Workspace & Help Center — Filings4U</title>
+  <style>
+    :root { --navy: #0c2340; --emerald: #047857; --slate: #f8fafc; --border: #e2e8f0; }
+    body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--slate); color: #1e293b; }
+    .support-wrapper { max-width: 1200px; margin: 0 auto; padding: 60px 20px; box-sizing: border-box; width: 100%; }
+    
+    /* Search Header Banner Area */
+    .support-search-banner { background: var(--navy); border-radius: 12px; padding: 50px 40px; text-align: center; color: #fff; margin-bottom: 40px; box-shadow: 0 4px 25px rgba(12, 35, 64, 0.18); }
+    .search-input-box { width: 100%; max-width: 540px; padding: 14px 22px; border: 0; border-radius: 8px; font-size: 1rem; font-weight: 500; box-shadow: 0 4px 10px rgba(0,0,0,0.15); outline: none; margin-top: 18px; }
+    
+    /* Category Filter Row Links */
+    .filter-tabs-row { display: flex; gap: 12px; margin-bottom: 40px; overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
+    .tab-btn { background: #fff; border: 1px solid var(--border); color: #475569; padding: 11px 22px; border-radius: 30px; font-weight: 700; font-size: 0.88rem; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+    .tab-btn.active, .tab-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    
+    /* Support Article Card Grid Matrix Layout */
+    .support-card-matrix { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; }
+    .support-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; }
+    .support-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(15,23,42,0.06); }
+    
+    .category-indicator-tag { display: inline-block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; margin-bottom: 12px; letter-spacing: 0.5px; }
+    .tag-billing { background: #eff6ff; color: #1d4ed8; }
+    .tag-account { background: #fffbeb; color: #b45309; }
+    .tag-filing { background: #f0fdf4; color: #15803d; }
+    
+    .support-card h3 { margin: 0 0 12px 0; font-size: 1.25rem; font-weight: 800; color: var(--navy); line-height: 1.35; }
+    .support-card p { margin: 0 0 20px 0; font-size: 0.88rem; color: #64748b; line-height: 1.6; font-weight: 500; }
+    .action-link-btn { font-size: 0.88rem; font-weight: 700; color: var(--emerald); display: flex; align-items: center; gap: 4px; text-decoration: none; cursor: pointer; }
+    
+    /* Contact Floating Bridge Panel Container */
+    .emergency-contact-panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 30px; display: flex; justify-content: space-between; align-items: center; margin-top: 60px; flex-wrap: wrap; gap: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+  </style>
+</head>
+<body>
+
+  <div class="support-wrapper">
+    <!-- 🔍 DYNAMIC SEARCH MODULE HEADER BANNER -->
+    <div class="support-search-banner">
+      <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #cbd5e1;">Filings4U Hub Network</span>
+      <h2 style="margin: 8px 0 0 0; font-size: 2rem; font-weight: 900; letter-spacing: -0.5px;">Operational Support & Help Desk</h2>
+      <input type="text" id="help-desk-search-engine" class="search-input-box" placeholder="Search by question, account issues, declined card error logs..." oninput="window.filterSupportArticles()">
+    </div>
+
+    <!-- 📊 SEGMENTATION FILTER BUTTON TABS ROW -->
+    <div class="filter-tabs-row">
+      <button class="tab-btn active" onclick="window.setSupportCategoryFilter('all', this)">All Support Documentation</button>
+      <button class="tab-btn" onclick="window.setSupportCategoryFilter('billing', this)">Gateway & Billing Logs</button>
+      <button class="tab-btn" onclick="window.setSupportCategoryFilter('account', this)">Account Access & Rehydration</button>
+      <button class="tab-btn" onclick="window.setSupportCategoryFilter('filing', this)">State Processing & Audits</button>
+    </div>
+
+    <!-- 📋 DYNAMIC CONSOLE INJECTION INTERFACE MATRIX TARGET -->
+    <div class="support-card-matrix" id="support-articles-display-target">
+      <!-- Support layout panels inject here cleanly via JavaScript loops -->
+    </div>
+
+    <!-- 📞 EMERGENCY LIVE TECHNICAL ESCALATION ROW BRIDGE -->
+    <div class="emergency-contact-panel">
+      <div style="text-align: left;">
+        <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Still experiencing pipeline blockages?</h4>
+        <p style="margin: 0; font-size: 0.88rem; color: #64748b; font-weight: 500;">Our technical operations lane supervisor teams can manually override reference sync faults.</p>
+      </div>
+      <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <a href="tel:7732457009" style="background: var(--navy); color: #fff; text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 12px 20px; border-radius: 6px; box-shadow: 0 4px 6px rgba(12,35,64,0.15);">Call Desk: 773-245-7009</a>
+        <button type="button" style="background: var(--emerald); color: #fff; border: 0; font-weight: 700; font-size: 0.88rem; padding: 12px 20px; border-radius: 6px; cursor: pointer;" onclick="if(window.toggleCustomSupportChatDrawer) window.toggleCustomSupportChatDrawer();">Launch Live Support Terminal 💬</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Help Center Filter Engine Controller Modules -->
+  <script>
+    // 🧠 CENTRAL TECHNICAL SUPPORT INDEX MATRIX REGISTER
+    window.SUPPORT_DOCUMENTATION_RECORDS = [
+      { id: "sup-01", category: "billing", title: "Resolving 'Insufficient Funds' & Banking Gateway Declines", description: "Learn how to diagnose payment rejections inside the Step 6 Stripe frame, manage authorization hold parameters, or re-verify credit line structures.", actionText: "Troubleshoot Billing Faults ➔" },
+      { id: "sup-02", category: "account", title: "Resuming Progress via Wizard Inline Login Modals", description: "Step-by-step guidance on opening the 'Save & Exit' control popups, creating permanent passkeys, and rehydrating fields using our global variable systems.", actionText: "Learn Session Rehydration ➔" },
+      { id: "sup-03", category: "filing", title: "State Schema Cache Outdates & Rejection Fixes", description: "What to do if a Secretary of State registry returns a 'Column Syntax Not Found' or database cache error due to state server schema updates.", actionText: "Resolve Schema Rejections ➔" },
+      { id: "sup-04", category: "billing", title: "Stripe Token Environment Cross-Mixing Blocking Rules", description: "Why your element box might throw an HTTP 400 error or fail to render because a development Test Key is attempting to call a production Live Payment Intent object.", actionText: "Fix Environment Collisions ➔" },
+      { id: "sup-05", category: "account", title: "Claiming Your Dashboard via Magic Email Invitations", description: "Understanding how the automated password setup invite link works right after checkout to route you safely into your client-dashboard.html portal workspace.", actionText: "Review Account Setup ➔" },
+      { id: "sup-06", category: "filing", title: "Fulfillment Lane Turnaround & Processing Timelines", description: "How to check if your application record row has transitioned from 'Pending Authorization' into the 'Fulfillment Lane' status inside the administrative registry logs.", actionText: "Check Lane Status ➔" }
+    ];
+
+    window.currentActiveSupportFilter = "all";
+
+    window.renderSupportInterfaceCards = function() {
+      const target = document.getElementById("support-articles-display-target");
+      const searchStr = document.getElementById("help-desk-search-engine")?.value.toLowerCase().trim() || "";
+      if (!target) return;
+
+      let filteredArray = window.SUPPORT_DOCUMENTATION_RECORDS;
+
+      // Filter array list by target selection category tab choice
+      if (window.currentActiveSupportFilter !== "all") {
+        filteredArray = filteredArray.filter(item => item.category === window.currentActiveSupportFilter);
+      }
+
+      // Filter array list by structural input text typing value matching
+      if (searchStr) {
+        filteredArray = filteredArray.filter(item => 
+          item.title.toLowerCase().includes(searchStr) || 
+          item.description.toLowerCase().includes(searchStr)
+        );
+      }
+
+      if (filteredArray.length === 0) {
+        target.innerHTML = `<div style="grid-column:1/-1; padding:40px; text-align:center; color:#94a3b8; font-weight:600;">No support or troubleshooting documents matched your text query.</div>`;
+        return;
+      }
+
+      target.innerHTML = filteredArray.map(item => {
+        let catClass = "tag-filing";
+        let catLabel = "State Processing";
+        if (item.category === "billing") { catClass = "tag-billing"; catLabel = "Gateway & Billing"; }
+        if (item.category === "account") { catClass = "tag-account"; catLabel = "Account Security"; }
+
+        return `
+          <div class="support-card">
+            <div>
+              <span class="category-indicator-tag ${catClass}">${catLabel}</span>
+              <h3>${item.title}</h3>
+              <p>${item.description}</p>
+            </div>
+            <div class="action-link-btn" onclick="alert('Help Article Reference: Our automated live agent tracking drawer is loading this trace now.')">${item.actionText}</div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    window.setSupportCategoryFilter = function(category, element) {
+window.currentActiveSupportFilter = category;document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));element.classList.add('active');window.renderSupportInterfaceCards();};window.filterSupportArticles = function() {window.renderSupportInterfaceCards();};// Instantiate layout mapping outputs immediately on launch sequencesdocument.addEventListener("DOMContentLoaded", () => {window.renderSupportInterfaceCards();});

@@ -2118,3 +2118,325 @@ section.faq-section .faq-grid {
   animation: spin 1s linear infinite !important;
   box-sizing: border-box !important;
 }
+
+/* =================================================================== */
+/* 🛠️ MASTER LAYOUT ARCHITECTURE & SPACING SYSTEMS                    */
+/* =================================================================== */
+
+/* Universal Box Sizing Reset Safeguard */
+.enterprise-metrics-section,
+.secure-vault-section,
+.timeline-desk-section,
+.site-width-alignment-guard,
+.metrics-dashboard-grid,
+.logistics-split-grid,
+.vault-split-grid,
+.timeline-row-matrix,
+.metric-card-block,
+.vault-security-item,
+.timeline-track-card {
+  box-sizing: border-box !important;
+}
+
+/* 🎯 GLOBAL CONTAINER WIDTH AND PROPORTIONAL ALIGNMENT GUARDS */
+.site-width-alignment-guard {
+  width: 100% !important;
+  max-width: 1450px !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* =================================================================== */
+/* 📊 SECTION 4: ENTERPRISE METRICS SYSTEM STYLES                      */
+/* =================================================================== */
+.enterprise-metrics-section {
+  padding: 120px 0 !important;
+  background-color: #0c2340;
+  color: #ffffff;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden;
+  position: relative;
+  margin: 0 !important;
+  display: block !important;
+}
+
+.enterprise-metrics-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.04;
+  pointer-events: none;
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.metrics-header-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 32px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.metrics-header-left {
+  text-align: left;
+  max-width: 600px;
+}
+
+.metrics-system-tag {
+  display: inline-block;
+  background-color: #047857;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+.metrics-header-left h2 {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.metrics-status-beacon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #10b981;
+  font-family: monospace;
+  background-color: rgba(16, 185, 129, 0.1);
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.metrics-status-beacon span {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+  animation: beacon-pulse 2s infinite;
+}
+
+.metrics-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  width: 100%;
+  margin: 0;
+}
+
+.metric-card-block {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 35px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.3s ease;
+}
+
+.metric-card-block:hover {
+  border-color: rgba(4, 120, 87, 0.5);
+}
+
+.metric-card-block .card-icon {
+  font-size: 1.8rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.metric-card-block .card-number {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #ffffff;
+  font-family: monospace;
+  line-height: 1;
+}
+
+.metric-card-block .card-number.accent {
+  color: #10b981;
+}
+
+.metric-card-block h3 {
+  margin: 4px 0 0 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #cbd5e1;
+}
+
+.metric-card-block p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* =================================================================== */
+/* 🛠️ SECTION 5: NORTH AMERICAN DATA INTERCHANGE LANES STYLES          */
+/* =================================================================== */
+.enterprise-logistics-section {
+  padding: 120px 0 !important;
+  background-color: #ffffff;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+.logistics-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+
+.infra-spec-card {
+  padding: 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.infra-spec-card strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #0c2340;
+  margin-bottom: 2px;
+}
+
+.infra-spec-card span {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* =================================================================== */
+/* 📂 SECTION 6: ENTERPRISE SECURE REPOSITORY & DOCUMENT VAULT         */
+/* =================================================================== */
+.secure-vault-section {
+  padding: 120px 0 !important;
+  background-color: #f8fafc;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+.vault-split-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+
+.vault-security-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.vault-security-item {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 24px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.vault-security-item:hover {
+  transform: translateX(4px);
+  border-color: #cbd5e1;
+}
+
+.vault-security-item h4 {
+  margin: 0 0 6px 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0c2340;
+}
+
+.vault-security-item p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* =================================================================== */
+/* 📜 SECTION 7: OPERATIONAL RECURRING RENEWAL TIMELINE DESK          */
+/* =================================================================== */
+.timeline-desk-section {
+  padding: 120px 0 !important;
+  background-color: #ffffff;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+.timeline-row-matrix {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 50px;
+  width: 100%;
+}
+
+.timeline-track-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 35px 28px;
+  box-shadow: 0 4px 6px -1px rgba(12, 35, 64, 0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.timeline-track-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(12, 35, 64, 0.05);
+}
+
+.timeline-track-card h4 {
+  margin: 12px 0 8px 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0c2340;
+}
+
+.timeline-track-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
+  font-weight: 500;
+}
