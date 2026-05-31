@@ -18,47 +18,9 @@
     } else {
       console.error("Stripe network core CDN script was blocked or failed to load in the head section.");
     }
-
-    // ===================================================================
-// 🛡️ SECURITY LAYER A: BLOCK ACCIDENTALLY HITTING REFRESH / BACK
-// ===================================================================
-window.addEventListener('beforeunload', (event) => {
-  // If the user is on the final success screen (Step 7), let them leave normally
-  if (typeof activeWizardStepIndex !== "undefined" && activeWizardStepIndex === 7) {
-    return;
-  }
-  
-  // Standard modern browser warning trigger to cancel page refresh loops
-  event.preventDefault();
-  event.returnValue = 'Are you sure you want to exit? Your progress will be lost.';
-});
-
-// ===================================================================
-// 🛡️ SECURITY LAYER B: ENFORCE ABSOLUTE BASE RESET ON FRESH PAGE LOADS
-// ===================================================================
-window.addEventListener("load", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  // If they are coming back from a real verified transaction redirect, skip reset
-  if (urlParams.get('step') === '7' && urlParams.get('order_ref')) {
-    console.log("Verified transaction return detected. Permitting receipt hydration...");
-    return;
-  }
-
-  // 🎯 THE HARD GUARD: Force the tracking index back to step 1 on any manual reload
-  console.log("Enforcing absolute structural baseline step state index reset...");
-  window.activeWizardStepIndex = 1;
-  
-  // Force your UI rendering engine to immediately draw Step 1 layout views 
-  if (typeof synchronizeWizardStepUILayout === "function") {
-    synchronizeWizardStepUILayout();
-  }
-});
-
   </script>
   <link rel="icon" type="image/png" href="images/fav.png">
 </head>
-
 
   <style>
     :root {
@@ -368,7 +330,11 @@ window.addEventListener("load", () => {
   </style>
 </head>
 
+
+
 <body>
+
+  
   <div class="wizard-card-wrapper">
     <!-- Branding Header Strip Area -->
     <div style="background:#ffffff; padding:20px 35px; border-bottom:4px solid var(--brand-emerald); text-align:left; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; box-sizing:border-box;">
@@ -2339,4 +2305,64 @@ window.handleInlinePaymentSubmission = async function() {
     </div>
   </div>
 </body>
+
+<!-- =================================================================== -->
+<!-- 🪟 SYSTEM MODAL DIALOGS BACKDROP VIEWPORT (Perfectly Center-Aligned) -->
+<!-- =================================================================== -->
+<div id="wizardGlobalSystemModalBackdrop" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15, 23, 42, 0.6); backdrop-filter:blur(4px); z-index:99999; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
+  
+  <!-- VIEWPORT MODAL CARD SHIELD A: Save progress decision options frame -->
+  <div id="saveExitDecisionModalCard" style="display:none; background:#ffffff; border-radius:12px; max-width:480px; width:100%; padding:32px; box-sizing:border-box; text-align:center; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <span style="font-size:2.8rem; display:block; margin-bottom:12px;">💾</span>
+    <h3 style="margin:0 0 12px 0; color:#0c2340; font-size:1.35rem; font-weight:900;">Save Your Filing Progress?</h3>
+    <!-- 🎯 UPDATED PROMPT TEXT -->
+    <p style="margin:0 0 28px 0; color:#475569; font-size:0.92rem; line-height:1.6; font-weight:500;">All your changes will be lost. Create an Account Now To Save Your Changes before closing this active terminal session.</p>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <button type="button" style="background:#0c2340; color:#ffffff; font-weight:700; font-size:0.9rem; padding:14px; border:0; border-radius:6px; cursor:pointer;" onclick="window.transitionModalToAccountCreation()">Create Account & Save Progress 🔒</button>
+      <button type="button" style="background:#ef4444; color:#ffffff; font-weight:700; font-size:0.9rem; padding:14px; border:0; border-radius:6px; cursor:pointer;" onclick="window.executeHardAbandonmentClear()">Discard Progress & Exit ❌</button>
+      <button type="button" style="background:transparent; color:#64748b; font-weight:600; font-size:0.85rem; border:0; cursor:pointer; margin-top:4px;" onclick="window.closeWizardSystemModals()">Cancel, Keep Filing</button>
+    </div>
+  </div>
+
+  <!-- VIEWPORT MODAL CARD SHIELD B: Account password collection panel box -->
+  <div id="saveExitAccountCreationModalCard" style="display:none; background:#ffffff; border-radius:12px; max-width:420px; width:100%; padding:32px; box-sizing:border-box; text-align:left; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <h3 style="margin:0 0 6px 0; color:#0c2340; font-size:1.25rem; font-weight:900;">Establish Account Password</h3>
+    <p style="margin:0 0 20px 0; color:#64748b; font-size:0.82rem; line-height:1.4;">Confirm your coordinates below. Your email profile will serve as your dynamic permanent dashboard access reference link token.</p>
+    <form id="modalSecureCreationForm" onsubmit="window.handleServerSideAccountCreation(event)">
+      <div style="margin-bottom:16px;">
+        <label style="display:block; font-size:0.8rem; font-weight:700; color:#334155; margin-bottom:6px;">Filing Email Address:</label>
+        <input type="email" id="modalAccountInputEmail" required style="width:100%; padding:11px; border:1px solid #cbd5e1; border-radius:6px; box-sizing:border-box; font-size:0.9rem; background:#f8fafc;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block; font-size:0.8rem; font-weight:700; color:#334155; margin-bottom:6px;">Create Workspace Password:</label>
+        <input type="password" id="modalAccountInputPassword" required minlength="6" placeholder="Minimum 6 characters" style="width:100%; padding:11px; border:1px solid #cbd5e1; border-radius:6px; box-sizing:border-box; font-size:0.9rem;">
+      </div>
+      <div id="modalCreationFeedbackTray" style="font-size:0.8rem; font-weight:600; margin-bottom:12px; color:#ef4444; line-height:1.4;"></div>
+      <button type="submit" id="modalCreationSubmitBtn" style="width:100%; background:#047857; color:#ffffff; font-weight:700; padding:14px; border:0; border-radius:6px; font-size:0.92rem; cursor:pointer;">Secure Workspace Progress ➔</button>
+      <button type="button" style="width:100%; background:transparent; color:#64748b; font-weight:600; font-size:0.85rem; border:0; cursor:pointer; margin-top:12px; text-align:center;" onclick="window.closeWizardSystemModals()">Back</button>
+    </form>
+  </div>
+
+  <!-- VIEWPORT MODAL CARD SHIELD C: Returning user login layout box -->
+  <div id="returningCustomerSignInModalCard" style="display:none; background:#ffffff; border-radius:12px; max-width:420px; width:100%; padding:32px; box-sizing:border-box; text-align:left; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <h3 style="margin:0 0 6px 0; color:#0c2340; font-size:1.25rem; font-weight:900;">Resume Saved Filing Progress</h3>
+    <p style="margin:0 0 20px 0; color:#64748b; font-size:0.82rem; line-height:1.4;">Provide your profile email and password metrics to download your existing form canvas parameters back into memory logs automatically.</p>
+    <form id="modalSignInActionForm" onsubmit="window.handleServerSideWizardInlineLogin(event)">
+      <div style="margin-bottom:14px;">
+        <label style="display:block; font-size:0.8rem; font-weight:700; color:#334155; margin-bottom:6px;">Email Address:</label>
+        <input type="email" id="modalLoginInputEmail" required style="width:100%; padding:11px; border:1px solid #cbd5e1; border-radius:6px; box-sizing:border-box; font-size:0.9rem;">
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:block; font-size:0.8rem; font-weight:700; color:#334155; margin-bottom:6px;">Account Password:</label>
+        <input type="password" id="modalLoginInputPassword" required style="width:100%; padding:11px; border:1px solid #cbd5e1; border-radius:6px; box-sizing:border-box; font-size:0.9rem;">
+      </div>
+      <div id="modalLoginFeedbackTray" style="font-size:0.8rem; font-weight:600; margin-bottom:12px; color:#ef4444; line-height:1.4;"></div>
+      <button type="submit" id="modalLoginSubmitBtn" style="width:100%; background:#0c2340; color:#ffffff; font-weight:700; padding:14px; border:0; border-radius:6px; font-size:0.92rem; cursor:pointer;">Sign In & Restore Progress ➔</button>
+      <button type="button" style="width:100%; background:transparent; color:#64748b; font-weight:600; font-size:0.85rem; border:0; cursor:pointer; margin-top:12px; text-align:center;" onclick="window.closeWizardSystemModals()">Cancel</button>
+    </form>
+  </div>
+</div>
+
+
+
 </html>

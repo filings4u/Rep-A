@@ -114,7 +114,7 @@ async function initializeHomepageBlogFeeds() {
   if (!dbInstance) return; 
 
   const currentUrl = window.location.href.toLowerCase(); 
-  const MAXIMUM_BLOG_DISPLAY_CAP = 4; 
+  const MAXIMUM_BLOG_DISPLAY_CAP = 3; 
 
   try { 
     // Only fetch posts where is_published is true
