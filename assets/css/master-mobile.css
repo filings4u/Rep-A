@@ -1187,3 +1187,57 @@
 }
 
 
+/* Apply to the global stylesheet */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* Prevents spilling over edges */
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* Ensure main containers fill the space */
+.main-container {
+  width: 100%;
+  padding: 0 15px; /* Keeps text readable but elements filled */
+}
+
+
+/* Target mobile screens specifically */
+@media (max-width: 768px) {
+  .hero-section {
+    display: flex;
+    flex-direction: column; /* Stacks items vertically */
+  }
+
+  .hero-image {
+    order: 1; /* Puts image at the top */
+    width: 100%;
+  }
+
+  .hero-text {
+    order: 2; /* Puts text at the bottom */
+  }
+}
+
+
+.navy-section {
+  background-color: #000080; /* Replace with your specific navy hex code */
+  color: #ffffff; /* Turns all text white */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers items horizontally */
+  justify-content: center; /* Centers items vertically */
+  text-align: center;
+}
+
+/* Ensures nested vectors and icons align properly */
+.navy-section img, 
+.navy-section svg {
+  display: block;
+  margin: 0 auto;
+}
