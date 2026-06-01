@@ -1185,3 +1185,58 @@
         padding: 14px 0 !important;        /* Balanced tactile thumb-tap surface area */
     }
 }
+
+
+/* ==========================================================================
+   📱 MOBILE TYPOGRAPHY & ICON COMPRESSION SCALER
+   Forces oversized text, metric numbers, and icons to match global specs
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    
+    /* 1. COMPRESS HERO HEADLINES & SECTION TITLES */
+    h1, h1 span,
+    h2, h2 span,
+    h2[style*="font-size"] {
+        font-size: 1.8rem !important;  /* Brings massive titles down to safe mobile scales */
+        line-height: 1.25 !important;
+        letter-spacing: -0.5px !important;
+    }
+
+    /* 2. SCALE DOWN OVERSIZED DASHBOARD METRIC NUMBERS */
+    div[style*="font-size: 2.4rem"],
+    div[style*="font-size: 2.2rem"],
+    .metrics-dashboard-grid div {
+        font-size: 1.6rem !important;  /* Cuts massive number sizes down to prevent split rows */
+        font-weight: 800 !important;
+        line-height: 1 !important;
+    }
+
+    /* 3. SHRINK GLOWING ICONS & STATUS BADGES */
+    /* Targets your REST gateway active glowing icons and data card emojis */
+    span[style*="font-size: 1.8rem"],
+    div[style*="font-size: 0.8rem"] {
+        font-size: 1rem !important;    /* Shrinks emoji scales and pill-badges instantly */
+    }
+
+    /* Compresses the green secure status rest gateway alert wrapper */
+    div[style*="display: flex"][style*="background: rgba(16,185,129"] {
+        font-size: 0.7rem !important;  /* Shrinks status box text */
+        padding: 4px 10px !important;  /* Drastically tightens padding to stop row drops */
+        white-space: nowrap !important; /* Forces status line to remain strict on one row */
+    }
+
+    /* 4. COMPRESS PARAGRAPHS & DESCRIPTION BLOCK COPY */
+    p, 
+    p[style*="font-size: 1.05rem"],
+    p[style*="font-size: 1rem"] {
+        font-size: 0.9rem !important;   /* Matches your core global body text rules */
+        line-height: 1.5 !important;
+        color: #475569 !important;      /* Enforces clean, high-contrast dark gray */
+    }
+
+    /* 5. TIGHTEN METRIC CARDS GAPS */
+    .metric-card-block {
+        padding: 20px 16px !important;  /* Reduces inner padding so numbers have wider tracks */
+        gap: 4px !important;
+    }
+}
