@@ -1132,3 +1132,56 @@
     }
   }
   
+
+  /* ==========================================================================
+   📱 GLOBAL MOBILE RESPONSIVE LAYOUT MATRIX
+   Forces media rows to stack with images on top and text content below
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    
+    /* 1. Target the split containers (Section D, Section E, etc.) */
+    .site-width-alignment-guard,
+    .enterprise-metrics-section div[style*="display: flex"],
+    div[style*="display: grid"] {
+        display: flex !important;
+        flex-direction: column !important; /* Forces strict vertical stacking */
+        gap: 35px !important;              /* Clean layout separation spacing */
+    }
+
+    /* 2. FORCE IMAGE WRAPPERS TO RENDER FIRST IN VERTICAL STACK */
+    /* Targets the image container column inside Section D */
+    .site-width-alignment-guard > div:has(img),
+    div[style*="justify-content: center"]:has(img) {
+        order: 1 !important;               /* Moves image container block to position #1 */
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* 3. FORCE TEXT WRAPPERS TO RENDER SECOND IN VERTICAL STACK */
+    /* Targets the text column layout blocks */
+    .site-width-alignment-guard > div:not(:has(img)),
+    div[style*="box-sizing: border-box"]:not(:has(img)) {
+        order: 2 !important;               /* Moves descriptive copy block to position #2 */
+        width: 100% !important;
+        max-width: 100% !important;
+        text-align: left !important;       /* Preserves clean brand typography flow */
+    }
+
+    /* 4. Enforce fluid padding inside content gutters */
+    .site-width-alignment-guard {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    /* 5. Mobile Subscription Input Form Optimization (Section E) */
+    form[style*="display: flex"] {
+        flex-direction: column !important; /* Stacks email input and button vertically */
+        gap: 12px !important;
+        padding: 16px !important;
+    }
+
+    form[style*="display: flex"] button {
+        width: 100% !important;            /* Expands action button to full mobile row width */
+        padding: 14px 0 !important;        /* Balanced tactile thumb-tap surface area */
+    }
+}

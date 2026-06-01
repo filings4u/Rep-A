@@ -2786,3 +2786,20 @@ section.faq-section .faq-grid {
         box-shadow: 0 0 12px rgba(16, 185, 129, 0.2) !important;
     }
 
+    /* 🎯 SET GLOBAL NAVIGATION CONTENT WRAPPER TO 1450PX */
+.nav-content-wrapper {
+    width: 100% !important;
+    max-width: 1450px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure the parent nav element remains full-width to preserve background color */
+nav {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
