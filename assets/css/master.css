@@ -2440,3 +2440,349 @@ section.faq-section .faq-grid {
   line-height: 1.5;
   font-weight: 500;
 }
+
+  @keyframes beacon-pulse {
+    0% { transform: scale(0.95); opacity: 0.5; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); opacity: 0.5; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+  @media screen and (max-width: 992px) {
+    .metrics-dashboard-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 24px !important;
+    }
+  }
+  @media screen and (max-width: 560px) {
+    .metrics-dashboard-grid {
+      grid-template-columns: 1fr !important;
+      gap: 20px !important;
+    }
+    .enterprise-metrics-section h2 {
+      font-size: 1.85rem !important;
+    }
+    .site-width-alignment-guard {
+      padding: 0 24px !important; /* Adjusted horizontal mobilization padding for 1450 layout profiles */
+    }
+  }
+
+  /* ==========================================================================
+   UNIFIED SYSTEM THEME & VARIABLES
+   ========================================================================== */
+:root {
+  --brand-navy: #0a1f44;
+  --brand-green: #10b981;
+  --bg-light: #f4f7fa;
+  --text-muted: #55657e;
+  --site-max-width: 1450px;
+}
+
+/* ==========================================================================
+   GLOBAL LAYOUT STRUCTURAL GUARDS (1450PX ALIGNMENT)
+   ========================================================================== */
+.site-width-alignment-guard,
+.page-container {
+  width: 100%;
+  max-width: var(--site-max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   SECTION 5 & SECTION 2: FLAT CAPABILITIES CORE MATRIX
+   ========================================================================== */
+.enterprise-capabilities-section {
+  padding: 100px 0;
+  box-sizing: border-box;
+}
+
+.section-lead-block {
+  margin-bottom: 60px;
+  max-width: 700px;
+}
+
+.section-lead-block h2 {
+  font-size: 36px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.section-eyebrow {
+  display: block;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* Typographic grid with zero container backgrounds */
+.capabilities-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 42px;
+  box-sizing: border-box;
+}
+
+/* Linear cell layout with only a top line */
+.capability-cell {
+  padding-top: 24px;
+  box-sizing: border-box;
+}
+
+.cell-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cell-index {
+  font-size: 14px;
+  font-family: monospace;
+  font-weight: 700;
+}
+
+.capability-cell h3 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.capability-cell p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   SECTION 6 & SECTION 3: ASYMMETRIC CONTENT SPLIT LAYOUT
+   ========================================================================== */
+.institutional-faq-section {
+  padding: 100px 0;
+  box-sizing: border-box;
+}
+
+.faq-layout-split {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 100px;
+  box-sizing: border-box;
+}
+
+.faq-sticky-sidebar {
+  position: sticky;
+  top: 40px;
+  align-self: start;
+}
+
+.faq-sticky-sidebar h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.text-link-premium {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: opacity 0.2s ease;
+}
+
+.text-link-premium:hover {
+  opacity: 0.8;
+}
+
+.faq-accordion-stack {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.faq-row {
+  padding: 30px 0;
+  box-sizing: border-box;
+}
+
+.faq-trigger {
+  font-size: 18px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.faq-panel {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Reconfigurable console raw image boundary placeholder frame */
+.aside-hero-image-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   SECTION 7 & SECTION 4: HORIZONTAL STRIP & METRICS TRACKER GRID
+   ========================================================================== */
+.enterprise-metrics-section {
+  padding: 60px 0;
+  box-sizing: border-box;
+}
+
+.metrics-header-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  margin-bottom: 50px;
+  box-sizing: border-box;
+}
+
+.metrics-header-left h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.metrics-status-beacon {
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 1px;
+  font-family: monospace;
+}
+
+/* Inlined Carousel Multi-Grid system maps to 4 flat blocks */
+.metrics-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.metric-card-block {
+  box-sizing: border-box;
+}
+
+.card-icon {
+  display: block;
+}
+
+.card-number {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.metric-card-block p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKENGINE OVERRIDES
+   ========================================================================== */
+@media screen and (max-width: 1200px) {
+  .faq-layout-split {
+    gap: 50px;
+  }
+  .metrics-dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .site-width-alignment-guard, 
+  .page-container { 
+    padding: 0 24px; 
+  }
+  
+  /* Compress spacing boundaries safely for mobile viewports */
+  .enterprise-capabilities-section, 
+  .institutional-faq-section, 
+  .enterprise-metrics-section { 
+    padding: 60px 0; 
+  }
+  
+  /* Fall back to linear layout chains instead of multidirectional matrices */
+  .capabilities-matrix-grid, 
+  .faq-layout-split, 
+  .metrics-dashboard-grid { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 32px; 
+  }
+  
+  .section-lead-block h2, 
+  .faq-sticky-sidebar h2 { 
+    font-size: 28px; 
+  }
+  
+  .metrics-header-strip { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 16px; 
+    margin-bottom: 35px; 
+  }
+  
+  .faq-sticky-sidebar { 
+    position: static; 
+  }
+  
+  .capability-cell, 
+  .metric-card-block { 
+    min-height: auto; 
+  }
+}
+
+    .agency-link {
+        color: #0a1f44;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 0.95rem;
+        display: inline-block;
+        position: relative;
+        transition: color 0.2s ease;
+    }
+    .agency-link:hover {
+        color: #10b981;
+    }
+    .agency-link::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: #10b981;
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+    }
+    .agency-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+
+   /* 🔒 CLEAN INDUSTRIAL HOVER WITH DEFAULT SYSTEM ARROW CURSOR */
+    .border-glowing-card {
+        transition: border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out !important;
+        cursor: default !important; /* Forces standard system pointer arrow */
+    }
+
+    /* THE TWIST: SMOOTH ILLUMINATION SHIELD */
+    .border-glowing-card:hover {
+        border-color: rgba(16, 185, 129, 0.8) !important;
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.2) !important;
+    }
+

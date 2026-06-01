@@ -1100,3 +1100,35 @@
         margin-bottom: 10px !important;
     }
 }
+
+@media screen and (max-width: 992px) {
+    .solutions-deployment-grid {
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+    }
+    .showcase-split-layout {
+      grid-template-columns: 1fr !important;
+      gap: 50px !important;
+    }
+    .pipeline-onboarding-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 24px !important;
+    }
+  }
+
+  @media screen and (max-width: 560px) {
+    .pipeline-onboarding-grid {
+      grid-template-columns: 1fr !important;
+      gap: 20px !important;
+    }
+    .enterprise-solutions-section h2, 
+    .integrated-showcase-section h2, 
+    .onboarding-pipeline-section h2 {
+      font-size: 1.85rem !important;
+    }
+    .solution-card-block,
+    .pipeline-card-block {
+      padding: 30px 20px !important;
+    }
+  }
+  
