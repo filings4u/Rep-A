@@ -217,32 +217,47 @@ function executeDynamicRegulatoryFieldInjection(serviceKey) {
   }
 }
 
-// ========================================================
-// 🔀 WIZARD INTERACTIVE NAVIGATION SEQUENCING CONTROLLER
-// ========================================================
-
 function goToNextWizardStep(targetStepIndex) {
-  // Form compliance boundary guards
-  if (targetStepIndex > currentWizardActiveStep) {
-    const currentActivePanel = document.getElementById(`step-panel-${currentWizardActiveStep}`);
-    if (currentActivePanel) {
-      const analyticalInputs = currentActivePanel.querySelectorAll("input[required], select[required]");
-      let isPanelDataValid = true;
-      
-      analyticalInputs.forEach(element => {
-        if (!element.checkValidity()) {
-          element.reportValidity();
-          isPanelDataValid = false;
-        }
-      });
-      
-      if (!isPanelDataValid) return false; // Prevent navigation if form data is invalid
+    console.log(`[Manual Override] Forcing step state jump directly to index: ${targetStepIndex}`);
+    
+    // 1. Force override update on the tracking counter
+    currentWizardActiveStep = targetStepIndex;
+
+    // 2. Select every wizard panel element on the page
+    const panels = document.querySelectorAll(".wizard-panel");
+    console.log(`[Manual Override] Total panels located in current DOM structure: ${panels.length}`);
+
+    if (panels.length > 0) {
+        panels.forEach((panel, sequence) => {
+            const currentItemNumericalStep = sequence + 1;
+            
+            if (currentItemNumericalStep === targetStepIndex) {
+                panel.classList.add("active");
+                panel.style.display = "block"; // Enforce instant CSS layout override
+                console.log(`[Manual Override] Target panel unlocked and made active: Position ${currentItemNumericalStep}`);
+            } else {
+                panel.classList.remove("active");
+                panel.style.display = "none"; // Hard hide structural neighbors
+            }
+        });
+    } else {
+        console.error("[Manual Override] Critical configuration failure: No items containing the '.wizard-panel' class exist in this document.");
     }
-  }
-  
-  currentWizardActiveStep = targetStepIndex;
-  renderActiveWizardStepUiLayout();
+
+    // 3. Try to run standard secondary timeline tracking icons if functional
+    if (typeof renderActiveWizardStepUiLayout === "function") {
+        try {
+            renderActiveWizardStepUiLayout();
+        } catch(e) {
+            console.warn("[Manual Override] Layout engine threw warning on secondary markers, ignoring to allow navigation:", e);
+        }
+    }
 }
+
+
+
+
+
 
 // ========================================================
 // 🧠 AUTOMATED DATA CONTROLLER AND CALCULATIONS SCRIPT ENGINE
@@ -486,54 +501,124 @@ function handleNavigationButtonClickEvent() {
 
 // alias mapping function requested by form clicks
 function goToNextWizardStep(targetStepIndex) {
-  const stepDifference = targetStepIndex - currentWizardActiveStep;
-  navigateWizardStepTrackVanilla(stepDifference);
+    console.log(`[Wizard Navigation] Intended target: Step ${targetStepIndex}. Current state: Step ${currentWizardActiveStep}`);
+
+    // 1. Form compliance boundary guards (Validation)
+    if (targetStepIndex > currentWizardActiveStep) {
+   
+        const currentActivePanel = document.getElementById(`step-panel-${currentWizardActiveStep}`);
+        
+        if (currentActivePanel) {
+            const analyticalInputs = currentActivePanel.querySelectorAll("input[required], select[required], textarea[required]");
+            let isPanelDataValid = true;
+
+            analyticalInputs.forEach(element => {
+                if (!element.checkValidity()) {
+                    element.reportValidity(); // Highlight browser error bubble
+                    isPanelDataValid = false;
+                }
+            });
+
+            if (!isPanelDataValid) {
+                console.warn(`[Wizard Blocked] Step ${currentWizardActiveStep} validation failed.`);
+                return false; 
+            }
+        } else {
+            console.log(`[Wizard Notice] No explicit panel ID found for 'step-panel-${currentWizardActiveStep}'. Skipping validation block.`);
+        }
+    }
+
+    // 2. Cache current progress to localStorage before changing steps
+    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+        cacheAndRestoreWizardFormStatesVanilla(false); // Saves current inputs
+        console.log("[Wizard Cache] Form metrics successfully synced to storage.");
+    }
+
+    // 3. Update the global active step pointer
+    currentWizardActiveStep = targetStepIndex;
+    console.log(`[Wizard Success] Global pointer moved to step: ${currentWizardActiveStep}`);
+
+    // 4. Fire the matrix UI update loop
+    if (typeof renderActiveWizardStepUiLayout === "function") {
+        renderActiveWizardStepUiLayout();
+    } else {
+        console.error("[Wizard Layout Failure] renderActiveWizardStepUiLayout function is missing.");
+    }
 }
+
 
 // 💾 BROWSER STORAGE STATE CACHE MECHANICS (VANILLA JS)
 function cacheAndRestoreWizardFormStatesVanilla(isExecutionInitialLoad) {
-  const cacheKeyNamespace = "f4u_wizard_onboarding_state";
-  
-  if (isExecutionInitialLoad) {
-    // Recover fields seamlessly on screen load
-    const restoredPayloadString = localStorage.getItem(cacheKeyNamespace);
-    if (!restoredPayloadString) return;
+    const cacheKeyNamespace = "f4u_wizard_onboarding_state";
     
-    try {
-      const payloadDataObject = JSON.parse(restoredPayloadString);
-      Object.keys(payloadDataObject).forEach(fieldIdKey => {
-        const inputNode = document.getElementById(fieldIdKey);
-        if (inputNode) {
-          if (inputNode.type === 'checkbox') {
-            inputNode.checked = payloadDataObject[fieldIdKey];
-          } else {
-            inputNode.value = payloadDataObject[fieldIdKey];
-          }
+    // Explicitly register sensitive elements that must avoid plain text storage layout logs
+    const sensitiveFieldsList = ["ein_responsible_id", "sllc_member_ssn", "wizard_tax_id"];
+
+    // Self-contained cryptographic translation utility matrix
+    const executeCipherTranslation = (rawString, decryptMode) => {
+        if (!rawString) return "";
+        try {
+            if (decryptMode) {
+                return atob(rawString).split("").map(char => String.fromCharCode(char.charCodeAt(0) - 3)).join("");
+            } else {
+                let shifted = rawString.split("").map(char => String.fromCharCode(char.charCodeAt(0) + 3)).join("");
+                return btoa(shifted);
+            }
+        } catch (err) {
+            console.error("[Cache Crypto Failure] Unable to compute key mask vector:", err);
+            return "";
         }
-      });
-    } catch (jsonErr) {
-      console.error("State data recovery parse error loop encountered: ", jsonErr);
+    };
+
+    if (isExecutionInitialLoad) {
+        // Recover fields seamlessly on screen load
+        const restoredPayloadString = localStorage.getItem(cacheKeyNamespace);
+        if (!restoredPayloadString) return;
+        try {
+            const payloadDataObject = JSON.parse(restoredPayloadString);
+            Object.keys(payloadDataObject).forEach(fieldIdKey => {
+                const inputNode = document.getElementById(fieldIdKey);
+                if (inputNode) {
+                    let finalExtractedValue = payloadDataObject[fieldIdKey];
+
+                    // ⚡ RECOVER LAYER: Decrypt tokens seamlessly back into raw input elements
+                    if (sensitiveFieldsList.indexOf(fieldIdKey) !== -1 && typeof finalExtractedValue === "string") {
+                        finalExtractedValue = executeCipherTranslation(finalExtractedValue, true);
+                    }
+
+                    if (inputNode.type === 'checkbox') {
+                        inputNode.checked = finalExtractedValue;
+                    } else {
+                        inputNode.value = finalExtractedValue;
+                    }
+                }
+            });
+        } catch (jsonErr) {
+            console.error("State data recovery parse error loop encountered: ", jsonErr);
+        }
+    } else {
+        // Collect input values into a local payload object
+        let activeFormMetricsObject = {};
+        const masterForm = document.getElementById("master-onboarding-form");
+        if (!masterForm) return;
+
+        masterForm.querySelectorAll("input, select, textarea").forEach(inputNode => {
+            const idAttr = inputNode.getAttribute('id');
+            if (idAttr) {
+                let elementValueToCache = inputNode.type === 'checkbox' ? inputNode.checked : inputNode.value;
+
+                // ⚡ PROTECT LAYER: Convert plain numbers into unreadable base64 cipher variants
+                if (sensitiveFieldsList.indexOf(idAttr) !== -1 && typeof elementValueToCache === "string" && elementValueToCache.trim() !== "") {
+                    elementValueToCache = executeCipherTranslation(elementValueToCache, false);
+                }
+
+                activeFormMetricsObject[idAttr] = elementValueToCache;
+            }
+        });
+        localStorage.setItem(cacheKeyNamespace, JSON.stringify(activeFormMetricsObject));
     }
-  } else {
-    // Collect input values into a local payload object
-    let activeFormMetricsObject = {};
-    const masterForm = document.getElementById("master-onboarding-form");
-    if (!masterForm) return;
-    
-    masterForm.querySelectorAll("input, select, textarea").forEach(inputNode => {
-      const idAttr = inputNode.getAttribute('id');
-      if (idAttr) {
-        if (inputNode.type === 'checkbox') {
-          activeFormMetricsObject[idAttr] = inputNode.checked;
-        } else {
-          activeFormMetricsObject[idAttr] = inputNode.value;
-        }
-      }
-    });
-    
-    localStorage.setItem(cacheKeyNamespace, JSON.stringify(activeFormMetricsObject));
-  }
 }
+
 
 // 💾 STRATEGIC SAVE & EXIT PROGRESS HANDLER
 function executeSaveAndExitWorkflow() {
@@ -1559,4 +1644,1228 @@ function appendNewSubSeriesCellNode() {
 
 function removeSubSeriesCellNode(targetIndex) {
   const cardToRemove = document.getElementById(`sllc_cell_card_${targetIndex}`);
-if (cardToRemove) cardToRemove.remove();}function toggleSeriesEinWorkflow(selectedValue) {const wrapper = document.getElementById("sllc_ein_reason_wrapper");if (wrapper) wrapper.style.display = (selectedValue === "yes") ? "flex" : "none";if (typeof updateDynamicPricingMatrixVanilla === "function") {window.customSelectedEinProcurementServiceActive = (selectedValue === "yes");updateDynamicPricingMatrixVanilla();}}function toggleSeriesLicenseWorkflow(selectedValue) {const warningNote = document.getElementById("sllc_custom_license_wrapper");if (warningNote) warningNote.style.display = (selectedValue === "yes") ? "flex" : "none";if (typeof updateDynamicPricingMatrixVanilla === "function") {window.customSelectedSeriesLicenseAuditActive = (selectedValue === "no");updateDynamicPricingMatrixVanilla();}}function toggleSeriesLlcDurationField(selectedValue) {const wrapper = document.getElementById("sllc_duration_term_wrapper");if (wrapper) wrapper.style.display = (selectedValue === "project") ? "flex" : "none";}
+if (cardToRemove) cardToRemove.remove();}
+
+function toggleSeriesEinWorkflow(selectedValue) {
+  const wrapper = document.getElementById("sllc_ein_reason_wrapper");
+if (wrapper) wrapper.style.display = (selectedValue === "yes") ? "flex" : "none";
+if (typeof updateDynamicPricingMatrixVanilla === "function") {window.customSelectedEinProcurementServiceActive = (selectedValue === "yes");updateDynamicPricingMatrixVanilla();}}
+
+function toggleSeriesLicenseWorkflow(selectedValue) {const warningNote = document.getElementById("sllc_custom_license_wrapper");
+
+  if (warningNote) warningNote.style.display = (selectedValue === "yes") ? "flex" : "none";
+  if (typeof updateDynamicPricingMatrixVanilla === "function") {window.customSelectedSeriesLicenseAuditActive = (selectedValue === "no");updateDynamicPricingMatrixVanilla();}}
+  
+  function toggleSeriesLlcDurationField(selectedValue) {const wrapper = document.getElementById("sllc_duration_term_wrapper");
+  
+  if (wrapper) wrapper.style.display = (selectedValue === "project") ? "flex" : "none";
+
+}
+
+// ========================================================
+// 🔗 REPAIRED MASTER ALIAS ROUTING BRIDGE FOR HTML BUTTONS
+// ========================================================
+
+// Maps standard manual panel clicks (e.g., onclick="goToNextWizardStep(3)")
+function goToNextWizardStep(targetStepIndex) {
+    console.log(`[Bridge Action] Incoming call value:`, targetStepIndex);
+
+    // ⚡ SAFE FALLBACK: If targetStepIndex is undefined, an object, or blank, calculate it automatically
+    if (!targetStepIndex || typeof targetStepIndex !== "number") {
+        targetStepIndex = currentWizardActiveStep + 1;
+        console.log(`[Bridge Safety Override] Index was invalid. Recalculated target step to: ${targetStepIndex}`);
+    }
+
+    // Protect against jumping past total expected steps
+    if (typeof totalWizardExpectedSteps !== "undefined" && targetStepIndex > totalWizardExpectedSteps) {
+        console.warn(`[Bridge Guard] Cannot jump to step ${targetStepIndex}. Max steps is ${totalWizardExpectedSteps}.`);
+        return false;
+    }
+
+    console.log(`[Bridge Success] Routing engine executing step jump to index: ${targetStepIndex}`);
+    executeDirectStepJump(targetStepIndex);
+}
+
+// Maps forward continue triggers (e.g., from generic next buttons)
+function handleNavigationButtonClickEvent() {
+    if (typeof currentWizardActiveStep !== "undefined" && typeof totalWizardExpectedSteps !== "undefined") {
+        if (currentWizardActiveStep === totalWizardExpectedSteps) {
+            if (typeof executeOnboardingTransactionPayloadSubmitVanilla === "function") {
+                executeOnboardingTransactionPayloadSubmitVanilla();
+            }
+        } else {
+            const nextStepIndex = currentWizardActiveStep + 1;
+            console.log(`[Bridge Auto-Advance] Moving to Step: ${nextStepIndex}`);
+            goToNextWizardStep(nextStepIndex);
+        }
+    }
+}
+
+
+// Internal engine utility that manages the state transition securely
+function executeDirectStepJump(targetIndex) {
+    console.log(`[Wizard Engine] Transitioning state: Step ${currentWizardActiveStep} -> Step ${targetIndex}`);
+
+    // 1. Force validation verification before advancing
+    if (targetIndex > currentWizardActiveStep) {
+        const activePanel = document.getElementById(`step-panel-${currentWizardActiveStep}`);
+        if (activePanel) {
+            const inputs = activePanel.querySelectorAll("input[required], select[required], textarea[required]");
+            let isValid = true;
+            
+            inputs.forEach(el => {
+                if (!el.checkValidity()) {
+                    el.reportValidity();
+                    isValid = false;
+                }
+            });
+            if (!isValid) return false; // Prevent step movement if validation fails
+        }
+    }
+
+    // 2. Sync values to LocalStorage cache (Saves current step state data)
+    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+        cacheAndRestoreWizardFormStatesVanilla(false);
+    }
+
+    // 3. Apply state transformation indices
+    currentWizardActiveStep = targetIndex;
+
+    // 4. Force DOM visibility refresh on your wizard layout panels
+    const panels = document.querySelectorAll(".wizard-panel");
+    if (panels.length > 0) {
+        panels.forEach((panel, sequence) => {
+            if ((sequence + 1) === targetIndex) {
+                panel.classList.add("active");
+                panel.style.display = "block"; // Turn on target step container
+            } else {
+                panel.classList.remove("active");
+                panel.style.display = "none";  // Hide all non-active steps
+            }
+        });
+    }
+
+  }
+
+  // Internal engine utility that manages the state transition securely
+function executeDirectStepJump(targetIndex) {
+    console.log("Transitioning state: Step " + currentWizardActiveStep + " -> Step " + targetIndex);
+
+    // 1. Force validation verification before advancing
+    if (targetIndex > currentWizardActiveStep) {
+        var activePanel = document.getElementById("step-panel-" + currentWizardActiveStep);
+        if (activePanel) {
+            var inputs = activePanel.querySelectorAll("input[required], select[required], textarea[required]");
+            var isValid = true;
+            inputs.forEach(function(el) {
+                if (!el.checkValidity()) {
+                    el.reportValidity();
+                    isValid = false;
+                }
+            });
+            if (!isValid) return false; 
+        }
+    }
+
+    // 2. Sync values to LocalStorage cache
+    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+        cacheAndRestoreWizardFormStatesVanilla(false);
+    }
+
+    // 3. Apply state transformation indices
+    currentWizardActiveStep = targetIndex;
+
+    // 4. Force DOM visibility refresh on your wizard layout panels
+    var panels = document.querySelectorAll(".wizard-panel");
+    if (panels.length > 0) {
+        panels.forEach(function(panel, sequence) {
+            if ((sequence + 1) === targetIndex) {
+                panel.classList.add("active");
+                panel.style.display = "block";
+            } else {
+                panel.classList.remove("active");
+                panel.style.display = "none";
+            }
+        });
+    }
+
+    // ⚡ 4.5 UNIFIED DYNAMIC FORM INJECTION SYSTEM FOR STEP 2
+    if (targetIndex === 2) {
+        var fieldsRoot = document.getElementById("dynamic-onboarding-fields-root");
+        if (fieldsRoot) {
+            // Instantly clear out old fields, placeholders, or previous layouts
+            fieldsRoot.innerHTML = ""; 
+
+            // Safely read global dropdown elements from window memory
+            var stateOptions = window.globalStateDropdownOptionsHtml || "";
+
+            // Normalize the service key completely (lowercase, strip extra spaces, replace spaces with hyphens)
+            var cleanKey = String(routeActiveServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
+            console.log("[Wizard Engine] Evaluating structural form layout matching for: " + cleanKey);
+
+            // ========================================================
+            // 🗺️ MASTER SERVICE MAP INTEGRATION BACKPLANE
+            // ========================================================
+            if (cleanKey.indexOf("operating-agreement") !== -1 && typeof buildOperatingAgreementForm === "function") {
+                fieldsRoot.innerHTML = buildOperatingAgreementForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("annual-report") !== -1 && typeof buildAnnualReportsForm === "function") {
+                fieldsRoot.innerHTML = buildAnnualReportsForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("trademark-filing") !== -1 && typeof buildTrademarkFilingForm === "function") {
+                fieldsRoot.innerHTML = buildTrademarkFilingForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("servicemark-filing") !== -1 && typeof buildServicemarkFilingForm === "function") {
+                fieldsRoot.innerHTML = buildServicemarkFilingForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("foreign-qualification") !== -1 && typeof buildForeignQualificationForm === "function") {
+                fieldsRoot.innerHTML = buildForeignQualificationForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("llc-reinstatement") !== -1 && typeof buildLlcReinstatementForm === "function") {
+                fieldsRoot.innerHTML = buildLlcReinstatementForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("business-license") !== -1 && typeof buildBusinessLicensesForm === "function") {
+                fieldsRoot.innerHTML = buildBusinessLicensesForm(stateOptions);
+            } 
+            else if ((cleanKey.indexOf("ein") !== -1 || cleanKey.indexOf("employer-id") !== -1) && typeof buildEinApplicationForm === "function") {
+                fieldsRoot.innerHTML = buildEinApplicationForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("dissolution") !== -1 && typeof buildEntityDissolutionForm === "function") {
+                fieldsRoot.innerHTML = buildEntityDissolutionForm(stateOptions);
+            } 
+            else if ((cleanKey.indexOf("good-standing") !== -1 || cleanKey.indexOf("existence") !== -1 || cleanKey.indexOf("status") !== -1) && typeof buildGoodStandingForm === "function") {
+                fieldsRoot.innerHTML = buildGoodStandingForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("apostille") !== -1 && typeof buildApostilleServiceForm === "function") {
+                fieldsRoot.innerHTML = buildApostilleServiceForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("clia") !== -1 && typeof buildCliaCertificateForm === "function") {
+                fieldsRoot.innerHTML = buildCliaCertificateForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("custom-regulatory") !== -1 && typeof buildCustomRegulatoryConsultingForm === "function") {
+                fieldsRoot.innerHTML = buildCustomRegulatoryConsultingForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("federal-income-tax") !== -1 && typeof buildFederalIncomeTaxForm === "function") {
+                fieldsRoot.innerHTML = buildFederalIncomeTaxForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("state-income-tax") !== -1 && typeof buildStateIncomeTaxForm === "function") {
+                fieldsRoot.innerHTML = buildStateIncomeTaxForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("franchise-tax") !== -1 && typeof buildFranchiseTaxFilingForm === "function") {
+                fieldsRoot.innerHTML = buildFranchiseTaxFilingForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("sales-tax") !== -1 && typeof buildSalesTaxRegistrationForm === "function") {
+                fieldsRoot.innerHTML = buildSalesTaxRegistrationForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("payroll-tax") !== -1 && typeof buildPayrollTaxForm === "function") {
+                fieldsRoot.innerHTML = buildPayrollTaxForm(stateOptions);
+            } 
+            else if ((cleanKey.indexOf("heavy-use") !== -1 || cleanKey.indexOf("2290") !== -1) && typeof buildHeavyUseTaxForm === "function") {
+                fieldsRoot.innerHTML = buildHeavyUseTaxForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("cage-code") !== -1 && typeof buildCageCodeForm === "function") {
+                fieldsRoot.innerHTML = buildCageCodeForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("duns") !== -1 && typeof buildDunsNumberForm === "function") {
+                fieldsRoot.innerHTML = buildDunsNumberForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("procurement-registration") !== -1 && typeof buildProcurementRegistrationForm === "function") {
+                fieldsRoot.innerHTML = buildProcurementRegistrationForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("minority-certificate") !== -1 && typeof buildMinorityCertificateForm === "function") {
+                fieldsRoot.innerHTML = buildMinorityCertificateForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("owner-operator") !== -1 && typeof buildOwnerOperatorsForm === "function") {
+                fieldsRoot.innerHTML = buildOwnerOperatorsForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("trucker-authority") !== -1 && typeof buildTruckerAuthorityForm === "function") {
+                fieldsRoot.innerHTML = buildTruckerAuthorityForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("broker-authority") !== -1 && typeof buildBrokerAuthorityForm === "function") {
+                fieldsRoot.innerHTML = buildBrokerAuthorityForm(stateOptions);
+            } 
+            else if ((cleanKey.indexOf("registered-agent") !== -1 || cleanKey.indexOf("ucr-registration") !== -1) && typeof buildRegisteredAgentServiceForm === "function") {
+                // Shared entry architecture blocks handle agent parameters natively
+                fieldsRoot.innerHTML = buildRegisteredAgentServiceForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("scac-code") !== -1 && typeof buildScacCodeRegistrationForm === "function") {
+                fieldsRoot.innerHTML = buildScacCodeRegistrationForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("dot-consortium") !== -1 && typeof buildDotConsortiumForm === "function") {
+                fieldsRoot.innerHTML = buildDotConsortiumForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("driver-qualification") !== -1 && typeof buildDriverQualificationFileForm === "function") {
+                fieldsRoot.innerHTML = buildDriverQualificationFileForm(stateOptions);
+            } 
+            else if ((cleanKey.indexOf("process-agent") !== -1 || cleanKey.indexOf("boc-3") !== -1) && typeof buildProcessAgentBoc3Form === "function") {
+                fieldsRoot.innerHTML = buildProcessAgentBoc3Form(stateOptions);
+            } 
+            else if (cleanKey.indexOf("ifta") !== -1 && typeof buildIftaRegistrationForm === "function") {
+                fieldsRoot.innerHTML = buildIftaRegistrationForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("hazmat-registration") !== -1 && typeof buildHazmatRegistrationForm === "function") {
+                fieldsRoot.innerHTML = buildHazmatRegistrationForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("trucker-insurance") !== -1 && typeof buildTruckerInsuranceForm === "function") {
+                fieldsRoot.innerHTML = buildTruckerInsuranceForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("broker-insurance") !== -1 && typeof buildBrokerInsuranceForm === "function") {
+                fieldsRoot.innerHTML = buildBrokerInsuranceForm(stateOptions);
+            } 
+            else if (cleanKey.indexOf("new-entrant-audit") !== -1 && typeof buildNewEntrantAuditForm === "function") {
+                fieldsRoot.innerHTML = buildNewEntrantAuditForm(stateOptions);
+            } 
+            else {
+                console.warn("[Wizard Engine Warning] No matching layout string found for: " + cleanKey);
+                fieldsRoot.innerHTML = '<div style="grid-column: span 2; text-align: center; padding: 20px; color: #ef4444; font-weight: 700;">⚠️ Form configuration layout modules for "' + routeActiveServiceKey + '" are not mounted.</div>';
+            }
+
+            console.log("[Wizard Engine Success] Form mounting sequence completed for target node.");
+        }
+    }
+
+
+
+
+    // 5. Fire your main engine UI sync matrices
+    if (typeof renderActiveWizardStepUiLayout === "function") {
+        renderActiveWizardStepUiLayout();
+    }
+
+    // 6. Restore form values from LocalStorage cache
+    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+        cacheAndRestoreWizardFormStatesVanilla(true);
+    }
+    
+}
+
+// ========================================================
+// 🔄 CERTIFICATE OF GOOD STANDING INTERACTION LAYER
+// ========================================================
+
+function toggleGoodStandingPurposeSpecificationVisibility(selectionValue) {
+    var wrapper = document.getElementById("cgs_purpose_other_wrapper");
+    var input = document.getElementById("cgs_purpose_other_text");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "other") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleGoodStandingPhysicalDeliveryVisibility(selectionValue) {
+    var wrapper = document.getElementById("cgs_shipping_address_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "physical") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = false;
+        });
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+
+// ========================================================
+// 🔄 PROFESSIONAL REGISTERED AGENT SERVICE LOGIC WORKFLOWS
+// ========================================================
+
+let currentRaEntityCount = 1;
+
+function toggleRegisteredAgentMailingVisibility(selectionValue) {
+    var wrapper = document.getElementById("ra_mailing_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "different") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = false;
+        });
+    }
+}
+
+function toggleRegisteredAgentMultiEntityVisibility(selectionValue) {
+    var wrapper = document.getElementById("ra_multi_entity_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = false;
+        });
+    }
+}
+
+function appendNewRegisteredAgentEntityRow() {
+    currentRaEntityCount++;
+    var container = document.getElementById("ra_entities_container");
+    if (!container) return;
+
+    var entityRow = document.createElement("div");
+    entityRow.className = "member-record-card";
+    entityRow.id = "ra_entity_card_" + currentRaEntityCount;
+    entityRow.style.cssText = "background: #ffffff; border: 1px solid var(--border); padding: 16px; border-radius: 8px; box-sizing: border-box; display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-top: 8px;";
+    
+    entityRow.innerHTML = `
+        <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; grid-column: span 2; display: flex; justify-content: space-between;">
+            Secondary Entity #${currentRaEntityCount} Records
+            <button type="button" onclick="removeRegisteredAgentEntityRow(${currentRaEntityCount})" style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-weight: 700; font-size: 0.75rem;"><i class="fa-solid fa-trash"></i> Remove</button>
+        </span>
+        <div class="wizard-input-group" style="margin: 0;">
+            Entity Name <span style="color: #ef4444;">*</span></label>
+            
+        </div>
+        <div class="wizard-input-group" style="margin: 0;">
+            Entity Type <span style="color: #ef4444;">*</span></label>
+            
+                <option value="llc">LLC</option>
+                <option value="corporation">Corporation</option>
+                <option value="partnership">Partnership</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+    `;
+    container.appendChild(entityRow);
+}
+
+function removeRegisteredAgentEntityRow(nodeId) {
+    var card = document.getElementById("ra_entity_card_" + nodeId);
+    if (card) card.remove();
+}
+
+function toggleRegisteredAgentMailForwardingWorkflow(selectionValue) {
+    var wrapper = document.getElementById("ra_forwarding_address_wrapper");
+    var input = document.getElementById("ra_forwarding_street");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+
+
+
+
+// ========================================================
+// 🔄 CONDITIONAL INTERACTION INTERFACE CONTROL ROUTINES
+// ========================================================
+
+function toggleFqAgentDetailsVisibility(selectionValue) {
+    const manualWrapper = document.getElementById("fq_agent_manual_wrapper");
+    if (!manualWrapper) return;
+
+    if (selectionValue === "no") {
+        manualWrapper.style.display = "flex";
+        manualWrapper.querySelectorAll("input, select").forEach(field => {
+            if (field.id !== "fq_agent_unit") field.required = true;
+        });
+    } else {
+        manualWrapper.style.display = "none";
+        manualWrapper.querySelectorAll("input, select").forEach(field => field.required = false);
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+function toggleFqLicenseAssistanceVisibility(selectionValue) {
+    const detailsWrapper = document.getElementById("fq_license_details_wrapper");
+    const assistanceWrapper = document.getElementById("fq_license_assistance_wrapper");
+    const assistanceSelect = document.getElementById("fq_add_licensing_service");
+
+    if (selectionValue === "yes") {
+        if (detailsWrapper) detailsWrapper.style.display = "block";
+        if (assistanceWrapper) assistanceWrapper.style.display = "none";
+        if (assistanceSelect) assistanceSelect.required = false;
+    } else if (selectionValue === "no") {
+        if (detailsWrapper) detailsWrapper.style.display = "none";
+        if (assistanceWrapper) assistanceWrapper.style.display = "block";
+        if (assistanceSelect) assistanceSelect.required = true;
+    } else {
+        if (detailsWrapper) detailsWrapper.style.display = "none";
+        if (assistanceWrapper) assistanceWrapper.style.display = "none";
+        if (assistanceSelect) assistanceSelect.required = false;
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+function toggleFqEinWorkflow(selectionValue) {
+    const reasonWrapper = document.getElementById("fq_ein_reason_wrapper");
+    const reasonInput = document.getElementById("fq_ein_reason");
+    if (!reasonWrapper || !reasonInput) return;
+
+    if (selectionValue === "yes") {
+        reasonWrapper.style.display = "flex";
+        reasonInput.required = true;
+    } else {
+        reasonWrapper.style.display = "none";
+        reasonInput.required = false;
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+// ========================================================
+// 🔄 LLC REINSTATEMENT INTERACTION LOGIC CONTROL ROUTINES
+// ========================================================
+
+function toggleReinstatementFeesNoticeVisibility(selectionValue) {
+    const unpaidWrapper = document.getElementById("rein_fees_unpaid_wrapper");
+    const auditSelect = document.getElementById("rein_add_compliance_audit");
+    if (!unpaidWrapper || !auditSelect) return;
+
+    if (selectionValue === "no") {
+        unpaidWrapper.style.display = "flex";
+        auditSelect.required = true;
+    } else {
+        unpaidWrapper.style.display = "none";
+        auditSelect.required = false;
+        auditSelect.value = "no";
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+function toggleReinstatementIssuesVisibility(selectionValue) {
+    const issuesWrapper = document.getElementById("rein_pending_issues_wrapper");
+    const detailsInput = document.getElementById("rein_pending_details");
+    if (!issuesWrapper || !detailsInput) return;
+
+    if (selectionValue === "no") {
+        issuesWrapper.style.display = "block";
+        detailsInput.required = true;
+    } else {
+        issuesWrapper.style.display = "none";
+        detailsInput.required = false;
+    }
+}
+
+function toggleReinstatementEinWorkflow(selectionValue) {
+    const reasonWrapper = document.getElementById("rein_ein_reason_wrapper");
+    const reasonInput = document.getElementById("rein_ein_reason");
+    if (!reasonWrapper || !reasonInput) return;
+
+    if (selectionValue === "yes") {
+        reasonWrapper.style.display = "flex";
+        reasonInput.required = true;
+    } else {
+        reasonWrapper.style.display = "none";
+        reasonInput.required = false;
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+function toggleReinstatementDurationFieldVisibility(selectionValue) {
+    const dateWrapper = document.getElementById("rein_duration_date_wrapper");
+    const dateInput = document.getElementById("rein_duration_date");
+    if (!dateWrapper || !dateInput) return;
+
+    if (selectionValue === "specific") {
+        dateWrapper.style.display = "flex";
+        dateInput.required = true;
+    } else {
+        dateWrapper.style.display = "none";
+        dateInput.required = false;
+    }
+}
+
+
+// ========================================================
+// 🔄 USPTO TRADEMARK APPLICATION INTERACTION LAYER ROUTINES
+// ========================================================
+
+function toggleTrademarkSpecimenWorkflow(selectionValue) {
+    const wrapper = document.getElementById("tm_specimen_wrapper");
+    if (!wrapper) return;
+
+    const descInput = document.getElementById("tm_specimen_desc");
+    const fileInput = document.getElementById("tm_specimen_file");
+
+    if (selectionValue === "use-in-commerce") {
+        wrapper.style.display = "flex";
+        if (descInput) descInput.required = true;
+        if (fileInput) fileInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (descInput) descInput.required = false;
+        if (fileInput) fileInput.required = false;
+    }
+}
+
+function toggleTrademarkSearchAssistanceVisibility(selectionValue) {
+    const detailsWrapper = document.getElementById("tm_search_details_wrapper");
+    const assistanceWrapper = document.getElementById("tm_search_assistance_wrapper");
+    const assistanceSelect = document.getElementById("tm_add_search_service");
+    const resultsInput = document.getElementById("tm_search_results_data");
+
+    if (selectionValue === "yes") {
+        if (detailsWrapper) detailsWrapper.style.display = "block";
+        if (resultsInput) resultsInput.required = true;
+        if (assistanceWrapper) assistanceWrapper.style.display = "none";
+        if (assistanceSelect) {
+            assistanceSelect.required = false;
+            assistanceSelect.value = "no";
+        }
+    } else if (selectionValue === "no") {
+        if (detailsWrapper) detailsWrapper.style.display = "none";
+        if (resultsInput) resultsInput.required = false;
+        if (assistanceWrapper) assistanceWrapper.style.display = "block";
+        if (assistanceSelect) assistanceSelect.required = true;
+    } else {
+        if (detailsWrapper) detailsWrapper.style.display = "none";
+        if (resultsInput) resultsInput.required = false;
+        if (assistanceWrapper) assistanceWrapper.style.display = "none";
+        if (assistanceSelect) {
+            assistanceSelect.required = false;
+            assistanceSelect.value = "no";
+        }
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+function toggleTrademarkAttorneyWrapperVisibility(selectionValue) {
+    const wrapper = document.getElementById("tm_attorney_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(field => {
+            field.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(field => {
+            field.required = false;
+        });
+    }
+}
+
+
+// ========================================================
+// 🔄 STATE SERVICEMARK APPLICATION INTERACTION LAYER ROUTINES
+// ========================================================
+
+function toggleServicemarkSpecimenWorkflow(selectionValue) {
+    const wrapper = document.getElementById("sm_specimen_wrapper");
+    if (!wrapper) return;
+
+    const descInput = document.getElementById("sm_specimen_desc");
+    const fileInput = document.getElementById("sm_specimen_file");
+
+    if (selectionValue === "use-in-commerce") {
+        wrapper.style.display = "flex";
+        if (descInput) descInput.required = true;
+        if (fileInput) fileInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (descInput) descInput.required = false;
+        if (fileInput) fileInput.required = false;
+    }
+}
+
+function toggleServicemarkSearchAssistanceVisibility(selectionValue) {
+    const detailsWrapper = document.getElementById("sm_search_details_wrapper");
+    const assistanceWrapper = document.getElementById("sm_search_assistance_wrapper");
+    const assistanceSelect = document.getElementById("sm_add_search_service");
+    const resultsInput = document.getElementById("sm_search_results_data");
+
+    if (selectionValue === "yes") {
+        if (detailsWrapper) detailsWrapper.style.display = "block";
+        if (resultsInput) resultsInput.required = true;
+        if (assistanceWrapper) assistanceWrapper.style.display = "none";
+        if (assistanceSelect) {
+            assistanceSelect.required = false;
+            assistanceSelect.value = "no";
+        }
+    } else if (selectionValue === "no") {
+        if (detailsWrapper) detailsWrapper.style.display = "none";
+        if (resultsInput) resultsInput.required = false;
+        if (assistanceWrapper) assistanceWrapper.style.display = "block";
+        if (assistanceSelect) assistanceSelect.required = true;
+    } else {
+        if (detailsWrapper) detailsWrapper.style.display = "none";
+        if (resultsInput) resultsInput.required = false;
+        if (assistanceWrapper) assistanceWrapper.style.display = "none";
+        if (assistanceSelect) {
+            assistanceSelect.required = false;
+            assistanceSelect.value = "no";
+        }
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+function toggleServicemarkAttorneyWrapperVisibility(selectionValue) {
+    const wrapper = document.getElementById("sm_attorney_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(field => {
+            field.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(field => {
+            field.required = false;
+        });
+    }
+}
+
+
+// ========================================================
+// 🔄 ANNUAL REPORT REPORTING LIFE-CYCLE VISIBILITY ROUTINES
+// ========================================================
+
+function toggleAnnualReportMailingAddressVisibility(selectionValue) {
+    const wrapper = document.getElementById("ar_mailing_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "different") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(el => el.required = true);
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(el => el.required = false);
+    }
+}
+
+function toggleAnnualReportStateExplanationVisibility(selectionValue) {
+    const wrapper = document.getElementById("ar_state_explanation_wrapper");
+    const input = document.getElementById("ar_state_reason");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "no") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleAnnualReportCityExplanationVisibility(selectionValue) {
+    const wrapper = document.getElementById("ar_city_explanation_wrapper");
+    const input = document.getElementById("ar_city_reason");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "no") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleAnnualReportFederalExplanationVisibility(selectionValue) {
+    const wrapper = document.getElementById("ar_fed_explanation_wrapper");
+    const input = document.getElementById("ar_fed_reason");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "no") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleAnnualReportOtherExplanationVisibility(selectionValue) {
+    const wrapper = document.getElementById("ar_other_explanation_wrapper");
+    const input = document.getElementById("ar_other_filings_list");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "flex";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleAnnualReportComplianceCheckVisibility(selectionValue) {
+    const wrapper = document.getElementById("ar_compliance_pending_wrapper");
+    const input = document.getElementById("ar_pending_renewals_list");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "no") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+// ========================================================
+// 🔄 OPERATING AGREEMENT INTERACTIVE SUBSYSTEM LAYER
+// ========================================================
+
+let currentOaMemberCount = 1;
+
+function toggleOperatingAgreementOwnershipSubForm(structureType) {
+    const singleWrapper = document.getElementById("oa_single_member_wrapper");
+    const multiWrapper = document.getElementById("oa_multi_member_wrapper");
+    
+    if (!singleWrapper || !multiWrapper) return;
+
+    if (structureType === "single-member") {
+        singleWrapper.style.display = "flex";
+        multiWrapper.style.display = "none";
+        
+        // Toggle attribute requirements
+        document.getElementById("oa_sole_member_name").required = true;
+        document.getElementById("oa_sole_member_contribution").required = true;
+        
+        // Strip requirements from the multi-member arrays
+        clearMultiMemberValidationRequirements();
+    } else if (structureType === "multi-member") {
+        singleWrapper.style.display = "none";
+        multiWrapper.style.display = "flex";
+        
+        document.getElementById("oa_sole_member_name").required = false;
+        document.getElementById("oa_sole_member_contribution").required = false;
+        
+        enforceMultiMemberValidationRequirements();
+        calculateCumulativeOperatingAgreementEquityTotal();
+    }
+}
+
+function appendNewOperatingAgreementMemberRow() {
+    currentOaMemberCount++;
+    const container = document.getElementById("oa_members_container");
+    if (!container) return;
+
+    const memberRow = document.createElement("div");
+    memberRow.className = "member-record-card";
+    memberRow.id = `oa_member_card_${currentOaMemberCount}`;
+    memberRow.style.cssText = "background: #ffffff; border: 1px solid var(--border); padding: 16px; border-radius: 8px; box-sizing: border-box; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-top: 8px;";
+    
+    memberRow.innerHTML = `
+        <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; grid-column: span 3; display: flex; justify-content: space-between;">
+            Member #${currentOaMemberCount} Equity Node
+            <button type="button" onclick="removeOperatingAgreementMemberNode(${currentOaMemberCount})" style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-weight: 700; font-size: 0.75rem;"><i class="fa-solid fa-trash"></i> Remove</button>
+        </span>
+        <div class="wizard-input-group" style="margin: 0;">
+            <label for="oa_member_name_${currentOaMemberCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Full Legal Name <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="oa_member_name_${currentOaMemberCount}" required placeholder="Full Legal Name" class="wizard-input-field">
+        </div>
+        <div class="wizard-input-group" style="margin: 0;">
+            <label for="oa_member_contribution_${currentOaMemberCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Capital Contribution ($) <span style="color: #ef4444;">*</span></label>
+            <input type="number" id="oa_member_contribution_${currentOaMemberCount}" required placeholder="e.g. 500" min="0" class="wizard-input-field">
+        </div>
+        <div class="wizard-input-group" style="margin: 0;">
+            <label for="oa_member_percentage_${currentOaMemberCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Ownership % <span style="color: #ef4444;">*</span></label>
+            <input type="number" id="oa_member_percentage_${currentOaMemberCount}" required placeholder="e.g. 25" min="0" max="100" class="wizard-input-field oa-percentage-field" oninput="calculateCumulativeOperatingAgreementEquityTotal()">
+        </div>
+    `;
+    container.appendChild(memberRow);
+    calculateCumulativeOperatingAgreementEquityTotal();
+}
+
+function removeOperatingAgreementMemberNode(nodeId) {
+    const targetCard = document.getElementById(`oa_member_card_${nodeId}`);
+    if (targetCard) {
+        targetCard.remove();
+        calculateCumulativeOperatingAgreementEquityTotal();
+    }
+}
+
+function calculateCumulativeOperatingAgreementEquityTotal() {
+    const percentageFields = document.querySelectorAll(".oa-percentage-field");
+    let cumulativeTotal = 0;
+    
+    percentageFields.forEach(field => {
+        const fieldVal = parseFloat(field.value);
+        if (!isNaN(fieldVal)) cumulativeTotal += fieldVal;
+    });
+
+    const outputSpan = document.getElementById("oa_live_percentage_total_span");
+    const balanceAlert = document.getElementById("oa_percentage_balance_alert");
+    
+    if (outputSpan) outputSpan.innerText = cumulativeTotal;
+
+    if (balanceAlert) {
+        if (cumulativeTotal === 100) {
+            balanceAlert.style.background = "#ecfdf5";
+            balanceAlert.style.color = "#065f46";
+        } else {
+            balanceAlert.style.background = "#f1f5f9";
+            balanceAlert.style.color = "var(--navy)";
+        }
+    }
+    return cumulativeTotal;
+}
+
+function clearMultiMemberValidationRequirements() {
+    const multiWrapper = document.getElementById("oa_multi_member_wrapper");
+    if (multiWrapper) {
+        multiWrapper.querySelectorAll("input").forEach(inp => inp.required = false);
+    }
+}
+
+function enforceMultiMemberValidationRequirements() {
+    const multiWrapper = document.getElementById("oa_multi_member_wrapper");
+    if (multiWrapper) {
+        multiWrapper.querySelectorAll("input").forEach(inp => inp.required = true);
+    }
+}
+
+// ⚡ INTEGRATION HOOK FOR YOUR SUBMITTER WORKFLOW TO VALIDATE THE LEDGER 
+function verifyOperatingAgreementLedgerBalanceBeforeSubmit() {
+    const structType = document.getElementById("oa_membership_structure").value;
+    if (structType === "multi-member") {
+        const finalWeightSum = calculateCumulativeOperatingAgreementEquityTotal();
+        if (finalWeightSum !== 100) {
+            alert(`Ownership distribution calculation mismatch. Your ledger total is currently ${finalWeightSum}%. It must equal exactly 100% before the system compiles the asset variables for Supabase file generation.`);
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * Handles showing and hiding the alternate mailing layout wrapper card.
+ * Dynamically assigns or clears required validation constraints.
+ */
+function toggleRegisteredAgentMailingVisibility(selectedValue) {
+    const wrapper = document.getElementById('ra_mailing_wrapper');
+    if (!wrapper) return;
+
+    const fields = [
+        document.getElementById('ra_mailing_street'),
+        document.getElementById('ra_mailing_city'),
+        document.getElementById('ra_mailing_state'),
+        document.getElementById('ra_mailing_zip')
+    ];
+
+    if (selectedValue === 'different') {
+        wrapper.style.display = 'flex';
+        fields.forEach(field => {
+            if (field) field.setAttribute('required', 'true');
+        });
+    } else {
+        wrapper.style.display = 'none';
+        fields.forEach(field => {
+            if (field) {
+                field.removeAttribute('required');
+                field.value = ''; // Clean field values out when hidden
+            }
+        });
+    }
+}
+
+// Ensure global scope coverage
+window.toggleRegisteredAgentMailingVisibility = toggleRegisteredAgentMailingVisibility;
+
+// ========================================================
+// 🔄 BUSINESS LICENSES CONFIGURATOR INTERACTION LAYER
+// ========================================================
+
+function toggleBusinessLicensesMailingVisibility(selectionValue) {
+    var wrapper = document.getElementById("bl_mailing_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "different") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = false;
+        });
+    }
+}
+
+function toggleBusinessLicensesLandlordVisibility(selectionValue) {
+    var wrapper = document.getElementById("bl_landlord_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "lease") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input").forEach(function(el) {
+            el.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input").forEach(function(el) {
+            el.required = false;
+        });
+    }
+}
+
+function toggleBusinessLicensesCityRegsVisibility(selectionValue) {
+    var wrapper = document.getElementById("bl_city_regs_wrapper");
+    var input = document.getElementById("bl_city_regs_details");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleBusinessLicensesOtherPermitsVisibility(selectionValue) {
+    var wrapper = document.getElementById("bl_other_permits_wrapper");
+    var input = document.getElementById("bl_other_permits_list");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+// ========================================================
+// 🔄 EMPLOYER ID (EIN) APPLICATION INTERACTION LAYER
+// ========================================================
+
+function toggleEinMailingVisibility(selectionValue) {
+    var wrapper = document.getElementById("ein_mailing_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "different") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = false;
+        });
+    }
+}
+
+function toggleEinStructureSpecificationVisibility(selectionValue) {
+    var wrapper = document.getElementById("ein_structure_other_wrapper");
+    var input = document.getElementById("ein_structure_other_text");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "other") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleEinReasonSpecificationVisibility(isOptionChecked) {
+    var wrapper = document.getElementById("ein_reason_other_wrapper");
+    var input = document.getElementById("ein_reason_other_text");
+    if (!wrapper || !input) return;
+
+    if (isOptionChecked) {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+
+// ========================================================
+// 🔄 ENTITY DISSOLUTION APPLICATION INTERACTION LAYER
+// ========================================================
+
+function toggleDissolutionStructureSpecificationVisibility(selectionValue) {
+    var wrapper = document.getElementById("dis_structure_other_wrapper");
+    var input = document.getElementById("dis_structure_other_text");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "other") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleDissolutionReasonSpecificationVisibility(isOptionChecked) {
+    var wrapper = document.getElementById("dis_reason_other_wrapper");
+    var input = document.getElementById("dis_reason_other_text");
+    if (!wrapper || !input) return;
+
+    if (isOptionChecked) {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleDissolutionAssetDistributionVisibility(selectionValue) {
+    var wrapper = document.getElementById("dis_asset_dist_wrapper");
+    var input = document.getElementById("dis_asset_dist_details");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleDissolutionDebtsVisibility(selectionValue) {
+    var wrapper = document.getElementById("dis_debts_wrapper");
+    var input = document.getElementById("dis_debts_details");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+// ========================================================
+// 🔄 CERTIFICATE OF GOOD STANDING INTERACTION LAYER
+// ========================================================
+
+function toggleGoodStandingPurposeSpecificationVisibility(selectionValue) {
+    var wrapper = document.getElementById("cgs_purpose_other_wrapper");
+    var input = document.getElementById("cgs_purpose_other_text");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "other") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+function toggleGoodStandingPhysicalDeliveryVisibility(selectionValue) {
+    var wrapper = document.getElementById("cgs_shipping_address_wrapper");
+    if (!wrapper) return;
+
+    if (selectionValue === "physical") {
+        wrapper.style.display = "flex";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = true;
+        });
+    } else {
+        wrapper.style.display = "none";
+        wrapper.querySelectorAll("input, select").forEach(function(el) {
+            el.required = false;
+        });
+    }
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+// ========================================================
+// 🔄 APOSTILLE AUTHENTICATION SERVICES INTERACTION LAYER
+// ========================================================
+
+function toggleApostilleDocumentSpecificationVisibility(selectionValue) {
+    var wrapper = document.getElementById("ap_doc_type_other_wrapper");
+    var input = document.getElementById("ap_doc_type_other_text");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "other") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+
+// ========================================================
+// 🔄 CLIA CERTIFICATE REGISTRATION INTERACTION LAYER
+// ========================================================
+
+function toggleCliaFacilityOtherSpecificationVisibility(selectionValue) {
+    var wrapper = document.getElementById("clia_facility_other_wrapper");
+    var input = document.getElementById("clia_facility_other_text");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "other") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+    }
+}
+
+// ========================================================
+// 🔄 FEDERAL INCOME TAX APPLICATION INTERACTION LAYER
+// ========================================================
+
+function toggleFederalTaxInventoryCostVisibility(selectionValue) {
+    var wrapper = document.getElementById("fed_tax_inventory_wrapper");
+    var input = document.getElementById("fed_tax_cogs_value");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+        input.value = "";
+    }
+}

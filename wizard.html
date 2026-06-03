@@ -11,11 +11,11 @@
     <!-- 🧰 ENTERPRISE VECTOR DEPENDENCIES -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://www.cloudflare.com/turnstile/v0/api.js">
+    <script src="assets/js/wizard-calculations-engine.js"></script> 
+    <script src="assets/js/wizard-layouts.js"></script> 
+    <script src="assets/js/wizard-chat-widget.js"></script> 
 
-   <!-- Update your paths to include your subfolder name if applicable -->
-<script src="js/wizard-calculations-engine.js" defer></script>
-<script src="js/wizard-layouts.js" defer></script>
-<script src="js/wizard-chat-widget.js" defer></script>
+    <link rel="icon" type="image/png" href="images/fav.png">
     
     <!-- 🧑‍🎨 WIZARD LAYOUT STYLESHEET -->
     <link rel="stylesheet" href="assets/css/wizard.css">
@@ -197,7 +197,8 @@
     <div class="wizard-action-footer">
         <button type="button" class="btn-wizard-alt" style="visibility: hidden;">Back</button>
         <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(2)">Continue to Profile</button>
+        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep()">Continue to Profile</button>
+
     </div>
 </div> <!-- /End Step 1 Panel -->
 
@@ -606,8 +607,7 @@
     </div>
 </div>
 
-    <script src="assets/js/toggle.js"></script> 
- 
 
+</script src="assets/js/toggle.js"></script>
 </body> 
 </html>
