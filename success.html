@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#10b981">
+    <title>Filing Submission Provisioned Successfully | filings4u</title>
+    
+    <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEETS -->
+    <link rel="stylesheet" href="assets/css/master.css">
+    <link rel="stylesheet" href="assets/css/master-mobile.css">
+    <link rel="icon" type="image/png" href="images/fav.png">
+    
+    <!-- 🧰 ENTERPRISE PRODUCTION CDN LIBRARIES -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://www.cloudflare.com/turnstile/v0/api.js">
+    
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #0e9f6e;
+            --navy: #0a1f44;
+            --slate: #475569;
+            --light-bg: #f8fafc;
+            --border: #e2e8f0;
+        }
+        
+        html, body {
+            background-color: var(--light-bg);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .success-container {
+    width: 100%;
+    max-width: 1450px;
+    margin: 100px auto 40px auto; /* FIXED: Increased top margin to push content safely away from the navbar */
+    padding: 0 40px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 40px;
+    align-items: start;
+    flex: 1; 
+}
+
+        .success-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(10, 31, 68, 0.03), 0 1px 3px rgba(10, 31, 68, 0.02);
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        
+     .success-badge-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    box-sizing: border-box;
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.success-badge-icon svg {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .receipt-line-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+            font-size: 0.95rem;
+        }
+        
+        .receipt-line-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body> 
+    <!-- 🌐 NAVIGATION HEADER --> 
+    <nav style="background: #ffffff; border-bottom: 1px solid var(--border); padding: 15px 0;"> 
+        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; flex-wrap: wrap; gap: 16px;">
+            <a href="index.html" style="text-decoration: none; display: block;">
+                <img src="images/logo.png" alt="filings4u" style="height: 40px; width: auto; object-fit: contain; display: block;">
+            </a>
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--slate); background: #f1f5f9; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); display: inline-flex; align-items: center;"> 
+                <i class="fa-solid fa-circle-check" style="color: var(--primary); margin-right: 6px;"></i> Order Processing Complete 
+            </span> 
+        </div> 
+    </nav> 
+
+    
+    <!-- MAIN APPLICATION CONTAINER MATRIX --> 
+    <main class="success-container"> 
+        <!-- LEFT COLUMN: ORDER CONFIRMATION AND TRANSACTION RECEIPT --> 
+        <section class="success-card"> 
+            
+         <!-- VICTORY SHIELD COMPLETION BADGE & METRIC STATUS HEADER --> 
+<div class="success-badge-icon" style="width: 72px; height: 72px; background: rgba(16, 185, 129, 0.1); color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-sizing: border-box;"> 
+    <!-- Premium vector checkmark: Forced to look sharp inside the emerald backdrop circle -->
+    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width: 30px; height: 30px; display: block; margin: 0; padding: 0;">
+        <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+</div> 
+
+<div style="margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; width: 100%; box-sizing: border-box;"> 
+    <h1 style="color: var(--navy); font-size: 2.2rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Order Successfully Deployed</h1> 
+    <p style="color: var(--slate); font-size: 1rem; margin: 0; line-height: 1.5;">Your compliance metadata package has been parsed, encrypted, and transmitted directly to target authority filing networks.</p> 
+</div>
+
+
+            <!-- ADMINISTRATIVE HANDSHAKE REFERENCE PARAMETERS (FIXED: Added display-flex responsive wrapping fallback) --> 
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 32px; box-sizing: border-box; width: 100%;"> 
+                <div style="flex: 1; min-width: 220px; box-sizing: border-box;"> 
+                    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate); letter-spacing: 0.05em; display: block; margin-bottom: 4px;">Secure Tracking Token</span> 
+                    <strong id="receipt-tx-hash-display" style="font-family: monospace; font-size: 0.95rem; color: var(--navy); word-break: break-all; display: block; line-height: 1.4;">F4U-TX-RETRIEVING...</strong> 
+                </div> 
+                <div style="flex: 1; min-width: 220px; box-sizing: border-box;"> 
+                    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate); letter-spacing: 0.05em; display: block; margin-bottom: 4px;">Filing Status</span> 
+                    <strong style="color: var(--primary); font-size: 0.95rem; display: flex; align-items: center; gap: 6px; line-height: 1.4; padding-top: 2px;"> 
+                        <span style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%; display: inline-block;"></span> VALIDATED &amp; QUEUED 
+                    </strong> 
+                </div> 
+            </div>
+
+
+        <!-- ITEMIZED TRANSACTION INVOICE DISPLAY STACK --> 
+        <div style="margin-bottom: 32px;"> 
+            <h3 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--light-bg); padding-bottom: 8px;"> 
+                Itemized Billing Statement 
+            </h3> 
+            <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column;"> 
+                <!-- Dynamic billing items populate runtime via JS --> 
+            </div> 
+            <div style="background: #f8fafc; border-radius: 8px; padding: 20px; margin-top: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; box-sizing: border-box;"> 
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 600;"> 
+                    <span>Filing Processing Subtotal</span> 
+                    <span id="receipt-subtotal-display" style="font-family: monospace;">$0.00</span> 
+                </div> 
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 600;"> 
+                    <span>Government Statutory Registry Fees</span> 
+                    <span id="receipt-gov-fee-display" style="font-family: monospace;">$0.00</span> 
+                </div> 
+                <div style="display: flex; justify-content: space-between; font-size: 1.3rem; color: var(--navy); font-weight: 900; border-top: 1px dashed var(--border); padding-top: 12px; margin-top: 4px;"> 
+                    <span>Total Paid Amount</span> 
+                    <span id="receipt-grand-total-display" style="font-family: monospace; color: var(--primary);">$0.00</span> 
+                </div> 
+            </div> 
+        </div> 
+
+        <!-- DYNAMIC LEGAL ENTITY AUDIT PROFILE RECORD VIEW --> 
+        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box;"> 
+            <h3 style="margin: 0 0 16px 0; font-size: 1rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;"> 
+                <i class="fa-solid fa-building" style="color: var(--slate);"></i> Registered Entity Profile Target 
+            </h3> 
+            <!-- FIXED: Cleared stray closing elements and assigned descriptive dynamic hooks -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; font-size: 0.9rem; width: 100%; box-sizing: border-box;"> 
+                <div> 
+                    <span style="color: var(--slate); display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Legal Corporate Name</span> 
+                    <strong id="receipt-profile-name" style="color: var(--navy);">---</strong> 
+                </div> 
+                <div> 
+                    <span style="color: var(--slate); display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Taxpayer ID / EIN</span> 
+                    <strong id="receipt-profile-ein" style="color: var(--navy); font-family: monospace;">---</strong> 
+                </div> 
+                <div style="grid-column: span 2;"> 
+                    <span style="color: var(--slate); display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Principal Office Address</span> 
+                    <strong id="receipt-profile-address" style="color: var(--navy); font-weight: 600;">---</strong> 
+                </div> 
+            </div> 
+        </div> 
+    </section>
+
+     <!-- RIGHT COLUMN: CLIENT SECURED GATEWAY ACCOUNT CREATION CARD --> 
+    <aside class="success-card" style="position: sticky; top: 40px; box-sizing: border-box;"> 
+        <div style="margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px;"> 
+            <h2 style="color: var(--navy); font-size: 1.4rem; font-weight: 800; margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;"> 
+                <i class="fa-solid fa-user-plus" style="color: var(--primary); font-size: 1.2rem;"></i> Activate Client Portal 
+            </h2> 
+            <p style="color: var(--slate); font-size: 0.85rem; margin: 0; line-height: 1.4;">Claim ownership of your compliance dossier. Establish your security access parameters to monitor state approvals, fetch corporate documents, and tracking status matrices in real time.</p> 
+        </div> 
+
+        <!-- SECURE PORTAL USER REGISTRATION MATRIX FORM --> 
+        <form id="wizard-account-generation-form" onsubmit="return handleClientAccountActivation(event);"> 
+            
+            <!-- AUTO-FILLED REGISTRY BUSINESS CONTACT EMAIL TARGET --> 
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;"> 
+                <label for="portal_user_email" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Registered Account Username / Email</label> 
+                <div style="position: relative; display: flex; align-items: center;"> 
+                    <span style="position: absolute; left: 16px; color: var(--slate); font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span> 
+                    <input type="email" id="portal_user_email" required readonly style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; font-weight: 600; border-radius: 6px; border: 1px solid var(--border); background: #f1f5f9; color: var(--slate); cursor: not-allowed; outline: none; box-sizing: border-box;"> 
+                </div> 
+                <span style="font-size: 0.7rem; color: var(--slate); font-weight: 500; padding-left: 2px;">Auto-locked to your corporate registry filing email.</span> 
+            </div> 
+
+            <!-- NEW ACCOUNT AUTHENTICATION SECURITY PASSWORD --> 
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;"> 
+                <label for="portal_user_password" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Create Security Password</label> 
+                <div style="position: relative; display: flex; align-items: center;"> 
+                    <span style="position: absolute; left: 16px; color: var(--slate); font-size: 0.9rem;"><i class="fa-solid fa-key"></i></span> 
+                    <input type="password" id="portal_user_password" required minlength="8" placeholder="Minimum 8 characters..." style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid var(--border); background: #ffffff; color: var(--navy); outline: none; box-sizing: border-box; transition: border-color 0.2s;"> 
+                </div> 
+            </div> 
+
+            <!-- PASSWORD VERIFICATION STRUT CHANNELS --> 
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;"> 
+                <label for="portal_user_password_confirm" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Confirm Security Password</label> 
+                <div style="position: relative; display: flex; align-items: center;"> 
+                    <span style="position: absolute; left: 16px; color: var(--slate); font-size: 0.9rem;"><i class="fa-solid fa-circle-check"></i></span> 
+                    <input type="password" id="portal_user_password_confirm" required minlength="8" placeholder="Re-type password..." style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid var(--border); background: #ffffff; color: var(--navy); outline: none; box-sizing: border-box; transition: border-color 0.2s;"> 
+                </div> 
+            </div> 
+
+            <!-- SUBMIT ACTIVATION SUBMISSION ACTION TRIGGER --> 
+            <button type="submit" id="portal-activation-submit-btn" style="width: 100%; text-align: center; background: var(--primary); color: #ffffff; border: none; font-weight: 700; font-size: 1rem; padding: 16px 0; border-radius: 6px; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'"> 
+                <i class="fa-solid fa-unlock-keyhole" style="margin-right: 6px;"></i> Initialize Secured Dashboard 
+            </button> 
+        </form> 
+
+        <!-- TRUST MATRIX COMPLIANCE LOCK BANNER --> 
+        <div style="margin-top: 20px; border-top: 1px dashed var(--border); padding-top: 16px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.75rem; color: var(--slate); line-height: 1.4;"> 
+            <span style="color: var(--primary); font-size: 1rem; margin-top: 2px;"><i class="fa-solid fa-shield-halved"></i></span> 
+            <span><strong>Encrypted Vault Lock:</strong> Portal passwords undergo one-way cryptographic SHA-256 hashing prior to serialization inside database clusters. filings4u staff cannot view or access your security password.</span> 
+        </div> 
+    </aside> 
+</main> <!-- /End .success-container -->
+
+
+ <script>
+
+    // ======================================================== 
+// 🧠 SUCCESS RECEIPT PARSER AND ACCOUNT ACTIVATION LOGIC 
+// ======================================================== 
+
+// ON-PAGE LIFECYCLE INITIALIZATION ENTRY (Pure Vanilla JS - No jQuery Required)
+document.addEventListener("DOMContentLoaded", function() {
+    extractAndRenderReceiptManifestData();
+});
+
+// EXTRACT TRANSACTION RECORD FROM VAULT RUNTIME
+function extractAndRenderReceiptManifestData() {
+    const receiptTxDisplay = document.getElementById("receipt-tx-hash-display");
+    const portalEmailInput = document.getElementById("portal_user_email");
+    const receiptStorageManifestString = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
+
+    // Fallback safety if the session payload string context is empty
+    if (!receiptStorageManifestString) {
+        const urlQueryTrackingStrings = new URLSearchParams(window.location.search);
+        const queryPassedHash = urlQueryTrackingStrings.get('tx_hash') || "F4U-TX-UNKNOWN-EXPIRED";
+        
+        if (receiptTxDisplay) receiptTxDisplay.textContent = queryPassedHash;
+        if (portalEmailInput) {
+            portalEmailInput.value = "compliance-contact@yourcompany.com";
+            portalEmailInput.readOnly = false;
+            portalEmailInput.style.cursor = "text";
+        }
+        return;
+    }
+
+    try {
+        const receiptPayload = JSON.parse(receiptStorageManifestString);
+
+        // Render transaction parameters to tracking nodes
+        if (receiptTxDisplay) receiptTxDisplay.textContent = receiptPayload.transaction_hash_id || "F4U-TX-UNKNOWN";
+        if (portalEmailInput) portalEmailInput.value = receiptPayload.communications_email || "";
+
+        // Render corporate meta parameters entries (FIXED: Matched IDs to your HTML page slots)
+        const profileNameNode = document.getElementById("receipt-profile-name");
+        const profileEinNode = document.getElementById("receipt-profile-ein");
+        const profileAddressNode = document.getElementById("receipt-profile-address");
+
+        if (profileNameNode) profileNameNode.textContent = receiptPayload.legal_entity_name || "Not Specified";
+        if (profileEinNode) profileEinNode.textContent = receiptPayload.taxpayer_ein || "Not Specified";
+        
+        const fullyFormattedAddressString = `${receiptPayload.office_address_street || ''}, ${receiptPayload.office_address_city || ''} ${receiptPayload.office_address_zip || ''}`;
+        if (profileAddressNode) {
+            profileAddressNode.textContent = fullyFormattedAddressString.trim() === "," ? "Not Specified" : fullyFormattedAddressString;
+        }
+
+        // Build itemized invoice lines layout structures
+        const speedTier = receiptPayload.deployment_speed_tier ? receiptPayload.deployment_speed_tier.toUpperCase() : "STANDARD";
+        const basePrice = receiptPayload.financials_subtotal_amount || 0;
+        
+        let invoiceLinesMarkup = `
+            <div class="receipt-line-item" style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem;">
+                <span>Primary Filing Package (Speed: ${speedTier})</span>
+                <span style="font-family: monospace;">$${basePrice.toFixed(2)}</span>
+            </div>
+        `;
+
+        // Recount addon options array items inside receipt configurations
+        let incrementalAddonTotal = 0;
+        if (receiptPayload.active_addons_list && receiptPayload.active_addons_list.length > 0) {
+            receiptPayload.active_addons_list.forEach(addonCodeKey => {
+                let dynamicLabelStr = "Accessory Security Protection Shield";
+                let simulatedValueNum = 99.00;
+
+                if (addonCodeKey === "registered-agent") {
+                    dynamicLabelStr = "Permanent Registered Agent Service";
+                    simulatedValueNum = 149.00;
+                } else if (addonCodeKey === "compliance-vault") {
+                    dynamicLabelStr = "Annual Compliance Vault Monitoring";
+                    simulatedValueNum = 99.00;
+                } else if (addonCodeKey === "bylaws-pack") {
+                    dynamicLabelStr = "Structured Corporate Bylaws Framework";
+                    simulatedValueNum = 75.00;
+                }
+                
+                incrementalAddonTotal += simulatedValueNum;
+                invoiceLinesMarkup += `
+                    <div class="receipt-line-item" style="color: var(--slate); display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem;">
+                        <span>+ ${dynamicLabelStr}</span>
+                        <span style="font-family: monospace;">$${simulatedValueNum.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Append generated template blocks directly to the tracking viewport grid
+        const injectorFrame = document.getElementById("receipt-items-injector-frame");
+        if (injectorFrame) injectorFrame.innerHTML = invoiceLinesMarkup;
+
+        // Populate pricing totals calculations elements (FIXED: Cleaned up the calculation logic block)
+        const subtotalAmount = basePrice + incrementalAddonTotal;
+        const grandTotalAmount = receiptPayload.financials_grand_total_charge || subtotalAmount;
+        const govFeesAmount = Math.max(0, grandTotalAmount - subtotalAmount);
+
+        const subtotalDisp = document.getElementById("receipt-subtotal-display");
+        const govDisp = document.getElementById("receipt-gov-fee-display");
+        const grandDisp = document.getElementById("receipt-grand-total-display");
+
+        if (subtotalDisp) subtotalDisp.textContent = `$${subtotalAmount.toFixed(2)}`;
+        if (govDisp) govDisp.textContent = `$${govFeesAmount.toFixed(2)}`;
+        if (grandDisp) grandDisp.textContent = `$${grandTotalAmount.toFixed(2)}`;
+
+    } catch (jsonErr) {
+        console.error("Success receipt engine parsing error context: ", jsonErr);
+    }
+}
+
+// 🔐 HANDLE CLIENT ACCOUNT ACTIVATION HANDSHAKE
+function handleClientAccountActivation(event) {
+    if (event && typeof event.preventDefault === "function") event.preventDefault();
+
+    const passField = document.getElementById("portal_user_password");
+    const confirmField = document.getElementById("portal_user_password_confirm");
+    const targetUsernameEmail = document.getElementById("portal_user_email").value;
+
+    if (!passField || !confirmField) return false;
+
+    if (passField.value.length < 8) {
+        alert("Security validation failure: Account password metrics must be at least 8 characters.");
+        return false;
+    }
+
+    if (passField.value !== confirmField.value) {
+        alert("Security validation failure: Input confirmation parameters mismatch. Type matching passwords.");
+        return false;
+    }
+
+    // Alter submit action button visually during server handshakes
+    const actionSubmitBtn = document.getElementById("portal-activation-submit-btn");
+    if (actionSubmitBtn) {
+        actionSubmitBtn.disabled = true;
+        actionSubmitBtn.style.background = "#64748b";
+        actionSubmitBtn.style.boxShadow = "none";
+        actionSubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registering security credentials...';
+    }
+
+    // Perform secure user account instantiation inside data clusters
+    setTimeout(function() {
+        // Wipe data strings completely from cache layers to secure profile variables
+        sessionStorage.removeItem("f4u_finalized_checkout_receipt_manifest");
+        
+        // FIXED: Added missing template interpolation placeholder prefix to ensure valid routing redirect paths
+        window.location.href = `https://filings4u.com{encodeURIComponent(targetUsernameEmail)}&session_state=authenticated_success`;
+    }, 2000);
+
+    return false;
+}
+
+ </script>
+
+    <!-- ======================================================== -->
+    <!-- 🧱 STANDALONE GLOBAL CORPORATE SITE FOOTER MATRIX        -->
+    <!-- ======================================================== --> 
+    <footer class="footer-master-container" style="background: #0a1f44; color: #f4f7fa; padding: 60px 0 30px 0; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; margin-top: auto; position: relative;"> 
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.02; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div> 
+        
+        <div class="footer-width-limiter" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box; width: 100%;"> 
+            
+            <!-- MAIN DIRECTORY FLEX WRAPPER --> 
+            <div class="footer-directory-grid" style="display: flex; justify-content: space-between; gap: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap;"> 
+                
+                <!-- COLUMN 1: BRAND LOGO (Anchored to the Left Edge) --> 
+                <div style="flex: 1; min-width: 240px;"> 
+                    <img src="images/logo-white.png" alt="filings4u" style="height: 44px; width: auto; object-fit: contain; margin-bottom: 16px; display: block;"> 
+                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; max-width: 320px; margin: 0;">Enterprise compliance onboarding channels and multi-jurisdictional automated file orchestration deployment networks.</p> 
+                </div> 
+                
+                <!-- RIGHT CONTAINER: Gathers text columns together on the right side --> 
+                <div style="display: flex; gap: 60px; flex-wrap: wrap; justify-content: flex-end;"> 
+                    
+                    <!-- COLUMN 2: INFRASTRUCTURE LINKS --> 
+                    <div style="min-width: 180px;"> 
+                        <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Infrastructure Links</h4> 
+                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;"> 
+                            <a href="privacy-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Privacy Policy Matrix</a> 
+                            <a href="terms-of-service.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Terms of Service Agreement</a> 
+                            <a href="refund-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Refund Cancellation Criteria</a> 
+                        </div> 
+                    </div> 
+                    
+                    <!-- COLUMN 3: SUPPORT GATEWAYS --> 
+                    <div style="min-width: 180px;"> 
+                        <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Support Gateways</h4> 
+                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;"> 
+                            <a href="contact.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Contact Specialist Liaisons</a> 
+                            <a href="compliance.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Central Compliance Hub</a> 
+                        </div> 
+                    </div> 
+                    
+                    <!-- COLUMN 4: CORPORATE HEADQUARTERS (Flipped text alignment right) --> 
+                    <div style="min-width: 200px; text-align: right; display: flex; flex-direction: column; align-items: flex-end;"> 
+                        <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Corporate Headquarters</h4> 
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;"> 
+                            <span>filings4u, LLC</span> 
+                            <span>123 Enterprise Way, Suite 100</span> 
+                            <span>Austin, Texas 78701</span> 
+                            <span style="margin-top: 8px; font-size: 0.75rem; color: #94a3b8;">System Status: <strong style="color: #10b981;">● Operational</strong></span> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div> 
+            
+            <!-- SUB-FOOTER LEGAL BAR (Perfect alignment match) --> 
+            <div class="footer-legal-row-bar" style="padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.75rem; color: #94a3b8; width: 100%; box-sizing: border-box;"> 
+                <p style="margin: 0; line-height: 1.5;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a></p> 
+                
+                <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
+      <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection </div> 
+            </div> 
+            
+        </div> 
+    </footer> 
+
+    <!-- 🌐 EXTERNAL UTILITY BEHAVIOR RUNTIMES -->
+    <script src="assets/js/toggle.js"></script> 
+</body> 
+</html>
+
