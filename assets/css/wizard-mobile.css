@@ -1,0 +1,95 @@
+/* ========================================================
+   📱 WIZARD FLUID MOBILE RESPONSIVE ENGINE WRAPPER Matrix
+   ======================================================== */
+
+@media screen and (max-width: 768px) {
+    /* 1. Force the Main Layout Container into a Single Column Fluid Stack */
+    #master-onboarding-form,
+    #dynamic-onboarding-fields-root,
+    .wizard-grid-layout,
+    [style*="display: grid"],
+    [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* 2. Strip Hardcoded Span Modifiers to Allow Form Factor Real Estate Expansion */
+    .wizard-input-group,
+    [style*="grid-column: span 2"],
+    [style*="grid-column: span 1"],
+    [style*="grid-column: span 3"] {
+        grid-column: span 1 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 3. Force Nested Inner Grid Modules (City/State/Zip Blocks) into Stacked Vectors */
+    [style*="grid-template-columns: 2fr 1fr 1fr"],
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="grid-template-columns: 2fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+
+    /* 4. Optimize Touch Target Scale Fields for Easy Thumb Selections */
+    .wizard-input-field,
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+        width: 100% !important;
+        min-height: 48px !important; /* Meets Apple/Android accessibility guidelines */
+        font-size: 16px !important;  /* Prevents iOS from forcing auto-zoom behaviors */
+        padding: 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 5. Fluid Adjustment for Custom UI Addon Selector and Multi-Row Cards */
+    .member-record-card,
+    #bl_mailing_wrapper > div,
+    #ein_mailing_wrapper > div,
+    #dis_asset_dist_wrapper,
+    #dis_debts_wrapper,
+    #cgs_shipping_address_wrapper > div,
+    #ap_shipping_address_wrapper > div,
+    #st_physical_nexus_wrapper,
+    #st_economic_nexus_wrapper,
+    #pr_existing_suta_wrapper,
+    #hut_vehicle_card_1,
+    #sam_uei_code_wrapper {
+        grid-template-columns: 1fr !important;
+        padding: 12px !important;
+        gap: 12px !important;
+    }
+
+    /* 6. Enforce Absolute Padding Compressions on Global Root Panels */
+    .wizard-panel-card {
+        padding: 16px !important;
+        margin: 8px !important;
+        border-radius: 8px !important;
+    }
+
+    /* 7. Optimize the Dynamic Pop-up Modal Geometry for Small Form Factors */
+    #nea_checklist_modal_backdrop > div {
+        width: 95% !important;
+        max-height: 90vh !important;
+        margin: 10px !important;
+    }
+
+    /* 8. Make Invoice Summary Rows Scannable and Compact */
+    #checkout-invoice-rows-container > div {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+        padding: 8px 0 !important;
+    }
+
+    #checkout-invoice-rows-container > div > span:last-child {
+        align-self: flex-end !important;
+        font-weight: 700 !important;
+    }
+}
