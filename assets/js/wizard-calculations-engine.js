@@ -258,201 +258,225 @@ function goToNextWizardStep(targetStepIndex) {
 
 
 
-
 // ========================================================
 // 🧠 AUTOMATED DATA CONTROLLER AND CALCULATIONS SCRIPT ENGINE
 // ========================================================
 
 // 🚀 MASTER STEP NAVIGATION CONTROL LOGIC (VANILLA JS IMPLEMENTATION)
 function navigateWizardStepTrackVanilla(directionOffset) {
-  const plannedTargetStep = currentWizardActiveStep + directionOffset;
-  
-  // Limit navigation bounds to valid panels
-  if (plannedTargetStep < 1 || plannedTargetStep > totalWizardExpectedSteps) return;
-  
-  // Execute input structure check loops when advancing panels
-  if (directionOffset > 0) {
-    if (!validateStepInputParametersVanilla(currentWizardActiveStep)) {
-      return; // Prevent step advance if validation parameters check fails
+    const plannedTargetStep = currentWizardActiveStep + directionOffset;
+    
+    // Limit navigation bounds to valid panels
+    if (plannedTargetStep < 1 || plannedTargetStep > totalWizardExpectedSteps) return;
+    
+    // Execute input structure check loops when advancing panels
+    if (directionOffset > 0) {
+        if (!validateStepInputParametersVanilla(currentWizardActiveStep)) {
+            return; // Prevent step advance if validation parameters check fails
+        }
     }
-  }
-  
-  // Save structural panel parameters to state
-  if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
-    cacheAndRestoreWizardFormStatesVanilla(false);
-  }
-  
+    
+    // Save structural panel parameters to state
+    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+        cacheAndRestoreWizardFormStatesVanilla(false);
+    }
+} // 💎 FIX: Explicitly closed missing navigation control function bracket
 
-  // 🔍 INPUT INTERACTIVE VALIDATION CONTROL ENGINE
+// 🔍 INPUT INTERACTIVE VALIDATION CONTROL ENGINE
 function validateStepInputParametersVanilla(stepIndex) {
-  let isValid = true;
-  const targetPanel = document.getElementById(`step-panel-${stepIndex}`);
-  if (!targetPanel) return true;
-  
-  // Clear prior validation markers
-  targetPanel.querySelectorAll('.input-error-marker').forEach(node => node.remove());
-  targetPanel.querySelectorAll('input, select').forEach(node => {
-    node.style.borderColor = 'var(--border)';
-  });
-
-  // Step 1 Check Parameters
-  if (stepIndex === 1) {
-    const targetJurisdiction = document.getElementById('wizard-target-jurisdiction');
-    if (targetJurisdiction && !targetJurisdiction.value) {
-      markFieldAsInvalidVanilla(targetJurisdiction, 'Filing authority target jurisdiction choice required.');
-      isValid = false;
-    }
-  }
-
-  // Step 2 Check Parameters
-  if (stepIndex === 2) {
-    const checkedRequiredFields = [
-      { id: 'ent_legal_name', label: 'Legal business name parameter entry is required.' },
-      { id: 'ent_ein', label: 'Federal taxonomy taxpayer EIN/Tax ID entry is required.' },
-      { id: 'ent_address_street', label: 'Principal business address designation entry is required.' },
-      { id: 'ent_address_city', label: 'Principal corporate office locality municipality city value required.' },
-      { id: 'ent_address_zip', label: 'Postal registration address zip routing index entry required.' },
-      { id: 'ent_officer_name', label: 'Executing administrative chief executive profile name parameter required.' },
-      { id: 'ent_comms_email', label: 'Communications notification gateway alert system target address required.' },
-      { id: 'ent_comms_phone', label: 'Communications cellular telephone connectivity digits parameter entry required.' }
-    ];
+    let isValid = true;
+    const targetPanel = document.getElementById(`step-panel-${stepIndex}`);
+    if (!targetPanel) return true;
     
-    checkedRequiredFields.forEach(field => {
-      const inputNode = document.getElementById(field.id);
-      if (inputNode && (!inputNode.value || inputNode.value.trim() === "")) {
-        markFieldAsInvalidVanilla(inputNode, field.label);
-        isValid = false;
-      }
+    // Clear prior validation markers
+    targetPanel.querySelectorAll('.input-error-marker').forEach(node => node.remove());
+    targetPanel.querySelectorAll('input, select').forEach(node => {
+        node.style.borderColor = 'var(--border)';
     });
-  }
-
-  // Step 4 Check Parameters
-  if (stepIndex === 4) {
-    if (!window.signaturePadHasBeenDrawnByUser) {
-      alert("Digital Power of Attorney signature verification parameters mapping record empty. Draw signature on screen canvas pad to pass validation check.");
-      isValid = false;
+    
+    // Step 1 Check Parameters
+    if (stepIndex === 1) {
+        const targetJurisdiction = document.getElementById('wizard-target-jurisdiction');
+        if (targetJurisdiction && !targetJurisdiction.value) {
+            markFieldAsInvalidVanilla(targetJurisdiction, 'Filing authority target jurisdiction choice required.');
+            isValid = false;
+        }
     }
     
-    const poaPrintedName = document.getElementById('poa_signer_printed');
-    if (poaPrintedName && (!poaPrintedName.value || poaPrintedName.value.trim() === "")) {
-      markFieldAsInvalidVanilla(poaPrintedName, 'Signatory electronic acknowledgement identity verification string missing.');
-      isValid = false;
+    // Step 2 Check Parameters
+    if (stepIndex === 2) {
+        const checkedRequiredFields = [
+            { id: 'ent_legal_name', label: 'Legal business name parameter entry is required.' },
+            { id: 'ent_ein', label: 'Federal taxonomy taxpayer EIN/Tax ID entry is required.' },
+            { id: 'ent_address_street', label: 'Principal business address designation entry is required.' },
+            { id: 'ent_address_city', label: 'Principal corporate office locality municipality city value required.' },
+            { id: 'ent_address_zip', label: 'Postal registration address zip routing index entry required.' },
+            { id: 'ent_officer_name', label: 'Executing administrative chief executive profile name parameter required.' },
+            { id: 'ent_comms_email', label: 'Communications notification gateway alert system target address required.' },
+            { id: 'ent_comms_phone', label: 'Communications cellular telephone connectivity digits parameter entry required.' }
+        ];
+        
+        checkedRequiredFields.forEach(field => {
+            const inputNode = document.getElementById(field.id);
+            if (inputNode && (!inputNode.value || inputNode.value.trim() === "")) {
+                markFieldAsInvalidVanilla(inputNode, field.label);
+                isValid = false;
+            }
+        });
     }
     
-    const poaCheckbox = document.getElementById('poa_agreement_lock');
-    if (poaCheckbox && !poaCheckbox.checked) {
-      alert("Authorization lock check verification asset validation check failed. Accept Power of Attorney terms layout constraints to continue.");
-      isValid = false;
+    // Step 4 Check Parameters
+    if (stepIndex === 4) {
+        if (!window.signaturePadHasBeenDrawnByUser) {
+            alert("Digital Power of Attorney signature verification parameters mapping record empty. Draw signature on screen canvas pad to pass validation check.");
+            isValid = false;
+        }
+        const poaPrintedName = document.getElementById('poa_signer_printed');
+        if (poaPrintedName && (!poaPrintedName.value || poaPrintedName.value.trim() === "")) {
+            markFieldAsInvalidVanilla(poaPrintedName, 'Signatory electronic acknowledgement identity verification string missing.');
+            isValid = false;
+        }
+        const poaCheckbox = document.getElementById('poa_agreement_lock');
+        if (poaCheckbox && !poaCheckbox.checked) {
+            alert("Authorization lock check verification asset validation check failed. Accept Power of Attorney terms layout constraints to continue.");
+            isValid = false;
+        }
     }
-  }
-
-  return isValid;
+    
+    return isValid;
 }
 
-  // VISUAL ERROR MARKER INJECTION PROTOCOL
+// VISUAL ERROR MARKER INJECTION PROTOCOL
 function markFieldAsInvalidVanilla(inputNode, informativeLabelString) {
-  if (!inputNode || !inputNode.parentNode) return;
-  inputNode.style.borderColor = '#ef4444';
-  const spanError = document.createElement('span');
-  spanError.className = 'input-error-marker';
-  spanError.style.color = '#ef4444';
-  spanError.style.fontSize = '0.75rem';
-  spanError.style.marginTop = '4px';
-  spanError.textContent = informativeLabelString;
-  inputNode.parentNode.insertBefore(spanError, inputNode.nextSibling);
+    if (!inputNode || !inputNode.parentNode) return;
+    inputNode.style.borderColor = '#ef4444';
+    const spanError = document.createElement('span');
+    spanError.className = 'input-error-marker';
+    spanError.style.color = '#ef4444';
+    spanError.style.fontSize = '0.75rem';
+    spanError.style.marginTop = '4px';
+    spanError.textContent = informativeLabelString;
+    inputNode.parentNode.insertBefore(spanError, inputNode.nextSibling);
 }
 
 // 📊 DYNAMIC MATHEMATICAL AGGREGATION INVOICE LOGIC (COMPLETE CORE SYSTEM)
 function updateDynamicPricingMatrixVanilla() {
-  const dropdownService = document.getElementById("wizard-route-service-id");
-  const dropdownPlan = document.getElementById("wizard-route-tier-id");
-  
-  if (dropdownService && dropdownService.value) routeActiveServiceKey = dropdownService.value;
-  if (dropdownPlan && dropdownPlan.value) routeActivePlanKey = dropdownPlan.value;
-  
-  const planConfig = CENTRAL_SERVICE_PLAN_DB[routeActiveServiceKey];
-  if (!planConfig) return;
-  
-  // Core baseline parameters calculation lookups
-  const baseTierPrice = planConfig.prices[routeActivePlanKey];
-  const baseGovAgencyFee = planConfig.gov_fee;
-  
-  // Explicitly declared incremental variable token inside local execution scope
-  let incrementalAddonTotal = 0;
-  let descriptiveInvoiceRowsHtml = `
-    <div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: var(--navy); border-bottom: 1px solid var(--border); padding-bottom: 10px;">
-      <span>${planConfig.name} (${routeActivePlanKey.toUpperCase()})</span>
-      <span style="font-family: monospace;">$${baseTierPrice.toFixed(2)}</span>
-    </div>
-  `;
-
-  // Evaluate checked state on accessory protection upsell checkboxes
-  document.querySelectorAll('.upsell-checkbox:checked').forEach(checkbox => {
-    const addonPriceValue = parseFloat(checkbox.getAttribute('data-price')) || 0;
-    const addonLabelString = checkbox.getAttribute('data-name') || "Optional Add-on Asset";
-    incrementalAddonTotal += addonPriceValue;
-    descriptiveInvoiceRowsHtml += `
-      <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-        <span>+ ${addonLabelString}</span>
-        <span style="font-family: monospace;">$${addonPriceValue.toFixed(2)}</span>
-      </div>
+    const dropdownService = document.getElementById("wizard-route-service-id");
+    const dropdownPlan = document.getElementById("wizard-route-tier-id");
+    
+    if (dropdownService && dropdownService.value) routeActiveServiceKey = dropdownService.value;
+    if (dropdownPlan && dropdownPlan.value) routeActivePlanKey = dropdownPlan.value;
+    
+    const planConfig = CENTRAL_SERVICE_PLAN_DB[routeActiveServiceKey];
+    if (!planConfig) return;
+    
+    // Core baseline parameters calculation lookups
+    const baseTierPrice = planConfig.prices[routeActivePlanKey];
+    const baseGovAgencyFee = planConfig.gov_fee;
+    
+    // Explicitly declared incremental variable token inside local execution scope
+    let incrementalAddonTotal = 0;
+    let descriptiveInvoiceRowsHtml = `
+        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: var(--navy); border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+            <span>${planConfig.name} (${routeActivePlanKey.toUpperCase()})</span>
+            <span style="font-family: monospace;">$${baseTierPrice.toFixed(2)}</span>
+        </div>
     `;
-  });
-
-  // ========================================================
-  // 🛒 STEP 2 DYNAMIC CONDITIONAL CART ADD-ON ITEMS HOOKS
-  // ========================================================
-  if (window.customSelectedRegisteredAgentServiceActive) {
-    incrementalAddonTotal += 75.00;
-    descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ Registered Agent Shield</span><span style="font-family: monospace;">$75.00</span></div>`;
-  }
-  if (window.customSelectedEinProcurementServiceActive) {
-    incrementalAddonTotal += 79.00;
-    descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ EIN Procurement Processing</span><span style="font-family: monospace;">$79.00</span></div>`;
-  }
-  if (window.customSelectedScorpElectionServiceActive) {
-    incrementalAddonTotal += 79.00;
-    descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ Form 2553 Preparation</span><span style="font-family: monospace;">$79.00</span></div>`;
-  }
-  if (window.customSelectedSolePropLicenseAuditServiceActive || window.customSelectedDbaLicenseAuditServiceActive || window.customSelectedNonprofitLicenseCheckActive) {
-    incrementalAddonTotal += 79.00;
-    descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ Compliance License Audit Suite</span><span style="font-family: monospace;">$79.00</span></div>`;
-  }
-  if (window.customSelectedDbaSearchServiceActive) {
-    incrementalAddonTotal += 79.00;
-    descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ Name Availability Search</span><span style="font-family: monospace;">$79.00</span></div>`;
-  }
-  if (window.customSelectedSeriesLicenseAuditActive) {
-    incrementalAddonTotal += 125.00;
-    descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ License &amp; Permit Audit Suite</span><span style="font-family: monospace;">$125.00</span></div>`;
-  }
-
-  // Aggregate absolute billing metrics strings parameters
-  const aggregatedFilingSubtotal = baseTierPrice + incrementalAddonTotal;
-  const finalizedGrandTotal = aggregatedFilingSubtotal + baseGovAgencyFee;
-
-  // Inject rendered components to the document layout tree root containers
-  const invoiceContainer = document.getElementById('checkout-invoice-rows-container');
-  if (invoiceContainer) invoiceContainer.innerHTML = descriptiveInvoiceRowsHtml;
-
-  const subtotalDisp = document.getElementById('invoice-subtotal-display');
-  if (subtotalDisp) subtotalDisp.textContent = `$${aggregatedFilingSubtotal.toFixed(2)}`;
-
-  const govDisp = document.getElementById('invoice-gov-fees-display');
-  if (govDisp) govDisp.textContent = `$${baseGovAgencyFee.toFixed(2)}`;
-
-  const grandDisp = document.getElementById('invoice-grand-total-display');
-  if (grandDisp) grandDisp.textContent = `$${finalizedGrandTotal.toFixed(2)}`;
-
-  // State synchronization anchor mapping assignment
-  window.wizardCalculatedFinalTotalAmount = finalizedGrandTotal;
-  
-  // Update secondary static layout displays if present on the view page
-  const secondaryTotalDisplay = document.getElementById("wizard-sticky-total-value");
-  if (secondaryTotalDisplay) secondaryTotalDisplay.textContent = `$${finalizedGrandTotal.toFixed(2)}`;
+    
+    // Evaluate checked state on accessory protection upsell checkboxes
+    document.querySelectorAll('.upsell-checkbox:checked').forEach(checkbox => {
+        const addonPriceValue = parseFloat(checkbox.getAttribute('data-price')) || 0;
+        const addonLabelString = checkbox.getAttribute('data-name') || "Optional Add-on Asset";
+        incrementalAddonTotal += addonPriceValue;
+        
+        descriptiveInvoiceRowsHtml += `
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 500;">
+                <span>+ ${addonLabelString}</span>
+                <span style="font-family: monospace;">$${addonPriceValue.toFixed(2)}</span>
+            </div>
+        `;
+    });
+    
+    // ========================================================
+    // 🛒 STEP 2 DYNAMIC CONDITIONAL CART ADD-ON ITEMS HOOKS
+    // ========================================================
+    if (window.customSelectedRegisteredAgentServiceActive) {
+        incrementalAddonTotal += 75.00;
+        descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ Registered Agent Shield</span><span style="font-family: monospace;">$75.00</span></div>`;
+    }
+    if (window.customSelectedEinProcurementServiceActive) {
+        incrementalAddonTotal += 79.00;
+        descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ EIN Procurement Processing</span><span style="font-family: monospace;">$79.00</span></div>`;
+    }
+    if (window.customSelectedScorpElectionServiceActive) {
+        incrementalAddonTotal += 79.00;
+        descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ Form 2553 Preparation</span><span style="font-family: monospace;">$79.00</span></div>`;
+    }
+    if (window.customSelectedSolePropLicenseAuditServiceActive || window.customSelectedDbaLicenseAuditServiceActive || window.customSelectedNonprofitLicenseCheckActive) {
+        incrementalAddonTotal += 79.00;
+        descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ Compliance License Audit Suite</span><span style="font-family: monospace;">$79.00</span></div>`;
+    }
+    if (window.customSelectedDbaSearchServiceActive) {
+        incrementalAddonTotal += 79.00;
+        descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ Name Availability Search</span><span style="font-family: monospace;">$79.00</span></div>`;
+    }
+    if (window.customSelectedSeriesLicenseAuditActive) {
+        incrementalAddonTotal += 125.00;
+        descriptiveInvoiceRowsHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate);"><span>+ License &amp; Permit Audit Suite</span><span style="font-family: monospace;">$125.00</span></div>`;
+    }
+    
+    // 💎 INJECTED NEW ENTRANT LIVE AUDIT CHECKOUT HOOK
+    if (window.lastCalculatedNewEntrantAddonTotal && window.lastCalculatedNewEntrantAddonTotal > 0) {
+        incrementalAddonTotal += window.lastCalculatedNewEntrantAddonTotal;
+    }
+    
+    // Aggregate absolute billing metrics strings parameters
+    const aggregatedFilingSubtotal = baseTierPrice + incrementalAddonTotal;
+    const finalizedGrandTotal = aggregatedFilingSubtotal + baseGovAgencyFee;
+    
+    // Inject rendered components to the document layout tree root containers
+    const invoiceContainer = document.getElementById('checkout-invoice-rows-container');
+    if (invoiceContainer) {
+        invoiceContainer.innerHTML = descriptiveInvoiceRowsHtml;
+    }
+    
+    // 💎 INJECTED NEW ENTRANT SUMMARY INVOICE PRINT ELEMENT
+    const summaryAddonRoot = document.getElementById("summary-onboarding-addons-root");
+    if (summaryAddonRoot) {
+        if (window.lastCalculatedNewEntrantAddonHtml && window.lastCalculatedNewEntrantAddonTotal > 0) {
+            summaryAddonRoot.innerHTML = window.lastCalculatedNewEntrantAddonHtml;
+            summaryAddonRoot.style.display = "block";
+        } else {
+            summaryAddonRoot.innerHTML = "";
+            summaryAddonRoot.style.display = "none";
+        }
+    }
+    
+    // 🛡️ REPAIRED SYNTAX WRAPPERS Below (Added valid string assignment syntax quotes)
+    const subtotalDisp = document.getElementById('invoice-subtotal-display');
+    if (subtotalDisp) subtotalDisp.textContent = `$${aggregatedFilingSubtotal.toFixed(2)}`;
+    
+    const govDisp = document.getElementById('invoice-gov-fees-display');
+    if (govDisp) govDisp.textContent = `$${baseGovAgencyFee.toFixed(2)}`;
+    
+    const grandDisp = document.getElementById('invoice-grand-total-display');
+    if (grandDisp) grandDisp.textContent = `$${finalizedGrandTotal.toFixed(2)}`;
+    
+    // State synchronization anchor mapping assignment
+    window.wizardCalculatedFinalTotalAmount = finalizedGrandTotal;
+    
+    // 🛡️ REPAIRED SYNTAX WRAPPERS (Fixed split variable spaces name and template literals)
+    const secondaryTotalDisplay = document.getElementById("wizard-sticky-total-value");
+    if (secondaryTotalDisplay) secondaryTotalDisplay.textContent = `$${finalizedGrandTotal.toFixed(2)}`;
 }
 
+// 💎 SYSTEM NAMING SYNCHRONIZATION ALIAS
+function updateWizardFinalTotalAmountMatrix() {
+    updateDynamicPricingMatrixVanilla();
 }
+
+
+
 
 
 
@@ -3354,6 +3378,113 @@ function toggleBoc3AuthorityIdentifiersVisibility(selectionValue) {
 // ========================================================
 
 function toggleIftaFulfillmentSubFields(selectionValue) {
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+
+// ========================================================
+// 🔄 FREIGHT BROKER INSURANCE CONFIGURATOR INTERACTION LAYER
+// ========================================================
+
+function toggleBrokerInsuranceBankruptcyDetailsVisibility(selectionValue) {
+    var wrapper = document.getElementById("bins_bankruptcy_details_wrapper");
+    var input = document.getElementById("bins_bankruptcy_details");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+        input.value = "";
+    }
+}
+
+function toggleBrokerInsuranceFelonyDetailsVisibility(selectionValue) {
+    var wrapper = document.getElementById("bins_felony_details_wrapper");
+    var input = document.getElementById("bins_felony_details");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+        input.value = "";
+    }
+}
+
+
+// ========================================================
+// 🔄 NEW ENTRANT SAFETY AUDIT CONFIGURATOR INTERACTION LAYER
+// ========================================================
+
+// Toggles visibility for official target letter deadlines
+function toggleNewEntrantAuditLetterDetails(selectionValue) {
+    var wrapper = document.getElementById("nea_letter_deadline_wrapper");
+    var dateInput = document.getElementById("nea_audit_deadline");
+    if (!wrapper || !dateInput) return;
+
+    if (selectionValue === "letter-received") {
+        wrapper.style.display = "block";
+        dateInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        dateInput.required = false;
+        dateInput.value = "";
+    }
+}
+
+// Interactive Strategic Checklist Modal Operations
+function triggerNewEntrantAuditComplianceChecklistPopup() {
+    var modal = document.getElementById("nea_checklist_modal_backdrop");
+    if (modal) modal.style.display = "flex";
+}
+
+function closeNewEntrantAuditComplianceChecklistPopup() {
+    var modal = document.getElementById("nea_checklist_modal_backdrop");
+    if (modal) modal.style.display = "none";
+}
+
+// Live Calculations Synchronizer Layer
+function executeNewEntrantAuditLiveFulfillmentSync() {
+    // 1. Identify active addon selections
+    const servicesList = [
+        { id: "nea_service_dqf", price: 79.00, label: "Audit Prep: DQF Assembly" },
+        { id: "nea_service_consortium", price: 149.00, label: "Audit Prep: DOT Consortium" },
+        { id: "nea_service_hos", price: 195.00, label: "Audit Prep: HOS Log Audit" },
+        { id: "nea_service_maintenance" , price: 85.00, label: "Audit Prep: Maintenance Record" },
+        { id: "nea_service_consultation", price: 250.00, label: "Audit Prep: 1-on-1 Strategist Session" }
+    ];
+
+    let dynamicAddonTotal = 0;
+    let selectedAddonItemsHtml = "";
+
+    servicesList.forEach(function(service) {
+        var checkboxNode = document.getElementById(service.id);
+        if (checkboxNode && checkboxNode.checked) {
+            dynamicAddonTotal += service.price;
+            selectedAddonItemsHtml += `
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; padding: 4px 0; border-bottom: 1px dashed #e2e8f0; color: var(--slate);">
+                    <span><i class="fa-solid fa-square-check" style="color: var(--primary);"></i> ${service.label}</span>
+                    <span style="font-family: monospace; font-weight: 600;">$${service.price.toFixed(2)}</span>
+                </div>
+                
+            `;
+        }
+    });
+
+    // Store calculations out to window state memory for the final step checkout page to capture
+    window.lastCalculatedNewEntrantAddonTotal = dynamicAddonTotal;
+    window.lastCalculatedNewEntrantAddonHtml = selectedAddonItemsHtml;
+
+    console.log("[Audit Calculator Sync] Running layout balance adjustments. Addon Delta Total: $" + dynamicAddonTotal);
+
+    // 2. Trigger your wizard's native financial recalculation function to modify checkout totals
     if (typeof updateWizardFinalTotalAmountMatrix === "function") {
         updateWizardFinalTotalAmountMatrix();
     }

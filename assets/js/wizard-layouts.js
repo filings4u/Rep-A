@@ -6959,6 +6959,640 @@ function buildIftaRegistrationForm(stateDropdownOptionsHtml = "") {
 }
 
 
+// FAMILY 31A: HAZMAT REGISTRATION LAYOUT MATRIX (PART 1 OF 3)
+function buildHazmatRegistrationFormPart1(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: WHAT IS HAZMAT REGISTRATION? -->
+        <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
+            <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> Pipeline and Hazardous Materials Safety Administration (PHMSA) Compliance</strong>
+            Any business entity transporting or offering for transport specific types and quantities of hazardous materials in commerce must maintain a valid federal Hazardous Materials Registration certificate with the PHMSA department. Operating a commercial fleet unit handling placarded explosives, flammable gases, radioactive materials, or toxic-by-inhalation cargo without a processed PHMSA credential voids safety standing and brings substantial federal daily enforcement citations.
+        </div>
+
+        <!-- SECTION 1: HAZARDOUS MATERIALS CARRIER PROFILE -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Carrier Identity Profile</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="haz_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Official Legal Company Name <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="haz_legal_name" required placeholder="Enter exact name registered with your USDOT number and state records" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="haz_usdot_number" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">USDOT Number <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="haz_usdot_number" required placeholder="Enter USDOT Number" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="haz_federal_ein" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Employer Identification Number (EIN) <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="haz_federal_ein" required placeholder="00-0000000" pattern="[0-9]{2}\\\\-[0-9]{7}" title="Standard 9-digit EIN required (XX-XXXXXXX)" class="wizard-input-field" style="font-family: monospace;">
+        </div>
+
+        <!-- SECTION 2: PHMSA TIER CLASSIFICATIONS -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. PHMSA Regulatory Tier Selection</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="haz_business_tier" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Federal Business Entity Size Classification <span style="color: #ef4444;">*</span></label>
+            <select id="haz_business_tier" required class="wizard-input-field" style="font-weight: 600;" onchange="if(typeof updateWizardFinalTotalAmountMatrix === 'function') { updateWizardFinalTotalAmountMatrix(); }">
+                <option value="" disabled selected>Select Business Classification...</option>
+                <option value="small">Small Business / Non-Profit Operator (Meets SBA size criteria parameters — Reduced federal registration fees apply)</option>
+                <option value="large">Large Business Entity (Exceeds baseline SBA size parameters — Standard federal registration fees apply)</option>
+            </select>
+        </div>
+    `;
+}
+
+// FAMILY 31A: HAZMAT REGISTRATION LAYOUT MATRIX (PART 2 OF 3)
+function buildHazmatRegistrationFormPart2(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- SECTION 3: PHMSA MULTI-YEAR REGISTRATION PACKAGE SELECTION -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Registration Validity Multi-Period Package</h3>
+            <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">Select your planned multi-year processing horizon package. Selecting a multi-year setup locks in current rates and reduces annual filing overhead loops.</p>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="haz_registration_period" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Filing Multi-Year Term Selection <span style="color: #ef4444;">*</span></label>
+            <select id="haz_registration_period" required class="wizard-input-field" style="font-weight: 600;" onchange="if(typeof updateWizardFinalTotalAmountMatrix === 'function') { updateWizardFinalTotalAmountMatrix(); }">
+                <option value="1-year" selected>1-Year Registration Term Package (Valid for the upcoming standard federal cycle)</option>
+                <option value="2-year">2-Year Multi-Period Registration Term (Locks in pricing and structural tracking validations)</option>
+                <option value="3-year">3-Year Extended Multi-Period Registration Term (Maximum authorized coverage block window)</option>
+            </select>
+        </div>
+
+        <!-- SECTION 4: HAZARDOUS MATERIALS CARGO CLASS CATEGORIES CHECKLIST -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px; margin-bottom: 8px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">4. Hazardous Materials Commodity Profile Checklist</h3>
+            <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">Select the specific classifications of hazardous products your equipment asset frameworks are hauling (Check all that apply):</p>
+        </div>
+
+        <div style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #ffffff; border: 1px solid var(--border); padding: 16px; border-radius: 8px; box-sizing: border-box;">
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" id="haz_class_1" value="explosives" style="margin-top: 3px;">
+                <label for="haz_class_1" style="font-size: 0.825rem; color: var(--navy); font-weight: 600;">Class 1: Explosives (Placardable quantities/divisions)</label>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" id="haz_class_2" value="gases" style="margin-top: 3px;">
+                <label for="haz_class_2" style="font-size: 0.825rem; color: var(--navy); font-weight: 600;">Class 2: Gases (Flammable, non-flammable, or toxic variants)</label>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" id="haz_class_3" value="flammable_liquids" style="margin-top: 3px;">
+                <label for="haz_class_3" style="font-size: 0.825rem; color: var(--navy); font-weight: 600;">Class 3: Flammable and Combustible Liquids (e.g. Fuel, Oils)</label>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" id="haz_class_4" value="flammable_solids" style="margin-top: 3px;">
+                <label for="haz_class_4" style="font-size: 0.825rem; color: var(--navy); font-weight: 600;">Class 4: Flammable Solids / Spontaneously Combustible</label>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" id="haz_class_5" value="oxidizers" style="margin-top: 3px;">
+                <label for="haz_class_5" style="font-size: 0.825rem; color: var(--navy); font-weight: 600;">Class 5: Oxidizers and Organic Peroxides</label>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" id="haz_class_6" value="poisons" style="margin-top: 3px;">
+                <label for="haz_class_6" style="font-size: 0.825rem; color: var(--navy); font-weight: 600;">Class 6: Poisons, Toxic Substances, or Infectious Agents</label>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" id="haz_class_7" value="radioactive" style="margin-top: 3px;">
+                <label for="haz_class_7" style="font-size: 0.825rem; color: var(--navy); font-weight: 600;">Class 7: Radioactive Materials (Yellow III label requirements)</label>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                <input type="checkbox" id="haz_class_8" value="corrosives" style="margin-top: 3px;">
+                <label for="haz_class_8" style="font-size: 0.825rem; color: var(--navy); font-weight: 600;">Class 8: Corrosive Liquids or Solid Compounds</label>
+            </div>
+        </div>
+    `;
+}
+
+// FAMILY 31A: HAZMAT REGISTRATION LAYOUT MATRIX (PART 3 OF 3)
+function buildHazmatRegistrationFormPart3(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- SECTION 5: AUTHORIZED SAFETY OFFICIAL POC -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">5. Authorized Safety Official Contact</h3>
+            <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">Provide the profile details of the compliance or logistics manager responsible for PHMSA hazardous material cargo declarations.</p>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="haz_poc_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Safety Official Full Legal Name <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="haz_poc_name" required placeholder="First and Last Legal Name" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="haz_poc_phone" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Direct Phone Number <span style="color: #ef4444;">*</span></label>
+            <input type="tel" id="haz_poc_phone" required placeholder="(512) 555-0199" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="haz_poc_email" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Compliance Communications Email <span style="color: #ef4444;">*</span></label>
+            <input type="email" id="haz_poc_email" required placeholder="safety@yourcarrier.com" class="wizard-input-field">
+        </div>
+
+        <!-- SECTION 6: ADDITIONAL PROVISIONS -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">6. Special Handling Directives & Hazmat Notes</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="haz_provisions" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Special Carrier Instructions or Disclosure Notes</label>
+            <textarea id="haz_provisions" placeholder="Detail any immediate shipping lane deadlines, bulk packaging exceptions, radioactive transport route permits, or custom proxy handling directives relative to your PHMSA HAZMAT registration dossier..." class="wizard-input-field" style="width: 100%; min-height: 80px; box-sizing: border-box; padding: 12px; font-family: inherit; resize: vertical; border: 1px solid var(--border); border-radius: 6px; font-weight: 600;"></textarea>
+        </div>
+    `;
+}
+
+// 📦 MASTER HAZMAT REGISTRATION APPLICATION ASSEMBLY HOOK (Place at the bottom of wizard-layout.js)
+function buildHazmatRegistrationForm(stateDropdownOptionsHtml = "") {
+    return buildHazmatRegistrationFormPart1(stateDropdownOptionsHtml) +
+           buildHazmatRegistrationFormPart2(stateDropdownOptionsHtml) +
+           buildHazmatRegistrationFormPart3(stateDropdownOptionsHtml);
+}
+
+
+// FAMILY 32A: TRUCKER INSURANCE LEAD MATRIX (PART 1 OF 3)
+function buildTruckerInsuranceFormPart1(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: TRUCKER INSURANCE CLEARINGHOUSE -->
+        <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
+            <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> Commercial Motor Carrier Insurance Lead Clearinghouse</strong>
+            Fulfilling public liability coverage requirements is a federal pre-requisite under FMCSA rules to activate your interstate Operating Authority (Form BMC-91 or BMC-91X). 
+            <span style="font-weight: 700; color: var(--primary);">⚠️ Crucial Disclosing Provision:</span> Filings4u is a specialized commercial document filing service organization. We are not a licensed insurance agency, brokerage, or underwriter, and we do not sell insurance policies directly. All risk profile metrics submitted here are securely routed to our premium licensed insurance entity partners to compile and issue a competitive, non-binding quote tailored to your fleet.
+        </div>
+
+        <!-- SECTION 1: CARRIER RISK ASSESSMENT PROFILE -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Risk Assessment Identity Profile</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="ins_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Official Business Entity Name <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="ins_legal_name" required placeholder="Enter name exactly as registered on your corporate state records or USDOT profile" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="ins_usdot_number" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">USDOT Number (If Issued)</label>
+            <input type="text" id="ins_usdot_number" placeholder="e.g., 1234567 (Leave blank if pending authority setup)" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="ins_operation_state" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Garaging Base State <span style="color: #ef4444;">*</span></label>
+            <select id="ins_operation_state" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="" disabled selected>Select Primary State...</option>
+                ${stateDropdownOptionsHtml}
+            </select>
+        </div>
+
+        <!-- SECTION 2: LIABILITY TARGET THRESHOLDS -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Primary Auto Liability Target Thresholds</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="ins_liability_limit" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Combined Single Limit (CSL) Auto Liability Request <span style="color: #ef4444;">*</span></label>
+            <select id="ins_liability_limit" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="" disabled selected>Select Primary Liability Limit...</option>
+                <option value="750k">$750,000 Combined Single Limit (Standard FMCSA minimum framework for non-hazardous general freight)</option>
+                <option value="1m" selected>$1,000,000 Combined Single Limit (Highly recommended tier required by most freight brokers, shippers, and logistics platforms)</option>
+                <option value="2m">$2,000,000 Combined Single Limit (Extended tier required for specialized contracts or oversize cargo loads)</option>
+                <option value="5m">$5,000,000 Combined Single Limit (Statutory federal minimum requirement for certain hazardous material placard categories)</option>
+            </select>
+        </div>
+    `;
+}
+
+
+// FAMILY 32A: TRUCKER INSURANCE LEAD MATRIX (PART 2 OF 3)
+function buildTruckerInsuranceFormPart2(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- SECTION 3: CARGO & PHYSICAL DAMAGE THRESHOLDS -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Motor Truck Cargo & Physical Damage Limits</h3>
+            <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">Detail your requested cargo asset coverage parameters to match vendor onboarding verification standards.</p>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="ins_cargo_limit" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Motor Truck Cargo Limit <span style="color: #ef4444;">*</span></label>
+            <select id="ins_cargo_limit" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="50k">$50,000 Cargo Limit (Low-tier local hauling matrix)</option>
+                <option value="100k" selected>$100,000 Cargo Limit (Standard broker contract minimum baseline for dry van / reefer)</option>
+                <option value="250k">$250,000 Cargo Limit (High-value equipment or machinery loads)</option>
+                <option value="500k">$500,000+ Cargo Limit (Specialized electronic or premium pharmaceutical electronics)</option>
+            </select>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="ins_physical_damage" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Physical Damage Coverage Request? <span style="color: #ef4444;">*</span></label>
+            <select id="ins_physical_damage" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="yes" selected>Yes, quote Physical Damage (Comprehensive & Collision tracking based on equipment value)</option>
+                <option value="no">No, exclude physical damage (Liability and Cargo parameters only)</option>
+            </select>
+        </div>
+
+        <!-- SECTION 4: FLEET UNIT & OPERATOR RISK METRICS -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">4. Fleet & Driver Underwriting Metrics</h3>
+            <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">These structural vehicle metrics allow partners to compute accurate exposure and allocation scores.</p>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="ins_truck_count" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Number of Power Units (Tractors/Trucks) <span style="color: #ef4444;">*</span></label>
+            <input type="number" id="ins_truck_count" required placeholder="1" min="1" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="ins_trailer_count" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Number of Trailers <span style="color: #ef4444;">*</span></label>
+            <input type="number" id="ins_trailer_count" required placeholder="1" min="0" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="ins_operating_radius" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Primary Operating Radius <span style="color: #ef4444;">*</span></label>
+            <select id="ins_operating_radius" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="local">Local (Under 100 Miles radius from home base)</option>
+                <option value="regional">Regional (100 to 500 Miles radius footprint)</option>
+                <option value="long-haul" selected>Long-Haul / Over-the-Road (OTR - Exceeds 500 Miles nationally)</option>
+            </select>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="ins_driver_min_age" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Age of Youngest Driver in Fleet <span style="color: #ef4444;">*</span></label>
+            <select id="ins_driver_min_age" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="under_23">Under 23 Years Old (High exposure tier status)</option>
+                <option value="23_25" selected>23 to 25 Years Old</option>
+                <option value="over_25">Over 25 Years Old (Standard industry preferred tier)</option>
+            </select>
+        </div>
+    `;
+}
+
+// FAMILY 32A: TRUCKER INSURANCE LEAD MATRIX (PART 3 OF 3)
+function buildTruckerInsuranceFormPart3(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- SECTION 5: ADDITIONAL PROVISIONS & REQUEST SPECIFICS -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">5. Special Handling Directives & Coverage History</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="ins_provisions" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Special Quote Instructions, Target Commodities, or Loss History Notes</label>
+            <textarea id="ins_provisions" placeholder="Detail any specific equipment makes/models, trailer types (Flatbed, Reefer, Stepdeck), target commodities to haul, prior commercial insurance policy history, or urgent deadline dates for broker onboarding verification..." class="wizard-input-field" style="width: 100%; min-height: 80px; box-sizing: border-box; padding: 12px; font-family: inherit; resize: vertical; border: 1px solid var(--border); border-radius: 6px; font-weight: 600;"></textarea>
+        </div>
+    `;
+}
+
+// 📦 MASTER TRUCKER INSURANCE LEAD APPLICATION ASSEMBLY HOOK (Place at the bottom of wizard-layout.js)
+function buildTruckerInsuranceForm(stateDropdownOptionsHtml = "") {
+    return buildTruckerInsuranceFormPart1(stateDropdownOptionsHtml) +
+           buildTruckerInsuranceFormPart2(stateDropdownOptionsHtml) +
+           buildTruckerInsuranceFormPart3(stateDropdownOptionsHtml);
+}
+
+
+// FAMILY 33A: BROKER INSURANCE LEAD MATRIX (PART 1 OF 3)
+function buildBrokerInsuranceFormPart1(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: FREIGHT BROKER INSURANCE CLEARINGHOUSE -->
+        <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
+            <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> Freight Broker Insurance Lead Clearinghouse & BMC-85 Financial Network</strong>
+            Operating safely as an FMCSA licensed property broker requires robust risk management parameter shields to insulate your logistics firm from vicarious liability claims. 
+            <span style="font-weight: 700; color: var(--primary);">⚠️ Crucial Disclosing Provision:</span> Filings4u is a specialized commercial document filing service organization. We are not a licensed insurance agency, brokerage, or underwriter, and we do not sell insurance policies directly. All risk profile metrics submitted here are securely routed to our premium licensed insurance entity partners to compile and issue a competitive, non-binding quote tailored to your brokerage. <span style="font-weight: 700; color: var(--navy);">Notice:</span> Financial underwriting requests through this channel are strictly structured for **BMC-85 Trust Fund ($75,000 Cash Escrow Settlement)** options.
+        </div>
+
+        <!-- SECTION 1: BROKER RISK ASSESSMENT PROFILE -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Broker Corporate Risk Profile</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="bins_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Official Freight Brokerage Name <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="bins_legal_name" required placeholder="Enter name exactly as registered on your corporate state records or MC profile" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_mc_number" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">MC Number (If Pending/Issued)</label>
+            <input type="text" id="bins_mc_number" placeholder="e.g., MC-000000" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_base_state" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Corporate Base State <span style="color: #ef4444;">*</span></label>
+            <select id="bins_base_state" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="" disabled selected>Select State...</option>
+                ${stateDropdownOptionsHtml}
+            </select>
+        </div>
+
+        <!-- SECTION 2: CONTINGENT LIABILITY LIMITS -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Contingent Risk Coverage Ceilings</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_contingent_cargo" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Contingent Cargo Liability Request <span style="color: #ef4444;">*</span></label>
+            <select id="bins_contingent_cargo" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="100k" selected>$100,000 Contingent Cargo Limit (Standard baseline preferred by most domestic shippers)</option>
+                <option value="250k">$250,000 Contingent Cargo Limit (Enhanced structural tier for high-value logistics tracking)</option>
+                <option value="500k">$500,000 Contingent Cargo Limit (Premium specialized commodity carrier matching matrix)</option>
+                <option value="none">Exclude Contingent Cargo (Seeking BMC-85 Trust Account quotation parameters only)</option>
+            </select>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_broker_liability" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Freight Broker Liability (FBL) Limit <span style="color: #ef4444;">*</span></label>
+            <select id="bins_broker_liability" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="none" selected>Exclude Freight Broker General Liability</option>
+                <option value="1m">$1,000,000 General Liability Bracket (Protects against third-party bodily injury / property damage claims)</option>
+                <option value="2m">$2,000,000 Extended General Liability Bracket</option>
+            </select>
+        </div>
+    `;
+}
+
+
+// FAMILY 33A: BROKER INSURANCE LEAD MATRIX (PART 2 OF 3)
+function buildBrokerInsuranceFormPart2(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- SECTION 3: UNDERWRITING BACKGROUND RISK QUESTIONNAIRE -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Principal Underwriting & Background Risk Assessment</h3>
+            <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">BMC-85 trust fund underwriters require personal background disclosures to assess financial stability, operational compliance, and processing risk tiers.</p>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_marital_status" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Marital Status <span style="color: #ef4444;">*</span></label>
+            <select id="bins_marital_status" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="" disabled selected>Select Status...</option>
+                <option value="single">Single</option>
+                <option value="married">Married (May qualify for optimized financial accountability tiers)</option>
+                <option value="divorced">Divorced / Separated</option>
+                <option value="widowed">Widowed</option>
+            </select>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_has_bankruptcy" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Prior Personal or Business Bankruptcy? <span style="color: #ef4444;">*</span></label>
+            <select id="bins_has_bankruptcy" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleBrokerInsuranceBankruptcyDetailsVisibility(this.value)">
+                <option value="no" selected>No, explicitly zero history of structural insolvency or Chapter filings</option>
+                <option value="yes">Yes, a past personal or business bankruptcy record exists</option>
+            </select>
+        </div>
+
+        <!-- Hidden Conditional Container: Bankruptcy Verification Details -->
+        <div id="bins_bankruptcy_details_wrapper" class="wizard-input-group" style="grid-column: span 2; display: none;">
+            <label for="bins_bankruptcy_details" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Please specify bankruptcy type, filing date, and discharge status: <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="bins_bankruptcy_details" placeholder="e.g., Chapter 7 discharged in 2021, Chapter 11 corporate wrap..." class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_has_felony" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Any Felony Convictions or Legal Judgments? <span style="color: #ef4444;">*</span></label>
+            <select id="bins_has_felony" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleBrokerInsuranceFelonyDetailsVisibility(this.value)">
+                <option value="no" selected>No, principal officers possess completely clear background records</option>
+                <option value="yes">Yes, legal background histories or pending statutory counts exist</option>
+            </select>
+        </div>
+
+        <!-- Hidden Conditional Container: Felony Background Explanations -->
+        <div id="bins_felony_details_wrapper" class="wizard-input-group" style="grid-column: span 2; display: none;">
+            <label for="bins_felony_details" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Please specify year, charge classification, and resolution status: <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="bins_felony_details" placeholder="Provide background profile details for underwriting review..." class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_has_tax_liens" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Any Outstanding Tax Liens or Judgments? <span style="color: #ef4444;">*</span></label>
+            <select id="bins_has_tax_liens" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="no" selected>No outstanding state or federal tax liens are filed against the principal</option>
+                <option value="yes">Yes, active state/federal tax lien parameters exist or are being resolved</option>
+            </select>
+        </div>
+    `;
+}
+
+// FAMILY 33A: BROKER INSURANCE LEAD MATRIX (PART 3 OF 3)
+function buildBrokerInsuranceFormPart3(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- SECTION 4: OPERATIONAL VOLUMES -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">4. Projected Freight Volumes</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_projected_loads" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Projected Monthly Shipments / Loads <span style="color: #ef4444;">*</span></label>
+            <input type="number" id="bins_projected_loads" required placeholder="0" min="0" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="bins_years_experience" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Years of Transportation Logistics Experience <span style="color: #ef4444;">*</span></label>
+            <input type="number" id="bins_years_experience" required placeholder="0" min="0" class="wizard-input-field">
+        </div>
+
+        <!-- SECTION 5: ADDITIONAL PROVISIONS -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">5. Special Handling Directives & Background Notes</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="bins_provisions" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Special Instructions or Explanatory Background Notes</label>
+            <textarea id="bins_provisions" placeholder="Detail any specific commodity focus lines, partner asset tracking requirements, background explanation summaries, or custom underwriting proxy timelines relative to your BMC-85 trust configuration packet..." class="wizard-input-field" style="width: 100%; min-height: 80px; box-sizing: border-box; padding: 12px; font-family: inherit; resize: vertical; border: 1px solid var(--border); border-radius: 6px; font-weight: 600;"></textarea>
+        </div>
+    `;
+}
+
+// 📦 MASTER FREIGHT BROKER INSURANCE LEAD APPLICATION ASSEMBLY HOOK (Place at the bottom of wizard-layout.js)
+function buildBrokerInsuranceForm(stateDropdownOptionsHtml = "") {
+    return buildBrokerInsuranceFormPart1(stateDropdownOptionsHtml) +
+           buildBrokerInsuranceFormPart2(stateDropdownOptionsHtml) +
+           buildBrokerInsuranceFormPart3(stateDropdownOptionsHtml);
+}
+
+// FAMILY 34A: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART 1 OF 3)
+function buildNewEntrantAuditFormPart1(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: NEW ENTRANT SAFETY ASSURANCE PROGRAM -->
+        <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
+            <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> FMCSA New Entrant Safety Assurance Program</strong>
+            All newly registered motor carriers are placed into a 18-month federal monitoring window. The FMCSA mandates a compulsory **New Entrant Safety Audit** within this timeframe to verify robust administrative tracking of driver logs, vehicle records, drug screens, and security structures. Failing this audit results in immediate, permanent revocation of operating authority.
+        </div>
+
+        <!-- SECTION 1: CARRIER IDENTITY PROFILE -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Motor Carrier Audit Identification Profile</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="nea_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Official Motor Carrier Name <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="nea_legal_name" required placeholder="Enter exact name registered on your USDOT portal" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="nea_usdot_number" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">USDOT Number <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="nea_usdot_number" required placeholder="e.g. 1234567" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 1;">
+            <label for="nea_audit_trigger_status" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">FMCAS Safety Audit Notice Status <span style="color: #ef4444;">*</span></label>
+            <select id="nea_audit_trigger_status" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleNewEntrantAuditLetterDetails(this.value)">
+                <option value="preemptive" selected>Preemptive Check (Proactively setting up compliance before receiving state tracking letters)</option>
+                <option value="letter-received">Official Audit Letter Received (FMCSA has issued an explicit document request deadline)</option>
+            </select>
+        </div>
+
+        <!-- Hidden Conditional Container: Official Audit Notice Letter Deadline Details -->
+        <div id="nea_letter_deadline_wrapper" class="wizard-input-group" style="grid-column: span 2; display: none;">
+            <label for="nea_audit_deadline" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">FMCSA Mandatory Submission Deadline Date <span style="color: #ef4444;">*</span></label>
+            <input type="date" id="nea_audit_deadline" class="wizard-input-field">
+        </div>
+
+        <!-- INTERACTIVE STRATEGIC COMPLIANCE MODAL TRIGGER BUTTON -->
+        <div style="grid-column: span 2; margin: 12px 0;">
+            <button type="button" onclick="triggerNewEntrantAuditComplianceChecklistPopup()" style="background: var(--navy); color: #ffffff; font-weight: 800; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+                <i class="fa-solid fa-list-check"></i> Launch New Entrant Audit Requirements Checklist & Price Guide
+            </button>
+        </div>
+
+        <!-- POPUP MODAL ELEMENT FOR AUDIT REQUIREMENTS CHECKLIST -->
+        <div id="nea_checklist_modal_backdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+            <div style="background: #ffffff; border-radius: 12px; width: 100%; max-width: 650px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.3); overflow: hidden; animation: fadeIn 0.25s ease-out;">
+                <div style="background: var(--navy); color: #ffffff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fa-solid fa-shield"></i> FMCSA Audit Audit Requirements Guide</h4>
+                    <button type="button" onclick="closeNewEntrantAuditComplianceChecklistPopup()" style="background: transparent; border: none; color: #ffffff; font-size: 1.25rem; cursor: pointer; font-weight: 700;">&times;</button>
+                </div>
+                <div style="padding: 20px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5; color: #334155; display: flex; flex-direction: column; gap: 16px;">
+                    <p style="margin: 0; font-weight: 600; color: var(--navy);">To pass the New Entrant Safety Audit, you must present up-to-date, compliant records for the following parameters. Review what you need vs. Filings4u's flat-rate assembly options:</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between;">
+                            <span>1. Driver Qualification File (DQF)</span>
+                            <span style="color: var(--primary); font-family: monospace;">$79.00 / File</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--slate);">Mandatory Part 391 medical certificates, 3-year safety histories, and annual motor vehicle driving records.</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between;">
+                            <span>2. DOT Drug & Alcohol Consortium Enrollment</span>
+                            <span style="color: var(--primary); font-family: monospace;">$149.00 / Yr</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--slate);">Part 382 workplace pre-employment screening documentation and proof of random testing pool active enrollment.</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between;">
+                            <span>3. Extended Hours of Service (HOS) Log Audit</span>
+                            <span style="color: var(--primary); font-family: monospace;">$195.00</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--slate);">Part 395 structural review of Electronic Logging Device (ELD) outputs and records of duty status patterns.</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between;">
+                            <span>4. Vehicle Maintenance & Periodic Inspection Files</span>
+                            <span style="color: var(--primary); font-family: monospace;">$85.00 / Truck</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--slate);">Part 396 systemic records of annual visual test inspections, repairs, and daily driver vehicle inspection reports (DVIR).</span>
+                    </div>
+                </div>
+                <div style="background: #f8fafc; border-top: 1px solid var(--border); padding: 12px 20px; display: flex; justify-content: flex-end;">
+                    <button type="button" onclick="closeNewEntrantAuditComplianceChecklistPopup()" style="background: var(--navy); color: #ffffff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; cursor: pointer;">Got It, Close Guide</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// FAMILY 34A: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART 2 OF 3)
+function buildNewEntrantAuditFormPart2(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- SECTION 2: FILINGS4U PREMIUM COMPLIANCE PROCUREMENT -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Authorized Audit Preparation Support</h3>
+            <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">Select which critical compliance folders you want Filings4u to assemble and optimize. Checked items add dynamically to your checkout balance:</p>
+        </div>
+
+        <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 12px;">
+            <!-- Service Choice Item 1 -->
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                    <input type="checkbox" id="nea_service_dqf" value="79.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+                    <div>
+                        <label for="nea_service_dqf" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Assemble Driver Qualification Files (DQF)</label>
+                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Comprehensive folder tracking layout setup, medical examiner check, and 3-year history assembly.</span>
+                    </div>
+                </div>
+                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$79.00</div>
+            </div>
+
+            <!-- Service Choice Item 2 -->
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                    <input type="checkbox" id="nea_service_consortium" value="149.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+                    <div>
+                        <label for="nea_service_consortium" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">DOT Drug & Alcohol Consortium Enrollment</label>
+                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Instant active pool random registration certificate extraction and compliance validation records.</span>
+                    </div>
+                </div>
+                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$149.00</div>
+            </div>
+
+            <!-- Service Choice Item 3 -->
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                    <input type="checkbox" id="nea_service_hos" value="195.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+                    <div>
+                        <label for="nea_service_hos" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Hours of Service (HOS) Log Audit Pre-Review</label>
+                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">ELD graph telemetry assessment, structural exception auditing, and form correction profiling templates.</span>
+                    </div>
+                </div>
+                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$195.00</div>
+            </div>
+
+            <!-- Service Choice Item 4 -->
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                    <input type="checkbox" id="nea_service_maintenance" value="85.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+                    <div>
+                        <label for="nea_service_maintenance" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Vehicle Maintenance Ledger & Inspection Set</label>
+                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Part 396 systemic annual visual documentation sheets, DVIR trackers, and asset profile folders.</span>
+                    </div>
+                </div>
+                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$85.00</div>
+            </div>
+
+            <!-- Pre-Review Consultant Selector -->
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: rgba(10, 31, 68, 0.02); border: 1px dashed var(--primary); padding: 14px; border-radius: 8px; box-sizing: border-box; margin-top: 4px;">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                    <input type="checkbox" id="nea_service_consultation" value="250.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+                    <div>
+                        <label for="nea_service_consultation" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Add Independent Compliance Consultant Pre-Audit Consultation Package</label>
+                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">A dedicated 1-on-1 dossier mock review with an expert compliance strategist prior to official state submission upload slots.</span>
+                    </div>
+                </div>
+                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$250.00</div>
+            </div>
+        </div>
+    `;
+}
+
+// FAMILY 34A: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART 3 OF 3)
+function buildNewEntrantAuditFormPart3(stateDropdownOptionsHtml = "") {
+    return `
+        <!-- SECTION 3: ADDITIONAL PROVISIONS & ATTESTATION -->
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Special Handling Instructions & Carrier Authorization</h3>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2;">
+            <label for="nea_provisions" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Special Audit Instructions or Fleet Operational Vulnerabilities</label>
+            <textarea id="nea_provisions" placeholder="Detail any existing safety write-ups, custom ELD platform vendors, upcoming equipment expansion plans, or urgent timing thresholds relative to your FMCSA New Entrant dossier preparation..." class="wizard-input-field" style="width: 100%; min-height: 80px; box-sizing: border-box; padding: 12px; font-family: inherit; resize: vertical; border: 1px solid var(--border); border-radius: 6px; font-weight: 600;"></textarea>
+        </div>
+    `;
+}
+
+// 📦 MASTER NEW ENTRANT AUDIT SERVICE APPLICATION ASSEMBLY HOOK (Place at the bottom of wizard-layout.js)
+function buildNewEntrantAuditForm(stateDropdownOptionsHtml = "") {
+    return buildNewEntrantAuditFormPart1(stateDropdownOptionsHtml) +
+           buildNewEntrantAuditFormPart2(stateDropdownOptionsHtml) +
+           buildNewEntrantAuditFormPart3(stateDropdownOptionsHtml);
+}
+
+
 
 // EXTENDED GENERATOR LINKER FOR REMAINING FAMILIES (6 to 11)
 function buildExtendedFamiliesFieldsLayoutHtml(familyKey) {
