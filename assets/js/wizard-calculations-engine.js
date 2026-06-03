@@ -2869,3 +2869,492 @@ function toggleFederalTaxInventoryCostVisibility(selectionValue) {
         input.value = "";
     }
 }
+
+
+// ========================================================
+// 🔄 STATE INCOME TAX APPLICATION INTERACTION LAYER
+// ========================================================
+
+// Automated Federal-to-State Data Sync Engine Hook
+function executeStateTaxAutomatedCacheSync(sourceCacheId, targetInputNode) {
+    if (!targetInputNode || (targetInputNode.value !== "" && targetInputNode.value !== "0")) return;
+    
+    const localStorageNamespace = "f4u_wizard_onboarding_state";
+    try {
+        const rawPayload = localStorage.getItem(localStorageNamespace);
+        if (rawPayload) {
+            const parsedData = JSON.parse(rawPayload);
+            if (parsedData && parsedData[sourceCacheId]) {
+                targetInputNode.value = parsedData[sourceCacheId];
+                console.log(`[Cache Sync Engine] Pulled value "${parsedData[sourceCacheId]}" from "${sourceCacheId}" into "${targetInputNode.id}".`);
+            }
+        }
+    } catch (syncErr) {
+        console.warn("[Cache Sync Engine Warning] Could not execute automated form coupling:", syncErr);
+    }
+}
+
+function toggleStateTaxPtetWorkflow(selectedState) {
+    // States lacking broad PTET frameworks or corporate income taxes are excluded
+    const nonPtetStates = ["AK", "FL", "NV", "SD", "TN", "TX", "WA", "WY"];
+    const ptetWrapper = document.getElementById("state_tax_ptet_wrapper");
+    if (!ptetWrapper) return;
+
+    if (nonPtetStates.indexOf(selectedState) !== -1) {
+        ptetWrapper.style.display = "none";
+        document.getElementById("state_tax_ptet_choice").required = false;
+        document.getElementById("state_tax_ptet_choice").value = "no";
+    } else {
+        toggleStateTaxPtetStructureCheck();
+    }
+}
+
+function toggleStateTaxPtetStructureCheck() {
+    const ptetWrapper = document.getElementById("state_tax_ptet_wrapper");
+    const entityType = document.getElementById("state_tax_entity_type");
+    const ptetSelect = document.getElementById("state_tax_ptet_choice");
+    const targetState = document.getElementById("state_tax_target_state");
+    
+    if (!ptetWrapper || !entityType || !ptetSelect || !targetState) return;
+
+    const structuralStates = ["AK", "FL", "NV", "SD", "TN", "TX", "WA", "WY"];
+    if (structuralStates.indexOf(targetState.value) !== -1) return;
+
+    if (entityType.value === "pass-through") {
+        ptetWrapper.style.display = "flex";
+        ptetSelect.required = true;
+    } else {
+        ptetWrapper.style.display = "none";
+        ptetSelect.required = false;
+        ptetSelect.value = "no";
+    }
+}
+
+function toggleStateTaxApportionmentVisibility(selectionValue) {
+    var wrapper = document.getElementById("state_tax_apportionment_wrapper");
+    var input = document.getElementById("state_tax_apportionment_percentage");
+    if (!wrapper || !input) return;
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "block";
+        input.required = true;
+    } else {
+        wrapper.style.display = "none";
+        input.required = false;
+        input.value = "";
+    }
+}
+
+
+// ========================================================
+// 🔄 FRANCHISE TAX APPLICATION INTERACTION LAYER
+// ========================================================
+
+let currentFranchiseOfficerCount = 1;
+
+function executeFranchiseTaxStateParsingWorkflow(selectedStateCode) {
+    const bannerWrapper = document.getElementById("fran_tax_state_notification_banner");
+    const bannerText = document.getElementById("fran_tax_state_banner_text");
+    const methodSelect = document.getElementById("fran_tax_method_type");
+    
+    if (!bannerWrapper || !bannerText || !methodSelect) return;
+    
+    // Core State Overrides Mapping Profiles
+    if (selectedStateCode === "TX") {
+        bannerWrapper.style.display = "block";
+        bannerText.innerHTML = "💡 Texas State Notice: Businesses with gross receipts below the state statutory threshold file a No-Tax-Due Information Report. Filings4u will automatically process this variant for your entity configuration.";
+        methodSelect.value = "informational";
+    } else if (selectedStateCode === "DE") {
+        bannerWrapper.style.display = "block";
+        bannerText.innerHTML = "💡 Delaware State Notice: Domestic LLCs are subject to a flat minimum annual franchise tax of $300.00. Corporations calculate their parameter fees via the Authorized Shares method or Assumed Par Value Capital method.";
+        methodSelect.value = "flat";
+    } else {
+        bannerWrapper.style.display = "none";
+        bannerText.innerHTML = "";
+    }
+    
+    toggleFranchiseTaxThresholdInputFieldsVisibility(methodSelect.value);
+}
+
+function toggleFranchiseTaxThresholdInputFieldsVisibility(selectionValue) {
+    const calcWrapper = document.getElementById("fran_tax_calculation_wrapper");
+    if (!calcWrapper) return;
+
+    if (selectionValue === "margin-or-stock") {
+        calcWrapper.style.display = "flex";
+        calcWrapper.querySelectorAll("input").forEach(el => el.required = true);
+    } else {
+        calcWrapper.style.display = "none";
+        calcWrapper.querySelectorAll("input").forEach(el => {
+            el.required = false;
+            el.value = "";
+        });
+    }
+}
+
+function appendNewFranchiseTaxOfficerRow() {
+    currentFranchiseOfficerCount++;
+    const container = document.getElementById("fran_officer_container");
+    if (!container) return;
+
+    const officerCard = document.createElement("div");
+    officerCard.className = "member-record-card";
+    officerCard.id = `fran_officer_card_${currentFranchiseOfficerCount}`;
+    officerCard.style.cssText = "background: #ffffff; border: 1px solid var(--border); padding: 16px; border-radius: 8px; box-sizing: border-box; display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-top: 8px;";
+    
+    officerCard.innerHTML = `
+        <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; grid-column: span 2; display: flex; justify-content: space-between;">
+            Principal Officer / Manager #${currentFranchiseOfficerCount}
+            <button type="button" onclick="removeFranchiseTaxOfficerRow(${currentFranchiseOfficerCount})" style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-weight: 700; font-size: 0.75rem;"><i class="fa-solid fa-trash"></i> Remove</button>
+        </span>
+        
+        <div class="wizard-input-group" style="margin: 0;">
+            <label for="fran_officer_name_${currentFranchiseOfficerCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Full Legal Name <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="fran_officer_name_${currentFranchiseOfficerCount}" required placeholder="First and Last Legal Name" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="margin: 0;">
+            <label for="fran_officer_title_${currentFranchiseOfficerCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Official Title <span style="color: #ef4444;">*</span></label>
+            <select id="fran_officer_title_${currentFranchiseOfficerCount}" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="President">President / CEO</option>
+                <option value="Secretary">Secretary</option>
+                <option value="Treasurer">Treasurer / CFO</option>
+                <option value="Manager">Manager / Managing Member</option>
+                <option value="Director">Director</option>
+            </select>
+        </div>
+
+        <div class="wizard-input-group" style="grid-column: span 2; margin: 0;">
+            <label for="fran_officer_street_${currentFranchiseOfficerCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Mailing Address <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="fran_officer_street_${currentFranchiseOfficerCount}" required placeholder="Street Address, Suite, Apt" class="wizard-input-field" onfocus="attachGooglePlacesAutocompleteToNode(this, 'fran_officer_addr_${currentFranchiseOfficerCount}')">
+        </div>
+    `;
+    
+    container.appendChild(officerCard);
+}
+
+function removeFranchiseTaxOfficerRow(nodeId) {
+    const card = document.getElementById(`fran_officer_card_${nodeId}`);
+    if (card) card.remove();
+}
+
+
+// ========================================================
+// 🔄 SALES TAX REGISTRATION CONFIGURATOR INTERACTION LAYER
+// ========================================================
+
+function toggleSalesTaxNexusSubInputs(selectionValue) {
+    const physicalWrapper = document.getElementById("st_physical_nexus_wrapper");
+    const economicWrapper = document.getElementById("st_economic_nexus_wrapper");
+    
+    if (!physicalWrapper || !economicWrapper) return;
+
+    const inventoryInput = document.getElementById("st_inventory_location");
+    const employeesInput = document.getElementById("st_in_state_employees");
+    const grossSalesInput = document.getElementById("st_prior_year_gross");
+    const transactionsInput = document.getElementById("st_prior_year_transactions");
+
+    if (selectionValue === "physical") {
+        physicalWrapper.style.display = "grid";
+        economicWrapper.style.display = "none";
+        
+        if (inventoryInput) inventoryInput.required = true;
+        if (employeesInput) employeesInput.required = true;
+        if (grossSalesInput) grossSalesInput.required = false;
+        if (transactionsInput) transactionsInput.required = false;
+    } 
+    else if (selectionValue === "economic") {
+        physicalWrapper.style.display = "none";
+        economicWrapper.style.display = "grid";
+        
+        if (inventoryInput) inventoryInput.required = false;
+        if (employeesInput) employeesInput.required = false;
+        if (grossSalesInput) grossSalesInput.required = true;
+        if (transactionsInput) transactionsInput.required = true;
+    } 
+    else if (selectionValue === "both") {
+        physicalWrapper.style.display = "grid";
+        economicWrapper.style.display = "grid";
+        
+        if (inventoryInput) inventoryInput.required = true;
+        if (employeesInput) employeesInput.required = true;
+        if (grossSalesInput) grossSalesInput.required = true;
+        if (transactionsInput) transactionsInput.required = true;
+    } 
+    else {
+        physicalWrapper.style.display = "none";
+        economicWrapper.style.display = "none";
+        
+        if (inventoryInput) inventoryInput.required = false;
+        if (employeesInput) employeesInput.required = false;
+        if (grossSalesInput) grossSalesInput.required = false;
+        if (transactionsInput) transactionsInput.required = false;
+    }
+}
+
+
+// ========================================================
+// 🔄 PAYROLL TAX REGISTRATION INTERACTION LAYER
+// ========================================================
+
+function togglePayrollTaxSutaFieldsVisibility(selectionValue) {
+    const wrapper = document.getElementById("pr_existing_suta_wrapper");
+    if (!wrapper) return;
+
+    const sutaInput = document.getElementById("pr_existing_suta_id");
+    const withholdingInput = document.getElementById("pr_existing_withholding_id");
+
+    if (selectionValue === "existing") {
+        wrapper.style.display = "grid";
+        if (sutaInput) sutaInput.required = true;
+        if (withholdingInput) withholdingInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (sutaInput) {
+            sutaInput.required = false;
+            sutaInput.value = "";
+        }
+        if (withholdingInput) {
+            withholdingInput.required = false;
+            withholdingInput.value = "";
+        }
+    }
+}
+
+
+// ========================================================
+// 🔄 HEAVY USE TAX (2290) CONFIGURATOR INTERACTION LAYER
+// ========================================================
+
+let currentHutVehicleCount = 1;
+
+function appendNewHeavyUseTaxVehicleRow() {
+    currentHutVehicleCount++;
+    var container = document.getElementById("hut_fleet_container");
+    if (!container) return;
+
+    var vehicleCard = document.createElement("div");
+    vehicleCard.className = "member-record-card";
+    vehicleCard.id = "hut_vehicle_card_" + currentHutVehicleCount;
+    vehicleCard.style.cssText = "background: #ffffff; border: 1px solid var(--border); padding: 16px; border-radius: 8px; box-sizing: border-box; display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 16px; margin-top: 8px;";
+    
+    vehicleCard.innerHTML = `
+        <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; grid-column: span 3; display: flex; justify-content: space-between;">
+            Heavy Vehicle Asset Unit #${currentHutVehicleCount}
+            <button type="button" onclick="removeHeavyUseTaxVehicleRow(${currentHutVehicleCount})" style="background: transparent; border: none; color: #ef4444; cursor: pointer; font-weight: 700; font-size: 0.75rem;"><i class="fa-solid fa-trash"></i> Remove</button>
+        </span>
+        
+        <div class="wizard-input-group" style="margin: 0;">
+            <label for="hut_vin_${currentHutVehicleCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Vehicle Identification Number (VIN) <span style="color: #ef4444;">*</span></label>
+            <input type="text" id="hut_vin_${currentHutVehicleCount}" required placeholder="17-Digit Alpha-Numeric VIN" maxlength="17" style="font-family: monospace; text-transform: uppercase;" class="wizard-input-field">
+        </div>
+
+        <div class="wizard-input-group" style="margin: 0;">
+            <label for="hut_weight_category_${currentHutVehicleCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Taxable Gross Weight Class <span style="color: #ef4444;">*</span></label>
+            <select id="hut_weight_category_${currentHutVehicleCount}" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="A" selected>Category A: 55,000 to 55,999 lbs</option>
+                <option value="B">Category B: 56,000 to 56,999 lbs</option>
+                <option value="C">Category C: 57,000 to 57,999 lbs</option>
+                <option value="D">Category D: 58,000 to 58,999 lbs</option>
+                <option value="E">Category E: 59,000 to 59,999 lbs</option>
+                <option value="F">Category F: 60,000 to 60,999 lbs</option>
+                <option value="G">Category G: 61,000 to 61,999 lbs</option>
+                <option value="H">Category H: 62,000 to 62,999 lbs</option>
+                <option value="I">Category I: 63,000 to 63,999 lbs</option>
+                <option value="J">Category J: 64,000 to 64,999 lbs</option>
+                <option value="K">Category K: 65,000 to 65,999 lbs</option>
+                <option value="L">Category L: 66,000 to 66,999 lbs</option>
+                <option value="M">Category M: 67,000 to 67,999 lbs</option>
+                <option value="N">Category N: 68,000 to 68,999 lbs</option>
+                <option value="O">Category O: 69,000 to 69,999 lbs</option>
+                <option value="P">Category P: 70,000 to 70,999 lbs</option>
+                <option value="Q">Category Q: 71,000 to 71,999 lbs</option>
+                <option value="R">Category R: 72,000 to 72,999 lbs</option>
+                <option value="S">Category S: 73,000 to 73,999 lbs</option>
+                <option value="T">Category T: 74,000 to 74,999 lbs</option>
+                <option value="U">Category U: 75,000 lbs up to logging weight</option>
+                <option value="V">Category V: Over 75,000 lbs (Max Tax Bracket Rate)</option>
+            </select>
+        </div>
+
+        <div class="wizard-input-group" style="margin: 0;">
+            <label for="hut_is_logging_${currentHutVehicleCount}" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">Logging Vehicle? <span style="color: #ef4444;">*</span></label>
+            <select id="hut_is_logging_${currentHutVehicleCount}" required class="wizard-input-field" style="font-weight: 600;">
+                <option value="no" selected>No</option>
+                <option value="yes">Yes</option>
+            </select>
+        </div>
+    `;
+    
+    container.appendChild(vehicleCard);
+}
+
+function removeHeavyUseTaxVehicleRow(nodeId) {
+    var card = document.getElementById("hut_vehicle_card_" + nodeId);
+    if (card) card.remove();
+}
+
+
+// ========================================================
+// 🔄 CAGE CODE REGISTRATION INTERACTION LAYER ROUTINES
+// ========================================================
+
+function toggleCageParentCompanyWrapperVisibility(selectionValue) {
+    var wrapper = document.getElementById("cage_parent_company_wrapper");
+    if (!wrapper) return;
+
+    var parentNameInput = document.getElementById("cage_parent_legal_name");
+
+    if (selectionValue === "yes") {
+        wrapper.style.display = "grid";
+        if (parentNameInput) parentNameInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (parentNameInput) {
+            parentNameInput.required = false;
+            parentNameInput.value = "";
+        }
+        var parentCageInput = document.getElementById("cage_parent_cage_code");
+        if (parentCageInput) parentCageInput.value = "";
+    }
+}
+
+
+// ========================================================
+// 🔄 DUNS NUMBER CONFIGURATION INTERACTION LAYER ROUTINES
+// ========================================================
+
+function toggleDunsParentCompanyVisibility(selectionValue) {
+    var wrapper = document.getElementById("duns_parent_wrapper");
+    if (!wrapper) return;
+
+    var parentNameInput = document.getElementById("duns_parent_legal_name");
+    var parentCountryInput = document.getElementById("duns_parent_country");
+
+    if (selectionValue === "branch" || selectionValue === "subsidiary") {
+        wrapper.style.display = "grid";
+        if (parentNameInput) parentNameInput.required = true;
+        if (parentCountryInput) parentCountryInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (parentNameInput) {
+            parentNameInput.required = false;
+            parentNameInput.value = "";
+        }
+        if (parentCountryInput) {
+            parentCountryInput.required = false;
+            parentCountryInput.value = "";
+        }
+    }
+}
+
+
+// ========================================================
+// 🔄 SAM.GOV PROCUREMENT REGISTRATION INTERACTION LAYER
+// ========================================================
+
+function toggleSamUniqueEntityIdVisibility(selectionValue) {
+    var wrapper = document.getElementById("sam_uei_code_wrapper");
+    if (!wrapper) return;
+
+    var ueiInput = document.getElementById("sam_existing_uei");
+
+    if (selectionValue === "existing") {
+        wrapper.style.display = "block";
+        if (ueiInput) ueiInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (ueiInput) {
+            ueiInput.required = false;
+            ueiInput.value = "";
+        }
+    }
+}
+
+// ========================================================
+// 🔄 MINORITY CERTIFICATE REGISTRATION INTERACTION LAYER
+// ========================================================
+
+function toggleMorphicMbeAgencySubInputs(selectionValue) {
+    var wrapper = document.getElementById("mbe_state_agency_wrapper");
+    if (!wrapper) return;
+
+    var agencyInput = document.getElementById("mbe_target_agency_name");
+
+    if (selectionValue === "state-local") {
+        wrapper.style.display = "block";
+        if (agencyInput) agencyInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (agencyInput) {
+            agencyInput.required = false;
+            agencyInput.value = "";
+        }
+    }
+}
+
+
+// ========================================================
+// 🔄 DRIVER QUALIFICATION FILE INTERACTION LAYER
+// ========================================================
+
+function toggleDqfFleetQuantityVisibility(selectionValue) {
+    var wrapper = document.getElementById("dqf_fleet_count_wrapper");
+    if (!wrapper) return;
+
+    var countInput = document.getElementById("dqf_total_files_needed");
+
+    if (selectionValue === "fleet-addition") {
+        wrapper.style.display = "block";
+        if (countInput) countInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (countInput) {
+            countInput.required = false;
+            countInput.value = "1";
+        }
+    }
+    
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
+
+
+// ========================================================
+// 🔄 PROCESS AGENT (BOC-3) FILING INTERACTION LAYER
+// ========================================================
+
+function toggleBoc3AuthorityIdentifiersVisibility(selectionValue) {
+    var wrapper = document.getElementById("boc_authority_nums_wrapper");
+    if (!wrapper) return;
+
+    var usdotInput = document.getElementById("boc_usdot_number");
+    var mcInput = document.getElementById("boc_mc_number");
+
+    if (selectionValue === "independent") {
+        wrapper.style.display = "grid";
+        if (usdotInput) usdotInput.required = true;
+        if (mcInput) mcInput.required = true;
+    } else {
+        wrapper.style.display = "none";
+        if (usdotInput) {
+            usdotInput.required = false;
+            usdotInput.value = "";
+        }
+        if (mcInput) {
+            mcInput.required = false;
+            mcInput.value = "";
+        }
+    }
+}
+
+// ========================================================
+// 🔄 INTERNATIONAL FUEL TAX AGREEMENT (IFTA) INTERACTION
+// ========================================================
+
+function toggleIftaFulfillmentSubFields(selectionValue) {
+    if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+        updateWizardFinalTotalAmountMatrix();
+    }
+}
