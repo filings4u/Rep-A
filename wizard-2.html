@@ -8,299 +8,48 @@
     <meta name="theme-color" content="#10b981">
     <title>Secured Enterprise Compliance Deployment Wizard | filings4u</title>
     
-    <!-- 🧰 DEPLOYMENT CDN LIBRARIES -->
+    <!-- 🧰 ENTERPRISE VECTOR DEPENDENCIES -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://www.cloudflare.com/turnstile/v0/api.js">
+    <script src="assets/js/wizard-calculations-engine.js"></script> 
+    <script src="assets/js/wizard-layouts.js"></script> 
+    <script src="assets/js/wizard-chat-widget.js"></script> 
+
+    <link rel="icon" type="image/png" href="images/fav.png">
     
-    <style>
-        /* 🎨 MASTER CSS VARIABLES & STYLE PALETTE OVERRIDES */
-        :root {
-            --primary: #10b981;
-            --primary-dark: #0e9f6e;
-            --navy: #0a1f44;
-            --slate: #475569;
-            --light-bg: #f8fafc;
-            --border: #e2e8f0;
-            --card-shadow: 0 20px 40px rgba(10, 31, 68, 0.04), 0 1px 3px rgba(10, 31, 68, 0.02);
-        }
-        
-        body {
-            background-color: var(--light-bg);
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: var(--navy);
-            line-height: 1.5;
-        }
+    <!-- 🧑‍🎨 WIZARD LAYOUT STYLESHEET -->
+    <link rel="stylesheet" href="assets/css/wizard.css">
+    <!-- 🧑‍🎨 WIZARD MOBILE LAYOUT STYLESHEET -->
+    <link rel="stylesheet" href="assets/css/wizard-mobile.css">
 
-        /* 🎯 SITE WIDTH ALIGNMENT SYNC CARD CONTROLS */
-        .wizard-container {
-            width: 100%;
-            max-width: 1450px;
-            margin: 40px auto;
-            padding: 0 40px;
-            box-sizing: border-box;
-        }
-
-        .wizard-card {
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            padding: 40px;
-            box-sizing: border-box;
-            min-height: 550px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        /* 📊 PROGRESS TIMELINE INDICATORS TRACK */
-        .step-timeline {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            position: relative;
-            background: #ffffff;
-            padding: 24px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: var(--card-shadow);
-            box-sizing: border-box;
-        }
-
-        .step-timeline::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 6%;
-            right: 6%;
-            height: 2px;
-            background: var(--border);
-            z-index: 1;
-            transform: translateY(-50%);
-        }
-
-        .timeline-progress-bar {
-            position: absolute;
-            top: 50%;
-            left: 6%;
-            width: 0%;
-            height: 2px;
-            background: var(--primary);
-            z-index: 2;
-            transform: translateY(-50%);
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .step-node {
-            position: relative;
-            z-index: 3;
-            background: #ffffff;
-            border: 2px solid var(--border);
-            color: var(--slate);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 0 6px #ffffff;
-        }
-
-        .step-node.active {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: #ffffff;
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.25), 0 0 0 6px #ffffff;
-        }
-
-        .step-node.completed {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: #ffffff;
-        }
-
-        .step-node-label {
-            position: absolute;
-            top: 52px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            white-space: nowrap;
-            color: var(--slate);
-        }
-
-        .step-node.active .step-node-label {
-            color: var(--primary);
-        }
-
-        /* 🧙‍♂️ WIZARD STEP PANEL ANIMATIONS CARD */
-        .wizard-panel {
-            display: none;
-            border: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .wizard-panel.active {
-            display: block;
-            animation: panelFadeSheetIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes panelFadeSheetIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 💬 FLOATING CHAT BUBBLE WIDGET LINK */
-        .chat-bubble-widget {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--navy);
-            color: #ffffff;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            box-shadow: 0 10px 25px rgba(10, 31, 68, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            cursor: pointer;
-            z-index: 999999;
-            transition: transform 0.2s, background 0.2s;
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-
-        .chat-bubble-widget:hover {
-            transform: scale(1.05);
-            background: var(--primary);
-        }
-
-        /* BUTTON CONTROLS */
-        .btn-wizard-main {
-            background: var(--primary);
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 0.95rem;
-            padding: 14px 32px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
-        }
-
-        .btn-wizard-main:hover { background: var(--primary-dark); }
-        .btn-wizard-main:active { transform: scale(0.98); }
-
-        .btn-wizard-alt {
-            background: #ffffff;
-            color: var(--navy);
-            font-weight: 700;
-            font-size: 0.95rem;
-            padding: 14px 28px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-wizard-alt:hover { background: var(--light-bg); }
-
-        /* INPUT MATRIX STRUCTURAL DECORATIONS */
-        .wizard-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            box-sizing: border-box;
-            width: 100%;
-        }
-
-        .wizard-input-field {
-            width: 100%;
-            padding: 14px 18px;
-            font-size: 0.95rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: #ffffff;
-            color: var(--navy);
-            outline: none;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
-            box-sizing: border-box;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .wizard-input-field:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
-        }
-
-        .input-error-marker {
-            color: #ef4444;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-top: 4px;
-            display: block;
-        }
-    </style>
 </head>
-<body>
 
-    <!-- 🌐 SITE-WIDE HEADER GRID PANEL WITH REAL-TIME CLOCK & SECURE BADGES -->
+<body>
+    <!-- 🌐 SITE HEADER WITH 12HR CLOCK, CONTACT PHONE & CLEAN REARRANGEMENTS -->
     <nav style="background: #ffffff; border-bottom: 1px solid var(--border); padding: 16px 0;">
-        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; flex-wrap: wrap; gap: 16px;">
-            <a href="index.html" style="text-decoration: none; display: block;">
+        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+            <a href="index.html" style="display: block;">
                 <img src="images/logo.png" alt="filings4u" style="height: 40px; width: auto; object-fit: contain; display: block;">
             </a>
-            
-            <!-- REAL-TIME CHRONOLOGICAL WATCH COMPONENT -->
-            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-                <div style="font-size: 0.8rem; font-weight: 700; color: var(--slate); background: var(--light-bg); padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-regular fa-clock" style="color: var(--primary);"></i>
-                    <span id="wizard-live-clock-timestamp">UTC Tracking Link Active</span>
+            <!-- CHRONOMETER AND HELPLINE DATA DISPLAY HEADER STRIP -->
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--navy); background: var(--light-bg); padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                    <span><i class="fa-solid fa-phone" style="color: var(--primary); margin-right: 4px;"></i> <strong>773-245-7079</strong></span>
+                    <span style="width: 1px; height: 14px; background: #cbd5e1;"></span>
+                    <span><i class="fa-regular fa-clock" style="color: var(--primary); margin-right: 4px;"></i> <span id="wizard-live-clock-timestamp">Initializing clock...</span></span>
                 </div>
             </div>
         </div>
     </nav>
-    <!-- MAIN APPLICATION TRACK CONTAINER -->
+
+    <!-- MAIN WORKSPACE CONTAINER UNIT -->
     <div class="wizard-container">
         
-        <!-- 📊 PROGRESS TIMELINE INDICATORS TRACK -->
-        <header class="step-timeline" id="wizard-timeline-track-root">
-            <div class="timeline-progress-bar" id="timeline-progress-fill-node"></div>
-            
-            <div class="step-node active" data-step="1">
-                1 <span class="step-node-label">Registration</span>
-            </div>
-            <div class="step-node" data-step="2">
-                2 <span class="step-node-label">Entity Details</span>
-            </div>
-            <div class="step-node" data-step="3">
-                3 <span class="step-node-label">Add-On Tiers</span>
-            </div>
-            <div class="step-node" data-step="4">
-                4 <span class="step-node-label">Authorization</span>
-            </div>
-            <div class="step-node" data-step="5">
-                5 <span class="step-node-label">Checkout Seam</span>
-            </div>
-        </header>
-
-        <!-- 🧙‍♂️ MASTER VANILLA MAIN ENTRY FORM CONTAINER -->
-        <div class="wizard-card">
-            <form id="master-onboarding-form" onsubmit="return false;" novalidate style="width: 100%; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
-                
-
-
-              <!-- ======================================================== -->
+      <!-- 🧙‍♂️ MASTER APPLICATION FORM INTERFACE CARD -->
+<div class="wizard-card">
+    <form id="master-onboarding-form" onsubmit="return false;" novalidate style="margin: 0; padding: 0; width: 100%;">
+        
+<!-- ======================================================== -->
 <!-- 🎯 STEP 1 PANEL: SERVICE PATH SELECTION CONFIGURATOR     -->
 <!-- ======================================================== -->
 <div class="wizard-panel active" id="step-panel-1">
@@ -309,34 +58,33 @@
         <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Confirm target parameters, operational speed layouts, and state tracking registries.</p>
     </div>
     
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; width: 100%; box-sizing: border-box;">
+    <!-- Unified 2-Column Framework: This will be duplicated exactly on Steps 2, 3, 4, and 5 -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
         
         <!-- LEFT MAIN ENTRY STRUCTURAL COLUMN -->
         <div class="form-grid-layout" style="display: flex; flex-direction: column; gap: 24px; width: 100%;">
             
-            <!-- 1. PRIMARY REGISTRATION TARGET (LOCKED TEXT FIELD EQUIPPED WITH A LOCK SYMBOL) -->
-            <div class="wizard-input-group">
-                <label for="wizard-route-service-id" style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Primary Registration Target</label>
-                <div style="position: relative;">
-                    <!-- Grayed out and locked text input field to show previous website page name -->
-                    <input type="text" id="wizard-route-service-id" readonly required class="wizard-input-field" style="background: #f1f5f9; color: var(--slate); font-weight: 700; cursor: not-allowed;" value="Evaluating incoming filters...">
-                    <span style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--slate); font-size: 0.85rem;"><i class="fa-solid fa-lock"></i></span>
-                </div>
-            </div>
+            <!-- 1. PRIMARY REGISTRATION TARGET -->
+         <!-- Restore your clean, original read-only info input field blocks inside step 1 -->
+<div class="wizard-input-group" style="width: 100%; display: block; clear: both;">
+    <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: var(--slate); display: block; margin-bottom: 6px;">Active Selected Deployment Track</label>
+    <input type="text" id="wizard-route-service-id" readonly class="wizard-input-field" style="background: #f1f5f9; color: #475569; font-weight: 600;" value="Loading chosen selection parameters...">
+</div>
 
-            <!-- 2. PRICING PLAN SELECTION (DROPDOWN DROPPED, CONVERTED TO LOCKED TEXT ASSET) -->
+
+            <!-- 2. SELECTED PRICING PLAN -->
             <div class="wizard-input-group">
                 <label for="wizard-route-tier-id" style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Selected Pricing Plan</label>
                 <div style="position: relative;">
-                    <!-- Grayed out and locked text input field to mirror clicked pricing choice -->
                     <input type="text" id="wizard-route-tier-id" readonly required class="wizard-input-field" style="background: #f1f5f9; color: var(--slate); font-weight: 700; cursor: not-allowed;" value="Elite Priority Processing Plan (Recommended)">
                     <span style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--slate); font-size: 0.85rem;"><i class="fa-solid fa-lock"></i></span>
                 </div>
             </div>
-                        <!-- 3. STATE OF BUSINESS CREATION DROPDOWN -->
+
+            <!-- 3. STATE OF BUSINESS CREATION -->
             <div class="wizard-input-group">
                 <label for="wizard-target-jurisdiction" style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">State of Business Creation (Where you want to create the business)</label>
-                <select id="wizard-target-jurisdiction" required class="wizard-input-field" style="font-weight: 600;" onchange="updateDynamicFilingParametersRadar()">
+                <select id="wizard-target-jurisdiction" required class="wizard-input-field" style="font-weight: 600;">
                     <option value="" disabled selected>Select State of Creation...</option>
                     <option value="FEDERAL">United States Federal Filing Nodes (DOT/USPTO/SAM)</option>
                     <option value="AL">Alabama (AL)</option><option value="AK">Alaska (AK)</option><option value="AZ">Arizona (AZ)</option>
@@ -359,10 +107,10 @@
                 </select>
             </div>
 
-            <!-- 4. STATE OF INTENDED OPERATIONS DROPDOWN -->
+            <!-- 4. STATE OF INTENDED OPERATIONS -->
             <div class="wizard-input-group">
                 <label for="wizard-operational-jurisdiction" style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">State of Intended Operations (Where you plan to operate)</label>
-                <select id="wizard-operational-jurisdiction" required class="wizard-input-field" style="font-weight: 600;" onchange="updateDynamicFilingParametersRadar()">
+                <select id="wizard-operational-jurisdiction" required class="wizard-input-field" style="font-weight: 600;">
                     <option value="" disabled selected>Select State of Operations...</option>
                     <option value="AL">Alabama (AL)</option><option value="AK">Alaska (AK)</option><option value="AZ">Arizona (AZ)</option>
                     <option value="AR">Arkansas (AR)</option><option value="CA">California (CA)</option><option value="CO">Colorado (CO)</option>
@@ -385,949 +133,588 @@
             </div>
 
         </div> <!-- /End Left Column -->
-        <!-- 5. ACTIVE FILING PARAMETERS SIDEBAR CARD -->
-        <div style="background: #ffffff; border: 2px solid var(--primary); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.05);">
-            <h3 style="margin: 0; font-size: 1rem; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-radar" style="color: var(--primary);"></i> Filing Parameters
-            </h3>
-            <!-- Interactive state visualization readout block -->
-            <div id="radar-live-tracking-profile" style="font-size: 0.85rem; color: var(--slate); display: flex; flex-direction: column; gap: 12px;">
-                <p style="margin: 0; line-height: 1.5;" id="radar-default-placeholder-text">Your live requirements tracking profile will render inside this terminal matrix container.</p>
-                <div id="radar-active-data-nodes" style="display: none; flex-direction: column; gap: 10px; background: var(--light-bg); padding: 12px; border-radius: 6px; border: 1px solid var(--border);">
-                    <div><span style="font-weight:700; font-size:0.7rem; text-transform:uppercase; color:var(--slate);">Creation Space:</span> <strong id="radar-node-creation" style="color:var(--navy);">--</strong></div>
-                    <div><span style="font-weight:700; font-size:0.7rem; text-transform:uppercase; color:var(--slate);">Operation Space:</span> <strong id="radar-node-operations" style="color:var(--navy);">--</strong></div>
-                </div>
-            </div>
-        </div> <!-- /End Right Column -->
 
-    </div> <!-- /End 2-Column Grid Layout -->
+
+
+         <!-- 5. PERMANENT APPLICATION ACCELERATION & PROGRESS SIDEBAR CARD -->
+        <aside style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 40px; width: 100%;">
+            <div>
+                <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Application Map
+                </h3>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">Estimated completion time: <strong>4 minutes</strong></p>
+            </div>
+
+            <!-- TABLE OF CONTENTS LAYOUT MATRIX -->
+            <nav style="display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border); padding-top: 16px;">
+                <div class="toc-step-row toc-active">
+                    <span class="toc-dot"></span>
+                    <div class="toc-text-group">
+                        <span class="toc-step-title">1. Pathway Verification</span>
+                        <span class="toc-step-desc">Target selection & jurisdictions</span>
+                    </div>
+                </div>
+                <div class="toc-step-row">
+                    <span class="toc-dot"></span>
+                    <div class="toc-text-group">
+                        <span class="toc-step-title">2. Entity Profile</span>
+                        <span class="toc-step-desc">Corporate details & addresses</span>
+                    </div>
+                </div>
+                <div class="toc-step-row">
+                    <span class="toc-dot"></span>
+                    <div class="toc-text-group">
+                        <span class="toc-step-title">3. Add-On Tiers</span>
+                        <span class="toc-step-desc">Compliance assets & shields</span>
+                    </div>
+                </div>
+                <div class="toc-step-row">
+                    <span class="toc-dot"></span>
+                    <div class="toc-text-group">
+                        <span class="toc-step-title">4. Authorization</span>
+                        <span class="toc-step-desc">Digital POA execution</span>
+                    </div>
+                </div>
+                <div class="toc-step-row">
+                    <span class="toc-dot"></span>
+                    <div class="toc-text-group">
+                        <span class="toc-step-title">5. Secure Checkout</span>
+                        <span class="toc-step-desc">Order breakdown & billing</span>
+                    </div>
+                </div>
+            </nav>
+
+            <div style="background: var(--light-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.75rem; color: var(--slate); line-height: 1.4; display: flex; gap: 8px; align-items: flex-start; margin-top: 4px;">
+                <i class="fa-solid fa-lock" style="color: var(--primary); margin-top: 2px;"></i>
+                <span>Progress is cached locally in real time. You can save and resume later safely.</span>
+            </div>
+        </aside> <!-- /End Right Column -->
+
+    </div> <!-- /End 2-Column Grid Layout Wrapper -->
 
     <!-- 🔘 STEP 1 NAVIGATION CONTROL BAR -->
     <div class="wizard-action-footer">
         <button type="button" class="btn-wizard-alt" style="visibility: hidden;">Back</button>
         <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(2)">Continue to Profile</button>
+        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep()">Continue to Profile</button>
+
     </div>
 </div> <!-- /End Step 1 Panel -->
 
 
+<!-- ======================================================== -->
+<!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES -->
+<!-- ======================================================== -->
+<div class="wizard-panel" id="step-panel-2">
+  <!-- Header Block -->
+  <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+    <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
+    <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p>
+  </div>
+
+  <!-- Master 2-Column Framework Grid Wrapper -->
+  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
+    
+    <!-- LEFT COLUMN CONTAINER: Holds dynamic onboarding forms based on client page source -->
+    <div id="dynamic-onboarding-fields-root" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; width: 100%; box-sizing: border-box;">
+      
+      <!-- Field 1: Legal Entity Name (Full Width) -->
+      <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px;">
+        <label for="legal-name" style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">Legal Entity Name *</label>
+        <input type="text" id="legal-name" name="legal_name" placeholder="e.g., Acme Corporation LLC" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box;" required />
+      </div>
+
+      <!-- Field 2: EIN / Tax ID (Left Column) -->
+      <div style="grid-column: span 1; display: flex; flex-direction: column; gap: 8px;">
+        <label for="ein" style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">EIN / Tax ID *</label>
+        <input type="text" id="ein" name="ein" placeholder="00-0000000" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box;" required />
+      </div>
+
+      <!-- Field 3: Formation Jurisdiction (Right Column) -->
+      <div style="grid-column: span 1; display: flex; flex-direction: column; gap: 8px;">
+        <label for="formation-state" style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">State of Formation *</label>
+        <select id="formation-state" name="formation_state" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; background: #fff;" required>
+          <option value="" disabled selected>Select state</option>
+          <option value="DE">Delaware</option>
+          <option value="WY">Wyoming</option>
+          <option value="CA">California</option>
+          <option value="NY">New York</option>
+        </select>
+      </div>
+
+      <!-- Field 4: Principal Business Address (Full Width) -->
+      <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px;">
+        <label for="business-address" style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">Principal Business Address *</label>
+        <input type="text" id="business-address" name="business_address" placeholder="Street address, Suite, Unit" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box;" required />
+      </div>
+
+    </div> <!-- /End Left Column Container -->
+
+    <!-- RIGHT COLUMN: STANDALONE PROGRESS TIMELINE ACCELERATOR -->
+    <aside style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 40px; width: 100%;">
+      <div>
+        <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Application Map
+        </h3>
+        <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">Estimated completion time: <strong>4 minutes</strong></p>
+      </div>
+
+      <!-- TABLE OF CONTENTS LAYOUT MATRIX -->
+      <nav style="display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border); padding-top: 16px;">
+        <div class="toc-step-row toc-completed">
+          <span class="toc-dot"></span>
+          <div class="toc-text-group">
+            <span class="toc-step-title">1. Pathway Verification</span>
+            <span class="toc-step-desc">Target selection & jurisdictions</span>
+          </div>
+        </div>
+        <div class="toc-step-row toc-active">
+          <span class="toc-dot"></span>
+          <div class="toc-text-group">
+            <span class="toc-step-title">2. Entity Profile</span>
+            <span class="toc-step-desc">Corporate details & addresses</span>
+          </div>
+        </div>
+        <div class="toc-step-row">
+          <span class="toc-dot"></span>
+          <div class="toc-text-group">
+            <span class="toc-step-title">3. Add-On Tiers</span>
+            <span class="toc-step-desc">Compliance assets & shields</span>
+          </div>
+        </div>
+        <div class="toc-step-row">
+          <span class="toc-dot"></span>
+          <div class="toc-text-group">
+            <span class="toc-step-title">4. Authorization</span>
+            <span class="toc-step-desc">Digital POA execution</span>
+          </div>
+        </div>
+        <div class="toc-step-row">
+          <span class="toc-dot"></span>
+          <div class="toc-text-group">
+            <span class="toc-step-title">5. Secure Checkout</span>
+            <span class="toc-step-desc">Order breakdown & billing</span>
+          </div>
+        </div>
+      </nav>
+
+      <div style="background: var(--light-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.75rem; color: var(--slate); line-height: 1.4; display: flex; gap: 8px; align-items: flex-start; margin-top: 4px;">
+        <i class="fa-solid fa-lock" style="color: var(--primary); margin-top: 2px;"></i>
+        <span>Progress is cached locally in real time. You can save and resume later safely.</span>
+      </div>
+    </aside> <!-- /End Right Column -->
+    
+  </div> <!-- /End Master 2-Column Grid Layout Wrapper -->
+
+  <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR -->
+  <div class="wizard-action-footer">
+    <button type="button" class="btn-wizard-alt" onclick="goToPreviousWizardStep(1)">Back</button>
+    <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+    <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)">Continue to Tiers</button>
+  </div>
+</div> <!-- /End Step 2 Panel -->
 
 
 
 
+ <!-- ======================================================== -->
+<!-- 🚀 STEP 3 PANEL: SPLIT DESIGN COMPLIANCE ADD-ONS MARKET  -->
+<!-- ======================================================== -->
+<div class="wizard-panel" id="step-panel-3">
+    <!-- TWO-COLUMN WORKSPACE WRAPPER -->
+    <div style="display: grid; grid-template-columns: 1fr 340px; gap: 30px; width: 100%; box-sizing: border-box; align-items: start;">
+        
+        <!-- LEFT COLUMN: THE UPSELL ADD-ON MARKETPLACE -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 10px;">
+                <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Add-On Assets & Protection Tiers</h2>
+                <p style="color: var(--slate); font-size: 0.95rem; margin: 0; line-height: 1.4;">Activate secondary infrastructure shields to protect your active corporate standing from sudden status shifts.</p>
+            </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <!-- ======================================================== -->
-                <!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES -->
-                <!-- ======================================================== -->
-                <div class="wizard-panel" id="step-panel-2">
-                    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
-                        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
-                        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p>
-                    </div>
-
-                    <!-- 2-COLUMN DESIGN LAYOUT INPUT BLOCK GRID -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; box-sizing: border-box; margin-bottom: 12px;">
-                        
-                        <!-- FIELD 01: LEGAL BUSINESS COMPANY NAME -->
-                        <div class="wizard-input-group">
-                            <label for="ent_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Legal Business Name <span style="color: #ef4444;">*</span></label>
-                            <input type="text" id="ent_legal_name" name="ent_legal_name" required placeholder="Example Logistics LLC" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 02: DBA / TRADE FOOTPRINT NAME -->
-                        <div class="wizard-input-group">
-                            <label for="ent_dba_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">DBA / Trade Name <span style="font-weight: 500; color: var(--slate); font-size: 0.75rem;">(Optional)</span></label>
-                            <input type="text" id="ent_dba_name" name="ent_dba_name" placeholder="Trade name if different from legal name" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 03: EMPLOYER IDENTIFICATION NUMBER (EIN) -->
-                        <div class="wizard-input-group">
-                            <label for="ent_ein" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Federal Tax ID / EIN <span style="color: #ef4444;">*</span></label>
-                            <input type="text" id="ent_ein" name="ent_ein" required placeholder="00-0000000" style="font-family: monospace;" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 04: USDOT NUMBER LINK -->
-                        <div class="wizard-input-group">
-                            <label for="ent_usdot" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">USDOT Number <span style="font-weight: 500; color: var(--slate); font-size: 0.75rem;">(Required for Fleet paths)</span></label>
-                            <input type="text" id="ent_usdot" name="ent_usdot" placeholder="Enter DOT index parameters if applicable" style="font-family: monospace;" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 05: PHYSICAL STREET ADDRESS -->
-                        <div class="wizard-input-group" style="grid-column: span 2;">
-                            <label for="ent_address_street" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Principal Office Street Address <span style="color: #ef4444;">*</span></label>
-                            <input type="text" id="ent_address_street" name="ent_address_street" required placeholder="123 Enterprise Way, Suite 100" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 06: ADDRESS MUNICIPALITY CITY -->
-                        <div class="wizard-input-group">
-                            <label for="ent_address_city" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">City <span style="color: #ef4444;">*</span></label>
-                            <input type="text" id="ent_address_city" name="ent_address_city" required placeholder="Austin" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 07: ADDRESS POSTAL CODE -->
-                        <div class="wizard-input-group">
-                            <label for="ent_address_zip" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Postal Zip Code <span style="color: #ef4444;">*</span></label>
-                            <input type="text" id="ent_address_zip" name="ent_address_zip" required placeholder="78701" style="font-family: monospace;" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 08: CHIEF OFFICER EXECUTIVE NAME -->
-                        <div class="wizard-input-group">
-                            <label for="ent_officer_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Authorized Officer Name <span style="color: #ef4444;">*</span></label>
-                            <input type="text" id="ent_officer_name" name="ent_officer_name" required placeholder="Jane Doe" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 09: OFFICER CAPACITY TITLE -->
-                        <div class="wizard-input-group">
-                            <label for="ent_officer_title" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Officer Title / Capacity <span style="color: #ef4444;">*</span></label>
-                            <select id="ent_officer_title" name="ent_officer_title" required class="wizard-input-field" style="height: 52px; font-weight: 600;">
-                                <option value="Managing Member">Managing Member (LLC)</option>
-                                <option value="President">President (Corporate)</option>
-                                <option value="Chief Executive Officer">Chief Executive Officer (CEO)</option>
-                                <option value="Sole Proprietor">Sole Proprietor</option>
-                                <option value="Authorized Representative">Authorized Representative</option>
-                            </select>
-                        </div>
-
-                        <!-- FIELD 10: COMMUNICATIONS EMAIL GATEWAY -->
-                        <div class="wizard-input-group">
-                            <label for="ent_comms_email" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Communications Notification Email <span style="color: #ef4444;">*</span></label>
-                            <input type="email" id="ent_comms_email" name="ent_comms_email" required placeholder="operations@yourfirm.com" class="wizard-input-field">
-                        </div>
-
-                        <!-- FIELD 11: COMMUNICATIONS PHONE GATEWAY -->
-                        <div class="wizard-input-group">
-                            <label for="ent_comms_phone" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Direct Phone / Mobile <span style="color: #ef4444;">*</span></label>
-                            <input type="tel" id="ent_comms_phone" name="ent_comms_phone" required placeholder="(512) 555-0199" style="font-family: monospace;" class="wizard-input-field">
-                        </div>
-
-                    </div>
-                </div>
-                <!-- ======================================================== -->
-                <!-- 🚀 STEP 3 PANEL: STRATEGIC COMPLIANCE UPSELLS & ADD-ONS  -->
-                <!-- ======================================================== -->
-                <div class="wizard-panel" id="step-panel-3">
-                    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
-                        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Add-On Assets & Protection Tiers</h2>
-                        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Activate secondary infrastructure shields to protect your active corporate standing from sudden status shifts.</p>
-                    </div>
-
-                    <!-- CONTAINER GRID MATRIX FOR EXTENSIONS -->
-                    <div style="display: flex; flex-direction: column; gap: 20px; width: 100%; box-sizing: border-box;">
-                        
-                        <!-- UPSELL CARD 01: DEDICATED REGISTERED AGENT -->
-                        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box;">
-                            <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
-                                <div style="font-size: 2rem; color: var(--primary);"><i class="fa-solid fa-building-shield"></i></div>
-                                <div>
-                                    <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Permanent Registered Agent Service</h4>
-                                    <p style="margin: 0; font-size: 0.85rem; color: var(--slate); line-height: 1.5;">Bypass personal address exposure on public registries. Secure immediate state document scanning, legal intake monitoring, and statutory mail shielding services.</p>
-                                </div>
-                            </div>
-                            <div style="text-align: right; min-width: 160px;">
-                                <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy); font-family: monospace; margin-bottom: 8px;">$149 <span style="font-size: 0.75rem; color: var(--slate); font-family: system-ui;">/ Year</span></div>
-                                <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); user-select: none;">
-                                    <input type="checkbox" class="upsell-checkbox" data-id="registered-agent" data-name="Registered Agent Shield Service" data-price="149" style="accent-color: var(--primary); width: 16px; height: 16px; margin: 0;" onchange="updateDynamicPricingMatrixVanilla()"> Add to Order
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- UPSELL CARD 02: AUTOMATED ANNUAL REPORT FILING MONITORING -->
-                        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box;">
-                            <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
-                                <div style="font-size: 2rem; color: var(--primary);"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                                <div>
-                                    <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Automated Annual Compliance Vault</h4>
-                                    <p style="margin: 0; font-size: 0.85rem; color: var(--slate); line-height: 1.5;">Prevent automatic dissolution from missed state milestones. Our analytical platform monitors calendar cutoffs and automatically flags corporate filing obligations.</p>
-                                </div>
-                            </div>
-                            <div style="text-align: right; min-width: 160px;">
-                                <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy); font-family: monospace; margin-bottom: 8px;">$99 <span style="font-size: 0.75rem; color: var(--slate); font-family: system-ui;">/ Year</span></div>
-                                <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); user-select: none;">
-                                    <input type="checkbox" class="upsell-checkbox" data-id="compliance-vault" data-name="Annual Compliance Vault Monitoring" data-price="99" style="accent-color: var(--primary); width: 16px; height: 16px; margin: 0;" onchange="updateDynamicPricingMatrixVanilla()"> Add to Order
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- UPSELL CARD 03: CORPORATE BYLAWS / OPERATING AGREEMENT PACKS -->
-                        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box;">
-                            <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
-                                <div style="font-size: 2rem; color: var(--primary);"><i class="fa-solid fa-file-signature"></i></div>
-                                <div>
-                                    <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Structured Corporate Bylaws & Frameworks</h4>
-                                    <p style="margin: 0; font-size: 0.85rem; color: var(--slate); line-height: 1.6;">Receive customized structural templates including board organization parameters, active entity bylaws, stock allocation strategies, or internal membership operating structures.</p>
-                                </div>
-                            </div>
-                            <div style="text-align: right; min-width: 160px;">
-                                <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy); font-family: monospace; margin-bottom: 8px;">$75 <span style="font-size: 0.75rem; color: var(--slate); font-family: system-ui;">/ Single File</span></div>
-                                <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); user-select: none;">
-                                    <input type="checkbox" class="upsell-checkbox" data-id="bylaws-pack" data-name="Structured Corporate Bylaws Framework" data-price="75" style="accent-color: var(--primary); width: 16px; height: 16px; margin: 0;" onchange="updateDynamicPricingMatrixVanilla()"> Add to Order
-                                </label>
-                            </div>
-                        </div>
-
+            <!-- UPSELL CARD 01: PERMANENT REGISTERED AGENT -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box;">
+                <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                    <div style="font-size: 2.2rem; color: var(--primary); min-width: 45px; text-align: center;"><i class="fa-solid fa-building-shield"></i></div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Permanent Registered Agent Service</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--slate); line-height: 1.5;">Bypass personal address exposure on public registries. Secure immediate state document scanning, legal intake monitoring, and statutory mail shielding services.</p>
                     </div>
                 </div>
-                <!-- ======================================================== -->
-                <!-- ✒️ STEP 4 PANEL: POWER OF ATTORNEY & DIGITAL SIGNATURE   -->
-                <!-- ======================================================== -->
-                <div class="wizard-panel" id="step-panel-4">
-                    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
-                        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Filing Authorization Agency Seam</h2>
-                        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Execute the limited agency declaration enabling our specialists to push payloads to government nodes.</p>
-                    </div>
+                <div style="text-align: right; min-width: 160px;">
+                    <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy); font-family: monospace; margin-bottom: 8px;">$149 <span style="font-size: 0.75rem; color: var(--slate); font-family: system-ui; font-weight: normal;">/ Year</span></div>
+                    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); user-select: none;">
+                        <input type="checkbox" class="upsell-checkbox" data-id="registered-agent" data-name="Registered Agent Shield Service" data-price="149" style="accent-color: var(--primary); width: 16px; height: 16px; margin: 0;" onchange="updateDynamicPricingMatrixVanilla()"> Add to Order
+                    </label>
+                </div>
+            </div>
 
-                    <!-- LEGAL COVENANT DEED TEXT SCROLL BOX -->
-                    <div style="background: #f8fafc; border: 1px solid var(--border); padding: 24px; border-radius: 8px; height: 160px; overflow-y: scroll; font-size: 0.85rem; line-height: 1.6; color: var(--slate); margin-bottom: 24px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box;">
-                        <strong>LIMITED POWER OF ATTORNEY & AGENCY MANDATE</strong><br><br>
-                        By executing this digital signature registration form, the applicant ("Principal") grants filings4u, LLC, its subsidiaries, corporate entities, and authorized third-party filing specialists a limited power of attorney to execute administrative filings on their behalf. This authority is restricted strictly to the preparation, formatting, structural verification, and deployment of regulatory registrations with city, state, and federal administrative layers.<br><br>
-                        The Principal certifies that all factual data metrics provided inside this entry form are true, correct, and matching active internal corporate taxonomies. filings4u assumes zero liability for system spacing errors, administrative rejections, or fines generated due to unverified parameter inputs provided by the user.
-                    </div>
-
-                    <!-- INTERACTIVE HTML5 CANVAS FIELD LAYOUT -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
-                        
-                        <!-- CANVAS CAPTURE PANEL -->
-                        <div class="wizard-input-group">
-                            <label style="display: block; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Draw Official Signature <span style="color: #ef4444;">*</span></label>
-                            <div style="background: #ffffff; border: 2px dashed var(--border); border-radius: 8px; padding: 4px; position: relative; width: 100%; max-width: 500px; box-sizing: border-box;">
-                                <canvas id="poa-signature-pad" width="500" height="180" style="background: #ffffff; display: block; cursor: crosshair; touch-action: none; width: 100%; max-width: 500px; height: 180px;"></canvas>
-                                <button type="button" onclick="clearSignatureCanvasTrack()" style="position: absolute; right: 12px; bottom: 12px; background: rgba(10,31,68,0.06); border: none; font-size: 0.75rem; font-weight: 700; padding: 6px 12px; border-radius: 4px; cursor: pointer; color: var(--navy);">Clear Pad</button>
-                            </div>
-                        </div>
-
-                        <!-- SIGNATORY TEXT FIELD INTERFACE -->
-                        <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center; padding-top: 26px;">
-                            <div class="wizard-input-group">
-                                <label for="poa_signer_printed" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Printed Legal Name <span style="color: #ef4444;">*</span></label>
-                                <input type="text" id="poa_signer_printed" name="poa_signer_printed" required placeholder="Type full name to verify token" class="wizard-input-field">
-                            </div>
-                            <label style="display: inline-flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem; line-height: 1.5; color: var(--slate); user-select: none;">
-                                <input type="checkbox" id="poa_agreement_lock" required style="accent-color: var(--primary); width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0;">
-                                <span>I execute this digital registration stamp as my electronic signature asset. I accept the limited Power of Attorney parameters outlined above.</span>
-                            </label>
-                        </div>
-
+            <!-- UPSELL CARD 02: AUTOMATED COMPLIANCE VAULT -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box;">
+                <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                    <div style="font-size: 2.2rem; color: var(--primary); min-width: 45px; text-align: center;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Automated Annual Compliance Vault</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--slate); line-height: 1.5;">Prevent automatic dissolution from missed state milestones. Our analytical platform monitors calendar cutoffs and automatically flags corporate filing obligations.</p>
                     </div>
                 </div>
-                <!-- ======================================================== -->
-                <!-- 💳 STEP 5 PANEL: REVIEW SUMMARY & MULTI-ITEM CHECKOUT    -->
-                <!-- ======================================================== -->
-                <div class="wizard-panel" id="step-panel-5">
-                    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
-                        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Order Summary &amp; Checkout Matrix</h2>
-                        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Review your dynamic data package allocations and execute encrypted checkout processes.</p>
-                    </div>
+                <div style="text-align: right; min-width: 160px;">
+                    <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy); font-family: monospace; margin-bottom: 8px;">$99 <span style="font-size: 0.75rem; color: var(--slate); font-family: system-ui; font-weight: normal;">/ Year</span></div>
+                    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); user-select: none;">
+                        <input type="checkbox" class="upsell-checkbox" data-id="compliance-vault" data-name="Annual Compliance Vault Monitoring" data-price="99" style="accent-color: var(--primary); width: 16px; height: 16px; margin: 0;" onchange="updateDynamicPricingMatrixVanilla()"> Add to Order
+                    </label>
+                </div>
+            </div>
 
-                    <div style="display: grid; grid-template-columns: 4fr 3fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
-                        
-                        <!-- LEFT MAIN: DYNAMIC ORDER INVOICE STACK -->
-                        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box;">
-                            <h3 style="margin: 0 0 20px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--light-bg); padding-bottom: 10px;">
-                                <i class="fa-solid fa-receipt" style="color: var(--primary); margin-right: 8px;"></i> Selected Compliance Items
-                            </h3>
-                            
-                            <!-- Dynamic Checkout Elements Row Injector Frame -->
-                            <div id="checkout-invoice-rows-container" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px;">
-                                <!-- Dynamic records populate here runtime via JS -->
-                            </div>
-
-                            <!-- Calculations Invoice Row Grid Seam -->
-                            <div style="border-top: 1px solid var(--border); padding-top: 20px; display: flex; flex-direction: column; gap: 10px;">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--slate); font-weight: 600;">
-                                    <span>Filing Application Subtotal</span>
-                                    <span id="invoice-subtotal-display" style="font-family: monospace;">$0.00</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--slate); font-weight: 600;">
-                                    <span>Government Agency &amp; Regulatory Fees</span>
-                                    <span id="invoice-gov-fees-display" style="font-family: monospace;">$0.00</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; font-size: 1.3rem; color: var(--navy); font-weight: 900; border-top: 1px dashed var(--border); padding-top: 14px;">
-                                    <span>Total Secured Charge</span>
-                                    <span id="invoice-grand-total-display" style="font-family: monospace; color: var(--primary);">$0.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- RIGHT MAIN: SECURE CREDIT CARD PLACEHOLDER -->
-                        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;">
-                            <div>
-                                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Encrypted Payment Entry</h3>
-                                <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">All card numbers remain completely shielded inside tokenized vault pipelines.</p>
-                            </div>
-
-                            <!-- CARD NUMBER CAPTURE SEAM -->
-                            <div class="wizard-input-group">
-                                <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Credit Card Number</label>
-                                <div style="position: relative; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; display: flex; align-items: center; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);">
-                                    <span style="color: var(--slate); margin-right: 12px; font-size: 1rem;"><i class="fa-solid fa-credit-card"></i></span>
-                                    <input type="text" id="checkout_card_num" maxlength="19" placeholder="4111 1111 1111 1111" style="border: none; outline: none; font-family: monospace; font-size: 1rem; width: 100%; color: var(--navy);">
-                                    <span style="position: absolute; right: 16px; font-size: 0.8rem; color: var(--primary); font-weight: 800; letter-spacing: 0.05em;">🔒 SSL</span>
-                                </div>
-                            </div>
-
-                            <!-- EXPIRATION DATE & SECURITY MARKS GRID -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;">
-                                <div class="wizard-input-group">
-                                    <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Expiration Date</label>
-                                    <input type="text" id="checkout_card_exp" maxlength="5" placeholder="MM/YY" style="font-family: monospace;" class="wizard-input-field">
-                                </div>
-                                <div class="wizard-input-group">
-                                    <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">CVV Code</label>
-                                    <input type="password" id="checkout_card_cvv" maxlength="4" placeholder="***" style="font-family: monospace;" class="wizard-input-field">
-                                </div>
-                            </div>
-
-                            <!-- REASSURANCE TRIPLE SEAL STACK -->
-                            <div style="border-top: 1px solid var(--border); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 0.75rem; color: var(--slate); font-weight: 600;">
-                                <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> PCI-DSS Level 1 Compliant Architecture Seam</div>
-                                <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Official Corporate Guarantee Protection Included</div>
-                            </div>
-                        </div>
-
+            <!-- UPSELL CARD 03: CORPORATE BYLAWS FRAMEWORK -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box;">
+                <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                    <div style="font-size: 2.2rem; color: var(--primary); min-width: 45px; text-align: center;"><i class="fa-solid fa-file-signature"></i></div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Structured Corporate Bylaws & Frameworks</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--slate); line-height: 1.6;">Receive customized structural templates including board organization parameters, active entity bylaws, stock allocation strategies, or internal membership operating structures.</p>
                     </div>
                 </div>
-
-                <!-- ======================================================== -->
-                <!-- 🛠️ INTERACTIVE NAVIGATION CONTROL ROW TRIPPERS           -->
-                <!-- ======================================================== -->
-                <footer style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; box-sizing: border-box;">
-                    <!-- LEFT ALIGNED BACK ACTIONS -->
-                    <button type="button" id="wizard-prev-trigger-btn" class="btn-wizard-alt" onclick="navigateWizardStepTrackVanilla(-1)" style="display: none;">&larr; Return Back</button>
-                    
-                    <!-- RIGHT ALIGNED SUBMISSIONS & SAVE TRIPPERS -->
-                    <div style="display: flex; align-items: center; gap: 16px; margin-left: auto;">
-                        <!-- 💾 DEDICATED SAVE & EXIT TRIGGER BUTTON -->
-                        <button type="button" id="wizard-save-exit-btn" class="btn-wizard-alt" onclick="executeSaveAndExitWorkflow()" style="border-color: #cbd5e1; color: var(--slate);">
-                            <i class="fa-solid fa-floppy-disk" style="margin-right: 6px; color: var(--slate);"></i> Save &amp; Exit
-                        </button>
-                        
-                        <!-- DEDICATED CONTINUE/NEXT ACTION TRIGGER BUTTON -->
-                        <button type="button" id="wizard-next-trigger-btn" class="btn-wizard-main" onclick="handleNavigationButtonClickEvent()">
-                            Continue Application &rarr;
-                        </button>
+                <div style="text-align: right; min-width: 160px;">
+                    <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy); font-family: monospace; margin-bottom: 8px;">$75 <span style="font-size: 0.75rem; color: var(--slate); font-family: system-ui; font-weight: normal;">/ Single File</span></div>
+                    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); user-select: none;">
+                        <input type="checkbox" class="upsell-checkbox" data-id="bylaws-pack" data-name="Structured Corporate Bylaws Framework" data-price="75" style="accent-color: var(--primary); width: 16px; height: 16px; margin: 0;" onchange="updateDynamicPricingMatrixVanilla()"> Add to Order
+                    </label>
+                </div>
+            </div>
+            <!-- 🚛 UPSELL CARD 04: TRUCKING FMCSA COMPLIANCE BOOSTER FILE PACK -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box; border-left: 4px solid #f59e0b;">
+                <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                    <div style="font-size: 2.2rem; color: #f59e0b; min-width: 45px; text-align: center;"><i class="fa-solid fa-truck-ramp-box"></i></div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">FMCSA Safety Audit Preparation Binder</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--slate); line-height: 1.5;">Essential asset shield for transportation companies. Includes standardized mock logs, compliance vehicle inspection sheets, maintenance forms, and DQF template outlines.</p>
                     </div>
-                </footer>
+                </div>
+                <div style="text-align: right; min-width: 160px;">
+                    <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy); font-family: monospace; margin-bottom: 8px;">$119 <span style="font-size: 0.75rem; color: var(--slate); font-family: system-ui; font-weight: normal;">/ One-Time</span></div>
+                    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #fffbeb; border: 1px solid #fef3c7; color: #b45309; padding: 8px 16px; border-radius: 6px; user-select: none;">
+                        <input type="checkbox" class="upsell-checkbox" data-id="fmcsa-audit-binder" data-name="FMCSA Safety Audit Prep Binder" data-price="119" style="accent-color: #d97706; width: 16px; height: 16px; margin: 0;" onchange="updateDynamicPricingMatrixVanilla()"> Add to Order
+                    </label>
+                </div>
+            </div>
+
+            <!-- UPSELL CARD 05: CERTIFIED EXPEDITED COURIER UPGRADE -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box;">
+                <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                    <div style="font-size: 2.2rem; color: #22c55e; min-width: 45px; text-align: center;"><i class="fa-solid fa-bolt"></i></div>
+                    <div>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Certified Platinum Hand-Delivery Processing</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--slate); line-height: 1.5;">Bypass delayed state mail delivery backlogs. Filings4u routes your final packet via direct electronic API validation queues or certified hand-couriers.</p>
+                    </div>
+                </div>
+                <div style="text-align: right; min-width: 160px;">
+                    <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy); font-family: monospace; margin-bottom: 8px;">$49 <span style="font-size: 0.75rem; color: var(--slate); font-family: system-ui; font-weight: normal;">/ Order</span></div>
+                    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f0fdf4; border: 1px solid #dcfce7; color: #166534; padding: 8px 16px; border-radius: 6px; user-select: none;">
+                        <input type="checkbox" class="upsell-checkbox" data-id="expedited-courier" data-name="Platinum Hand-Delivery Courier" data-price="49" style="accent-color: #22c55e; width: 16px; height: 16px; margin: 0;" onchange="updateDynamicPricingMatrixVanilla()"> Add to Order
+                    </label>
+                </div>
+            </div>
+        </div> <!-- /End Left Column Marketplace -->
+        <!-- RIGHT COLUMN: THE COMPLIANCE TRACKING APPLICATION INVOICE CARD -->
+        <div style="position: sticky; top: 20px; background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-sizing: border-box; box-shadow: 0 4px 12px rgba(10,31,68,0.04);">
+            
+            <!-- STEPPING INDICATOR METRIC HOOKS -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
+                <span style="font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px;">Live Filing Summary</span>
+                <!-- STEP INDICATOR LIGHTS UP FOR PANEL 3 -->
+                <div style="display: flex; gap: 4px; align-items: center;">
+                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #e2e8f0;"></span>
+                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #e2e8f0;"></span>
+                    <span style="width: 20px; height: 7px; border-radius: 4px; background: var(--primary); transition: all 0.2s ease;"></span>
+                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #e2e8f0;"></span>
+                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #e2e8f0;"></span>
+                </div>
+            </div>
+
+            <!-- INVOICE SELECTIONS SCROLL BOX ROOT -->
+            <div id="checkout-invoice-rows-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; max-height: 240px; overflow-y: auto; padding-right: 4px;">
+                <!-- Filled programmatically by updateDynamicPricingMatrixVanilla() -->
+            </div>
+
+            <!-- INJECTED LIVE CHECKBOX AUDIT HOOK -->
+            <div id="summary-onboarding-addons-root" style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px;">
+                <!-- Appends new entrant options seamlessly if checked in previous step -->
+            </div>
+
+            <!-- TOTAL BILLING RECONCILIATION LAYOUT MODULES -->
+            <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: var(--slate);">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Filing Subtotal:</span>
+                    <span id="invoice-subtotal-display" style="font-family: monospace; font-weight: 600; color: var(--navy);">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Government Surcharge / Agent Fees:</span>
+                    <span id="invoice-gov-fees-display" style="font-family: monospace; font-weight: 600; color: var(--navy);">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 1.05rem; font-weight: 800; color: var(--navy); border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: 4px;">
+                    <span>Total Amount:</span>
+                    <span id="invoice-grand-total-display" style="color: var(--primary); font-family: monospace;">$0.00</span>
+                </div>
+            </div>
+        </div>
+        
+    </div> <!-- /End Workspace Grid Wrapper -->
+
+    <!-- 🔘 STEP 3 NAVIGATION CONTROL BAR -->
+    <div class="wizard-action-footer" style="margin-top: 35px; border-top: 1px solid var(--border); padding-top: 20px; display: flex; justify-content: space-between; width: 100%;">
+        <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(2)">Back</button>
+        <div style="display: flex; gap: 12px;">
+            <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+            <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(4)">Continue to Authorization</button>
+        </div>
+    </div>
+</div>
+<!-- /End Step 3 Panel -->
+
+
+
+
+<!-- ======================================================== --> 
+<!-- ✒️ STEP 4 PANEL: POWER OF ATTORNEY & DIGITAL SIGNATURE   --> 
+<!-- ======================================================== --> 
+<div class="wizard-panel" id="step-panel-4"> 
+    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;"> 
+        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Filing Authorization Agency Seam</h2> 
+        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Execute the limited agency declaration enabling our specialists to push payloads to government nodes.</p> 
+    </div> 
+
+    <!-- LEGAL COVENANT DEED TEXT SCROLL BOX --> 
+    <div style="background: #f8fafc; border: 1px solid var(--border); padding: 24px; border-radius: 8px; height: 160px; overflow-y: scroll; font-size: 0.85rem; line-height: 1.6; color: var(--slate); margin-bottom: 24px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box;"> 
+        <strong>LIMITED POWER OF ATTORNEY & AGENCY MANDATE</strong><br><br> By executing this digital signature registration form, the applicant ("Principal") grants filings4u, LLC, its subsidiaries, corporate entities, and authorized third-party filing specialists a limited power of attorney to execute administrative filings on their behalf. This authority is restricted strictly to the preparation, formatting, structural verification, and deployment of regulatory registrations with city, state, and federal administrative layers.<br><br> The Principal certifies that all factual data metrics provided inside this entry form are true, correct, and matching active internal corporate taxonomies. filings4u assumes zero liability for system spacing errors, administrative rejections, or fines generated due to unverified parameter inputs provided by the user. 
+    </div> 
+
+    <!-- INTERACTIVE HTML5 CANVAS FIELD LAYOUT --> 
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;"> 
+        <!-- CANVAS CAPTURE PANEL --> 
+        <div class="wizard-input-group"> 
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Draw Official Signature <span style="color: #ef4444;">*</span></label> 
+            <div style="background: #ffffff; border: 2px dashed var(--border); border-radius: 8px; padding: 4px; position: relative; width: 100%; max-width: 500px; box-sizing: border-box;"> 
+                <canvas id="poa-signature-pad" width="500" height="180" style="background: #ffffff; display: block; cursor: crosshair; touch-action: none; width: 100%; max-width: 500px; height: 180px;"></canvas> 
+                <button type="button" onclick="clearSignatureCanvasTrack()" style="position: absolute; right: 12px; bottom: 12px; background: rgba(10,31,68,0.06); border: none; font-size: 0.75rem; font-weight: 700; padding: 6px 12px; border-radius: 4px; cursor: pointer; color: var(--navy);">Clear Pad</button> 
+            </div> 
+        </div> 
+
+        <!-- SIGNATORY TEXT FIELD INTERFACE --> 
+        <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center; padding-top: 26px;"> 
+            <div class="wizard-input-group"> 
+                <label for="poa_signer_printed" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">Printed Legal Name <span style="color: #ef4444;">*</span></label> 
+                <input type="text" id="poa_signer_printed" name="poa_signer_printed" required placeholder="Type full name to verify token" class="wizard-input-field"> 
+            </div> 
+            <label style="display: inline-flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem; line-height: 1.5; color: var(--slate); user-select: none;"> 
+                <input type="checkbox" id="poa_agreement_lock" required style="accent-color: var(--primary); width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0;"> 
+                <span>I execute this digital registration stamp as my electronic signature asset. I accept the limited Power of Attorney parameters outlined above.</span> 
+            </label> 
+        </div> 
+    </div> <!-- /End Grid Layout Row --> 
+
+    <!-- 🔘 STEP 4 NAVIGATION CONTROL BAR --> 
+<div class="wizard-action-footer">
+    <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(3)">Back</button>
+    <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+    <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(5)">Continue to Checkout</button>
+</div>
+
+
+</div> <!-- /End Step 4 Panel -->
+
+ <!-- ======================================================== --> 
+<!-- 💳 STEP 5 PANEL: REVIEW SUMMARY & MULTI-ITEM CHECKOUT    --> 
+<!-- ======================================================== --> 
+<div class="wizard-panel" id="step-panel-5"> 
+    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;"> 
+        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Order Summary &amp; Checkout Matrix</h2> 
+        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Review your dynamic data package allocations and execute encrypted checkout processes.</p> 
+    </div> 
+
+    <div style="display: grid; grid-template-columns: 4fr 3fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;"> 
+        <!-- LEFT MAIN: DYNAMIC ORDER INVOICE STACK --> 
+        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box;"> 
+            <h3 style="margin: 0 0 20px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--light-bg); padding-bottom: 10px;"> 
+                <i class="fa-solid fa-receipt" style="color: var(--primary); margin-right: 8px;"></i> Selected Compliance Items 
+            </h3> 
+            <!-- Dynamic Checkout Elements Row Injector Frame --> 
+            <div id="checkout-invoice-rows-container" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px;"> 
+                <!-- Dynamic records populate here runtime via JS --> 
+            </div> 
+            <!-- Calculations Invoice Row Grid Seam --> 
+            <div style="border-top: 1px solid var(--border); padding-top: 20px; display: flex; flex-direction: column; gap: 10px;"> 
+                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--slate); font-weight: 600;"> 
+                    <span>Filing Application Subtotal</span> 
+                    <span id="invoice-subtotal-display" style="font-family: monospace;">$0.00</span> 
+                </div> 
+                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--slate); font-weight: 600;"> 
+                    <span>Government Agency &amp; Regulatory Fees</span> 
+                    <span id="invoice-gov-fees-display" style="font-family: monospace;">$0.00</span> 
+                </div> 
+                <div style="display: flex; justify-content: space-between; font-size: 1.3rem; color: var(--navy); font-weight: 900; border-top: 1px dashed var(--border); padding-top: 14px;"> 
+                    <span>Total Secured Charge</span> 
+                    <span id="invoice-grand-total-display" style="font-family: monospace; color: var(--primary);">$0.00</span> 
+                </div> 
+            </div> 
+        </div> 
+
+        <!-- RIGHT MAIN: SECURE CREDIT CARD PLACEHOLDER --> 
+        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;"> 
+            <div> 
+                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Encrypted Payment Entry</h3> 
+                <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">All card numbers remain completely shielded inside tokenized vault pipelines.</p> 
+            </div> 
+            <!-- CARD NUMBER CAPTURE SEAM --> 
+            <div class="wizard-input-group"> 
+                <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Credit Card Number</label> 
+                <div style="position: relative; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; display: flex; align-items: center; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);"> 
+                    <span style="color: var(--slate); margin-right: 12px; font-size: 1rem;"><i class="fa-solid fa-credit-card"></i></span> 
+                    <input type="text" id="checkout_card_num" maxlength="19" placeholder="4111 1111 1111 1111" style="border: none; outline: none; font-family: monospace; font-size: 1rem; width: 100%; color: var(--navy);"> 
+                    <span style="position: absolute; right: 16px; font-size: 0.8rem; color: var(--primary); font-weight: 800; letter-spacing: 0.05em;"><i class="fa-solid fa-lock"></i> SSL</span> 
+                </div> 
+            </div> 
+            <!-- EXPIRATION DATE & SECURITY MARKS GRID --> 
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;"> 
+                <div class="wizard-input-group"> 
+                    <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Expiration Date</label> 
+                    <input type="text" id="checkout_card_exp" maxlength="5" placeholder="MM/YY" style="font-family: monospace;" class="wizard-input-field"> 
+                </div> 
+                <div class="wizard-input-group"> 
+                    <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">CVV Code</label> 
+                    <input type="password" id="checkout_card_cvv" maxlength="4" placeholder="***" style="font-family: monospace;" class="wizard-input-field"> 
+                </div> 
+            </div> 
+            <!-- REASSURANCE TRIPLE SEAL STACK --> 
+            <div style="border-top: 1px solid var(--border); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 0.75rem; color: var(--slate); font-weight: 600;"> 
+                <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> PCI-DSS Level 1 Compliant Architecture Seam</div> 
+                <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Official Corporate Guarantee Protection Included</div> 
+            </div> 
+        </div> 
+    </div> <!-- /End Grid Checkout Panel Row --> 
+
+    <!-- 🔘 STEP 5 NAVIGATION CONTROL BAR --> 
+<div class="wizard-action-footer">
+    <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(4)">Back</button>
+    <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+    <button type="button" id="wizard-next-trigger-btn" class="btn-wizard-main" onclick="executeOnboardingTransactionPayloadSubmitVanilla()">Complete Order & Submit</button>
+</div>
+
+
+</div> <!-- /End Step 5 Panel -->
 
             </form>
-        </div> <!-- End Master Card -->
-    </div> <!-- End Wizard App Container -->
-    <!-- ======================================================== -->
-    <!-- 🧠 AUTOMATED DATA CONTROLLER AND CALCULATIONS SCRIPT ENGINE -->
-    <!-- ======================================================== -->
-    <script>
-        // 🗂️ CENTRAL COMPLIANCE SERVICE SYSTEM DATABASE INDEX (2026 SPECS)
-        const CENTRAL_SERVICE_PLAN_DB = {
-            "ucr-registration": { "name": "Unified Carrier Registration (UCR)", "gov_fee": 76, "prices": { "standard": 149, "elite": 249, "enterprise": 449 } },
-            "clia-certificate": { "name": "CLIA Laboratory Certificate", "gov_fee": 180, "prices": { "standard": 199, "elite": 349, "enterprise": 599 } },
-            "regulatory-consulting": { "name": "Custom Regulatory Legal Consulting", "gov_fee": 0, "prices": { "standard": 299, "elite": 499, "enterprise": 899 } },
-            "hazmat-registration": { "name": "HAZMAT Registration (PHMSA)", "gov_fee": 300, "prices": { "standard": 175, "elite": 299, "enterprise": 499 } },
-            "duns-number": { "name": "DUNS Number Procurement", "gov_fee": 0, "prices": { "standard": 125, "elite": 249, "enterprise": 449 } },
-            "procurement-registration": { "name": "Government Procurement Registration", "gov_fee": 0, "prices": { "standard": 199, "elite": 349, "enterprise": 699 } },
-            "llc-reinstatement": { "name": "LLC Reinstatement Processing", "gov_fee": 150, "prices": { "standard": 199, "elite": 349, "enterprise": 549 } },
-            "apostille-services": { "name": "Apostille Authentication Services", "gov_fee": 45, "prices": { "standard": 149, "elite": 299, "enterprise": 499 } },
-            "good-standing": { "name": "Certificate of Good Standing", "gov_fee": 50, "prices": { "standard": 49, "elite": 99, "enterprise": 199 } },
-            "foreign-qualification": { "name": "Foreign Qualification Certificate", "gov_fee": 200, "prices": { "standard": 149, "elite": 299, "enterprise": 499 } },
-            "scac-code": { "name": "SCAC Code Registration (NMFTA)", "gov_fee": 95, "prices": { "standard": 125, "elite": 249, "enterprise": 449 } },
-            "trademark-filing": { "name": "Trademark Filing Application", "gov_fee": 350, "prices": { "standard": 199, "elite": 399, "enterprise": 699 } },
-            "servicemark-filing": { "name": "Servicemark Filing Application", "gov_fee": 350, "prices": { "standard": 199, "elite": 399, "enterprise": 699 } }
-        };
+        </div> <!-- /End .wizard-card -->
+    </div> <!-- /End .wizard-container -->
 
-        // ⚙️ SYSTEM STATE FLOW VARIABLES
-        let currentWizardActiveStep = 1;
-        const totalWizardExpectedSteps = 5;
-        let routeActiveServiceKey = "hazmat-registration"; // Standard fallback routing
-        let routeActivePlanKey = "elite";
-        window.wizardCalculatedFinalTotalAmount = 0;
 
-        // LIFE-CYCLE INITIALIZATION ENGINE IN VANILLA JS
-        document.addEventListener("DOMContentLoaded", function() {
-            initializeDynamicChronometerWidget();
-            generateSecureRuntimeSessionTokenVanilla();
-            initializeUrlParameterParserEngineVanilla();
-            initializeSignatureCanvasPadEngineVanilla();
-            cacheAndRestoreWizardFormStatesVanilla(true); // Attempt to pull existing entries from cache
-            updateDynamicPricingMatrixVanilla();
-        });
-
-        // ⏱️ REAL-TIME CHRONOLOGICAL WATCH COMPONENT (UTC SYNC)
-        function initializeDynamicChronometerWidget() {
-            const clockNode = document.getElementById("wizard-live-clock-timestamp");
-            function refreshLiveTime() {
-                const nowTimestamp = new Date();
-                const formattedTimeStr = nowTimestamp.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
-                if (clockNode) clockNode.textContent = formattedTimeStr;
-            }
-            refreshLiveTime();
-            setInterval(refreshLiveTime, 1000);
-        }
-
-        // GENERATE SECURE TRANSACTION STAMP
-        function generateSecureRuntimeSessionTokenVanilla() {
-            let bufferArray = new Uint32Array(4);
-            window.crypto.getRandomValues(bufferArray);
-            let hexTokenStr = Array.from(bufferArray, val => val.toString(16).padStart(8, '0')).join('').toUpperCase();
-            let sessionTokenString = `F4U-TX-${hexTokenStr.substring(0, 16)}`;
-            
-            const sessionDisplayNode = document.getElementById("wizard-session-token-display-root");
-            if (sessionDisplayNode) sessionDisplayNode.textContent = sessionTokenString;
-            window.f4u_tx_session_hash = sessionTokenString;
-        }
-
-// URL PARAMETERS CONVERSION AND DYNAMIC RECOVERY LOGIC ENGINE
-function initializeUrlParameterParserEngineVanilla() {
-    const searchUrlQueryStrings = new URLSearchParams(window.location.search);
-    const queryPassedService = searchUrlQueryStrings.get('service');
-    const queryPassedPlan = searchUrlQueryStrings.get('plan');
+<!-- 🧱 STANDALONE GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+<footer class="footer-master-container"> 
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.02; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div> 
     
-    const inputServiceNode = document.getElementById("wizard-route-service-id");
-    const inputPlanNode = document.getElementById("wizard-route-tier-id");
-    
-    // 1. Parse incoming website page targets
-    if (queryPassedService) {
-        routeActiveServiceKey = queryPassedService;
-        if (inputServiceNode) {
-            if (CENTRAL_SERVICE_PLAN_DB[queryPassedService]) {
-                inputServiceNode.value = CENTRAL_SERVICE_PLAN_DB[queryPassedService].name;
-            } else {
-                let cleanLabel = queryPassedService.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                inputServiceNode.value = cleanLabel;
-            }
-        }
-    }
-    
-    // 2. Parse incoming pricing click tiers
-    if (queryPassedPlan) {
-        const standardizedPlanString = queryPassedPlan.toLowerCase();
-        if (["standard", "elite", "enterprise"].includes(standardizedPlanString)) {
-            routeActivePlanKey = standardizedPlanString;
-            if (inputPlanNode) {
-                let planDisplayNames = {
-                    "standard": "Standard General Processing Plan",
-                    "elite": "Elite Priority Processing Plan (Recommended)",
-                    "enterprise": "Enterprise Complete Portfolio Plan"
-                };
-                inputPlanNode.value = planDisplayNames[standardizedPlanString];
-            }
-        }
-    }
-}
-
-// LIVE FILING PARAMETERS MONITORING CONTROLLER
-function updateDynamicFilingParametersRadar() {
-    const creationNode = document.getElementById("wizard-target-jurisdiction");
-    const operationalNode = document.getElementById("wizard-operational-jurisdiction");
-    
-    const placeholderText = document.getElementById("radar-default-placeholder-text");
-    const metricsContainer = document.getElementById("radar-active-data-nodes");
-    
-    const readCreation = document.getElementById("radar-node-creation");
-    const readOperations = document.getElementById("radar-node-operations");
-    
-    if (creationNode.value || operationalNode.value) {
-        if (placeholderText) placeholderText.style.display = "none";
-        if (metricsContainer) metricsContainer.style.display = "flex";
+    <div class="footer-width-limiter"> 
         
-        if (readCreation) readCreation.textContent = creationNode.value ? creationNode.options[creationNode.selectedIndex].text : "--";
-        if (readOperations) readOperations.textContent = operationalNode.value ? operationalNode.options[operationalNode.selectedIndex].text : "--";
-    }
-}
-
-    </script>
-    <script>
-        // 🚀 MASTER STEP NAVIGATION CONTROL LOGIC (VANILLA JS IMPLEMENTATION)
-        function navigateWizardStepTrackVanilla(directionOffset) {
-            const plannedTargetStep = currentWizardActiveStep + directionOffset;
+        <!-- MAIN DIRECTORY FLEX WRAPPER --> 
+        <div class="footer-directory-grid" style="display: flex; justify-content: space-between; gap: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap;"> 
             
-            // Limit navigation bounds to valid panels
-            if (plannedTargetStep < 1 || plannedTargetStep > totalWizardExpectedSteps) return;
-
-            // Execute input structure check loops when advancing panels
-            if (directionOffset > 0) {
-                if (!validateStepInputParametersVanilla(currentWizardActiveStep)) {
-                    return; // Prevent step advance if validation parameters check fails
-                }
-            }
-
-            // Save structural panel parameters to state
-            cacheAndRestoreWizardFormStatesVanilla(false);
-
-            // Toggle element active states
-            document.getElementById(`step-panel-${currentWizardActiveStep}`).classList.remove('active');
+            <!-- COLUMN 1: BRAND LOGO (Anchored to the Left Edge) -->
+            <div style="flex: 1; min-width: 240px;"> 
+                <img src="images/logo-white.png" alt="filings4u" style="height: 44px; width: auto; object-fit: contain; margin-bottom: 16px; display: block;"> 
+                <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; max-width: 320px; margin: 0;">Enterprise compliance onboarding channels and multi-jurisdictional automated file orchestration deployment networks.</p> 
+            </div> 
             
-            const priorActiveStepNode = document.querySelector(`.step-node[data-step="${currentWizardActiveStep}"]`);
-            if (priorActiveStepNode) {
-                priorActiveStepNode.classList.remove('active');
-                if (directionOffset > 0) {
-                    priorActiveStepNode.classList.add('completed');
-                }
-            }
-            
-            if (directionOffset < 0) {
-                const returningStepNode = document.querySelector(`.step-node[data-step="${plannedTargetStep}"]`);
-                if (returningStepNode) returningStepNode.classList.remove('completed');
-            }
-
-            currentWizardActiveStep = plannedTargetStep;
-            
-            document.getElementById(`step-panel-${currentWizardActiveStep}`).classList.add('active');
-            const targetStepNode = document.querySelector(`.step-node[data-step="${currentWizardActiveStep}"]`);
-            if (targetStepNode) {
-                targetStepNode.classList.add('active');
-                targetStepNode.classList.remove('completed');
-            }
-
-            // Refresh progress tracker line sizes
-            const barFillPercentage = ((currentWizardActiveStep - 1) / (totalWizardExpectedSteps - 1)) * 88;
-            document.getElementById('timeline-progress-fill-node').style.width = `${barFillPercentage}%`;
-
-            // Adapt navigation control trigger text loops
-            const prevBtn = document.getElementById('wizard-prev-trigger-btn');
-            const nextBtn = document.getElementById('wizard-next-trigger-btn');
-
-            if (currentWizardActiveStep === 1) {
-                if (prevBtn) prevBtn.style.display = 'none';
-            } else {
-                if (prevBtn) prevBtn.style.display = 'block';
-            }
-
-            if (currentWizardActiveStep === totalWizardExpectedSteps) {
-                if (nextBtn) {
-                    nextBtn.innerHTML = '<i class="fa-solid fa-credit-card"></i> Process Secured Payment';
-                    nextBtn.style.background = '#10b981';
-                }
-                updateDynamicPricingMatrixVanilla(); // Force final aggregation calculation loops
-            } else {
-                if (nextBtn) {
-                    nextBtn.text = 'Continue Application \u2192';
-                    nextBtn.style.background = 'var(--primary)';
-                }
-            }
-
-            // Window anchor scroll to topmost header boundary
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // 🔍 INPUT INTERACTIVE VALIDATION CONTROL ENGINE
-        function validateStepInputParametersVanilla(stepIndex) {
-            let isValid = true;
-            const targetPanel = document.getElementById(`step-panel-${stepIndex}`);
-            if (!targetPanel) return true;
-            
-            // Clear prior validation markers
-            targetPanel.querySelectorAll('.input-error-marker').forEach(node => node.remove());
-            targetPanel.querySelectorAll('input, select').forEach(node => {
-                node.style.borderColor = 'var(--border)';
-            });
-
-            // Step 1 Check Parameters
-            if (stepIndex === 1) {
-                const targetJurisdiction = document.getElementById('wizard-target-jurisdiction');
-                if (targetJurisdiction && !targetJurisdiction.value) {
-                    markFieldAsInvalidVanilla(targetJurisdiction, 'Filing authority target jurisdiction choice required.');
-                    isValid = false;
-                }
-            }
-
-            // Step 2 Check Parameters
-            if (stepIndex === 2) {
-                const checkedRequiredFields = [
-                    { id: 'ent_legal_name', label: 'Legal business name parameter entry is required.' },
-                    { id: 'ent_ein', label: 'Federal taxonomy taxpayer EIN/Tax ID entry is required.' },
-                    { id: 'ent_address_street', label: 'Principal business address designation entry is required.' },
-                    { id: 'ent_address_city', label: 'Principal corporate office locality municipality city value required.' },
-                    { id: 'ent_address_zip', label: 'Postal registration address zip routing index entry required.' },
-                    { id: 'ent_officer_name', label: 'Executing administrative chief executive profile name parameter required.' },
-                    { id: 'ent_comms_email', label: 'Communications notification gateway alert system target address required.' },
-                    { id: 'ent_comms_phone', label: 'Communications cellular telephone connectivity digits parameter entry required.' }
-                ];
-
-                checkedRequiredFields.forEach(field => {
-                    const inputNode = document.getElementById(field.id);
-                    if (inputNode && (!inputNode.value || inputNode.value.trim() === "")) {
-                        markFieldAsInvalidVanilla(inputNode, field.label);
-                        isValid = false;
-                    }
-                });
-            }
-
-            // Step 4 Check Parameters
-            if (stepIndex === 4) {
-                if (!window.signaturePadHasBeenDrawnByUser) {
-                    alert("Digital Power of Attorney signature verification parameters mapping record empty. Draw signature on screen canvas pad to pass validation check.");
-                    isValid = false;
-                }
-                const poaPrintedName = document.getElementById('poa_signer_printed');
-                if (poaPrintedName && (!poaPrintedName.value || poaPrintedName.value.trim() === "")) {
-                    markFieldAsInvalidVanilla(poaPrintedName, 'Signatory electronic acknowledgement identity verification string missing.');
-                    isValid = false;
-                }
-                const poaCheckbox = document.getElementById('poa_agreement_lock');
-                if (poaCheckbox && !poaCheckbox.checked) {
-                    alert("Authorization lock check verification asset validation check failed. Accept Power of Attorney terms layout constraints to continue.");
-                    isValid = false;
-                }
-            }
-
-            return isValid;
-        }
-
-        // VISUAL ERROR MARKER INJECTION PROTOCOL
-        function markFieldAsInvalidVanilla(inputNode, informativeLabelString) {
-            inputNode.style.borderColor = '#ef4444';
-            const spanError = document.createElement('span');
-            spanError.className = 'input-error-marker';
-            spanError.style.color = '#ef4444';
-            spanError.style.fontSize = '0.75rem';
-            spanError.style.fontWeight = '700';
-            spanError.style.marginTop = '4px';
-            spanError.style.display = 'block';
-            spanError.textContent = informativeLabelString;
-            inputNode.parentNode.insertBefore(spanError, inputNode.nextSibling);
-        }
-
-        // 📊 DYNAMIC MATHEMATICAL AGGREGATION INVOICE LOGIC
-        function updateDynamicPricingMatrixVanilla() {
-            const dropdownService = document.getElementById("wizard-route-service-id");
-            const dropdownPlan = document.getElementById("wizard-route-tier-id");
-            
-            if (dropdownService && dropdownService.value) {
-                routeActiveServiceKey = dropdownService.value;
-            }
-            if (dropdownPlan && dropdownPlan.value) {
-                routeActivePlanKey = dropdownPlan.value;
-            }
-
-            const planConfig = CENTRAL_SERVICE_PLAN_DB[routeActiveServiceKey];
-            if (!planConfig) return;
-
-            const baseTierPrice = planConfig.prices[routeActivePlanKey];
-            const baseGovAgencyFee = planConfig.gov_fee;
-            
-            let incrementalAddonTotal = 0;
-            let descriptiveInvoiceRowsHtml = `
-                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: var(--navy); border-bottom: 1px solid var(--border); padding-bottom: 10px;">
-                    <span>${planConfig.name} (${routeActivePlanKey.toUpperCase()})</span>
-                    <span style="font-family: monospace;">$${baseTierPrice.toFixed(2)}</span>
-                </div>
-            `;
-
-            // Evaluate checked state on accessory protection modules
-            document.querySelectorAll('.upsell-checkbox:checked').forEach(checkbox => {
-                const addonPriceValue = parseFloat(checkbox.getAttribute('data-price'));
-                const addonLabelString = checkbox.getAttribute('data-name');
-                incrementalAddonTotal += addonPriceValue;
+            <!-- RIGHT CONTAINER: Gathers all text columns together on the right side -->
+            <div style="display: flex; gap: 60px; flex-wrap: wrap; justify-content: flex-end;">
                 
-                descriptiveInvoiceRowsHtml += `
-                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-                        <span>+ ${addonLabelString}</span>
-                        <span style="font-family: monospace;">$${addonPriceValue.toFixed(2)}</span>
-`;
+                <!-- COLUMN 2: INFRASTRUCTURE LINKS (Left-Aligned Text) -->
+                <div style="min-width: 180px;"> 
+                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Infrastructure Links</h4> 
+                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;"> 
+                        <a href="privacy-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Privacy Policy Matrix</a> 
+                        <a href="terms-of-service.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Terms of Service Agreement</a> 
+                        <a href="refund-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Refund Cancellation Criteria</a> 
+                    </div> 
+                </div> 
+                
+                <!-- COLUMN 3: SUPPORT GATEWAYS (Left-Aligned Text) -->
+                <div style="min-width: 180px;"> 
+                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Support Gateways</h4> 
+                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;"> 
+                        <a href="contact.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Contact Specialist Liaisons</a> 
+                        <a href="compliance.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Central Compliance Hub</a> 
+                    </div> 
+                </div> 
+                
+                <!-- COLUMN 4: CORPORATE HEADQUARTERS (FIXED: Flipped text alignment to the right edge) -->
+                <div style="min-width: 200px; text-align: right; display: flex; flex-direction: column; align-items: flex-end;"> 
+                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Corporate Headquarters</h4> 
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;"> 
+                        <span>filings4u, LLC</span> 
+                        <span>123 Enterprise Way, Suite 100</span> 
+                        <span>Austin, Texas 78701</span> 
+                        <span style="margin-top: 8px; font-size: 0.75rem; color: #94a3b8;">System Status: <strong style="color: #10b981;">● Operational</strong></span> 
+                    </div> 
+                </div> 
 
-});
-
-const aggregatedFilingSubtotal = baseTierPrice + incrementalAddonTotal;
-const finalizedGrandTotal = aggregatedFilingSubtotal + baseGovAgencyFee; // Update user view interfacesconst invoiceContainer = document.getElementById('checkout-invoice-rows-container');if (invoiceContainer) invoiceContainer.innerHTML = descriptiveInvoiceRowsHtml;const subtotalDisp = document.getElementById('invoice-subtotal-display');if (subtotalDisp) subtotalDisp.textContent = $${aggregatedFilingSubtotal.toFixed(2)};const govDisp = document.getElementById('invoice-gov-fees-display');if (govDisp) govDisp.textContent = $${baseGovAgencyFee.toFixed(2)};const grandDisp = document.getElementById('invoice-grand-total-display');if (grandDisp) grandDisp.textContent = $${finalizedGrandTotal.toFixed(2)};// Preserve totals within state propertieswindow.wizardCalculatedFinalTotalAmount = finalizedGrandTotal;}// TRIGGER CENTRAL ENTRY HUB FOR SUBMIT/NEXTfunction handleNavigationButtonClickEvent() {if (currentWizardActiveStep === totalWizardExpectedSteps) {executeOnboardingTransactionPayloadSubmitVanilla();} else {navigateWizardStepTrackVanilla(1);}}
-        }
-    </script>
-
-
-    <script>
-        // 💾 BROWSER STORAGE STATE CACHE MECHANICS (VANILLA JS)
-        function cacheAndRestoreWizardFormStatesVanilla(isExecutionInitialLoad) {
-            const cacheKeyNamespace = "f4u_wizard_onboarding_state";
+            </div>
             
-            if (isExecutionInitialLoad) {
-                // Recover fields seamlessly on screen load
-                const restoredPayloadString = localStorage.getItem(cacheKeyNamespace);
-                if (!restoredPayloadString) return;
-                
-                try {
-                    const payloadDataObject = JSON.parse(restoredPayloadString);
-                    
-                    Object.keys(payloadDataObject).forEach(fieldIdKey => {
-                        const inputNode = document.getElementById(fieldIdKey);
-                        if (inputNode) {
-                            if (inputNode.type === 'checkbox') {
-                                inputNode.checked = payloadDataObject[fieldIdKey];
-                            } else {
-                                inputNode.value = payloadDataObject[fieldIdKey];
-                            }
-                        }
-                    });
-                } catch (jsonErr) {
-                    console.error("State data recovery parse error loop encountered: ", jsonErr);
-                }
-            } else {
-                // Collect input values into a local payload object
-                let activeFormMetricsObject = {};
-                const masterForm = document.getElementById("master-onboarding-form");
-                if (!masterForm) return;
-
-                masterForm.querySelectorAll("input, select, textarea").forEach(inputNode => {
-                    const idAttr = inputNode.getAttribute('id');
-                    if (idAttr) {
-                        if (inputNode.type === 'checkbox') {
-                            activeFormMetricsObject[idAttr] = inputNode.checked;
-                        } else {
-                            activeFormMetricsObject[idAttr] = inputNode.value;
-                        }
-                    }
-                });
-                
-                localStorage.setItem(cacheKeyNamespace, JSON.stringify(activeFormMetricsObject));
-            }
-        }
-
-        // 💾 STRATEGIC SAVE & EXIT PROGRESS HANDLER
-        function executeSaveAndExitWorkflow() {
-            // Commit all current changes to localStorage parameters cache
-            cacheAndRestoreWizardFormStatesVanilla(false);
+        </div> 
+        
+        <!-- SUB-FOOTER LEGAL BAR (UNMODIFIED) --> 
+        <div class="footer-legal-row-bar" style="padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.75rem; color: #94a3b8; width: 100%; box-sizing: border-box;"> 
+            <p style="margin: 0; line-height: 1.5;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a></p> 
             
-            // Confirm progress save with flash pop-ups
-            alert("Application data package locked and synchronized successfully. You may resume your onboarding sequence from this node at any point.");
-            
-            // Route user back to central resource folder hub
-            window.location.href = "compliance.html";
-        }
+            <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
+                <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection 
+            </div> 
+        </div> 
+        
+    </div> 
+</footer>
 
-        // 🎨 INTERACTIVE CANVAS SIGNATURE pad CONTROLLER (VANILLA JS)
-        function initializeSignatureCanvasPadEngineVanilla() {
-            const padCanvasElement = document.getElementById("poa-signature-pad");
-            if (!padCanvasElement) return;
+<!-- 💬 HIGH-CONTRAST INTERACTIVE SPECIALIST HELP TRIGGER -->
+<div class="chat-bubble-widget" onclick="toggleSupportFlyoutContainer(true)" title="Chat with an Expert">
+    <!-- Universal SVG Chat Icon: Custom scales to the absolute center -->
+    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px; display: block; margin: 0; padding: 0;">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+</div>
 
-            const rasterRenderingContext2D = padCanvasElement.getContext("2d");
-            window.signaturePadHasBeenDrawnByUser = false;
-            
-            let isDrawingInputActive = false;
-            let lastRecordedCoordinateX = 0;
-            let lastRecordedCoordinateY = 0;
-
-            // Stroke properties definitions
-            rasterRenderingContext2D.strokeStyle = "#0a1f44"; 
-            rasterRenderingContext2D.lineWidth = 3;
-            rasterRenderingContext2D.lineCap = "round";
-            rasterRenderingContext2D.lineJoin = "round";
-
-            function calculateNormalizedCoordinates(inputClientX, inputClientY) {
-                const canvasBoundaryBox = padCanvasElement.getBoundingClientRect();
-                return {
-                    x: (inputClientX - canvasBoundaryBox.left) * (padCanvasElement.width / canvasBoundaryBox.width),
-                    y: (inputClientY - canvasBoundaryBox.top) * (padCanvasElement.height / canvasBoundaryBox.height)
-                };
-            }
-
-            // MOUSE BOUND TRACKING
-            padCanvasElement.addEventListener("mousedown", (e) => {
-                isDrawingInputActive = true;
-                const coordinates = calculateNormalizedCoordinates(e.clientX, e.clientY);
-                lastRecordedCoordinateX = coordinates.x;
-                lastRecordedCoordinateY = coordinates.y;
-            });
-
-            padCanvasElement.addEventListener("mousemove", (e) => {
-                if (!isDrawingInputActive) return;
-                const coordinates = calculateNormalizedCoordinates(e.clientX, e.clientY);
-                
-                rasterRenderingContext2D.beginPath();
-                rasterRenderingContext2D.moveTo(lastRecordedCoordinateX, lastRecordedCoordinateY);
-                rasterRenderingContext2D.lineTo(coordinates.x, coordinates.y);
-                rasterRenderingContext2D.stroke();
-                
-                lastRecordedCoordinateX = coordinates.x;
-                lastRecordedCoordinateY = coordinates.y;
-                window.signaturePadHasBeenDrawnByUser = true;
-            });
-
-            window.addEventListener("mouseup", () => { isDrawingInputActive = false; });
-
-            // MOBILE SMARTPHONE TOUCH EVENT BINDINGS
-            padCanvasElement.addEventListener("touchstart", (e) => {
-                if (e.touches.length !== 1) return;
-                isDrawingInputActive = true;
-                const touchObj = e.touches[0];
-                const coordinates = calculateNormalizedCoordinates(touchObj.clientX, touchObj.clientY);
-                lastRecordedCoordinateX = coordinates.x;
-                lastRecordedCoordinateY = coordinates.y;
-            });
-
-            padCanvasElement.addEventListener("touchmove", (e) => {
-                if (!isDrawingInputActive || e.touches.length !== 1) return;
-                e.preventDefault(); 
-                const touchObj = e.touches[0];
-                const coordinates = calculateNormalizedCoordinates(touchObj.clientX, touchObj.clientY);
-                
-                rasterRenderingContext2D.beginPath();
-                rasterRenderingContext2D.moveTo(lastRecordedCoordinateX, lastRecordedCoordinateY);
-                rasterRenderingContext2D.lineTo(coordinates.x, coordinates.y);
-                rasterRenderingContext2D.stroke();
-                
-                lastRecordedCoordinateX = coordinates.x;
-                lastRecordedCoordinateY = coordinates.y;
-                window.signaturePadHasBeenDrawnByUser = true;
-            });
-
-            padCanvasElement.addEventListener("touchend", () => { isDrawingInputActive = false; });
-        }
-
-        // RE-CLEAR PAD TRACKS
-        function clearSignatureCanvasTrack() {
-            const padCanvasElement = document.getElementById("poa-signature-pad");
-            if (!padCanvasElement) return;
-            const rasterRenderingContext2D = padCanvasElement.getContext("2d");
-            rasterRenderingContext2D.clearRect(0, 0, padCanvasElement.width, padCanvasElement.height);
-            window.signaturePadHasBeenDrawnByUser = false;
-        }
-    </script>
-
-    <script>
-        // ========================================================
-        // 🔒 SECURE TRANSACTION DISPATCH MECHANICS (VANILLA JS)
-        // ========================================================
-        function executeOnboardingTransactionPayloadSubmitVanilla() {
-            const cardNum = document.getElementById('checkout_card_num').value.replace(/\s+/g, '');
-            const cardExp = document.getElementById('checkout_card_exp').value;
-            const cardCvv = document.getElementById('checkout_card_cvv').value;
-
-            if (!cardNum || cardNum.length < 15) {
-                alert("Cryptographic verification failed: Card account entry parameters invalid.");
-                return;
-            }
-            if (!cardExp || !cardExp.includes('/')) {
-                alert("Cryptographic verification failed: Expiration envelope format invalid.");
-                return;
-            }
-            if (!cardCvv || cardCvv.length < 3) {
-                alert("Cryptographic verification failed: Security verification code CVV parameter length invalid.");
-                return;
-            }
-
-            // Alter control button visual states to prevent multi-clicks
-            const nextBtn = document.getElementById('wizard-next-trigger-btn');
-            if (nextBtn) {
-                nextBtn.disabled = true;
-                nextBtn.style.background = '#64748b';
-                nextBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Encrypting Channels...';
-            }
-
-            // Extract values natively
-            const finalizedServiceKey = document.getElementById("wizard-route-service-id").value;
-            const finalizedTierKey = document.getElementById("wizard-route-tier-id").value;
-            const selectedJurisdiction = document.getElementById("wizard-target-jurisdiction").value;
-            
-            let auxiliaryAddonsArray = [];
-            document.querySelectorAll('.upsell-checkbox:checked').forEach(checkbox => {
-                auxiliaryAddonsArray.push(checkbox.getAttribute('data-id'));
-            });
-
-            const signatureCanvas = document.getElementById("poa-signature-pad");
-            const base64SignatureDataUrl = signatureCanvas ? signatureCanvas.toDataURL() : null;
-
-            // Structure master corporate submission object
-            const primarySubmissionPayloadData = {
-                transaction_hash_id: window.f4u_tx_session_hash,
-                target_service_id: finalizedServiceKey,
-                deployment_speed_tier: finalizedTierKey,
-                authority_jurisdiction: selectedJurisdiction,
-                legal_entity_name: document.getElementById('ent_legal_name').value,
-                trade_dba_name: document.getElementById('ent_dba_name').value,
-                taxpayer_ein: document.getElementById('ent_ein').value,
-                usdot_identifier: document.getElementById('ent_usdot').value,
-                office_address_street: document.getElementById('ent_address_street').value,
-                office_address_city: document.getElementById('ent_address_city').value,
-                office_address_zip: document.getElementById('ent_address_zip').value,
-                executing_officer_name: document.getElementById('ent_officer_name').value,
-                executing_officer_title: document.getElementById('ent_officer_title').value,
-                communications_email: document.getElementById('ent_comms_email').value,
-                communications_phone: document.getElementById('ent_comms_phone').value,
-                active_addons_list: auxiliaryAddonsArray,
-                printed_signature_auth: document.getElementById('poa_signer_printed').value,
-                digital_signature_raster_vector: base64SignatureDataUrl,
-                financials_subtotal_amount: baseTierPriceCalculationFallbackVanilla(),
-                financials_grand_total_charge: window.wizardCalculatedFinalTotalAmount || 0,
-                client_session_timestamp: new Date().toISOString()
-            };
-
-            // Secure channel storage serialization
-            setTimeout(function() {
-                try {
-                    localStorage.removeItem("f4u_wizard_onboarding_state");
-                    sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(primarySubmissionPayloadData));
-                    window.location.href = `success.html?tx_hash=${window.f4u_tx_session_hash}&status=validated_cleared`;
-                } catch (routingErr) {
-                    console.error("Payload preservation routing matrix write fault loop triggered: ", routingErr);
-                    if (nextBtn) {
-                        nextBtn.disabled = false;
-                        nextBtn.style.background = '#10b981';
-                        nextBtn.innerHTML = '<i class="fa-solid fa-credit-card"></i> Process Secured Payment';
-                    }
-                }
-            }, 2500);
-        }
-
-        function baseTierPriceCalculationFallbackVanilla() {
-            try {
-                const sKey = document.getElementById("wizard-route-service-id").value;
-                const pKey = document.getElementById("wizard-route-tier-id").value;
-                return CENTRAL_SERVICE_PLAN_DB[sKey].prices[pKey];
-            } catch(e) {
-                return 0;
-            }
-        }
-
-        // 💬 IN-APP LIVE CHAT POP-UP ACTION ROUTINE
-        function handleFloatingChatBubbleClick() {
-            alert("Connecting with an on-duty B2G registration specialist. Your current onboarding session tokens are attached to this care token.");
-        }
-    </script>
-
-    <!-- 💬 FLOATING CLIENT HELP CHAT WIDGET CORE BUBBLE -->
-    <div class="chat-bubble-widget" onclick="handleFloatingChatBubbleClick()" title="Chat with a specialist">
-        <i class="fa-solid fa-comments"></i>
+<!-- 🪟 SLIDE-OUT SUPPORT FLYOUT CONTAINER MODULE -->
+<div class="support-slide-container" id="support-chat-flyout-panel">
+    <header style="background: var(--navy); color: #ffffff; padding: 24px; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-comments" style="color: var(--primary);"></i> Live Specialist Desk
+        </h3>
+        <button type="button" onclick="toggleSupportFlyoutContainer(false)" style="background: transparent; border: none; color: #ffffff; font-size: 1.2rem; cursor: pointer; font-weight: bold;">&times;</button>
+    </header>
+    
+    <div style="padding: 24px; flex: 1; overflow-y: auto;" id="chat-preflight-input-form">
+        <p style="margin: 0 0 20px 0; font-size: 0.85rem; color: var(--slate); line-height: 1.4;">Provide your verified baseline records parameters to bypass auto-queues and bridge instantly to an expert broker.</p>
+        <form onsubmit="validateAndLaunchAgentChatSession(event)" style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="wizard-input-group">
+                <label style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate);">First Name</label>
+                <input type="text" id="chat_first_name" required class="wizard-input-field" placeholder="John">
+            </div>
+            <div class="wizard-input-group">
+                <label style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate);">Last Name</label>
+                <input type="text" id="chat_last_name" required class="wizard-input-field" placeholder="Doe">
+            </div>
+            <div class="wizard-input-group">
+                <label style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate);">Phone Number</label>
+                <input type="tel" id="chat_phone" required class="wizard-input-field" placeholder="(555) 000-0000">
+            </div>
+            <div class="wizard-input-group">
+                <label style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate);">Business Email</label>
+                <input type="email" id="chat_email" required class="wizard-input-field" placeholder="john@company.com">
+            </div>
+            <button type="submit" class="btn-wizard-main" style="width: 100%; margin-top: 10px; padding: 14px 0;">
+                Connect to Live Agent Hub
+            </button>
+        </form>
     </div>
+</div>
 
-    <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX -->
-    <footer class="site-footer" style="position: relative; overflow: hidden; background: #0a1f44; color: #f4f7fa; padding: 60px 0 30px 0; margin-top: 80px; font-family: system-ui, sans-serif; width: 100%;">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.02; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 40px; box-sizing: border-box;">
-            <div style="grid-column: span 2;">
-                <img src="images/logo-white.png" alt="filings4u" style="height: 44px; width: auto; object-fit: contain; margin-bottom: 16px;">
-                <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; max-width: 320px; margin: 0;">Enterprise compliance onboarding channels and multi-jurisdictional automated file orchestration deployment networks.</p>
-            </div>
-            <div>
-                <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Infrastructure Links</h4>
-                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
-                    <a href="privacy-policy.html" style="color: #cbd5e1; text-decoration: none;">Privacy Policy Matrix</a>
-                    <a href="terms-of-service.html" style="color: #cbd5e1; text-decoration: none;">Terms of Service Agreement</a>
-                    <a href="refund-policy.html" style="color: #cbd5e1; text-decoration: none;">Refund Cancellation Criteria</a>
-                </div>
-            </div>
-            <div>
-                <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Support Gateways</h4>
-                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
-                    <a href="contact.html" style="color: #cbd5e1; text-decoration: none;">Contact Specialist Liaisons</a>
-                    <a href="compliance.html" style="color: #cbd5e1; text-decoration: none;">Central Compliance Matrix Hub</a>
-                </div>
-            </div>
-        </div>
-        <div style="max-width: 1450px; margin: 0 auto; padding: 24px 40px 0 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.75rem; color: #94a3b8; box-sizing: border-box;">
-            <p style="margin: 0;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a></p>
-            <div style="background: rgba(255,255,255,0.04); padding: 6px 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.06); font-weight: bold;">🔒 AES-256 Crypto Encrypted Transaction Connection Validated</div>
-        </div>
-    </footer>
 
-</body>
+</script src="assets/js/toggle.js"></script>
+</body> 
 </html>
-

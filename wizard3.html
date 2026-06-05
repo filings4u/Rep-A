@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -5,66 +7,37 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#10b981">
     <title>Secured Enterprise Compliance Deployment Wizard | filings4u</title>
-
-    <!-- 1. CORE API & SECURITY NETWORK INJECTIONS FIRST -->
-    <script src="https://js.stripe.com/v3/"></script>
-    
-    <!-- FIX: Corrected path directory parameter matching to load your asset block safely -->
-    <script src="assets/js/stripe.js"></script>
-    
+    <!-- 🧰 ENTERPRISE VECTOR DEPENDENCIES -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    
-    <!-- FIX: Updated broken raw domain string into a structurally complete placeholder layout -->
-    <script src="https://googleapis.com" async defer></script>
-
-    <!-- 2. STYLESHEETS & VISUAL ASSETS -->
+    <link rel="stylesheet" href="https://www.cloudflare.com/turnstile/v0/api.js">
+    <script src="assets/js/wizard-calculations-engine.js"></script>
+    <script src="assets/js/wizard-layouts.js"></script>
+    <script src="assets/js/wizard-chat-widget.js"></script>
     <link rel="icon" type="image/png" href="images/fav.png">
+    <!-- 🧑‍🎨 WIZARD LAYOUT STYLESHEETS -->
     <link rel="stylesheet" href="assets/css/wizard.css">
     <link rel="stylesheet" href="assets/css/wizard-mobile.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
-
-    <!-- 3. LOCAL SCRIPTS ENGINE LOWER DOWN -->
-    <script src="assets/js/wizard-calculations-engine.js"></script>
-    <script src="assets/js/wizard-layout.js"></script>
-    <script src="assets/js/wizard-chat-widget.js"></script>
-    <script src="assets/js/wizard-runtime-patch.js"></script>
+    <!-- GOOGLE FONTS FOR SIGNATURE TREATMENT -->
+    <link rel="preconnect" href="https://googleapis.com">
+   
+   
 </head>
-
-
 <body>
-
-    <!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE --> 
-<nav style="background: #ffffff; border-bottom: 1px solid var(--border); padding: 16px 0;"> 
-    <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;"> 
-        
-        <a href="index.html" style="display: block;"> 
-            <img src="images/logo.png" alt="filings4u" style="height: 44px; width: auto; object-fit: contain; display: block;"> 
-        </a> 
-        
-        <div style="display: flex; align-items: center; gap: 16px;"> 
-            <div style="font-size: 0.85rem; font-weight: 700; color: var(--navy); background: var(--light-bg); padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px;"> 
-                
-                <a href="tel:+17732457079" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center;">
-                    <i class="fa-solid fa-phone" style="color: var(--primary); margin-right: 6px;"></i> 
-                    <strong>773-245-7079</strong>
-                </a>
-                
-                <span style="width: 1px; height: 14px; background: #cbd5e1;"></span> 
-                
-                <span style="display: inline-flex; align-items: center;">
-                    <i class="fa-regular fa-clock" style="color: var(--primary); margin-right: 6px;"></i> 
-                    <span id="wizard-live-clock-timestamp">Initializing clock...</span>
-                </span> 
-                
-            </div> 
-        </div> 
-        
-    </div> 
-</nav>
-
+    <!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE -->
+    <nav style="background: #ffffff; border-bottom: 1px solid var(--border); padding: 16px 0;">
+        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+            <a href="index.html" style="display: block;">
+                <img src="images/logo.png" alt="filings4u" style="height: 44px; width: auto; object-fit: contain; display: block;">
+            </a>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--navy); background: var(--light-bg); padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                    <span><i class="fa-solid fa-phone" style="color: var(--primary); margin-right: 4px;"></i> <strong>773-245-7079</strong></span>
+                    <span style="width: 1px; height: 14px; background: #cbd5e1;"></span>
+                    <span><i class="fa-regular fa-clock" style="color: var(--primary); margin-right: 4px;"></i> <span id="wizard-live-clock-timestamp">Initializing clock...</span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <!-- MAIN WORKSPACE CONTAINER UNIT -->
     <div class="wizard-container">
@@ -93,16 +66,20 @@
                                 </div>
                             </div>
 
-        <div class="wizard-input-group">
-    <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">What Comes with the Package</label>
-    <!-- Added id="step-1-package-features-list" so JavaScript can inject customized bullet points dynamically -->
-    <div id="step-1-package-features-list" style="background: var(--light-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;">
-            <i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Loading your customized selection parameters...
-        </div>
-    </div>
-</div>
-
+                            <div class="wizard-input-group">
+                                <label style="font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--navy);">What Comes with the Package</label>
+                                <div style="background: var(--light-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;">
+                                        <i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Multi-Jurisdictional Government Deployment File
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;">
+                                        <i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Automated System Structural Parameter Validation
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;">
+                                        <i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Real-Time State Status Intake Caching Systems
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /End Left Column -->
 
@@ -137,93 +114,74 @@
                 <!-- /End Step 1 Panel -->
 
 
- <!-- ======================================================== -->
-<!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES -->
-<!-- ======================================================== -->
-<div class="wizard-panel" id="step-panel-2">
-    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
-        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
-        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p>
-    </div>
+                <!-- ======================================================== -->
+                <!-- 🏢 STEP 2 PANEL: SERVICE PURCHASE INFORMATION FORM       -->
+                <!-- ======================================================== -->
+                <div class="wizard-panel" id="step-panel-2">
+                    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
+                        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p>
+                    </div>
 
-    <!-- Master 2-Column Framework Grid Wrapper -->
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
-        
-        <!-- LEFT COLUMN CONTAINER: Holds dynamic onboarding forms based on client page source -->
-        <div id="dynamic-onboarding-fields-root" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; box-sizing: border-box;">
-            
-            <!-- ⚡ DYNAMIC SLOT HOOK: Your script loops will inject the matching form here instantly at runtime! -->
-            <div style="grid-column: span 2; text-align: center; padding: 40px 0; color: var(--slate); font-weight: 600; font-size: 0.95rem;">
-                <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary); margin-right: 8px;"></i>
-                Assembling specialized compliance filing interfaces...
-            </div>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
+                        <!-- LEFT MAIN FORM FIELDS -->
+                        <div id="dynamic-onboarding-fields-root" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; width: 100%; box-sizing: border-box;">
+                            
+                            <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px;">
+                                <label for="legal-name" style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">Legal Entity Name *</label>
+                                <input type="text" id="legal-name" name="legal_name" placeholder="e.g., Acme Corporation LLC" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box;" required />
+                            </div>
 
-        </div> <!-- /End Left Column Container -->
+                            <div style="grid-column: span 1; display: flex; flex-direction: column; gap: 8px;">
+                                <label for="ein" style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">EIN / Tax ID *</label>
+                                <input type="text" id="ein" name="ein" placeholder="00-0000000" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box;" required />
+                            </div>
 
+                            <div style="grid-column: span 1; display: flex; flex-direction: column; gap: 8px;">
+                                <label for="formation-state" style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">State of Formation *</label>
+                                <select id="formation-state" name="formation_state" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; background: #fff;" required>
+                                    <option value="" disabled selected>Select state</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="WY">Wyoming</option>
+                                    <option value="CA">California</option>
+                                    <option value="NY">New York</option>
+                                </select>
+                            </div>
 
+                            <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px;">
+                                <label for="business-address" style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">Principal Business Address *</label>
+                                <input type="text" id="business-address" name="business_address" placeholder="Street address, Suite, Unit" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box;" required />
+                            </div>
+                        </div>
 
-        <!-- RIGHT COLUMN: STANDALONE PROGRESS TIMELINE ACCELERATOR -->
-        <aside style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 40px; width: 100%;">
-            <div>
-                <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Application Map
-                </h3>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">Estimated completion time: <strong>4 minutes</strong></p>
-            </div>
+                        <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE -->
+                        <aside style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 40px; width: 100%;">
+                            <div>
+                                <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Application Map
+                                </h3>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">Estimated completion time: <strong>4 minutes</strong></p>
+                            </div>
+                            <nav style="display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border); padding-top: 16px;">
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div>
+                                <div class="toc-step-row toc-active"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div>
+                                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div>
+                                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div>
+                                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div>
+                                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div>
+                                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div>
+                            </nav>
+                        </aside>
+                    </div>
 
-            <!-- TABLE OF CONTENTS LAYOUT MATRIX -->
-            <nav style="display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border); padding-top: 16px;">
-                <div class="toc-step-row toc-completed">
-                    <span class="toc-dot" style="background-color: #10b981 !important; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15) !important;"></span>
-                    <div class="toc-text-group">
-                        <span class="toc-step-title" style="color: var(--navy) !important;">1. Pathway Verification</span>
-                        <span class="toc-step-desc">Target selection & jurisdictions</span>
+                    <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR -->
+                    <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 35px;">
+                        <button type="button" class="btn-wizard-alt" onclick="goToPreviousWizardStep(1)">Back</button>
+                        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+                        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)">Continue to Add-Ons</button>
                     </div>
                 </div>
-                <div class="toc-step-row toc-active" style="background-color: var(--light-bg) !important;">
-                    <span class="toc-dot" style="background-color: #10b981 !important; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15) !important;"></span>
-                    <div class="toc-text-group">
-                        <span class="toc-step-title" style="color: var(--navy) !important;">2. Entity Profile</span>
-                        <span class="toc-step-desc">Corporate details & addresses</span>
-                    </div>
-                </div>
-                <div class="toc-step-row">
-                    <span class="toc-dot"></span>
-                    <div class="toc-text-group">
-                        <span class="toc-step-title">3. Add-On Tiers</span>
-                        <span class="toc-step-desc">Compliance assets & shields</span>
-                    </div>
-                </div>
-                <div class="toc-step-row">
-                    <span class="toc-dot"></span>
-                    <div class="toc-text-group">
-                        <span class="toc-step-title">4. Authorization</span>
-                        <span class="toc-step-desc">Digital POA execution</span>
-                    </div>
-                </div>
-                <div class="toc-step-row">
-                    <span class="toc-dot"></span>
-                    <div class="toc-text-group">
-                        <span class="toc-step-title">5. Secure Checkout</span>
-                        <span class="toc-step-desc">Order breakdown & billing</span>
-                    </div>
-                </div>
-            </nav>
-            <div style="background: var(--light-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.75rem; color: var(--slate); line-height: 1.4; display: flex; gap: 8px; align-items: flex-start; margin-top: 4px;">
-                <i class="fa-solid fa-lock" style="color: var(--primary); margin-top: 2px;"></i>
-                <span>Progress is cached locally in real time. You can save and resume later safely.</span>
-            </div>
-        </aside> <!-- /End Right Column -->
-
-    </div> <!-- /End Master 2-Column Grid Layout Wrapper -->
-
-        <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR -->
-        <div class="wizard-action-footer">
-            <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1)">Back</button>
-            <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-            <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)">Continue to Tiers</button>
-        </div>
-    </div> <!-- /End Step 2 Panel -->
+                <!-- /End Step 2 Panel -->
 
 
                 <!-- ======================================================== -->
@@ -431,170 +389,154 @@
                 <!-- /End Step 4 Panel -->
 
 
- <!-- ======================================================== -->
-<!-- 📋 STEP 5 PANEL: DYNAMIC PURCHASE SUMMARY                -->
-<!-- ======================================================== -->
-<div class="wizard-panel" id="step-panel-5">
-    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
-        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Review Your Purchase Summary</h2>
-        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Verify your baseline item allocations and dynamic package selections before continuing to payment.</p>
-    </div>
+                                <!-- ======================================================== -->
+                <!-- 📋 STEP 5 PANEL: DYNAMIC PURCHASE SUMMARY                -->
+                <!-- ======================================================== -->
+                <div class="wizard-panel" id="step-panel-5">
+                    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Review Your Purchase Summary</h2>
+                        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Verify your baseline item allocations and dynamic package selections before continuing to payment.</p>
+                    </div>
 
-    <!-- Unified Production 2-Column Framework Grid Wrapper -->
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
-        
-        <!-- LEFT MAIN COLUMN: ITEM RECEIPT FRAME -->
-        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box;">
-            <!-- CRITICAL TARGET: This exact container ID collects the live line items -->
-            <div id="summary-purchase-rows-container" style="display: flex; flex-direction: column; gap: 16px;">
-                <!-- Line items are appended programmatically here -->
-            </div>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
+                        <!-- LEFT MAIN: SYSTEM SELECTION INVOICE LIST -->
+                        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box;">
+                            <h3 style="margin: 0 0 20px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--light-bg); padding-bottom: 10px;">
+                                <i class="fa-solid fa-receipt" style="color: var(--primary); margin-right: 8px;"></i> Items Selected inside Your Order
+                            </h3>
+                            
+                            <!-- Dynamic Summary Injection Target Node Box -->
+                            <div id="summary-purchase-rows-container" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px;">
+                                <!-- Live added items list updates programmatically here at runtime -->
+                            </div>
 
-            <!-- Cost Display Slates Framework -->
-            <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
-                <div style="display: flex; justify-content: space-between;">
-                    <span style="color: var(--slate); font-weight: 600;">Subtotal Selection Cost</span>
-                    <strong id="summary-subtotal-display" style="font-family: monospace;">$0.00</strong>
+                            <!-- Structural Cost Matrix Totals Calculation Summary Strip -->
+                            <div style="border-top: 1px solid var(--border); padding-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--slate); font-weight: 600;">
+                                    <span>Selected Package Subtotal</span>
+                                    <span id="summary-subtotal-display" style="font-family: monospace;">$0.00</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--slate); font-weight: 600;">
+                                    <span>Government Registration &amp; Filing Fees</span>
+                                    <span id="summary-gov-fees-display" style="font-family: monospace;">$0.00</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 1.3rem; color: var(--navy); font-weight: 900; border-top: 1px dashed var(--border); padding-top: 14px;">
+                                    <span>Secured Summary Total</span>
+                                    <span id="summary-grand-total-display" style="font-family: monospace; color: var(--primary);">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE -->
+                        <aside style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 40px; width: 100%;">
+                            <div>
+                                <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Application Map
+                                </h3>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">Estimated completion time: <strong>2 minutes</strong></p>
+                            </div>
+                            <nav style="display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border); padding-top: 16px;">
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div>
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div>
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div>
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div>
+                                <div class="toc-step-row toc-active"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div>
+                                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div>
+                                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div>
+                            </nav>
+                        </aside>
+                    </div>
+
+                    <!-- 🔘 STEP 5 NAVIGATION CONTROL BAR -->
+                    <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 35px;">
+                        <button type="button" class="btn-wizard-alt" onclick="goToPreviousWizardStep(4)">Back</button>
+                        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+                        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(6)">Continue to Payment</button>
+                    </div>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                    <span style="color: var(--slate); font-weight: 600;">Government Statutory Fees</span>
-                    <strong id="summary-gov-fees-display" style="font-family: monospace;">$0.00</strong>
+                <!-- /End Step 5 Panel -->
+
+
+                                <!-- ======================================================== -->
+                <!-- 💳 STEP 6 PANEL: ENCRYPTED GATEWAY CHECKOUT INTERFACE    -->
+                <!-- ======================================================== -->
+                <div class="wizard-panel" id="step-panel-6">
+                    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                        <h2 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Encrypted Payment Entry</h2>
+                        <p style="color: var(--slate); font-size: 0.95rem; margin: 0;">Provide tokenized card verification parameters to authorize and execute your secure checkout connection.</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
+                        <!-- LEFT MAIN: CREDIT CARD CAPTURE FIELDS -->
+                        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+                                <div>
+                                    <h3 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy);">Secure Credit Card Details</h3>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">All numbers remain completely shielded inside tokenized merchant processing vault pipelines.</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px;">Filing Total:</span>
+                                    <div style="font-size: 1.4rem; font-weight: 900; color: var(--primary); font-family: monospace;" id="payment-gateway-total-display">$0.00</div>
+                                </div>
+                            </div>
+
+                            <!-- CARD NUMBER INPUT MODULE -->
+                            <div class="wizard-input-group">
+                                <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Credit Card Number</label>
+                                <div style="position: relative; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; display: flex; align-items: center; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);">
+                                    <span style="color: var(--slate); margin-right: 12px; font-size: 1rem;"><i class="fa-solid fa-credit-card"></i></span>
+                                    <input type="text" id="checkout_card_num" maxlength="19" placeholder="4111 1111 1111 1111" style="border: none; outline: none; font-family: monospace; font-size: 1rem; width: 100%; color: var(--navy);">
+                                    <span style="position: absolute; right: 16px; font-size: 0.8rem; color: var(--primary); font-weight: 800; letter-spacing: 0.05em;"><i class="fa-solid fa-lock"></i> SSL</span>
+                                </div>
+                            </div>
+
+                            <!-- CARD EXPIRATION & CVV SECURITY CODE MATRIX -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;">
+                                <div class="wizard-input-group">
+                                    <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Expiration Date</label>
+                                    <input type="text" id="checkout_card_exp" maxlength="5" placeholder="MM/YY" style="font-family: monospace;" class="wizard-input-field">
+                                </div>
+                                <div class="wizard-input-group">
+                                    <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">CVV Code</label>
+                                    <input type="password" id="checkout_card_cvv" maxlength="4" placeholder="***" style="font-family: monospace;" class="wizard-input-field">
+                                </div>
+                            </div>
+
+                            <!-- PCI SECURITY COMPLIANCE BADGES -->
+                            <div style="border-top: 1px solid var(--border); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 0.75rem; color: var(--slate); font-weight: 600;">
+                                <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> PCI-DSS Level 1 Compliant Architecture Seam</div>
+                                <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Official Corporate Guarantee Protection Included</div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE -->
+                        <aside style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 40px; width: 100%;">
+                            <div>
+                                <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Application Map
+                                </h3>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">Estimated completion time: <strong>1 minute</strong></p>
+                            </div>
+                            <nav style="display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border); padding-top: 16px;">
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div>
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div>
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div>
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div>
+                                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div>
+                                <div class="toc-step-row toc-active"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div>
+                                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div>
+                            </nav>
+                        </aside>
+                    </div>
+
+                    <!-- 🔘 STEP 6 NAVIGATION CONTROL BAR -->
+                    <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 35px;">
+                        <button type="button" class="btn-wizard-alt" onclick="goToPreviousWizardStep(5)">Back</button>
+                        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+                        <button type="button" id="wizard-next-trigger-btn" class="btn-wizard-main" onclick="executeOnboardingTransactionPayloadSubmitVanilla()">Complete Order & Submit</button>
+                    </div>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 14px; border-top: 1px dashed var(--border); padding-top: 14px; font-size: 1.3rem;">
-                    <span style="color: var(--navy); font-weight: 800;">Total Summary Amount</span>
-                    <strong id="summary-grand-total-display" style="font-family: monospace; color: var(--primary);">$0.00</strong>
-                </div>
-            </div>
-        </div>
-
-        <!-- RIGHT MAIN COLUMN: MASTER TIMELINE APPLICATION MAP -->
-        <aside style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 40px; width: 100%;">
-            <div>
-                <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Application Map
-                </h3>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--slate); line-height: 1.4;">Estimated completion time: <strong>2 minutes</strong></p>
-            </div>
-            <nav style="display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border); padding-top: 16px;">
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div>
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div>
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div>
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div>
-                <div class="toc-step-row toc-active"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div>
-                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div>
-                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div>
-            </nav>
-        </aside>
-
-    </div> <!-- /End Framework Grid Wrapper -->
-
-    <!-- 🔘 STEP 5 NAVIGATION CONTROL BAR -->
-    <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 35px; border-top: 1px solid var(--border); padding-top: 20px;">
-        <button type="button" class="btn-wizard-alt" onclick="goToPreviousWizardStep(4)">Back</button>
-        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(6)">Continue to Payment</button>
-    </div>
-</div>
-<!-- /End Step 5 Panel -->
-
-<!-- ======================================================== --> 
-<!-- 💳 STEP 6 PANEL: EMBEDDED FLAT CHECKOUT INTERFACE        --> 
-<!-- ======================================================== --> 
-<div class="wizard-panel" id="step-panel-6" style="display: none;"> 
-    
-    <!-- Header Block Component -->
-    <div style="margin-bottom: 35px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 20px;"> 
-        <h2 style="color: var(--navy, #0a1f44); font-size: 1.8rem; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">Encrypted Payment Entry</h2> 
-        <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide tokenized card verification parameters to authorize and execute your secure checkout connection.</p> 
-    </div> 
-    
-    <!-- Two-Column Flex Layout Grid Matrix -->
-    <div style="display: flex; flex-direction: row; gap: 40px; width: 100%; box-sizing: border-box; align-items: start;"> 
-        
-        <!-- COLUMN A (LEFT): SECURE FLAT STRIPE MOUNT HUB --> 
-        <div style="flex: 2; background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;"> 
-            
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px;"> 
-                <div> 
-                    <h3 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy, #0a1f44);">Secure Credit Card Details</h3> 
-                    <p style="margin: 0; font-size: 0.8rem; color: var(--slate, #64748b); line-height: 1.4;">All numbers remain completely shielded inside tokenized merchant processing vault pipelines.</p> 
-                </div> 
-                <div style="text-align: right;"> 
-                    <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Filing Total:</span> 
-                    <div style="font-size: 1.4rem; font-weight: 900; color: var(--primary, #10b981); font-family: monospace;" id="payment-gateway-total-display">$0.00</div> 
-                </div> 
-            </div> 
-            
-            <!-- 💳 SECURE CARDS CONTAINER CELL --> 
-            <div class="wizard-input-group" style="margin-bottom: 8px;"> 
-                <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate, #64748b); display: block; margin-bottom: 12px;"> 
-                    Secure Credit or Debit Card Payment 
-                </label> 
-                <div style="background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);"> 
-                    
-                    <!-- CRUCIAL TARGET: Stripe Elements embeds card inputs completely FLAT inside this cell node --> 
-                    <div id="stripe-payment-element-mount-point"></div> 
-                    
-                </div> 
-            </div> 
-            
-            <!-- PCI Security Compliance Badge Groupings --> 
-            <div style="border-top: 1px solid var(--border, #e2e8f0); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 0.75rem; color: var(--slate, #64748b); font-weight: 600;"> 
-                <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-shield-halved" style="color: var(--primary, #10b981);"></i> PCI-DSS Level 1 Compliant Architecture Seam</div> 
-                <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i> Official Corporate Guarantee Protection Included</div> 
-            </div> 
-        </div> 
-        
-        <!-- COLUMN B (RIGHT): MASTER APPLICATION MAP TIMELINE SIDEBAR --> 
-        <aside style="flex: 1; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; height: fit-content; position: sticky; top: 40px;"> 
-            <div> 
-                <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: var(--navy, #0a1f44); font-weight: 800; display: flex; align-items: center; gap: 8px;"> 
-                    <i class="fa-solid fa-list-check" style="color: var(--primary, #10b981);"></i> Application Map 
-                </h3> 
-                <p style="margin: 0; font-size: 0.8rem; color: var(--slate, #64748b); line-height: 1.4;">Estimated completion time: <strong>1 minute</strong></p> 
-            </div> 
-            
-            <!-- Sidebar Navigation Steps Checklist -->
-            <nav style="display: flex; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border, #e2e8f0); padding-top: 16px;"> 
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div> 
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div> 
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div> 
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div> 
-                <div class="toc-step-row toc-completed"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div> 
-                <div class="toc-step-row toc-active"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div> 
-                <div class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div> 
-            </nav> 
-        </aside> 
-        
-    </div> 
-    
-    <!-- 🔘 STEP 6 FOOTER ACTION BAR --> 
-    <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 35px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px;"> 
-        <!-- Fixed: Set to jump precisely back to step 5 (Summary Screen) without execution blocks -->
-        <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(5)" style="padding: 10px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;">Back</button> 
-        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; background: none; border: 1px solid var(--border, #e2e8f0); color: var(--navy, #0a1f44);"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button> 
-        <button type="button" id="wizard-next-trigger-btn" class="btn-wizard-main" onclick="executeOnboardingTransactionPayloadSubmitVanilla()" style="padding: 12px 30px; border-radius: 6px; cursor: pointer; font-weight: 700; background: var(--primary, #10b981); color: #ffffff; border: none; box-shadow: 0 4px 12px rgba(16,185,129,0.25);">Complete Order & Submit</button> 
-    </div> 
-</div> 
-<!-- /End Step 6 Panel -->
-
-<style>
-/* Responsive Mobile Stack Rules Override Sizing Matrix */
-@media (max-width: 991px) {
-    #step-panel-6 > div:style-index(2) {
-        flex-direction: column !important;
-        gap: 24px !important;
-    }
-    #step-panel-6 aside {
-        position: relative !important;
-        top: 0 !important;
-        width: 100% !important;
-    }
-}
-</style>
-
-
-
+                <!-- /End Step 6 Panel -->
 
                 <!-- ======================================================== -->
                 <!-- 🎉 STEP 7 PANEL: SUCCESS PORTAL & ACCOUNT CREATION        -->
@@ -836,6 +778,5 @@
 
 
 </script src="assets/js/toggle.js"></script>
- 
 </body> 
 </html>

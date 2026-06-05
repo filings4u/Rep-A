@@ -1,58 +1,245 @@
-// Expose state dropdown options globally so wizard-calculations.js can read them
+// ==========================================
+// PART 1: FIELD REGEX VALIDATION
+// ==========================================
+function validateStepInputParametersVanilla(activeStep) {
+    var activePanel = document.getElementById("step-panel-" + activeStep);
+    if (!activePanel) return true;
+
+    var inputs = activePanel.querySelectorAll("input, select, textarea");
+    var stepIsValid = true;
+    var regexLetters = /^[A-Za-z\s.\x27\-]+$/;
+    var regexNumbers = /^\d+$/;
+    var regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // (Validation logic loop continued in next part)
+    return stepIsValid;
+}
+
+    inputs.forEach(function(el) {
+        if (el.type === "hidden" || el.disabled) return;
+        var val = el.value.trim();
+
+        if (el.hasAttribute("required") && val === "") {
+            el.setCustomValidity("This field is required.");
+            el.reportValidity();
+            stepIsValid = false;
+            return;
+        }
+
+        if (val !== "") {
+            if (el.type === "email" || el.classList.contains("validate-email") || (el.name && el.name.indexOf("email") !== -1)) {
+                if (!regexEmail.test(val)) {
+                    el.setCustomValidity("Please enter a valid email address.");
+                    el.reportValidity();
+                    stepIsValid = false;
+                } else { el.setCustomValidity(""); }
+            }
+            // (Checks for alphabet and number patterns continued in next part)
+        }
+
+                    else if (el.classList.contains("validate-letters") || (el.name && el.name.indexOf("name") !== -1) || (el.name && el.name.indexOf("city") !== -1)) {
+                if (!regexLetters.test(val)) {
+                    el.setCustomValidity("This field can only contain letters, spaces, or periods.");
+                    el.reportValidity();
+                    stepIsValid = false;
+                } else { el.setCustomValidity(""); }
+            }
+            else if (el.type === "number" || el.classList.contains("validate-numbers") || (el.name && el.name.indexOf("zip") !== -1) || (el.name && el.name.indexOf("ein") !== -1)) {
+                if (!regexNumbers.test(val)) {
+                    el.setCustomValidity("This field can only contain numbers.");
+                    el.reportValidity();
+                    stepIsValid = false;
+                } else { el.setCustomValidity(""); }
+            }
+
+    });
+
+    // ==========================================
+// PART 2: STATE DROPDOWN GENERATOR
+// ==========================================
+function getUsaStatesHtml(selectedState) {
+    var states = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+    var html = '<option value="">-- Select State --</option>';
+    var currentSel = selectedState || "TX";
+    
+    states.forEach(function(st) {
+        var selectedAttr = (st === currentSel.toUpperCase()) ? "selected" : "";
+        html += '<option value="' + st + '" ' + selectedAttr + '>' + st + '</option>';
+    });
+    return html;
+}
+// ==========================================
+// PART 3: STEP 2 FORM FIELD INJECTION
+// ==========================================
+function buildLlcFormationFieldsLayoutHtml(serviceKey) {
+    var currentState = window.selectedFormationStateCode || "TX";
+    var statesDropdownOptions = getUsaStatesHtml(currentState);
+    var blankStatesDropdownOptions = getUsaStatesHtml("");
+
+    return '<!-- Business Details Container Block -->' +
+    '<div style="grid-column: span 2; margin-bottom: 8px;">' +
+        '<h3 style="color: var(--navy, #0a1f44); font-size: 1.25rem; font-weight: 800; border-bottom: 2px solid var(--border, #e2e8f0); padding-bottom: 8px; margin-bottom: 12px;">' +
+            'Business Information' +
+        '</h3>' +
+    '</div>';
+}
+
+
+
+    // Expose state dropdown options globally so wizard-calculations.js can read them
 window.globalStateDropdownOptionsHtml = typeof stateDropdownOptionsHtml !== 'undefined' ? stateDropdownOptionsHtml : '';
 
-// FAMILY 1: LLC FORMATION LAYOUT MATRIX (PART 1)
-function buildLlcFormationFieldsLayoutHtml() {
-  return `
-    <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 12px;">
-      <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Business Information</h3>
-    </div>
-    <div class="wizard-input-group">
-      <label for="llc_proposed_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Proposed LLC Name <span style="color: #ef4444;">*</span></label>
-      <input type="text" id="llc_proposed_name" required placeholder="Example Logistics LLC" class="wizard-input-field" onblur="validateLlcNameSuffix(this)">
-      <span style="font-size: 0.7rem; color: var(--slate); font-weight: 500; padding-left: 2px;">Must include "LLC" or "Limited Liability Company".</span>
-    </div>
-    <div class="wizard-input-group">
-      <label for="llc_business_purpose" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Business Purpose / Activities <span style="color: #ef4444;">*</span></label>
-      <input type="text" id="llc_business_purpose" required placeholder="Brief description of what the LLC will do..." class="wizard-input-field">
-    </div>
-    <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-      <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Registered Agent Information</h3>
-    </div>
-    <div class="wizard-input-group" style="grid-column: span 2;">
-      <label for="llc_ra_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Select Registered Agent Provision <span style="color: #ef4444;">*</span></label>
-      <select id="llc_ra_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleRegisteredAgentConditionalFields(this.value)">
-        <option value="" disabled selected>Choose an option...</option>
-        <option value="filings4u">Utilize Filings4u Protected Agent Shield Service — $75.00 / Year</option>
-        <option value="custom">Maintain External Independent Third-Party Registered Agent</option>
-      </select>
-    </div>
-    <div id="llc_custom_ra_wrapper" style="grid-column: span 2; display: none; grid-template-columns: 1fr 1fr; gap: 24px; background: var(--light-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-sizing: border-box; width: 100%;">
-      <div class="wizard-input-group" style="grid-column: span 2;">
-        <label for="ra_custom_name" style="font-weight:700; font-size:0.8rem; color:var(--navy);">Agent Name</label>
-        <input type="text" id="ra_custom_name" class="wizard-input-field">
-      </div>
-      <div class="wizard-input-group" style="grid-column: span 2;">
-        <label for="ra_custom_street" style="font-weight:700; font-size:0.8rem; color:var(--navy);">Street Address</label>
-        <input type="text" id="ra_custom_street" class="wizard-input-field">
-      </div>
-      <div class="wizard-input-group">
-        <label for="ra_custom_city" style="font-weight:700; font-size:0.8rem; color:var(--navy);">City</label>
-        <input type="text" id="ra_custom_city" class="wizard-input-field">
-      </div>
-      <div class="wizard-input-group" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-        <div>
-          <label for="ra_custom_state" style="font-weight:700; font-size:0.8rem; color:var(--navy);">State</label>
-          <input type="text" id="ra_custom_state" maxlength="2" class="wizard-input-field">
-        </div>
-        <div>
-          <label for="ra_custom_zip" style="font-weight:700; font-size:0.8rem; color:var(--navy);">Zip</label>
-          <input type="text" id="ra_custom_zip" class="wizard-input-field">
-        </div>
-      </div>
-    </div>
-  ` + buildLlcFormationFieldsPart2();
+function buildGlobalUsaStateDropdownOptionsHtml(selectedStateCode) {
+    const states = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+    let optionsHtml = '<option value="">-- Select State --</option>';
+    
+    states.forEach(state => {
+        const isSelected = (String(selectedStateCode).toUpperCase() === state) ? "selected" : "";
+        optionsHtml += `<option value="${state}" ${isSelected}>${state}</option>`;
+    });
+    return optionsHtml;
 }
+
+
+function buildLlcFormationFieldsLayoutHtml() {
+    var currentJurisdiction = window.selectedFormationStateCode || "TX";
+    var stateSelectorHtml = typeof getUsaStatesHtml === "function" ? getUsaStatesHtml(currentJurisdiction) : '<option value="TX">TX</option>';
+    var blankStatesHtml = typeof getUsaStatesHtml === "function" ? getUsaStatesHtml("") : '<option value="">Select State</option>';
+
+    var htmlPayload = '<div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 12px;">' +
+        '<h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Business Information</h3>' +
+    '</div>' +
+    
+    '<div class="wizard-input-group">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">What state do you want to form your business in? *</label>' +
+        '<select name="formation_state" id="wizard-target-jurisdiction" required class="wizard-input-field" onchange="window.selectedFormationStateCode = this.value; if(typeof updateDynamicPricingMatrixVanilla === \'function\') updateDynamicPricingMatrixVanilla();">' + stateSelectorHtml + '</select>' +
+    '</div>' +
+    
+    '<div class="wizard-input-group">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">What state will your headquarters be in? *</label>' +
+        '<select name="headquarters_state" required class="wizard-input-field">' + blankStatesHtml + '</select>' +
+    '</div>';
+    
+        htmlPayload += '' +
+    '<div class="wizard-input-group" style="grid-column: span 2;">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Proposed LLC Name <span style="color: #ef4444;">*</span></label>' +
+        '<input type="text" id="llc_proposed_name" name="ent_legal_name" required placeholder="Example Logistics LLC" class="wizard-input-field validate-letters" onblur="if(typeof validateLlcNameSuffix===\'function\')validateLlcNameSuffix(this);">' +
+        '<span style="font-size: 0.7rem; color: var(--slate); font-weight: 500; padding-left: 2px;">Must include "LLC" or "Limited Liability Company".</span>' +
+    '</div>' +
+    
+    '<div class="wizard-input-group" style="grid-column: span 2;">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">Business Address *</label>' +
+        '<input type="text" name="ent_address_street" required class="wizard-input-field" placeholder="Street address">' +
+    '</div>' +
+    
+    '<div class="wizard-input-group" style="grid-column: span 2;">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">Suite, building, etc. (Optional)</label>' +
+        '<input type="text" name="ent_address_suite" class="wizard-input-field" placeholder="Suite, Apt, Floor">' +
+    '</div>' +
+    
+    '<div class="wizard-input-group">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">Business City *</label>' +
+        '<input type="text" name="ent_address_city" required class="wizard-input-field validate-letters" placeholder="City">' +
+    '</div>' +
+    
+    '<div class="wizard-input-group">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">Business State *</label>' +
+        '<select name="business_state" required class="wizard-input-field">' + blankStatesHtml + '</select>' +
+    '</div>' +
+    
+    '<div class="wizard-input-group" style="grid-column: span 2;">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">Business Zip Code *</label>' +
+        '<input type="text" name="ent_address_zip" required class="wizard-input-field validate-numbers" maxlength="5" placeholder="5-digit ZIP code">' +
+    '</div>';
+    htmlPayload += '<!-- NAICS Industry Purpose Dropdown Matrix -->' +
+    '<div class="wizard-input-group" style="grid-column: span 2; margin-top: 12px;">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Business Purpose / Activities <span style="color: #ef4444;">*</span></label>' +
+        '<select id="llc_business_purpose" name="business_purpose_naics" required class="wizard-input-field">' +
+            '<option value="">-- Select Industry Classification --</option>' +
+            '<option value="541110">Offices of Lawyers (NAICS 541110)</option>' +
+            '<option value="541211">Offices of Certified Public Accountants (NAICS 541211)</option>' +
+            '<option value="541330">Engineering Services (NAICS 541330)</option>' +
+            '<option value="541511">Custom Computer Programming Services (NAICS 541511)</option>' +
+            '<option value="541611">Administrative Management Consulting Services (NAICS 541611)</option>' +
+            '<option value="541810">Advertising Agencies (NAICS 541810)</option>' +
+            '<option value="621111">Offices of Physicians (except Mental Health) (NAICS 621111)</option>' +
+            '<option value="621210">Offices of Dentists (NAICS 621210)</option>' +
+            '<option value="236115">New Single-Family Housing Construction (NAICS 236115)</option>' +
+            '<option value="531210">Offices of Real Estate Agents and Brokers (NAICS 531210)</option>' +
+            '<option value="722511">Full-Service Restaurants (NAICS 722511)</option>' +
+            '<option value="454110">Electronic Shopping and Mail-Order Houses (NAICS 454110)</option>' +
+            '<option value="484121">General Freight Trucking, Long-Distance, TL (NAICS 484121)</option>' +
+            '<option value="561730">Landscaping Services (NAICS 561730)</option>' +
+            '<option value="812112">Beauty Salons (NAICS 812112)</option>' +
+        '</select>' +
+    '</div>';
+    htmlPayload += '<div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">' +
+        '<h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Registered Agent Information</h3>' +
+    '</div>' +
+    '<div class="wizard-input-group" style="grid-column: span 2;">' +
+        '<label style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Select Registered Agent Provision <span style="color: #ef4444;">*</span></label>' +
+        '<select id="llc_ra_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="if(typeof toggleRegisteredAgentConditionalFields===\'function\')toggleRegisteredAgentConditionalFields(this.value);">' +
+            '<option value="" disabled selected>Choose an option...</option>' +
+            '<option value="filings4u">Utilize Filings4u Protected Agent Shield Service — $75.00 / Year</option>' +
+            '<option value="custom">Maintain External Independent Third-Party Registered Agent</option>' +
+        '</select>' +
+    '</div>' +
+    '<div id="llc_custom_ra_wrapper" style="grid-column: span 2; display: none; grid-template-columns: 1fr 1fr; gap: 24px; background: var(--light-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-sizing: border-box; width: 100%;">' +
+        '<div class="wizard-input-group" style="grid-column: span 2;">' +
+            '<label style="font-weight:700; font-size:0.8rem; color:var(--navy);">Agent Name *</label>' +
+            '<input type="text" id="ra_custom_name" class="wizard-input-field validate-letters">' +
+        '</div>' +
+        '<div class="wizard-input-group" style="grid-column: span 2;">' +
+            '<label style="font-weight:700; font-size:0.8rem; color:var(--navy);">Street Address *</label>' +
+            '<input type="text" id="ra_custom_street" class="wizard-input-field">' +
+        '</div>' +
+        '<div class="wizard-input-group">' +
+            '<label style="font-weight:700; font-size:0.8rem; color:var(--navy);">City *</label>' +
+            '<input type="text" id="ra_custom_city" class="wizard-input-field validate-letters">' +
+        '</div>' +
+        '<div class="wizard-input-group" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">' +
+            '<div>' +
+                '<label style="font-weight:700; font-size:0.8rem; color:var(--navy);">State *</label>' +
+                '<select id="ra_custom_state" class="wizard-input-field">' + blankStatesHtml + '</select>' +
+            '</div>' +
+            '<div>' +
+                '<label style="font-weight:700; font-size:0.8rem; color:var(--navy);">Zip *</label>' +
+                '<input type="text" id="ra_custom_zip" maxlength="5" class="wizard-input-field validate-numbers">' +
+            '</div>' +
+        '</div>' +
+    '</div>';
+    return htmlPayload;
+}
+
+/**
+ * Handles Registered Agent view toggles and conditional fee billing
+ */
+function toggleRegisteredAgentConditionalFields(selectedValue) {
+    var wrapper = document.getElementById("llc_custom_ra_wrapper");
+    if (!wrapper) return;
+
+    var inputs = wrapper.querySelectorAll("input, select");
+
+    if (selectedValue === "custom") {
+        wrapper.style.display = "grid";
+        window.customSelectedRegisteredAgentServiceActive = false; // Turn off $75 fee
+        inputs.forEach(function(el) { el.setAttribute("required", "required"); });
+    } else {
+        wrapper.style.display = "none";
+        window.customSelectedRegisteredAgentServiceActive = true;  // Activate $75 fee
+        inputs.forEach(function(el) { el.removeAttribute("required"); el.value = ""; });
+    }
+
+    if (typeof updateDynamicPricingMatrixVanilla === "function") {
+        updateDynamicPricingMatrixVanilla();
+    }
+}
+
+
+
+
+
+
 // FAMILY 1: LLC FORMATION LAYOUT MATRIX (PART 2)
 function buildLlcFormationFieldsPart2() {
   return `
@@ -3014,6 +3201,7 @@ function buildRegisteredAgentServicePart1(stateDropdownOptionsHtml = "") {
 }
 
 
+
 // FAMILY 8A: REGISTERED AGENT SERVICE LAYOUT MATRIX (PART 2 OF 3)
 function buildRegisteredAgentServicePart2(stateDropdownOptionsHtml = "") {
     return `
@@ -3052,6 +3240,7 @@ function buildRegisteredAgentServicePart2(stateDropdownOptionsHtml = "") {
                 </div>
             </div>
             
+            <!-- FIXED STRUCTURAL BUTTON POSITION -->
             <button type="button" onclick="appendNewRegisteredAgentEntityRow()" style="background: transparent; border: 1px dashed var(--primary); color: var(--primary); font-weight: 700; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; width: fit-content; margin-top: 12px; display: flex; align-items: center; gap: 8px;">
                 <i class="fa-solid fa-plus"></i> Add Additional Entity
             </button>
@@ -3083,6 +3272,8 @@ function buildRegisteredAgentServicePart2(stateDropdownOptionsHtml = "") {
         </div>
     `;
 }
+
+
 
 
 // FAMILY 8A: REGISTERED AGENT SERVICE LAYOUT MATRIX (PART 3 OF 3)
@@ -3138,7 +3329,7 @@ function buildRegisteredAgentServicePart3(stateDropdownOptionsHtml = "") {
     `;
 }
 
-// 📦 MASTER REGISTERED AGENT SERVICE ASSEMBLY HOOK
+// MASTER REGISTERED AGENT SERVICE ASSEMBLY HOOK
 function buildRegisteredAgentServiceForm(stateDropdownOptionsHtml = "") {
     return buildRegisteredAgentServicePart1(stateDropdownOptionsHtml) + 
            buildRegisteredAgentServicePart2(stateDropdownOptionsHtml) + 
@@ -3190,7 +3381,7 @@ function buildBusinessLicensesPart1(stateDropdownOptionsHtml = "") {
                 <div>
                     <label for="bl_business_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label>
                     <select id="bl_business_state" required class="wizard-input-field" style="font-weight: 600;">
-                        \${stateDropdownOptionsHtml}
+                        ${stateDropdownOptionsHtml}
                     </select>
                 </div>
                 <div>
@@ -3224,7 +3415,7 @@ function buildBusinessLicensesPart1(stateDropdownOptionsHtml = "") {
                     <div>
                         <label for="bl_mailing_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label>
                         <select id="bl_mailing_state" class="wizard-input-field" style="font-weight: 600;">
-                            \${stateDropdownOptionsHtml}
+                            ${stateDropdownOptionsHtml}
                         </select>
                     </div>
                     <div>
@@ -3558,7 +3749,7 @@ function buildEinApplicationPart1(stateDropdownOptionsHtml = "") {
                 <div>
                     <label for="ein_business_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label>
                     <select id="ein_business_state" required class="wizard-input-field" style="font-weight: 600;">
-                        \${stateDropdownOptionsHtml}
+                        ${stateDropdownOptionsHtml}
                     </select>
                 </div>
                 <div>
@@ -3592,7 +3783,7 @@ function buildEinApplicationPart1(stateDropdownOptionsHtml = "") {
                     <div>
                         <label for="ein_mailing_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label>
                         <select id="ein_mailing_state" class="wizard-input-field" style="font-weight: 600;">
-                            \${stateDropdownOptionsHtml}
+                            ${stateDropdownOptionsHtml}
                         </select>
                     </div>
                     <div>
@@ -4417,7 +4608,10 @@ function buildCliaCertificateForm(stateDropdownOptionsHtml = "") {
 
 
 // FAMILY 15A: FEDERAL INCOME TAX FILING LAYOUT MATRIX (PART 1 OF 3)
-function buildFederalIncomeTaxFormPart1(stateDropdownOptionsHtml = "") {
+function buildFederalIncomeTaxFormPart1(stateDropdownOptionsHtml) {
+    // FIX: Fallback string handling protects the template layout if global variables load late
+    var optionsList = stateDropdownOptionsHtml || window.globalStateDropdownOptionsHtml || '<option value="" disabled>-- No States Loaded --</option>';
+
     return `
         <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: FEDERAL INCOME TAX FILING -->
         <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
@@ -4437,7 +4631,8 @@ function buildFederalIncomeTaxFormPart1(stateDropdownOptionsHtml = "") {
 
         <div class="wizard-input-group" style="grid-column: span 1;">
             <label for="fed_tax_ein" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Employer Identification Number (EIN) <span style="color: #ef4444;">*</span></label>
-            <input type="text" id="fed_tax_ein" required placeholder="00-0000000" pattern="[0-9]{2}\\\\-[0-9]{7}" title="Please provide a valid 9-digit format (XX-XXXXXXX)" class="wizard-input-field" style="font-family: monospace;">
+            <!-- FIX: Normalized regex pattern backslashes to allow smooth native JS compiler reading -->
+            <input type="text" id="fed_tax_ein" required placeholder="00-0000000" pattern="[0-9]{2}-[0-9]{7}" title="Please provide a valid 9-digit format (XX-XXXXXXX)" class="wizard-input-field" style="font-family: monospace;">
         </div>
 
         <div class="wizard-input-group" style="grid-column: span 1;">
@@ -4453,7 +4648,8 @@ function buildFederalIncomeTaxFormPart1(stateDropdownOptionsHtml = "") {
 
         <div class="wizard-input-group" style="grid-column: span 2;">
             <label for="fed_tax_principal_street" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Principal Business Address <span style="color: #ef4444;">*</span></label>
-            <input type="text" id="fed_tax_principal_street" required placeholder="Street address, suite, unit (No P.O. Boxes)" pattern="[A-Za-z0-9\\\\s\\\\#\\\\-\\\\.\\\\,\\\\s]+" title="Please provide a valid address layout." class="wizard-input-field" onfocus="attachGooglePlacesAutocompleteToNode(this, 'fed_tax_principal')">
+            <!-- FIX: Simplified valid address pattern regex structure to avoid breaking HTML rendering blocks -->
+            <input type="text" id="fed_tax_principal_street" required placeholder="Street address, suite, unit (No P.O. Boxes)" pattern="[A-Za-z0-9\\s#\\-\\.,]+" title="Please provide a valid address layout." class="wizard-input-field" onfocus="attachGooglePlacesAutocompleteToNode(this, 'fed_tax_principal')">
         </div>
 
         <div class="wizard-input-group" style="grid-column: span 2;">
@@ -4465,17 +4661,19 @@ function buildFederalIncomeTaxFormPart1(stateDropdownOptionsHtml = "") {
                 <div>
                     <label for="fed_tax_principal_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label>
                     <select id="fed_tax_principal_state" required class="wizard-input-field" style="font-weight: 600;">
-                        ${stateDropdownOptionsHtml}
+                        <option value="" disabled selected>Select...</option>
+                        ${optionsList}
                     </select>
                 </div>
                 <div>
                     <label for="fed_tax_principal_zip" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">Zip Code <span style="color: #ef4444;">*</span></label>
-                    <input type="text" id="fed_tax_principal_zip" required placeholder="Zip Code" style="font-family: monospace;" class="wizard-input-field">
+                    <input type="text" id="fed_tax_principal_zip" required placeholder="Zip" style="font-family: monospace;" class="wizard-input-field">
                 </div>
             </div>
         </div>
     `;
 }
+
 
 // FAMILY 15A: FEDERAL INCOME TAX FILING LAYOUT MATRIX (PART 2 OF 5)
 function buildFederalIncomeTaxFormPart2(stateDropdownOptionsHtml = "") {
@@ -4647,6 +4845,7 @@ function buildStateIncomeTaxFormPart1(stateDropdownOptionsHtml = "") {
         </div>
     `;
 }
+
 
 
 // FAMILY 16A: STATE INCOME TAX FILING LAYOUT MATRIX (PART 2 OF 5)
@@ -7770,3 +7969,50 @@ function toggleDbaDurationField(selectedValue) {
     if (wrapper) wrapper.style.display = (selectedValue === "temporary") ? "flex" : "none";
 }
 
+// ==========================================
+// PART 4: LLC MEMBERSHIP CONTROLLER
+// ==========================================
+function handleMembershipDropdownChange(selectElement) {
+    var chosenValue = selectElement.value; 
+    var isSingleMember = (chosenValue === "1");
+    
+    var singleMemberBox = document.getElementById("single-member-question-wrapper");
+    var membersBox = document.getElementById("dynamic-members-fields-root");
+    
+    if (!singleMemberBox || !membersBox) return;
+
+    singleMemberBox.innerHTML = "";
+    membersBox.innerHTML = "";
+
+    if (isSingleMember) {
+        singleMemberBox.innerHTML = 
+        '<div class="wizard-input-group" style="margin-top: 14px; background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; grid-column: span 2; box-sizing: border-box;">' +
+            '<label style="font-weight: 700; color: var(--navy); display: block; margin-bottom: 6px;">Are you the 1 Member of this company? *</label>' +
+            '' +
+                '<option value="">-- Choose Option --</option>' +
+                '<option value="yes">Yes, I am the sole owner</option>' +
+                '<option value="no">No, someone else is the owner</option>' +
+            '</select>' +
+        '</div>';
+    } else if (chosenValue !== "") {
+        if (typeof generateMultipleMembersInputForms === "function") {
+            generateMultipleMembersInputForms(parseInt(chosenValue, 10), membersBox);
+        }
+    }
+}
+/**
+ * SINGLE OWNER IDENTITY TRACKING FILTER
+ * Captures verification answers and displays a profile subform if needed.
+ */
+function handleSoleMemberIdentityToggle(answerValue) {
+    var membersBox = document.getElementById("dynamic-members-fields-root");
+    if (!membersBox) return;
+    
+    membersBox.innerHTML = "";
+
+    if (answerValue === "no") {
+        if (typeof generateMultipleMembersInputForms === "function") {
+            generateMultipleMembersInputForms(1, membersBox);
+        }
+    }
+}
