@@ -10,6 +10,8 @@
     
     <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
      <link rel="stylesheet" href="assets/css/master.css">
+     <script src="assets/js/prices.js"></script>
+
     <link rel="stylesheet" href="assets/css/master-mobile.css">
     <link rel="icon" type="image/png" href="images/fav.png">
     
@@ -165,51 +167,10 @@
     </div>
 </section>
 
-<!-- SECTION 3: PRICING -->
-<section id="pricing" class="pricing-section">
-    <span class="hero-tag">Deployment Tiers</span>
-    <h2>Transparent formation pricing.</h2>
-    <div class="pricing-grid">
-        <div class="price-card">
-            <h3>Basic</h3>
-            <div class="amount">$75 <span>+ State Fee</span></div>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Standard state filing for cost-conscious founders.</p>
-            <ul class="price-features">
-                <li>Name Availability Check</li>
-                <li>Articles of Org. Filing</li>
-                <li>Digital Document Access</li>
-            </ul>
-            <a href="wizard.html?service=llc-formation&plan=starter" class="btn-main" style="width: 100%; text-align: center; background: var(--navy);">Select Basic</a>
-        </div>
 
-        <div class="price-card featured">
-            <div class="price-badge">Most Popular</div>
-            <h3>Elite</h3>
-            <div class="amount">$199 <span>+ State Fee</span></div>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Full automation and legal infrastructure.</p>
-            <ul class="price-features">
-                <li>Everything in Basic</li>
-                <li><strong>1-Year Registered Agent</strong></li>
-                <li>Custom Operating Agreement</li>
-                <li>Federal Tax ID (EIN) Filing</li>
-            </ul>
-            <a href="wizard.html?service=llc-formation&plan=compliance" class="btn-main" style="width: 100%; text-align: center;">Select Elite</a>
-        </div>
+<!-- For your LLC page, drop this single hook line: -->
+<div id="website-package-pricing-cards-root" data-service-key="llc-formation"></div>
 
-        <div class="price-card">
-            <h3>Enterprise</h3>
-            <div class="amount">$349 <span>+ State Fee</span></div>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Hands-off compliance for high-volume entities.</p>
-            <ul class="price-features">
-                <li>Everything in Elite</li>
-                <li>BOI FinCEN Reporting</li>
-                <li>Corporate Resolution Kit</li>
-                <li>Compliance Shield Monitoring</li>
-            </ul>
-            <a href="wizard.html?service=llc-formation&plan=enterprise" class="btn-main" style="width: 100%; text-align: center; background: var(--navy);">Select Enterprise</a>
-        </div>
-    </div>
-</section>
 
 <!-- SECTION 4: KNOWLEDGE BASE (FAQs) -->
 <section class="faq-section">

@@ -310,3 +310,43 @@ if (document.readyState === 'loading') {
 } else {
   executeCentralizedSystemStartupSequence();
 }
+
+/**
+ * Renders dynamic pricing cards on the main website landing pages
+ * @param {string} serviceKey - Either 'llc-formation' or 'corporation'
+ * @param {string} containerId - The HTML element ID where cards should load
+ */
+function renderMainWebsitePricingCards(serviceKey, containerId) {
+    var container = document.getElementById(containerId);
+    if (!container || !window.GLOBAL_COMPANY_PRICING) return;
+
+    var serviceData = window.GLOBAL_COMPANY_PRICING.packages[serviceKey];
+    if (!serviceData) return;
+
+    var tiers = ["starter", "compliance", "enterprise"];
+    var cardsHtml = "";
+
+    tiers.forEach(function(tier) {
+        var basePrice = serviceData[tier];
+        var bullets = serviceData.bullets[tier];
+        
+        // Build the feature bullet items list safely
+        var bulletListHtml = "";
+        bullets.forEach(function(bulletText) {
+            bulletListHtml += '<li style="display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:0.85rem; color:#475569;">' +
+                '<span style="color:#10b981; font-weight:bold;">✔</span> ' + bulletText + '</li>';
+        });
+
+        // Generate the responsive card frame string layout
+        cardsHtml += '<div style="flex:1; min-width:260px; max-width:360px; border:1px solid #e2e8f0; border-radius:12px; padding:24px; background:#ffffff; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); font-family:sans-serif;">' +
+            '<div>' +
+                '<h4 style="margin:0; text-transform:uppercase; font-size:0.75rem; letter-spacing:1px; color:#64748b; font-weight:800;">' + tier + '</h4>' +
+                '<div style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin:10px 0 16px 0;">$' + basePrice.toFixed(2) + '</div>' +
+                '<ul style="list-style:none; padding:0; margin:0;">' + bulletListHtml + '</ul>' +
+            '</div>' +
+            '<a href="wizard.html?service=' + serviceKey + '&plan=' + tier + '" style="display:block; text-align:center; background:#0a1f44; color:#ffffff; padding:10px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:24px; font-size:0.9rem;">Get Started</a>' +
+        '</div>';
+    });
+
+    container.innerHTML = '<div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; width:100%; box-sizing:border-box;">' + cardsHtml + '</div>';
+}

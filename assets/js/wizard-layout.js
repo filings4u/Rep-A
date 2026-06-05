@@ -1,5 +1,5 @@
 // ==========================================
-// PART 1: FIELD REGEX VALIDATION
+// PART 1: FIELD REGEX VALIDATION (CLEAN REWRITE)
 // ==========================================
 function validateStepInputParametersVanilla(activeStep) {
     var activePanel = document.getElementById("step-panel-" + activeStep);
@@ -10,10 +10,6 @@ function validateStepInputParametersVanilla(activeStep) {
     var regexLetters = /^[A-Za-z\s.\x27\-]+$/;
     var regexNumbers = /^\d+$/;
     var regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    // (Validation logic loop continued in next part)
-    return stepIsValid;
-}
 
     inputs.forEach(function(el) {
         if (el.type === "hidden" || el.disabled) return;
@@ -34,10 +30,7 @@ function validateStepInputParametersVanilla(activeStep) {
                     stepIsValid = false;
                 } else { el.setCustomValidity(""); }
             }
-            // (Checks for alphabet and number patterns continued in next part)
-        }
-
-                    else if (el.classList.contains("validate-letters") || (el.name && el.name.indexOf("name") !== -1) || (el.name && el.name.indexOf("city") !== -1)) {
+            else if (el.classList.contains("validate-letters") || (el.name && el.name.indexOf("name") !== -1) || (el.name && el.name.indexOf("city") !== -1)) {
                 if (!regexLetters.test(val)) {
                     el.setCustomValidity("This field can only contain letters, spaces, or periods.");
                     el.reportValidity();
@@ -51,8 +44,12 @@ function validateStepInputParametersVanilla(activeStep) {
                     stepIsValid = false;
                 } else { el.setCustomValidity(""); }
             }
-
+        }
     });
+
+    return stepIsValid;
+}
+
 
     // ==========================================
 // PART 2: STATE DROPDOWN GENERATOR
