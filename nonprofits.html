@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="assets/css/master.css">
     <link rel="stylesheet" href="assets/css/master-mobile.css">
 </head>
-<body>
-    <nav>
-        <div class="nav-content-wrapper">
-            <a href="index.html"><img src="images/logo.png" style="height:40px;"></a>
+<body style="margin:0; padding:0; background:#ffffff;">
+    <nav style="border-bottom:1px solid rgba(10,31,68,0.05); width:100%; display:block; background:#ffffff;">
+        <div class="nav-content-wrapper" style="max-width:1450px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:20px 40px; box-sizing:border-box;">
+            <a href="index.html" class="logo-link"><img src="images/logo.png" alt="filings4u" style="height:40px; width:auto; object-fit:contain;"></a>
+            <div class="nav-links" style="display:flex; align-items:center; gap:20px;">
+                <a href="index.html" style="color:#0a1f44; font-weight:700; text-decoration:none; font-size:0.95rem;">Home</a>
+                <a href="get-started.html" style="color:#0a1f44; font-weight:700; text-decoration:none; font-size:0.95rem;">All Services</a>
+            </div>
         </div>
     </nav>
     <main class="page-container" style="background: #ffffff !important; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 1450px; box-sizing: border-box; margin: 0 auto;">
@@ -28,25 +32,32 @@
         </div>
     </main>
     
-    <section id="pricing" style="background:#ffffff !important; max-width:1450px !important; width:100% !important; margin:60px auto !important; padding:0 40px !important; box-sizing:border-box !important;">
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:30px; width:100%; box-sizing:border-box;">
-            <div style="border:1px solid rgba(10,31,68,0.1); padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between;">
-                <div><h3>Basic Plan</h3><div style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$149.00</div></div>
-                <a href="wizard.html?service=nonprofits&plan=starter" style="width:100%; text-align:center; padding:12px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#10b981; display:block;">Select Basic</a>
+    <section id="pricing" style="background:#ffffff !important; max-width:1450px !important; width:100% !important; margin:60px auto !important; padding:40px; box-sizing:border-box !important; border:none !important; font-family:system-ui, sans-serif;">
+        <div style="text-align:center; margin-bottom:40px;">
+            <span style="color:#10b981; font-weight:800; text-transform:uppercase; font-size:0.8rem; letter-spacing:0.05em;">Deployment Tiers</span>
+            <h2 style="color:#0a1f44; font-size:2.5rem; font-weight:900; margin:4px 0 0 0; letter-spacing:-0.5px;">Choose Your Plan</h2>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:30px; width:100; box-sizing:border-box;">
+            <div style="border:1px solid rgba(10,31,68,0.1); padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; background:#fff;">
+                <div><h3 style="color:#0a1f44; font-size:1.4rem; margin:0 0 12px 0;">Basic</h3><div style="font-size:2.4rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$149.00 <span style="font-size:0.85rem; color:#475569; font-weight:500;">+ State Fee</span></div></div>
+                <a href="wizard.html?service=nonprofits&plan=starter" style="width:100%; text-align:center; padding:14px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#10b981; display:block;">Select Basic</a>
             </div>
-            <div style="border:1px solid #10b981; padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
-                <div style="position:absolute; top:-12px; background:#10b981; color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:20px; font-weight:800;">Most Popular</div>
-                <div><h3>Elite Plan</h3><div style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$299.00</div></div>
-                <a href="wizard.html?service=nonprofits&plan=compliance" style="width:100%; text-align:center; padding:12px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#0a1f44; display:block;">Select Elite</a>
+            <div style="border:2px solid #10b981; padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; position:relative; background:#fff; box-shadow:0 10px 30px rgba(16,185,129,0.05);">
+                <div style="position:absolute; top:-12px; left:24px; background:#10b981; color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:20px; font-weight:800; text-transform:uppercase;">Most Popular</div>
+                <div><h3 style="color:#0a1f44; font-size:1.4rem; margin:0 0 12px 0;">Elite</h3><div style="font-size:2.4rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$299.00 <span style="font-size:0.85rem; color:#475569; font-weight:500;">+ State Fee</span></div></div>
+                <a href="wizard.html?service=nonprofits&plan=compliance" style="width:100%; text-align:center; padding:14px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#0a1f44; display:block;">Select Elite</a>
             </div>
-            <div style="border:1px solid rgba(10,31,68,0.1); padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between;">
-                <div><h3>Enterprise Plan</h3><div style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$499.00</div></div>
-                <a href="wizard.html?service=nonprofits&plan=enterprise" style="width:100%; text-align:center; padding:12px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#10b981; display:block;">Select Enterprise</a>
+            <div style="border:1px solid rgba(10,31,68,0.1); padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; background:#fff;">
+                <div><h3 style="color:#0a1f44; font-size:1.4rem; margin:0 0 12px 0;">Enterprise</h3><div style="font-size:2.4rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$499.00 <span style="font-size:0.85rem; color:#475569; font-weight:500;">+ State Fee</span></div></div>
+                <a href="wizard.html?service=nonprofits&plan=enterprise" style="width:100%; text-align:center; padding:14px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#10b981; display:block;">Select Enterprise</a>
             </div>
         </div>
     </section>
-    <footer style="background:#0a1f44; color:#fff; padding:60px 40px; text-align:center;">
-        <p>&copy; 2026 filings4u. All rights reserved.</p>
+    <footer class="site-footer" style="background:#0a1f44; color:#ffffff; padding:60px 0 30px 0; width:100%; display:block; box-sizing:border-box;">
+        <div class="footer-container" style="max-width:1450px; margin:0 auto; padding:0 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; box-sizing:border-box;">
+            <p style="margin:0; font-size:0.85rem; color:#94a3b8;">&copy; 2026 filings4u, LLC. All rights reserved.</p>
+            <div style="background:rgba(255,255,255,0.05); padding:10px 20px; border-radius:8px; font-size:0.75rem; color:#10b981; font-weight:700;">SECURE GATEWAY ENCRYPTION LOGGED</div>
+        </div>
     </footer>
 </body>
 </html>
