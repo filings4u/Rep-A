@@ -89,17 +89,17 @@ function runSinglePageDynamicRouter() {
         var numericIndex = keysArray.indexOf(urlSlugKey);
         var isEven = (numericIndex % 2 === 0);
 
-        // Splice sections smoothly into one layout canvas
-        var heroMarkup = buildDynamicHeroSection(urlSlugKey, serviceProfile, isEven);
-        var capabilityMarkup = buildDynamicCapabilitiesGrid(urlSlugKey, serviceProfile);
-        var billingMarkup = buildDynamicPricingCards(urlSlugKey, serviceProfile);
+       // ============================================================================
+// ⚙️ FIXED INJECTION HOOKS - REPLACES LINES 120-130
+// ============================================================================
 
-        rootSlot.innerHTML = heroMarkup + capabilityMarkup + billingMarkup;
-        console.log("Single-page dynamic engine successfully injected architecture loops for: " + urlSlugKey);
+        // Splice all constructed layout strings smoothly into one single block
+        layoutSlot.innerHTML = heroHtml + capabilityHtml + billingHtml;
+        console.log("Enterprise framework loaded dynamic loops for: " + activeKey);
 
-    } catch (crashInterceptException) {
-        console.error("Runtime exception halted engine execution layouts:", crashInterceptException);
-        rootSlot.innerHTML = '<div style="text-align:center; padding:80px; color:red; font-family:sans-serif; background:#fff;"><h2>Framework Error</h2><p>' + crashInterceptException.message + '</p></div>';
+    } catch (crashIntercept) {
+        console.error("Pipeline crash caught inside loop logic:", crashIntercept);
+        layoutSlot.innerHTML = `<div style="text-align:center; padding:80px; color:red; font-family:sans-serif; background:#ffffff;"><h2>System Fault</h2><p>${crashIntercept.message}</p></div>`;
     }
 }
 
