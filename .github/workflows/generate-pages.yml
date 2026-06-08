@@ -1,0 +1,66 @@
+name: 🚀 Automatic SEO Page Generator Engine
+
+on:
+  push:
+    branches:
+      - main  # Fires automatically every time you push code modifications to main
+  repository_dispatch:
+    types: [supabase_content_update] # Fires via webhooks instantly when changing text inside your Admin Portal
+
+jobs:
+  build-static-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📁 Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Install Supabase Client Core Dependencies
+        run: npm install @supabase/supabase-js
+
+      - name: ⚙️ Run Automation Compiler File Build Execution Loop
+        env:
+          SUPABASE_URL: "https://supabase.co"
+          SUPABASE_ANON_KEY: "your-anon-key-here"
+        run: |
+          node -e "
+          const { createClient } = require('@supabase/supabase-js');
+          const fs = require('fs');
+          const path = require('path');
+
+          const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+          async function compileSystem() {
+              const { data: services, error } = await supabase.from('services').select('*');
+              if (error || !services) { console.error('Database pull failure:', error); process.exit(1); }
+
+              // Read your signature template layout framework file cleanly from storage
+              const baseTemplate = fs.readFileSync('service-template.html', 'utf8');
+
+              services.forEach(service => {
+                  let pageHtml = baseTemplate;
+                  
+                  // For bots, print pre-compiled text directly onto raw tags for immediate parsing
+                  pageHtml = pageHtml.replace('id=\"meta-title\">', 'id=\"meta-title\">' + service.service_title + ' | ');
+                  pageHtml = pageHtml.replace('data-service-key=\"dynamic-loader\"', 'data-service-key=\"' + service.slug + '\"');
+
+                  // Output pristine, search-optimized standalone files directly into your public folder
+                  const destinationPath = path.join(process.cwd(), service.slug + '.html');
+                  fs.writeFileSync(destinationPath, pageHtml, 'utf8');
+                  console.log('✅ Automated Compilation Success: Saved ' + service.slug + '.html');
+              });
+          }
+          compileSystem();
+          "
+
+      - name: 💾 Commit and Sync Compiled Production Assets to Repository
+        run: |
+          git config --global user.name "filings4u Automation Engine"
+          git config --global user.email "bot@filings4u.com"
+          git add *.html
+          git diff-index --quiet HEAD || git commit -m "chore: auto-generated 44 search-engine optimized filing pages"
+          git push
