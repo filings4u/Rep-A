@@ -86,65 +86,68 @@ const SERVICES_BATCH_2 = {
 
 Object.assign(GLOBAL_COMPANY_PRICING, SERVICES_BATCH_2);
 
-// 📦 ADDITIONAL INTEGRATED MARKETING COPY MATRIX
-const COPY_BATCH_EXT = {
-    "sole-proprietorship": { headline: "Main Street Execution. Total Operational Peace of Mind.", subheadline: "Register Independent Operations Without Corporate Complexity.", summary: "Establish your local business checking pathways and commercial brand footprints cleanly. Protect your independent project with structural documentation templates built specifically for solo operators.", badge: "Ecosystem Active Gateways: 10,000+ Verified Records", features: [{ icon: "🏡", title: "Neighborhood Growth Focus", text: "Get the essential paperwork required to secure local commercial banking pathways and launch vendor operations safely." }, { icon: "📋", title: "Municipal Registration Alignment", text: "Ensure your localized tax tokens and local authority records line up precisely with municipal compliance rules." }, { icon: "📝", title: "Business Blueprint Frameworks", text: "Access standard operational logs and resource maps to guide your early enterprise trajectories effortlessly." }] },
-"dba-registration": { headline: "Trade Name Authority. Expand Your Brand Foothold.", subheadline: "Register Fictitious Names Across County Jurisdictions Safely.", summary: "Operate alternate trade lines, sub-brands, or market divisions without the overhead of forming multiple corporate entities. Our platform navigates complex county publication laws to secure your public commercial brand identity safely.", badge: "Complete Cross-County Fictitious Records Aligned Natively", features: [{ icon: "🏷️", title: "Brand Identity Separation", text: "Legally accept payments and market services under custom names distinct from your core entity wrapper." }, { icon: "📰", title: "Publication Requirement Audits", text: "Automate statutory local legal notice publications required by specific county and state filing loops." }, { icon: "📌", title: "State-Wide Protection Matching", text: "Map trade name footprints clearly across regional jurisdictions to defend against copycat brand confusion." }] },"nonprofit-organization": { headline: "Mission-Driven Infrastructure. Solid Philanthropic Roots.", subheadline: "Incorporate Foundations Built for Compliance and Grant Capital.", summary: "Accelerate your foundation, charity, or association launch with robust organizational parameters. We automate custom charitable Articles of Incorporation and build compliant governance frameworks designed to satisfy rigorous IRS review procedures.", badge: "Pristine Compliance Mapping to Standard IRS 501(c)(3) Rules", features: [{ icon: "🤝", title: "Grant & Donation Ready", text: "Build the structural legal baseline required to pursue federal grants, issue corporate sponsorships, and accept tax-deductible capital." }, { icon: "⚖️", title: "Statutory Bylaw Blueprints", text: "Deploy complete non-profit governance guidelines, board of directors rules, and strict asset conflict protocols." }, { icon: "🏛️", title: "Charitable Status Tracking", text: "Direct corporate alignment with state charity commissioners to secure public fundraising authority certificates." }] }};Object.assign(INTEGRATED_COPY, COPY_BATCH_EXT);// 🛠️ RUNTIME INJECTION ENGINE: Dynamically creates robust content frameworks for any unmapped servicesObject.keys(GLOBAL_COMPANY_PRICING).forEach(function(slug) {if (!INTEGRATED_COPY[slug]) {var serviceName = GLOBAL_COMPANY_PRICING[slug].name;var isTax = slug.includes('tax') || slug.includes('report') || slug.includes('consulting');var isDot = slug.includes('dot') || slug.includes('authority') || slug.includes('insurance') || slug.includes('file') || slug.includes('registration') || slug.includes('code') || slug.includes('scac') || slug.includes('ucr') || slug.includes('boc3') || slug.includes('ifta') || slug.includes('hazmat') || slug.includes('audit');var primaryHeadline = isTax ? Enterprise Corporate ${serviceName} Solutions. : (isDot ? Hardened Logistics ${serviceName} Track. : Premium Systems for ${serviceName}.);var subHeadline = isTax ? Optimize Your Corporate Liabilities and Secure Local Clearances. : (isDot ? Bypass Commercial Freight Red Tape and Maintain Active Transit Standing. : Automate Enterprise Infrastructure and Protect Your Capital Growth.);var summaryBody = isTax ? Avoid processing penalties, audit exposure, or structural tax rejections. Our compliance desk handles your annual informational statements, operations tracking, and tax files securely. : Ensure absolute structural alignment with regulatory state systems and federal monitoring compacts. We structure complete documentation sets, handle verification logs, and maintain active tracking parameters overnight.;INTEGRATED_COPY[slug] = {headline: primaryHeadline,subheadline: subHeadline,summary: summaryBody,badge: "All Clear: SECURE SYSTEM HANDSHAKE ACTIVE",features: [{ icon: "🛡️", title: "Complete Liability Shielding", text: "Safeguard your commercial wealth and ensure personal operations are permanently insulated from regulatory penalty metrics." },{ icon: "⚡", title: "Expedited Pipeline Execution", text: "Our integrated data checking rules eliminate standard processing delays, pushing your files through fast gateways." },{ icon: "📊", title: "Continuous Compliance Defense", text: "Maintain active validity statuses across state lines with automated background tracking updates." }]};}});
-
-
 // ============================================================================
-// ⚙️ MODULE 2: FULLY-DEVELOPED LAYOUT GENERATOR & COMPILATION LOOP (PART 3 OF 3)
+// ⚙️ MODULE 2: DESIGN STRUT ENGINE & BILLING MATRICES (PART 3 OF 3)
 // ============================================================================
 
-// 🛠️ PRIVATE HELPER: Compiles the 3-point value proposition check-list layout automatically
-function buildMarketingFeaturesGrid(slug) {
-    const copy = INTEGRATED_COPY[slug];
-    if (!copy || !copy.features) return '';
+function buildMarketingFeaturesGrid(slug, data) {
+    var isTax = slug.includes('tax') || slug.includes('report') || slug.includes('consulting');
+    var isDot = slug.includes('dot') || slug.includes('authority') || slug.includes('insurance') || slug.includes('file') || slug.includes('registration') || slug.includes('code') || slug.includes('scac') || slug.includes('ucr') || slug.includes('boc3') || slug.includes('ifta') || slug.includes('hazmat') || slug.includes('audit');
+    
+    var f1_title = "Complete Shielding Protocols";
+    var f1_text = "Isolate operational risk vectors completely. Ensure your personal assets are permanently insulated from regulatory penalties.";
+    var f2_title = "Expedited Gateway Execution";
+    var f2_text = "Our structural routing rules eliminate formatting errors, pushing your paperwork through agency networks in record time.";
+    var f3_title = "Continuous Standing Support";
+    var f3_text = "Maintain dynamic validity status parameters effortlessly across municipal boundaries with automated timeline tracking updates.";
 
-    let featuresHtml = `
-    <!-- 📊 VALUE PROPOSITION INFRASTRUCTURE FEATURE MATRIX -->
-    <section style="background: #f8fafc; padding: 80px 0; font-family: system-ui, sans-serif; width: 100%;">
+    if (isTax) {
+        f1_title = "Deduction Optimization"; f1_text = "Leverage legal frameworks to capture essential write-offs while keeping your processing records pristine.";
+        f2_title = "Audit Risk Eradication"; f2_text = "Intelligent pre-screening processes align your reporting data layers with IRS and state regulations automatically.";
+        f3_title = "Charter Continuity"; f3_text = "Guard your company from sudden privilege tax suspensions, asset freezing, or unexpected franchise dissolution fines.";
+    } else if (isDot) {
+        f1_title = "Federal FMCSA Alignment"; f1_text = "Keep your operating credentials fully clear of safety flags, roadside hold orders, or unexpected out-of-service mandates.";
+        f2_title = "Electronic Database Sync"; f2_text = "Automate immediate verification loops across federal drug testing pools, carrier records, and border compact clearances.";
+        f3_title = "Audit Shield Safeguards"; f3_text = "Proactively format your driver records, vehicle tax logs, and route details to pass highway enforcement audits.";
+    }
+
+    return `
+    <section style="background: #f8fafc; padding: 80px 0; font-family: system-ui, sans-serif; width: 100%; border-top:1px solid rgba(10,31,68,0.05);">
         <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
             <div style="text-align: center; margin-bottom: 50px;">
                 <span style="color: #10b981; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em;">Core Capabilities</span>
                 <h2 style="color: #0a1f44; font-size: 2.4rem; font-weight: 900; margin: 4px 0 0 0; letter-spacing: -0.5px;">Engineered for Precision and Scale</h2>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%;">`;
-
-    copy.features.forEach(function(feat) {
-        featuresHtml += `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%;">
                 <div style="background: #ffffff; border: 1px solid rgba(10,31,68,0.06); padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(10,31,68,0.01);">
-                    <div style="font-size: 2.5rem; margin-bottom: 15px;">${feat.icon}</div>
-                    <h3 style="color: #0a1f44; font-size: 1.3rem; font-weight: 800; margin: 0 0 10px 0;">${feat.title}</h3>
-                    <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0;">${feat.text}</p>
-                </div>`;
-    });
-
-    featuresHtml += `
+                    <div style="font-size: 2.2rem; margin-bottom: 15px;">🛡️</div>
+                    <h3 style="color: #0a1f44; font-size: 1.3rem; font-weight: 800; margin: 0 0 10px 0;">${f1_title}</h3>
+                    <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0;">${f1_text}</p>
+                </div>
+                <div style="background: #ffffff; border: 1px solid rgba(10,31,68,0.06); padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(10,31,68,0.01);">
+                    <div style="font-size: 2.2rem; margin-bottom: 15px;">⚡</div>
+                    <h3 style="color: #0a1f44; font-size: 1.3rem; font-weight: 800; margin: 0 0 10px 0;">${f2_title}</h3>
+                    <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0;">${f2_text}</p>
+                </div>
+                <div style="background: #ffffff; border: 1px solid rgba(10,31,68,0.06); padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(10,31,68,0.01);">
+                    <div style="font-size: 2.2rem; margin-bottom: 15px;">📊</div>
+                    <h3 style="color: #0a1f44; font-size: 1.3rem; font-weight: 800; margin: 0 0 10px 0;">${f3_title}</h3>
+                    <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0;">${f3_text}</p>
+                </div>
             </div>
         </div>
     </section>`;
-    return featuresHtml;
 }
 
-// 🗺️ DESIGN LAYOUT A (TEXT LEFT, IMAGE RIGHT SPLIT)
-function buildLayoutA(slug, data, pricingCardsHtml) {
-    const copy = INTEGRATED_COPY[slug];
-    const featuresGrid = buildMarketingFeaturesGrid(slug);
-
+function buildLayoutA(slug, data, pricingCardsHtml, featuresGridHtml) {
     return `
     <main class="page-container" style="background: #ffffff !important; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 1450px; box-sizing: border-box; margin: 0 auto;">
         <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
                 <article class="content-area" style="width: 100%; box-sizing: border-box;">
                     <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Filing Program</span>
-                    <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 12px 0; line-height: 1.1; letter-spacing: -1px;">${copy.headline}</h1>
-                    <h2 style="color: #10b981; font-size: 1.6rem; font-weight: 700; margin: 0 0 18px 0; line-height: 1.3;">${copy.subheadline}</h2>
-                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 32px 0;">${copy.summary}</p>
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                        <div style="height: 2px; width: 24px; background: #10b981;"></div>
-                        <span style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${copy.badge}</span>
-                    </div>
+                    <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 12px 0; line-height: 1.1; letter-spacing: -1px;">Secure Your Standalone <br><span style="color:#10b981;">${data.name} Tracks</span></h1>
+                    <p style="color: #475569; font-size: 1.15rem; line-height: 1.6; margin: 0 0 32px 0;">Bypass complex processing red tape and manual forms. We structure complete documentation sets, handle verification logs, and maintain active tracking parameters overnight so you can focus entirely on business scalability models from day one.</p>
                 </article>
                 <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
                     <img src="images/startup-launch.jpg" alt="${data.name}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25);">
@@ -152,15 +155,11 @@ function buildLayoutA(slug, data, pricingCardsHtml) {
             </div>
         </div>
     </main>
-    ${featuresGrid}
+    ${featuresGridHtml}
     ${pricingCardsHtml}`;
 }
 
-// 🗺️ DESIGN LAYOUT B (IMAGE LEFT, TEXT RIGHT ALTERNATING SPLIT)
-function buildLayoutB(slug, data, pricingCardsHtml) {
-    const copy = INTEGRATED_COPY[slug];
-    const featuresGrid = buildMarketingFeaturesGrid(slug);
-
+function buildLayoutB(slug, data, pricingCardsHtml, featuresGridHtml) {
     return `
     <section style="background: #ffffff !important; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
         <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
@@ -170,18 +169,16 @@ function buildLayoutB(slug, data, pricingCardsHtml) {
                 </div>
                 <div style="width: 100%; box-sizing: border-box;">
                     <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">System Track</span>
-                    <h2 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 12px 0; line-height: 1.1; letter-spacing: -1px;">${copy.headline}</h2>
-                    <h3 style="color: #10b981; font-size: 1.6rem; font-weight: 700; margin: 0 0 18px 0; line-height: 1.3;">${copy.subheadline}</h3>
-                    <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 32px 0;">${copy.summary}</p>
+                    <h2 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 12px 0; line-height: 1.1; letter-spacing: -1px;">Hardened Compliance. <br><span style="color:#10b981;">Built for ${data.name}.</span></h2>
+                    <p style="color: #475569; font-size: 1.15rem; line-height: 1.6; margin: 0 0 32px 0;">Protect business assets, optimize operating logs, and handle multi-state administrative filing obligations flawlessly under an advanced encryption verification framework designed for total operational safety.</p>
                 </div>
             </div>
         </div>
     </section>
-    ${featuresGrid}
+    ${featuresGridHtml}
     ${pricingCardsHtml}`;
 }
 
-// 💳 GENERATE 3-TIER PRICING CARDS
 function buildPricingCards(slug, data) {
     var starterBullets = (data.bullets && data.bullets.starter) ? data.bullets.starter : [];
     var complianceBullets = (data.bullets && data.bullets.compliance) ? data.bullets.compliance : [];
@@ -192,16 +189,4 @@ function buildPricingCards(slug, data) {
     var b3 = ""; enterpriseBullets.forEach(function(b) { b3 += '<li style="margin-bottom:8px; color:#475569; font-size:0.95rem; font-weight:500;">✓ ' + b + '</li>'; });
 
     return `
-    <section id="pricing" style="background:#ffffff !important; max-width:1450px !important; width:100% !important; margin:60px auto !important; padding:0 40px !important; box-sizing:border-box !important; border:none !important; box-shadow:none !important; outline:none !important; font-family:system-ui, sans-serif;">
-        <div style="text-align:center; margin-bottom:40px;">
-            <span style="color:#10b981; font-weight:800; text-transform:uppercase; font-size:0.8rem; letter-spacing:0.05em;">Deployment Tiers</span>
-            <h2 style="color:#0a1f44; font-size:2.2rem; font-weight:900; margin:4px 0 0 0;">Transparent Pricing Plans</h2>
-        </div>
-        <div class="pricing-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:30px; width:100%; box-sizing:border-box;">
-            <div class="price-card" style="border:1px solid rgba(10,31,68,0.1); padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; background:#fff; position:relative; box-sizing:border-box;">
-                <div><h3 style="color:#0a1f44; margin:0 0 10px 0; font-size:1.4rem;">Basic</h3><div class="amount" style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin-bottom:15px;">$${data.starter.toFixed(2)} <span style="font-size:0.85rem; color:#475569; font-weight:500;">+ State Fee</span></div><ul style="list-style:none; padding:0; margin:0 0 24px 0;">${b1}</ul></div>
-                <a href="wizard.html?service=${slug}&plan=starter" class="btn-main" style="width:100%; text-align:center; padding:12px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#0a1f44; display:block; box-sizing:border-box;">Select Basic</a>
-            </div>
-            <div class="price-card featured" style="border:2px solid #10b981; padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; background:#fff; position:relative; box-sizing:border-box; box-shadow:0 10px 30px rgba(16,185,129,0.05);">
-                <div class="price-badge" style="position:absolute; top:-12px; left:24px; background:#10b981; color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:20px; font-weight:800; text-transform:uppercase;">Most Popular</div>
-Elite$${data.compliance.toFixed(2)} + State Fee${b2}Select EliteEnterprise$${data.enterprise.toFixed(2)} + State Fee${b3}Select Enterprise`;}// ⚙️ COMPILATION MASTER PRODUCTION BUILD LOOPfunction compileAllPages() {const headerHtml = <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{{TITLE}} | filings4u</title><link rel="stylesheet" href="assets/css/master.css"><link rel="stylesheet" href="assets/css/master-mobile.css"></head><body style="margin:0; padding:0; background:#ffffff;"><nav style="border-bottom:1px solid rgba(10,31,68,0.05); width:100%; display:block; background:#ffffff;"><div class="nav-content-wrapper" style="max-width:1450px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:20px 40px; box-sizing:border-box;"><a href="index.html" class="logo-link"><img src="images/logo.png" style="height:40px; width:auto;"></a><div style="display:flex; align-items:center; gap:24px;"><a href="index.html" style="color:#0a1f44; font-weight:700; text-decoration:none; font-size:0.95rem;">Home</a><a href="get-started.html" style="color:#0a1f44; font-weight:700; text-decoration:none; font-size:0.95rem;">All Services</a></div></div></nav>;const footerHtml = <footer style="background:#0a1f44; color:#ffffff; padding:60px 0 30px 0; width:100%; display:block; box-sizing:border-box;"><div style="max-width:1450px; margin:0 auto; padding:0 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; box-sizing:border-box;"><p style="margin:0; font-size:0.85rem; color:#94a3b8;">&copy; 2026 filings4u, LLC. All rights reserved.</p></div></footer></body></html>;let fileCounter = 0;Object.keys(GLOBAL_COMPANY_PRICING).forEach((slug, index) => {const item = GLOBAL_COMPANY_PRICING[slug];const pricingCards = buildPricingCards(slug, item);const layoutContent = (index % 2 === 0) ? buildLayoutA(slug, item, pricingCards) : buildLayoutB(slug, item, pricingCards);const absolutePageHtml = headerHtml.replace('{{TITLE}}', item.name) + layoutContent + footerHtml;fs.writeFileSync(path.join(process.cwd(), ${slug}.html), absolutePageHtml, 'utf8');fileCounter++;});console.log(\n====================================================);console.log(✅ SUCCESS: Generated ${fileCounter} Fully Developed Landing Files inside Root Path!);console.log(====================================================\n);}compileAllPages();
+Deployment TiersTransparent Pricing PlansBasic$${data.starter.toFixed(2)} + State Fee${b1}Select BasicMost PopularElite$${data.compliance.toFixed(2)} + State Fee${b2}Select EliteEnterprise$${data.enterprise.toFixed(2)} + State Fee${b3}Select Enterprise`;}function compileAllPages() {const headerHtml = `{{TITLE}} | filings4uHomeAll Services`;const footerHtml = `© 2026 filings4u, LLC. All rights reserved.`;let fileCounter = 0;Object.keys(GLOBAL_COMPANY_PRICING).forEach((slug, index) => {const item = GLOBAL_COMPANY_PRICING[slug];const pricingCards = buildPricingCards(slug, item);const featuresGrid = buildMarketingFeaturesGrid(slug, item);const layoutContent = (index % 2 === 0)? buildLayoutA(slug, item, pricingCards, featuresGrid): buildLayoutB(slug, item, pricingCards, featuresGrid);const absolutePageHtml = headerHtml.replace('{{TITLE}}', item.name) + layoutContent + footerHtml;fs.writeFileSync(path.join(process.cwd(), `${slug}.html`), absolutePageHtml, 'utf8');fileCounter++;});console.log(`\n====================================================`);console.log(`✅ SUCCESS: Generated ${fileCounter} Fully Developed Standalone Files inside Root Path!`);console.log(`====================================================\n`);}compileAllPages();

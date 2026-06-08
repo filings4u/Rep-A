@@ -1,131 +1,109 @@
 // ============================================================================
-// 🎛️ MODULE 2: PRODUCTION CONNECTIVITY MATRIX & AUTOMATED BILLING GENERATOR
+// 🎛️ ENTERPRISE ARCHITECTURE: CORE INJECTOR SYSTEM RUNTIME (PART 1 OF 3)
 // ============================================================================
 
-function generateDynamicPricingCards(serviceKey, servicePricingObj) {
-    if (!servicePricingObj) return '';
-    
-    const plansConfig = [
-        { key: "starter", name: "Basic", class: "price-card", btnStyle: "background: var(--navy);" },
-        { key: "compliance", name: "Elite", class: "price-card featured", btnStyle: "" },
-        { key: "enterprise", name: "Enterprise", class: "price-card", btnStyle: "background: var(--navy);" }
-    ];
-
-    let cardsHtml = "";
-    plansConfig.forEach(plan => {
-        const basePrice = servicePricingObj[plan.key] || 0;
-        const bullets = (servicePricingObj.bullets && servicePricingObj.bullets[plan.key]) ? servicePricingObj.bullets[plan.key] : [];
-        
-        let bulletListHtml = "";
-        bullets.forEach(bulletText => {
-            bulletListHtml += `<li style="display:flex; align-items:center; gap:8px; margin-bottom:10px; color:#475569; font-size:0.95rem; font-weight:500;"><span style="color:#10b981; font-weight:bold;">✓</span> ${bulletText}</li>`;
-        });
-
-        const badgeHtml = (plan.key === "compliance") ? '<div class="price-badge" style="position:absolute; top:-12px; left:24px; background:#10b981; color:#ffffff; font-size:0.75rem; font-weight:800; padding:4px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em; z-index:10;">Most Popular</div>' : '';
-
-        // 💳 INTEGRATED HARDSHAKE ACTIONS PASS-THROUGH HANDLER
-        cardsHtml += `
-        <div class="${plan.class}" style="position:relative; background:#ffffff; border:1px solid rgba(10,31,68,0.1); padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 12px rgba(0,0,0,0.02); box-sizing:border-box; width:100%;">
-            <div>
-                ${badgeHtml}
-                <h3 style="color:#0a1f44; font-size:1.4rem; font-weight:800; margin:0 0 12px 0;">${plan.name}</h3>
-                <div class="amount" style="font-size:2.4rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$${basePrice.toFixed(2)} <span style="font-size:0.85rem; color:#475569; font-weight:500;">+ State Fee</span></div>
-                <ul class="price-features" style="list-style:none; padding:0; margin:0 0 24px 0;">${bulletListHtml}</ul>
-            </div>
-            
-            <!-- 🚀 STEP 3 WIZARD PAYMENTS HANDSHAKE GATEWAY -->
-            <a href="wizard.html?service=${serviceKey}&plan=${plan.key}" class="btn-main" style="width:100%; text-align:center; padding:14px 20px; border-radius:6px; color:#ffffff; text-decoration:none; font-weight:700; display:block; box-sizing:border-box; background:#10b981; box-shadow:0 6px 12px rgba(16,185,129,0.15); transition:background 0.2s; ${plan.btnStyle}">Select ${plan.name}</a>
-        </div>`;
-    });
-
-    return `
-    <section id="pricing" class="pricing-section" style="background:#ffffff !important; max-width:1450px !important; width:100% !important; margin:60px auto !important; padding:40px 40px 0 40px !important; box-sizing:border-box !important; border:none !important; box-shadow:none !important; display:block !important;">
-        <div style="margin-bottom:40px; text-align:center;">
-            <span style="color:#10b981; font-weight:800; text-transform:uppercase; font-size:0.8rem; letter-spacing:0.05em;">Deployment Tiers</span>
-            <h2 style="color:#0a1f44; font-size:2.5rem; font-weight:900; margin:4px 0 0 0; letter-spacing:-0.5px;">Transparent Pricing Plans.</h2>
-        </div>
-        <div class="pricing-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:30px; width:100%; box-sizing:border-box;">
-            ${cardsHtml}
-        </div>
-    </section>`;
-}
-
-const LayoutBlueprints = {
-    "text-left-split": function(data, pricingCardsHtml) {
-        return `
-        <main class="page-container" style="background:#ffffff !important; padding:60px 0; font-family:system-ui, sans-serif; width:100% !important; max-width:1450px; box-sizing:border-box; margin:0 auto;">
-            <div class="site-width-alignment-guard" style="width:100% !important; max-width:1450px; margin:0 auto !important; padding:0 40px !important; box-sizing:border-box !important;">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%;">
-                    <article class="content-area" style="width:100%; box-sizing:border-box;">
-                        <span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">${data.pill_tag}</span>
-                        <h1 style="color:#0a1f44; font-size:3.2rem; font-weight:900; margin:0 0 18px 0; line-height:1.1; letter-spacing:-1px;">${data.headline_main}<br><span style="color:#10b981;">${data.headline_accent}</span></h1>
-                        <p style="color:#475569; font-size:1.1rem; line-height:1.6; margin:0 0 32px 0;">${data.description_paragraph}</p>
-                        <div class="active-sync-badge-wrapper" style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-                            <div class="badge-line" style="height:2px; width:24px; background:#10b981;"></div>
-                            <span class="badge-text" style="color:#0a1f44; font-weight:700; font-size:0.9rem;">${data.badge_text || "Active Entity Sync: Verified"}</span>
-                        </div>
-                    </article>
-                    <aside class="hero-image-container" style="display:flex; justify-content:center; width:100%;">
-                        <img src="${data.hero_image_url}" alt="${data.service_title}" style="width:100%; height:auto; display:block; border-radius:12px; border:1px solid rgba(10,31,68,0.15); box-shadow:0 20px 40px rgba(10,31,68,0.25), 0 4px 12px rgba(10,31,68,0.1);">
-                    </aside>
-                </div>
-            </div>
-        </main>
-        ${pricingCardsHtml}`;
-    },
-
-    "image-left-split": function(data, pricingCardsHtml) {
-        return `
-        <section style="background:#ffffff !important; padding:60px 0; font-family:system-ui, sans-serif; width:100% !important; max-width:100% !important; box-sizing:border-box;">
-            <div class="site-width-alignment-guard" style="width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:0 40px !important; box-sizing:border-box !important;">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%;">
-                    <div style="display:flex; justify-content:center; width:100%;">
-                        <img src="${data.hero_image_url}" alt="${data.service_title}" style="width:100%; height:auto; display:block; border-radius:12px; border:1px solid rgba(10,31,68,0.15); box-shadow:0 20px 40px rgba(10,31,68,0.25), 0 4px 12px rgba(10,31,68,0.1);">
-                    </div>
-                    <div style="width:100%; box-sizing:border-box;">
-                        <span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">${data.pill_tag}</span>
-                        <h2 style="color:#0a1f44; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">${data.headline_main}<br><span style="color:#10b981;">${data.headline_accent}</span></h2>
-                        <p style="color:#475569; font-size:1rem; line-height:1.6; margin:0 0 32px 0;">${data.description_paragraph}</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        ${pricingCardsHtml}`;
-    }
+// 📦 PRODUCTION DICTIONARY MATRIX USING THE EXACT WIZARD KEY STRINGS FROM STATE-PRICING
+var ENTERPRISE_DATA_MAP = {
+    "llc-formation": { name: "LLC Formation", starter: 99.00, compliance: 199.00, enterprise: 299.00, bullets: { starter: ["Articles of Organization Filing", "Standard Processing", "Digital Delivery", "Operating Agreement Template"], compliance: ["Everything in Basic (plus)", "Elite Compliance Guard", "Priority Submission", "Registered Agent Service (1 Year)", "Employer Identification Number"], enterprise: ["Everything in Elite (plus)", "Complete Enterprise Asset Suite", "White Glove Execution", "Instant Turnaround", "Corporate Binder & Seal"] } },
+    "corporations": { name: "Corporations (C/S-Corp)", starter: 129.00, compliance: 249.00, enterprise: 599.00, bullets: { starter: ["Name availability search", "State filing fees included", "Corporate Bylaws"], compliance: ["Everything in Basic (plus)", "Registered agent service for 1 year", "Employer Identification Number"], enterprise: ["Everything in Elite (plus)", "Corporate Binder", "Corporate Seal", "Compliance Monitoring (1 Year)"] } },
+    "sole-proprietorship": { name: "Sole Proprietorship", starter: 79.00, compliance: 159.00, enterprise: 239.00, bullets: { starter: ["Initial business name registration", "Business tips and resources"], compliance: ["Everything in Basic (plus)", "DBA registration", "Employer Identification Number", "Operating Agreement"], enterprise: ["Everything in Elite (plus)", "Customized business license research", "Business Plan Template"] } },
+    "dba-registration": { name: "DBA Registration", starter: 39.00, compliance: 99.00, enterprise: 159.00, bullets: { starter: ["Name availability check", "Filing with the county"], compliance: ["Everything in Basic (plus)", "Guidance on renewal process"], enterprise: ["Everything in Elite (plus)", "State-wide DBA registration option"] } },
+    "nonprofit-organization": { name: "Nonprofit Organization", starter: 149.00, compliance: 299.00, enterprise: 499.00, bullets: { starter: ["Articles of incorporation preparation", "Name availability search"], compliance: ["Everything in Basic (plus)", "501(c)(3) application assistance"], enterprise: ["Everything in Elite (plus)", "IRS compliance package"] } },
+    "series-llc": { name: "Series LLC", starter: 199.00, compliance: 299.00, enterprise: 399.00, bullets: { starter: ["State filing fees included", "Initial series setup guidance"], compliance: ["Everything in Basic (plus)", "Operating agreement for series"], enterprise: ["Everything in Elite (plus)", "Customized tax and legal strategy guidance"] } },
+    "foreign-qualification": { name: "Foreign Qualification Certificate", starter: 149.00, compliance: 249.00, enterprise: 349.00, bullets: { starter: ["Eligibility assessment", "Preparation of application"], compliance: ["Everything in Basic (plus)", "Registered agent service in the foreign state"], enterprise: ["Everything in Elite (plus)", "Compliance reminders and support"] } },
+    "llc-reinstatement": { name: "LLC Reinstatement Processing", starter: 79.00, compliance: 149.00, enterprise: 249.00, bullets: { starter: ["Review of reinstatement eligibility", "Basic instructions provided"], compliance: ["Everything in Basic (plus)", "Preparation and submission of forms"], enterprise: ["Everything in Elite (plus)", "Follow-up and support through reinstatement"] } },
+    "trademark-filing": { name: "Trademark Filing", starter: 199.00, compliance: 299.00, enterprise: 499.00, bullets: { starter: ["Trademark search", "Basic application filing"], compliance: ["Everything in Basic (plus)", "Preparation of a comprehensive application"], enterprise: ["Everything in Elite (plus)", "Monitoring and support for registration process"] } },
+    "servicemark-filing": { name: "Servicemark Filing", starter: 199.00, compliance: 299.00, enterprise: 399.00, bullets: { starter: ["Servicemark search", "Application filing"], compliance: ["Everything in Basic (plus)", "Status tracking for 1 year"], enterprise: ["Everything in Elite (plus)", "Legal consultation on infringement issues"] } },
+    "annual-reports": { name: "Annual Reports", starter: 89.00, compliance: 159.00, enterprise: 249.00, bullets: { starter: ["Reminder service for due dates", "Filing support for one year"], compliance: ["Everything in Basic (plus)", "Preparation and filing assistance"], enterprise: ["Everything in Elite (plus)", "Ongoing compliance checks"] } },
+    "operating-agreement": { name: "Operating Agreement", starter: 49.00, compliance: 99.00, enterprise: 199.00, bullets: { starter: ["Standard template provided"], compliance: ["Customized operating agreement template"], enterprise: ["Full drafting and consultation services"] } },
+    "registered-agent": { name: "Registered Agent", starter: 99.00, compliance: 179.00, enterprise: 299.00, bullets: { starter: ["Registered agent services for one year"], compliance: ["Everything in Basic (plus)", "Mail forwarding service"], enterprise: ["Everything in Elite (plus)", "Annual compliance support"] } },
+    "business-licenses": { name: "Business Licenses", starter: 79.00, compliance: 149.00, enterprise: 299.00, bullets: { starter: ["Basic license research"], compliance: ["License application assistance"], enterprise: ["Complete compliance package and ongoing support"] } },
+    "employer-id-ein": { name: "Employer ID (EIN)", starter: 79.00, compliance: 149.00, enterprise: 199.00, bullets: { starter: ["EIN application assistance"], compliance: ["Everything in Basic (plus)", "IRS form preparation"], enterprise: ["Everything in Elite (plus)", "Tax planning consultation"] } }
 };
 
 // ============================================================================
-// 📡 MODULE 3: CORRELATION ENGINE CONTROLLER
+// 📦 MODULE 1: LANDING WORKSPACE DICTIONARY EXTENSION (PART 2 OF 3)
 // ============================================================================
-const SUPABASE_PROJECT_URL = "https://supabase.co"; 
-const SUPABASE_PUBLIC_ANON_KEY = "your-anon-key-here";
-const supabaseClient = supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_PUBLIC_ANON_KEY);
 
-document.addEventListener("DOMContentLoaded", async function() {
+const SERVICES_BATCH_2 = {
+    "entity-dissolution": { name: "Entity Dissolution", starter: 149.00, compliance: 249.00, enterprise: 349.00, bullets: { starter: ["Preparation of dissolution paperwork"], compliance: ["Everything in Basic (plus)", "Filing with the state"], enterprise: ["Complete compliance assistance and tax filings"] } },
+    "good-standing": { name: "Certificate of Good Standing", starter: 49.00, compliance: 99.00, enterprise: 149.00, bullets: { starter: ["Application assistance"], compliance: ["Everything in Basic (plus)", "Mode of delivery options"], enterprise: ["Fast track filing service"] } },
+    "apostille-services": { name: "Apostille Authentication Services", starter: 99.00, compliance: 179.00, enterprise: 299.00, bullets: { starter: ["Preparation and filing for one document"], compliance: ["Everything in Basic (plus)", "Multiple document discounts available"], enterprise: ["Comprehensive service with expedited processing"] } },
+    "clia-certificate": { name: "CLIA Certificate", starter: 199.00, compliance: 349.00, enterprise: 499.00, bullets: { starter: ["Basic consultation"], compliance: ["Application assistance"], enterprise: ["Full compliance support"] } },
+    "legal-consulting": { name: "Custom Regulatory Legal Consulting", starter: 150.00, compliance: 1000.00, enterprise: 1000.00, bullets: { starter: ["Tailored consulting services ($150 / Hour)"], compliance: ["Package Plan: Pre-purchased 10 hours for ongoing support"], enterprise: ["Package Plan: Pre-purchased 10 hours for ongoing support"] } },
+    "federal-tax": { name: "Federal Income Tax", starter: 299.00, compliance: 499.00, enterprise: 799.00, bullets: { starter: ["Basic federal tax preparation"], compliance: ["Everything in Basic (plus)", "Tax planning session included"], enterprise: ["Comprehensive tax strategy and filing"] } },
+    "state-tax": { name: "State Income Tax", starter: 199.00, compliance: 349.00, enterprise: 549.00, bullets: { starter: ["State tax preparation"], compliance: ["Everything in Basic (plus)", "State compliance review"], enterprise: ["Full service with audit support"] } },
+    "franchise-tax": { name: "Franchise Tax Filing", starter: 149.00, compliance: 249.00, enterprise: 399.00, bullets: { starter: ["Preparation and filing assistance"], compliance: ["Everything in Basic (plus)", "Compliance tracking and reminders"], enterprise: ["Full service with consultations"] } },
+    "sales-tax": { name: "Sales Tax Registration", starter: 99.00, compliance: 199.00, enterprise: 299.00, bullets: { starter: ["Application assistance"], compliance: ["Everything in Basic (plus)", "Ongoing compliance support"], enterprise: ["Strategic sales tax planning"] } },
+    "payroll-tax": { name: "Payroll Tax (940/941)", starter: 199.00, compliance: 349.00, enterprise: 499.00, bullets: { starter: ["Basic payroll tax filing"], compliance: ["Everything in Basic (plus)", "Detailed payroll reporting"], enterprise: ["Comprehensive payroll solutions"] } },
+    "heavy-use-tax": { name: "Heavy Use Tax (2290)", starter: 99.00, compliance: 179.00, enterprise: 249.00, bullets: { starter: ["Preparation assistance for one vehicle"], compliance: ["Everything in Basic (plus)", "Multiple vehicle discounts"], enterprise: ["Comprehensive compliance and auditing"] } },
+    "cage-code": { name: "CAGE Code", starter: 249.00, compliance: 349.00, enterprise: 449.00, bullets: { starter: ["Application assistance"], compliance: ["Everything in Basic (plus)", "Status monitoring"], enterprise: ["Full service with registration support"] } },
+    "duns-number": { name: "DUNS Number Procurement", starter: 49.00, compliance: 99.00, enterprise: 179.00, bullets: { starter: ["Step-by-step guidance"], compliance: ["Everything in Basic (plus)", "Expedited processing"], enterprise: ["Comprehensive support"] } },
+    "minority-certificate": { name: "Minority Certificate", starter: 99.00, compliance: 249.00, enterprise: 399.00, bullets: { starter: ["Eligibility assessment"], compliance: ["Application assistance"], enterprise: ["Ongoing support and renewal"] } },
+    "owner-operators": { name: "Owner Operators", starter: 199.00, compliance: 299.00, enterprise: 499.00, bullets: { starter: ["Business structure advice"], compliance: ["Full compliance package"], enterprise: ["Financial planning services"] } },
+    "trucker-authority": { name: "Trucker Authority", starter: 199.00, compliance: 299.00, enterprise: 499.00, bullets: { starter: ["Authority application preparation"], compliance: ["Everything in Basic (plus)", "Support for compliance documentation"], enterprise: ["Full service with ongoing support"] } },
+    "broker-authority": { name: "Broker Authority", starter: 199.00, compliance: 299.00, enterprise: 499.00, bullets: { starter: ["Basic application preparation"], compliance: ["Everything in Basic (plus)", "Compliance support"], enterprise: ["Full service with network connections"] } },
+    "ucr-registration": { name: "UCR Registration", starter: 99.00, compliance: 179.00, enterprise: 249.00, bullets: { starter: ["Registration assistance"], compliance: ["Everything in Basic (plus)", "Compliance reminders"], enterprise: ["Ongoing support services"] } },
+    "scac-code": { name: "SCAC Code Registration", starter: 49.00, compliance: 99.00, enterprise: 149.00, bullets: { starter: ["Application assistance"], compliance: ["Everything in Basic (plus)", "Status tracking service"], enterprise: ["Complete registration support"] } },
+    "dot-consortium": { name: "DOT Consortium", starter: 149.00, compliance: 299.00, enterprise: 499.00, bullets: { starter: ["Program enrollment assistance"], compliance: ["Everything in Basic (plus)", "Compliance monitoring"], enterprise: ["Full service with ongoing audits"] } },
+    "driver-file": { name: "Driver Qualification File", starter: 279.00, compliance: 349.00, enterprise: 449.00, bullets: { starter: ["Basic documentation preparation"], compliance: ["Everything in Basic (plus)", "Compliance packet preparation"], enterprise: ["Comprehensive management of files"] } },
+    "process-agent-boc3": { name: "Process Agent (BOC-3)", starter: 49.00, compliance: 99.00, enterprise: 149.00, bullets: { starter: ["Filing assistance"], compliance: ["Everything in Basic (plus)", "Annual renewal support"], enterprise: ["Ongoing compliance service"] } },
+    "ifta-registration": { name: "IFTA Registration", starter: 159.00, compliance: 279.00, enterprise: 349.00, bullets: { starter: ["IFTA registration assistance"], compliance: ["Everything in Basic (plus)", "Compliance checks"], enterprise: ["Full support with filing"] } },
+    "dot-hazmat": { name: "DOT HAZMAT Registration", starter: 199.00, compliance: 349.00, enterprise: 499.00, bullets: { starter: ["Basic registration assistance"], compliance: ["Everything in Basic (plus)", "Detailed compliance packet"], enterprise: ["Full support and ongoing compliance"] } },
+    "licenses-permits": { name: "Licenses & Permits", starter: 79.00, compliance: 149.00, enterprise: 299.00, bullets: { starter: ["Basic license research"], compliance: ["Complete application assistance"], enterprise: ["Ongoing compliance support"] } },
+    "trucker-insurance": { name: "Trucker Insurance", starter: 99.00, compliance: 199.00, enterprise: 299.00, bullets: { starter: ["Document preparation and filing"], compliance: ["Everything in Basic (plus)", "Negotiation with providers"], enterprise: ["Comprehensive package customized"] } },
+    "broker-insurance": { name: "Broker Insurance", starter: 99.00, compliance: 199.00, enterprise: 299.00, bullets: { starter: ["Document preparation and filing"], compliance: ["Everything in Basic (plus)", "Risk assessment included"], enterprise: ["Full consultation for coverage needs"] } },
+    "new-entrant-audit": { name: "New Entrant Audit", starter: 199.00, compliance: 299.00, enterprise: 499.00, bullets: { starter: ["Basic audit preparation"], compliance: ["Everything in Basic (plus)", "Mock audit and consultation"], enterprise: ["Comprehensive audit support"] } }
+};
+
+Object.assign(ENTERPRISE_DATA_MAP, SERVICES_BATCH_2);
+
+
+// ============================================================================
+// ⚙️ ENGINE CONTROLLER: DIRECT QUERY PARAMETER ROUTE DISPATCH MATRIX
+// ============================================================================
+
+function runSinglePageDynamicRouter() {
+    var rootSlot = document.getElementById("dynamic-layout-root");
+    if (!rootSlot) return;
+
     try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const activeServiceKey = urlParams.get('id');
-        if (!activeServiceKey) return;
+        var urlAddressParams = new URLSearchParams(window.location.search);
+        var urlSlugKey = urlAddressParams.get('id');
 
-        // 1. Fetch content layout properties natively from Supabase rows
-        const { data: databaseRecord, error: connectionError } = await supabaseClient
-            .from('services')
-            .select('*')
-            .eq('slug', activeServiceKey)
-            .single();
+        // Fallback safety checkpoint: Default to LLC if param is missing
+        if (!urlSlugKey) { urlSlugKey = "index.html"; }
 
-        if (!connectionError && databaseRecord) {
-            document.title = databaseRecord.service_title + " | filings4u";
-            
-            // 2. Locate match records out of your client matrix global variable files
-            const localPricingObj = window.GLOBAL_COMPANY_PRICING?.packages?.[activeServiceKey];
-            
-            // 3. Compile the exact fully developed pricing array grid layouts
-            const computedPricingMarkup = generateDynamicPricingCards(activeServiceKey, localPricingObj);
-            
-            const chosenDesignKey = databaseRecord.layout_type || "text-left-split";
-            const renderTemplate = LayoutBlueprints[chosenDesignKey];
-            
-            if (renderTemplate) {
-                document.getElementById("dynamic-layout-root").innerHTML = renderTemplate(databaseRecord, computedPricingMarkup);
-}}} catch (err) { console.error("Global core landing initialization failure:", err); }});
+        var serviceProfile = ENTERPRISE_DATA_MAP[urlSlugKey];
+
+        if (!serviceProfile) {
+            rootSlot.innerHTML = '<div style="text-align:center; padding:100px 40px; font-family:sans-serif; background:#fff;"><h2>Profile Unknown</h2><p>The code identifier "' + urlSlugKey + '" is unmapped.</p></div>';
+            return;
+        }
+
+        // Apply browser tab title dynamically
+        document.title = serviceProfile.name + " | filings4u Platforms";
+
+        // Alternate split layouts dynamically based on object key string ordering position metrics
+        var keysArray = Object.keys(ENTERPRISE_DATA_MAP);
+        var numericIndex = keysArray.indexOf(urlSlugKey);
+        var isEven = (numericIndex % 2 === 0);
+
+        // Splice sections smoothly into one layout canvas
+        var heroMarkup = buildDynamicHeroSection(urlSlugKey, serviceProfile, isEven);
+        var capabilityMarkup = buildDynamicCapabilitiesGrid(urlSlugKey, serviceProfile);
+        var billingMarkup = buildDynamicPricingCards(urlSlugKey, serviceProfile);
+
+        rootSlot.innerHTML = heroMarkup + capabilityMarkup + billingMarkup;
+        console.log("Single-page dynamic engine successfully injected architecture loops for: " + urlSlugKey);
+
+    } catch (crashInterceptException) {
+        console.error("Runtime exception halted engine execution layouts:", crashInterceptException);
+        rootSlot.innerHTML = '<div style="text-align:center; padding:80px; color:red; font-family:sans-serif; background:#fff;"><h2>Framework Error</h2><p>' + crashInterceptException.message + '</p></div>';
+    }
+}
+
+// Fire runtime tracking paths when DOM tree finishes compiling safely
+window.onload = function() {
+    runSinglePageDynamicRouter();
+};
