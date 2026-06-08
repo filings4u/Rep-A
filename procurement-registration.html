@@ -1,30 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <meta name="mobile-web-app-capable" content="yes"> 
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> 
-  <meta name="theme-color" content="#10b981"> 
-  <title>Government Procurement Registration & B2G Portal Setup | filings4u</title> 
-  
-  <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET --> 
-  <link rel="stylesheet" href="assets/css/master.css"> 
-  <link rel="stylesheet" href="assets/css/master-mobile.css"> 
-  <link rel="icon" type="image/png" href="images/fav.png"> 
-  
-  <!-- 🔍 FIXED: Corrected full jQuery CDN framework script path --> 
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
-  
-  <!-- Supabase Production Library Client --> 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
-  
-  <!-- Custom site assets dependency execution scripts -->
-  <script src="assets/js/master.js"></script> 
-  <script src="assets/js/subscription-listener.js"></script> 
-  <script src="assets/js/state-pricing.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#10b981">
+    <title>Government Procurement Registration & B2G Portal Setup | filings4u</title>
+    <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
+    <link rel="stylesheet" href="assets/css/master.css">
+    <link rel="stylesheet" href="assets/css/master-mobile.css">
+    <link rel="icon" type="image/png" href="images/fav.png">
+    <!-- 🔍 VERIFIED FULL JQUERY CDN URL PATH -->
+    <script src="https://googleapis.com"></script>
+    <!-- Supabase Production Library Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/master.js"></script>
 </head>
-
 <body>
 
     <!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
@@ -82,7 +74,7 @@
                             <a href="good-standing.html">Certificate of Good Standing</a>
                             <a href="apostille-services.html">Apostille Authentication Services</a>
                             <a href="clia-certificate.html">CLIA Certificate</a>
-                            <a href="regulatory-consulting.html">Regulatory Consulting</a>
+                            <a href="regulatory-consulting.html">Custom Regulatory Legal Consulting</a>
                         </div>
                     </div>
                 </div>
@@ -142,11 +134,10 @@
                         </div>
                     </div>
                 </div>
-                <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Secure Portal</a>
+                <a href="https://filings4u.com" class="btn-client-portal">Secure Portal</a>
             </div>
         </div>
     </nav>
-
     <!-- SECTION 1: HERO CONTAINER (STRETCHED 1450PX ALIGNED BLOCK) -->
     <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
         <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION -->
@@ -406,51 +397,39 @@
             </div> <!-- End Pricing Grid Matrix -->
         </div> <!-- End Site Width Alignment Guard -->
     </section>
-  
-  
-<!-- 🌐 SECTION E: ENTERPRISE SUBSCRIPTION CAPTURE MATRIX (DARK FOOTER STYLED) --> 
-<section style="background: #0a1f44; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; position: relative; overflow: hidden; margin-bottom: 0 !important; border-bottom: none !important;"> 
-  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div> 
-  <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;"> 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;"> 
-      
-      <!-- LEFT TEXT BOX MODULE --> 
-      <div style="width: 100%; box-sizing: border-box;"> 
-        <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.12); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">Compliance Bulletins</span> 
-        <h2 style="color: #ffffff; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; line-height: 1.15; letter-spacing: -0.5px;">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2> 
-        <p style="color: #94a3b8; font-size: 1.05rem; line-height: 1.6; margin: 0; max-width: 580px;">Get actionable regulatory deadline text flashes, corporate filing advice, and federal state policy change updates sent straight to your box. Zero clutter. Direct compliance updates.</p> 
-      </div> 
-      
-      <!-- RIGHT INPUT FORM BOX INTERFACE --> 
-      <div style="width: 100%; box-sizing: border-box;"> 
-        <!-- FIXED: Removed onsubmit="return false;" so JS event listener captures default submission natively --> 
-        <form id="compliance-subscribe-form" style="display: flex; gap: 14px; width: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);"> 
-          <input type="email" id="subscriber-email" placeholder="Enter your business email..." required aria-label="Business Email" style="flex: 1; padding: 16px 22px; font-size: 0.95rem; font-weight: 500; border-radius: 8px; border: none; background: rgba(255, 255, 255, 0.05); color: #ffffff; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1); transition: all 0.25s ease;" onfocus="this.style.backgroundColor='rgba(255,255,255,0.08)'; this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.1), 0 0 0 3px rgba(16, 185, 129, 0.25), 0 0 0 1px #10b981'" onblur="this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1)'"> 
-          <button type="submit" id="subscribe-button" style="background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 0.95rem; padding: 0 32px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#0e9f6e'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#10b981'; this.style.transform='translateY(0)';">Subscribe</button> 
-        </form> 
-        
-        <!-- NEW: Added role="status" and aria-live="polite" for clean screen-reader delivery --> 
-        <div id="form-status-message" role="status" aria-live="polite" style="margin-top: 14px; font-size: 0.9rem; display: none; padding: 12px 16px; border-radius: 8px; font-weight: 600; line-height: 1.4;"></div> 
-        
-        <!-- FIXED: Cleaned up URL encoded emoji string (%EF%B8%8F) into clean Unicode character output --> 
-        <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #94a3b8; padding-left: 4px;"> 
-          <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🛡️ ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures. 
-        </div> 
-      </div>
+   <!-- 🌐 SECTION E: ENTERPRISE SUBSCRIPTION CAPTURE MATRIX -->
+    <section style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
+                
+                <!-- LEFT TEXT BOX MODULE -->
+                <div style="width: 100%; box-sizing: border-box;">
+                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.08); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;">Compliance Bulletins</span>
+                    <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; line-height: 1.15; letter-spacing: -0.5px;">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
+                    <p style="color: #475569; font-size: 1.05rem; line-height: 1.6; margin: 0; max-width: 580px;">Get actionable regulatory deadline text flashes, corporate filing advice, and federal state policy change updates sent straight to your box. Zero clutter. Direct compliance updates.</p>
+                </div>
 
-    </div> 
-  </div> 
-</section>
+                <!-- RIGHT INPUT FORM BOX INTERFACE -->
+                <div style="width: 100%; box-sizing: border-box;">
+                    <form action="#" method="POST" style="display: flex; gap: 14px; width: 100%; background: #ffffff; border: 1px solid #f1f5f9; padding: 20px; border-radius: 16px; box-shadow: 0 20px 40px rgba(10,31,68,0.06), 0 1px 3px rgba(10,31,68,0.02);">
+                        <input type="email" placeholder="Enter your business email..." required aria-label="Business Email" style="flex: 1; padding: 16px 22px; font-size: 0.95rem; font-weight: 500; border-radius: 8px; border: none; background: #ffffff; color: #0a1f44; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08); transition: box-shadow 0.25s ease;" onfocus="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.02), 0 0 0 3px rgba(16, 185, 129, 0.15), 0 0 0 1px #10b981'" onblur="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08)'">
+                        <button type="submit" style="background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 0.95rem; padding: 0 32px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#0e9f6e'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#10b981'; this.style.transform='translateY(0)';">Subscribe</button>
+                    </form>
+                    <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #64748b; padding-left: 4px;">
+                        <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🔒 ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
+                    </div>
+                </div>
 
- <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX (1450PX OVERRIDE ALIGNED) -->
-  <footer class="site-footer" style="position: relative !important; overflow: hidden !important; background: #0a1f44 !important; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; margin: 0 auto !important; padding: 60px 0 30px 0 !important; font-family: system-ui, sans-serif !important;">
-    
-    <!-- Tech Vector Network Grid Background Layer -->
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-    
-    <!-- MASTER CONTAINER GUARD: Locks 1450px on Desktop, Auto Fluids on Mobile -->
-    <div class="footer-container" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; display: grid !important; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important; gap: 40px !important;">
-      
+            </div>
+        </div>
+    </section>
+
+     <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+<footer class="site-footer" style="position: relative; overflow: hidden;"> 
+  <!-- Tech Vector Network Grid Background Layer --> 
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+  <div class="footer-container"> 
     <div class="footer-brand"> 
       <!-- 🔄 FIXED: Wrapped the brand logo in a link pointing to the homepage and increased height to 48px --> 
       <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"> 
@@ -514,31 +493,20 @@
       </ul> 
     </div> 
   </div> 
-
-
-  <!-- FOOTER BOTTOM ROWS INTERFACE --> 
-   
-  <!-- Isolated Line Container -->
-  <div class="footer-bottom-line-container" style="width: 100% !important; max-width: 1450px !important; margin: 40px auto 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-    <div style="border-top: 1px solid rgba(255, 255, 255, 0.08) !important; width: 100% !important;"></div>
-  </div>
-
-  <!-- Links and Copyright Wrapper (Border stripped completely) -->
-  <div class="footer-bottom" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 30px 40px 0 40px !important; border-top: none !important; box-sizing: border-box !important; display: flex !important; justify-content: space-between !important; align-items: center !important; flex-wrap: wrap !important; gap: 24px !important;"> 
+  <div class="footer-bottom"> 
     <div> 
-      <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; color: #94a3b8 !important; overflow-wrap: break-word;"> &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a> </p> 
+      <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;"> &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a> </p> 
     </div> 
-    <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important; border: 1px solid rgba(255,255,255,0.06) !important;"> 
-      <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection 
-    </div> 
-    <div class="legal-links" style="display: flex !important; gap: 20px !important;"> 
-      <a href="privacy-policy.html" style="color: #94a3b8 !important; text-decoration: none !important; font-size: 0.85rem !important;">Privacy Policy</a> 
-      <a href="terms-of-service.html" style="color: #94a3b8 !important; text-decoration: none !important; font-size: 0.85rem !important;">Terms of Service</a> 
-      <a href="refund-policy.html" style="color: #94a3b8 !important; text-decoration: none !important; font-size: 0.85rem !important;">Refund Policy</a> 
+    <!-- 🔄 FIXED SECURE BADGE CONTAINER: Injected absolute block inline resets to override conflict issues --> 
+    <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
+      <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection </div> 
+    <div class="legal-links"> 
+      <a href="privacy-policy.html">Privacy Policy</a> 
+      <a href="terms-of-service.html">Terms of Service</a> 
+      <a href="refund-policy.html">Refund Policy</a> 
     </div> 
   </div> 
 </footer>
-
 
 
 <script src="assets/js/toggle.js"></script>

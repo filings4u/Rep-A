@@ -15,7 +15,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Everything in Elite (plus)", "Complete Enterprise Asset Suite", "White Glove Execution", "Instant Turnaround", "Corporate Binder & Seal"]
     }
   },
-  "corporations": {
+  "corporation": {
     name: "Corporations (C/S-Corp)",
     starter: 129.00,
     compliance: 249.00,
@@ -508,61 +508,49 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.addons, {
 
 
 // ============================================================================ //
-// 🛠️ MODULE 4: AUTOMATED WEBSITE SALES-CARD RENDER ENGINE
+// 🛠️ MODULE 4: AUTOMATED WEBSITE SALES-CARD RENDER ENGINE                     //
 // ============================================================================ //
 document.addEventListener("DOMContentLoaded", function() {
-    var targetContainer = document.getElementById("website-package-pricing-cards-root");
-    if (!targetContainer || !window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) return;
+  var targetContainer = document.getElementById("website-package-pricing-cards-root");
+  if (!targetContainer || !window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) return;
 
-    var targetServiceKey = targetContainer.getAttribute("data-service-key") || "llc-formation";
-    var serviceData = window.GLOBAL_COMPANY_PRICING.packages[targetServiceKey];
-    if (!serviceData) return;
+  var targetServiceKey = targetContainer.getAttribute("data-service-key") || "llc-formation";
+  var serviceData = window.GLOBAL_COMPANY_PRICING.packages[targetServiceKey];
+  if (!serviceData) return;
 
-    var cardsHtml = "";
-    var plansConfig = [
-        { key: "starter", name: "Basic", class: "price-card", btnStyle: "background: var(--navy);" },
-        { key: "compliance", name: "Elite", class: "price-card featured", btnStyle: "" },
-        { key: "enterprise", name: "Enterprise", class: "price-card", btnStyle: "background: var(--navy);" }
-    ];
+  var cardsHtml = "";
+  var plansConfig = [
+    { key: "starter", name: "Basic", class: "price-card", btnStyle: "background: var(--navy);" },
+    { key: "compliance", name: "Elite", class: "price-card featured", btnStyle: "" },
+    { key: "enterprise", name: "Enterprise", class: "price-card", btnStyle: "background: var(--navy);" }
+  ];
 
-    plansConfig.forEach(function(plan) {
-        var basePrice = serviceData[plan.key] || 0;
-        var bullets = (serviceData.bullets && serviceData.bullets[plan.key]) ? serviceData.bullets[plan.key] : [];
-        
-        var bulletListHtml = "";
-        bullets.forEach(function(bulletText) {
-            bulletListHtml += '<li>' + bulletText + '</li>';
-        });
+  plansConfig.forEach(function(plan) {
+    var basePrice = serviceData[plan.key] || 0;
+    var bullets = (serviceData.bullets && serviceData.bullets[plan.key]) ? serviceData.bullets[plan.key] : [];
+    var bulletListHtml = "";
 
-        var badgeHtml = (plan.key === "compliance") ? '<div class="price-badge">Most Popular</div>' : '';
-
-        cardsHtml += '<div class="' + plan.class + '">' +
-            badgeHtml +
-            '<h3>' + plan.name + '</h3>' +
-            '<div class="amount">$' + basePrice.toFixed(2) + ' <span>+ State Fee</span></div>' +
-            '<ul class="price-features">' +
-                bulletListHtml +
-            '</ul>' +
-            '<a href="wizard.html?service=' + targetServiceKey + '&plan=' + plan.key + '" class="btn-main" style="width: 100%; text-align: center; ' + plan.btnStyle + '">Select ' + plan.name + '</a>' +
-        '</div>';
+    bullets.forEach(function(bulletText) {
+      bulletListHtml += '<li>' + bulletText + '</li>';
     });
 
-    // 🌟 CHANGED: Added direct inline styles to override the background, borders, width, and margins completely
-    targetContainer.innerHTML = '<section id="pricing" class="pricing-section" style="background: #ffffff !important; background-color: #ffffff !important; max-width: 1400px !important; width: 100% !important; margin: 0 auto !important; padding: 40px 0 !important; border: none !important; box-shadow: none !important; outline: none !important;">' +
-        '<span class="hero-tag">Deployment Tiers</span>' +
-        '<h2>Transparent formation pricing.</h2>' +
-        '<div class="pricing-grid">' +
-            cardsHtml +
-        '</div>' +
-    '</section>';
+    var badgeHtml = (plan.key === "compliance") ? '<div class="price-badge">Most Popular</div>' : '';
+
+    cardsHtml += '<div class="' + plan.class + '">' +
+                 badgeHtml +
+                 '<h3>' + plan.name + '</h3>' +
+                 '<div class="amount">$' + basePrice.toFixed(2) + ' <span>+ State Fee</span></div>' +
+                 '<ul class="price-features">' + bulletListHtml + '</ul>' +
+                 '<a href="wizard.html?service=' + targetServiceKey + '&plan=' + plan.key + '" class="btn-main" style="width: 100%; text-align: center; ' + plan.btnStyle + '">Select ' + plan.name + '</a>' +
+                 '</div>';
+  });
+
+  targetContainer.innerHTML = '<section id="pricing" class="pricing-section">' +
+                              '<span class="hero-tag">Deployment Tiers</span>' +
+                              '<h2>Transparent formation pricing.</h2>' +
+                              '<div class="pricing-grid">' + cardsHtml + '</div>' +
+                              '</section>';
 });
-
-
-
-
-
-
-
 // ============================================================================ //
 // 🏛️ MODULE 5: STATE FILING FEES DATA LAYER (PART 1: AL - MO)                  //
 // ============================================================================ //

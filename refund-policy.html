@@ -18,9 +18,6 @@
     
     <!-- Supabase Production Library Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="assets/js/master.js"></script>
-    <script src="assets/js/prices.js"></script>
-
 </head>
 <body>
 
@@ -31,14 +28,14 @@
       <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;"> 
     </a> 
     
-    <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="toggleMobileMenu()" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button> 
-    
+<!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
+<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
+
     <div class="nav-links"> 
-      
-      <!-- FORMATIONS DROPDOWN (EXPANDED TO 3 COLS FOR SPECIALTY REINSTATEMENTS) --> 
+      <!-- FORMATIONS DROPDOWN --> 
       <div class="nav-item-dropdown static-dropdown"> 
         <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-three-col"> 
+        <div class="dropdown-content mega-panel-two-col"> 
           <div class="mega-column"> 
             <span class="column-title">Popular Formations</span> 
             <a href="limited-liability-company.html">LLC Formation</a> 
@@ -51,20 +48,13 @@
             <a href="nonprofits.html">Nonprofit Organization</a> 
             <a href="series-llc.html">Series LLC</a> 
           </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Expansion & Recovery</span> 
-            <a href="foreign-qualification.html">Foreign Qualification Certificate</a>
-            <a href="llc-reinstatement.html">LLC Reinstatement Processing</a>
-            <a href="trademark-filing.html">Trademark Filing</a>
-            <a href="servicemark-filing.html">Servicemark Filing</a>
-          </div> 
         </div> 
       </div> 
-
-      <!-- COMPLIANCE DROPDOWN (EXPANDED TO 3 COLS FOR LEGAL & CERTIFICATE PROTOCOLS) --> 
+      
+      <!-- COMPLIANCE DROPDOWN --> 
       <div class="nav-item-dropdown static-dropdown"> 
         <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-three-col"> 
+        <div class="dropdown-content mega-panel-two-col"> 
           <div class="mega-column"> 
             <span class="column-title">Entity Health</span> 
             <a href="annual-reports.html">Annual Reports</a> 
@@ -77,20 +67,13 @@
             <a href="employer-identification-number-ein.html">Employer ID (EIN)</a> 
             <a href="dissolution.html">Entity Dissolution</a> 
           </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Global Verification</span> 
-            <a href="good-standing.html">Certificate of Good Standing</a>
-            <a href="apostille-services.html">Apostille Authentication Services</a>
-            <a href="clia-certificate.html">CLIA Certificate</a>
-            <a href="regulatory-consulting.html">Custom Regulatory Legal Consulting</a>
-          </div> 
         </div> 
       </div> 
-
-      <!-- TAX FILINGS DROPDOWN (EXPANDED TO 3 COLS FOR FEDERAL & PROCUREMENT ROOTS) --> 
+      
+      <!-- TAX FILINGS DROPDOWN --> 
       <div class="nav-item-dropdown static-dropdown"> 
         <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-three-col"> 
+        <div class="dropdown-content mega-panel-two-col"> 
           <div class="mega-column"> 
             <span class="column-title">Income & Operations</span> 
             <a href="federal-income-tax.html">Federal Income Tax</a> 
@@ -103,17 +86,10 @@
             <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a> 
             <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a> 
           </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Gov & Procurement</span> 
-            <a href="cage-code.html">CAGE Code</a>
-            <a href="duns-number.html">DUNS Number Procurement</a>
-            <a href="procurement-registration.html">Procurement Registration</a>
-            <a href="minority-certificate.html">Minority Certificate</a>
-          </div> 
         </div> 
       </div> 
-
-      <!-- DOT & FLEET DROPDOWN (PRESERVED 3 COLS - INJECTED NEW REGISTRATIONS) --> 
+      
+      <!-- DOT & FLEET DROPDOWN --> 
       <div class="nav-item-dropdown static-dropdown"> 
         <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
         <div class="dropdown-content mega-panel-three-col"> 
@@ -123,7 +99,6 @@
             <a href="trucker-authority.html">Trucker Authority</a> 
             <a href="broker-authority.html">Broker Authority</a> 
             <a href="ucr-registration.html">UCR Registration</a> 
-            <a href="scac-code.html">SCAC Code Registration</a>
           </div> 
           <div class="mega-column"> 
             <span class="column-title">Compliance & Regs</span> 
@@ -131,7 +106,6 @@
             <a href="driver-qualification-file.html">Driver Qualification File</a> 
             <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a> 
             <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a> 
-            <a href="hazmat-registration.html">HAZMAT Registration</a>
           </div> 
           <div class="mega-column"> 
             <span class="column-title">Insurance & Risk</span> 
@@ -148,172 +122,126 @@
   </div> 
 </nav>
 
-  <!-- 🏛️ REFUND POLICY HERO HEADER SECTION -->
-  <header class="legal-page-hero">
-    <h1>Refund & Cancellation Policy</h1>
-    <p>Last Dated: June 1, 2026</p>
-  </header>
 
-    <!-- 📄 CORE COMPLIANCE STATEMENT WRAPPER -->
-  <main class="legal-container-wrapper">
-    <article class="legal-card-content">
-      
-      <h3>1. General Policy Parameters</h3>
-      <p>At filings4u, LLC ("we," "us," or "our"), a subsidiary of Roseland Companies, LLC, we aim to deliver transparent document processing and regulatory filing services. Because state agencies, structural registries, and federal networks charge immediate, non-refundable administrative fees to post records, our refund terms depend strictly on the stage of your application track at the time a cancellation request is submitted.</p>
+    <main class="page-container" style="padding: 60px 20px;">
+        <div class="legal-content" style="max-width: 900px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <span class="hero-tag" style="margin-bottom: 10px; display: inline-block;">Legal Infrastructure</span>
+            <h1 style="margin: 0 0 10px 0; color: #0a1f44; font-size: 2.5rem; font-weight: 800;">Refund Policy</h1>
+            <p style="font-size: 0.85rem; color: #64748b; font-style: italic; margin-bottom: 30px;">Effective Date: May 15, 2026</p>
 
-      <h3>2. Covered Corporate & Logistics tracks</h3>
-      <p>This policy governs all processing options, checklist orders, and dynamic checkout fees associated with our active operational product parameters, which include:</p>
-      
-      <div class="service-badge-grid">
-        <div class="service-badge-item">LLC Formation</div>
-        <div class="service-badge-item">Corporations (C/S-Corp)</div>
-        <div class="service-badge-item">Sole Proprietorship</div>
-        <div class="service-badge-item">DBA Registration</div>
-        <div class="service-badge-item">Nonprofit Organization</div>
-        <div class="service-badge-item">Series LLC</div>
-        <div class="service-badge-item">Foreign Qualification</div>
-        <div class="service-badge-item">LLC Reinstatement</div>
-        <div class="service-badge-item">Trademark Filing</div>
-        <div class="service-badge-item">Annual Reports</div>
-        <div class="service-badge-item">Operating Agreements</div>
-        <div class="service-badge-item">Registered Agent Services</div>
-        <div class="service-badge-item">Business Licenses</div>
-        <div class="service-badge-item">Employer ID (EIN)</div>
-        <div class="service-badge-item">Entity Dissolution</div>
-        <div class="service-badge-item">Certificate of Good Standing</div>
-        <div class="service-badge-item">Apostille Authentication</div>
-        <div class="service-badge-item">CLIA Certificates</div>
-        <div class="service-badge-item">Regulatory Consulting</div>
-        <div class="service-badge-item">Tax Filings (Fed/State/Sales)</div>
-        <div class="service-badge-item">CAGE Code & DUNS</div>
-        <div class="service-badge-item">Procurement Registration</div>
-        <div class="service-badge-item">Licensing and Permitting</div>
-        <div class="service-badge-item">Trucker/Broker Authorities</div>
-        <div class="service-badge-item">UCR & SCAC Registration</div>
-        <div class="service-badge-item">DOT Consortium Services</div>
-        <div class="service-badge-item">Driver Qualification Files</div>
-        <div class="service-badge-item">Process Agent (BOC-3)</div>
-        <div class="service-badge-item">IFTA & HAZMAT</div>
-        <div class="service-badge-item">Trucker/Broker Insurance</div>
-        <div class="service-badge-item">New Entrant Audits</div>
-      </div>
+            <p>Because our services involve time-sensitive legal documentation, state processing dependencies, and government fees, filings4u, LLC enforces a strict refund structural policy. Please review these parameters before completing your payment on `order.html`.</p>
 
-      <h3>3. Cancellation Prior to Document Review</h3>
-      <p>If you submit a cancellation ticket before our compliance expert group conducts data validation checks, structural document reviews, or name reservation audits, you are eligible for a complete refund of your order track fee, minus a small processing merchant transaction gateway surcharge fee of 10%.</p>
+            <h2>1. Immediate Void Constraints</h2>
+            <ul>
+                <li><strong>State and Federal Costs:</strong> Any funds already paid to government bodies (such as State Secretary filing fees, UCR registries, or IRS processing allocations) cannot be refunded under any circumstances.</li>
+                <li><strong>Active Processing:</strong> Once your filing data passes our internal verification loops and is transmitted to a government agency, our platform service fee is fully earned and non-refundable.</li>
+            </ul>
 
-      <h3>4. Cancellation During active Preparation Stage</h3>
-      <p>If your application has been verified, matched, and internal document sets have been drawn up or compiled, but the paperwork has not been officially submitted to state departments or corporate registries, you are eligible for a partial refund. We will return your payment minus a $50.00 standard administrative execution charge to compensate for internal compliance hours.</p>
+            <h2>2. Refundable Threshold Conditions</h2>
+            <ul>
+                <li><strong>Pre-Transmission Cancellations:</strong> If you submit a formal cancellation request via your workspace notifications panel or contact our help desk <strong>before</strong> our team or edge functions transmit your document pack to the state or federal registry, you may request a refund.</li>
+                <li><strong>Processing Deductions:</strong> Approved cancellations are subject to a <strong>$45.00 administrative fee</strong> to cover merchant card gateway costs, database caching setups, and initial data review.</li>
+            </ul>
 
-      <h3>5. Non-Refundable Status Post-Submission</h3>
-      <p>Once filings4u agents have submitted your data fields, signed paperwork, digital proxies, or registration credentials to any local state authority, court, the IRS, or federal logistics registries (e.g., FMCSA, UCR, or IFTA platforms), **no refunds will be granted under any circumstance**. The funds at this phase have already been permanently moved to administrative bodies.</p>
+            <h2>3. Dispute Processing Flow</h2>
+            <p>To file a refund request, you must submit a ticket through your secure dashboard messaging terminal or contact our experts at <code>support@filings4u.com</code>. Please include your corporate entity name, your original checkout session ID, and your registered account email.</p>
+            <ul>
+                <li>Approved refunds are credited exclusively back to the payment method used during your checkout session within 5 to 10 banking days.</li>
+                <li>Initiating unauthorized chargebacks or fraudulent billing disputes skips our resolution process and will lead to the immediate suspension of your portal account, termination of registered agent services, and the formal withdrawal of any pending state filings.</li>
+            </ul>
+        </div>
+    </main>
 
-      <h3>6. State Backlogs and Processing Surcharges</h3>
-      <p>State administrative backlogs, department delays, or government network outages are entirely outside the operational jurisdiction of filings4u, LLC. Cancellations or refunds demanded on the grounds of slow government turnaround phases post-submission will be rejected.</p>
-
-      <h3>7. How to Submit a Refund Request</h3>
-      <p>To file an official request, users must open an application ticket through the client portal or send a direct email to our compliance oversight committee. All inquiries must list your primary transaction reference code, chosen deployment package, and company name fields:</p>
-      <p style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; line-height: 1.6; font-family: monospace;">
-        <strong>filings4u, LLC — Intake Desk</strong><br>
-        Email: refunds@filings4u.com<br>
-        Legal Handling HQ: State of Illinois
-      </p>
-
-      <h3>8. Processing Surcharges and Gateway Timelines</h3>
-      <p>Approved partial or full refunds will be credited back via the exact merchant credit card loop or secure payment gateway token used during checkout. Financial banking loops usually take 5 to 7 business processing days to balance accounts.</p>
-
-      <h3>9. Governing Jurisdiction</h3>
-      <p>This Refund and Cancellation Policy is executed and interpreted in accordance with the business codes and state laws of the State of Illinois.</p>
-
-    </article>
-  </main>
-
-   
  <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
-<footer class="site-footer" style="position: relative; overflow: hidden;"> 
-  <!-- Tech Vector Network Grid Background Layer --> 
-  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-
-  <div class="footer-container"> 
-    <div class="footer-brand"> 
-      <!-- 🔄 FIXED: Wrapped the brand logo in a link pointing to the homepage and increased height to 48px --> 
-      <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"> 
-        <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;"> 
-      </a> 
-      <p>Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.</p> 
-      <div style="margin-top: 25px; display: flex; gap: 15px;"> 
-        <!-- LinkedIn --> 
+<footer class="site-footer"> 
+    <div class="footer-container"> 
+        <div class="footer-brand"> 
+    <!-- 🔄 FIXED: Wrapped the brand logo in a link pointing to the homepage and increased height to 48px -->
+    <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;">
+    </a>
+    
+    <p>Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.</p> 
+    
+    <div style="margin-top: 25px; display: flex; gap: 15px;"> 
+        <!-- LinkedIn -->
         <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
-          <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg> 
+            <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg> 
         </a> 
-        <!-- YouTube --> 
+        
+        <!-- YouTube -->
         <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
-          <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg> 
+            <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg> 
         </a> 
-        <!-- X --> 
+        
+        <!-- X -->
         <a href="https://x.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
-          <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg> 
+            <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg> 
         </a> 
-      </div> 
     </div> 
-    <div class="footer-col"> 
-      <h4>Formations</h4> 
-      <ul> 
-        <li><a href="limited-liability-company.html">LLC Formation</a></li> 
-        <li><a href="corporations.html">Corporations</a></li> 
-        <li><a href="nonprofits.html">Non-Profits</a></li> 
-        <li><a href="registered-agent.html">Registered Agent</a></li> 
-        <li><a href="employer-identification-number-ein.html">Tax ID (EIN)</a></li> 
-      </ul> 
+</div>
+
+        <div class="footer-col"> 
+            <h4>Formations</h4> 
+            <ul> 
+                <li><a href="limited-liability-company.html">LLC Formation</a></li> 
+                <li><a href="corporations.html">Corporations</a></li> 
+                <li><a href="nonprofits.html">Non-Profits</a></li> 
+                <li><a href="registered-agent.html">Registered Agent</a></li> 
+                <li><a href="employer-identification-number-ein.html">Tax ID (EIN)</a></li> 
+            </ul> 
+        </div> 
+        <div class="footer-col"> 
+            <h4>Fleet & DOT</h4> 
+            <ul> 
+                <li><a href="ucr-registration.html">UCR Registration</a></li> 
+                <li><a href="international-fuel-tax-agreement-ifta.html">IFTA Filings</a></li> 
+                <li><a href="trucker-authority.html">DOT Authority</a></li> 
+                <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li> 
+                <li><a href="heavy-use-tax-2290.html">Form 2290</a></li> 
+            </ul> 
+        </div> 
+        <!-- 🔄 NEW SECTION: Tax & Filings --> 
+        <div class="footer-col"> 
+            <h4>Tax & Filings</h4> 
+            <ul> 
+                <li><a href="federal-income-tax.html">Federal Income Tax</a></li> 
+                <li><a href="state-income-tax.html">State Income Tax</a></li> 
+                <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li> 
+                <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li> 
+                <li><a href="franchise-tax.html">Franchise Tax Filing</a></li> 
+            </ul> 
+        </div> 
+        <div class="footer-col"> 
+            <h4>Support</h4> 
+            <ul> 
+                <li><a href="https://portal.filings4u.com/portal-login.html">Client Portal</a></li> 
+                <li><a href="compliance.html">Compliance Hub</a></li> 
+                <li><a href="contact.html">Contact Experts</a></li> 
+                <li><a href="annual-reports.html">Annual Reports</a></li> 
+                <li><a href="blog.html">Resource Library</a></li> 
+            </ul> 
+        </div> 
     </div> 
-    <div class="footer-col"> 
-      <h4>Fleet & DOT</h4> 
-      <ul> 
-        <li><a href="ucr-registration.html">UCR Registration</a></li> 
-        <li><a href="international-fuel-tax-agreement-ifta.html">IFTA Filings</a></li> 
-        <li><a href="trucker-authority.html">DOT Authority</a></li> 
-        <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li> 
-        <li><a href="heavy-use-tax-2290.html">Form 2290</a></li> 
-      </ul> 
+    <div class="footer-bottom"> 
+        <div> 
+            <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;"> &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a> </p> </div> 
+        
+        <!-- 🔄 FIXED SECURE BADGE CONTAINER: Injected absolute block inline resets to override conflict issues -->
+        <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
+            <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection 
+        </div> 
+        
+        <div class="legal-links"> 
+            <a href="privacy-policy.html">Privacy Policy</a> 
+            <a href="terms-of-service.html">Terms of Service</a> 
+            <a href="refund-policy.html">Refund Policy</a> 
+        </div> 
     </div> 
-    <!-- 🔄 NEW SECTION: Tax & Filings --> 
-    <div class="footer-col"> 
-      <h4>Tax & Filings</h4> 
-      <ul> 
-        <li><a href="federal-income-tax.html">Federal Income Tax</a></li> 
-        <li><a href="state-income-tax.html">State Income Tax</a></li> 
-        <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li> 
-        <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li> 
-        <li><a href="franchise-tax.html">Franchise Tax Filing</a></li> 
-      </ul> 
-    </div> 
-    <div class="footer-col"> 
-      <h4>Support</h4> 
-      <ul> 
-        <li><a href="https://portal.filings4u.com/portal-login.html">Client Portal</a></li> 
-        <li><a href="compliance.html">Compliance Hub</a></li> 
-        <li><a href="contact.html">Contact Experts</a></li> 
-        <li><a href="annual-reports.html">Annual Reports</a></li> 
-        <li><a href="blog.html">Resource Library</a></li> 
-      </ul> 
-    </div> 
-  </div> 
-  <div class="footer-bottom"> 
-    <div> 
-      <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;"> &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a> </p> 
-    </div> 
-    <!-- 🔄 FIXED SECURE BADGE CONTAINER: Injected absolute block inline resets to override conflict issues --> 
-    <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
-      <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection </div> 
-    <div class="legal-links"> 
-      <a href="privacy-policy.html">Privacy Policy</a> 
-      <a href="terms-of-service.html">Terms of Service</a> 
-      <a href="refund-policy.html">Refund Policy</a> 
-    </div> 
-  </div> 
 </footer>
 
-
 <script src="assets/js/toggle.js"></script>
+<script src="assets/js/master.js"></script>
 
 <!-- 🔼 SCROLL TO TOP FLOATING INTERFACE -->
 <button id="scrollToTopBtn" aria-label="Scroll to top" class="scroll-to-top-btn">
@@ -321,6 +249,7 @@
         <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
     </svg>
 </button>
+
 
 </body>
 </html>

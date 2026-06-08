@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    .wrapper { width: 100%; background-color: #f8fafc; padding: 40px 20px; box-sizing: border-box; }
+    .container { max-width: 600px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; margin: 0 auto; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    
+    /* 🎯 BRANDING HEADER: Flexible layout grid for text and logos */
+    .header { background-color: #0c2340; padding: 32px; display: flex; justify-content: space-between; align-items: center; color: #ffffff; box-sizing: border-box; }
+    .header-logo { height: 45px; width: auto; display: block; }
+    .header-title h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: right; }
+    
+    .content { padding: 32px; box-sizing: border-box; }
+    .status-badge { display: inline-block; background-color: #ecfdf5; color: #047857; font-weight: 700; font-size: 12px; padding: 6px 12px; border-radius: 9999px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .greeting { font-size: 18px; font-weight: 700; color: #0c2340; margin-top: 0; margin-bottom: 12px; }
+    .text { color: #475569; font-size: 15px; line-height: 1.6; margin: 0 0 24px 0; }
+    
+    .receipt-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 24px; }
+    .receipt-title { font-size: 13px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; letter-spacing: 0.5px; }
+    .receipt-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; color: #334155; }
+    .receipt-row.total { border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 12px; font-size: 16px; font-weight: 800; color: #0c2340; }
+    
+    .credentials-box { background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    .credentials-title { color: #92400e; font-weight: 700; font-size: 14px; margin-bottom: 4px; display: block; }
+    .credentials-code { font-family: monospace; font-size: 16px; font-weight: 800; color: #b45309; background: #ffffff; padding: 4px 8px; border-radius: 4px; border: 1px solid #fde68a; display: inline-block; margin: 4px 0; }
+    .btn { display: block; background-color: #047857; color: #ffffff !important; text-decoration: none; text-align: center; padding: 14px; border-radius: 6px; font-weight: 700; font-size: 15px; box-sizing: border-box; }
+    .footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; background: #fafafa; border-top: 1px solid #f1f5f9; }
+
+    /* 📱 RESPONSIVE MEDIA QUERY DRAWER: Drops rows and centers alignments on smartphones */
+    @media screen and (max-width: 480px) {
+      .header { flex-direction: column !important; gap: 16px !important; text-align: center !important; padding: 24px !important; }
+      .header-logo { margin: 0 auto !important; }
+      .header-title h1 { text-align: center !important; font-size: 20px !important; }
+      .content { padding: 24px !important; text-align: center !important; }
+      .receipt-row { flex-direction: column !important; align-items: center !important; gap: 4px !important; }
+      .btn { width: 100% !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <!-- Desktop Logo on Left Side (Floats to Center Automatically on Mobile Phones) -->
+        <img class="header-logo" src="images/logo.png" alt="filings4u Logo">
+        <div class="header-title">
+          <h1>Compliance Networks</h1>
+        </div>
+      </div>
+      <div class="content">
+        <div class="status-badge">Payment Confirmed</div>
+        <h2 class="greeting">Filing Session Successfully Authorized</h2>
+        <p class="text">Thank you for registering with filings4u. Your payment was safely processed, and your corporate filing files are locked into our registration queues.</p>
+        
+        <div class="receipt-card">
+          <div class="receipt-title">Transaction Ledger Details</div>
+          <div class="receipt-row"><div>Filing Service:</div><div style="font-weight: 600;">{{service_title}}</div></div>
+          <div class="receipt-row"><div>Filing Plan Tier:</div><div style="text-transform: uppercase; font-weight: 600;">{{plan_tier}}</div></div>
+          <div class="receipt-row"><div>Tracking Number:</div><div style="font-family: monospace;">{{tracking_number}}</div></div>
+          <div class="receipt-row total"><div>Total Securely Paid</div><div>${{total_fee}}</div></div>
+        </div>
+
+        <div class="credentials-box">
+          <span class="credentials-title">🔑 Temporary Account Password:</span>
+          <div class="credentials-code">{{temporary_password}}</div>
+          <div style="font-size: 12px; color: #b45309; font-weight: 500; margin-top: 6px;">Please log in and update this passkey immediately inside your portal workspace panel.</div>
+        </div>
+
+        <a href="https://portal.filings4u.com/client-dashboard.html" class="btn">Access Dashboard Portal ➔</a>
+      </div>
+      <div class="footer">
+        &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of Roseland Companies, LLC<br>
+        This is an automated transactional banking transaction receipt.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

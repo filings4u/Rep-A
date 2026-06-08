@@ -82,25 +82,22 @@ $(document).ready(function() {
  * Shared singleton connection engine to prevent duplicate client initialization
  * ==========================================================================
  */
+let sharedDbInstance = null;
+
 function getSupabaseInstance() {
-  // 1. If it already exists globally on the window, return it instantly
-  if (window.__SUPABASE_SINGLETON_INSTANCE__) {
-    return window.__SUPABASE_SINGLETON_INSTANCE__;
-  }
+  if (sharedDbInstance) return sharedDbInstance;
 
   const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
   const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
 
   if (typeof window.supabase !== 'undefined') {
-    // 2. Initialize and attach it to the window object to survive duplicate script tags
-    window.__SUPABASE_SINGLETON_INSTANCE__ = window.supabase.createClient(dbUrl, dbKey);
-    return window.__SUPABASE_SINGLETON_INSTANCE__;
+    sharedDbInstance = window.supabase.createClient(dbUrl, dbKey);
+    return sharedDbInstance;
   } else {
     console.warn("Blog/FAQ Engine Core: Supabase core missing from window scope.");
     return null;
   }
 }
-
 
 /** 
  * ========================================================================== 
