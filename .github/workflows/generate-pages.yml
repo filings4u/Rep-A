@@ -1,66 +1,48 @@
-name: 🚀 Automatic SEO Page Generator Engine
+name: Build and Deploy Enterprise Static Pages
 
 on:
   push:
     branches:
-      - main  # Fires automatically every time you push code modifications to main
-  repository_dispatch:
-    types: [supabase_content_update] # Fires via webhooks instantly when changing text inside your Admin Portal
+      - main
+
+# 🔴 CRITICAL STEP: Opt-in completely to the secure Node 24 runtime engine environment
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
-  build-static-pages:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 📁 Checkout Repository Code
+      # 1. Pull down pristine source code metrics from main branch safely
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js Environment
+      # 2. Bind the runtime environment cleanly to the targeted Node 24 engine
+      - name: Setup Enterprise Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '24'
+          cache: 'npm' # Removes execution lag if you use a package framework
 
-      - name: 📦 Install Supabase Client Core Dependencies
-        run: npm install @supabase/supabase-js
-
-      - name: ⚙️ Run Automation Compiler File Build Execution Loop
-        env:
-          SUPABASE_URL: "https://supabase.co"
-          SUPABASE_ANON_KEY: "your-anon-key-here"
+      # 3. Clean install tracking dependencies
+      - name: Install System Dependencies
         run: |
-          node -e "
-          const { createClient } = require('@supabase/supabase-js');
-          const fs = require('fs');
-          const path = require('path');
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
-          const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+      # 4. Fire the single file pipeline automation engine to render your 43+ pages
+      - name: Execute Mass Landing Compilation Matrix
+        run: node generate.js
 
-          async function compileSystem() {
-              const { data: services, error } = await supabase.from('services').select('*');
-              if (error || !services) { console.error('Database pull failure:', error); process.exit(1); }
-
-              // Read your signature template layout framework file cleanly from storage
-              const baseTemplate = fs.readFileSync('service-template.html', 'utf8');
-
-              services.forEach(service => {
-                  let pageHtml = baseTemplate;
-                  
-                  // For bots, print pre-compiled text directly onto raw tags for immediate parsing
-                  pageHtml = pageHtml.replace('id=\"meta-title\">', 'id=\"meta-title\">' + service.service_title + ' | ');
-                  pageHtml = pageHtml.replace('data-service-key=\"dynamic-loader\"', 'data-service-key=\"' + service.slug + '\"');
-
-                  // Output pristine, search-optimized standalone files directly into your public folder
-                  const destinationPath = path.join(process.cwd(), service.slug + '.html');
-                  fs.writeFileSync(destinationPath, pageHtml, 'utf8');
-                  console.log('✅ Automated Compilation Success: Saved ' + service.slug + '.html');
-              });
-          }
-          compileSystem();
-          "
-
-      - name: 💾 Commit and Sync Compiled Production Assets to Repository
+      # 5. Push compiled static assets cleanly onto your hosting environment
+      - name: Deploy Compiled Infrastructure Assets
         run: |
-          git config --global user.name "filings4u Automation Engine"
-          git config --global user.email "bot@filings4u.com"
-          git add *.html
-          git diff-index --quiet HEAD || git commit -m "chore: auto-generated 44 search-engine optimized filing pages"
-          git push
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "chore(ci): automated production mass page compilation loop"
+          git push origin main
