@@ -1142,3 +1142,123 @@
         padding-bottom: 15px !important;
     }
 }
+
+ @media (max-width: 768px) {
+      .legal-card-content { padding: 24px; }
+      .legal-page-hero { padding: 40px 20px; }
+      .legal-page-hero h1 { font-size: 2rem; }
+    }
+
+  @media (max-width: 768px) {
+      .legal-card-content { padding: 24px; }
+      .legal-page-hero { padding: 40px 20px; }
+      .legal-page-hero h1 { font-size: 2rem; }
+    }
+
+     @media (max-width: 768px) {
+      .legal-card-content { padding: 24px; }
+      .legal-page-hero { padding: 40px 20px; }
+      .legal-page-hero h1 { font-size: 2rem; }
+    }
+
+/* 5. Mobile & Tablet Override Fluidity (< 1024px) */
+@media (max-width: 1023px) {
+  .site-width-alignment-guard,
+  .nav-content-wrapper,
+  .footer-container {
+    max-width: 100% !important;
+    padding-left: 20px !important; /* Snug down padding space for small viewports */
+    padding-right: 20px !important;
+  }
+  
+  /* Flex items drop to structural single stacks */
+  nav .nav-links {
+    width: 100% !important;
+  }
+}
+
+/* Cascading style layer modifications for narrow viewport profiles */
+@media (max-width: 580px) {
+  #compliance-subscribe-form {
+    flex-direction: column !important; /* Stacks the input field and button vertically */
+    padding: 16px !important;
+  }
+  
+  #subscribe-button {
+    padding: 16px 32px !important; /* Matches vertical thickness height scaling */
+    width: 100% !important;        /* Expands button to fill container footprint width */
+  }
+}
+
+
+/* 2. Responsive Side Panel Breakpoints */
+@media (max-width: 991px) {
+  #articleViewContentWrapper {
+    flex-direction: column !important;
+    gap: 40px !important;
+  }
+  
+  .article-sidebar-container {
+    position: relative !important;
+    top: 0 !important;
+    width: 100% !important;
+    background: #f8fafc;
+    padding: 24px !important;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+}
+
+
+/* 7. Dynamic Mobile Viewports Scaling Adjustments */
+@media (max-width: 768px) {
+  #articleViewContentWrapper {
+    padding: 40px 16px 60px 16px;
+  }
+  
+  #articleViewContentWrapper h1 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+  }
+  
+  .article-hero-image {
+    max-height: 280px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+  }
+  
+  .article-body-content {
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+}
+
+@keyframes academyRotate {
+  to { transform: rotate(360deg); }
+}
+
+/* 6. Dynamic Responsive Breakpoints */
+@media (max-width: 768px) {
+  .academy-content-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .filter-slat-container {
+    padding: 14px 0;
+  }
+}
+
+
+/* 2. Responsive Check: Turn off floating behavior on small screens (mobile) */
+@media (max-width: 991px) {
+  .article-sidebar-container {
+    position: relative !important;
+    top: 0 !important;
+    width: 100% !important;
+    background: #f8fafc;
+    padding: 24px !important;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-top: 40px;
+  }
+}

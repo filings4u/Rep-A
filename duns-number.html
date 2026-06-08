@@ -1,430 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#10b981">
-    <title>DUNS Number Procurement & Corporate Credit Setup | filings4u</title>
-    <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
-    <link rel="stylesheet" href="assets/css/master.css">
-    <link rel="stylesheet" href="assets/css/master-mobile.css">
-    <link rel="icon" type="image/png" href="images/fav.png">
-    <!-- 🔍 VERIFIED FULL JQUERY CDN URL PATH -->
-    <script src="https://googleapis.com"></script>
-    <!-- Supabase Production Library Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="assets/js/master.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#10b981">
+  <title>DUNS Number Procurement Services | Dun & Bradstreet Registration | filings4u</title>
+  
+  <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
+  <link rel="stylesheet" href="assets/css/master.css">
+  <link rel="stylesheet" href="assets/css/master-mobile.css">
+  <link rel="icon" type="image/png" href="images/fav.png">
+  
+  <!-- 🔍 VERIFIED FULL PATH CLIENT DATA INFRASTRUCTURE -->
+  <script src="https://googleapis.com"></script>
+  <script src="https://jsdelivr.net"></script>
+  <script src="assets/js/master.js"></script>
+  <script src="assets/js/state-pricing.js"></script>
 </head>
 <body>
 
-    <!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
-    <nav>
-        <div class="nav-content-wrapper">
-            <a href="index.html" class="logo-link">
-                <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
-            </a>
-            <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="toggleMobileMenu()" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
-            <div class="nav-links">
-                <!-- FORMATIONS DROPDOWN -->
-                <div class="nav-item-dropdown static-dropdown">
-                    <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                    <div class="dropdown-content mega-panel-three-col">
-                        <div class="mega-column">
-                            <span class="column-title">Popular Formations</span>
-                            <a href="limited-liability-company.html">LLC Formation</a>
-                            <a href="corporations.html">Corporations (C/S-Corp)</a>
-                            <a href="sole-proprietorship.html">Sole Proprietorship</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Specialty Structures</span>
-                            <a href="doing-business-as-dba.html">DBA Registration</a>
-                            <a href="nonprofits.html">Nonprofit Organization</a>
-                            <a href="series-llc.html">Series LLC</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Expansion & Recovery</span>
-                            <a href="foreign-qualification.html">Foreign Qualification Certificate</a>
-                            <a href="llc-reinstatement.html">LLC Reinstatement Processing</a>
-                            <a href="trademark-filing.html">Trademark Filing</a>
-                            <a href="servicemark-filing.html">Servicemark Filing</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- COMPLIANCE DROPDOWN -->
-                <div class="nav-item-dropdown static-dropdown">
-                    <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                    <div class="dropdown-content mega-panel-three-col">
-                        <div class="mega-column">
-                            <span class="column-title">Entity Health</span>
-                            <a href="annual-reports.html">Annual Reports</a>
-                            <a href="operating-agreement.html">Operating Agreement</a>
-                            <a href="registered-agent.html">Registered Agent</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Licensing & Exit</span>
-                            <a href="business-licenses.html">Business Licenses</a>
-                            <a href="employer-identification-number-ein.html">Employer ID (EIN)</a>
-                            <a href="dissolution.html">Entity Dissolution</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Global Verification</span>
-                            <a href="good-standing.html">Certificate of Good Standing</a>
-                            <a href="apostille-services.html">Apostille Authentication Services</a>
-                            <a href="clia-certificate.html">CLIA Certificate</a>
-                            <a href="regulatory-consulting.html">Custom Regulatory Legal Consulting</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAX FILINGS DROPDOWN -->
-                <div class="nav-item-dropdown static-dropdown">
-                    <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                    <div class="dropdown-content mega-panel-three-col">
-                        <div class="mega-column">
-                            <span class="column-title">Income & Operations</span>
-                            <a href="federal-income-tax.html">Federal Income Tax</a>
-                            <a href="state-income-tax.html">State Income Tax</a>
-                            <a href="franchise-tax.html">Franchise Tax Filing</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Sales & Payroll</span>
-                            <a href="sales-tax-registration.html">Sales Tax Registration</a>
-                            <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a>
-                            <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Gov & Procurement</span>
-                            <a href="cage-code.html">CAGE Code</a>
-                            <a href="duns-number.html">DUNS Number Procurement</a>
-                            <a href="procurement-registration.html">Procurement Registration</a>
-                            <a href="minority-certificate.html">Minority Certificate</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DOT & FLEET DROPDOWN -->
-                <div class="nav-item-dropdown static-dropdown">
-                    <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                    <div class="dropdown-content mega-panel-three-col">
-                        <div class="mega-column">
-                            <span class="column-title">Authority Setup</span>
-                            <a href="owner-operators.html">Owner Operators</a>
-                            <a href="trucker-authority.html">Trucker Authority</a>
-                            <a href="broker-authority.html">Broker Authority</a>
-                            <a href="ucr-registration.html">UCR Registration</a>
-                            <a href="scac-code.html">SCAC Code Registration</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Compliance & Regs</span>
-                            <a href="dot-consortium.html">DOT Consortium</a>
-                            <a href="driver-qualification-file.html">Driver Qualification File</a>
-                            <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
-                            <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a>
-                            <a href="hazmat-registration.html">HAZMAT Registration</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Insurance & Risk</span>
-                            <a href="licenses-permits.html">Licenses & Permits</a>
-                            <a href="trucker-insurance.html">Trucker Insurance</a>
-                            <a href="broker-insurance.html">Broker Insurance</a>
-                            <a href="new-entrant-audit.html">New Entrant Audit</a>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://filings4u.com" class="btn-client-portal">Secure Portal</a>
+  <!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
+  <nav>
+    <div class="nav-content-wrapper">
+      <a href="index.html" class="logo-link">
+        <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
+      </a>
+      <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="toggleMobileMenu()" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
+      <div class="nav-links">
+        
+        <!-- FORMATIONS DROPDOWN -->
+        <div class="nav-item-dropdown static-dropdown">
+          <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+          <div class="dropdown-content mega-panel-three-col">
+            <div class="mega-column">
+              <span class="column-title">Popular Formations</span>
+              <a href="limited-liability-company.html">LLC Formation</a>
+              <a href="corporations.html">Corporations (C/S-Corp)</a>
+              <a href="sole-proprietorship.html">Sole Proprietorship</a>
             </div>
+            <div class="mega-column">
+              <span class="column-title">Specialty Structures</span>
+              <a href="doing-business-as-dba.html">DBA Registration</a>
+              <a href="nonprofits.html">Nonprofit Organization</a>
+              <a href="series-llc.html">Series LLC</a>
+            </div>
+            <div class="mega-column">
+              <span class="column-title">Expansion & Recovery</span>
+              <a href="foreign-qualification.html">Foreign Qualification Certificate</a>
+              <a href="llc-reinstatement.html">LLC Reinstatement Processing</a>
+              <a href="trademark-filing.html">Trademark Filing</a>
+              <a href="servicemark-filing.html">Servicemark Filing</a>
+            </div>
+          </div>
         </div>
-    </nav>
-    <!-- SECTION 1: HERO CONTAINER (STRETCHED 1450PX ALIGNED BLOCK) -->
-    <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
-        <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION -->
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-            <!-- FORCE 50/50 BALANCED GRID STRUT -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
-                
-                <!-- 📝 TEXT COLUMN -->
-                <article class="content-area" style="width: 100%; box-sizing: border-box;">
-                    <!-- Pill Tag Anchor -->
-                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Commercial Credit Node</span>
-                    <!-- High-Contrast Split Headline -->
-                    <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">
-                        DUNS Number <br><span style="color: #10b981;">Procurement System.</span>
-                    </h1>
-                    <!-- Context Copy -->
-                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">Establish your business identity within global commercial tracking registers. Secure the unique 9-digit data structural identifier required for corporate funding, vendor contracts, and government bidding.</p>
-                    <!-- Active Sync Badge Area -->
-                    <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
-                        <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
-                        <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">Verification Gateway: Active Profile Matching Sync</span>
-                    </div>
-                    <!-- Primary Action Call-to-Action Link -->
-                    <a href="#pricing" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">View Procurement Plans &rarr;</a>
-                </article>
 
-                <!-- 📸 IMAGE COLUMN -->
-                <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
-                    <img src="images/duns-number-hero.jpg" alt="Commercial underwriting dashboard showing business profile credit layouts" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
-                </aside>
-
-            </div> <!-- End Grid Matrix -->
-        </div> <!-- End 1450px Alignment Guard Wrapper -->
-    </main>
-    <!-- SECTION 2: ENTERPRISE GLOBAL COMPLIANCE METRICS & PIPELINE STATUS -->
-    <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
-        <!-- Tech Vector Network Grid Background Layer -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-        <!-- 🎯 ABSOLUTE ALIGNMENT GUARD -->
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
-            <!-- Left-To-Right Executive Layout Header Strip -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
-                <div style="text-align: left; max-width: 600px;">
-                    <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">Commercial Identity Node</h2>
-                </div>
-                <div style="text-align: right;">
-                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
-                        <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> VALIDATION DATAFLOW CHANNELS ACTIVE
-                    </div>
-                </div>
+        <!-- COMPLIANCE DROPDOWN -->
+        <div class="nav-item-dropdown static-dropdown">
+          <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+          <div class="dropdown-content mega-panel-three-col">
+            <div class="mega-column">
+              <span class="column-title">Entity Health</span>
+              <a href="annual-reports.html">Annual Reports</a>
+              <a href="operating-agreement.html">Operating Agreement</a>
+              <a href="registered-agent.html">Registered Agent</a>
             </div>
-            <!-- 📊 THE ENTERPRISE METRIC CARD CAROUSEL ROW GRID -->
-            <div class="metrics-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; margin: 0;">
-                <!-- DATA CARD 01 -->
-                <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
-                    <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">📈</span>
-                    <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">11.4K+</div>
-                    <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Profiles Verified</div>
-                    <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Unique entity records mapped and recognized across international registries.</p>
-                </div>
-                <!-- DATA CARD 02 -->
-                <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
-                    <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🎯</span>
-                    <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">100%</div>
-                    <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Syntax Match</div>
-                    <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Rigorous alignment audits correct spelling variations before transmission.</p>
-                </div>
-                <!-- DATA CARD 03 -->
-                <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
-                    <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">⚡</span>
-                    <div style="font-size: 2.4rem; font-weight: 900; color: #10b981; font-family: monospace; line-height: 1;">24-48h</div>
-                    <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Processing Pipeline</div>
-                    <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Accelerated layout rules push structured payloads rapidly into filing channels.</p>
-                </div>
-                <!-- DATA CARD 04 -->
-                <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
-                    <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🛡️</span>
-                    <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">2026</div>
-                    <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Credit Ready</div>
-                    <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Filing architectures fully integrated to support advanced funding frameworks.</p>
-                </div>
+            <div class="mega-column">
+              <span class="column-title">Licensing & Exit</span>
+              <a href="business-licenses.html">Business Licenses</a>
+              <a href="employer-identification-number-ein.html">Employer ID (EIN)</a>
+              <a href="dissolution.html">Entity Dissolution</a>
             </div>
+            <div class="mega-column">
+              <span class="column-title">Global Verification</span>
+              <a href="good-standing.html">Certificate of Good Standing</a>
+              <a href="apostille-services.html">Apostille Authentication Services</a>
+              <a href="clia-certificate.html">CLIA Certificate</a>
+              <a href="regulatory-consulting.html">Custom Regulatory Legal Consulting</a>
+            </div>
+          </div>
         </div>
-    </section>
-    <!-- SECTION B: ALTERNATING FLOW (IMAGE LEFT, TEXT RIGHT) -->
-    <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
-        <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION -->
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-            <!-- FORCE 50/50 BALANCED GRID STRUT -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
-                <!-- 📸 IMAGE COLUMN -->
-                <div style="display: flex; justify-content: center; width: 100%;">
-                    <img src="images/duns-number-alternating.jpg" alt="Business owners reviewing corporate credit scores and commercial underwriting profiles" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
-                </div>
-                <!-- 📝 TEXT COLUMN -->
-                <div style="width: 100%; box-sizing: border-box;">
-                    <!-- Pill Tag Anchor -->
-                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Corporate Valuation</span>
-                    <!-- High-Contrast Split Headline -->
-                    <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
-                        Global Identity. <br><span style="color: #10b981;">Total Funding Access.</span>
-                    </h2>
-                    <!-- Sub-Heading Callout -->
-                    <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Establish verified corporate visibility across tier-1 supplier systems.</p>
-                    <!-- Context Copy -->
-                    <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Protect your expanding commercial profile from unverified records or syntax alignment problems. We structure entity profiles, clear up spelling differences across agency networks, and route clean filing files directly to global business databases so your enterprise stays credit-ready.</p>
-                    <!-- Interactive Action Link -->
-                    <a href="#pricing" class="agency-link" style="color: #10b981; font-weight: 700; text-decoration: none;">View Procurement Matrices &rarr;</a>
-                </div>
-            </div> <!-- End Grid Matrix -->
-        </div> <!-- End 1450px Alignment Guard Wrapper -->
-    </section>
-    <!-- SECTION 3: ENTERPRISE SUPPORT MATRIX & AUDIT LOG EVENTS -->
-    <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f4f4; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
-        <!-- Tech Vector Network Grid Background Layer -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-        <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION -->
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
-            <!-- HEADER MODULE -->
-            <div style="margin-bottom: 32px;">
-                <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">Commercial Verification Desk</span>
-                <h2 style="color: #ffffff; font-size: 2.2rem; font-weight: 800; margin: 0 0 10px 0; line-height: 1.2;">On-Demand Corporate Identity Experts</h2>
-                <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin: 0;">Skip unverified third-party credit templates and confusing corporate registries. Connect immediately with our commercial filing specialists.</p>
+
+        <!-- TAX FILINGS DROPDOWN -->
+        <div class="nav-item-dropdown static-dropdown">
+          <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+          <div class="dropdown-content mega-panel-three-col">
+            <div class="mega-column">
+              <span class="column-title">Income & Operations</span>
+              <a href="federal-income-tax.html">Federal Income Tax</a>
+              <a href="state-income-tax.html">State Income Tax</a>
+              <a href="franchise-tax.html">Franchise Tax Filing</a>
             </div>
-            <!-- FEED CONTAINER WITH INCREASED SPACING GRID GAP -->
-            <div style="display: flex; flex-direction: column; gap: 24px;">
-                <!-- LOG EVENT 01 -->
-                <div class="border-glowing-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);">
-                    <div>
-                        <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; display: block;">Dedicated Commercial Liaison Desk</span>
-                        <span style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block;">Direct human matching for complex corporate profile verifications</span>
-                    </div>
-                    <span style="font-family: monospace; font-size: 0.8rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">INCLUDED</span>
-                </div>
-                <!-- LOG EVENT 02 -->
-                <div class="border-glowing-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);">
-                    <div>
-                        <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; display: block;">Registry Address Mapping Pre-Audits</span>
-                        <span style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block;">Our specialists cross-verify business addresses to align precisely down the matrix</span>
-                    </div>
-                    <span style="font-family: monospace; font-size: 0.8rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">VERIFIED</span>
-                </div>
-                <!-- LOG EVENT 03 -->
-                <div class="border-glowing-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);">
-                    <div>
-                        <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; display: block;">Commercial System Data Sync Monitoring</span>
-                        <span style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block;">Proactive notifications of business status alterations via account flashes</span>
-                    </div>
-                    <span style="font-family: monospace; font-size: 0.8rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">LIVE</span>
-                </div>
-            </div> <!-- End Stream Container -->
-        </div> <!-- End Site Width Alignment Guard -->
-    </section>
-    <!-- SECTION C: STARTUP EXPLORATION BLOCK (TEXT LEFT, IMAGE RIGHT) -->
-    <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
-        <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION -->
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-            <!-- FORCE 50/50 BALANCED GRID STRUT -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
-                <!-- 📝 TEXT COLUMN -->
-                <div style="width: 100%; box-sizing: border-box;">
-                    <!-- Pill Tag Anchor -->
-                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Credit Pipeline Setup</span>
-                    <!-- High-Contrast Split Headline -->
-                    <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
-                        Rapid Profile Setup. <br><span style="color: #10b981;">Built For Scale.</span>
-                    </h2>
-                    <!-- Sub-Heading Callout -->
-                    <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Turn confusing underwriting systems into a single straightforward submission entry.</p>
-                    <!-- Context Copy -->
-                    <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Accelerate your business's active corporate identifier records through precise pre-submission validation systems. We correct layout formatting flaws, crosscheck secretary of state registry filings, line up proper corporate identifiers, and process registrations fast so you can build commercial power from day one.</p>
-                    <!-- Interactive Action Link -->
-                    <a href="#pricing" class="agency-link">Select Procurement Tier &rarr;</a>
-                </div>
-                <!-- 📸 IMAGE COLUMN -->
-                <div style="display: flex; justify-content: center; width: 100%;">
-                    <img src="images/duns-number-scale.jpg" alt="Underwriters reviewing business validation data records" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
-                </div>
-            </div> <!-- End Grid Matrix -->
-        </div> <!-- End 1450px Alignment Guard Wrapper -->
-    </section>
-    <!-- SECTION D: INSTITUTIONAL TRUST & EXPERT PANEL (NAVY ACCENT OVERRIDE) -->
-    <section class="enterprise-metrics-section" style="padding: 80px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
-        <!-- Tech Vector Network Grid Background Layer -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-        <!-- 🎯 ABSOLUTE ALIGNMENT GUARD -->
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 60px;">
-            <!-- 📸 IMAGE COLUMN -->
-            <div style="flex: 1; min-width: 320px; max-width: 550px; display: flex; justify-content: center; box-sizing: border-box;">
-                <img src="images/duns-number-shield.jpg" alt="Secured company authentication mainframes protecting corporate credit registries" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65), 0 10px 20px rgba(0, 0, 0, 0.3);">
+            <div class="mega-column">
+              <span class="column-title">Sales & Payroll</span>
+              <a href="sales-tax-registration.html">Sales Tax Registration</a>
+              <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a>
+              <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a>
             </div>
-            <!-- 📝 TEXT COLUMN -->
-            <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
-                <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">Guaranteed Audit Protection</span>
-                <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Institutional Shield. <br><span style="color: #10b981;">Permanent Profile Security.</span></h2>
-                <p style="color: #cbd5e1; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Active database synchronization safeguards your profile credentials across credit bureaus.</p>
-                <p style="color: #94a3b8; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Avoid complex contract rejections, funding pipeline freezes, or sudden business profile matching drops caused by typos or mismatched state parameters. Our tracking platform monitors data variations, maps addresses flawlessly system-wide, and ensures your entity visibility stays permanent.</p>
-                <a href="#pricing" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 0.95rem;">Explore Security Infrastructure &rarr;</a>
+            <div class="mega-column">
+              <span class="column-title">Gov & Procurement</span>
+              <a href="cage-code.html">CAGE Code</a>
+              <a href="duns-number.html">DUNS Number Procurement</a>
+              <a href="procurement-registration.html">Procurement Registration</a>
+              <a href="minority-certificate.html">Minority Certificate</a>
             </div>
+          </div>
         </div>
-    </section>
-    <!-- SECTION 3: PRICING -->
-    <section id="pricing" class="pricing-section" style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
-        <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION -->
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-            
-            <div style="text-align: center; margin-bottom: 50px;">
-                <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Deployment Tiers</span>
-                <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0; line-height: 1.15; letter-spacing: -0.5px;">Transparent DUNS procurement pricing.</h2>
+
+        <!-- DOT & FLEET DROPDOWN -->
+        <div class="nav-item-dropdown static-dropdown">
+          <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+          <div class="dropdown-content mega-panel-three-col">
+            <div class="mega-column">
+              <span class="column-title">Authority Setup</span>
+              <a href="owner-operators.html">Owner Operators</a>
+              <a href="trucker-authority.html">Trucker Authority</a>
+              <a href="broker-authority.html">Broker Authority</a>
+              <a href="ucr-registration.html">UCR Registration</a>
+              <a href="scac-code.html">SCAC Code Registration</a>
             </div>
-
-            <!-- 📊 PRICING GRID OVERRIDE -->
-            <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
-                
-                <!-- STANDARD PLAN -->
-                <div class="price-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(10,31,68,0.03); position: relative;">
-                    <h3 style="color: #0a1f44; font-size: 1.5rem; font-weight: 800; margin: 0 0 16px 0;">Standard</h3>
-                    <div class="amount" style="color: #0a1f44; font-size: 2.8rem; font-weight: 900; margin-bottom: 12px; font-family: monospace;">$125 <span style="font-size: 0.9rem; color: #64748b; font-weight: 500; font-family: system-ui;">+ Registry Fees</span></div>
-                    <p style="font-size: 0.9rem; color: #475569; margin: 0 0 24px 0; line-height: 1.5; min-height: 45px;">Standard registration assembly and electronic data mapping for basic commercial verification.</p>
-                    <ul class="price-features" style="list-style: none; padding: 0; margin: 0 0 32px 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #f1f5f9; padding-top: 24px;">
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Address Spacing Formats Review</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Electronic Registry Delivery</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Digital Vault Document Cabinet Access</li>
-                    </ul>
-                    <a href="wizard.html?service=duns-number&plan=standard" class="btn-main" style="width: 100%; text-align: center; background: #0a1f44; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 0; border-radius: 8px; display: block; box-shadow: 0 4px 12px rgba(10,31,68,0.1); transition: all 0.2s;">Select Standard</a>
-                </div>
-
-                <!-- ELITE PLAN (FEATURED BRAND OVERRIDE) -->
-                <div class="price-card featured" style="background: #ffffff; border: 2px solid #10b981; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(16,185,129,0.12); position: relative;">
-                    <div class="price-badge" style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #10b981; color: #ffffff; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 14px; border-radius: 20px; box-shadow: 0 4px 10px rgba(16,185,129,0.25);">Most Popular</div>
-                    <h3 style="color: #0a1f44; font-size: 1.5rem; font-weight: 800; margin: 0 0 16px 0;">Elite</h3>
-                    <div class="amount" style="color: #0a1f44; font-size: 2.8rem; font-weight: 900; margin-bottom: 12px; font-family: monospace;">$249 <span style="font-size: 0.9rem; color: #64748b; font-weight: 500; font-family: system-ui;">+ Registry Fees</span></div>
-                    <p style="font-size: 0.9rem; color: #475569; margin: 0 0 24px 0; line-height: 1.5; min-height: 45px;">Full profile automation including expedited multi-system layout validation checks.</p>
-                    <ul class="price-features" style="list-style: none; padding: 0; margin: 0 0 32px 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #f1f5f9; padding-top: 24px;">
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Everything in Standard</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> <strong>Dedicated Profile Liaison Assignment</strong></li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Multi-Bureau Identity Calibration</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Priority Underwriting Validation</li>
-                    </ul>
-                    <a href="wizard.html?service=duns-number&plan=elite" class="btn-main" style="width: 100%; text-align: center; background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 0; border-radius: 8px; display: block; box-shadow: 0 10px 20px rgba(16,185,129,0.2); transition: background 0.2s;">Select Elite</a>
-                </div>
-
-                <!-- ENTERPRISE PLAN -->
-                <div class="price-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(10,31,68,0.03); position: relative;">
-                    <h3 style="color: #0a1f44; font-size: 1.5rem; font-weight: 800; margin: 0 0 16px 0;">Enterprise</h3>
-                    <div class="amount" style="color: #0a1f44; font-size: 2.8rem; font-weight: 900; margin-bottom: 12px; font-family: monospace;">$449 <span style="font-size: 0.9rem; color: #64748b; font-weight: 500; font-family: system-ui;">+ Registry Fees</span></div>
-                    <p style="font-size: 0.9rem; color: #475569; margin: 0 0 24px 0; line-height: 1.5; min-height: 45px;">Complete identity portfolio defense systems for complex corporate group networks.</p>
-                    <ul class="price-features" style="list-style: none; padding: 0; margin: 0 0 32px 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #f1f5f9; padding-top: 24px;">
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Everything in Elite</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Continuous Multi-Entity Profile Refreshes</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Vendor Pipeline Alignment Systems</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Compliance Shield Monitoring</li>
-                    </ul>
-                    <a href="wizard.html?service=duns-number&plan=enterprise" class="btn-main" style="width: 100%; text-align: center; background: #0a1f44; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 0; border-radius: 8px; display: block; box-shadow: 0 4px 12px rgba(10,31,68,0.1); transition: all 0.2s;">Select Enterprise</a>
-                </div>
-
-            </div> <!-- End Pricing Grid Matrix -->
-        </div> <!-- End Site Width Alignment Guard -->
-    </section>
-   <!-- 🌐 SECTION E: ENTERPRISE SUBSCRIPTION CAPTURE MATRIX -->
-    <section style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
-                
-                <!-- LEFT TEXT BOX MODULE -->
-                <div style="width: 100%; box-sizing: border-box;">
-                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.08); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;">Compliance Bulletins</span>
-                    <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; line-height: 1.15; letter-spacing: -0.5px;">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
-                    <p style="color: #475569; font-size: 1.05rem; line-height: 1.6; margin: 0; max-width: 580px;">Get actionable regulatory deadline text flashes, corporate filing advice, and federal state policy change updates sent straight to your box. Zero clutter. Direct compliance updates.</p>
-                </div>
-
-                <!-- RIGHT INPUT FORM BOX INTERFACE -->
-                <div style="width: 100%; box-sizing: border-box;">
-                    <form action="#" method="POST" style="display: flex; gap: 14px; width: 100%; background: #ffffff; border: 1px solid #f1f5f9; padding: 20px; border-radius: 16px; box-shadow: 0 20px 40px rgba(10,31,68,0.06), 0 1px 3px rgba(10,31,68,0.02);">
-                        <input type="email" placeholder="Enter your business email..." required aria-label="Business Email" style="flex: 1; padding: 16px 22px; font-size: 0.95rem; font-weight: 500; border-radius: 8px; border: none; background: #ffffff; color: #0a1f44; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08); transition: box-shadow 0.25s ease;" onfocus="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.02), 0 0 0 3px rgba(16, 185, 129, 0.15), 0 0 0 1px #10b981'" onblur="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08)'">
-                        <button type="submit" style="background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 0.95rem; padding: 0 32px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#0e9f6e'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#10b981'; this.style.transform='translateY(0)';">Subscribe</button>
-                    </form>
-                    <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #64748b; padding-left: 4px;">
-                        <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🔒 ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
-                    </div>
-                </div>
-
+            <div class="mega-column">
+              <span class="column-title">Compliance & Regs</span>
+              <a href="dot-consortium.html">DOT Consortium</a>
+              <a href="driver-qualification-file.html">Driver Qualification File</a>
+              <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
+              <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a>
+              <a href="hazmat-registration.html">HAZMAT Registration</a>
             </div>
+            <div class="mega-column">
+              <span class="column-title">Insurance & Risk</span>
+              <a href="licenses-permits.html">Licenses & Permits</a>
+              <a href="trucker-insurance.html">Trucker Insurance</a>
+              <a href="broker-insurance.html">Broker Insurance</a>
+              <a href="new-entrant-audit.html">New Entrant Audit</a>
+            </div>
+          </div>
         </div>
-    </section>
+        <a href="https://filings4u.com" class="btn-client-portal">Secure Portal</a>
+      </div>
+    </div>
+  </nav>
+  <!-- SECTION 1: HERO CONTAINER (STRETCHED 1450PX ALIGNED BLOCK) -->
+  <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 1450px; box-sizing: border-box;">
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
+        
+        <!-- 📝 TEXT COLUMN -->
+        <article class="content-area" style="width: 100%; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Commercial Identity Core</span>
+          <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">
+            Establish Your Global <br><span style="color: #10b981;">DUNS Number Index.</span>
+          </h1>
+          <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">Acquire your mandatory Dun & Bradstreet Data Universal Numbering System identifier. We build your profile matching sequence, verify corporate record alignments, structure credit matrix parameters, and secure your 9-digit trade index safely.</p>
+          <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
+            <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
+            <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">D&B Data Pipeline: Active & Real-Time</span>
+          </div>
+          <a href="wizard.html?service=duns-number&plan=starter" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">Secure Your DUNS Now &rarr;</a>
+        </article>
+        
+        <!-- 📸 IMAGE COLUMN -->
+        <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
+          <img src="images/duns-hero.jpg" alt="Dun & Bradstreet DUNS Number Tracking Interface" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+        </aside>
 
-     <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+      </div>
+    </div>
+  </main>
+
+  <!-- 💳 ISOLATED PRICING HOOK SECTION -->
+  <section class="pricing-cards-wrapper" style="width: 100%; background: #ffffff; padding: 20px 0;">
+    <div class="site-width-alignment-guard" style="width: 100%; max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
+      <div id="website-package-pricing-cards-root" data-service-key="duns-number" style="margin: 0 auto; width: 100%;"></div>
+    </div>
+  </section>
+  <!-- SECTION: ENTERPRISE GLOBAL COMPLIANCE METRICS & PIPELINE STATUS -->
+  <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
+        <div style="text-align: left; max-width: 600px;">
+          <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">Commercial Identity Metrics</h2>
+        </div>
+        <div style="text-align: right;">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
+            <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> DATA SYSTEM REGISTRIES ACTIVE
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; margin: 0;">
+        <!-- DATA CARD 01 -->
+        <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🔢</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">14K+</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Numbers Allocated</div>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Corporate identities correctly indexed and published in commercial credit frameworks.</p>
+        </div>
+        <!-- DATA CARD 02 -->
+        <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🛡️</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">100%</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Record Alignment</div>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Enforces direct alignment between individual IRS parameters and global credit profiles.</p>
+        </div>
+        <!-- DATA CARD 03 -->
+        <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">⚡</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #10b981; font-family: monospace; line-height: 1;">&lt; 24h</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Profile Verification</div>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Rapid parsing processes clean your business profile inputs for immediate routing.</p>
+        </div>
+        <!-- DATA CARD 04 -->
+        <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🔒</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">99.98%</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">First-Time Approval</div>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Advanced system matching eliminates layout mismatch loops before profile generation.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- SECTION B: ALTERNATING FLOW (STRETCHED 1450PX ALIGNED BLOCK) -->
+  <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
+        
+        <!-- 📸 IMAGE COLUMN: Left side graphics wrapper -->
+        <div style="display: flex; justify-content: center; width: 100%;">
+          <img src="images/duns-compliance.jpg" alt="Corporate officers verifying international commercial registry matching indicators and trade credit strings" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+        </div>
+        
+        <!-- 📝 TEXT COLUMN: Right side content -->
+        <div style="width: 100%; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Credit Indexing</span>
+          <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
+            Establish Commercial Profiles. <br><span style="color: #10b981;">Anchor Corporate Trade History.</span>
+          </h2>
+          <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Deploy compliant corporate tracking lines and verified Dun & Bradstreet registry profiles safely.</p>
+          <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Acquiring an official Data Universal Numbering System (DUNS) code functions as the standard baseline for corporate visibility. Global tier vendors, commercial lenders, and contract processors reject basic financing tracks without matching credit indexes. We align your official tax parameters, configure identity fields, and clear system processing loops securely.</p>
+          <a href="wizard.html?service=duns-number&plan=starter" class="agency-link" style="color: #10b981; font-weight: 700; text-decoration: none;">Explore DUNS Options &rarr;</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: EXPERT LOG EVENT PANELS -->
+  <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f4f4; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+      
+      <div style="margin-bottom: 32px;">
+        <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">On-Demand Concierge</span>
+        <h2 style="color: #ffffff; font-size: 2.2rem; font-weight: 800; margin: 0 0 10px 0; line-height: 1.2;">Expert Processing Verification</h2>
+        <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin: 0;">Skip confusing commercial tracking steps and slow verification loops. Every account configuration block undergoes expert validation checks.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- LOG EVENT 01 -->
+        <div class="border-glowing-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);">
+          <div>
+            <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; display: block;">Dedicated Identity Specialist</span>
+            <span style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block;">Direct corporate representative routing to clear complex profile validation locks</span>
+          </div>
+          <span style="font-family: monospace; font-size: 0.8rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">INCLUDED</span>
+        </div>
+        <!-- LOG EVENT 02 -->
+        <div class="border-glowing-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);">
+          <div>
+            <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; display: block;">Pre-Submission Identity Scrubbing</span>
+            <span style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block;">Analysts manually match address records, character spacing strings, and state active registry lines</span>
+          </div>
+          <span style="font-family: monospace; font-size: 0.8rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">VERIFIED</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- SECTION C: STARTUP EXPLORATION BLOCK (TEXT LEFT, IMAGE RIGHT) -->
+  <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
+        
+        <!-- 📝 TEXT COLUMN -->
+        <div style="width: 100%; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Growth Infrastructure</span>
+          <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
+            Identity Launchpad. <br><span style="color: #10b981;">Engineered For Scale.</span>
+          </h2>
+          <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Transition your company vision into an officially filed legal structure.</p>
+          <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Accelerate your business journey with standardized incorporation frameworks. We automate initial tax registration allocations, structure global identity matrices, process federal employer identification inputs (EIN), and queue data vectors for instant state record ingestion so you can authorize corporate bank accounts and sign commercial leases safely.</p>
+          <a href="wizard.html?service=duns-number&plan=starter" class="agency-link" style="color: #10b981; font-weight: 700; text-decoration: none;">Form Your Entity &rarr;</a>
+        </div>
+
+        <!-- 📸 IMAGE COLUMN -->
+        <div style="display: flex; justify-content: center; width: 100%;">
+          <img src="images/duns-scale.jpg" alt="Business team managing structural business parameters" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 🌐 SECTION E: ENTERPRISE SUBSCRIPTION CAPTURE MATRIX -->
+  <section style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
+        
+        <div style="width: 100%; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.08); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;">Compliance Bulletins</span>
+          <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; line-height: 1.15; letter-spacing: -0.5px;">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
+          <p style="color: #475569; font-size: 1.05rem; line-height: 1.6; margin: 0; max-width: 580px;">Get actionable corporate filing advice, state requirement deadline warnings, and corporate policy shift breakdowns sent straight to your box. Zero clutter. Direct alignment updates.</p>
+        </div>
+
+        <div style="width: 100%; box-sizing: border-box;">
+          <form action="#" method="POST" style="display: flex; gap: 14px; width: 100%; background: #ffffff; border: 1px solid #f1f5f9; padding: 20px; border-radius: 16px; box-shadow: 0 20px 40px rgba(10,31,68,0.06), 0 1px 3px rgba(10,31,68,0.02);">
+            <input type="email" placeholder="Enter your business email..." required aria-label="Business Email" style="flex: 1; padding: 16px 22px; font-size: 0.95rem; font-weight: 500; border-radius: 8px; border: none; background: #ffffff; color: #0a1f44; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08); transition: box-shadow 0.25s ease;" onfocus="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.02), 0 0 0 3px rgba(16, 185, 129, 0.15), 0 0 0 1px #10b981'" onblur="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08)'">
+            <button type="submit" style="background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 0.95rem; padding: 0 32px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#0e9f6e'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#10b981'; this.style.transform='translateY(0)';">Subscribe</button>
+          </form>
+          <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #64748b; padding-left: 4px;">
+            <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🛡️ ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section> <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
 <footer class="site-footer" style="position: relative; overflow: hidden;"> 
   <!-- Tech Vector Network Grid Background Layer --> 
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>

@@ -1,367 +1,420 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#10b981">
-    <title>Professional Compliance Dashboard | filings4u</title>
-    
-    <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
-     <link rel="stylesheet" href="assets/css/master.css">
-    <link rel="stylesheet" href="assets/css/master-mobile.css">
-    <link rel="icon" type="image/png" href="images/fav.png">
-    
-    <!-- 🔍 VERIFIED FULL JQUERY CDN URL PATH -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    
-    <!-- Supabase Production Library Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#10b981">
+  <title>Commercial Trucker Motor Carrier Authority MC & USDOT Setup | filings4u</title>
+  
+  <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
+  <link rel="stylesheet" href="assets/css/master.css">
+  <link rel="stylesheet" href="assets/css/master-mobile.css">
+  <link rel="icon" type="image/png" href="images/fav.png">
+  
+  <!-- 🔍 VERIFIED FULL PATH CLIENT DATA INFRASTRUCTURE -->
+  <script src="https://googleapis.com"></script>
+  <script src="https://jsdelivr.net"></script>
+  <script src="assets/js/master.js"></script>
+  <script src="assets/js/state-pricing.js"></script>
 </head>
 <body>
 
-<!-- 🌐 SITE-WIDE NAVIGATION HEADER --> 
-<nav> 
-  <div class="nav-content-wrapper"> 
-    <a href="index.html" class="logo-link"> 
-      <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;"> 
-    </a> 
-    
-<!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
-<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
-
-    <div class="nav-links"> 
-      <!-- FORMATIONS DROPDOWN --> 
-      <div class="nav-item-dropdown static-dropdown"> 
-        <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
-          <div class="mega-column"> 
-            <span class="column-title">Popular Formations</span> 
-            <a href="limited-liability-company.html">LLC Formation</a> 
-            <a href="corporations.html">Corporations (C/S-Corp)</a> 
-            <a href="sole-proprietorship.html">Sole Proprietorship</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Specialty Structures</span> 
-            <a href="doing-business-as-dba.html">DBA Registration</a> 
-            <a href="nonprofits.html">Nonprofit Organization</a> 
-            <a href="series-llc.html">Series LLC</a> 
-          </div> 
-        </div> 
-      </div> 
-      
-      <!-- COMPLIANCE DROPDOWN --> 
-      <div class="nav-item-dropdown static-dropdown"> 
-        <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
-          <div class="mega-column"> 
-            <span class="column-title">Entity Health</span> 
-            <a href="annual-reports.html">Annual Reports</a> 
-            <a href="operating-agreement.html">Operating Agreement</a> 
-            <a href="registered-agent.html">Registered Agent</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Licensing & Exit</span> 
-            <a href="business-licenses.html">Business Licenses</a> 
-            <a href="employer-identification-number-ein.html">Employer ID (EIN)</a> 
-            <a href="dissolution.html">Entity Dissolution</a> 
-          </div> 
-        </div> 
-      </div> 
-      
-      <!-- TAX FILINGS DROPDOWN --> 
-      <div class="nav-item-dropdown static-dropdown"> 
-        <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
-          <div class="mega-column"> 
-            <span class="column-title">Income & Operations</span> 
-            <a href="federal-income-tax.html">Federal Income Tax</a> 
-            <a href="state-income-tax.html">State Income Tax</a> 
-            <a href="franchise-tax.html">Franchise Tax Filing</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Sales & Payroll</span> 
-            <a href="sales-tax-registration.html">Sales Tax Registration</a> 
-            <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a> 
-            <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a> 
-          </div> 
-        </div> 
-      </div> 
-      
-      <!-- DOT & FLEET DROPDOWN --> 
-      <div class="nav-item-dropdown static-dropdown"> 
-        <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-three-col"> 
-          <div class="mega-column"> 
-            <span class="column-title">Authority Setup</span> 
-            <a href="owner-operators.html">Owner Operators</a> 
-            <a href="trucker-authority.html">Trucker Authority</a> 
-            <a href="broker-authority.html">Broker Authority</a> 
-            <a href="ucr-registration.html">UCR Registration</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Compliance & Regs</span> 
-            <a href="dot-consortium.html">DOT Consortium</a> 
-            <a href="driver-qualification-file.html">Driver Qualification File</a> 
-            <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a> 
-            <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Insurance & Risk</span> 
-            <a href="licenses-permits.html">Licenses & Permits</a> 
-            <a href="trucker-insurance.html">Trucker Insurance</a> 
-            <a href="broker-insurance.html">Broker Insurance</a> 
-            <a href="new-entrant-audit.html">New Entrant Audit</a> 
-          </div> 
-        </div> 
-      </div> 
-      
-      <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Secure Portal</a> 
-    </div> 
-  </div> 
-</nav>
-
-<main class="page-container">
-    <div class="service-grid">
-        <article class="content-area">
-            <span class="hero-tag">Authority Deployment</span>
-            <h1>Trucker Authority <br>& DOT Filings.</h1>
-            <p>Deploy your interstate trucking operations with speed. We manage the entire FMCSA handshake to secure your USDOT and MC numbers, ensuring you stay on the road.</p>
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 50px;">
-                <div style="height: 2px; width: 30px; background: var(--emerald);"></div>
-                <span style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Direct FMCSA Handshake Active</span>
+  <!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
+  <nav>
+    <div class="nav-content-wrapper">
+      <a href="index.html" class="logo-link">
+        <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
+      </a>
+      <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="toggleMobileMenu()" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
+      <div class="nav-links">
+        
+        <!-- FORMATIONS DROPDOWN -->
+        <div class="nav-item-dropdown static-dropdown">
+          <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+          <div class="dropdown-content mega-panel-three-col">
+            <div class="mega-column">
+              <span class="column-title">Popular Formations</span>
+              <a href="limited-liability-company.html">LLC Formation</a>
+              <a href="corporations.html">Corporations (C/S-Corp)</a>
+              <a href="sole-proprietorship.html">Sole Proprietorship</a>
             </div>
-            <a href="#pricing" class="btn-main">Launch My Authority →</a>
+            <div class="mega-column">
+              <span class="column-title">Specialty Structures</span>
+              <a href="doing-business-as-dba.html">DBA Registration</a>
+              <a href="nonprofits.html">Nonprofit Organization</a>
+              <a href="series-llc.html">Series LLC</a>
+            </div>
+            <div class="mega-column">
+              <span class="column-title">Expansion & Recovery</span>
+              <a href="foreign-qualification.html">Foreign Qualification Certificate</a>
+              <a href="llc-reinstatement.html">LLC Reinstatement Processing</a>
+              <a href="trademark-filing.html">Trademark Filing</a>
+              <a href="servicemark-filing.html">Servicemark Filing</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPLIANCE DROPDOWN -->
+        <div class="nav-item-dropdown static-dropdown">
+          <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+          <div class="dropdown-content mega-panel-three-col">
+            <div class="mega-column">
+              <span class="column-title">Entity Health</span>
+              <a href="annual-reports.html">Annual Reports</a>
+              <a href="operating-agreement.html">Operating Agreement</a>
+              <a href="registered-agent.html">Registered Agent</a>
+            </div>
+            <div class="mega-column">
+              <span class="column-title">Licensing & Exit</span>
+              <a href="business-licenses.html">Business Licenses</a>
+              <a href="employer-identification-number-ein.html">Employer ID (EIN)</a>
+              <a href="dissolution.html">Entity Dissolution</a>
+            </div>
+            <div class="mega-column">
+              <span class="column-title">Global Verification</span>
+              <a href="good-standing.html">Certificate of Good Standing</a>
+              <a href="apostille-services.html">Apostille Authentication Services</a>
+              <a href="clia-certificate.html">CLIA Certificate</a>
+              <a href="regulatory-consulting.html">Custom Regulatory Legal Consulting</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAX FILINGS DROPDOWN -->
+        <div class="nav-item-dropdown static-dropdown">
+          <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+          <div class="dropdown-content mega-panel-three-col">
+            <div class="mega-column">
+              <span class="column-title">Income & Operations</span>
+              <a href="federal-income-tax.html">Federal Income Tax</a>
+              <a href="state-income-tax.html">State Income Tax</a>
+              <a href="franchise-tax.html">Franchise Tax Filing</a>
+            </div>
+            <div class="mega-column">
+              <span class="column-title">Sales & Payroll</span>
+              <a href="sales-tax-registration.html">Sales Tax Registration</a>
+              <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a>
+              <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a>
+            </div>
+            <div class="mega-column">
+              <span class="column-title">Gov & Procurement</span>
+              <a href="cage-code.html">CAGE Code</a>
+              <a href="duns-number.html">DUNS Number Procurement</a>
+              <a href="procurement-registration.html">Procurement Registration</a>
+              <a href="minority-certificate.html">Minority Certificate</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- DOT & FLEET DROPDOWN -->
+        <div class="nav-item-dropdown static-dropdown">
+          <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
+          <div class="dropdown-content mega-panel-three-col">
+            <div class="mega-column">
+              <span class="column-title">Authority Setup</span>
+              <a href="owner-operators.html">Owner Operators</a>
+              <a href="trucker-authority.html">Trucker Authority</a>
+              <a href="broker-authority.html">Broker Authority</a>
+              <a href="ucr-registration.html">UCR Registration</a>
+              <a href="scac-code.html">SCAC Code Registration</a>
+            </div>
+            <div class="mega-column">
+              <span class="column-title">Compliance & Regs</span>
+              <a href="dot-consortium.html">DOT Consortium</a>
+              <a href="driver-qualification-file.html">Driver Qualification File</a>
+              <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
+              <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a>
+              <a href="hazmat-registration.html">HAZMAT Registration</a>
+            </div>
+            <div class="mega-column">
+              <span class="column-title">Insurance & Risk</span>
+              <a href="licenses-permits.html">Licenses & Permits</a>
+              <a href="trucker-insurance.html">Trucker Insurance</a>
+              <a href="broker-insurance.html">Broker Insurance</a>
+              <a href="new-entrant-audit.html">New Entrant Audit</a>
+            </div>
+          </div>
+        </div>
+        <a href="https://filings4u.com" class="btn-client-portal">Secure Portal</a>
+      </div>
+    </div>
+  </nav>
+  <!-- SECTION 1: HERO CONTAINER (STRETCHED 1450PX ALIGNED BLOCK) -->
+  <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 1450px; box-sizing: border-box;">
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
+        
+        <!-- 📝 TEXT COLUMN -->
+        <article class="content-area" style="width: 100%; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Commercial Fleet Authority Setup</span>
+          <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">
+            Secure Your Commercial <br><span style="color: #10b981;">Trucker Authority Core.</span>
+          </h1>
+          <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">Establish your multi-unit interstate logistics tracks, clear FMCSA motor carrier requirements, and obtain clean active USDOT configurations. We automate form generation layers and coordinate registration pipelines to bypass technical bottlenecks securely.</p>
+          <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
+            <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
+            <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">Federal Registry Sync: Active & Live</span>
+          </div>
+          <a href="wizard.html?service=trucker-authority&plan=starter" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">Secure Trucking Authority &rarr;</a>
         </article>
-        <aside>
-            <div class="hero-image-container">
-                <img src="images/trucker-authority-hero.jpg" alt="FMCSA Trucking Authority Setup">
-            </div>
+        
+        <!-- 📸 IMAGE COLUMN -->
+        <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
+          <img src="images/trucker-authority-hero.jpg" alt="Commercial Fleet Trucking Motor Carrier Authority Application Dashboard Interface" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
         </aside>
-    </div>
-</main>
 
-<section class="feature-section">
-    <div class="hero-tag">Infrastructure</div>
-    <h2 style="margin-bottom: 20px;">Safety Ready Operations.</h2>
-    <div class="icon-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;">
-        <div class="icon-box">
-            <h4>MC Number Issuance</h4>
-            <p>Immediate filing of the OP-1 application to secure your interstate operating authority.</p>
-        </div>
-        <div class="icon-box">
-            <h4>DOT Compliance</h4>
-            <p>Registration of your USDOT number with verified MCS-150 data synchronization.</p>
-        </div>
-        <div class="icon-box">
-            <h4>BOC-3 Integration</h4>
-            <p>Automatic assignment of process agents across all 50 states to satisfy legal mandates.</p>
-        </div>
+      </div>
     </div>
-</section>
+  </main>
 
-<!-- BRIDGE TO INSURANCE HUB -->
-<section style="padding: 40px 8% !important; background: var(--ice); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center;">
-        <div>
-            <span class="hero-tag">Activation Requirements</span>
-            <h2 style="margin-bottom: 15px;">Mandatory Insurance Filings.</h2>
-            <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 700px;">
-                Securing your DOT or MC number is only the first step. To move to "Active" status, the FMCSA requires specific <strong>BMC-91</strong>, <strong>BMC-34</strong>, or <strong>BMC-84</strong> filings. Failure to provide these within the 20-day window results in dismissal of your application.
-            </p>
+  <!-- 💳 ISOLATED PRICING HOOK SECTION -->
+  <section class="pricing-cards-wrapper" style="width: 100%; background: #ffffff; padding: 20px 0;">
+    <div class="site-width-alignment-guard" style="width: 100%; max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
+      <div id="website-package-pricing-cards-root" data-service-key="trucker-authority" style="margin: 0 auto; width: 100%;"></div>
+    </div>
+  </section>
+  <!-- SECTION: ENTERPRISE GLOBAL COMPLIANCE METRICS & PIPELINE STATUS -->
+  <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
+        <div style="text-align: left; max-width: 600px;">
+          <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">Carrier Validation Metrics</h2>
         </div>
         <div style="text-align: right;">
-            <a href="fmcsa-insurance-filings.html" class="btn-main" style="background: var(--navy); border: 1px solid var(--navy);">View Filing Hub →</a>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
+            <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> FMCSA CHANNELS ACTIVE & VERIFIED
+          </div>
         </div>
+      </div>
+
+      <div class="metrics-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; margin: 0;">
+        <!-- DATA CARD 01 -->
+        <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🛣️</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">42K+</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">DOT Numbers Setup</div>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Commercial carrier indices generated, structured, and activated for interstate freight lanes.</p>
+        </div>
+        <!-- DATA CARD 02 -->
+        <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🔍</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">100%</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Clearinghouse Compliance</div>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Pre-submission background checks verify operator database strings to secure quick approvals.</p>
+        </div>
+        <!-- DATA CARD 03 -->
+        <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">⚡</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #10b981; font-family: monospace; line-height: 1;">&lt; 24h</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Authority Processing</div>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Rapid corporate data assembly compiles your parameters to execute instant registry queues.</p>
+        </div>
+        <!-- DATA CARD 04 -->
+        <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🔒</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">99.98%</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">First-Time Pass Ratio</div>
+          <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Advanced system filters align vehicle data types to bypass regular administrative holds.</p>
+        </div>
+      </div>
+
     </div>
-</section>
-
-
-<section id="pricing" class="pricing-section"> 
-    <span class="hero-tag">Deployment Tiers</span> 
-    <h2>Transparent authority pricing.</h2> 
-    <div class="pricing-grid"> 
+  </section>
+  <!-- SECTION B: ALTERNATING FLOW (STRETCHED 1450PX ALIGNED BLOCK) -->
+  <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
         
-        <!-- BASIC / STARTER CARD --> 
-        <div class="price-card"> 
-            <h3>Basic</h3> 
-            <div class="amount">$499 <span>+ Gov Fees</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Essential DOT/MC number registration.</p> 
-            <ul class="price-features"> 
-                <li>USDOT Number Filing</li> 
-                <li>MC Number Application</li> 
-                <li>Digital Authority Vault</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to central wizard.html with starter plan tier parameters --> 
-            <a href="wizard.html?service=trucker-authority&plan=starter" class="btn-main" style="width: 100%; text-align: center; background: var(--navy); text-decoration: none;">Select Basic</a> 
-        </div> 
-
-        <!-- ELITE / COMPLIANCE CARD --> 
-        <div class="price-card featured"> 
-            <div class="price-badge">Most Popular</div> 
-            <h3>Elite</h3> 
-            <div class="amount">$899 <span>+ Gov Fees</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Full turn-key authority deployment.</p> 
-            <ul class="price-features"> 
-                <li>Everything in Basic</li> 
-                <li><strong>BOC-3 Processing</strong></li> 
-                <li>UCR Registration Link</li> 
-                <li>Priority 24h Review</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to central wizard.html with compliance plan tier parameters --> 
-            <a href="wizard.html?service=trucker-authority&plan=compliance" class="btn-main" style="width: 100%; text-align: center; text-decoration: none;">Select Elite</a> 
-        </div> 
-
-        <!-- ENTERPRISE CARD --> 
-        <div class="price-card"> 
-            <h3>Enterprise</h3> 
-            <div class="amount">$1,299 <span>+ Gov Fees</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Total fleet safety infrastructure.</p> 
-            <ul class="price-features"> 
-                <li>Everything in Elite</li> 
-                <li>Drug & Alcohol Consortium</li> 
-                <li>DQ File Management</li> 
-                <li>Dedicated Safety Expert</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to central wizard.html with enterprise plan tier parameters --> 
-            <a href="wizard.html?service=trucker-authority&plan=enterprise" class="btn-main" style="width: 100%; text-align: center; background: var(--navy); text-decoration: none;">Select Enterprise</a> 
-        </div> 
+        <!-- 📸 IMAGE COLUMN: Left side graphics wrapper -->
+        <div style="display: flex; justify-content: center; width: 100%;">
+          <img src="images/trucker-authority-growth.jpg" alt="Commercial dispatch team managing active fleet authority logs and carrier registration records" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+        </div>
         
-    </div> 
-</section>
+        <!-- 📝 TEXT COLUMN: Right side content -->
+        <div style="width: 100%; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Logistics Expansion</span>
+          <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
+            Activate Motor Carrier Status. <br><span style="color: #10b981;">Acquire High-Yield Freight Contracts.</span>
+          </h2>
+          <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Deploy compliant interstate transport frameworks and clean fleet parameters safely.</p>
+          <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Acquiring an active Motor Carrier (MC) number and USDOT index serves as the operational prerequisite for freight movement. Top tier brokers, commercial insurance pools, and digital loadboards reject basic carriage assignments without clean federal registrations. We structure your carrier records, verify asset configurations, and resolve processing loops securely.</p>
+          <a href="wizard.html?service=trucker-authority&plan=starter" class="agency-link" style="color: #10b981; font-weight: 700; text-decoration: none;">Explore Trucking Options &rarr;</a>
+        </div>
 
-
-
-<section class="faq-section">
-    <div class="hero-tag">Knowledge Base</div>
-    <h2 style="margin-bottom: 30px;">Common Questions</h2>
-    <div class="faq-grid">
-        <div class="faq-item">
-            <h4>What is an MC Number?</h4>
-            <p>Operating Authority (MC number) is required for companies that transport passengers or federally regulated commodities in interstate commerce.</p>
-        </div>
-        <div class="faq-item">
-            <h4>How long is the protest period?</h4>
-            <p>Once filed, the FMCSA mandates a 10-day protest period before your authority can be granted.</p>
-        </div>
-        <div class="faq-item">
-            <h4>Do I need insurance first?</h4>
-            <p>You can file for your MC number before getting insurance, but you must have it active within 20 days of filing.</p>
-        </div>
-        <div class="faq-item">
-            <h4>What is a BOC-3?</h4>
-            <p>It is a federal filing that designates process agents in every state in case of legal action against your fleet.</p>
-        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- SECTION 5: LATEST INSIGHTS (BLOG SECTION) -->
-<section class="blog-section unified-site-section">
-    <div class="section-alignment-wrapper">
-        <div class="hero-tag">Latest Insights</div>
-        <h2 style="margin-bottom: 40px;">Recent Compliance Updates</h2>
-        <div class="resource-grid" id="public-homepage-blog-grid-target">
-            <!-- 🌟 AUTOMATED SYNC HANDLER SPINNER -->
-            <div id="blog-loading-spinner">
-                <div class="spinner-animation-circle"></div>
-                <span>Gathering latest articles...</span>
-            </div>
+  <!-- SECTION: EXPERT LOG EVENT PANELS -->
+  <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f4f4; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+      
+      <div style="margin-bottom: 32px;">
+        <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">On-Demand Concierge</span>
+        <h2 style="color: #ffffff; font-size: 2.2rem; font-weight: 800; margin: 0 0 10px 0; line-height: 1.2;">Expert Processing Verification</h2>
+        <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin: 0;">Skip confusing federal portals and legacy paperwork steps. Every registration track undergoes specialized asset reviews.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- LOG EVENT 01 -->
+        <div class="border-glowing-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);">
+          <div>
+            <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; display: block;">Dedicated Fleet Authority Liaison</span>
+            <span style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block;">Direct corporate agent routing to resolve state structural exceptions and insurance blocks</span>
+          </div>
+          <span style="font-family: monospace; font-size: 0.8rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">INCLUDED</span>
         </div>
+        <!-- LOG EVENT 02 -->
+        <div class="border-glowing-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; box-shadow: 0 0 15px rgba(16, 185, 129, 0.05);">
+          <div>
+            <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; display: block;">Pre-Submission Data Sifting</span>
+            <span style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block;">Specialists manually verify unit strings, capital distributions, and state active registry lines</span>
+          </div>
+          <span style="font-family: monospace; font-size: 0.8rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2);">VERIFIED</span>
+        </div>
+      </div>
+
     </div>
-</section>
+  </section>
+ <!-- SECTION C: STARTUP EXPLORATION BLOCK (TEXT LEFT, IMAGE RIGHT) -->
+  <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
+        
+        <!-- 📝 TEXT COLUMN -->
+        <div style="width: 100%; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Growth Infrastructure</span>
+          <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
+            Logistics Launchpad. <br><span style="color: #10b981;">Engineered For Scale.</span>
+          </h2>
+          <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Transition your transport company vision into an officially filed legal structure.</p>
+          <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Accelerate your business journey with standardized incorporation frameworks. We automate initial tax registration allocations, structure multi-unit carrier credentials, process federal employer identification inputs (EIN), and queue data vectors for instant state record ingestion so you can authorize corporate bank accounts and sign commercial leases safely.</p>
+          <a href="wizard.html?service=trucker-authority&plan=starter" class="agency-link" style="color: #10b981; font-weight: 700; text-decoration: none;">Form Your Entity &rarr;</a>
+        </div>
 
+        <!-- 📸 IMAGE COLUMN -->
+        <div style="display: flex; justify-content: center; width: 100%;">
+          <img src="images/trucker-scale.jpg" alt="Fleet team managing commercial transport structural parameters" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+        </div>
 
- <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
-<footer class="site-footer"> 
-    <div class="footer-container"> 
-        <div class="footer-brand"> 
-    <!-- 🔄 FIXED: Wrapped the brand logo in a link pointing to the homepage and increased height to 48px -->
-    <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-        <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;">
-    </a>
-    
-    <p>Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.</p> 
-    
-    <div style="margin-top: 25px; display: flex; gap: 15px;"> 
-        <!-- LinkedIn -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 🌐 SECTION E: ENTERPRISE SUBSCRIPTION CAPTURE MATRIX -->
+  <section style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+    <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
+        
+        <div style="width: 100%; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.08); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;">Compliance Bulletins</span>
+          <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; line-height: 1.15; letter-spacing: -0.5px;">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
+          <p style="color: #475569; font-size: 1.05rem; line-height: 1.6; margin: 0; max-width: 580px;">Get actionable corporate filing advice, state requirement deadline warnings, and transportation policy shift breakdowns sent straight to your box. Zero clutter. Direct alignment updates.</p>
+        </div>
+
+        <div style="width: 100%; box-sizing: border-box;">
+          <form action="#" method="POST" style="display: flex; gap: 14px; width: 100%; background: #ffffff; border: 1px solid #f1f5f9; padding: 20px; border-radius: 16px; box-shadow: 0 20px 40px rgba(10,31,68,0.06), 0 1px 3px rgba(10,31,68,0.02);">
+            <input type="email" placeholder="Enter your business email..." required aria-label="Business Email" style="flex: 1; padding: 16px 22px; font-size: 0.95rem; font-weight: 500; border-radius: 8px; border: none; background: #ffffff; color: #0a1f44; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08); transition: box-shadow 0.25s ease;" onfocus="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.02), 0 0 0 3px rgba(16, 185, 129, 0.15), 0 0 0 1px #10b981'" onblur="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08)'">
+            <button type="submit" style="background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 0.95rem; padding: 0 32px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#0e9f6e'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#10b981'; this.style.transform='translateY(0)';">Subscribe</button>
+          </form>
+          <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #64748b; padding-left: 4px;">
+            <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🛡️ ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section> <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+<footer class="site-footer" style="position: relative; overflow: hidden;"> 
+  <!-- Tech Vector Network Grid Background Layer --> 
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+  <div class="footer-container"> 
+    <div class="footer-brand"> 
+      <!-- 🔄 FIXED: Wrapped the brand logo in a link pointing to the homepage and increased height to 48px --> 
+      <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"> 
+        <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;"> 
+      </a> 
+      <p>Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.</p> 
+      <div style="margin-top: 25px; display: flex; gap: 15px;"> 
+        <!-- LinkedIn --> 
         <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
-            <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg> 
+          <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg> 
         </a> 
-        
-        <!-- YouTube -->
+        <!-- YouTube --> 
         <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
-            <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg> 
+          <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg> 
         </a> 
-        
-        <!-- X -->
+        <!-- X --> 
         <a href="https://x.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
-            <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg> 
+          <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg> 
         </a> 
+      </div> 
     </div> 
-</div>
-
-        <div class="footer-col"> 
-            <h4>Formations</h4> 
-            <ul> 
-                <li><a href="limited-liability-company.html">LLC Formation</a></li> 
-                <li><a href="corporations.html">Corporations</a></li> 
-                <li><a href="nonprofits.html">Non-Profits</a></li> 
-                <li><a href="registered-agent.html">Registered Agent</a></li> 
-                <li><a href="employer-identification-number-ein.html">Tax ID (EIN)</a></li> 
-            </ul> 
-        </div> 
-        <div class="footer-col"> 
-            <h4>Fleet & DOT</h4> 
-            <ul> 
-                <li><a href="ucr-registration.html">UCR Registration</a></li> 
-                <li><a href="international-fuel-tax-agreement-ifta.html">IFTA Filings</a></li> 
-                <li><a href="trucker-authority.html">DOT Authority</a></li> 
-                <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li> 
-                <li><a href="heavy-use-tax-2290.html">Form 2290</a></li> 
-            </ul> 
-        </div> 
-        <!-- 🔄 NEW SECTION: Tax & Filings --> 
-        <div class="footer-col"> 
-            <h4>Tax & Filings</h4> 
-            <ul> 
-                <li><a href="federal-income-tax.html">Federal Income Tax</a></li> 
-                <li><a href="state-income-tax.html">State Income Tax</a></li> 
-                <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li> 
-                <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li> 
-                <li><a href="franchise-tax.html">Franchise Tax Filing</a></li> 
-            </ul> 
-        </div> 
-        <div class="footer-col"> 
-            <h4>Support</h4> 
-            <ul> 
-                <li><a href="https://portal.filings4u.com/portal-login.html">Client Portal</a></li> 
-                <li><a href="compliance.html">Compliance Hub</a></li> 
-                <li><a href="contact.html">Contact Experts</a></li> 
-                <li><a href="annual-reports.html">Annual Reports</a></li> 
-                <li><a href="blog.html">Resource Library</a></li> 
-            </ul> 
-        </div> 
+    <div class="footer-col"> 
+      <h4>Formations</h4> 
+      <ul> 
+        <li><a href="limited-liability-company.html">LLC Formation</a></li> 
+        <li><a href="corporations.html">Corporations</a></li> 
+        <li><a href="nonprofits.html">Non-Profits</a></li> 
+        <li><a href="registered-agent.html">Registered Agent</a></li> 
+        <li><a href="employer-identification-number-ein.html">Tax ID (EIN)</a></li> 
+      </ul> 
     </div> 
-    <div class="footer-bottom"> 
-        <div> 
-            <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;"> &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a> </p> </div> 
-        
-        <!-- 🔄 FIXED SECURE BADGE CONTAINER: Injected absolute block inline resets to override conflict issues -->
-        <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
-            <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection 
-        </div> 
-        
-        <div class="legal-links"> 
-            <a href="privacy-policy.html">Privacy Policy</a> 
-            <a href="terms-of-service.html">Terms of Service</a> 
-            <a href="refund-policy.html">Refund Policy</a> 
-        </div> 
+    <div class="footer-col"> 
+      <h4>Fleet & DOT</h4> 
+      <ul> 
+        <li><a href="ucr-registration.html">UCR Registration</a></li> 
+        <li><a href="international-fuel-tax-agreement-ifta.html">IFTA Filings</a></li> 
+        <li><a href="trucker-authority.html">DOT Authority</a></li> 
+        <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li> 
+        <li><a href="heavy-use-tax-2290.html">Form 2290</a></li> 
+      </ul> 
     </div> 
+    <!-- 🔄 NEW SECTION: Tax & Filings --> 
+    <div class="footer-col"> 
+      <h4>Tax & Filings</h4> 
+      <ul> 
+        <li><a href="federal-income-tax.html">Federal Income Tax</a></li> 
+        <li><a href="state-income-tax.html">State Income Tax</a></li> 
+        <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li> 
+        <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li> 
+        <li><a href="franchise-tax.html">Franchise Tax Filing</a></li> 
+      </ul> 
+    </div> 
+    <div class="footer-col"> 
+      <h4>Support</h4> 
+      <ul> 
+        <li><a href="https://portal.filings4u.com/portal-login.html">Client Portal</a></li> 
+        <li><a href="compliance.html">Compliance Hub</a></li> 
+        <li><a href="contact.html">Contact Experts</a></li> 
+        <li><a href="annual-reports.html">Annual Reports</a></li> 
+        <li><a href="blog.html">Resource Library</a></li> 
+      </ul> 
+    </div> 
+  </div> 
+  <div class="footer-bottom"> 
+    <div> 
+      <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;"> &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a> </p> 
+    </div> 
+    <!-- 🔄 FIXED SECURE BADGE CONTAINER: Injected absolute block inline resets to override conflict issues --> 
+    <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
+      <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection </div> 
+    <div class="legal-links"> 
+      <a href="privacy-policy.html">Privacy Policy</a> 
+      <a href="terms-of-service.html">Terms of Service</a> 
+      <a href="refund-policy.html">Refund Policy</a> 
+    </div> 
+  </div> 
 </footer>
 
+
 <script src="assets/js/toggle.js"></script>
-<script src="assets/js/master.js"></script>
 
 <!-- 🔼 SCROLL TO TOP FLOATING INTERFACE -->
 <button id="scrollToTopBtn" aria-label="Scroll to top" class="scroll-to-top-btn">
@@ -369,7 +422,6 @@
         <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
     </svg>
 </button>
-
 
 </body>
 </html>

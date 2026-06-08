@@ -1,0 +1,184 @@
+// ============================================================================
+// 🛠️ COMPILER ENGINE: SINGLE FILE AUTOMATION PLATFORM (PART 1 OF 3)
+// ============================================================================
+const fs = require('fs');
+const path = require('path');
+
+// 📦 CORE SERVICE DICTIONARY MATRIX
+const GLOBAL_COMPANY_PRICING = {
+    "limited-liability-company": { 
+        name: "LLC Formation", 
+        starter: 99.00, 
+        compliance: 199.00, 
+        enterprise: 299.00, 
+        pill: "Launch Infrastructure", 
+        main: "Turn Your Business Idea Into A", 
+        accent: "Recognized Legal Entity.", 
+        desc: "Protect your personal assets and gain tax flexibility. We handle your Articles of Organization, state registry communication, and structural setup overnight under a secure corporate architecture." 
+    },
+    "corporations": { 
+        name: "Corporations (C/S-Corp)", 
+        starter: 129.00, 
+        compliance: 249.00, 
+        enterprise: 599.00, 
+        pill: "Enterprise Formations", 
+        main: "Scale Your Corporate Venture With", 
+        accent: "Institutional Shields.", 
+        desc: "Form an optimized C-Corp or S-Corp structure to issue stocks, attract investment capital, and secure market protection. Includes comprehensive bylaws, name availability searches, and state filing coordination." 
+    },
+    "sole-proprietorship": { 
+        name: "Sole Proprietorship", 
+        starter: 79.00, 
+        compliance: 159.00, 
+        enterprise: 239.00, 
+        pill: "Main Street Setup", 
+        main: "Establish Your Local Venture With", 
+        accent: "Total Legal Peace of Mind.", 
+        desc: "Protect your independent project with structural documentation templates built for solo operators. We process your municipal tax setups, business licensing checkups, and initial registrations under a clean company framework." 
+    },
+    "doing-business-as-dba": { 
+        name: "DBA Registration", 
+        starter: 39.00, 
+        compliance: 99.00, 
+        enterprise: 159.00, 
+        pill: "Trade Name Authority", 
+        main: "Register Your Official Fictitious Name", 
+        accent: "Across Local Jurisdictions.", 
+        desc: "Operate under an optimized brand identity without forming a completely separate corporation. Our framework handles county filing rules, corporate publication records, and state-wide DBA registries under an automated tracking platform." 
+    },
+    "nonprofits": { 
+        name: "Nonprofit Organization", 
+        starter: 149.00, 
+        compliance: 299.00, 
+        enterprise: 499.00, 
+        pill: "Mission Infrastructure", 
+        main: "Form Your Mission-Driven Venture With", 
+        accent: "Solid Regulatory Approval.", 
+        desc: "Accelerate your philanthropic foundation or association setup with robust incorporation parameters. We automate your structural Articles of Incorporation and build compliant corporate governance frameworks." 
+    }
+};
+
+
+// ============================================================================
+// 📁 MODULE 2: DESIGN STRUT ENGINE & BILLING MATRICES (PART 2 OF 3)
+// ============================================================================
+
+// 🗺️ DESIGN LAYOUT A (TEXT LEFT, IMAGE RIGHT)
+function buildLayoutA(slug, data, pricingCards) {
+    return `
+    <main class="page-container" style="background: #ffffff !important; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 1450px; box-sizing: border-box; margin: 0 auto;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
+                <article class="content-area" style="width: 100%; box-sizing: border-box;">
+                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${data.pill}</span>
+                    <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">${data.main}<br><span style="color: #10b981;">${data.accent}</span></h1>
+                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 32px 0;">${data.desc}</p>
+                </article>
+                <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
+                    <img src="images/startup-launch.jpg" alt="${data.name}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25);">
+                </aside>
+            </div>
+        </div>
+    </main>
+    ${pricingCards}`;
+}
+
+// 🗺️ DESIGN LAYOUT B (IMAGE LEFT, TEXT RIGHT)
+function buildLayoutB(slug, data, pricingCards) {
+    return `
+    <section style="background: #ffffff !important; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
+                <div style="display: flex; justify-content: center; width: 100%;">
+                    <img src="images/regulatory-compliance.jpg" alt="${data.name}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25);">
+                </div>
+                <div style="width: 100%; box-sizing: border-box;">
+                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${data.pill}</span>
+                    <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">${data.main}<br><span style="color: #10b981;">${data.accent}</span></h2>
+                    <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 32px 0;">${data.desc}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    ${pricingCards}`;
+}
+
+// 💳 GENERATE PRICING MATRIX HTML
+function buildPricingCards(slug, data) {
+    return `
+    <section id="pricing" style="background:#ffffff !important; max-width:1450px !important; width:100% !important; margin:60px auto !important; padding:0 40px !important; box-sizing:border-box !important;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:30px; width:100%; box-sizing:border-box;">
+            <div style="border:1px solid rgba(10,31,68,0.1); padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between;">
+                <div><h3>Basic Plan</h3><div style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$${data.starter.toFixed(2)}</div></div>
+                <a href="wizard.html?service=${slug}&plan=starter" style="width:100%; text-align:center; padding:12px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#10b981; display:block;">Select Basic</a>
+            </div>
+            <div style="border:1px solid #10b981; padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">
+                <div style="position:absolute; top:-12px; background:#10b981; color:#fff; font-size:0.75rem; padding:4px 12px; border-radius:20px; font-weight:800;">Most Popular</div>
+                <div><h3>Elite Plan</h3><div style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$${data.compliance.toFixed(2)}</div></div>
+                <a href="wizard.html?service=${slug}&plan=compliance" style="width:100%; text-align:center; padding:12px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#0a1f44; display:block;">Select Elite</a>
+            </div>
+            <div style="border:1px solid rgba(10,31,68,0.1); padding:32px 24px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between;">
+                <div><h3>Enterprise Plan</h3><div style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin-bottom:20px;">$${data.enterprise.toFixed(2)}</div></div>
+                <a href="wizard.html?service=${slug}&plan=enterprise" style="width:100%; text-align:center; padding:12px; border-radius:6px; color:#fff; text-decoration:none; font-weight:700; background:#10b981; display:block;">Select Enterprise</a>
+            </div>
+        </div>
+    </section>`;
+}
+
+
+// ============================================================================
+// ⚙️ MODULE 3: PRODUCTION MASS COMPILATION ROUTINE (PART 3 OF 3)
+// ============================================================================
+function compileAllPages() {
+    // 🌐 SHARED STRUCTURE: Global Navigation Header Matrix
+    const headerHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} | filings4u</title>
+    <link rel="stylesheet" href="assets/css/master.css">
+    <link rel="stylesheet" href="assets/css/master-mobile.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-content-wrapper">
+            <a href="index.html"><img src="images/logo.png" style="height:40px;"></a>
+        </div>
+    </nav>`;
+    
+    // 🌐 SHARED STRUCTURE: Global Corporate Footer Matrix
+    const footerHtml = `
+    <footer style="background:#0a1f44; color:#fff; padding:60px 40px; text-align:center;">
+        <p>&copy; 2026 filings4u. All rights reserved.</p>
+    </footer>
+</body>
+</html>`;
+
+    let fileCounter = 0;
+    
+    // Process every single profile defined inside Part 1
+    Object.keys(GLOBAL_COMPANY_PRICING).forEach((slug, index) => {
+        const item = GLOBAL_COMPANY_PRICING[slug];
+        const pricingCards = buildPricingCards(slug, item);
+        
+        // Alternates designs smoothly: Even positions get Layout A, Odd positions get Layout B
+        const layoutContent = (index % 2 === 0) 
+            ? buildLayoutA(slug, item, pricingCards) 
+            : buildLayoutB(slug, item, pricingCards);
+
+        // Splice all components tightly into a pure standalone page
+        const absolutePageHtml = headerHtml.replace('{{TITLE}}', item.name) + layoutContent + footerHtml;
+        
+        // Write file cleanly onto your directory path context
+        fs.writeFileSync(path.join(process.cwd(), `${slug}.html`), absolutePageHtml, 'utf8');
+        fileCounter++;
+    });
+
+    console.log(`\n====================================================`);
+    console.log(`✅ SUCCESS: ${fileCounter} Independent Landing Pages Compiled!`);
+    console.log(`====================================================\n`);
+}
+
+// Fire off the generation routine process
+compileAllPages();
