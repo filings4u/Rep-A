@@ -1142,3 +1142,64 @@
         padding-bottom: 15px !important;
     }
 }
+
+/* 7. Dynamic Mobile Viewports Scaling Adjustments */
+@media (max-width: 768px) {
+  #articleViewContentWrapper {
+    padding: 40px 16px 60px 16px;
+  }
+  
+  #articleViewContentWrapper h1 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+  }
+  
+  .article-hero-image {
+    max-height: 280px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+  }
+  
+  .article-body-content {
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+}
+
+
+@keyframes academyRotate {
+  to { transform: rotate(360deg); }
+}
+
+/* 6. Dynamic Responsive Breakpoints */
+@media (max-width: 768px) {
+  .academy-content-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .filter-slat-container {
+    padding: 14px 0;
+  }
+}
+
+/* Cascading style layer modifications for narrow viewport profiles */
+@media (max-width: 580px) {
+  #compliance-subscribe-form {
+    flex-direction: column !important; /* Stacks the input field and button vertically */
+    padding: 16px !important;
+  }
+  
+  #subscribe-button {
+    padding: 16px 32px !important; /* Matches vertical thickness height scaling */
+    width: 100% !important;        /* Expands button to fill container footprint width */
+  }
+}
+
+
+@media (max-width: 991px) {
+  #articleViewContentWrapper {
+    margin-top: 90px !important; /* Slightly tighter top spacing for mobile display layouts */
+    flex-direction: column !important;
+    gap: 40px !important;
+  }
+}
