@@ -509,49 +509,58 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.addons, {
 
 
 // ============================================================================ //
-// 🛠️ MODULE 4: AUTOMATED WEBSITE SALES-CARD RENDER ENGINE                     //
+// 🛠️ MODULE 4: AUTOMATED WEBSITE SALES-CARD RENDER ENGINE (SYNCHRONIZED READY)
 // ============================================================================ //
-document.addEventListener("DOMContentLoaded", function() {
-  var targetContainer = document.getElementById("website-package-pricing-cards-root");
-  if (!targetContainer || !window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) return;
+function renderMainWebsitePricingCards(passedServiceKey) {
+    var targetContainer = document.getElementById("website-package-pricing-cards-root");
+    if (!targetContainer || !window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) return;
 
-  var targetServiceKey = targetContainer.getAttribute("data-service-key") || "llc-formation";
-  var serviceData = window.GLOBAL_COMPANY_PRICING.packages[targetServiceKey];
-  if (!serviceData) return;
+    // Synchronize parameter calculations with your content engine runtime slug keys
+    var targetServiceKey = passedServiceKey || targetContainer.getAttribute("data-service-key") || "llc-formation";
+    var serviceData = window.GLOBAL_COMPANY_PRICING.packages[targetServiceKey];
+    
+    // SAFE FALLBACK: If specific service package variables are missing, default to llc-formation price grids
+    if (!serviceData) {
+        console.warn("Pricing parameters missing for slug key [" + targetServiceKey + "]. Utilizing formation default arrays.");
+        serviceData = window.GLOBAL_COMPANY_PRICING.packages["llc-formation"];
+    }
+    if (!serviceData) return; // Exit if fallback is completely empty
 
-  var cardsHtml = "";
-  var plansConfig = [
-    { key: "starter", name: "Basic", class: "price-card", btnStyle: "background: var(--navy);" },
-    { key: "compliance", name: "Elite", class: "price-card featured", btnStyle: "" },
-    { key: "enterprise", name: "Enterprise", class: "price-card", btnStyle: "background: var(--navy);" }
-  ];
+    var cardsHtml = "";
+    var plansConfig = [
+        { key: "starter", name: "Basic", class: "price-card", btnStyle: "background: var(--navy);" },
+        { key: "compliance", name: "Elite", class: "price-card featured", btnStyle: "" },
+        { key: "enterprise", name: "Enterprise", class: "price-card", btnStyle: "background: var(--navy);" }
+    ];
 
-  plansConfig.forEach(function(plan) {
-    var basePrice = serviceData[plan.key] || 0;
-    var bullets = (serviceData.bullets && serviceData.bullets[plan.key]) ? serviceData.bullets[plan.key] : [];
-    var bulletListHtml = "";
+    plansConfig.forEach(function(plan) {
+        var basePrice = serviceData[plan.key] || 0;
+        var bullets = (serviceData.bullets && serviceData.bullets[plan.key]) ? serviceData.bullets[plan.key] : [];
+        var bulletListHtml = "";
+        bullets.forEach(function(bulletText) {
+            bulletListHtml += '<li>' + bulletText + '</li>';
+        });
 
-    bullets.forEach(function(bulletText) {
-      bulletListHtml += '<li>' + bulletText + '</li>';
+        var badgeHtml = (plan.key === "compliance") ? '<div class="price-badge">Most Popular</div>' : '';
+        
+        // FIXED WIZARD REDIRECT LINK: Explicitly forwards the exact custom topic page slug parameter
+        cardsHtml += '<div class="' + plan.class + '">' + badgeHtml + '<h3>' + plan.name + '</h3>' +
+                     '<div class="amount">$' + basePrice.toFixed(2) + ' <span>+ State Fee</span></div>' +
+                     '<ul class="price-features">' + bulletListHtml + '</ul>' +
+                     '<a href="wizard.html?service=' + targetServiceKey + '&plan=' + plan.key + '" class="btn-main" style="width: 100%; text-align: center; ' + plan.btnStyle + '">Select ' + plan.name + '</a>' +
+                     '</div>';
     });
 
-    var badgeHtml = (plan.key === "compliance") ? '<div class="price-badge">Most Popular</div>' : '';
+    targetContainer.innerHTML = '<section id="pricing" class="pricing-section">' +
+                                '<span class="hero-tag">Deployment Tiers</span>' +
+                                '<h2>Transparent formation pricing.</h2>' +
+                                '<div class="pricing-grid">' + cardsHtml + '</div>' +
+                                '</section>';
+}
 
-    cardsHtml += '<div class="' + plan.class + '">' +
-                 badgeHtml +
-                 '<h3>' + plan.name + '</h3>' +
-                 '<div class="amount">$' + basePrice.toFixed(2) + ' <span>+ State Fee</span></div>' +
-                 '<ul class="price-features">' + bulletListHtml + '</ul>' +
-                 '<a href="wizard.html?service=' + targetServiceKey + '&plan=' + plan.key + '" class="btn-main" style="width: 100%; text-align: center; ' + plan.btnStyle + '">Select ' + plan.name + '</a>' +
-                 '</div>';
-  });
 
-  targetContainer.innerHTML = '<section id="pricing" class="pricing-section">' +
-                              '<span class="hero-tag">Deployment Tiers</span>' +
-                              '<h2>Transparent formation pricing.</h2>' +
-                              '<div class="pricing-grid">' + cardsHtml + '</div>' +
-                              '</section>';
-});
+
+
 // ============================================================================ //
 // 🏛️ MODULE 5: STATE FILING FEES DATA LAYER (PART 1: AL - MO)                  //
 // ============================================================================ //

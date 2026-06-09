@@ -1562,30 +1562,43 @@ function compileFullTemplateLayoutHtml(data) {
     return out;
 }
 
+// SMART RUNTIME CONTROLLER AND INITIALIZATION MANAGER
 function renderMasterSystem() {
     const activeKey = getUnifiedServiceKey();
-    const pageData = GLOBAL_SEO_CONTENT_MAP[activeKey];
+    let pageData = GLOBAL_SEO_CONTENT_MAP[activeKey];
+    
+    // Auto-generation fallback logic parameters layer
     if (!pageData) {
-        console.warn('Missing content map parameters for key: ' + activeKey);
-        return;
+        console.warn("Mismatched map slug tracking for: " + activeKey + ". Triggering auto-copy builder.");
+        const titleText = activeKey.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        pageData = {
+            title: titleText, pricingKey: activeKey, seoTitle: titleText + " Services | filings4u",
+            heroPill: "Enterprise Ecosystem", heroHeadline: "The Hub for <br><span style='color:#10b981;'>Total " + titleText + ".</span>",
+            heroBody: "Automate your corporate structures, regulatory deadlines, and registrations directly from one single dashboard.",
+            heroBadge: "Active Sync: 10,000+ Verified", heroImage: "images/hero-image.jpg",
+            secBPill: "Main Street Growth", secBHeadline: "Neighborhood Focus.", secBSub: "Streamlined data scheduling.", secBBody: "Protect your project seamlessly.", secBImage: "images/local-business.jpg",
+            secCPill: "Launch Infrastructure", secCHeadline: "Startup Launchpad.", secCSub: "Turn your business idea into reality.", secCBody: "Accelerate your setup frameworks smoothly.", secCImage: "images/startup-launch.jpg",
+            secDPill: "Guaranteed Audit Protection", secDHeadline: "Institutional Shield.", secDSub: "Active cloud status defense.", secDBody: "Avoid expensive penalties automatically.", secDImage: "images/regulatory-compliance.jpg"
+        };
     }
-    document.title = pageData.title + ' | filings4u';
-    let metaDescTag = document.querySelector('meta[name="description"]');
-    if (!metaDescTag) {
-        metaDescTag = document.createElement('meta');
-        metaDescTag.setAttribute('name', 'description');
-        document.head.appendChild(metaDescTag);
-    }
-    metaDescTag.setAttribute('content', pageData.heroBody.substring(0, 150));
+
+    document.title = pageData.seoTitle || (pageData.title + ' | filings4u');
+    
     const pricingRoot = document.getElementById('website-package-pricing-cards-root');
     if (pricingRoot) {
         pricingRoot.setAttribute('data-service-key', pageData.pricingKey || activeKey);
         pricingRoot.style.cssText = 'width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; display: block !important;';
     }
+    
     const dynamicSectionsRoot = document.getElementById('dynamic-sections-root');
     if (dynamicSectionsRoot) {
         dynamicSectionsRoot.innerHTML = compileFullTemplateLayoutHtml(pageData);
-        console.log('✅ Content Engine: Loaded all 5 color-swapping sections safely.');
+        console.log('✅ Content Engine: Loaded template marketing sections for [' + activeKey + ']');
+    }
+
+    // ⚡ THE HANDSHAKE HANDLER: Explicitly wakes up your state-pricing.js engine right now using the correct key parameters!
+    if (typeof renderMainWebsitePricingCards === "function") {
+        renderMainWebsitePricingCards(pageData.pricingKey || activeKey);
     }
 }
-document.addEventListener('DOMContentLoaded', renderMasterSystem);
+document.addEventListener("DOMContentLoaded", renderMasterSystem);
