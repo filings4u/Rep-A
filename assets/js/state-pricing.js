@@ -3,6 +3,7 @@
 // ============================================================================ //
 window.GLOBAL_COMPANY_PRICING = window.GLOBAL_COMPANY_PRICING || { packages: {}, addons: {} };
 
+
 Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
   "llc-formation": {
     name: "LLC Formation",
