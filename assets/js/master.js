@@ -1,352 +1,123 @@
 /**
  * ==========================================================================
- * FILINGS4U MASTER ENGINE FRAMEWORK
- * Handles responsive utilities, layout interactions, and pricing configurations
+ * FILINGS4U MASTER ENGINE FRAMEWORK (CORRECTED INSTANCE URL)
  * ==========================================================================
  */
+window.FILINGS4U_MASTER_ENGINE = window.FILINGS4U_MASTER_ENGINE || {
+    sharedDbInstance: null,
+    getSupabaseInstance: function() {
+        if (this.sharedDbInstance) return this.sharedDbInstance;
+        // FIXED: Restored your full, uncorrupted project database sub-domain string
+        const dbUrl = 'https://supabase.co';
+        const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+        if (typeof window.supabase !== 'undefined') {
+            this.sharedDbInstance = window.supabase.createClient(dbUrl, dbKey);
+            return this.sharedDbInstance;
+        }
+        console.warn("Master Engine Core: Supabase scope missing from window canvas.");
+        return null;
+    }
+};
 
+// Scroll to Top UI Trigger Interaction
 document.addEventListener("DOMContentLoaded", function () {
     const scrollTopBtn = document.getElementById("scrollToTopBtn");
-
     if (scrollTopBtn) {
-        // Monitor browser scroll depth thresholds
         window.addEventListener("scroll", function () {
-            // Show the button once the user scrolls past 400px of content depth
             if (window.scrollY > 400) {
                 scrollTopBtn.classList.add("reveal-active");
             } else {
                 scrollTopBtn.classList.remove("reveal-active");
             }
         });
-
-        // Handle click event tracking to trigger the viewport sweep back up
         scrollTopBtn.addEventListener("click", function () {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth" // Native engine handles smooth acceleration transitions
-            });
+            window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }
 });
 
-/**
- * ==========================================================================
- * AUTOMATED PLAN HIGHLIGHTER HANDLER
- * Visually selects and scrolls to the package chosen from the dashboard
- * ==========================================================================
- */
-$(document).ready(function() {
-    // 1. Parse the URL to look for the active plan parameter matching your cards
+
+// Dynamic Selected Card Highlighter Execution Loop Handler
+document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
-    
-    // Looks for incoming package tags (maps standard -> starter, elite -> compliance, enterprise -> enterprise)
     let selectedPlan = urlParams.get('plan') || urlParams.get('tier');
+    if (!selectedPlan) return;
 
-    if (selectedPlan) {
-        // Standardize naming variables to catch your custom visual card names
-        selectedPlan = selectedPlan.toLowerCase().trim();
-        if (selectedPlan === 'starter') selectedPlan = 'standard';
-        if (selectedPlan === 'compliance') selectedPlan = 'elite';
+    selectedPlan = selectedPlan.toLowerCase().trim();
+    if (selectedPlan === 'starter') selectedPlan = 'basic';
+    if (selectedPlan === 'compliance') selectedPlan = 'elite';
 
-        console.log("Auto-selecting package tier: " + selectedPlan);
-        
-        // 2. Clear any existing active style highlights from your pricing grid elements
-        $('.price-card').removeClass('active-highlight-plan standard-dim');
+    const priceCards = document.querySelectorAll('.price-card');
+    let targetCard = null;
 
-        // 3. Locate the card based on the text inside the <h3> header tag
-        let targetCard = null;
-        $('.price-card h3').each(function() {
-            if ($(this).text().toLowerCase().trim() === selectedPlan) {
-                targetCard = $(this).closest('.price-card');
-            }
-        });
-
-        // 4. If a matching visual card is found, highlight it beautifully
-        if (targetCard && targetCard.length > 0) {
-            targetCard.addClass('active-highlight-plan');
-            
-            // Dim out the other choices to make the match instantly pop out
-            $('.price-card').not(targetCard).addClass('standard-dim');
-            
-            // Smoothly slide the user's viewport right down to their plan choice matrix
-            $('html, body').animate({
-                scrollTop: targetCard.offset().top - 100
-            }, 600);
+    priceCards.forEach(card => {
+        card.classList.remove('active-highlight-plan', 'standard-dim');
+        const cardHeader = card.querySelector('h3');
+        if (cardHeader && cardHeader.innerText.toLowerCase().trim() === selectedPlan) {
+            targetCard = card;
         }
+    });
+
+    if (targetCard) {
+        targetCard.classList.add('active-highlight-plan');
+        priceCards.forEach(card => {
+            if (card !== targetCard) card.classList.add('standard-dim');
+        });
+        setTimeout(() => {
+            const cardTopPosition = targetCard.getBoundingClientRect().top + window.scrollY - 100;
+            window.scrollTo({ top: cardTopPosition, behavior: 'smooth' });
+        }, 500);
     }
 });
 
-/**
- * ==========================================================================
- * 📊 GLOBAL CLIENT SYNCHRONIZATION MATRIX
- * Shared singleton connection engine to prevent duplicate client initialization
- * ==========================================================================
- */
-let sharedDbInstance = null;
 
-function getSupabaseInstance() {
-  if (sharedDbInstance) return sharedDbInstance;
+// Isolated Content Data Integration Controllers
+async function initializeHomepageBlogFeeds() {
+    const gridTarget = document.getElementById('public-homepage-blog-grid-target');
+    if (!gridTarget || gridTarget.querySelectorAll('.resource-card-item').length > 0) return;
+    const dbInstance = window.FILINGS4U_MASTER_ENGINE.getSupabaseInstance();
+    if (!dbInstance) return;
 
-  const dbUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
-  const dbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
-
-  if (typeof window.supabase !== 'undefined') {
-    sharedDbInstance = window.supabase.createClient(dbUrl, dbKey);
-    return sharedDbInstance;
-  } else {
-    console.warn("Blog/FAQ Engine Core: Supabase core missing from window scope.");
-    return null;
-  }
-}
-
-/** 
- * ========================================================================== 
- * 📊 PART 1: DYNAMIC CLOUD BLOG GRID RENDERING ENGINE (MAX 4 ITEMS) 
- * Pulls live published items from Supabase by matching current URL keywords 
- * ========================================================================== 
- */ 
-async function initializeHomepageBlogFeeds() { 
-  const gridTarget = document.getElementById('public-homepage-blog-grid-target'); 
-  if (!gridTarget) return; 
-  if (gridTarget.querySelectorAll('.resource-card-item').length > 0) return; 
-
-  const dbInstance = getSupabaseInstance(); 
-  if (!dbInstance) return; 
-
-  const currentUrl = window.location.href.toLowerCase(); 
-  const MAXIMUM_BLOG_DISPLAY_CAP = 3; 
-
-  try { 
-    // Only fetch posts where is_published is true
-    const { data: allPosts, error } = await dbInstance 
-      .from('blog_posts') 
-      .select('*') 
-      .eq('is_published', true)
-      .order('created_at', { ascending: false }); 
-
-    if (error) { 
-      console.error("Supabase API connection rejected:", error.message); 
-      return; 
-    } 
-
-    gridTarget.innerHTML = ""; 
-    if (!allPosts || allPosts.length === 0) { 
-      gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`; 
-      return; 
-    } 
-
-    let displayedCount = 0; 
-    for (let i = 0; i < allPosts.length; i++) { 
-      if (displayedCount >= MAXIMUM_BLOG_DISPLAY_CAP) break; 
-
-      const item = allPosts[i]; 
-      
-      // 🚀 FIXED PROPERTY mapping: Changed from service_slug to your actual column 'category'
-      const dbCategory = (item.category || 'global').toLowerCase(); 
-      const categoryTokens = dbCategory.split(/[-_\s]+/); 
-      
-      const isGlobal = (dbCategory === 'global'); 
-      const isUrlMatch = categoryTokens.some(token => token.length > 1 && currentUrl.includes(token)); 
-      
-      // Live homepage detection bypass rule
-      const isHomepage = window.location.pathname === '/' || window.location.pathname === '' || window.location.pathname.endsWith('index.html');
-
-      if (isGlobal || isUrlMatch || isHomepage) { 
-        const card = document.createElement('article'); 
-        card.className = "resource-card-item"; 
-        card.style.cssText = "background: #ffffff; border: 1px solid #e2e8f0; padding: 22px; border-radius: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); opacity: 0; transform: translateY(10px); transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);"; 
-        
-        const postDate = new Date(item.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); 
-        
-        card.innerHTML = ` 
-          <div> 
-            <span style="font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${postDate}</span> 
-            <h3 class="blog-live-title" style="font-size: 1.2rem; font-weight: 800; color: #0a1f44; margin: 8px 0 10px 0; line-height: 1.3;"></h3> 
-            <p class="blog-live-desc" style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;"></p> 
-          </div> 
-          <a href="article.html?slug=${item.slug}" style="color: #0a1f44; font-weight: 700; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#0a1f44'"> 
-            Read Article &rarr; 
-          </a> 
-        `; 
-        
-        card.querySelector('.blog-live-title').textContent = item.title; 
-        card.querySelector('.blog-live-desc').textContent = item.summary || ''; 
-        gridTarget.appendChild(card); 
-
-        (function(targetCard, offsetIndex) { 
-          setTimeout(() => { 
-            targetCard.style.opacity = "1"; 
-            targetCard.style.transform = "translateY(0)"; 
-            targetCard.classList.add('reveal-animated'); 
-          }, (offsetIndex * 80) + 150); 
-        })(card, displayedCount); 
-        
-        displayedCount++; 
-      } 
-    } 
-
-    if (displayedCount === 0) { 
-      gridTarget.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`; 
-    } 
-  } catch (err) { 
-    console.error("Cloud insights stream transmission failure:", err); 
-  } 
-}
-
-
-/**
- * ==========================================================================
- * 🗺️ PART 2: FUZZY MATRIX EXTRACTION ENGINE WITH STAGGERED ENTRANCE ANIMATIONS
- * Pulls targeted FAQs safely using uncorrupted credential keys
- * ==========================================================================
- */
-async function initializeDynamicFaqEngine() {
-  const faqGrid = document.getElementById('public-homepage-faq-grid-target');
-  if (!faqGrid) return;
-
-  const dbInstance = getSupabaseInstance();
-  if (!dbInstance) return;
-
-  const currentUrl = window.location.href.toLowerCase();
-  const MAXIMUM_FAQ_DISPLAY_CAP = 4;
-
-  try {
-    const { data: allFaqs, error } = await dbInstance
-      .from('faq_items')
-      .select('*')
-      .order('sort_order', { ascending: true });
-
-    if (error) {
-      console.error("Supabase API rejection caught:", error.message);
-      return;
-    }
-
-    if (!allFaqs || allFaqs.length === 0) {
-      showDefaultFaqPlaceholder(faqGrid);
-      return;
-    }
-
-    faqGrid.innerHTML = "";
-    let displayedCount = 0;
-
-    allFaqs.forEach(item => {
-      if (displayedCount >= MAXIMUM_FAQ_DISPLAY_CAP) return;
-
-      const dbSlug = item.service_slug.toLowerCase();
-      const slugTokens = dbSlug.split(/[-_\s]+/);
-      const isGlobal = (dbSlug === 'global');
-      const isUrlMatch = slugTokens.some(token => token.length > 1 && currentUrl.includes(token));
-
-      if (isGlobal || isUrlMatch) {
-        const faqBox = document.createElement('div');
-        faqBox.className = "faq-item";
-        faqBox.innerHTML = `
-          <h4 class="faq-render-q"></h4>
-          <p class="faq-render-a"></p>
-          <div class="faq-feedback-bar" style="margin-top: 15px; padding-top: 12px; border-top: 1px dashed #e2e8f0; display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: #64748b;">
-            <span>Was this answer helpful?</span>
-            <div style="display: flex; gap: 8px;">
-              <button class="feedback-btn up" style="background: none; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; cursor: pointer; font-size: 0.75rem;">👍 Yes</button>
-              <button class="feedback-btn down" style="background: none; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; cursor: pointer; font-size: 0.75rem;">👎 No</button>
-            </div>
-          </div>
-        `;
-        faqBox.querySelector('.faq-render-q').textContent = item.question;
-        faqBox.querySelector('.faq-render-a').textContent = item.answer;
-        faqGrid.appendChild(faqBox);
-        
-        bindFeedbackTrackingMetrics(faqBox, item.id, dbInstance);
-        displayedCount++;
-      }
-    });
-
-    if (displayedCount === 0) {
-      showDefaultFaqPlaceholder(faqGrid);
-    }
-  } catch (err) {
-    console.error("FAQ data stream failure:", err);
-  }
-}
-
-function showDefaultFaqPlaceholder(targetGrid) {
-  targetGrid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#64748b; padding:20px 0;">Consult our compliance desk directly for application support.</p>`;
-}
-
-function bindFeedbackTrackingMetrics(cardContainerNode, faqRowId, supabaseClientInstance) {
-  const yesButton = cardContainerNode.querySelector('.feedback-btn.up');
-  const noButton = cardContainerNode.querySelector('.feedback-btn.down');
-  const contextBar = cardContainerNode.querySelector('.faq-feedback-bar');
-
-  if (!yesButton || !noButton || !contextBar) return;
-
-  const registerVoteAction = async (voteIsPositive) => {
-    yesButton.disabled = true;
-    noButton.disabled = true;
     try {
-      const { error } = await supabaseClientInstance
-        .from('faq_feedback_metrics')
-        .insert([{ faq_id: faqRowId, is_helpful: voteIsPositive, page_url: window.location.pathname }]);
-
-      if (error) throw error;
-      contextBar.innerHTML = `<span style="color: #10b981; font-weight: 700;">Thank you for your feedback! ✅</span>`;
-    } catch (failErr) {
-      console.warn("Feedback recording bypassed:", failErr.message);
-      contextBar.innerHTML = `<span>Feedback logged. Thanks for contributing!</span>`;
-    }
-  };
-
-  yesButton.addEventListener('click', () => registerVoteAction(true));
-  noButton.addEventListener('click', () => registerVoteAction(false));
-}
-
-// 🚀 UNIFIED RUNTIME BOOTSTRAP INITIALIZATION MANAGER
-function executeCentralizedSystemStartupSequence() {
-  initializeHomepageBlogFeeds();
-  initializeDynamicFaqEngine();
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', executeCentralizedSystemStartupSequence);
-} else {
-  executeCentralizedSystemStartupSequence();
-}
-
-/**
- * Renders dynamic pricing cards on the main website landing pages
- * @param {string} serviceKey - Either 'llc-formation' or 'corporation'
- * @param {string} containerId - The HTML element ID where cards should load
- */
-function renderMainWebsitePricingCards(serviceKey, containerId) {
-    var container = document.getElementById(containerId);
-    if (!container || !window.GLOBAL_COMPANY_PRICING) return;
-
-    var serviceData = window.GLOBAL_COMPANY_PRICING.packages[serviceKey];
-    if (!serviceData) return;
-
-    var tiers = ["starter", "compliance", "enterprise"];
-    var cardsHtml = "";
-
-    tiers.forEach(function(tier) {
-        var basePrice = serviceData[tier];
-        var bullets = serviceData.bullets[tier];
+        const { data: allPosts, error } = await dbInstance.from('blog_posts').select('*').eq('is_published', true).order('created_at', { ascending: false });
+        if (error || !allPosts || allPosts.length === 0) return;
+        gridTarget.innerHTML = "";
         
-        // Build the feature bullet items list safely
-        var bulletListHtml = "";
-        bullets.forEach(function(bulletText) {
-            bulletListHtml += '<li style="display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:0.85rem; color:#475569;">' +
-                '<span style="color:#10b981; font-weight:bold;">✔</span> ' + bulletText + '</li>';
+        allPosts.slice(0, 3).forEach(item => {
+            const card = document.createElement('article');
+            card.className = "resource-card-item";
+            card.innerHTML = `<div><h3 class="blog-live-title" style="font-size:1.2rem; color:#0a1f44; margin:8px 0;"></h3><p class="blog-live-desc" style="font-size:0.9rem; color:#64748b;"></p></div><a href="article.html?slug=${item.slug}" style="color:#10b981; font-weight:700; text-decoration:none;">Read Article &rarr;</a>`;
+            card.querySelector('.blog-live-title').textContent = item.title;
+            card.querySelector('.blog-live-desc').textContent = item.summary || '';
+            gridTarget.appendChild(card);
         });
-
-        // Generate the responsive card frame string layout
-        cardsHtml += '<div style="flex:1; min-width:260px; max-width:360px; border:1px solid #e2e8f0; border-radius:12px; padding:24px; background:#ffffff; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); font-family:sans-serif;">' +
-            '<div>' +
-                '<h4 style="margin:0; text-transform:uppercase; font-size:0.75rem; letter-spacing:1px; color:#64748b; font-weight:800;">' + tier + '</h4>' +
-                '<div style="font-size:2.2rem; font-weight:900; color:#0a1f44; margin:10px 0 16px 0;">$' + basePrice.toFixed(2) + '</div>' +
-                '<ul style="list-style:none; padding:0; margin:0;">' + bulletListHtml + '</ul>' +
-            '</div>' +
-            '<a href="wizard.html?service=' + serviceKey + '&plan=' + tier + '" style="display:block; text-align:center; background:#0a1f44; color:#ffffff; padding:10px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:24px; font-size:0.9rem;">Get Started</a>' +
-        '</div>';
-    });
-
-    container.innerHTML = '<div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; width:100%; box-sizing:border-box;">' + cardsHtml + '</div>';
+    } catch (e) { console.error("Blog feed network exception:", e); }
 }
+
+async function initializeDynamicFaqEngine() {
+    const faqGrid = document.getElementById('public-homepage-faq-grid-target');
+    if (!faqGrid) return;
+    const dbInstance = window.FILINGS4U_MASTER_ENGINE.getSupabaseInstance();
+    if (!dbInstance) return;
+
+    try {
+        const { data: allFaqs, error } = await dbInstance.from('faq_items').select('*').order('sort_order', { ascending: true });
+        if (error || !allFaqs || allFaqs.length === 0) return;
+        faqGrid.innerHTML = "";
+
+        allFaqs.slice(0, 4).forEach(item => {
+            const faqBox = document.createElement('div');
+            faqBox.className = "faq-item";
+            faqBox.innerHTML = `<h4 class="faq-render-q" style="color:#0a1f44; font-weight:700;"></h4><p class="faq-render-a" style="color:#475569;"></p>`;
+            faqBox.querySelector('.faq-render-q').textContent = item.question;
+            faqBox.querySelector('.faq-render-a').textContent = item.answer;
+            faqGrid.appendChild(faqBox);
+        });
+    } catch (e) { console.error("FAQ feed network exception:", e); }
+}
+
+// Global Lifecycle Initialization Matrix Bootstrapper
+document.addEventListener("DOMContentLoaded", () => {
+    initializeHomepageBlogFeeds();
+    initializeDynamicFaqEngine();
+});

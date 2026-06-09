@@ -3108,3 +3108,198 @@ nav {
   align-items: flex-start;
 }
 
+/* ==========================================================================
+   🏛️ DYNAMIC ENGINE CONTENT ALIGNMENT CORE
+   ========================================================================== */
+.site-width-alignment-guard {
+    width: 100% !important;
+    max-width: 1450px !important;
+    margin: 0 auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+}
+
+#dynamic-sections-root main, 
+#dynamic-sections-root section {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+
+/* ==========================================================================
+   📊 PRODUCTION PRICING CARD TIERS
+   ========================================================================== */
+.pricing-section {
+    padding: 80px 0;
+    background: #f8fafc;
+    text-align: center;
+    width: 100%;
+}
+
+.pricing-section h2 {
+    color: #0a1f44;
+    font-size: 2.6rem;
+    font-weight: 900;
+    margin: 10px 0 40px 0;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+
+.price-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 35px 28px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
+}
+
+.price-card.featured {
+    border-color: #10b981;
+    box-shadow: 0 20px 40px rgba(10,31,68,0.05);
+}
+
+.price-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #10b981;
+    color: #ffffff;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.price-card h3 {
+    color: #0a1f44;
+    font-size: 1.4rem;
+    margin: 0 0 15px 0;
+}
+
+.price-features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 30px 0;
+    text-align: left;
+}
+
+.price-features li {
+    padding: 8px 0;
+    color: #475569;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Master.js Highlighter Interactive Modifiers */
+.active-highlight-plan {
+    border: 3px solid #10b981 !important;
+    transform: scale(1.03);
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15) !important;
+}
+
+.standard-dim {
+    opacity: 0.5;
+    filter: grayscale(30%);
+}
+
+
+/* ==========================================================================
+   📊 UNIFIED TEMPLATE PRICING SECTION OVERRIDES
+   ========================================================================== */
+.pricing-section {
+    background: #ffffff !important; /* Forces background to pure template white */
+    padding: 60px 0 !important;   /* Matches your alternating layout padding precisely */
+    font-family: system-ui, -apple-system, sans-serif !important; /* Uniform site typography */
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Forces the "Deployment Tiers" tag to snap into your green pill badge design */
+.pricing-section .hero-tag {
+    color: #10b981 !important;
+    font-size: 0.8rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    background: rgba(16, 185, 129, 0.08) !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    display: inline-block !important;
+    margin-bottom: 12px !important;
+    border: 1px solid rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Harmonizes the pricing headline text metrics with your core layout rules */
+.pricing-section h2 {
+    color: #0a1f44 !important;
+    font-size: 2.5rem !important;
+    font-weight: 900 !important;
+    margin: 0 0 40px 0 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.5px !important;
+}
+
+/* Ensures the cards grid layout container stays bounded to your 1450px grid matrix */
+.pricing-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 30px !important;
+    width: 100% !important;
+    max-width: 1450px !important;
+    margin: 0 auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+}
+
+.price-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(10, 31, 68, 0.15) !important;
+    border-radius: 12px !important;
+    padding: 35px 24px !important;
+    box-shadow: 0 4px 12px rgba(10, 31, 68, 0.05) !important;
+    font-family: system-ui, -apple-system, sans-serif !important;
+}
+
+/* Matches your high-contrast deep navy text headers */
+.price-card h3 {
+    color: #0a1f44 !important;
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    margin-top: 5px !important;
+}
+
+/* Harmonizes price text fonts with your database copy layout */
+.price-card .amount {
+    color: #0a1f44 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.price-card .amount span {
+    color: #475569 !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+}
+
+.price-features li {
+    color: #475569 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+}
