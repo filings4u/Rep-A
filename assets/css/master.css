@@ -3314,3 +3314,179 @@ nav {
     background: rgba(16, 185, 129, 0.15) !important;
     border: 1px solid rgba(16, 185, 129, 0.3) !important;
 }
+
+/* ==========================================================================
+   🏛️ FILINGS4U FOOTER CONTENT SPREAD & HORIZONTAL LINE FIX
+   ========================================================================== */
+
+/* 1. Force the inner footer content columns to spread out evenly across 1450px */
+.site-footer .footer-container {
+    width: 100% !important;
+    max-width: 1450px !important;
+    margin: 0 auto !important; /* Centers the content row on the screen */
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: space-between !important; /* 🔥 Spreads columns evenly left-to-right */
+    align-items: flex-start !important;
+}
+
+/* 2. Fix the horizontal line by containing it to the centered 1450px block */
+.site-footer .footer-bottom {
+    width: 100% !important;
+    max-width: 1450px !important;
+    margin: 0 auto !important; /* Centers the bottom legal bar */
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+    padding-top: 30px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center;
+    
+    /* 🔥 Forces the horizontal border line to lock exactly to 1450px width */
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important; 
+}
+
+/* 3. If your old horizontal line was hardcoded on the outer footer container, hide it */
+.site-footer {
+    border-top: none !important;
+}
+
+
+
+/* ==========================================================================
+   🧱 SURGICAL FOOTER HORIZONTAL LINE FIX
+   ========================================================================== */
+
+/* 1. Hide the old full-width border line from your outer footer background wrapper */
+footer, 
+.site-footer, 
+#footer {
+    border-top: none !important;
+}
+
+/* 2. Force the actual border line to attach strictly to the 1450px bottom container bar */
+.site-footer .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    width: 100% !important;
+    max-width: 1450px !important;
+    margin: 30px auto 0 auto !important; /* Centers the line right along with the text content */
+}
+
+
+/* ==========================================================================
+   🧱 MASTER FOOTER WHITE HORIZONTAL LINE CORRECTION
+   ========================================================================== */
+
+/* 1. Strip the full-screen border line away from the fluid layout containers */
+.site-footer,
+footer.site-footer,
+.site-footer .footer-bottom {
+    border-top: none !important;
+    box-shadow: none !important;
+}
+
+/* 2. Re-apply the white separator line inside the 1450px centered container block */
+.site-footer .footer-bottom::before {
+    content: "" !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 1450px !important; /* Constrains the line width */
+    height: 1px !important;
+    background-color: rgba(255, 255, 255, 0.1) !important; /* Semi-transparent clean white */
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important; /* Centers the line perfectly */
+}
+
+/* 3. Apply position relative to footer-bottom to lock the line anchor space */
+.site-footer .footer-bottom {
+    position: relative !important;
+    padding-top: 30px !important;
+    margin-top: 30px !important;
+}
+        :root {
+            --primary-navy: #0a1f44;
+            --emerald-accent: #10b981;
+            --slate-text: #475569;
+            --bg-offwhite: #f8fafc;
+        }
+        
+        .f4u-legal-root {
+            width: 100% !important;
+            max-width: 1450px !important;
+            margin: 140px auto 100px auto !important; /* Margin offset clears floating headers */
+            padding: 0 40px !important;
+            box-sizing: border-box !important;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .legal-content-card {
+            background: #ffffff; 
+            padding: 60px; 
+            border-radius: 24px; 
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 20px 40px rgba(10, 31, 68, 0.05);
+        }
+
+        .hero-tag-pill {
+            color: var(--emerald-accent);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: rgba(16, 185, 129, 0.08);
+            padding: 6px 16px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 16px;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .service-matrix-deck {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+            margin: 35px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .service-pill-item {
+            background: var(--bg-offwhite);
+            border: 1px solid rgba(10, 31, 68, 0.06);
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-image: none !important; /* Extinguishes duplicate dots bleeding into elements */
+        }
+
+        .service-pill-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--emerald-accent);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.06);
+            background: #ffffff;
+        }
+
+        .legal-content-card h2 {
+            color: var(--primary-navy);
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin: 45px 0 20px 0;
+            letter-spacing: -0.5px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .legal-content-card ul { padding-left: 20px; margin-bottom: 30px; }
+        .legal-content-card li { margin-bottom: 12px; font-size: 1.05rem; color: var(--slate-text); }
+        .legal-content-card p { font-size: 1.05rem; line-height: 1.7; color: var(--slate-text); text-align: justify; }

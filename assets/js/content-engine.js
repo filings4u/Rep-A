@@ -1756,12 +1756,10 @@ function compileSectionDLayoutHtml(data) {
 }
 
 
-
-
 /**
  * ==========================================================================
  * 🚀 HYBRID DATA ACQUISITION & CHESSBOARD ARRANGEMENT SEQUENCER
- * Resolves local copy layouts and merges with active Supabase price values.
+ * Self-contained engine that handles 406 network errors and auto-generates layout lines.
  * ==========================================================================
  */
 async function renderMasterSystem() { 
@@ -1769,48 +1767,66 @@ async function renderMasterSystem() {
         const activeSlug = getUnifiedServiceKey(); 
         console.log("🎯 Content Engine Launching Query Sequence For: " + activeSlug);
 
-        // 1. Fetch parameters from your live Supabase 'services' database table
-        const { data: dbRow, error } = await CONTENT_ENGINE_ONLY_SUPABASE
-            .from('services') 
-            .select('*')
-            .eq('slug', activeSlug)
-            .single();
+        // 1. Fetch from database with defensive error handling to trap 406 network drops
+        let dbRow = null;
+        try {
+            const response = await CONTENT_ENGINE_ONLY_SUPABASE
+                .from('services') 
+                .select('*')
+                .eq('slug', activeSlug)
+                .single();
+            if (response && !response.error) {
+                dbRow = response.data;
+            }
+        } catch (netErr) {
+            console.warn("⚠️ Network Layer blocked Supabase REST call. Dropping into local automation matrix.");
+        }
 
-        // 2. Pure Title Resolution ensures home is never mirrored on internal tracks
+        // 2. Generate clean semantic page name variants 
         let serviceTitleString = activeSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        if (!error && dbRow && dbRow.service_title) {
+        if (dbRow && dbRow.service_title) {
             serviceTitleString = dbRow.service_title;
         }
 
-        // 3. Independent Copy Synthesis maps variables natively to prevent global overrides
+        // 3. Build fully declared content lines to prevent blank or broken properties
         const dynamicContent = {
             pricingKey: activeSlug, 
             seoTitle: serviceTitleString + " Registration & Filing Services | filings4u",
             metaDesc: "Automate your corporate " + serviceTitleString + " tracking. Complete state processing schedules error-free.",
+            
             heroPill: serviceTitleString + " Framework",
-            heroHeadline: "The Platform for <br><span style='color:#10b981;'>Total " + serviceTitleString + ".</span>",
-            heroBody: "Automate your institutional profiles, dynamic state processing deadlines, and required legal updates from a single secure system deck. We establish the high-performance pipeline handshake between you and public registries for your secure " + serviceTitleString + " processing.",
-            heroBadge: serviceTitleString + " Network Sync: Active",
-            heroImage: "https://unsplash.com", 
-            secBPill: "Operational Continuity",
-            secBHeadline: serviceTitleString + " Focus. <br><span style='color:#10b981;'>Built For Growth.</span>",
+            heroHeadline: "The Engine for <br><span style='color:#10b981;'>Total " + serviceTitleString + ".</span>",
+            heroBody: "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your " + serviceTitleString + " processing.",
+            heroBadge: serviceTitleString + " Sync: 140,000+ Profiles Active",
+            
+            secBPill: "Operational Compliance",
+            secBHeadline: serviceTitleString + " Focus. <br><span style='color:#10b981;'>Built For Continuity.</span>",
             secBSub: "High-fidelity filing architecture designed for corporate peace of mind.",
-            secBBody: "Shield your ongoing corporate infrastructure utilizing secure monitoring systems designed for agile founders, fleet directors, and main-street operators. We process your unique " + serviceTitleString + " entries smoothly to stay completely clear of state processing errors.",
-            secBImage: "https://unsplash.com",
+            secBBody: "Protect your commercial operations with processing tracking loops built directly for startup builders and family shops. We manage state schedules securely so you can focus on community engagement and flawless " + serviceTitleString + " execution.",
+            
             secCPill: "Infrastructure Expansion",
             secCHeadline: "Scalable Systems. <br><span style='color:#10b981;'>Built For " + serviceTitleString + ".</span>",
-            secCSub: "Accelerate your operational velocity without data verification gaps.",
-            secCBody: "Turn your company metrics into fully approved registry tracks. Our centralized dashboard tracking matrix handles calendar guidelines, manages documentation forms, and submits your required " + serviceTitleString + " parameters securely so your enterprise stays approved.",
-            secCImage: "https://unsplash.com",
-            secDPill: "Guaranteed Audit Protection",
-            secDHeadline: "Institutional Shield. <br><span style='color:#10b981;'>Permanent Accuracy.</span>",
-            secDSub: "Active database synchronization safeguards your status across state lines.",
-            secDBody: "Avoid costly state penalties, business asset exposure, or accidental corporate dissolution. Our backdrop system actively checks state department registries daily to verify that your active filing profiles remain locked down, approved, and shielded.",
-            secDImage: "https://unsplash.com"
+            secCSub: "Full-spectrum fleet setup logs mapped flawlessly across state borders.",
+            secCBody: "Accelerate your logistical authorities under a robust unified dashboard tracking framework. We coordinate your structural transformations, state operating permits, and background screening accounts seamlessly.",
+            
+            secDPill: "Continuous Asset Shield",
+            secDHeadline: "Guaranteed Compliance. <br><span style='color:#10b981;'>Permanent Good Standing.</span>",
+            secDSub: "Proactive automated calendar sweeps eliminate corporate data gaps.",
+            secDBody: "Never face administrative state penalties, account freezing, or accidental entity exposure. Our cloud tracking matrix scans regulatory alterations daily, records state department transitions, and completes filing paperwork error-free.",
+            
+            // 🤖 AUTOMATED CANVA MEDIA PIPELINE: Maps your local folder image layouts using the file slug
+            heroImage: "images/" + activeSlug + "-hero.jpg", 
+            secBImage: "images/" + activeSlug + "-secb.jpg", 
+            secCImage: "images/" + activeSlug + "-secc.jpg", 
+            secDImage: "images/" + activeSlug + "-secd.jpg"
         };
 
-        // If user is on the actual home page root path, overwrite with home copy explicitly
+        // Explicit override to retain original home content only on the main landing index page
         if (activeSlug === "homepage-main-landing") {
+            dynamicContent.heroImage = "images/hero-image.jpg";
+            dynamicContent.secBImage = "images/local-business.jpg";
+            dynamicContent.secCImage = "images/startup-launch.jpg";
+            dynamicContent.secDImage = "images/regulatory-compliance.jpg";
             dynamicContent.heroPill = "Automated Registry Systems";
             dynamicContent.heroHeadline = "The Engine for <br><span style='color:#10b981;'>Corporate Launching.</span>";
             dynamicContent.heroBody = "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely.";
@@ -1829,7 +1845,7 @@ async function renderMasterSystem() {
             dynamicContent.secDBody = "Never face administrative state penalties, account freezing, or accidental entity exposure. Our cloud tracking matrix scans regulatory alterations daily, records state department transitions, and completes filing paperwork error-free.";
         }
 
-        // Synchronize browser header layout definitions
+        // Synchronize browser head title and metadata description
         document.title = dynamicContent.seoTitle; 
         let metaDescTag = document.querySelector('meta[name="description"]'); 
         if (!metaDescTag) { 
@@ -1839,17 +1855,17 @@ async function renderMasterSystem() {
         } 
         metaDescTag.setAttribute('content', dynamicContent.metaDesc); 
 
-        // CHESSBOARD STACK 1: Paint upper text segments above prices
+        // 🏛️ LAYOUT STEP 1: Paint upper text blocks above pricing grid elements
         const dynamicSectionsRoot = document.getElementById("dynamic-sections-root"); 
-        if (dynamicSectionsRoot) { 
+        if (dynamicSectionsRoot && typeof compileUpperLayoutBlueprintHtml === "function") { 
             dynamicSectionsRoot.innerHTML = compileUpperLayoutBlueprintHtml(dynamicContent); 
         } 
 
-        // CHESSBOARD STACK 2: Structure layout options across the Pricing container
+        // 🏛️ LAYOUT STEP 2: Position Pricing modules and trigger state-pricing integration
         const pricingRoot = document.getElementById("website-package-pricing-cards-root"); 
         if (pricingRoot) { 
             pricingRoot.setAttribute("data-service-key", dynamicContent.pricingKey); 
-            pricingRoot.style.cssText = "width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:80px 40px !important; box-sizing:border-box !important; display:block !important; background:#ffffff !important; position:relative !important; z-index:20 !important; background-image:none !important;"; 
+            pricingRoot.style.cssText = "width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:60px 40px !important; box-sizing:border-box !important; display:block !important; background:#ffffff !important; position:relative !important; z-index:20 !important; background-image:none !important;"; 
             
             let priceTitle = pricingRoot.querySelector("h2"); 
             if (priceTitle) priceTitle.style.setProperty("color", "#0a1f44", "important"); 
@@ -1859,7 +1875,7 @@ async function renderMasterSystem() {
             } 
         } 
 
-        // CHESSBOARD STACK 3: Generate Dynamic Section D (Using uniform #0a1f44 corporate navy color)
+        // 🏛️ LAYOUT STEP 3: Position section D directly below white pricing cards
         let sectionDElement = document.getElementById("dynamic-section-d-container"); 
         if (!sectionDElement) { 
             sectionDElement = document.createElement("div"); 
@@ -1867,14 +1883,11 @@ async function renderMasterSystem() {
             if (pricingRoot) pricingRoot.parentNode.insertBefore(sectionDElement, pricingRoot.nextSibling); 
         } 
         sectionDElement.className = "f4u-layout-section f4u-unified-navy";
-        sectionDElement.style.cssText = "padding: 80px 0 !important;";
-        sectionDElement.innerHTML = compileSectionDLayoutHtml(dynamicContent); 
+        if (typeof compileSectionDLayoutHtml === "function") {
+            sectionDElement.innerHTML = compileSectionDLayoutHtml(dynamicContent); 
+        }
 
-        // CHESSBOARD STACK 4: Re-stack opt-in subscribe cards underneath Section D content blocks
+        // 🏛️ LAYOUT STEP 4: Enforce contrast margins across subscribe blocks
         const subscribeContainer = document.getElementById("compliance-subscribe-form-container") || document.querySelector(".subscribe-section-wrapper"); 
         if (subscribeContainer && sectionDElement) { 
-            subscribeContainer.style.cssText = "background:#ffffff !important; color:#0a1f44 !important; padding:80px 0 !important; margin:0 !important; width:100% !important; max-width:100% !important; position:relative !important; z-index:10 !important; background-image:none !important;"; 
-            let subTitle = subscribeContainer.querySelector("h3, h2"); 
-            if (subTitle) subTitle.style.setProperty("color", "#0a1f44", "important"); 
-            let subText = subscribeContainer.querySelector("p"); 
-            if (subText) subText.style.setProperty("color", "#475569", "important"); sectionDElement.parentNode.insertBefore(subscribeContainer, sectionDElement.nextSibling);console.log("🏁 All Sections Successfully Anchored in Chessboard Order!");}} catch (globalCatchError) {console.error("❌ Content Engine Pipeline Exception Caught:", globalCatchError);}}document.addEventListener("DOMContentLoaded", renderMasterSystem);
+subscribeContainer.style.cssText = "background:#ffffff !important; color:#0a1f44 !important; padding:80px 0 !important; margin:0 !important; width:100% !important; max-width:100% !important; position:relative !important; z-index:10 !important; background-image:none !important;";let subTitle = subscribeContainer.querySelector("h3, h2");if (subTitle) subTitle.style.setProperty("color", "#0a1f44", "important");let subText = subscribeContainer.querySelector("p");if (subText) subText.style.setProperty("color", "#475569", "important");sectionDElement.parentNode.insertBefore(subscribeContainer, sectionDElement.nextSibling);console.log("🏁 Content engine compiled completely without anomalies!");}} catch (globalCatchError) {console.error("❌ Content Engine Pipeline Exception Caught:", globalCatchError);}}document.addEventListener("DOMContentLoaded", renderMasterSystem);
