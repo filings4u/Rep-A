@@ -7,137 +7,152 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#10b981">
     <title>LLC Reinstatement Processing & Entity Recovery | filings4u</title>
+
     <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
-    <link rel="stylesheet" href="assets/css/master.css">
+     <link rel="stylesheet" href="assets/css/master.css">
     <link rel="stylesheet" href="assets/css/master-mobile.css">
     <link rel="icon" type="image/png" href="images/fav.png">
+    
     <!-- 🔍 VERIFIED FULL JQUERY CDN URL PATH -->
-    <script src="https://googleapis.com"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
     <!-- Supabase Production Library Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/content-engine.js"></script>
     <script src="assets/js/master.js"></script>
+    <script src="assets/js/page-router.js"></script>
+    <script src="assets/js/state-pricing.js"></script>
+   
+
+
 </head>
 <body>
 
-    <!-- 🌐 SITE-WIDE NAVIGATION HEADER -->
-    <nav>
-        <div class="nav-content-wrapper">
-            <a href="index.html" class="logo-link">
-                <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
-            </a>
-            <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="toggleMobileMenu()" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
-            <div class="nav-links">
-                <!-- FORMATIONS DROPDOWN -->
-                <div class="nav-item-dropdown static-dropdown">
-                    <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                    <div class="dropdown-content mega-panel-three-col">
-                        <div class="mega-column">
-                            <span class="column-title">Popular Formations</span>
-                            <a href="limited-liability-company.html">LLC Formation</a>
-                            <a href="corporations.html">Corporations (C/S-Corp)</a>
-                            <a href="sole-proprietorship.html">Sole Proprietorship</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Specialty Structures</span>
-                            <a href="doing-business-as-dba.html">DBA Registration</a>
-                            <a href="nonprofits.html">Nonprofit Organization</a>
-                            <a href="series-llc.html">Series LLC</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Expansion & Recovery</span>
-                            <a href="foreign-qualification.html">Foreign Qualification Certificate</a>
-                            <a href="llc-reinstatement.html">LLC Reinstatement Processing</a>
-                            <a href="trademark-filing.html">Trademark Filing</a>
-                            <a href="servicemark-filing.html">Servicemark Filing</a>
-                        </div>
-                    </div>
-                </div>
+<!-- 🌐 SITE-WIDE NAVIGATION HEADER --> 
+<nav> 
+  <div class="nav-content-wrapper"> 
+    <a href="index.html" class="logo-link"> 
+      <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;"> 
+    </a> 
+    
+    <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="toggleMobileMenu()" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button> 
+    
+    <div class="nav-links"> 
+      
+      <!-- FORMATIONS DROPDOWN (EXPANDED TO 3 COLS FOR SPECIALTY REINSTATEMENTS) --> 
+      <div class="nav-item-dropdown static-dropdown"> 
+        <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
+        <div class="dropdown-content mega-panel-three-col"> 
+          <div class="mega-column"> 
+            <span class="column-title">Popular Formations</span> 
+            <a href="limited-liability-company.html">LLC Formation</a> 
+            <a href="corporations.html">Corporations (C/S-Corp)</a> 
+            <a href="sole-proprietorship.html">Sole Proprietorship</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Specialty Structures</span> 
+            <a href="doing-business-as-dba.html">DBA Registration</a> 
+            <a href="nonprofits.html">Nonprofit Organization</a> 
+            <a href="series-llc.html">Series LLC</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Expansion & Recovery</span> 
+            <a href="foreign-qualification.html">Foreign Entity Certificate</a>
+            <a href="llc-reinstatement.html">LLC Reinstatement </a>
+            <a href="trademark-filing.html">Trademark Filing</a>
+            <a href="servicemark-filing.html">Servicemark Filing</a>
+          </div> 
+        </div> 
+      </div> 
 
-                <!-- COMPLIANCE DROPDOWN -->
-                <div class="nav-item-dropdown static-dropdown">
-                    <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                    <div class="dropdown-content mega-panel-three-col">
-                        <div class="mega-column">
-                            <span class="column-title">Entity Health</span>
-                            <a href="annual-reports.html">Annual Reports</a>
-                            <a href="operating-agreement.html">Operating Agreement</a>
-                            <a href="registered-agent.html">Registered Agent</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Licensing & Exit</span>
-                            <a href="business-licenses.html">Business Licenses</a>
-                            <a href="employer-identification-number-ein.html">Employer ID (EIN)</a>
-                            <a href="dissolution.html">Entity Dissolution</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Global Verification</span>
-                            <a href="good-standing.html">Certificate of Good Standing</a>
-                            <a href="apostille-services.html">Apostille Authentication Services</a>
-                            <a href="clia-certificate.html">CLIA Certificate</a>
-                            <a href="regulatory-consulting.html">Custom Regulatory Legal Consulting</a>
-                        </div>
-                    </div>
-                </div>
+      <!-- COMPLIANCE DROPDOWN (EXPANDED TO 3 COLS FOR LEGAL & CERTIFICATE PROTOCOLS) --> 
+      <div class="nav-item-dropdown static-dropdown"> 
+        <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
+        <div class="dropdown-content mega-panel-three-col"> 
+          <div class="mega-column"> 
+            <span class="column-title">Entity Health</span> 
+            <a href="annual-reports.html">Annual Reports</a> 
+            <a href="operating-agreement.html">Operating Agreement</a> 
+            <a href="registered-agent.html">Registered Agent</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Licensing & Exit</span> 
+            <a href="business-licenses.html">Business Licenses</a> 
+            <a href="employer-identification-number-ein.html">Employer ID (EIN)</a> 
+            <a href="dissolution.html">Entity Dissolution</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Global Verification</span> 
+            <a href="good-standing.html">Certificate of Good Standing</a>
+            <a href="apostille-services.html">Apostille Authentication </a>
+            <a href="clia-certificate.html">CLIA Certificate</a>
+            <a href="regulatory-consulting.html">Regulatory Consulting</a>
+          </div> 
+        </div> 
+      </div> 
 
-                <!-- TAX FILINGS DROPDOWN -->
-                <div class="nav-item-dropdown static-dropdown">
-                    <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                    <div class="dropdown-content mega-panel-three-col">
-                        <div class="mega-column">
-                            <span class="column-title">Income & Operations</span>
-                            <a href="federal-income-tax.html">Federal Income Tax</a>
-                            <a href="state-income-tax.html">State Income Tax</a>
-                            <a href="franchise-tax.html">Franchise Tax Filing</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Sales & Payroll</span>
-                            <a href="sales-tax-registration.html">Sales Tax Registration</a>
-                            <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a>
-                            <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Gov & Procurement</span>
-                            <a href="cage-code.html">CAGE Code</a>
-                            <a href="duns-number.html">DUNS Number Procurement</a>
-                            <a href="procurement-registration.html">Procurement Registration</a>
-                            <a href="minority-certificate.html">Minority Certificate</a>
-                        </div>
-                    </div>
-                </div>
+      <!-- TAX FILINGS DROPDOWN (EXPANDED TO 3 COLS FOR FEDERAL & PROCUREMENT ROOTS) --> 
+      <div class="nav-item-dropdown static-dropdown"> 
+        <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
+        <div class="dropdown-content mega-panel-three-col"> 
+          <div class="mega-column"> 
+            <span class="column-title">Income & Operations</span> 
+            <a href="federal-income-tax.html">Federal Income Tax</a> 
+            <a href="state-income-tax.html">State Income Tax</a> 
+            <a href="franchise-tax.html">Franchise Tax Filing</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Sales & Payroll</span> 
+            <a href="sales-tax-registration.html">Sales Tax Registration</a> 
+            <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a> 
+            <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a> 
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Gov & Procurement</span> 
+            <a href="cage-code.html">CAGE Code</a>
+            <a href="duns-number.html">DUNS Number Procurement</a>
+            <a href="procurement-registration.html">Procurement Registration</a>
+            <a href="minority-certificate.html">Minority Certificate</a>
+          </div> 
+        </div> 
+      </div> 
 
-                <!-- DOT & FLEET DROPDOWN -->
-                <div class="nav-item-dropdown static-dropdown">
-                    <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
-                    <div class="dropdown-content mega-panel-three-col">
-                        <div class="mega-column">
-                            <span class="column-title">Authority Setup</span>
-                            <a href="owner-operators.html">Owner Operators</a>
-                            <a href="trucker-authority.html">Trucker Authority</a>
-                            <a href="broker-authority.html">Broker Authority</a>
-                            <a href="ucr-registration.html">UCR Registration</a>
-                            <a href="scac-code.html">SCAC Code Registration</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Compliance & Regs</span>
-                            <a href="dot-consortium.html">DOT Consortium</a>
-                            <a href="driver-qualification-file.html">Driver Qualification File</a>
-                            <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
-                            <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a>
-                            <a href="hazmat-registration.html">HAZMAT Registration</a>
-                        </div>
-                        <div class="mega-column">
-                            <span class="column-title">Insurance & Risk</span>
-                            <a href="licenses-permits.html">Licenses & Permits</a>
-                            <a href="trucker-insurance.html">Trucker Insurance</a>
-                            <a href="broker-insurance.html">Broker Insurance</a>
-                            <a href="new-entrant-audit.html">New Entrant Audit</a>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://filings4u.com" class="btn-client-portal">Secure Portal</a>
-            </div>
-        </div>
-    </nav>
+      <!-- DOT & FLEET DROPDOWN (PRESERVED 3 COLS - INJECTED NEW REGISTRATIONS) --> 
+      <div class="nav-item-dropdown static-dropdown"> 
+        <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
+        <div class="dropdown-content mega-panel-three-col"> 
+          <div class="mega-column"> 
+            <span class="column-title">Authority Setup</span> 
+            <a href="owner-operators.html">Owner Operators</a> 
+            <a href="trucker-authority.html">Trucker Authority</a> 
+            <a href="broker-authority.html">Broker Authority</a> 
+            <a href="ucr-registration.html">UCR Registration</a> 
+            <a href="scac-code.html">SCAC Code Registration</a>
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Compliance & Regs</span> 
+            <a href="dot-consortium.html">DOT Consortium</a> 
+            <a href="driver-qualification-file.html">Driver Qualification File</a> 
+            <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a> 
+            <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a> 
+            <a href="hazmat-registration.html">HAZMAT Registration</a>
+          </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Insurance & Risk</span> 
+            <a href="licenses-permits.html">Licenses & Permits</a> 
+            <a href="trucker-insurance.html">Trucker Insurance</a> 
+            <a href="broker-insurance.html">Broker Insurance</a> 
+            <a href="new-entrant-audit.html">New Entrant Audit</a> 
+          </div> 
+        </div> 
+      </div> 
+      
+      <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Secure Portal</a> 
+    </div> 
+  </div> 
+</nav>
+
+
     <!-- SECTION 1: HERO CONTAINER (STRETCHED 1450PX ALIGNED BLOCK) -->
     <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
         <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION -->
@@ -150,7 +165,7 @@
                     <!-- Pill Tag Anchor -->
                     <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Entity Recovery Pipeline</span>
                     <!-- High-Contrast Split Headline -->
-                    <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">
+                    <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;" id="hero-title">
                         LLC Reinstatement <br><span style="color: #10b981;">& Status Recovery.</span>
                     </h1>
                     <!-- Context Copy -->
@@ -237,7 +252,7 @@
                     <!-- Pill Tag Anchor -->
                     <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Corporate Restoration</span>
                     <!-- High-Contrast Split Headline -->
-                    <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
+                    <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;" id="info-title-1">
                         Status Recovery. <br><span style="color: #10b981;">Total Asset Defense.</span>
                     </h2>
                     <!-- Sub-Heading Callout -->
@@ -302,7 +317,7 @@
                     <!-- Pill Tag Anchor -->
                     <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Status Infrastructure</span>
                     <!-- High-Contrast Split Headline -->
-                    <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
+                    <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;" id="info-title-2">
                         Rapid Recovery Pipeline. <br><span style="color: #10b981;">Built For Speed.</span>
                     </h2>
                     <!-- Sub-Heading Callout -->
@@ -339,64 +354,11 @@
             </div>
         </div>
     </section>
-    <!-- SECTION 3: PRICING -->
-    <section id="pricing" class="pricing-section" style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
-        <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION -->
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-            
-            <div style="text-align: center; margin-bottom: 50px;">
-                <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Deployment Tiers</span>
-                <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0; line-height: 1.15; letter-spacing: -0.5px;">Transparent reinstatement pricing.</h2>
-            </div>
+ 
+<!-- THE DYNAMIC PRICING CARDS ENGINE TARGET -->
+<div id="website-package-pricing-cards-root"></div>
 
-            <!-- 📊 PRICING GRID OVERRIDE -->
-            <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; width: 100%; box-sizing: border-box; align-items: start;">
-                
-                <!-- STANDARD PLAN -->
-                <div class="price-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(10,31,68,0.03); position: relative;">
-                    <h3 style="color: #0a1f44; font-size: 1.5rem; font-weight: 800; margin: 0 0 16px 0;">Standard</h3>
-                    <div class="amount" style="color: #0a1f44; font-size: 2.8rem; font-weight: 900; margin-bottom: 12px; font-family: monospace;">$199 <span style="font-size: 0.9rem; color: #64748b; font-weight: 500; font-family: system-ui;">+ State Fees</span></div>
-                    <p style="font-size: 0.9rem; color: #475569; margin: 0 0 24px 0; line-height: 1.5; min-height: 45px;">Reinstatement application preparation and filing for administratively dissolved companies.</p>
-                    <ul class="price-features" style="list-style: none; padding: 0; margin: 0 0 32px 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #f1f5f9; padding-top: 24px;">
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Overdue Annual Report Audits</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Reinstatement Article Drafting</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Digital Vault Document Cabinet Access</li>
-                    </ul>
-                    <a href="wizard.html?service=llc-reinstatement&plan=standard" class="btn-main" style="width: 100%; text-align: center; background: #0a1f44; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 0; border-radius: 8px; display: block; box-shadow: 0 4px 12px rgba(10,31,68,0.1); transition: all 0.2s;">Select Standard</a>
-                </div>
 
-                <!-- ELITE PLAN (FEATURED BRAND OVERRIDE) -->
-                <div class="price-card featured" style="background: #ffffff; border: 2px solid #10b981; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(16,185,129,0.12); position: relative;">
-                    <div class="price-badge" style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #10b981; color: #ffffff; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 14px; border-radius: 20px; box-shadow: 0 4px 10px rgba(16,185,129,0.25);">Most Popular</div>
-                    <h3 style="color: #0a1f44; font-size: 1.5rem; font-weight: 800; margin: 0 0 16px 0;">Elite</h3>
-                    <div class="amount" style="color: #0a1f44; font-size: 2.8rem; font-weight: 900; margin-bottom: 12px; font-family: monospace;">$349 <span style="font-size: 0.9rem; color: #64748b; font-weight: 500; font-family: system-ui;">+ State Fees</span></div>
-                    <p style="font-size: 0.9rem; color: #475569; margin: 0 0 24px 0; line-height: 1.5; min-height: 45px;">Complete status restoration with full historical clearance and tax clearance integration.</p>
-                    <ul class="price-features" style="list-style: none; padding: 0; margin: 0 0 32px 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #f1f5f9; padding-top: 24px;">
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Everything in Standard</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> <strong>Assigned Recovery Liaison Desk</strong></li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> State Tax Clearance Assistance</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Delinquent Fee Resolution Checks</li>
-                    </ul>
-                    <a href="wizard.html?service=llc-reinstatement&plan=elite" class="btn-main" style="width: 100%; text-align: center; background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 0; border-radius: 8px; display: block; box-shadow: 0 10px 20px rgba(16,185,129,0.2); transition: background 0.2s;">Select Elite</a>
-                </div>
-
-                <!-- ENTERPRISE PLAN -->
-                <div class="price-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(10,31,68,0.03); position: relative;">
-                    <h3 style="color: #0a1f44; font-size: 1.5rem; font-weight: 800; margin: 0 0 16px 0;">Enterprise</h3>
-                    <div class="amount" style="color: #0a1f44; font-size: 2.8rem; font-weight: 900; margin-bottom: 12px; font-family: monospace;">$549 <span style="font-size: 0.9rem; color: #64748b; font-weight: 500; font-family: system-ui;">+ State Fees</span></div>
-                    <p style="font-size: 0.9rem; color: #475569; margin: 0 0 24px 0; line-height: 1.5; min-height: 45px;">Complete administrative restoration defense system for multi-entity holdings.</p>
-                    <ul class="price-features" style="list-style: none; padding: 0; margin: 0 0 32px 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #f1f5f9; padding-top: 24px;">
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Everything in Elite</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Corporate Entity Restructure Review</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Active Real-Time Franchise Tax Monitoring</li>
-                        <li style="color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;"><span style="color: #10b981; font-weight: bold;">✓</span> Compliance Shield Monitoring</li>
-                    </ul>
-                    <a href="wizard.html?service=llc-reinstatement&plan=enterprise" class="btn-main" style="width: 100%; text-align: center; background: #0a1f44; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 0; border-radius: 8px; display: block; box-shadow: 0 4px 12px rgba(10,31,68,0.1); transition: all 0.2s;">Select Enterprise</a>
-                </div>
-
-            </div> <!-- End Pricing Grid Matrix -->
-        </div> <!-- End Site Width Alignment Guard -->
-    </section>
     <!-- 🌐 SECTION E: ENTERPRISE SUBSCRIPTION CAPTURE MATRIX -->
     <section style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
         <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">

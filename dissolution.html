@@ -18,6 +18,13 @@
     
     <!-- Supabase Production Library Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/content-engine.js"></script>
+    <script src="assets/js/master.js"></script>
+    <script src="assets/js/page-router.js"></script>
+    <script src="assets/js/state-pricing.js"></script>
+   
+
+
 </head>
 <body>
 
@@ -28,14 +35,14 @@
       <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;"> 
     </a> 
     
-<!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
-<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
-
+    <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" onclick="toggleMobileMenu()" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button> 
+    
     <div class="nav-links"> 
-      <!-- FORMATIONS DROPDOWN --> 
+      
+      <!-- FORMATIONS DROPDOWN (EXPANDED TO 3 COLS FOR SPECIALTY REINSTATEMENTS) --> 
       <div class="nav-item-dropdown static-dropdown"> 
         <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
+        <div class="dropdown-content mega-panel-three-col"> 
           <div class="mega-column"> 
             <span class="column-title">Popular Formations</span> 
             <a href="limited-liability-company.html">LLC Formation</a> 
@@ -48,13 +55,20 @@
             <a href="nonprofits.html">Nonprofit Organization</a> 
             <a href="series-llc.html">Series LLC</a> 
           </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Expansion & Recovery</span> 
+            <a href="foreign-qualification.html">Foreign Entity Certificate</a>
+            <a href="llc-reinstatement.html">LLC Reinstatement </a>
+            <a href="trademark-filing.html">Trademark Filing</a>
+            <a href="servicemark-filing.html">Servicemark Filing</a>
+          </div> 
         </div> 
       </div> 
-      
-      <!-- COMPLIANCE DROPDOWN --> 
+
+      <!-- COMPLIANCE DROPDOWN (EXPANDED TO 3 COLS FOR LEGAL & CERTIFICATE PROTOCOLS) --> 
       <div class="nav-item-dropdown static-dropdown"> 
         <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
+        <div class="dropdown-content mega-panel-three-col"> 
           <div class="mega-column"> 
             <span class="column-title">Entity Health</span> 
             <a href="annual-reports.html">Annual Reports</a> 
@@ -67,13 +81,20 @@
             <a href="employer-identification-number-ein.html">Employer ID (EIN)</a> 
             <a href="dissolution.html">Entity Dissolution</a> 
           </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Global Verification</span> 
+            <a href="good-standing.html">Certificate of Good Standing</a>
+            <a href="apostille-services.html">Apostille Authentication </a>
+            <a href="clia-certificate.html">CLIA Certificate</a>
+            <a href="regulatory-consulting.html">Regulatory Consulting</a>
+          </div> 
         </div> 
       </div> 
-      
-      <!-- TAX FILINGS DROPDOWN --> 
+
+      <!-- TAX FILINGS DROPDOWN (EXPANDED TO 3 COLS FOR FEDERAL & PROCUREMENT ROOTS) --> 
       <div class="nav-item-dropdown static-dropdown"> 
         <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
+        <div class="dropdown-content mega-panel-three-col"> 
           <div class="mega-column"> 
             <span class="column-title">Income & Operations</span> 
             <a href="federal-income-tax.html">Federal Income Tax</a> 
@@ -86,10 +107,17 @@
             <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a> 
             <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a> 
           </div> 
+          <div class="mega-column"> 
+            <span class="column-title">Gov & Procurement</span> 
+            <a href="cage-code.html">CAGE Code</a>
+            <a href="duns-number.html">DUNS Number Procurement</a>
+            <a href="procurement-registration.html">Procurement Registration</a>
+            <a href="minority-certificate.html">Minority Certificate</a>
+          </div> 
         </div> 
       </div> 
-      
-      <!-- DOT & FLEET DROPDOWN --> 
+
+      <!-- DOT & FLEET DROPDOWN (PRESERVED 3 COLS - INJECTED NEW REGISTRATIONS) --> 
       <div class="nav-item-dropdown static-dropdown"> 
         <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
         <div class="dropdown-content mega-panel-three-col"> 
@@ -99,6 +127,7 @@
             <a href="trucker-authority.html">Trucker Authority</a> 
             <a href="broker-authority.html">Broker Authority</a> 
             <a href="ucr-registration.html">UCR Registration</a> 
+            <a href="scac-code.html">SCAC Code Registration</a>
           </div> 
           <div class="mega-column"> 
             <span class="column-title">Compliance & Regs</span> 
@@ -106,6 +135,7 @@
             <a href="driver-qualification-file.html">Driver Qualification File</a> 
             <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a> 
             <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a> 
+            <a href="hazmat-registration.html">HAZMAT Registration</a>
           </div> 
           <div class="mega-column"> 
             <span class="column-title">Insurance & Risk</span> 
@@ -164,59 +194,9 @@
     </div>
 </section>
 
-<!-- SECTION 3: PRICING --> 
-<section id="pricing" class="pricing-section"> 
-    <span class="hero-tag">Deployment Tiers</span> 
-    <h2>Transparent formation pricing.</h2> 
-    <div class="pricing-grid"> 
-        
-        <!-- Standard / Starter Tier Card -->
-        <div class="price-card"> 
-            <h3>Standard</h3> 
-            <div class="amount">$149 <span>+ State Fee</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Basic state dissolution filing.</p> 
-            <ul class="price-features"> 
-                <li>Articles of Dissolution Preparation</li> 
-                <li>State Submission Management</li> 
-                <li>Digital High-Res Receipt</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to wizard framework query parameters -->
-            <a href="wizard.html?service=dissolution&plan=starter" class="btn-main" style="width: 100%; text-align: center; background: var(--navy); text-decoration: none;">Select Standard</a> 
-        </div> 
+<!-- THE DYNAMIC PRICING CARDS ENGINE TARGET -->
+<div id="website-package-pricing-cards-root"></div>
 
-        <!-- Elite / Compliance Tier Card -->
-        <div class="price-card featured"> 
-            <div class="price-badge">Most Popular</div> 
-            <h3>Elite</h3> 
-            <div class="amount">$299 <span>+ State Fee</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Full tax and legal wind-down.</p> 
-            <ul class="price-features"> 
-                <li>Everything in Standard</li> 
-                <li><strong>State Tax Clearance Request</strong></li> 
-                <li>IRS EIN Closure Documents</li> 
-                <li>Priority Support</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to wizard framework query parameters -->
-            <a href="wizard.html?service=dissolution&plan=compliance" class="btn-main" style="width: 100%; text-align: center; text-decoration: none;">Select Elite</a> 
-        </div> 
-
-        <!-- Enterprise Tier Card -->
-        <div class="price-card"> 
-            <h3>Enterprise</h3> 
-            <div class="amount">$499 <span>+ State Fee</span></div> 
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Total organizational exit.</p> 
-            <ul class="price-features"> 
-                <li>Everything in Elite</li> 
-                <li>Multi-State Withdrawal</li> 
-                <li>Final Board Resolutions</li> 
-                <li>Compliance Archive Record</li> 
-            </ul> 
-            <!-- FIXED: Mapped directly to wizard framework query parameters -->
-            <a href="wizard.html?service=dissolution&plan=enterprise" class="btn-main" style="width: 100%; text-align: center; background: var(--navy); text-decoration: none;">Select Enterprise</a> 
-        </div> 
-        
-    </div> 
-</section>
 
 
 <!-- SECTION 4: KNOWLEDGE BASE (FAQs) -->
