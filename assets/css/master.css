@@ -3303,3 +3303,14 @@ nav {
     font-size: 0.95rem !important;
     line-height: 1.5 !important;
 }
+
+/* ==========================================================================
+   🌌 NAVY THEME PRICING GRID ADAPTATIONS
+   ========================================================================== */
+.pricing-section-navy-override h2 {
+    color: #ffffff !important;
+}
+.pricing-section-navy-override .hero-tag {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}

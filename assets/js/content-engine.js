@@ -6,29 +6,35 @@
  */
 
 const GLOBAL_SEO_CONTENT_MAP = {
-    "annual-reports": {
-        "title": "Annual Reports",
-        "heroPill": "Enterprise Ecosystem",
-        "heroHeadline": "The Hub for Total Compliance.",
-        "heroBody": "Automate your corporate structures securely.",
-        "heroBadge": "Active Entity Sync: 10,000+ Verified",
-        "heroImage": "images/hero-image.jpg",
-        "secBPill": "Main Street Growth",
-        "secBHeadline": "Neighborhood Focus.",
-        "secBSub": "Streamlined corporate filings.",
-        "secBBody": "Protect your independent venture seamlessly.",
-        "secBImage": "images/local-business.jpg",
-        "secCPill": "Launch Infrastructure",
-        "secCHeadline": "Startup Launchpad.",
-        "secCSub": "Turn your idea into reality overnight.",
-        "secCBody": "Accelerate your early-stage venture seamlessly.",
-        "secCImage": "images/startup-launch.jpg",
-        "secDPill": "Guaranteed Audit Protection",
-        "secDHeadline": "Institutional Shield.",
-        "secDSub": "Safeguard your multi-state status.",
-        "secDBody": "Avoid costly state penalties automatically.",
-        "secDImage": "images/regulatory-compliance.jpg"
+    
+    // 🏠 HOMEPAGE MATRIX ENTRY SEPARATES HOMEPAGE COPY FROM THE SERVICES
+    "homepage-main-landing": {
+        pricingKey: "llc-formation",
+        title: "Corporate Launchpad",
+        seoTitle: "Filings4U | Enterprise Entity Setup & Business Compliance Platforms",
+        metaDesc: "Automate your company setups, asset registries, and federal operating authorizations flawlessly out of a single secure infrastructure dashboard layer.",
+        heroPill: "Automated Registry Systems",
+        heroHeadline: "The Engine for <br><span style='color:#10b981;'>Corporate Launching.</span>",
+        heroBody: "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely.",
+        heroBadge: "System Core Sync: 140,000+ Profiles Active",
+        heroImage: "images/hero-image.jpg",
+        secBPill: "Independent Ventures",
+        secBHeadline: "Main Street Growth. <br><span style='color:#10b981;'>Built For Communities.</span>",
+        secBSub: "High-accuracy structural filings optimized for local business frameworks.",
+        secBBody: "Protect your commercial operations with processing tracking loops built directly for startup builders and family shops. We manage state schedules securely so you can focus on community engagement.",
+        secBImage: "images/local-business.jpg",
+        secCPill: "Global Distribution Networks",
+        secCHeadline: "Transit Infrastructure. <br><span style='color:#10b981;'>Built For Operations.</span>",
+        secCSub: "Full-spectrum fleet setup logs mapped flawlessly across state borders.",
+        secCBody: "Accelerate your logistical authorities under a robust unified dashboard tracking framework. We coordinate trucker registrations, broker permissions, state operating permits, and background drug screening accounts seamlessly.",
+        secCImage: "images/startup-launch.jpg",
+        secDPill: "Continuous Asset Shield",
+        secDHeadline: "Guaranteed Compliance. <br><span style='color:#10b981;'>Permanent Good Standing.</span>",
+        secDSub: "Proactive automated calendar sweeps eliminate corporate data gaps.",
+        secDBody: "Never face administrative state penalties, account freezing, or accidental entity exposure. Our cloud tracking matrix scans regulatory alterations daily, records state department transitions, and completes filing paperwork error-free.",
+        secDImage: "images/regulatory-compliance.jpg"
     },
+
     "apostille-services": {
         "title": "Apostille Services",
         "heroPill": "International Verification",
@@ -1526,79 +1532,349 @@ const GLOBAL_SEO_CONTENT_MAP = {
     }
 };
 
-const EXPLICIT_CONTENT_URL = 'https://supabase.co';
-const EXPLICIT_CONTENT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+const EXPLICIT_CONTENT_URL = 'https://lrbimrlbskjweynxlgas.supabase.co'; 
+const EXPLICIT_CONTENT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; 
+const CONTENT_ENGINE_ONLY_SUPABASE = window.supabase.createClient(EXPLICIT_CONTENT_URL, EXPLICIT_CONTENT_KEY); 
 
-const CONTENT_ENGINE_ONLY_SUPABASE = window.supabase.createClient(EXPLICIT_CONTENT_URL, EXPLICIT_CONTENT_KEY);
-
-function getUnifiedServiceKey() {
-    const path = window.location.pathname;
-    const fileName = path.split('/').pop().replace('.html', '').trim().toLowerCase() || 'limited-liability-company';
-    const urlMap = {
-        'limited-liability-company': 'llc-formation', 'corporations': 'corporation', 'sole-proprietorship': 'sole-proprietorship',
-        'doing-business-as-dba': 'dba-registration', 'nonprofits': 'nonprofit-organization', 'series-llc': 'series-llc',
-        'foreign-qualification': 'foreign-qualification', 'llc-reinstatement': 'llc-reinstatement', 'trademark-filing': 'trademark-filing',
-        'servicemark-filing': 'servicemark-filing', 'annual-reports': 'annual-reports', 'operating-agreement': 'operating-agreement',
-        'registered-agent': 'registered-agent', 'business-licenses': 'business-licenses', 'employer-identification-number-ein': 'employer-id-ein',
-        'dissolution': 'entity-dissolution', 'good-standing': 'good-standing', 'apostille-services': 'apostille-services',
-        'clia-certificate': 'clia-certificate', 'regulatory-consulting': 'legal-consulting', 'federal-income-tax': 'federal-tax',
-        'state-income-tax': 'state-tax', 'franchise-tax': 'franchise-tax', 'sales-tax-registration': 'sales-tax',
-        'payroll-tax-940-941': 'payroll-tax', 'heavy-use-tax-2290': 'heavy-use-tax', 'owner-operators': 'owner-operators',
-        'trucker-authority': 'trucker-authority', 'broker-authority': 'broker-authority', 'ucr-registration': 'ucr-registration',
-        'scac-code': 'scac-code', 'dot-consortium': 'dot-consortium', 'driver-qualification-file': 'driver-file',
-        'process-agents-boc-3': 'process-agent-boc3', 'international-fuel-tax-agreement-ifta': 'ifta-registration',
-        'hazmat-registration': 'dot-hazmat', 'new-entrant-audit': 'new-entrant-audit'
-    };
-    return urlMap[fileName] || fileName;
+/**
+ * ==========================================================================
+ * 🏛️ FILINGS4U CENTRAL UNIFIED ROUTER MATRIX
+ * Strips incoming URL parameters to extract the unique database service key.
+ * ==========================================================================
+ */
+function getUnifiedServiceKey() { 
+    const path = window.location.pathname; 
+    let fileName = path.split("/").pop().replace(".html", "").trim().toLowerCase(); 
+    if (!fileName || fileName === "index" || fileName === "index copy" || fileName === "home") { 
+        return "homepage-main-landing"; 
+    } 
+    const urlMap = { 
+        "limited-liability-company": "llc-formation", 
+        "corporations": "corporation", 
+        "nonprofits": "nonprofit-organization", 
+        "doing-business-as-dba": "dba-registration", 
+        "annual-reports": "annual-reports", 
+        "employer-identification-number-ein": "employer-id-ein", 
+        "employer-id-ein": "employer-id-ein",
+        "dissolution": "entity-dissolution", 
+        "good-standing": "good-standing", 
+        "certificate-of-good-standing": "good-standing",
+        "apostille-services": "apostille-services", 
+        "apostille-authentication": "apostille-services",
+        "clia-certificate": "clia-certificate", 
+        "regulatory-consulting": "legal-consulting", 
+        "sole-proprietorship": "sole-proprietorship",
+        "series-llc": "series-llc",
+        "foreign-entity-certificate": "foreign-qualification",
+        "llc-reinstatement": "llc-reinstatement",
+        "trademark-filing": "trademark-filing",
+        "servicemark-filing": "servicemark-filing",
+        "operating-agreement": "operating-agreement",
+        "registered-agent": "registered-agent",
+        "business-licenses": "business-licenses",
+        "cage-code": "cage-code",
+        "duns-number": "duns-number",
+        "procurement": "procurement-consulting",
+        "procurement-registration": "procurement-registration",
+        "minority-certificate": "minority-certificate",
+        "licenses-permits": "licenses-permits",
+        "federal-income-tax": "federal-tax", 
+        "state-income-tax": "state-tax", 
+        "franchise-tax": "franchise-tax", 
+        "franchise-tax-filing": "franchise-tax",
+        "sales-tax-registration": "sales-tax", 
+        "payroll-tax-940-941": "payroll-tax", 
+        "heavy-use-tax-2290": "heavy-use-tax", 
+        "owner-operators": "owner-operators", 
+        "trucker-authority": "trucker-authority", 
+        "broker-authority": "broker-authority", 
+        "ucr-registration": "ucr-registration", 
+        "scac-code": "scac-code", 
+        "scac-code-registration": "scac-code",
+        "dot-consortium": "dot-consortium", 
+        "driver-qualification-file": "driver-file", 
+        "process-agents-boc-3": "process-agent-boc3", 
+        "international-fuel-tax-agreement-ifta": "ifta-registration", 
+        "hazmat-registration": "dot-hazmat", 
+        "new-entrant-audit": "new-entrant-audit",
+        "trucker-insurance": "trucker-insurance",
+        "broker-insurance": "broker-insurance"
+    }; 
+    return urlMap[fileName] || fileName; 
 }
 
-function compileFullTemplateLayoutHtml(data) {
-    var out = '';
-    out += '<main class="page-container" style="background:#ffffff; padding:60px 0; font-family:system-ui,sans-serif; width:100% !important; max-width:100% !important; box-sizing:border-box;"><div class="site-width-alignment-guard" style="width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:0 40px !important; box-sizing:border-box !important;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%;"><article style="width:100%; box-sizing:border-box;"><span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">' + data.heroPill + '</span><h1 style="color:#0a1f44; font-size:3.2rem; font-weight:900; margin:0 0 18px 0; line-height:1.1; letter-spacing:-1px;">' + data.heroHeadline + '</h1><p style="color:#475569; font-size:1.1rem; line-height:1.6; margin:0 0 24px 0;">' + data.heroBody + '</p><div style="display:flex; align-items:center; gap:10px; margin-bottom:32px;"><div style="height:2px; width:24px; background:#10b981;"></div><span style="color:#0a1f44; font-weight:700; font-size:0.9rem;">' + data.heroBadge + '</span></div><a href="#pricing" class="btn-main" style="background:#10b981; color:#ffffff; font-weight:700; text-decoration:none; padding:14px 32px; border-radius:6px; display:inline-block; box-shadow:0 10px 20px rgba(16,185,129,0.2);">Get Started &rarr;</a></article><aside style="display:flex; justify-content:center; width:100%;"><img src="' + data.heroImage + '" style="width:100%; height:auto; display:block; border-radius:12px; border:1px solid rgba(10,31,68,0.15); box-shadow:0 20px 40px rgba(10,31,68,0.25);"></aside></div></div></main>';
-    out += '<section class="enterprise-metrics-section" style="padding:60px 0 !important; background:#0a1f44; color:#f4f7fa; width:100% !important; max-width:100% !important; box-sizing:border-box; overflow:hidden; margin:0 !important;"><div class="site-width-alignment-guard" style="width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:0 40px !important; box-sizing:border-box !important;"><div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid rgba(244,247,250,0.1); padding-bottom:24px; margin-bottom:40px; flex-wrap:wrap; gap:24px; width:100%; box-sizing:border-box;"><h2 style="margin:0; font-size:2.2rem; font-weight:800; color:#ffffff; letter-spacing:-0.5px; line-height:1.2;">Corporate Filing Infrastructure</h2><div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; font-weight:700; color:#10b981; font-family:monospace; background:rgba(16,185,129,0.1); padding:8px 16px; border-radius:30px; border:1px solid rgba(16,185,129,0.2);"><span style="width:8px; height:8px; background:#10b981; border-radius:50%; display:inline-block;"></span> ALL CLEAR: SECURE REST GATEWAYS ACTIVE</div></div><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:30px; width:100%; box-sizing:border-box; margin:0;"><div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:30px 24px;">🏢<div style="font-size:2.4rem; font-weight:900; color:#ffffff; font-family:monospace;">142K+</div><div style="font-size:0.95rem; font-weight:800; color:#cbd5e1; margin-top:4px;">Corporate Entities Formed</div></div><div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:30px 24px;">🚛<div style="font-size:2.4rem; font-weight:900; color:#ffffff; font-family:monospace;">38,410</div><div style="font-size:0.95rem; font-weight:800; color:#cbd5e1; margin-top:4px;">Active Transits Monitored</div></div><div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:30px 24px;">⚡<div style="font-size:2.4rem; font-weight:900; color:#10b981; font-family:monospace;">1.8s</div><div style="font-size:0.95rem; font-weight:800; color:#cbd5e1; margin-top:4px;">Average API Pipeline Turn</div></div><div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:30px 24px;">🔒<div style="font-size:2.4rem; font-weight:900; color:#ffffff; font-family:monospace;">99.98%</div><div style="font-size:0.95rem; font-weight:800; color:#cbd5e1; margin-top:4px;">Filing Accuracy Quotient</div></div></div></div></section>';
-    out += '<section style="background:#ffffff; padding:60px 0; font-family:system-ui,sans-serif; width:100% !important; max-width:100% !important; box-sizing:border-box;"><div class="site-width-alignment-guard" style="width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:0 40px !important; box-sizing:border-box !important;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%;"><div style="display:flex; justify-content:center; width:100%;"><img src="' + data.secBImage + '" style="width:100%; height:auto; display:block; border-radius:12px; border:1px solid rgba(10,31,68,0.15); box-shadow:0 20px 40px rgba(10,31,68,0.25);"></div><div style="width:100%; box-sizing:border-box;"><span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">' + data.secBPill + '</span><h2 style="color:#0a1f44; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">' + data.secBHeadline + '</h2><p style="color:#0a1f44; font-weight:700; font-size:1.05rem; margin:0 0 12px 0; line-height:1.4;">' + data.secBSub + '</p><p style="color:#475569; font-size:1rem; line-height:1.6; margin:0 0 28px 0;">' + data.secBBody + '</p></div></div></div></section>';
-    out += '<section style="background:#ffffff; padding:60px 0; font-family:system-ui,sans-serif; width:100% !important; max-width:100% !important; box-sizing:border-box;"><div class="site-width-alignment-guard" style="width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:0 40px !important; box-sizing:border-box !important;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%;"><div style="width:100%; box-sizing:border-box;"><span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">' + data.secCPill + '</span><h2 style="color:#0a1f44; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">' + data.secCHeadline + '</h2><p style="color:#0a1f44; font-weight:700; font-size:1.05rem; margin:0 0 12px 0; line-height:1.4;">' + data.secCSub + '</p><p style="color:#475569; font-size:1rem; line-height:1.6; margin:0 0 28px 0;">' + data.secCBody + '</p></div><div style="display:flex; justify-content:center; width:100%;"><img src="' + data.secCImage + '" style="width:100%; height:auto; display:block; border-radius:12px; border:1px solid rgba(10,31,68,0.15); box-shadow:0 20px 40px rgba(10,31,68,0.25);"></div></div></div></section>';
-    out += '<section class="enterprise-metrics-section" style="padding:80px 0 !important; background:#0a1f44; color:#f4f7fa; width:100% !important; max-width:100% !important; box-sizing:border-box; overflow:hidden; position:relative; margin:0 !important;"><div style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0.04; pointer-events:none; background-image:radial-gradient(#ffffff 1px, transparent 1px); background-size:20px 20px;"></div><div class="site-width-alignment-guard" style="width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:0 40px !important; box-sizing:border-box !important; position:relative; z-index:10; display:flex; flex-direction:row; flex-wrap:wrap; align-items:center; gap:60px;"><div style="flex:1; min-width:320px; max-width:550px; display:flex; justify-content:center; box-sizing:border-box;"><img src="' + data.secDImage + '" style="width:100%; height:auto; display:block; border-radius:12px; border:1px solid rgba(255,255,255,0.08); box-shadow:0 25px 50px rgba(0,0,0,0.65);"></div><div style="flex:1; min-width:320px; box-sizing:border-box;"><span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.12); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.25);">' + data.secDPill + '</span><h2 style="color:#ffffff; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">' + data.secDHeadline + '</h2><p style="color:#cbd5e1; font-weight:700; font-size:1.05rem; margin:0 0 12px 0; line-height:1.4;">' + data.secDSub + '</p><p style="color:#94a3b8; font-size:1rem; line-height:1.6; margin:0 0 28px 0;">' + data.secDBody + '</p></div></div></section>';
-    return out;
+
+
+
+
+
+/**
+ * ==========================================================================
+ * 📝 AUTOMATED COMPLIANCE DATA TEXT COMPILER (SEO DYNAMIC MATRIX)
+ * Separates homepage and auto-generates unique service copywriting lines.
+ * ==========================================================================
+ */
+function resolveDynamicPageTextContent(slugKey) { 
+    if (typeof GLOBAL_SEO_CONTENT_MAP !== "undefined" && GLOBAL_SEO_CONTENT_MAP[slugKey]) {
+        return GLOBAL_SEO_CONTENT_MAP[slugKey];
+    }
+
+    if (slugKey === "homepage-main-landing") { 
+        return { 
+            title: "Corporate Launchpad", 
+            pricingKey: "llc-formation", 
+            seoTitle: "Filings4U | Enterprise Entity Setup & Business Compliance Platforms", 
+            metaDesc: "Automate your company setups, asset registries, and federal operating authorizations flawlessly out of a single secure infrastructure dashboard layer.", 
+            heroPill: "Automated Registry Systems", 
+            heroHeadline: "The Engine for <br><span style='color:#10b981;'>Corporate Launching.</span>", 
+            heroBody: "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely.", 
+            heroBadge: "System Core Sync: 140,000+ Profiles Active", 
+            heroImage: "images/hero-image.jpg",
+            secBPill: "Independent Ventures", 
+            secBHeadline: "Main Street Growth. <br><span style='color:#10b981;'>Built For Communities.</span>", 
+            secBSub: "High-accuracy structural filings optimized for local business frameworks.", 
+            secBBody: "Protect your commercial operations with processing tracking loops built directly for startup builders and family shops. We manage state schedules securely so you can focus on community engagement.", 
+            secBImage: "images/local-business.jpg",
+            secCPill: "Global Distribution Networks", 
+            secCHeadline: "Transit Infrastructure. <br><span style='color:#10b981;'>Built For Operations.</span>", 
+            secCSub: "Full-spectrum fleet setup logs mapped flawlessly across state borders.", 
+            secCBody: "Accelerate your logistical authorities under a robust unified dashboard tracking framework. We coordinate trucker registrations, broker permissions, state operating permits, and background drug screening accounts seamlessly.", 
+            secCImage: "images/startup-launch.jpg",
+            secDPill: "Continuous Asset Shield", 
+            secDHeadline: "Guaranteed Compliance. <br><span style='color:#10b981;'>Permanent Good Standing.</span>", 
+            secDSub: "Proactive automated calendar sweeps eliminate corporate data gaps.", 
+            secDBody: "Never face administrative state penalties, account freezing, or accidental entity exposure. Our cloud tracking matrix scans regulatory alterations daily, records state department transitions, and completes filing paperwork error-free.",
+            secDImage: "images/regulatory-compliance.jpg"
+        }; 
+    } 
+
+    const titleText = slugKey.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '); 
+    return { 
+        title: titleText, 
+        pricingKey: slugKey, 
+        seoTitle: titleText + " Registration & Filing Services | filings4u", 
+        metaDesc: "Automate your corporate " + titleText + " tracking. Complete state processing schedules, document validation, and structural registrations managed error-free.", 
+        heroPill: "Compliance Ecosystem", 
+        heroHeadline: "The Platform for <br><span style='color:#10b981;'>Total " + titleText + ".</span>", 
+        heroBody: "Automate your institutional profiles, dynamic state processing deadlines, and required legal updates from a single secure system deck. We establish the high-performance pipeline handshake between you and public registries for your secure " + titleText + " processing.", 
+        heroBadge: "Operational Network Sync: Active & Monitored", 
+        heroImage: "images/hero-image.jpg", 
+        secBPill: "Operational Compliance", 
+        secBHeadline: "Strategic Focus. <br><span style='color:#10b981;'>Built For Continuity.</span>", 
+        secBSub: "High-fidelity filing architecture designed for corporate peace of mind.", 
+        secBBody: "Shield your ongoing corporate infrastructure utilizing secure monitoring systems designed for agile founders, fleet directors, and main-street operators. We process your unique " + titleText + " entries smoothly to stay completely clear of state processing errors.", 
+        secBImage: "images/local-business.jpg", 
+        secCPill: "Infrastructure Expansion", 
+        secCHeadline: "Scalable Systems. <br><span style='color:#10b981;'>Built For Development.</span>", 
+        secCSub: "Accelerate your operational velocity without data verification gaps.", 
+        secCBody: "Turn your company metrics into fully approved registry tracks. Our centralized dashboard tracking matrix handles calendar guidelines, manages documentation forms, and submits your required " + titleText + " parameters securely so your enterprise stays approved.", 
+        secCImage: "images/startup-launch.jpg", 
+        secDPill: "Guaranteed Audit Protection", 
+        secDHeadline: "Institutional Shield. <br><span style='color:#10b981;'>Permanent Accuracy.</span>", 
+        secDSub: "Active database synchronization safeguards your status across state lines.", 
+        secDBody: "Avoid costly state penalties, business asset exposure, or accidental corporate dissolution. Our backdrop system actively checks state department registries daily to verify that your active filing profiles remain locked down, approved, and shielded.", 
+        secDImage: "images/regulatory-compliance.jpg" 
+    }; 
 }
 
-// SMART RUNTIME CONTROLLER AND INITIALIZATION MANAGER
-function renderMasterSystem() {
-    const activeKey = getUnifiedServiceKey();
-    let pageData = GLOBAL_SEO_CONTENT_MAP[activeKey];
+
+/**
+ * ==========================================================================
+ * 🎨 MASTER INTERFACE LAYOUT ASSEMBLER (MOBILE RESPONSIVE PLATFORM)
+ * Unifies backgrounds to #0a1f44 and isolates card element styles.
+ * ==========================================================================
+ */
+function compileUpperLayoutBlueprintHtml(data) { 
+    var out = ''; 
     
-    // Auto-generation fallback logic parameters layer
-    if (!pageData) {
-        console.warn("Mismatched map slug tracking for: " + activeKey + ". Triggering auto-copy builder.");
-        const titleText = activeKey.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        pageData = {
-            title: titleText, pricingKey: activeKey, seoTitle: titleText + " Services | filings4u",
-            heroPill: "Enterprise Ecosystem", heroHeadline: "The Hub for <br><span style='color:#10b981;'>Total " + titleText + ".</span>",
-            heroBody: "Automate your corporate structures, regulatory deadlines, and registrations directly from one single dashboard.",
-            heroBadge: "Active Sync: 10,000+ Verified", heroImage: "images/hero-image.jpg",
-            secBPill: "Main Street Growth", secBHeadline: "Neighborhood Focus.", secBSub: "Streamlined data scheduling.", secBBody: "Protect your project seamlessly.", secBImage: "images/local-business.jpg",
-            secCPill: "Launch Infrastructure", secCHeadline: "Startup Launchpad.", secCSub: "Turn your business idea into reality.", secCBody: "Accelerate your setup frameworks smoothly.", secCImage: "images/startup-launch.jpg",
-            secDPill: "Guaranteed Audit Protection", secDHeadline: "Institutional Shield.", secDSub: "Active cloud status defense.", secDBody: "Avoid expensive penalties automatically.", secDImage: "images/regulatory-compliance.jpg"
+    out += '<style>' +
+        '  .f4u-layout-section { padding: 80px 0; width: 100% !important; max-width: 100% !important; box-sizing: border-box; margin: 0 !important; overflow: hidden; position: relative; display: block; }' +
+        '  .f4u-layout-container { width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10; }' +
+        '  .f4u-flex-grid { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 60px; width: 100%; box-sizing: border-box; }' +
+        '  .f4u-flex-column { flex: 1; width: 100%; box-sizing: border-box; }' +
+        '  .f4u-hero-under-nav { margin-top: 100px !important; padding-top: 40px !important; padding-bottom: 80px !important; }' + 
+        '  .f4u-unified-navy { background-color: #0a1f44 !important; background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px) !important; background-size: 20px 20px !important; color: #f4f7fa !important; }' +
+        '  .f4u-clean-white { background: #ffffff !important; color: #0a1f44 !important; }' +
+        '  .f4u-responsive-graphic { width: 100%; height: auto; display: block; border-radius: 12px; box-sizing: border-box; }' +
+        '  .f4u-unified-navy .f4u-responsive-graphic { border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 40px rgba(0,0,0,0.45); }' +
+        '  .f4u-clean-white .f4u-responsive-graphic { border: 1px solid rgba(10,31,68,0.15); box-shadow: 0 20px 40px rgba(10,31,68,0.15); }' +
+        '  @media (max-width: 960px) {' +
+        '    .f4u-flex-grid { flex-direction: column !important; gap: 40px !important; align-items: flex-start !important; }' +
+        '    .f4u-flex-column { width: 100% !important; flex: none !important; }' +
+        '    .f4u-hero-stack { flex-direction: column-reverse !important; }' + 
+        '    .f4u-layout-section { padding: 50px 0 !important; }' +
+        '    .f4u-layout-container { padding: 0 20px !important; }' +
+        '    h1 { font-size: 2.4rem !important; line-height: 1.15 !important; }' +
+        '    h2 { font-size: 1.9rem !important; }' +
+        '    .f4u-metrics-strip-wrapper { flex-direction: column !important; gap: 20px !important; }' +
+        '    .f4u-image-wrapper { order: -1 !important; width: 100% !important; display: block !important; }' + 
+        '  }' +
+        '</style>';
+
+    // LAYER 1: HERO UNIT
+    out += '<section class="f4u-layout-section f4u-clean-white f4u-hero-under-nav"><div class="f4u-layout-container"><div class="f4u-flex-grid f4u-hero-stack"><article class="f4u-flex-column"><span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">' + data.heroPill + '</span><h1 style="color:#0a1f44; font-size:3.2rem; font-weight:900; margin:0 0 18px 0; line-height:1.1; letter-spacing:-1px;">' + data.heroHeadline + '</h1><p style="color:#475569; font-size:1.1rem; line-height:1.6; margin:0 0 24px 0;">' + data.heroBody + '</p><div style="display:flex; align-items:center; gap:10px; margin-bottom:32px;"><div style="height:2px; width:24px; background:#10b981;"></div><span style="color:#0a1f44; font-weight:700; font-size:0.9rem;">' + data.heroBadge + '</span></div><a href="#pricing" class="btn-main" style="background:#10b981; color:#ffffff; font-weight:700; text-decoration:none; padding:14px 32px; border-radius:6px; display:inline-block; box-shadow:0 10px 20px rgba(16,185,129,0.2);">Get Started &rarr;</a></article><aside class="f4u-flex-column f4u-image-wrapper"><img src="' + data.heroImage + '" class="f4u-responsive-graphic"></aside></div></div></section>'; 
+
+    // LAYER 2: SYSTEM METRICS DASHBOARD STRIP
+    out += '<section class="f4u-layout-section f4u-unified-navy"><div class="f4u-layout-container"><div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid rgba(244,247,250,0.1); padding-bottom:24px; margin-bottom:40px; flex-wrap:wrap; gap:24px; width:100%; box-sizing:border-box;"><h2 style="margin:0; font-size:2.2rem; font-weight:800; color:#ffffff; letter-spacing:-0.5px; line-height:1.2;">Corporate Filing Infrastructure</h2><div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; font-weight:700; color:#10b981; font-family:monospace; background:rgba(16,185,129,0.1); padding:8px 16px; border-radius:30px; border:1px solid rgba(16,185,129,0.2);"><span style="width:8px; height:8px; background:#10b981; border-radius:50%; display:inline-block;"></span> ALL CLEAR: SECURE REST GATEWAYS ACTIVE</div></div>' +
+           '<div class="f4u-metrics-strip-wrapper" style="display:flex; gap:30px; width:100%; box-sizing:border-box; margin:0;">' +
+           '<div style="background-color:#0a1f44 !important; background-image:none !important; border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:30px 24px; flex:1;">🏢<div style="font-size:2.4rem; font-weight:900; color:#ffffff; font-family:monospace;">142K+</div><div style="font-size:0.95rem; font-weight:800; color:#cbd5e1; margin-top:4px;">Corporate Entities Formed</div></div>' +
+           '<div style="background-color:#0a1f44 !important; background-image:none !important; border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:30px 24px; flex:1;">🚛<div style="font-size:2.4rem; font-weight:900; color:#ffffff; font-family:monospace;">38,410</div><div style="font-size:0.95rem; font-weight:800; color:#cbd5e1; margin-top:4px;">Active Transits Monitored</div></div>' +
+           '<div style="background-color:#0a1f44 !important; background-image:none !important; border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:30px 24px; flex:1;">⚡<div style="font-size:2.4rem; font-weight:900; color:#10b981; font-family:monospace;">1.8s</div><div style="font-size:0.95rem; font-weight:800; color:#cbd5e1; margin-top:4px;">Average API Pipeline Turn</div></div>' +
+           '<div style="background-color:#0a1f44 !important; background-image:none !important; border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:30px 24px; flex:1;">🔒<div style="font-size:2.4rem; font-weight:900; color:#ffffff; font-family:monospace;">99.98%</div><div style="font-size:0.95rem; font-weight:800; color:#cbd5e1; margin-top:4px;">Filing Accuracy Quotient</div></div>' +
+           '</div></div></section>';
+
+    // LAYER 3: OPERATIONAL FOCUS SECTION B
+    out += '<section class="f4u-layout-section f4u-clean-white"><div class="f4u-layout-container"><div class="f4u-flex-grid"><div class="f4u-flex-column f4u-image-wrapper"><img src="' + data.secBImage + '" class="f4u-responsive-graphic"></div><div class="f4u-flex-column"><span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">' + data.secBPill + '</span><h2 style="color:#0a1f44; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">' + data.secBHeadline + '</h2><p style="color:#0a1f44; font-weight:700; font-size:1.05rem; margin:0 0 12px 0; line-height:1.4;">' + data.secBSub + '</p><p style="color:#475569; font-size:1rem; line-height:1.6; margin:0 0 28px 0;">' + data.secBBody + '</p></div></div></div></section>'; 
+
+    // LAYER 4: INFRASTRUCTURE EXPANSION SECTION C
+    out += '<section class="f4u-layout-section f4u-unified-navy"><div class="f4u-layout-container"><div class="f4u-flex-grid"><div class="f4u-flex-column"><span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.12); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.25);">' + data.secCPill + '</span><h2 style="color:#ffffff; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">' + data.secCHeadline + '</h2><p style="color:#cbd5e1; font-weight:700; font-size:1.05rem; margin:0 0 12px 0; line-height:1.4;">' + data.secCSub + '</p><p style="color:#94a3b8; font-size:1rem; line-height:1.6; margin:0 0 28px 0;">' + data.secCBody + '</p></div><div class="f4u-flex-column f4u-image-wrapper"><img src="' + data.secCImage + '" class="f4u-responsive-graphic"></div></div></div></section>'; 
+
+    return out; 
+}
+
+/* Update ONLY this function inside your content-engine.js file */
+function compileSectionDLayoutHtml(data) {
+    return '<div class="f4u-layout-container">' +
+           // 1. Injects f4u-grid to lock text columns to a max balanced width
+           '<div class="f4u-grid f4u-reverse-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; width:100%; box-sizing:border-box;">' +
+           
+           // Left Side Image Container
+           '<div style="display:flex; justify-content:center; box-sizing:border-box; width:100%;">' +
+           '<img src="' + data.secDImage + '" class="f4u-img" style="width:100%; height:auto; display:block; border-radius:12px;">' +
+           '</div>' +
+           
+           // Right Side Aligned Text Container
+           '<div style="width:100%; max-width:550px; box-sizing:border-box; text-align:left;">' +
+           '<span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.15); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.25);">' + data.secDPill + '</span>' +
+           '<h2 style="color:#ffffff; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">' + data.secDHeadline + '</h2>' + 
+           '<p style="color:#cbd5e1; font-weight:700; font-size:1.05rem; margin:0 0 12px 0; line-height:1.4;">' + data.secDSub + '</p>' + 
+           '<p style="color:#94a3b8; font-size:1rem; line-height:1.6; margin:0; word-break:break-word;">' + data.secDBody + '</p>' + 
+           '</div>' +
+           
+           '</div>' +
+           '</div>';
+}
+
+
+
+
+/**
+ * ==========================================================================
+ * 🚀 HYBRID DATA ACQUISITION & CHESSBOARD ARRANGEMENT SEQUENCER
+ * Resolves local copy layouts and merges with active Supabase price values.
+ * ==========================================================================
+ */
+async function renderMasterSystem() { 
+    try {
+        const activeSlug = getUnifiedServiceKey(); 
+        console.log("🎯 Content Engine Launching Query Sequence For: " + activeSlug);
+
+        // 1. Fetch parameters from your live Supabase 'services' database table
+        const { data: dbRow, error } = await CONTENT_ENGINE_ONLY_SUPABASE
+            .from('services') 
+            .select('*')
+            .eq('slug', activeSlug)
+            .single();
+
+        // 2. Pure Title Resolution ensures home is never mirrored on internal tracks
+        let serviceTitleString = activeSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        if (!error && dbRow && dbRow.service_title) {
+            serviceTitleString = dbRow.service_title;
+        }
+
+        // 3. Independent Copy Synthesis maps variables natively to prevent global overrides
+        const dynamicContent = {
+            pricingKey: activeSlug, 
+            seoTitle: serviceTitleString + " Registration & Filing Services | filings4u",
+            metaDesc: "Automate your corporate " + serviceTitleString + " tracking. Complete state processing schedules error-free.",
+            heroPill: serviceTitleString + " Framework",
+            heroHeadline: "The Platform for <br><span style='color:#10b981;'>Total " + serviceTitleString + ".</span>",
+            heroBody: "Automate your institutional profiles, dynamic state processing deadlines, and required legal updates from a single secure system deck. We establish the high-performance pipeline handshake between you and public registries for your secure " + serviceTitleString + " processing.",
+            heroBadge: serviceTitleString + " Network Sync: Active",
+            heroImage: "https://unsplash.com", 
+            secBPill: "Operational Continuity",
+            secBHeadline: serviceTitleString + " Focus. <br><span style='color:#10b981;'>Built For Growth.</span>",
+            secBSub: "High-fidelity filing architecture designed for corporate peace of mind.",
+            secBBody: "Shield your ongoing corporate infrastructure utilizing secure monitoring systems designed for agile founders, fleet directors, and main-street operators. We process your unique " + serviceTitleString + " entries smoothly to stay completely clear of state processing errors.",
+            secBImage: "https://unsplash.com",
+            secCPill: "Infrastructure Expansion",
+            secCHeadline: "Scalable Systems. <br><span style='color:#10b981;'>Built For " + serviceTitleString + ".</span>",
+            secCSub: "Accelerate your operational velocity without data verification gaps.",
+            secCBody: "Turn your company metrics into fully approved registry tracks. Our centralized dashboard tracking matrix handles calendar guidelines, manages documentation forms, and submits your required " + serviceTitleString + " parameters securely so your enterprise stays approved.",
+            secCImage: "https://unsplash.com",
+            secDPill: "Guaranteed Audit Protection",
+            secDHeadline: "Institutional Shield. <br><span style='color:#10b981;'>Permanent Accuracy.</span>",
+            secDSub: "Active database synchronization safeguards your status across state lines.",
+            secDBody: "Avoid costly state penalties, business asset exposure, or accidental corporate dissolution. Our backdrop system actively checks state department registries daily to verify that your active filing profiles remain locked down, approved, and shielded.",
+            secDImage: "https://unsplash.com"
         };
-    }
 
-    document.title = pageData.seoTitle || (pageData.title + ' | filings4u');
-    
-    const pricingRoot = document.getElementById('website-package-pricing-cards-root');
-    if (pricingRoot) {
-        pricingRoot.setAttribute('data-service-key', pageData.pricingKey || activeKey);
-        pricingRoot.style.cssText = 'width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; display: block !important;';
-    }
-    
-    const dynamicSectionsRoot = document.getElementById('dynamic-sections-root');
-    if (dynamicSectionsRoot) {
-        dynamicSectionsRoot.innerHTML = compileFullTemplateLayoutHtml(pageData);
-        console.log('✅ Content Engine: Loaded template marketing sections for [' + activeKey + ']');
-    }
+        // If user is on the actual home page root path, overwrite with home copy explicitly
+        if (activeSlug === "homepage-main-landing") {
+            dynamicContent.heroPill = "Automated Registry Systems";
+            dynamicContent.heroHeadline = "The Engine for <br><span style='color:#10b981;'>Corporate Launching.</span>";
+            dynamicContent.heroBody = "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely.";
+            dynamicContent.heroBadge = "System Core Sync: 140,000+ Profiles Active";
+            dynamicContent.secBPill = "Independent Ventures";
+            dynamicContent.secBHeadline = "Main Street Growth. <br><span style='color:#10b981;'>Built For Communities.</span>";
+            dynamicContent.secBSub = "High-accuracy structural filings optimized for local business frameworks.";
+            dynamicContent.secBBody = "Protect your commercial operations with processing tracking loops built directly for startup builders and family shops. We manage state schedules securely so you can focus on community engagement.";
+            dynamicContent.secCPill = "Global Distribution Networks";
+            dynamicContent.secCHeadline = "Transit Infrastructure. <br><span style='color:#10b981;'>Built For Operations.</span>";
+            dynamicContent.secCSub = "Full-spectrum fleet setup logs mapped flawlessly across state borders.";
+            dynamicContent.secCBody = "Accelerate your logistical authorities under a robust unified dashboard tracking framework. We coordinate trucker registrations, broker permissions, state operating permits, and background drug screening accounts seamlessly.";
+            dynamicContent.secDPill = "Continuous Asset Shield";
+            dynamicContent.secDHeadline = "Guaranteed Compliance. <br><span style='color:#10b981;'>Permanent Good Standing.</span>";
+            dynamicContent.secDSub = "Proactive automated calendar sweeps eliminate corporate data gaps.";
+            dynamicContent.secDBody = "Never face administrative state penalties, account freezing, or accidental entity exposure. Our cloud tracking matrix scans regulatory alterations daily, records state department transitions, and completes filing paperwork error-free.";
+        }
 
-    // ⚡ THE HANDSHAKE HANDLER: Explicitly wakes up your state-pricing.js engine right now using the correct key parameters!
-    if (typeof renderMainWebsitePricingCards === "function") {
-        renderMainWebsitePricingCards(pageData.pricingKey || activeKey);
-    }
-}
-document.addEventListener("DOMContentLoaded", renderMasterSystem);
+        // Synchronize browser header layout definitions
+        document.title = dynamicContent.seoTitle; 
+        let metaDescTag = document.querySelector('meta[name="description"]'); 
+        if (!metaDescTag) { 
+            metaDescTag = document.createElement('meta'); 
+            metaDescTag.setAttribute('name', 'description'); 
+            document.head.appendChild(metaDescTag); 
+        } 
+        metaDescTag.setAttribute('content', dynamicContent.metaDesc); 
+
+        // CHESSBOARD STACK 1: Paint upper text segments above prices
+        const dynamicSectionsRoot = document.getElementById("dynamic-sections-root"); 
+        if (dynamicSectionsRoot) { 
+            dynamicSectionsRoot.innerHTML = compileUpperLayoutBlueprintHtml(dynamicContent); 
+        } 
+
+        // CHESSBOARD STACK 2: Structure layout options across the Pricing container
+        const pricingRoot = document.getElementById("website-package-pricing-cards-root"); 
+        if (pricingRoot) { 
+            pricingRoot.setAttribute("data-service-key", dynamicContent.pricingKey); 
+            pricingRoot.style.cssText = "width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:80px 40px !important; box-sizing:border-box !important; display:block !important; background:#ffffff !important; position:relative !important; z-index:20 !important; background-image:none !important;"; 
+            
+            let priceTitle = pricingRoot.querySelector("h2"); 
+            if (priceTitle) priceTitle.style.setProperty("color", "#0a1f44", "important"); 
+            
+            if (typeof renderMainWebsitePricingCards === "function") { 
+                renderMainWebsitePricingCards(dynamicContent.pricingKey); 
+            } 
+        } 
+
+        // CHESSBOARD STACK 3: Generate Dynamic Section D (Using uniform #0a1f44 corporate navy color)
+        let sectionDElement = document.getElementById("dynamic-section-d-container"); 
+        if (!sectionDElement) { 
+            sectionDElement = document.createElement("div"); 
+            sectionDElement.id = "dynamic-section-d-container"; 
+            if (pricingRoot) pricingRoot.parentNode.insertBefore(sectionDElement, pricingRoot.nextSibling); 
+        } 
+        sectionDElement.className = "f4u-layout-section f4u-unified-navy";
+        sectionDElement.style.cssText = "padding: 80px 0 !important;";
+        sectionDElement.innerHTML = compileSectionDLayoutHtml(dynamicContent); 
+
+        // CHESSBOARD STACK 4: Re-stack opt-in subscribe cards underneath Section D content blocks
+        const subscribeContainer = document.getElementById("compliance-subscribe-form-container") || document.querySelector(".subscribe-section-wrapper"); 
+        if (subscribeContainer && sectionDElement) { 
+            subscribeContainer.style.cssText = "background:#ffffff !important; color:#0a1f44 !important; padding:80px 0 !important; margin:0 !important; width:100% !important; max-width:100% !important; position:relative !important; z-index:10 !important; background-image:none !important;"; 
+            let subTitle = subscribeContainer.querySelector("h3, h2"); 
+            if (subTitle) subTitle.style.setProperty("color", "#0a1f44", "important"); 
+            let subText = subscribeContainer.querySelector("p"); 
+            if (subText) subText.style.setProperty("color", "#475569", "important"); sectionDElement.parentNode.insertBefore(subscribeContainer, sectionDElement.nextSibling);console.log("🏁 All Sections Successfully Anchored in Chessboard Order!");}} catch (globalCatchError) {console.error("❌ Content Engine Pipeline Exception Caught:", globalCatchError);}}document.addEventListener("DOMContentLoaded", renderMasterSystem);

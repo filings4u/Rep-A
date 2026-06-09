@@ -511,22 +511,32 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.addons, {
 // ============================================================================ //
 // 🛠️ MODULE 4: AUTOMATED WEBSITE SALES-CARD RENDER ENGINE (SYNCHRONIZED READY)
 // ============================================================================ //
+
+    
+    // 1. STRICT TOPIC INTERCEPTOR - REMOVED ALL HARDCODED DEFAULTS
 function renderMainWebsitePricingCards(passedServiceKey) {
     var targetContainer = document.getElementById("website-package-pricing-cards-root");
     if (!targetContainer || !window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) return;
 
-    // Synchronize parameter calculations with your content engine runtime slug keys
-    var targetServiceKey = passedServiceKey || targetContainer.getAttribute("data-service-key") || "llc-formation";
+    // Read the explicit layout token string passed strictly at runtime by your engine
+    var targetServiceKey = passedServiceKey || targetContainer.getAttribute("data-service-key");
+    
+    // 🔒 ABSOLUTE SAFETY GATEKEEPER FIREWALL
+    if (!targetServiceKey) {
+        console.error("❌ Pricing Engine Failure: No valid service key parameter provided. Halting render operations.");
+        return;
+    }
+
     var serviceData = window.GLOBAL_COMPANY_PRICING.packages[targetServiceKey];
     
-    // SAFE FALLBACK: If specific service package variables are missing, default to llc-formation price grids
+    // If the database dictionary doesn't hold prices for this exact slug path, stop immediately
     if (!serviceData) {
-        console.warn("Pricing parameters missing for slug key [" + targetServiceKey + "]. Utilizing formation default arrays.");
-        serviceData = window.GLOBAL_COMPANY_PRICING.packages["llc-formation"];
+        console.warn("⚠️ Pricing Engine Note: No pricing configurations registered for key [" + targetServiceKey + "]");
+        return;
     }
-    if (!serviceData) return; // Exit if fallback is completely empty
 
-    var cardsHtml = "";
+
+       var cardsHtml = "";
     var plansConfig = [
         { key: "starter", name: "Basic", class: "price-card", btnStyle: "background: var(--navy);" },
         { key: "compliance", name: "Elite", class: "price-card featured", btnStyle: "" },
@@ -543,20 +553,20 @@ function renderMainWebsitePricingCards(passedServiceKey) {
 
         var badgeHtml = (plan.key === "compliance") ? '<div class="price-badge">Most Popular</div>' : '';
         
-        // FIXED WIZARD REDIRECT LINK: Explicitly forwards the exact custom topic page slug parameter
+        // Dynamically binds your link parameter string strictly to your verified page slug variable
         cardsHtml += '<div class="' + plan.class + '">' + badgeHtml + '<h3>' + plan.name + '</h3>' +
                      '<div class="amount">$' + basePrice.toFixed(2) + ' <span>+ State Fee</span></div>' +
                      '<ul class="price-features">' + bulletListHtml + '</ul>' +
                      '<a href="wizard.html?service=' + targetServiceKey + '&plan=' + plan.key + '" class="btn-main" style="width: 100%; text-align: center; ' + plan.btnStyle + '">Select ' + plan.name + '</a>' +
                      '</div>';
     });
-
     targetContainer.innerHTML = '<section id="pricing" class="pricing-section">' +
                                 '<span class="hero-tag">Deployment Tiers</span>' +
                                 '<h2>Transparent formation pricing.</h2>' +
                                 '<div class="pricing-grid">' + cardsHtml + '</div>' +
                                 '</section>';
 }
+
 
 
 
