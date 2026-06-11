@@ -1861,31 +1861,86 @@ async function renderMasterSystem() {
             dynamicSectionsRoot.innerHTML = compileUpperLayoutBlueprintHtml(dynamicContent); 
         } 
 
-        // 🏛️ LAYOUT STEP 2: Position Pricing modules and trigger state-pricing integration
-        const pricingRoot = document.getElementById("website-package-pricing-cards-root"); 
-        if (pricingRoot) { 
-            pricingRoot.setAttribute("data-service-key", dynamicContent.pricingKey); 
-            pricingRoot.style.cssText = "width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:60px 40px !important; box-sizing:border-box !important; display:block !important; background:#ffffff !important; position:relative !important; z-index:20 !important; background-image:none !important;"; 
-            
-            let priceTitle = pricingRoot.querySelector("h2"); 
-            if (priceTitle) priceTitle.style.setProperty("color", "#0a1f44", "important"); 
-            
-            if (typeof renderMainWebsitePricingCards === "function") { 
-                renderMainWebsitePricingCards(dynamicContent.pricingKey); 
-            } 
-        } 
+    // 🏛️ LAYOUT STEP 2: Position Pricing modules and trigger your native layout injection loops
+    const pricingRoot = document.getElementById("website-package-pricing-cards-root");
+    if (pricingRoot) {
+      pricingRoot.setAttribute("data-service-key", dynamicContent.pricingKey);
+      pricingRoot.style.cssText = "width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:60px 40px !important; box-sizing:border-box !important; display:block !important; background:#ffffff !important; position:relative !important; z-index:20 !important; background-image:none !important;";
 
-        // 🏛️ LAYOUT STEP 3: Position section D directly below white pricing cards
-        let sectionDElement = document.getElementById("dynamic-section-d-container"); 
-        if (!sectionDElement) { 
-            sectionDElement = document.createElement("div"); 
-            sectionDElement.id = "dynamic-section-d-container"; 
-            if (pricingRoot) pricingRoot.parentNode.insertBefore(sectionDElement, pricingRoot.nextSibling); 
-        } 
-        sectionDElement.className = "f4u-layout-section f4u-unified-navy";
-        if (typeof compileSectionDLayoutHtml === "function") {
-            sectionDElement.innerHTML = compileSectionDLayoutHtml(dynamicContent); 
+      let priceTitle = pricingRoot.querySelector("h2");
+      if (priceTitle) priceTitle.style.setProperty("color", "#0a1f44", "important");
+
+      // 🎯 THE COMPREHENSIVE RECOVERY FIX: Algorithmic key sync to match what state-pricing.js expects
+      if (typeof renderMainWebsitePackagePricingCards === "function") {
+        const globalCatalog = window.GLOBAL_COMPANY_PRICING?.packages;
+        let synchronizedKey = dynamicContent.pricingKey;
+        
+        if (globalCatalog && !globalCatalog[synchronizedKey]) {
+            if (synchronizedKey.endsWith('s')) {
+                const singularKey = synchronizedKey.slice(0, -1);
+                if (globalCatalog[singularKey]) synchronizedKey = singularKey;
+            } else {
+                const pluralKey = synchronizedKey + 's';
+                if (globalCatalog[pluralKey]) synchronizedKey = pluralKey;
+            }
         }
+        renderMainWebsitePackagePricingCards(synchronizedKey);
+      }
+
+      // Assign clean wizard parameter query strings perfectly across all cards
+      setTimeout(() => {
+        const anchors = pricingRoot.querySelectorAll('a');
+        anchors.forEach(a => {
+          let plan = 'starter';
+          if (a.innerText.toLowerCase().includes('compliance') || a.innerText.toLowerCase().includes('elite')) plan = 'compliance';
+          if (a.innerText.toLowerCase().includes('enterprise')) plan = 'enterprise';
+          a.setAttribute('href', `wizard.html?service=${dynamicContent.pricingKey}&plan=${plan}`);
+        });
+      }, 250);
+    }
+ 
+
+    // 🏛️ LAYOUT STEP 3: Position section D directly below white pricing cards
+    let sectionDElement = document.getElementById("dynamic-section-d-container");
+    try {
+        if (sectionDElement) {
+            sectionDElement.remove();
+        }
+        sectionDElement = document.createElement("div");
+        sectionDElement.id = "dynamic-section-d-container";
+        sectionDElement.className = "f4u-layout-section f4u-unified-navy";
+        
+        if (pricingRoot) {
+            pricingRoot.parentNode.insertBefore(sectionDElement, pricingRoot.nextSibling);
+        }
+
+        sectionDElement.innerHTML = `
+            <div class="f4u-layout-container">
+                <div class="f4u-flex-grid">
+                    <div class="f4u-flex-column f4u-image-wrapper">
+                        <img src="${dynamicContent.secDImage}" class="f4u-responsive-graphic">
+                    </div>
+                    <div class="f4u-flex-column">
+                        <span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">
+                            ${dynamicContent.secDPill}
+                        </span>
+                        <h2 style="color:#ffffff; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">
+                            ${dynamicContent.secDHeadline}
+                        </h2>
+                        <p style="color:#cbd5e1; font-weight:700; font-size:1.05rem; margin:0 0 12px 0; line-height:1.4;">
+                            ${dynamicContent.secDSub}
+                        </p>
+                        <p style="color:#94a3b8; font-size:1rem; line-height:1.6; margin:0 0 28px 0;">
+                            ${dynamicContent.secDBody}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+    } catch (err) { 
+        console.error("❌ Error in refreshed Layout Step 3 execution loop:", err); 
+    }
+
 
         // 🏛️ LAYOUT STEP 4: Enforce contrast margins across subscribe blocks
         const subscribeContainer = document.getElementById("compliance-subscribe-form-container") || document.querySelector(".subscribe-section-wrapper"); 

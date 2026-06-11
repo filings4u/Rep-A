@@ -1237,3 +1237,203 @@
             .hero-banner-card h1 { font-size: 2.3rem !important; }
             .service-deck-grid { grid-template-columns: 1fr !important; }
         }
+
+
+
+
+/** 
+ * ========================================================================== 
+ * FILINGS4U PRODUCTION UNIFIED MOBILE RESPONSIVENESS MATRIX
+ * FILE LOCATION: assets/css/master-mobile.css
+ * ========================================================================== 
+ */
+@media screen and (max-width: 960px) {
+    
+    /* --- 1. GLOBAL MOBILE VIEWPORT SAFETY RESETS --- */
+    html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-text-size-adjust: 100%; /* Prevents browsers from down-scaling text font scales */
+    }
+
+    /* 🛑 STACKING FIX: Prevents layout sections from crashing or running side-by-side */
+    #dynamic-sections-root,
+    #website-package-pricing-cards-root,
+    #dynamic-section-d-container,
+    #compliance-subscribe-form-container,
+    .subscribe-section-wrapper,
+    .f4u-layout-section,
+    section {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-top: 50px !important;    /* Uniform vertical spacing to fix smashed layouts */
+        padding-bottom: 50px !important; 
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+        float: none !important;
+    }
+
+    /* 📏 BALANCED CONSTRAINTS: Sets the universal guide lines to keep all layouts matching */
+    .f4u-layout-container,
+    .footer-container,
+    #website-package-pricing-cards-root > div,
+    #compliance-subscribe-form-container,
+    .subscribe-section-wrapper,
+    .container {
+        padding-left: 24px !important;  /* Strict uniform edge line anchor */
+        padding-right: 24px !important; 
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* --- 2. FIXED NAVIGATION MATRIX TO THE GLASS --- */
+    nav, .site-header nav {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .nav-content-wrapper {
+        padding-left: 20px !important;  /* Logo alignment anchor */
+        padding-right: 20px !important; /* Hamburger menu button alignment anchor */
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+    }
+
+    .nav-links {
+        display: none !important; /* Hides desktop navigation bars out of small viewports */
+    }
+
+    /* --- 3. THE HERO REVERSAL SYSTEM: IMAGE AT THE TOP --- */
+    .f4u-hero-stack,
+    #dynamic-sections-root .f4u-hero-stack {
+        display: flex !important;
+        flex-direction: column !important; /* Stack rows vertically instead of side-by-side */
+        width: 100% !important;
+    }
+
+    /* 🎯 Forces the hero graphic aside block to display at the absolute top of the viewport */
+    .f4u-hero-stack .f4u-image-wrapper,
+    .f4u-hero-stack aside,
+    #dynamic-sections-root .f4u-hero-stack .f4u-image-wrapper {
+        order: -1 !important; /* Positions graphic layout element above headers */
+        width: 100% !important;
+        margin-bottom: 24px !important;
+    }
+
+    .f4u-hero-stack article,
+    #dynamic-sections-root .f4u-hero-stack article {
+        order: 1 !important;
+        width: 100% !important;
+    }
+
+    .f4u-hero-under-nav {
+        margin-top: 70px !important; /* Snaps tight beneath your fixed navigation header */
+    }
+
+    /* --- 4. GENERAL GRID FLUID STACKS (PREVENTS SQUEEZING) --- */
+    .f4u-flex-grid, .row, .grid-row {
+        display: flex !important;
+        flex-direction: column !important; /* Changes horizontal layout rows into vertical tracks */
+        gap: 32px !important;
+        width: 100% !important;
+    }
+
+    .f4u-flex-column,
+    .f4u-image-wrapper,
+    .col,
+    .columns,
+    article,
+    aside {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+        display: block !important;
+        box-sizing: border-box !important;
+    }
+
+    .f4u-responsive-graphic, img {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        border-radius: 12px !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+
+    /* --- 5. PRICING PLANS COMPLIANT ALIGNMENT --- */
+    #website-package-pricing-cards-root > div {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 24px !important;
+        padding-left: 0 !important; /* Drops inner pads since master layer holds 24px guideline */
+        padding-right: 0 !important;
+        width: 100% !important;
+    }
+
+    .marketing-pricing-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 14px !important;
+        padding: 32px 24px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        transform: none !important; /* Disables desktop scaling effects on touch viewports */
+    }
+
+    /* --- 6. CRUNCHED 2x2 FOOTER SYSTEM INTERFACE --- */
+    footer .footer-container,
+    .site-footer .footer-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* Locks link lists into an elegant 2x2 grid matrix */
+        gap: 32px 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    footer .footer-brand,
+    .site-footer .footer-brand {
+        grid-column: span 2 !important; /* Extends logo info box completely across the top grid row track */
+        width: 100% !important;
+        margin-bottom: 12px !important;
+    }
+
+    /* --- 7. FOOTER BOTTOM CREDITS STRIP --- */
+    .footer-bottom {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 24px !important;
+        padding: 40px 20px 20px 20px !important;
+        border-top: 1px solid rgba(255,255,255,0.1) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .footer-bottom p {
+        max-width: 100% !important;
+    }
+
+    .footer-bottom .trust-badge {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    .footer-bottom .legal-links {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        width: 100% !important;
+        align-items: flex-start !important;
+    }
+}
