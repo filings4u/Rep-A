@@ -59,51 +59,63 @@ const SERVICES_BATCH_2 = {
 Object.assign(ENTERPRISE_DATA_MAP, SERVICES_BATCH_2);
 
 
-// ============================================================================
-// ⚙️ ENGINE CONTROLLER: DIRECT QUERY PARAMETER ROUTE DISPATCH MATRIX
-// ============================================================================
+// ============================================================================ 
+// ⚙️ ENGINE CONTROLLER: DIRECT QUERY PARAMETER ROUTE DISPATCH MATRIX 
+// ============================================================================ 
+function runSinglePageDynamicRouter() { 
+    // FIXED: Standardized target variable name across the entire loop canvas block
+    var layoutSlot = document.getElementById("dynamic-layout-root"); 
+    if (!layoutSlot) return; 
 
-function runSinglePageDynamicRouter() {
-    var rootSlot = document.getElementById("dynamic-layout-root");
-    if (!rootSlot) return;
+    try { 
+        var urlAddressParams = new URLSearchParams(window.location.search); 
+        var urlSlugKey = urlAddressParams.get('id'); 
 
-    try {
-        var urlAddressParams = new URLSearchParams(window.location.search);
-        var urlSlugKey = urlAddressParams.get('id');
+        // Fallback safety checkpoint: Default to index if param is missing 
+        if (!urlSlugKey) { 
+            urlSlugKey = "index.html"; 
+        } 
 
-        // Fallback safety checkpoint: Default to LLC if param is missing
-        if (!urlSlugKey) { urlSlugKey = "index.html"; }
+        // FIXED: Defined the activeKey string so the console logger can read it
+        var activeKey = String(urlSlugKey).toLowerCase().trim();
 
-        var serviceProfile = ENTERPRISE_DATA_MAP[urlSlugKey];
-
-        if (!serviceProfile) {
-            rootSlot.innerHTML = '<div style="text-align:center; padding:100px 40px; font-family:sans-serif; background:#fff;"><h2>Profile Unknown</h2><p>The code identifier "' + urlSlugKey + '" is unmapped.</p></div>';
-            return;
+        // 🔄 ALIGNMENT GUARD: Syncs dynamic URL variations to pull the correct form profiles
+        if (activeKey === 'limited-liability-company' || activeKey === 'llc-formation') {
+            activeKey = 'llc';
+        } else if (activeKey === 'corporations' || activeKey === 'corporation') {
+            activeKey = 'corporation';
+        } else if (activeKey === 'annual-reports') {
+            activeKey = 'annual-report';
         }
 
-        // Apply browser tab title dynamically
-        document.title = serviceProfile.name + " | filings4u Platforms";
+        var serviceProfile = ENTERPRISE_DATA_MAP[activeKey] || ENTERPRISE_DATA_MAP[urlSlugKey]; 
+        if (!serviceProfile) { 
+            layoutSlot.innerHTML = '<div style="text-align:center; padding:100px 40px; font-family:sans-serif; background:#fff;"><h2>Profile Unknown</h2><p>The code identifier "' + urlSlugKey + '" is unmapped.</p></div>'; 
+            return; 
+        } 
 
-        // Alternate split layouts dynamically based on object key string ordering position metrics
-        var keysArray = Object.keys(ENTERPRISE_DATA_MAP);
-        var numericIndex = keysArray.indexOf(urlSlugKey);
-        var isEven = (numericIndex % 2 === 0);
+        // Apply browser tab title dynamically 
+        document.title = serviceProfile.name + " | filings4u Platforms"; 
 
-       // ============================================================================
-// ⚙️ FIXED INJECTION HOOKS - REPLACES LINES 120-130
-// ============================================================================
+        // Alternate split layouts dynamically based on object key string ordering position metrics 
+        var keysArray = Object.keys(ENTERPRISE_DATA_MAP); 
+        var numericIndex = keysArray.indexOf(urlSlugKey); 
+        var isEven = (numericIndex % 2 === 0); 
 
-        // Splice all constructed layout strings smoothly into one single block
-        layoutSlot.innerHTML = heroHtml + capabilityHtml + billingHtml;
-        console.log("Enterprise framework loaded dynamic loops for: " + activeKey);
+        // ============================================================================ 
+        // ⚙️ FIXED INJECTION HOOKS - REPLACES LINES 120-130 
+        // ============================================================================ 
+        // Splice all constructed layout strings smoothly into one single block 
+        layoutSlot.innerHTML = heroHtml + capabilityHtml + billingHtml; 
+        console.log("Enterprise framework loaded dynamic loops for: " + activeKey); 
 
-    } catch (crashIntercept) {
-        console.error("Pipeline crash caught inside loop logic:", crashIntercept);
-        layoutSlot.innerHTML = `<div style="text-align:center; padding:80px; color:red; font-family:sans-serif; background:#ffffff;"><h2>System Fault</h2><p>${crashIntercept.message}</p></div>`;
-    }
-}
+    } catch (crashIntercept) { 
+        console.error("Pipeline crash caught inside loop logic:", crashIntercept); 
+        layoutSlot.innerHTML = `<div style="text-align:center; padding:80px; color:red; font-family:sans-serif; background:#ffffff;"><h2>System Fault</h2><p>${crashIntercept.message}</p></div>`; 
+    } 
+} 
 
-// Fire runtime tracking paths when DOM tree finishes compiling safely
-window.onload = function() {
-    runSinglePageDynamicRouter();
+// Fire runtime tracking paths when DOM tree finishes compiling safely 
+window.onload = function() { 
+    runSinglePageDynamicRouter(); 
 };

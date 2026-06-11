@@ -3810,19 +3810,24 @@ function getPricingConfiguration() {
         return null;
     }
 
+        // 🏛️ LINE 3814-3816 REPLACEMENT ENGINE
     var safePlanKey = (window.routeActivePlanKey || "starter").toLowerCase().trim();
+    
+    // 🔄 FIXED: Created a safe fallback variable from the function parameters to avoid ReferenceErrors
+    var unifiedLookupKey = typeof serviceKey !== 'undefined' ? serviceKey : (typeof selectedSlug !== 'undefined' ? selectedSlug : "llc");
+    unifiedLookupKey = String(unifiedLookupKey).toLowerCase().trim();
 
-// 🔄 ALIGNMENT GUARD 1: Syncs the active service key structure with state-pricing.js
-if (safeServiceKey === 'llc-formation') safeServiceKey = 'llc';
-if (safeServiceKey === 'corporations') safeServiceKey = 'corporation';
-if (safeServiceKey === 'annual-reports') safeServiceKey = 'annual-report';
+    // Algorithmic string key bridge to sync with state-pricing.js keys
+    if (unifiedLookupKey === 'llc-formation' || unifiedLookupKey === 'limited-liability-company') unifiedLookupKey = 'llc';
+    if (unifiedLookupKey === 'corporations' || unifiedLookupKey === 'corporation') unifiedLookupKey = 'corporation';
+    if (unifiedLookupKey === 'annual-reports') unifiedLookupKey = 'annual-report';
+    if (unifiedLookupKey === 'hazmat-registration') unifiedLookupKey = 'dot-hazmat'; // Clears the hazmat-registration block
 
-const planConfig = window.GLOBAL_COMPANY_PRICING.packages[safeServiceKey];
+    const planConfig = window.GLOBAL_COMPANY_PRICING.packages[unifiedLookupKey];
 
-
-    const planConfig = window.GLOBAL_COMPANY_PRICING.packages[safeServiceKey];
+    
     if (!planConfig) return null;
-
+    
     return {
         serviceKey: safeServiceKey,
         planKey: safePlanKey,
@@ -3831,6 +3836,7 @@ const planConfig = window.GLOBAL_COMPANY_PRICING.packages[safeServiceKey];
         displayName: (planConfig.name || "Business Formation") + " Package"
     };
 }
+
 // ============================================================================ //
 // 📊 MODULE 1: CENTRAL LIVE CHECKOUT PRICING SYNC ENGINE (PART 2 - JURISDICTION)//
 // ============================================================================ //
@@ -4014,17 +4020,22 @@ function recalculateSummaryStepFields() {
   if (safePlanKey === "standard") safePlanKey = "compliance";
   if (safePlanKey === "premium") safePlanKey = "enterprise";
 
-  if (!window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) {
-    console.warn("[Pricing Error] Master object missing.");
-    return;
-  }
+    // 🏛️ LINE 4010-4015 REPLACEMENT ENGINE
+    if (!window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) {
+        console.warn("[Pricing Engine] GLOBAL_COMPANY_PRICING package layer is missing.");
+    }
+    
+    // 🔄 FIXED: Created a safe fallback variable here as well to match your inner function parameters
+    var unifiedLookupKey = typeof serviceKey !== 'undefined' ? serviceKey : (typeof selectedSlug !== 'undefined' ? selectedSlug : "llc");
+    unifiedLookupKey = String(unifiedLookupKey).toLowerCase().trim();
 
-// 🔄 ALIGNMENT GUARD 2: Syncs checkout tracking variables with state-pricing.js
-if (safeServiceKey === 'llc-formation') safeServiceKey = 'llc';
-if (safeServiceKey === 'corporations') safeServiceKey = 'corporation';
-if (safeServiceKey === 'annual-reports') safeServiceKey = 'annual-report';
+    if (unifiedLookupKey === 'llc-formation' || unifiedLookupKey === 'limited-liability-company') unifiedLookupKey = 'llc';
+    if (unifiedLookupKey === 'corporations' || unifiedLookupKey === 'corporation') unifiedLookupKey = 'corporation';
+    if (unifiedLookupKey === 'annual-reports') unifiedLookupKey = 'annual-report';
+    if (unifiedLookupKey === 'hazmat-registration') unifiedLookupKey = 'dot-hazmat';
 
-const planConfig = window.GLOBAL_COMPANY_PRICING.packages[safeServiceKey];
+    const planConfig = window.GLOBAL_COMPANY_PRICING.packages[unifiedLookupKey];
+
 
   if (!planConfig) {
     console.warn("[Pricing Error] Key match failed: " + safeServiceKey);
@@ -4378,67 +4389,69 @@ UPSELLS_ROUTER_DATABASE.generic = [
 ];
 
 
-// ============================================================================ //
-// 📊 MODULE 2: CONDITIONAL INTERACTIVE UPSELLS ENGINE STRUCTURAL CORE          //
-// ============================================================================ //
-function renderTargetUpsellsListPanel(activeServiceKeyString) {
-  const container = document.getElementById("wizard-dynamic-upsells-render-target");
-  if (!container) return;
+// ============================================================================ 
+// 📊 MODULE 2: CONDITIONAL INTERACTIVE UPSELLS ENGINE STRUCTURAL CORE 
+// ============================================================================ 
+function renderTargetUpsellsListPanel(activeServiceKeyString) { 
+    const container = document.getElementById("wizard-dynamic-upsells-render-target"); 
+    if (!container) return; 
 
-  let lookupTargetKey = "generic";
-  const normalizedKey = (activeServiceKeyString || "").toLowerCase().trim();
+    let lookupTargetKey = "generic"; 
+    const normalizedKey = (activeServiceKeyString || "").toLowerCase().trim(); 
 
-  if (normalizedKey.includes("llc") || normalizedKey.includes("corp") || normalizedKey.includes("formation") || normalizedKey.includes("nonprofit")) {
-    lookupTargetKey = "formations";
-  } else if (normalizedKey.includes("broker") || normalizedKey.includes("authority-broker")) {
-    lookupTargetKey = "broker";
-  } else if (normalizedKey.includes("trucker") || normalizedKey.includes("trucking") || normalizedKey.includes("fmcsa")) {
-    lookupTargetKey = "trucker";
-  }
+    if (normalizedKey.includes("llc") || normalizedKey.includes("corp") || normalizedKey.includes("formation") || normalizedKey.includes("nonprofit")) { 
+        lookupTargetKey = "formations"; 
+    } else if (normalizedKey.includes("broker") || normalizedKey.includes("authority-broker")) { 
+        lookupTargetKey = "broker"; 
+    } else if (normalizedKey.includes("trucker") || normalizedKey.includes("trucking") || normalizedKey.includes("fmcsa")) { 
+        lookupTargetKey = "trucker"; 
+    } 
 
-  const targetedUpsellDataset = UPSELLS_ROUTER_DATABASE[lookupTargetKey];
-  let calculatedListMarkup = "";
+    const targetedUpsellDataset = UPSELLS_ROUTER_DATABASE[lookupTargetKey]; 
+    if (!targetedUpsellDataset) return; // Safety guard if database path is unmapped
 
-  targetedUpsellDataset.forEach(function(item) {
-    const displayCostString = item.price > 0 ? `$${item.price.toFixed(2)}` : "Free Partner Match";
-    const displayBillingText = item.price > 0 ? item.billing : " (Quote Request)";
-    
-    if (item.id === "op-agreement" && !normalizedKey.includes("llc")) return;
-    if (item.id === "corp-bylaws" && (!normalizedKey.includes("corp") && !normalizedKey.includes("corporation"))) return;
+    let calculatedListMarkup = ""; 
 
-    let cardIconClass = "fa-solid fa-circle-plus";
-    if (item.id.includes("ra-") || item.id.includes("boc3")) cardIconClass = "fa-solid fa-building-shield";
-    if (item.id.includes("comp-")) cardIconClass = "fa-solid fa-clock-rotate-left";
-    if (item.id.includes("minutes") || item.id.includes("resolutions")) cardIconClass = "fa-solid fa-book-bookmark";
-    if (item.id.includes("agreement") || item.id.includes("bylaws")) cardIconClass = "fa-solid fa-file-signature";
-    if (item.id.includes("ein")) cardIconClass = "fa-solid fa-passport";
-    if (item.id.includes("good-standing")) cardIconClass = "fa-solid fa-certificate";
-    if (item.id.includes("audit") || item.id.includes("quote")) cardIconClass = "fa-solid fa-shield-halved";
+    targetedUpsellDataset.forEach(function(item) { 
+        const displayCostString = item.price > 0 ? `$${item.price.toFixed(2)}` : "Free Partner Match"; 
+        const displayBillingText = item.price > 0 ? item.billing : " (Quote Request)"; 
 
-    calculatedListMarkup += `
-      <div class="upsell-card-node" style="background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box; margin-bottom: 16px;">
-        <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
-          <div style="font-size: 2.2rem; color: var(--primary, #10b981); min-width: 45px; text-align: center;">
-            <i class="${cardIconClass}"></i>
-          </div>
-          <div>
-            <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy, #0a1f44);">${item.name}</h4>
-            <p style="margin: 0; font-size: 0.85rem; color: var(--slate, #64748b); line-height: 1.5; text-align: justify;">${item.desc}</p>
-          </div>
-        </div>
-        <div style="text-align: right; min-width: 170px;">
-          <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy, #0a1f44); font-family: monospace; margin-bottom: 8px;">
-            ${displayCostString} <span style="font-size: 0.75rem; color: var(--slate, #64748b); font-family: system-ui; font-weight: normal;">${displayBillingText}</span>
-          </div>
-          <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border, #e2e8f0); user-select: none; transition: background 0.15s;">
-            <input type="checkbox" id="upsell-item-${item.id}" class="upsell-checkbox addon-checkbox" data-price="${item.price}" data-name="${item.name}" style="accent-color: var(--primary, #10b981); width: 16px; height: 16px; margin: 0; cursor: pointer;" onchange="if(typeof updateDynamicPricingMatrixVanilla === 'function') updateDynamicPricingMatrixVanilla();"> 
-            Add to Order
-          </label>
-        </div>
-      </div>`;
-  });
+        if (item.id === "op-agreement" && !normalizedKey.includes("llc")) return; 
+        if (item.id === "corp-bylaws" && (!normalizedKey.includes("corp") && !normalizedKey.includes("corporation"))) return; 
 
-  container.innerHTML = calculatedListMarkup;
+        let cardIconClass = "fa-solid fa-circle-plus"; 
+        if (item.id.includes("ra-") || item.id.includes("boc3")) cardIconClass = "fa-solid fa-building-shield"; 
+        if (item.id.includes("comp-")) cardIconClass = "fa-solid fa-clock-rotate-left"; 
+        if (item.id.includes("minutes") || item.id.includes("resolutions")) cardIconClass = "fa-solid fa-book-bookmark"; 
+        if (item.id.includes("agreement") || item.id.includes("bylaws")) cardIconClass = "fa-solid fa-file-signature"; 
+        if (item.id.includes("ein")) cardIconClass = "fa-solid fa-passport"; 
+        if (item.id.includes("good-standing")) cardIconClass = "fa-solid fa-certificate"; 
+        if (item.id.includes("audit") || item.id.includes("quote")) cardIconClass = "fa-solid fa-shield-halved"; 
+
+        calculatedListMarkup += ` 
+        <div class="upsell-card-node" style="background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box; margin-bottom: 16px;"> 
+            <div style="display: flex; align-items: center; gap: 20px; flex: 1;"> 
+                <div style="font-size: 2.2rem; color: var(--primary, #10b981); min-width: 45px; text-align: center;"> 
+                    <i class="${cardIconClass}"></i> 
+                </div> 
+                <div> 
+                    <h4 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy, #0a1f44);">${item.name}</h4> 
+                    <p style="margin: 0; font-size: 0.85rem; color: var(--slate, #64748b); line-height: 1.5; text-align: justify;">${item.desc}</p> 
+                </div> 
+            </div> 
+            <div style="text-align: right; min-width: 170px;"> 
+                <div style="font-size: 1.3rem; font-weight: 900; color: var(--navy, #0a1f44); font-family: monospace; margin-bottom: 8px;"> 
+                    ${displayCostString} <span style="font-size: 0.75rem; color: var(--slate, #64748b); font-family: system-ui; font-weight: normal;">${displayBillingText}</span> 
+                </div> 
+                <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border, #e2e8f0); user-select: none; transition: background 0.15s;"> 
+                    <input type="checkbox" id="upsell-item-${item.id}" class="upsell-checkbox addon-checkbox" data-price="${item.price}" data-name="${item.name}" style="accent-color: var(--primary, #10b981); width: 16px; height: 16px; margin: 0; cursor: pointer;" onchange="if(typeof updateDynamicPricingMatrixVanilla === 'function') updateDynamicPricingMatrixVanilla();"> Add to Order 
+                </label> 
+            </div> 
+        </div>`; 
+    }); 
+
+    // 🎯 FIXED: Safely close loop scopes and commit the string payload into the target container wrapper
+    container.innerHTML = calculatedListMarkup; 
 }
 
 
