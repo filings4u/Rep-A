@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return window.FILINGS4U_MASTER_ENGINE.getSupabaseInstance();
         }
         // Secure sub-domain fallback client connection context loop
-        const backupUrl = 'https://supabase.co';
+        const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
         const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
         return window.supabase.createClient(backupUrl, backupKey);
     }
