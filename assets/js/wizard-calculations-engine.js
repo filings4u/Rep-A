@@ -4466,3 +4466,233 @@ document.body.addEventListener("input", function(event) {
     }
   }
 });
+
+// ============================================================================
+// 🗺️ WIZARD CORE ENGINE: 7-STEP INTERACTIVE NAVIGATION ROUTER MODULE
+// ============================================================================
+var currentWizardStepIndex = 1; // Syncs tracking to start at Step 1 Panel
+
+function goToNextWizardStep(targetStepIndex) {
+    const panels = document.querySelectorAll(".wizard-panel");
+    if (!panels || panels.length === 0) return;
+
+    // 🛡️ Safe Field Validation Guard before advancing forward
+    if (targetStepIndex > currentWizardStepIndex && typeof validateCurrentWizardStepInputs === "function") {
+        if (!validateCurrentWizardStepInputs(currentWizardStepIndex)) {
+            console.warn("⚠️ Field validation rules failed on current step.");
+            return false;
+        }
+    }
+
+    // Hide all step panels cleanly
+    panels.forEach(p => p.classList.remove("active"));
+
+    // Activate the targeted panel container node
+    const targetPanel = document.getElementById(`step-panel-${targetStepIndex}`);
+    if (targetPanel) {
+        targetPanel.classList.add("active");
+        currentWizardStepIndex = targetStepIndex;
+    } else {
+        // If we go past the final payment step panel, execute your Stripe checkout loop
+        if (targetStepIndex > 6 && typeof executeFinalWizardCheckoutOrderProcessing === "function") {
+            executeFinalWizardCheckoutOrderProcessing();
+            return;
+        }
+    }
+
+    // 🟢 LIGHT UP THE EMERALD TIMELINE MARGIN DOTS
+    updateApplicationMapTimelineBubbles(currentWizardStepIndex);
+
+    // 📋 RE-CALCULATE RECEIPT SUMMARIES DYNAMICALLY UPON SWITCHING PANELS
+    if (typeof updateDynamicPricingMatrixVanilla === "function") {
+        updateDynamicPricingMatrixVanilla();
+    }
+
+    // Auto pan the viewport glass smoothly back to coordinate zero
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateApplicationMapTimelineBubbles(activeIndex) {
+    // Selects the sidebar timeline row blocks out of your navigation aside element
+    const rows = document.querySelectorAll(".toc-step-row");
+    if (!rows || rows.length === 0) return;
+
+    rows.forEach((row, idx) => {
+        const dotElement = row.querySelector(".toc-dot");
+        row.classList.remove("toc-active", "toc-completed");
+        
+        // Reset element inline color styles
+        if (dotElement) {
+            dotElement.style.background = "#cbd5e1";
+            dotElement.style.borderColor = "#cbd5e1";
+            dotElement.style.boxShadow = "none";
+        }
+
+        const loopIndex = idx + 1; // Map row indexes 0-6 to Step panel counts 1-7
+
+        if (loopIndex < activeIndex) {
+            row.classList.add("toc-completed");
+            if (dotElement) {
+                dotElement.style.background = "rgba(16, 185, 129, 0.15)";
+                dotElement.style.borderColor = "#10b981";
+            }
+        } else if (loopIndex === activeIndex) {
+            // 💎 THE EMERALD GLOW LIGHT EFFECT: Activates vibrant border lines and shadow fills
+            row.classList.add("toc-active");
+            if (dotElement) {
+                dotElement.style.background = "#10b981";
+                dotElement.style.borderColor = "#10b981";
+                dotElement.style.boxShadow = "0 0 12px rgba(16, 185, 129, 0.65)";
+            }
+        }
+    });
+}
+
+// ✍️ DIGITAL CURSIVE SIGNATURE RENDERING SUITE
+function initCursiveSignatureCaptureLivePreview() {
+    const inputField = document.getElementById("signature-input") || document.getElementById("legal-signature");
+    const previewDisplay = document.getElementById("cursive-signature-output") || document.getElementById("signature-preview");
+
+    if (inputField && previewDisplay) {
+        // Enforce the handwritten script typeface assets instantly on entry
+        previewDisplay.style.fontFamily = "'Dancing Script', 'Formal Script', 'Brush Script MT', cursive";
+        
+        inputField.addEventListener("input", (e) => {
+            previewDisplay.innerText = e.target.value;
+            if (e.target.value.trim() === "") {
+                previewDisplay.innerText = "Your Signature Preview";
+                previewDisplay.style.opacity = "0.3";
+            } else {
+                previewDisplay.style.opacity = "1";
+            }
+        });
+    }
+}
+
+// 🎒 BULLET LIST DISPATCHER: Injects the state-pricing.js features into your custom placeholder div
+function renderStep1CustomFeatureBullets(activeSlug) {
+    const targetDiv = document.getElementById("step-1-package-features-list");
+    if (!targetDiv || !window.GLOBAL_COMPANY_PRICING?.packages) return;
+
+    let searchKey = String(activeSlug || "").toLowerCase().trim();
+    if (searchKey === 'llc-formation') searchKey = 'llc';
+    if (searchKey === 'corporations') searchKey = 'corporation';
+    if (searchKey === 'annual-reports') searchKey = 'annual-report';
+
+    const serviceData = window.GLOBAL_COMPANY_PRICING.packages[searchKey];
+    const activeTier = (window.routeActivePlanKey || "compliance").toLowerCase().trim();
+    const bulletsArray = serviceData?.bullets?.[activeTier] || [];
+
+    if (bulletsArray.length > 0) {
+        let listHtml = "";
+        bulletsArray.forEach(text => {
+            listHtml += `
+            <div style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: var(--navy); line-height: 1.4;">
+                <i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981); margin-top: 3px; flex-shrink: 0;"></i>
+                <span style="font-weight: 500;">${text}</span>
+            </div>`;
+        });
+        targetDiv.innerHTML = listHtml;
+    }
+}
+
+// Initialize execution states when DOM compiling finishes
+document.addEventListener("DOMContentLoaded", () => {
+    const urlEngineParams = new URLSearchParams(window.location.search);
+    const resolvedSlug = urlEngineParams.get('service') || urlEngineParams.get('package') || "llc-formation";
+    
+    currentWizardStepIndex = 1;
+    goToNextWizardStep(currentWizardStepIndex);
+    initCursiveSignatureCaptureLivePreview();
+    renderStep1CustomFeatureBullets(resolvedSlug);
+});
+
+
+// ============================================================================
+// ??? RECOVERY SUITE: PRODUCTION 7-STEP UNIFIED ROUTER & INITIALIZATION ENGINE
+// ============================================================================
+function initSevenStepWizardSystem(activeSlug) {
+    let checkSlug = String(activeSlug || "").toLowerCase().trim();
+    
+    // ?? FIXED: Unified alignment map keys to pull correct form states across ALL pages
+    if (checkSlug === 'limited-liability-company' || checkSlug === 'llc-formation' || checkSlug === 'llc') {
+        checkSlug = 'llc';
+    } else if (checkSlug === 'corporations' || checkSlug === 'corporation') {
+        checkSlug = 'corporation';
+    } else if (checkSlug === 'annual-reports' || checkSlug === 'annual-report') {
+        checkSlug = 'annual-report';
+    }
+
+    console.log("? Activating 7-Step Operational Core Layout for: [" + checkSlug + "]");
+
+    // ??? APPLICATION PROGRESS MAP REALIGNMENT (Restores the 7 distinct stage panels)
+    const stepIndicators = document.getElementsByClassName("step-indicator-bubble");
+    if (stepIndicators && stepIndicators.length > 0) {
+        // Dynamically handles the visual layout display of the 7 progress steps
+        for (let i = 0; i < stepIndicators.length; i++) {
+            stepIndicators[i].style.display = "inline-flex";
+        }
+    }
+
+    // ?? CURSIVE SIGNATURE ENGINE HOOK
+    const signatureInput = document.getElementById("signature-input") || document.getElementById("legal-signature");
+    const signatureDisplay = document.getElementById("cursive-signature-output") || document.getElementById("signature-preview");
+    
+    if (signatureInput && signatureDisplay) {
+        // Forces explicit brand cursive typeface rules instantly upon key stroke actions
+        signatureDisplay.style.fontFamily = "'Formal Script', 'Dancing Script', 'Brush Script MT', cursive";
+        signatureDisplay.style.fontSize = "2.2rem";
+        signatureDisplay.style.color = "var(--navy, #0a1f44)";
+        
+        signatureInput.addEventListener("input", (e) => {
+            signatureDisplay.innerText = e.target.value;
+            if (e.target.value.trim() === "") {
+                signatureDisplay.innerText = "Your Signature Preview";
+                signatureDisplay.style.opacity = "0.3";
+            } else {
+                signatureDisplay.style.opacity = "1";
+            }
+        });
+    }
+
+    // ?? LIVE CHECKOUT SUMMARY BUILDER
+    if (typeof updateDynamicPricingMatrixVanilla === "function") {
+        updateDynamicPricingMatrixVanilla();
+    }
+}
+
+// ?? STEP PROGRESS EMERALD LIGHT MATRIX SYNCHRONIZER
+function updateWizardStepProgressIndicatorBubbles(activeIndexNumber) {
+    const bubbles = document.getElementsByClassName("step-indicator-bubble");
+    if (!bubbles || bubbles.length === 0) return;
+
+    for (let i = 0; i < bubbles.length; i++) {
+        // Clear old states
+        bubbles[i].style.background = "#e2e8f0";
+        bubbles[i].style.color = "#64748b";
+        bubbles[i].style.borderColor = "#cbd5e1";
+
+        if (i < activeIndexNumber) {
+            // Completed Steps: Dark background or Emerald border check states
+            bubbles[i].style.background = "rgba(16, 185, 129, 0.12)";
+            bubbles[i].style.color = "#10b981";
+            bubbles[i].style.borderColor = "rgba(16, 185, 129, 0.3)";
+        } else if (i === activeIndexNumber) {
+            // Active Step: ?? THE EMERALD LIGHTING GLOW INTERFACE
+            bubbles[i].style.background = "#10b981";
+            bubbles[i].style.color = "#ffffff";
+            bubbles[i].style.borderColor = "#10b981";
+            bubbles[i].style.boxShadow = "0 0 14px rgba(16, 185, 129, 0.45)";
+        }
+    }
+}
+
+// Intercept window listeners to auto-fire our custom 7-stage configuration layout definitions
+const urlSearchEngineParams = new URLSearchParams(window.location.search);
+const currentActiveUrlSlug = urlSearchEngineParams.get('service') || urlSearchEngineParams.get('package') || urlSearchEngineParams.get('id') || "llc";
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => { initSevenStepWizardSystem(currentActiveUrlSlug); });
+} else {
+    initSevenStepWizardSystem(currentActiveUrlSlug);
+}
