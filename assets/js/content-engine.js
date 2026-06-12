@@ -2825,33 +2825,123 @@ function renderDynamicGlobalCorporateFooter(targetElementId) {
     </button>
   `;
 
-  // Attach functionality to the injected button node immediately
-  const topBtn = document.getElementById("scrollToTopBtn");
-  if (topBtn) {
-    window.addEventListener("scroll", () => topBtn.classList.toggle("visible", window.scrollY > 400));
-    topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-  }
+// Attach functionality to the injected button node immediately 
+const topBtn = document.getElementById("scrollToTopBtn"); 
+if (topBtn) { 
+    window.addEventListener("scroll", () => topBtn.classList.toggle("visible", window.scrollY > 400)); 
+    topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" })); 
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Global site-wide modules loaded on ALL views instantly
-  if (typeof renderDynamicGlobalCorporateNavigation === "function") renderDynamicGlobalCorporateNavigation("global-platform-navigation-zone");
-  if (typeof renderDynamicHeroSection === "function") renderDynamicHeroSection("dynamic-hero-zone");
-  
-    const activeMetricsId = (activeSlug === "homepage-main-landing" || activeSlug === "") ? "dynamic-metrics-zone" : activeSlug + "-metrics-zone";
-    if (typeof renderDynamicMetricsSection === "function") renderDynamicMetricsSection(activeMetricsId, dbRow);
-  
-  if (typeof renderDynamicComplianceSubscribeSection === "function") renderDynamicComplianceSubscribeSection("dynamic-subscribe-placement-zone");
-  if (typeof renderDynamicGlobalCorporateFooter === "function") renderDynamicGlobalCorporateFooter("global-platform-footer-zone");
+document.addEventListener("DOMContentLoaded", async () => { 
+    try { 
+        // 1. Safely extract the active slug token right at the start 
+        const activeSlug = typeof getUnifiedServiceKey === "function" 
+            ? getUnifiedServiceKey().toLowerCase().replace(/\s+/g, '-') 
+            : "homepage-main-landing"; 
+        
+        console.log("⚙️ Master System Core Booting View Slug: " + activeSlug); 
 
-  // Secondary context logic tracker checks (marketing rows)
-  const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
-    if (rawPathname === "" || rawPathname.includes("index") || rawPathname.includes("home")) {
-      if (typeof renderDynamicAlternatingFlowSection === "function") renderDynamicAlternatingFlowSection("dynamic-alternating-flow-zone");
-      if (typeof renderDynamicExpertiseSection === "function") renderDynamicExpertiseSection("dynamic-expertise-zone");
-      if (typeof renderDynamicStartupLaunchpadSection === "function") renderDynamicStartupLaunchpadSection("dynamic-startup-launchpad-zone");
-    }
+        // 2. Await the database lookup and system sequencer run 
+        const arrangementLayout = await renderMasterSystem(); 
+        const dbRow = (arrangementLayout && arrangementLayout.payload) ? arrangementLayout.payload : null; 
+
+        // 3. Global site-wide modules loaded on ALL views instantly 
+        if (typeof renderDynamicGlobalCorporateNavigation === "function") { 
+            renderDynamicGlobalCorporateNavigation("global-platform-navigation-zone"); 
+        } 
+
+        // 4. Target your unique, custom isolated hero ids cleanly 
+        if (typeof renderDynamicHeroSection === "function") { 
+            const dynamicHeroId = (activeSlug === "homepage-main-landing" || activeSlug === "") 
+                ? "dynamic-hero-zone" 
+                : `${activeSlug}-hero-zone`; 
+            renderDynamicHeroSection(dynamicHeroId); 
+        } 
+
+        // 5. Safely bind metric parameters with valid data arguments 
+        const activeMetricsId = (activeSlug === "homepage-main-landing" || activeSlug === "") 
+            ? "dynamic-metrics-zone" 
+            : `${activeSlug}-metrics-zone`; 
+        if (typeof renderDynamicMetricsSection === "function") { 
+            renderDynamicMetricsSection(activeMetricsId, dbRow); 
+        } 
+
+        // 6. Trigger pricing cards module function hook
+        const dynamicPricingId = (activeSlug === "homepage-main-landing" || activeSlug === "") 
+            ? "dynamic-package-pricing-cards-root" 
+            : `${activeSlug}-package-pricing-cards-root`; 
+        
+        if (typeof renderDynamicPricingCardsSection === "function") {
+            renderDynamicPricingCardsSection(dynamicPricingId, dbRow); 
+        }
+
+        if (typeof renderDynamicComplianceSubscribeSection === "function") { 
+            renderDynamicComplianceSubscribeSection("dynamic-subscribe-placement-zone"); 
+        } 
+
+        if (typeof renderDynamicGlobalCorporateFooter === "function") { 
+            renderDynamicGlobalCorporateFooter("global-platform-footer-zone"); 
+        } 
+
+        // 7. Secondary context logic tracker checks (marketing rows) 
+        const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim(); 
+        if (rawPathname === "" || rawPathname.includes("index") || rawPathname.includes("home")) { 
+            if (typeof renderDynamicAlternatingFlowSection === "function") { 
+                renderDynamicAlternatingFlowSection("dynamic-alternating-flow-zone"); 
+            } 
+            if (typeof renderDynamicExpertiseSection === "function") { 
+                renderDynamicExpertiseSection("dynamic-expertise-zone"); 
+            } 
+            if (typeof renderDynamicStartupLaunchpadSection === "function") { 
+                renderDynamicStartupLaunchpadSection("dynamic-startup-launchpad-zone"); 
+            } 
+        } 
+    } catch (criticalInitErr) { 
+        console.warn("🚨 Content Engine crashed during view hydration sequence:", criticalInitErr); 
+    } 
 });
+
+// ==========================================================================
+// 🚀 SECTION 6: LIVE PRICING WIZARD MATRIX COMPONENT ENGINE
+// ==========================================================================
+function renderDynamicPricingCardsSection(targetId, dbRow) {
+    try {
+        const pricingContainer = document.getElementById(targetId);
+        if (!pricingContainer) return console.warn(`⚠️ Pricing target container not found: #${targetId}`);
+
+        const targetSlug = targetId.replace("-package-pricing-cards-root", "");
+        
+        pricingContainer.innerHTML = `
+            <article class="${targetSlug}-pricing-block" style="padding: 60px 20px; background: #f3f4f6; text-align: center;">
+                <span style="color: #4f46e5; font-weight: bold; text-transform: uppercase; font-size: 14px;">Infrastructure Selection</span>
+                <h2 style="font-size: 2rem; margin: 10px 0; color: #1f2937;">Standard Processing Layout Options</h2>
+                <p style="color: #4b5563; margin-bottom: 30px;">Select the management structure engineered for your profile needs.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; text-align: left;">
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
+                        <h3 style="margin: 0; color: #1f2937;">Basic Setup Plan</h3>
+                        <div style="font-size: 24px; font-weight: bold; margin: 15px 0; color: #111827;">$99 <span style="font-size: 14px; font-weight: normal; color: #6b7280;">+ state fees</span></div>
+                        <p style="color: #4b5563; font-size: 14px; min-height: 40px;">Standard registry declaration files processed securely.</p>
+                        <button onclick="window.location.href='order.html?service=${targetSlug}&plan=basic'" style="width: 100%; background: #10b981; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">Select Basic</button>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #10b981; position: relative;">
+                        <span style="position: absolute; top: -12px; right: 20px; background: #10b981; color: white; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: bold;">POPULAR</span>
+                        <h3 style="margin: 0; color: #1f2937;">Complete Shield</h3>
+                        <div style="font-size: 24px; font-weight: bold; margin: 15px 0; color: #111827;">$199 <span style="font-size: 14px; font-weight: normal; color: #6b7280;">+ state fees</span></div>
+                        <p style="color: #4b5563; font-size: 14px; min-height: 40px;">Includes processing, compliance alerts, and asset guard sheets.</p>
+                        <button onclick="window.location.href='order.html?service=${targetSlug}&plan=complete'" style="width: 100%; background: #111827; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">Select Complete</button>
+                    </div>
+                </div>
+            </article>
+        `;
+        console.log(`✅ Injected Section 6 (Pricing) into: #${targetId}`);
+    } catch (pricingErr) {
+        console.error("🚨 Error rendering pricing matrix module:", pricingErr);
+    }
+}
+
+}
+
 
 
 
@@ -3044,7 +3134,7 @@ async function renderMasterSystem() {
     let dbRow = null;
 
     try {
-      const backupUrl = 'https://supabase.co';
+      const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
       const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
       const endpointUrl = `${backupUrl}/rest/v1/services?select=*&slug=eq.${cleanPageKey}`;
       
