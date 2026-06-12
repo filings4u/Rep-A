@@ -2405,97 +2405,119 @@ function compileSectionDLayoutHtml(data) {
 }
 
 
-/** * ========================================================================== * 🚀 HYBRID DATA ACQUISITION & CHESSBOARD ARRANGEMENT SEQUENCER * Self-contained engine that handles 406 network errors and auto-generates layout lines. * ========================================================================== */ 
-async function renderMasterSystem() { 
-    try { 
-        const activeSlug = getUnifiedServiceKey(); 
-        console.log("🎯 Content Engine Launching Query Sequence For: " + activeSlug); 
-        let dbRow = null; 
+/**
+ * ==========================================================================
+ * 🚀 HYBRID DATA ACQUISITION & CHESSBOARD ARRANGEMENT SEQUENCER
+ * Self-contained engine that handles 406 network errors and auto-generates layout lines.
+ * ==========================================================================
+ */
+async function renderMasterSystem() {
+  try {
+    const activeSlug = getUnifiedServiceKey();
+    console.log("🎯 Content Engine Launching Query Sequence For: " + activeSlug);
 
-        // 1. Fetch from database with direct, clean web-native REST lookups to bypass 406 script crashes 
-        try { 
-            const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co'; 
-            const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'; 
-            
-            const endpointUrl = `${backupUrl}/rest/v1/services?select=*&slug=eq.${activeSlug}`; 
-            const response = await fetch(endpointUrl, { 
-                method: "GET", 
-                headers: { 
-                    "apikey": backupKey, 
-                    "Authorization": `Bearer ${backupKey}`, 
-                    "Accept": "application/json" 
-                } 
-            }); 
+    let dbRow = null;
 
-            if (response.ok) { 
-                const rawJsonPayloadArray = await response.json(); 
-                if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) { 
-                    dbRow = rawJsonPayloadArray[0]; 
-                } 
-            } else { 
-                console.warn(`[Supabase 406 Handshake Refused] Server returned status: ${response.status}`); 
-            } 
-        } catch (netErr) { 
-            console.warn("⚠️ Network Layer blocked Supabase REST call. Dropping into local automation matrix.", netErr); 
-        } 
+    // 1. Fetch from database with direct, clean web-native REST lookups to bypass 406 script crashes
+    try {
+      const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
+      const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+      
+      // Target the direct endpoint URL explicitly passing your filtering parameters
+      const endpointUrl = `${backupUrl}/rest/v1/services?select=*&slug=eq.${activeSlug}`;
 
-        // 2. Generate clean semantic page name variants automatically 
-        let serviceTitleString = activeSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '); 
-        if (dbRow && dbRow.service_title) { 
-            serviceTitleString = dbRow.service_title; 
-        } 
+      const response = await fetch(endpointUrl, {
+        method: "GET",
+        headers: {
+          "apikey": backupKey,
+          "Authorization": `Bearer ${backupKey}`,
+          // 🎯 THE 406 ERROR RESOLUTION FIX: Forces the server to accept and transmit clean JSON
+          "Accept": "application/json"
+        }
+      });
 
-        // 3. Process layout parameters and build the final arrangement 
-        const arrangementLayout = { 
-            title: serviceTitleString, 
-            dataSource: dbRow ? 'supabase_cloud' : 'procedural_fallback', 
-            payload: dbRow || { generatedAt: new Date().toISOString(), status: "offline_matrix" } 
-        }; 
-        console.log("🏁 Sequencing engine layout generation complete.", arrangementLayout); 
+      if (response.ok) {
+        const rawJsonPayloadArray = await response.json();
+        // Since lookups return an array layout, extract the first index record row cleanly
+        if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
+          dbRow = rawJsonPayloadArray[0];
+        }
+      } else {
+        console.warn(`[Supabase 406 Handshake Refused] Server returned status: ${response.status}`);
+      }
 
-         // 4. Build fully declared content lines safely inside the active scope
-        const dynamicContent = { 
+    } catch (netErr) {
+      console.warn("⚠️ Network Layer blocked Supabase REST call. Dropping into local automation matrix.", netErr);
+    }
+
+    // 2. Generate clean semantic page name variants automatically
+    let serviceTitleString = activeSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    
+    if (dbRow && dbRow.service_title) {
+      serviceTitleString = dbRow.service_title;
+    }
+    
+    // Remainder of your layout generation code block continues below cleanly...
+
+
+        // 3. Build fully declared content lines to prevent blank or broken properties
+        const dynamicContent = {
             pricingKey: activeSlug, 
-            seoTitle: serviceTitleString + " Registration & Filing Services | filings4u", 
-            metaDesc: "Automate your corporate " + serviceTitleString + " tracking. Complete state processing schedules error-free.", 
-            heroPill: serviceTitleString + " Framework", 
-            heroHeadline: "The Engine for <br><span style='color:#10b981;'>Total " + serviceTitleString + ".</span>", 
-            heroBody: "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your " + serviceTitleString + " processing.", 
-            heroBadge: serviceTitleString + " Sync: 140,000+ Profiles Active", 
-            secBPill: "Operational Compliance", 
-            secBHeadline: serviceTitleString + " Focus. <br><span style='color:#10b981;'>Built For Continuity.</span>", 
-            secBSub: "High-fidelity filing architecture designed for corporate peace of mind.", 
-            secBBody: "Protect your commercial operations with processing tracking loops built directly for startup builders and family shops. We manage state schedules securely so you can focus on community engagement and flawless " + serviceTitleString + " execution.", 
-            secCPill: "Infrastructure Expansion", 
-            secCHeadline: "Scalable Systems. <br><span style='color:#10b981;'>Built For " + serviceTitleString + ".</span>", 
-            secCSub: "Full-spectrum fleet setup logs mapped flawlessly across state borders.", 
-            secCBody: "Accelerate your logistical authorities under a robust unified dashboard tracking framework. We coordinate your structural transformations, state operating permits, and background screening accounts seamlessly.", 
+            seoTitle: serviceTitleString + " Registration & Filing Services | filings4u",
+            metaDesc: "Automate your corporate " + serviceTitleString + " tracking. Complete state processing schedules error-free.",
             
-            // 🎯 FIXED IMAGE FALLBACKS: Maps specific assets, falls back to structural standards if missing
+            heroPill: serviceTitleString + " Framework",
+            heroHeadline: "The Engine for <br><span style='color:#10b981;'>Total " + serviceTitleString + ".</span>",
+            heroBody: "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your " + serviceTitleString + " processing.",
+            heroBadge: serviceTitleString + " Sync: 140,000+ Profiles Active",
+            
+            secBPill: "Operational Compliance",
+            secBHeadline: serviceTitleString + " Focus. <br><span style='color:#10b981;'>Built For Continuity.</span>",
+            secBSub: "High-fidelity filing architecture designed for corporate peace of mind.",
+            secBBody: "Protect your commercial operations with processing tracking loops built directly for startup builders and family shops. We manage state schedules securely so you can focus on community engagement and flawless " + serviceTitleString + " execution.",
+            
+            secCPill: "Infrastructure Expansion",
+            secCHeadline: "Scalable Systems. <br><span style='color:#10b981;'>Built For " + serviceTitleString + ".</span>",
+            secCSub: "Full-spectrum fleet setup logs mapped flawlessly across state borders.",
+            secCBody: "Accelerate your logistical authorities under a robust unified dashboard tracking framework. We coordinate your structural transformations, state operating permits, and background screening accounts seamlessly.",
+            
+            secDPill: "Continuous Asset Shield",
+            secDHeadline: "Guaranteed Compliance. <br><span style='color:#10b981;'>Permanent Good Standing.</span>",
+            secDSub: "Proactive automated calendar sweeps eliminate corporate data gaps.",
+            secDBody: "Never face administrative state penalties, account freezing, or accidental entity exposure. Our cloud tracking matrix scans regulatory alterations daily, records state department transitions, and completes filing paperwork error-free.",
+            
+            // 🤖 AUTOMATED CANVA MEDIA PIPELINE: Maps your local folder image layouts using the file slug
             heroImage: "images/" + activeSlug + "-hero.jpg", 
-            secBImage: "images/" + activeSlug + "-secb.jpg",
-            fallbackImage: "images/local-business.jpg" 
-        }; 
+            secBImage: "images/" + activeSlug + "-secb.jpg", 
+            secCImage: "images/" + activeSlug + "-secc.jpg", 
+            secDImage: "images/" + activeSlug + "-secd.jpg"
+        };
 
-        // Explicit override to retain original home content only on the main landing index page 
-        if (activeSlug === "homepage-main-landing") { 
-            dynamicContent.heroImage = "images/hero-image.jpg"; 
-            dynamicContent.secBImage = "images/local-business.jpg"; 
-            dynamicContent.heroPill = "Automated Registry Systems"; 
-            dynamicContent.heroHeadline = "The Engine for <br><span style='color:#10b981;'>Corporate Launching.</span>"; 
-            dynamicContent.heroBody = "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely."; 
-            dynamicContent.heroBadge = "System Core Sync: 140,000+ Profiles Active"; 
-            dynamicContent.secBPill = "Independent Ventures"; 
-            dynamicContent.secBHeadline = "Main Street Growth. <br><span style='color:#10b981;'>Built For Communities.</span>"; 
-            dynamicContent.secBSub = "High-accuracy structural filings optimized for local business frameworks."; 
-            dynamicContent.secBBody = "Protect your commercial operations with processing tracking loops built directly for startup builders and family shops. We manage state schedules securely so you can focus on community engagement."; 
-            dynamicContent.secCPill = "Global Distribution Networks"; 
-            dynamicContent.secCHeadline = "Transit Infrastructure. <br><span style='color:#10b981;'>Built For Operations.</span>"; 
-            dynamicContent.secCSub = "Full-spectrum fleet setup logs mapped flawlessly across state borders."; 
-            dynamicContent.secCBody = "Accelerate your logistical authorities under a robust unified dashboard tracking framework. We coordinate trucker registrations, broker permissions, state operating permits, and background drug screening accounts seamlessly."; 
-        } 
+        // Explicit override to retain original home content only on the main landing index page
+        if (activeSlug === "homepage-main-landing") {
+            dynamicContent.heroImage = "images/hero-image.jpg";
+            dynamicContent.secBImage = "images/local-business.jpg";
+            dynamicContent.secCImage = "images/startup-launch.jpg";
+            dynamicContent.secDImage = "images/regulatory-compliance.jpg";
+            dynamicContent.heroPill = "Automated Registry Systems";
+            dynamicContent.heroHeadline = "The Engine for <br><span style='color:#10b981;'>Corporate Launching.</span>";
+            dynamicContent.heroBody = "Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely.";
+            dynamicContent.heroBadge = "System Core Sync: 140,000+ Profiles Active";
+            dynamicContent.secBPill = "Independent Ventures";
+            dynamicContent.secBHeadline = "Main Street Growth. <br><span style='color:#10b981;'>Built For Communities.</span>";
+            dynamicContent.secBSub = "High-accuracy structural filings optimized for local business frameworks.";
+            dynamicContent.secBBody = "Protect your commercial operations with processing tracking loops built directly for startup builders and family shops. We manage state schedules securely so you can focus on community engagement.";
+            dynamicContent.secCPill = "Global Distribution Networks";
+            dynamicContent.secCHeadline = "Transit Infrastructure. <br><span style='color:#10b981;'>Built For Operations.</span>";
+            dynamicContent.secCSub = "Full-spectrum fleet setup logs mapped flawlessly across state borders.";
+            dynamicContent.secCBody = "Accelerate your logistical authorities under a robust unified dashboard tracking framework. We coordinate trucker registrations, broker permissions, state operating permits, and background drug screening accounts seamlessly.";
+            dynamicContent.secDPill = "Continuous Asset Shield";
+            dynamicContent.secDHeadline = "Guaranteed Compliance. <br><span style='color:#10b981;'>Permanent Good Standing.</span>";
+            dynamicContent.secDSub = "Proactive automated calendar sweeps eliminate corporate data gaps.";
+            dynamicContent.secDBody = "Never face administrative state penalties, account freezing, or accidental entity exposure. Our cloud tracking matrix scans regulatory alterations daily, records state department transitions, and completes filing paperwork error-free.";
+        }
 
-        // Synchronize browser head title and metadata description 
+        // Synchronize browser head title and metadata description
         document.title = dynamicContent.seoTitle; 
         let metaDescTag = document.querySelector('meta[name="description"]'); 
         if (!metaDescTag) { 
@@ -2503,156 +2525,52 @@ async function renderMasterSystem() {
             metaDescTag.setAttribute('name', 'description'); 
             document.head.appendChild(metaDescTag); 
         } 
-        metaDescTag.setAttribute('content', dynamicContent.metaDesc);
+        metaDescTag.setAttribute('content', dynamicContent.metaDesc); 
 
-        arrangementLayout.contentMatrix = dynamicContent; 
-
-        // ==========================================================================
-        // 6. DUAL-STREAM INJECTION MATRIX & LIVE PRICING INTERFACE
-        // ==========================================================================
-        try {
-            if (activeSlug === "homepage-main-landing") {
-                // --- HOMEPAGE RENDERING TRACK ---
-                const homeHero = document.getElementById("homepage-hero-zone");
-                if (homeHero) {
-                    homeHero.innerHTML = `
-                        <div class="homepage-isolated-hero" style="padding: 60px 20px; text-align: center;">
-                            <h1>${dynamicContent.heroHeadline}</h1>
-                            <p>${dynamicContent.heroBody}</p>
-                        </div>
-                    `;
-                }
-                console.log("🏁 Homepage rendering sequence successfully processed.");
-            } else {
-                // --- DYNAMIC 48-INNER SERVICES RENDERING TRACK ---
-                // Selects target layout nodes matching your specific PowerShell slug patterns
-                const el = id => document.getElementById(`${activeSlug}-${id}`);
-                const hero = el("hero-zone");
-                const metrics = el("metrics-zone");
-                const pricing = el("package-pricing-cards-root");
-
-                // A. Render Isolated Hero Module
-                if (hero) {
-                    hero.innerHTML = `
-                        <header class="${activeSlug}-hero-block" style="padding: 80px 20px; text-align: center; background: #fafafa;">
-                            <span style="background: #e0f2fe; color: #0369a1; padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 600;">${dynamicContent.heroPill}</span>
-                            <h1 style="font-size: 2.5rem; margin: 20px 0; color: #1f2937; line-height: 1.2;">${dynamicContent.heroHeadline}</h1>
-                            <p style="max-width: 600px; margin: 0 auto 30px; color: #4b5563; font-size: 16px;">${dynamicContent.heroBody}</p>
-                            <div style="font-size: 13px; color: #6b7280;">🛡️ ${dynamicContent.heroBadge}</div>
-                        </header>
-                    `;
-                }
-
-                // B. Render Isolated Metrics Module (With Image Fixes)
-                if (metrics) {
-                    metrics.innerHTML = `
-                        <section class="${activeSlug}-metrics-block" style="padding: 60px 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-                            <div>
-                                <span style="color: #10b981; font-weight: bold; text-transform: uppercase; font-size: 14px;">${dynamicContent.secBPill}</span>
-                                <h2 style="font-size: 2rem; margin: 10px 0; color: #1f2937;">${dynamicContent.secBHeadline}</h2>
-                                <h4 style="color: #6b7280; margin-bottom: 15px;">${dynamicContent.secBSub}</h4>
-                                <p style="color: #4b5563; line-height: 1.6;">${dynamicContent.secBBody}</p>
-                            </div>
-                            <div>
-                                <!-- 🎯 DYNAMIC IMAGE HANDLER: Strips broken local assets and binds standard business illustration if missing -->
-                                <img src="${dynamicContent.secBImage}" alt="${dynamicContent.title} Framework" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" onerror="this.onerror=null; this.src='images/local-business.jpg';">
-                            </div>
-                        </section>
-                    `;
-                }
-
-                // C. Render Isolated Pricing Cards Module
-                if (pricing) {
-                    pricing.innerHTML = `
-                        <article class="${activeSlug}-pricing-block" style="padding: 60px 20px; background: #f3f4f6; text-align: center;">
-                            <span style="color: #4f46e5; font-weight: bold; text-transform: uppercase; font-size: 14px;">${dynamicContent.secCPill}</span>
-                            <h2 style="font-size: 2rem; margin: 10px 0; color: #1f2937;">Standard Processing Layout Options</h2>
-                            <p style="color: #4b5563; margin-bottom: 30px;">Select the management structure engineered for your profile needs.</p>
-                            
-                            <!-- 🎯 LIVE PRICING CARDS WIZARD MATRIX -->
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; text-align: left;">
-                                <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
-                                    <h3 style="margin: 0; color: #1f2937;">Basic Setup Plan</h3>
-                                    <div style="font-size: 24px; font-weight: bold; margin: 15px 0; color: #111827;">$99 <span style="font-size: 14px; font-weight: normal; color: #6b7280;">+ state fees</span></div>
-                                    <p style="color: #4b5563; font-size: 14px; min-height: 40px;">Standard registry declaration files processed securely.</p>
-                                    <button style="width: 100%; background: #10b981; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">Select Basic</button>
-                                </div>
-                                <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 2px solid #10b981; position: relative;">
-                                    <span style="position: absolute; top: -12px; right: 20px; background: #10b981; color: white; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: bold;">POPULAR</span>
-                                    <h3 style="margin: 0; color: #1f2937;">Complete Shield</h3>
-                                    <div style="font-size: 24px; font-weight: bold; margin: 15px 0; color: #111827;">$199 <span style="font-size: 14px; font-weight: normal; color: #6b7280;">+ state fees</span></div>
-                                    <p style="color: #4b5563; font-size: 14px; min-height: 40px;">Includes processing, compliance alerts, and asset guard sheets.</p>
-                                    <button style="width: 100%; background: #111827; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">Select Complete</button>
-                                </div>
-                            </div>
-                        </article>
-                    `;
-                }
-                console.log(`⚡ Injection complete. Hydrated system modules cleanly for service: /${activeSlug}`);
-            }
-        } catch (domErr) {
-            console.warn("⚠️ DOM execution matrix halted:", domErr);
-        }
-
-        return arrangementLayout;
-    } catch (criticalErr) {
-        console.error("🚨 Master System failure:", criticalErr);
-        throw criticalErr;
-    }
-}
-
-
-
-  // ==========================================================================
-    // 🧱 THE STRATEGIC 8-SECTION FLOW SEQUENCE (EXPLICITLY ISOLATED BY PAGE NAME)
-    // ==========================================================================
-    const currentPath = window.location.pathname.split("/").pop().replace(".html", "").trim().toLowerCase();
-    const cleanPageKey = (!currentPath || currentPath === "home" || currentPath === "index") ? "index" : currentPath;
-    const isHomePageLanding = (cleanPageKey === "index");
-
-    // 🎯 SECTION 1: Site-Wide Navigation Header Module
-    if (typeof renderDynamicGlobalCorporateNavigation === "function") {
-      renderDynamicGlobalCorporateNavigation("global-platform-navigation-zone");
-    }
-
-    // 🎯 SECTION 2: Page Hero Segment (Points home to global, subpages to their own ID)
-    const activeHeroId = isHomePageLanding ? "dynamic-sections-root" : cleanPageKey + "-hero-zone";
-    const dynamicSectionsRoot = document.getElementById(activeHeroId);
+     // 🏛️ LAYOUT STEP 1: Paint upper text blocks above pricing grid elements
+    const dynamicSectionsRoot = document.getElementById("dynamic-sections-root");
     if (dynamicSectionsRoot && typeof compileUpperLayoutBlueprintHtml === "function") {
       dynamicSectionsRoot.innerHTML = compileUpperLayoutBlueprintHtml(dynamicContent);
     }
-    
-    // 🎯 SECTION 3: Page-Specific Metrics Board (Points home to global, subpages to their own ID)
-    const activeMetricsId = isHomePageLanding ? "dynamic-metrics-zone" : cleanPageKey + "-metrics-zone";
-    const mNode = document.getElementById(activeMetricsId);
-    if (mNode && typeof renderDynamicMetricsSection === "function") {
-      renderDynamicMetricsSection(activeMetricsId, dbRow);
-    }
 
-    // 🎯 SECTIONS 4 & 5: Intermediate Content Marketing Rows (Loads ONLY on home)
-    if (isHomePageLanding) {
-      if (typeof renderDynamicAlternatingFlowSection === "function") renderDynamicAlternatingFlowSection("dynamic-alternating-flow-zone");
-      if (typeof renderDynamicExpertiseSection === "function") renderDynamicExpertiseSection("dynamic-expertise-zone");
-    }
+    // 🎯 THE LIVE COUPLING FIX: Triggers your page-specific metrics generator card matrix instantly 
+    // Passes the raw database row (dbRow) down so it evaluates database parameters first, then falls back to static copy
+    if (typeof renderDynamicMetricsSection === "function") {
+      renderDynamicMetricsSection("dynamic-metrics-zone", dbRow);
+    } 
 
- // 🎯 SECTION 6: Live Pricing Wizard Section (Points subpages to their own pricing ID)
-    const activePricingId = isHomePageLanding ? "website-package-pricing-cards-root" : cleanPageKey + "-package-pricing-cards-root";
-    const pRoot = document.getElementById(activePricingId);
-    if (pRoot) {
-      if (!isHomePageLanding) {
-        pRoot.style.display = "block";
-        // 💡 FIXED: Swapped out the undeclared variable references
-        pRoot.setAttribute("data-service-key", cleanPageKey);
-        if (typeof renderMainWebsitePricingCards === "function") renderMainWebsitePricingCards(cleanPageKey);
-      } else {
-        pRoot.style.display = "none";
-      }
-    }
+        // 🏛️ LAYOUT STEP 2: Position Pricing modules and trigger state-pricing integration
+        const pricingRoot = document.getElementById("website-package-pricing-cards-root"); 
+        if (pricingRoot) { 
+            pricingRoot.setAttribute("data-service-key", dynamicContent.pricingKey); 
+            pricingRoot.style.cssText = "width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:60px 40px !important; box-sizing:border-box !important; display:block !important; background:#ffffff !important; position:relative !important; z-index:20 !important; background-image:none !important;"; 
+            
+            let priceTitle = pricingRoot.querySelector("h2"); 
+            if (priceTitle) priceTitle.style.setProperty("color", "#0a1f44", "important"); 
+            
+            if (typeof renderMainWebsitePricingCards === "function") { 
+                renderMainWebsitePricingCards(dynamicContent.pricingKey); 
+            } 
+        } 
+
+        // 🏛️ LAYOUT STEP 3: Position section D directly below white pricing cards
+        let sectionDElement = document.getElementById("dynamic-section-d-container"); 
+        if (!sectionDElement) { 
+            sectionDElement = document.createElement("div"); 
+            sectionDElement.id = "dynamic-section-d-container"; 
+            if (pricingRoot) pricingRoot.parentNode.insertBefore(sectionDElement, pricingRoot.nextSibling); 
+        } 
+        sectionDElement.className = "f4u-layout-section f4u-unified-navy";
+        if (typeof compileSectionDLayoutHtml === "function") {
+            sectionDElement.innerHTML = compileSectionDLayoutHtml(dynamicContent); 
+        }
+
+        // 🏛️ LAYOUT STEP 4: Enforce contrast margins across subscribe blocks
+        const subscribeContainer = document.getElementById("compliance-subscribe-form-container") || document.querySelector(".subscribe-section-wrapper"); 
+        if (subscribeContainer && sectionDElement) { 
+subscribeContainer.style.cssText = "background:#ffffff !important; color:#0a1f44 !important; padding:80px 0 !important; margin:0 !important; width:100% !important; max-width:100% !important; position:relative !important; z-index:10 !important; background-image:none !important;";let subTitle = subscribeContainer.querySelector("h3, h2");if (subTitle) subTitle.style.setProperty("color", "#0a1f44", "important");let subText = subscribeContainer.querySelector("p");if (subText) subText.style.setProperty("color", "#475569", "important");sectionDElement.parentNode.insertBefore(subscribeContainer, sectionDElement.nextSibling);console.log("🏁 Content engine compiled completely without anomalies!");}} catch (globalCatchError) {console.error("❌ Content Engine Pipeline Exception Caught:", globalCatchError);}}document.addEventListener("DOMContentLoaded", renderMasterSystem);
 
 
-
-
-    
 /**
  * ============================================================================
  * 🌐 DYNAMIC CONTENT ENGINE MODULE: COMPLIANCE SUBSCRIBE COMPONENT
@@ -2838,19 +2756,20 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof renderDynamicGlobalCorporateNavigation === "function") renderDynamicGlobalCorporateNavigation("global-platform-navigation-zone");
   if (typeof renderDynamicHeroSection === "function") renderDynamicHeroSection("dynamic-hero-zone");
   
-    const activeMetricsId = (activeSlug === "homepage-main-landing" || activeSlug === "") ? "dynamic-metrics-zone" : activeSlug + "-metrics-zone";
-    if (typeof renderDynamicMetricsSection === "function") renderDynamicMetricsSection(activeMetricsId, dbRow);
+  // 🎯 LOAD METRICS GENERATOR GLOBALLY ON ALL SERVICE views
+  if (typeof renderDynamicMetricsSection === "function") renderDynamicMetricsSection("dynamic-metrics-zone");
   
   if (typeof renderDynamicComplianceSubscribeSection === "function") renderDynamicComplianceSubscribeSection("dynamic-subscribe-placement-zone");
   if (typeof renderDynamicGlobalCorporateFooter === "function") renderDynamicGlobalCorporateFooter("global-platform-footer-zone");
 
   // Secondary context logic tracker checks (marketing rows)
   const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
-    if (rawPathname === "" || rawPathname.includes("index") || rawPathname.includes("home")) {
-      if (typeof renderDynamicAlternatingFlowSection === "function") renderDynamicAlternatingFlowSection("dynamic-alternating-flow-zone");
-      if (typeof renderDynamicExpertiseSection === "function") renderDynamicExpertiseSection("dynamic-expertise-zone");
-      if (typeof renderDynamicStartupLaunchpadSection === "function") renderDynamicStartupLaunchpadSection("dynamic-startup-launchpad-zone");
-    }
+  if (rawPathname === "" || rawPathname.includes("index") || rawPathname.includes("home")) {
+    if (typeof renderDynamicAlternatingFlowSection === "function") renderDynamicAlternatingFlowSection("dynamic-alternating-flow-zone");
+    if (typeof renderDynamicExpertiseSection === "function") renderDynamicExpertiseSection("dynamic-expertise-zone");
+    if (typeof renderDynamicStartupLaunchpadSection === "function") renderDynamicStartupLaunchpadSection("dynamic-startup-launchpad-zone");
+    if (typeof renderDynamicTrustSection === "function") renderDynamicTrustSection("dynamic-trust-zone");
+  }
 });
 
 
@@ -3017,125 +2936,19 @@ function renderDynamicGlobalCorporateNavigation(targetElementId) {
     detectedPageKey = "index";
   }
   
-  try {
-    const targetKey = `${detectedPageKey}_metrics`;
-    console.log(`📍 Active Page File Token: "${detectedPageKey}"`);
-    console.log(`📍 Expected Data Catalog Key: "${targetKey}"`);
+  const targetKey = `${detectedPageKey}_metrics`;
+  console.log(`📍 Active Page File Token: "${detectedPageKey}"`);
+  console.log(`📍 Expected Data Catalog Key: "${targetKey}"`);
 
-    console.log('🏁 Isolated rendering scope compiled securely without errors.');
-  } catch (err) {
-    console.error('❌ Component System Crash Redirected:', err);
+  if (!window.PLATFORM_STATIC_PAGES_DATA) {
+    console.error("❌ CRITICAL ERROR: window.PLATFORM_STATIC_PAGES_DATA object cannot be found!");
+    return;
+  }
+
+  if (window.PLATFORM_STATIC_PAGES_DATA[targetKey]) {
+    console.log("✅ SUCCESS: Found matching data entry! Cards found count: " + window.PLATFORM_STATIC_PAGES_DATA[targetKey].cards.length);
+  } else {
+    console.warn(`⚠️ PATH MISMATCH: window.PLATFORM_STATIC_PAGES_DATA["${targetKey}"] is undefined.`);
+    console.log("📋 Available keys in your catalog are:", Object.keys(window.PLATFORM_STATIC_PAGES_DATA));
   }
 })();
-
-/**
- * ==========================================================================
- * 🚀 HYBRID DATA ACQUISITION & CHESSBOARD ARRANGEMENT SEQUENCER
- * Explicitly structures Sections 1 through 8 sequentially on every page.
- * ==========================================================================
- */
-async function renderMasterSystem() {
-  try {
-    const activeSlug = window.location.pathname.split("/").pop().replace(".html", "").trim().toLowerCase();
-    const cleanPageKey = (!activeSlug || activeSlug === "home" || activeSlug === "index") ? "index" : activeSlug;
-    const isHomePageLanding = (cleanPageKey === "index");
-
-    console.log("🎯 Content Engine Launching Query Sequence For Page Key: " + cleanPageKey);
-    let dbRow = null;
-
-    try {
-      const backupUrl = 'https://supabase.co';
-      const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
-      const endpointUrl = `${backupUrl}/rest/v1/services?select=*&slug=eq.${cleanPageKey}`;
-      
-      const response = await fetch(endpointUrl, {
-        method: "GET",
-        headers: {
-          "apikey": backupKey,
-          "Authorization": `Bearer ${backupKey}`,
-          "Accept": "application/json"
-        }
-      });
-
-      if (response.ok) {
-        const rawJsonPayloadArray = await response.json();
-        if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
-          dbRow = rawJsonPayloadArray[0];
-        }
-      }
-    } catch (netErr) {
-      console.warn("⚠️ Database query fallback active. Reading local sheets.", netErr);
-    }
-
-    let serviceTitleString = cleanPageKey.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-    if (dbRow && dbRow.service_title) {
-      serviceTitleString = dbRow.service_title;
-    }
-
-    const dynamicContent = {
-      pricingKey: cleanPageKey,
-      seoTitle: serviceTitleString + " Registration & Filing Services | filings4u",
-      metaDesc: "Automate your corporate " + serviceTitleString + " tracking loops instantly.",
-      heroPill: isHomePageLanding ? "Automated Registry Systems" : serviceTitleString + " Framework",
-      heroHeadline: isHomePageLanding ? "The Engine for <br><span style='color:#10b981;'>Corporate Launching.</span>" : "The Center for <br><span style='color:#10b981;'>Total " + serviceTitleString + ".</span>",
-      heroBody: isHomePageLanding ? "Launch, scale, and manage your asset protection profiles across all registries overnight." : "Launch and track your operational statuses cleanly.",
-      heroBadge: isHomePageLanding ? "System Core Sync: 140,000+ Profiles Active" : "System Core Sync: Connected",
-      heroImage: "images/hero-image.jpg"
-    };
-
-    document.title = dynamicContent.seoTitle;
-
-    // 🎯 SECTION 1: Site-Wide Navigation Header Module
-    if (typeof renderDynamicGlobalCorporateNavigation === "function") {
-      renderDynamicGlobalCorporateNavigation("global-platform-navigation-zone");
-    }
-
-    // 🎯 SECTION 2: Page Hero Segment (Home to global, subpages to their own ID)
-    const activeHeroId = isHomePageLanding ? "dynamic-sections-root" : cleanPageKey + "-hero-zone";
-    const dynamicSectionsRoot = document.getElementById(activeHeroId);
-    if (dynamicSectionsRoot && typeof compileUpperLayoutBlueprintHtml === "function") {
-      dynamicSectionsRoot.innerHTML = compileUpperLayoutBlueprintHtml(dynamicContent);
-    }
-    
-    // 🎯 SECTION 3: Page-Specific Metrics Board (Home to global, subpages to their own ID)
-    const activeMetricsId = isHomePageLanding ? "dynamic-metrics-zone" : cleanPageKey + "-metrics-zone";
-    const mNode = document.getElementById(activeMetricsId);
-    if (mNode && typeof renderDynamicMetricsSection === "function") {
-      renderDynamicMetricsSection(activeMetricsId, dbRow);
-    }
-
-    // 🎯 SECTIONS 4 & 5: Intermediate Content Marketing Rows (Home only)
-    if (isHomePageLanding) {
-      if (typeof renderDynamicAlternatingFlowSection === "function") renderDynamicAlternatingFlowSection("dynamic-alternating-flow-zone");
-      if (typeof renderDynamicExpertiseSection === "function") renderDynamicExpertiseSection("dynamic-expertise-zone");
-      if (typeof renderDynamicStartupLaunchpadSection === "function") renderDynamicStartupLaunchpadSection("dynamic-startup-launchpad-zone");
-    }
-
-    // 🎯 SECTION 6: Live Pricing Wizard Section (Subpages to their own pricing ID)
-    const activePricingId = isHomePageLanding ? "website-package-pricing-cards-root" : cleanPageKey + "-package-pricing-cards-root";
-    const pRoot = document.getElementById(activePricingId);
-    if (pRoot) {
-      if (!isHomePageLanding) {
-        pRoot.style.display = "block";
-        pRoot.setAttribute("data-service-key", cleanPageKey);
-        if (typeof renderMainWebsitePricingCards === "function") renderMainWebsitePricingCards(cleanPageKey);
-      } else {
-        pRoot.style.display = "none";
-      }
-    }
-
-    // 🎯 SECTION 7: Site-Wide Contact Form / Subscribe Placement Block
-    if (typeof renderDynamicComplianceSubscribeSection === "function") {
-      renderDynamicComplianceSubscribeSection("dynamic-subscribe-placement-zone");
-    }
-
-    // 🎯 SECTION 8: Global Corporate Footer Module
-    if (typeof renderDynamicGlobalCorporateFooter === "function") {
-      renderDynamicGlobalCorporateFooter("global-platform-footer-zone");
-    }
-
-    console.log("🏁 Isolated rendering scope compiled securely without errors.");
-  } catch(err) { console.error("❌ Component System Crash Redirected:", err); }
-}
-
-document.addEventListener("DOMContentLoaded", renderMasterSystem);
