@@ -1538,70 +1538,160 @@ const CONTENT_ENGINE_ONLY_SUPABASE = window.supabase.createClient(EXPLICIT_CONTE
 
 /**
  * ==========================================================================
- * 🏛️ FILINGS4U CENTRAL UNIFIED ROUTER MATRIX
- * Strips incoming URL parameters to extract the unique database service key.
+ * 🏛️ FILINGS4U CENTRAL UNIFIED ROUTER MATRIX & DATA SERVICE CORE
+ * Programmatically maps, resolves, and tracks active routing tokens
  * ==========================================================================
  */
-function getUnifiedServiceKey() { 
-    const path = window.location.pathname; 
-    let fileName = path.split("/").pop().replace(".html", "").trim().toLowerCase(); 
-    if (!fileName || fileName === "index" || fileName === "index copy" || fileName === "home") { 
-        return "homepage-main-landing"; 
-    } 
-    const urlMap = { 
-        "limited-liability-company": "llc-formation", 
-        "corporations": "corporation", 
-        "nonprofits": "nonprofit-organization", 
-        "doing-business-as-dba": "dba-registration", 
-        "annual-reports": "annual-reports", 
-        "employer-identification-number-ein": "employer-id-ein", 
-        "employer-id-ein": "employer-id-ein",
-        "dissolution": "entity-dissolution", 
-        "good-standing": "good-standing", 
-        "certificate-of-good-standing": "good-standing",
-        "apostille-services": "apostille-services", 
-        "apostille-authentication": "apostille-services",
-        "clia-certificate": "clia-certificate", 
-        "regulatory-consulting": "legal-consulting", 
-        "sole-proprietorship": "sole-proprietorship",
-        "series-llc": "series-llc",
-        "foreign-entity-certificate": "foreign-qualification",
-        "llc-reinstatement": "llc-reinstatement",
-        "trademark-filing": "trademark-filing",
-        "servicemark-filing": "servicemark-filing",
-        "operating-agreement": "operating-agreement",
-        "registered-agent": "registered-agent",
-        "business-licenses": "business-licenses",
-        "cage-code": "cage-code",
-        "duns-number": "duns-number",
-        "procurement": "procurement-consulting",
-        "procurement-registration": "procurement-registration",
-        "minority-certificate": "minority-certificate",
-        "licenses-permits": "licenses-permits",
-        "federal-income-tax": "federal-tax", 
-        "state-income-tax": "state-tax", 
-        "franchise-tax": "franchise-tax", 
-        "franchise-tax-filing": "franchise-tax",
-        "sales-tax-registration": "sales-tax", 
-        "payroll-tax-940-941": "payroll-tax", 
-        "heavy-use-tax-2290": "heavy-use-tax", 
-        "owner-operators": "owner-operators", 
-        "trucker-authority": "trucker-authority", 
-        "broker-authority": "broker-authority", 
-        "ucr-registration": "ucr-registration", 
-        "scac-code": "scac-code", 
-        "scac-code-registration": "scac-code",
-        "dot-consortium": "dot-consortium", 
-        "driver-qualification-file": "driver-file", 
-        "process-agents-boc-3": "process-agent-boc3", 
-        "international-fuel-tax-agreement-ifta": "ifta-registration", 
-        "hazmat-registration": "dot-hazmat", 
-        "new-entrant-audit": "new-entrant-audit",
-        "trucker-insurance": "trucker-insurance",
-        "broker-insurance": "broker-insurance"
-    }; 
-    return urlMap[fileName] || fileName; 
+
+// 1. Unified URL and Filename Mapping Dictionary Schema Matrix
+window.FILINGS4U_ROUTER_URL_MAP = window.FILINGS4U_ROUTER_URL_MAP || {
+  "limited-liability-company": "llc-formation",
+  "corporations": "corporation",
+  "nonprofits": "nonprofit-organization",
+  "doing-business-as-dba": "dba-registration",
+  "annual-reports": "annual-reports",
+  "employer-identification-number-ein": "employer-id-ein",
+  "employer-id-ein": "employer-id-ein",
+  "dissolution": "entity-dissolution",
+  "good-standing": "good-standing",
+  "certificate-of-good-standing": "good-standing",
+  "apostille-services": "apostille-services",
+  "apostille-authentication": "apostille-services",
+  "clia-certificate": "clia-certificate",
+  "regulatory-consulting": "legal-consulting",
+  "sole-proprietorship": "sole-proprietorship",
+  "series-llc": "series-llc",
+  "foreign-entity-certificate": "foreign-qualification",
+  "llc-reinstatement": "llc-reinstatement",
+  "trademark-filing": "trademark-filing",
+  "servicemark-filing": "servicemark-filing",
+  "operating-agreement": "operating-agreement",
+  "registered-agent": "registered-agent",
+  "business-licenses": "business-licenses",
+  "cage-code": "cage-code",
+  "duns-number": "duns-number",
+  "procurement": "procurement-consulting",
+  "procurement-registration": "procurement-registration",
+  "minority-certificate": "minority-certificate",
+  "licenses-permits": "licenses-permits",
+  "federal-income-tax": "federal-tax",
+  "state-income-tax": "state-tax",
+  "franchise-tax": "franchise-tax",
+  "franchise-tax-filing": "franchise-tax",
+  "sales-tax-registration": "sales-tax",
+  "payroll-tax-940-941": "payroll-tax",
+  "heavy-use-tax-2290": "heavy-use-tax",
+  "owner-operators": "owner-operators",
+  "trucker-authority": "trucker-authority",
+  "broker-authority": "broker-authority",
+  "ucr-registration": "ucr-registration",
+  "scac-code": "scac-code",
+  "scac-code-registration": "scac-code",
+  "dot-consortium": "dot-consortium",
+  "driver-qualification-file": "driver-file",
+  "process-agents-boc-3": "process-agent-boc3",
+  "international-fuel-tax-agreement-ifta": "ifta-registration",
+  "hazmat-registration": "dot-hazmat",
+  "new-entrant-audit": "new-entrant-audit",
+  "trucker-insurance": "trucker-insurance",
+  "broker-insurance": "broker-insurance"
+};
+
+// 2. Strict Programmatic Unified Service Key Extractor
+function getUnifiedServiceKey() {
+  const path = window.location.pathname;
+  let fileName = path.split("/").pop().replace(".html", "").trim().toLowerCase();
+  
+  if (!fileName || fileName === "index" || fileName === "index copy" || fileName === "home") {
+    return "homepage-main-landing";
+  }
+  
+  return window.FILINGS4U_ROUTER_URL_MAP[fileName] || fileName;
 }
+
+// 3. Automated HTML Layout Field Injection Engine
+function executeDynamicRegulatoryFieldInjection(serviceKey) {
+  const rootFieldContainer = document.getElementById("dynamic-onboarding-fields-root");
+  if (!rootFieldContainer) return;
+
+  const cleanKey = String(serviceKey || "").toLowerCase().trim();
+  
+  if (!cleanKey) {
+    throw new Error("[Fatal Lifecycle Error] Cannot resolve layout parameters: serviceKey string parameter context is completely missing.");
+  }
+
+  // Pure data layout injection router loops — maps 100% programmatically via your dictionary matrices
+  if (cleanKey === "series-llc") {
+    rootFieldContainer.innerHTML = typeof buildSeriesLlcRegistrationFieldsLayoutHtml === "function" ? buildSeriesLlcRegistrationFieldsLayoutHtml(cleanKey) : "";
+  } else if (cleanKey === "llc-formation") {
+    rootFieldContainer.innerHTML = typeof buildLlcFormationFieldsLayoutHtml === "function" ? buildLlcFormationFieldsLayoutHtml(cleanKey) : "";
+  } else if (cleanKey === "nonprofit-organization") {
+    rootFieldContainer.innerHTML = typeof buildNonprofitOrganizationFieldsLayoutHtml === "function" ? buildNonprofitOrganizationFieldsLayoutHtml(cleanKey) : "";
+  } else if (cleanKey === "corporation") {
+    rootFieldContainer.innerHTML = typeof buildCorporateFormationFieldsLayoutHtml === "function" ? buildCorporateFormationFieldsLayoutHtml(cleanKey) : "";
+  } else if (cleanKey === "dba-registration") {
+    rootFieldContainer.innerHTML = typeof buildDbaRegistrationFieldsLayoutHtml === "function" ? buildDbaRegistrationFieldsLayoutHtml(cleanKey) : "";
+  } else if (cleanKey === "sole-proprietorship") {
+    rootFieldContainer.innerHTML = typeof buildInformalEntityFieldsLayoutHtml === "function" ? buildInformalEntityFieldsLayoutHtml(cleanKey) : "";
+  } else if (cleanKey === "foreign-qualification") {
+    rootFieldContainer.innerHTML = typeof buildForeignQualificationFieldsLayoutHtml === "function" ? buildForeignQualificationFieldsLayoutHtml(cleanKey) : "";
+  } else if (cleanKey === "trademark-filing" || cleanKey === "servicemark-filing") {
+    rootFieldContainer.innerHTML = typeof buildIpRegistryFieldsLayoutHtml === "function" ? buildIpRegistryFieldsLayoutHtml(cleanKey) : "";
+  } else {
+    // Dynamically captures all 50+ other maintenance, regulatory, trucking, tax filing, and procurement services via standard extended modules
+    rootFieldContainer.innerHTML = typeof buildExtendedFamiliesFieldsLayoutHtml === "function" ? buildExtendedFamiliesFieldsLayoutHtml(cleanKey) : "";
+  }
+}
+
+// 4. Strict Programmatic Summary & Fee Calculation Engine
+function recalculateSummaryStepFields() {
+  // Sync directly to unified, explicit routing parameters across the platform
+  var safeServiceKey = window.routeActiveServiceKey || getUnifiedServiceKey();
+  var safePlanKey = window.routeActivePlanKey;
+
+  if (!safeServiceKey || !safePlanKey) {
+    throw new Error(`[Fatal Calculation Error] Critical workflow parameters missing. safeServiceKey: "${safeServiceKey}", safePlanKey: "${safePlanKey}".`);
+  }
+
+  safeServiceKey = safeServiceKey.toLowerCase().trim();
+  safePlanKey = safePlanKey.toLowerCase().trim();
+
+  // Explicit pricing key transformations to match plan tier criteria perfectly
+  if (safePlanKey === "basic") safePlanKey = "starter";
+  if (safePlanKey === "standard") safePlanKey = "compliance";
+  if (safePlanKey === "premium") safePlanKey = "enterprise";
+
+  if (!window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) {
+    throw new Error("[Fatal Calculation Error] window.GLOBAL_COMPANY_PRICING schema matrix layer is uninitialized.");
+  }
+
+  // Resolve data matrices strictly — prevents fallback guessing or structural type modifications
+  const finalCatalog = typeof globalCatalog !== 'undefined' ? globalCatalog : window.UPSELLS_ROUTER_DATABASE;
+
+  if (!finalCatalog || Object.keys(finalCatalog).length === 0) {
+    throw new Error("[Fatal Calculation Error] Core system catalog data matrix is empty or failed to load. Halting process.");
+  }
+
+  // Strict direct key match against the fully-qualified service tracking tokens
+  const planConfig = finalCatalog[safeServiceKey];
+
+  if (!planConfig) {
+    throw new Error(`[Fatal Calculation Error] Strict dictionary key verification failed for key token: "${safeServiceKey}".`);
+  }
+
+  if (typeof planConfig[safePlanKey] === 'undefined') {
+    throw new Error(`[Fatal Calculation Error] Unmapped processing plan tier structure "${safePlanKey}" for key profile: "${safeServiceKey}".`);
+  }
+
+  const filings4uBaseFee = parseFloat(planConfig[safePlanKey]);
+  
+  if (isNaN(filings4uBaseFee)) {
+    throw new Error(`[Fatal Calculation Error] Extracted fee parameter for tier "${safePlanKey}" evaluated to an invalid NaN token string.`);
+  }
+
+  console.log(`[Pricing Cleared] Service: "${safeServiceKey}" [Tier: "${safePlanKey}"]. Base processing fee strictly evaluated to: $${filings4uBaseFee.toFixed(2)}`);
+}
+
 
 
 

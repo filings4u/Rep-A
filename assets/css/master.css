@@ -3490,3 +3490,14 @@ footer.site-footer,
         .legal-content-card ul { padding-left: 20px; margin-bottom: 30px; }
         .legal-content-card li { margin-bottom: 12px; font-size: 1.05rem; color: var(--slate-text); }
         .legal-content-card p { font-size: 1.05rem; line-height: 1.7; color: var(--slate-text); text-align: justify; }
+
+
+
+.toc-dot {
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: box-shadow, background;
+}
+
+#portal-activation-submit-btn:hover {
+  background: var(--primary-dark, #059669) !important;
+}
