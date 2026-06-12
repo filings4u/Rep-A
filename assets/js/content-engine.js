@@ -1,3 +1,594 @@
+
+
+/**
+ * ============================================================================
+ * 📦 PLATFORM SYSTEM METRICS DYNAMIC CONTENT CATALOG
+ * Central data sheet tracking all non-wizard page copy variables programmatically
+ * ============================================================================
+ */
+window.PLATFORM_STATIC_PAGES_DATA = window.PLATFORM_STATIC_PAGES_DATA || {
+  // 📝 SECTION 1: HERO COPY REGISTRY
+  "index": {
+    pill: "Enterprise Ecosystem",
+    title: "The Hub for <br><span style='color: #10b981;'>Total Compliance.</span>",
+    lead: "Automate your corporate structures and DOT authorities from one single dashboard. We provide the technical handshake between you and state, federal, and local jurisdictions.",
+    badge: "Active Entity Sync: 10,000+ Verified",
+    btn_text: "Get Started &rarr;",
+    btn_url: "get-started.html",
+    img_src: "images/hero-image.jpg",
+    img_alt: "Compliance Dashboard Preview"
+  },
+
+  // 📊 SECTION 2: METRICS CARD REGISTRY
+  "index_metrics": {
+    section_title: "Corporate Filing Infrastructure",
+    status_badge: "ALL CLEAR: SECURE REST GATEWAYS ACTIVE",
+    cards: [
+      {
+        icon: "🏢",
+        value: "142K+",
+        title: "Corporate Entities Formed",
+        desc: "Authorized Articles of Organization across all 50 State Secretary registries."
+      },
+      {
+        icon: "🚛",
+        value: "38,410",
+        title: "Active Transits Monitored",
+        desc: "USDOT & MC operating authorities actively synchronized with FMCSA core data links."
+      },
+      {
+        icon: "⚡",
+        value: "1.8s",
+        title: "Average API Pipeline Turn",
+        desc: "Secure, real-time rest requests to launch bank check intents and background pre-saves.",
+        green_text: true
+      },
+      {
+        icon: "🔒",
+        value: "99.98%",
+        title: "Filing Accuracy Quotient",
+        desc: "Sophisticated layout rules eliminate common syntax rejection errors from state systems."
+      }
+    ]
+  },
+
+    // Place this directly inside your window.PLATFORM_STATIC_PAGES_DATA object wrapper:
+  "index_alternating": {
+    img_src: "images/local-business.jpg",
+    img_alt: "Local business owner working on compliance",
+    pill: "Main Street Growth",
+    title: "Neighborhood Focus. <br><span style='color: #10b981;'>Built For Community.</span>",
+    sub_heading: "Streamlined corporate filings designed for local business peace of mind.",
+    context_copy: "Protect your independent venture with compliance tools built for neighborhood startups, family shops, and local operators. We handle your annual reports, entity formations, and state requirements under a secure corporate architecture so you can stay focused on serving your immediate neighborhood clients.",
+    link_url: "formations.html",
+    link_text: "Explore Local Services &rarr;"
+  },
+
+    // Place this directly inside your window.PLATFORM_STATIC_PAGES_DATA object wrapper:
+  "index_expertise": {
+    pill: "Neighborhood Concierge",
+    title: "On-Demand Expertise",
+    lead: "Skip automated state phone lines and complex government legal forms. Connect instantly with our dedicated corporate filing experts.",
+    events: [
+      {
+        title: "Dedicated Account Liaison",
+        desc: "Direct human routing for complex state business applications",
+        status: "INCLUDED"
+      },
+      {
+        title: "Pre-Submission Document Audits",
+        desc: "Our specialists cross-verify address and entity name spelling rules",
+        status: "VERIFIED"
+      },
+      {
+        title: "Automated Franchise Tax Alerts",
+        desc: "Proactive neighborhood deadline notifications via phone or email",
+        status: "LIVE"
+      }
+    ]
+  },
+
+
+    // Place this directly inside your window.PLATFORM_STATIC_PAGES_DATA object wrapper:
+  "index_startup": {
+    pill: "Launch Infrastructure",
+    title: "Startup Launchpad. <br><span style='color: #10b981;'>Built For Scale.</span>",
+    sub_heading: "Turn your business idea into an officially recognized state legal entity overnight.",
+    context_copy: "Accelerate your early-stage venture with robust entity setup frameworks built for founders. We automate LLC formations, corporate bylaw preparation, tax ID filings (EIN), and state registry submissions under an enterprise architecture so you can legally issue shares, open commercial accounts, and protect your capital from day one.",
+    link_url: "formations.html",
+    link_text: "Launch Your Startup &rarr;",
+    img_src: "images/startup-launch.jpg",
+    img_alt: "Entrepreneurs launching a new startup business venture"
+  },
+
+  // Place this directly inside your window.PLATFORM_STATIC_PAGES_DATA object wrapper:
+  "index_trust": {
+    pill: "Guaranteed Audit Protection",
+    title: "Institutional Shield. <br><span style='color: #10b981;'>Never Miss A Filing.</span>",
+    sub_heading: "Active database synchronization safeguards your status across state lines.",
+    context_copy: "Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your operational status is permanently shielded.",
+    link_url: "compliance.html",
+    link_text: "Explore Security Infrastructure &rarr;",
+    img_src: "images/regulatory-compliance.jpg",
+    img_alt: "Entrepreneurs launching a new startup business venture"
+  }
+
+};
+
+
+/**
+ * Injects a 1450px layout grid block populated dynamically based on the active URL path.
+ * Reads text from either the Supabase database row or the local page metadata catalog.
+ */
+function renderDynamicHeroSection(targetElementId, dbRowData = null) {
+  const node = document.getElementById(targetElementId);
+  if (!node) return;
+
+  // 1. Programmatically extract clean template name token string
+  const urlPathname = window.location.pathname;
+  let detectedPageKey = urlPathname.split("/").pop().replace(".html", "").trim().toLowerCase();
+
+  // Helper utility to safely sanitize user or database generated strings against XSS attacks
+  const sanitize = (str) => {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;');
+  };
+
+  if (!detectedPageKey || detectedPageKey === "index copy" || detectedPageKey === "home") {
+    detectedPageKey = "index";
+  }
+
+  // Determine spacing and layout modifiers based on whether it is the index page
+  const isIndexPage = (detectedPageKey === "index");
+  const wrapperPaddingTop = isIndexPage ? "40px" : "120px";
+  const gridDirectionStyle = isIndexPage ? "direction: rtl;" : "";
+  const childrenDirectionStyle = isIndexPage ? "direction: ltr;" : "";
+
+  // 2. Initialize default layout fallback values
+  let heroPillText = "Compliance Management";
+  let heroHeadlineText = detectedPageKey.replace(/-/g, " ").toUpperCase();
+  let heroBodyText = "Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.";
+  let heroBadgeText = "Secure Gateway Active";
+  let heroButtonUrl = "get-started.html";
+  let heroButtonText = "Get Started &rarr;";
+  let heroImageSrc = "images/hero-image.jpg";
+  let heroImageAlt = "Compliance Dashboard Preview";
+
+  // 3. ✨ THE MATRIX ROUTING PASS: Check conditional states sequentially
+  if (dbRowData) {
+    heroPillText = sanitize(dbRowData.hero_pill) || "Automated Registry Systems";
+    heroHeadlineText = sanitize(dbRowData.hero_headline || dbRowData.service_title) || "Corporate Launchpad";
+    heroBodyText = sanitize(dbRowData.hero_body) || "Launch and manage your asset protection profiles safely.";
+    heroBadgeText = sanitize(dbRowData.hero_badge) || "System Core Sync: Active";
+    heroImageSrc = encodeURI(dbRowData.hero_image || "images/hero-image.jpg");
+    heroImageAlt = sanitize(dbRowData.service_title) || "Service Preview";
+  } else if (window.PLATFORM_STATIC_PAGES_DATA && window.PLATFORM_STATIC_PAGES_DATA[detectedPageKey]) {
+    const staticCopy = window.PLATFORM_STATIC_PAGES_DATA[detectedPageKey];
+    heroPillText = sanitize(staticCopy.pill);
+    heroHeadlineText = sanitize(staticCopy.title);
+    heroBodyText = sanitize(staticCopy.lead);
+    heroBadgeText = sanitize(staticCopy.badge);
+    heroButtonUrl = encodeURI(staticCopy.btn_url || "get-started.html");
+    heroButtonText = sanitize(staticCopy.btn_text || "Get Started &rarr;");
+    heroImageSrc = encodeURI(staticCopy.img_src || "images/hero-image.jpg");
+    heroImageAlt = sanitize(staticCopy.img_alt || "Page Preview");
+  }
+
+  // 4. Render layout using assigned parameters
+  node.innerHTML = `
+    <main class="hero-section-wrapper" style="background: #ffffff; padding: ${wrapperPaddingTop} 0 60px 0 !important; margin-top: 0 !important; margin-bottom: 120px !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+      <style>
+        .responsive-hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%; ${gridDirectionStyle} }
+        .responsive-hero-grid > * { ${childrenDirectionStyle} }
+        @media (max-width: 991px) {
+          .hero-section-wrapper { padding: 40px 0 40px 0 !important; margin-bottom: 40px !important; }
+          .responsive-hero-grid { grid-template-columns: 1fr !important; gap: 30px !important; direction: ltr !important; }
+          .responsive-hero-grid .hero-image-container { order: -1 !important; }
+          .responsive-hero-grid h1 { font-size: 2.4rem !important; }
+          .responsive-hero-grid h1, .responsive-hero-grid p, .responsive-hero-grid span, .responsive-hero-grid a { word-spacing: 0.08rem !important; letter-spacing: 0.01rem !important; white-space: normal !important; }
+        }
+      </style>
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+        <div class="responsive-hero-grid">
+          <article class="content-area" style="width: 100%; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${heroPillText}</span>
+            <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">${heroHeadlineText}</h1>
+            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">${heroBodyText}</p>
+            <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
+              <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
+              <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${heroBadgeText}</span>
+            </div>
+            <a href="${heroButtonUrl}" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">${heroButtonText}</a>
+          </article>
+          <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
+            <img src="${heroImageSrc}" alt="${heroImageAlt}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+          </aside>
+        </div>
+      </div>
+    </main>
+  `;
+}
+
+
+
+
+/**
+ * Injects the Section 2 Enterprise Global Compliance Metrics & Pipeline Status block
+ * programmatically using clear data parameters.
+ */
+function renderDynamicMetricsSection(targetElementId) {
+  const node = document.getElementById(targetElementId);
+  if (!node) return;
+
+  const urlPathname = window.location.pathname;
+  let detectedPageKey = urlPathname.split("/").pop().replace(".html", "").trim().toLowerCase();
+  
+  if (!detectedPageKey || detectedPageKey === "index copy" || detectedPageKey === "home") {
+    detectedPageKey = "index";
+  }
+
+  // Construct the lookup token key matching your extended data sheet registry
+  const metricsDataKey = `${detectedPageKey}_metrics`;
+  const metricsCopy = window.PLATFORM_STATIC_PAGES_DATA[metricsDataKey];
+  if (!metricsCopy) return;
+
+  // Build out all metric cards programmatically to completely remove hardcoded layout rows
+  let cardsHtmlPayload = "";
+  metricsCopy.cards.forEach(card => {
+    const numericColorValue = card.green_text ? "#10b981" : "#ffffff";
+    
+    cardsHtmlPayload += `
+      <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+        <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">${card.icon}</span>
+        <div style="font-size: 2.4rem; font-weight: 900; color: ${numericColorValue}; font-family: monospace; line-height: 1;">${card.value}</div>
+        <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">${card.title}</div>
+        <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">${card.desc}</p>
+      </div>
+    `;
+  });
+
+  node.innerHTML = `
+    <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+      
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
+          <div style="text-align: left; max-width: 600px;">
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">${metricsCopy.section_title}</h2>
+          </div>
+          <div style="text-align: right;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
+              <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> ${metricsCopy.status_badge}
+            </div>
+          </div>
+        </div>
+        
+        <div class="metrics-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; margin: 0;">
+          ${cardsHtmlPayload}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+
+/**
+ * Injects Section 3: The Neighborhood Main Street Alternating Matrix Layout
+ * programmatically using clear data parameters.
+ */
+function renderDynamicAlternatingFlowSection(targetElementId) {
+  const node = document.getElementById(targetElementId);
+  if (!node) return;
+
+  const urlPathname = window.location.pathname;
+  let detectedPageKey = urlPathname.split("/").pop().replace(".html", "").trim().toLowerCase();
+  
+  if (!detectedPageKey || detectedPageKey === "index copy" || detectedPageKey === "home") {
+    detectedPageKey = "index";
+  }
+
+  // Construct the lookup token key matching your dynamic data registry profile
+  const alternatingDataKey = `${detectedPageKey}_alternating`;
+  const altCopy = window.PLATFORM_STATIC_PAGES_DATA[alternatingDataKey];
+  if (!altCopy) return;
+
+  node.innerHTML = `
+    <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+      <style>
+        .responsive-alternating-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%; }
+        @media (max-width: 991px) {
+          .responsive-alternating-grid { grid-template-columns: 1fr !important; gap: 30px !important; }
+          .responsive-alternating-grid .alternating-image-container { order: -1 !important; }
+        }
+      </style>
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+        <div class="responsive-alternating-grid">
+          <div class="alternating-image-container" style="display: flex; justify-content: center; width: 100%;">
+            <img src="${altCopy.img_src}" alt="${altCopy.img_alt}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+          </div>
+          <div style="width: 100%; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${altCopy.pill}</span>
+            <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">${altCopy.title}</h2>
+            <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">${altCopy.sub_heading}</p>
+            <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">${altCopy.context_copy}</p>
+            <a href="${altCopy.link_url}" class="agency-link">${altCopy.link_text}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+
+/**
+ * Injects Section 4: The Enterprise Global Compliance Metrics & Pipeline Status log stream
+ * programmatically using clear data parameters.
+ */
+function renderDynamicExpertiseSection(targetElementId) {
+  const node = document.getElementById(targetElementId);
+  if (!node) return;
+
+  const urlPathname = window.location.pathname;
+  let detectedPageKey = urlPathname.split("/").pop().replace(".html", "").trim().toLowerCase();
+  
+  if (!detectedPageKey || detectedPageKey === "index copy" || detectedPageKey === "home") {
+    detectedPageKey = "index";
+  }
+
+  // Construct the lookup token key matching your dynamic data registry profile
+  const expertiseDataKey = `${detectedPageKey}_expertise`;
+  const expCopy = window.PLATFORM_STATIC_PAGES_DATA[expertiseDataKey];
+  if (!expCopy) return;
+
+  // Build out all row log cards programmatically to completely remove hardcoded template content strings
+  let logsHtmlPayload = "";
+  expCopy.events.forEach(ev => {
+    logsHtmlPayload += `
+      <div class="border-glowing-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; box-shadow: 0 0 15px rgba(16, 185, 129, 0.05); gap: 16px; flex-wrap: wrap;">
+        <div>
+          <span style="font-weight: 700; font-size: 0.95rem; color: #ffffff; display: block;">${ev.title}</span>
+          <span style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block;">${ev.desc}</span>
+        </div>
+        <span style="font-family: monospace; font-size: 0.8rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.2); height: fit-content; white-space: nowrap;">${ev.status}</span>
+      </div>
+    `;
+  });
+
+  node.innerHTML = `
+    <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f4f4; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+      
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+        <div style="margin-bottom: 32px;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">${expCopy.pill}</span>
+          <h2 style="color: #ffffff; font-size: 2.2rem; font-weight: 800; margin: 0 0 10px 0; line-height: 1.2;">${expCopy.title}</h2>
+          <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin: 0;">${expCopy.lead}</p>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          ${logsHtmlPayload}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+
+/**
+ * Injects Section 5: The Startup Exploration Layout Panel (Text Left, Image Right)
+ * programmatically using clear data parameters.
+ */
+function renderDynamicStartupLaunchpadSection(targetElementId) {
+  const node = document.getElementById(targetElementId);
+  if (!node) return;
+
+  const urlPathname = window.location.pathname;
+  let detectedPageKey = urlPathname.split("/").pop().replace(".html", "").trim().toLowerCase();
+  
+  if (!detectedPageKey || detectedPageKey === "index copy" || detectedPageKey === "home") {
+    detectedPageKey = "index";
+  }
+
+  // Construct the lookup token key matching your dynamic data registry profile
+  const startupDataKey = `${detectedPageKey}_startup`;
+  const startupCopy = window.PLATFORM_STATIC_PAGES_DATA[startupDataKey];
+  if (!startupCopy) return;
+
+  node.innerHTML = `
+    <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+      <style>
+        .responsive-startup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%; }
+        @media (max-width: 991px) {
+          .responsive-startup-grid { grid-template-columns: 1fr !important; gap: 30px !important; }
+          .responsive-startup-grid .startup-image-container { order: -1 !important; }
+        }
+      </style>
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+        <div class="responsive-startup-grid">
+          
+          <div style="width: 100%; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${startupCopy.pill}</span>
+            <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">${startupCopy.title}</h2>
+            <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">${startupCopy.sub_heading}</p>
+            <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">${startupCopy.context_copy}</p>
+            <a href="${startupCopy.link_url}" class="agency-link">${startupCopy.link_text}</a>
+          </div>
+          
+          <div class="startup-image-container" style="display: flex; justify-content: center; width: 100%;">
+            <img src="${startupCopy.img_src}" alt="${startupCopy.img_alt}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+          </div>
+
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+
+/**
+ * Injects Section 6: Institutional Trust & Expert Panel (Navy Accent Override)
+ * programmatically using clear data parameters.
+ */
+function renderDynamicTrustSection(targetElementId) {
+  const node = document.getElementById(targetElementId);
+  if (!node) return;
+
+  const urlPathname = window.location.pathname;
+  let detectedPageKey = urlPathname.split("/").pop().replace(".html", "").trim().toLowerCase();
+  
+  if (!detectedPageKey || detectedPageKey === "index copy" || detectedPageKey === "home") {
+    detectedPageKey = "index";
+  }
+
+  // Construct the lookup token key matching your dynamic data registry profile
+  const trustDataKey = `${detectedPageKey}_trust`;
+  const trustCopy = window.PLATFORM_STATIC_PAGES_DATA[trustDataKey];
+  if (!trustCopy) return;
+
+  node.innerHTML = `
+    <section class="enterprise-metrics-section" style="padding: 80px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+      
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 60px;">
+        
+        <!-- Image Column -->
+        <div style="flex: 1; min-width: 320px; max-width: 550px; display: flex; justify-content: center; box-sizing: border-box;">
+          <img src="${trustCopy.img_src}" alt="${trustCopy.img_alt}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65), 0 10px 20px rgba(0, 0, 0, 0.3);">
+        </div>
+        
+        <!-- Text Column -->
+        <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
+          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">${trustCopy.pill}</span>
+          <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">${trustCopy.title}</h2>
+          <p style="color: #cbd5e1; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">${trustCopy.sub_heading}</p>
+          <p style="color: #94a3b8; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">${trustCopy.context_copy}</p>
+          <a href="${trustCopy.link_url}" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 0.95rem;">${trustCopy.link_text}</a>
+        </div>
+
+      </div>
+    </section>
+  `;
+}
+
+
+/**
+ * Injects a highly responsive 1450px layout grid block populated with 
+ * page-specific data metrics completely programmatically based on the active URL path.
+ * Enforces uniform, flush horizontal snapping below the navigation bar for all pages.
+ */
+function renderDynamicHeroSection(targetElementId) {
+  const node = document.getElementById(targetElementId);
+  if (!node) return;
+
+  const urlPathname = window.location.pathname;
+  let detectedPageKey = urlPathname.split("/").pop().replace(".html", "").trim().toLowerCase();
+  
+  if (!detectedPageKey || detectedPageKey === "index copy" || detectedPageKey === "home") {
+    detectedPageKey = "index";
+  }
+
+  const pageCopy = window.PLATFORM_STATIC_PAGES_DATA[detectedPageKey];
+  if (!pageCopy) return;
+
+  node.innerHTML = `
+    <!-- 🎯 INLINE CORE DESIGN MATRIX STYLE OVERRIDES -->
+    <style>
+      .hero-section-wrapper {
+        background: #ffffff; 
+        padding: 0 0 60px 0 !important; 
+        margin-top: 0 !important; 
+        margin-bottom: 120px !important; 
+        font-family: system-ui, sans-serif; 
+        width: 100% !important; 
+        max-width: 100% !important; 
+        box-sizing: border-box;
+      }
+      .responsive-hero-grid { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 60px; 
+        align-items: center; 
+        width: 100%; 
+      }
+      /* 🎯 DESKTOP ALIGNMENT SYNCHRONIZATION: Snaps outer edges exactly to 1450px */
+      .site-width-alignment-guard {
+        width: 100% !important; 
+        max-width: 1450px !important; 
+        margin: 0 auto !important; 
+        padding: 0 40px !important; 
+        box-sizing: border-box !important;
+      }
+      
+      /* 📱 MOBILE RESPONSIVE ADAPTATIONS */
+      @media (max-width: 991px) {
+        .hero-section-wrapper {
+          padding: 0 0 40px 0 !important;
+          margin-bottom: 60px !important;
+        }
+        .responsive-hero-grid { 
+          grid-template-columns: 1fr !important; 
+          gap: 30px !important; 
+        }
+        /* Forces the image column natively to the absolute top of the viewport stack */
+        .responsive-hero-grid .hero-image-container { 
+          order: -1 !important; 
+        }
+        /* Mobile responsive header text size limits */
+        .responsive-hero-grid h1 {
+          font-size: 2.4rem !important;
+        }
+        /* 🎯 THE MOBILE WORD-WRAPPING FIX: Injects horizontal breathing space between words
+           and letters across mobile viewports to completely eliminate abrupt word-breaking */
+        .responsive-hero-grid h1,
+        .responsive-hero-grid p,
+        .responsive-hero-grid span,
+        .responsive-hero-grid a {
+          word-spacing: 0.08rem !important;
+          letter-spacing: 0.01rem !important;
+          white-space: normal !important;
+        }
+      }
+    </style>
+
+    <main class="hero-section-wrapper">
+      <div class="site-width-alignment-guard">
+        <div class="responsive-hero-grid">
+          
+          <!-- Left Text Area Content Stack -->
+          <article class="content-area" style="width: 100%; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${pageCopy.pill}</span>
+            <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">${pageCopy.title}</h1>
+            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">${pageCopy.lead}</p>
+            
+            <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
+              <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
+              <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${pageCopy.badge}</span>
+            </div>
+            
+            <a href="${pageCopy.btn_url}" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">${pageCopy.btn_text}</a>
+          </article>
+          
+          <!-- Right Adaptive Preview Image Block Container -->
+          <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
+            <img src="${pageCopy.img_src}" alt="${pageCopy.img_alt}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
+          </aside>
+
+        </div>
+      </div>
+    </main>
+  `;
+}
+
+
+
+
+
+
 /**
  * ==========================================================================
  * 🏛️ CENTRAL 44-SERVICE SEO & DESIGN MATRICES (PRODUCTION READY)
@@ -1538,160 +2129,79 @@ const CONTENT_ENGINE_ONLY_SUPABASE = window.supabase.createClient(EXPLICIT_CONTE
 
 /**
  * ==========================================================================
- * 🏛️ FILINGS4U CENTRAL UNIFIED ROUTER MATRIX & DATA SERVICE CORE
- * Programmatically maps, resolves, and tracks active routing tokens
+ * 🏛️ FILINGS4U CENTRAL UNIFIED ROUTER MATRIX
+ * Strips incoming URL parameters to extract the unique database service key.
  * ==========================================================================
  */
-
-// 1. Unified URL and Filename Mapping Dictionary Schema Matrix
-window.FILINGS4U_ROUTER_URL_MAP = window.FILINGS4U_ROUTER_URL_MAP || {
-  "limited-liability-company": "llc-formation",
-  "corporations": "corporation",
-  "nonprofits": "nonprofit-organization",
-  "doing-business-as-dba": "dba-registration",
-  "annual-reports": "annual-reports",
-  "employer-identification-number-ein": "employer-id-ein",
-  "employer-id-ein": "employer-id-ein",
-  "dissolution": "entity-dissolution",
-  "good-standing": "good-standing",
-  "certificate-of-good-standing": "good-standing",
-  "apostille-services": "apostille-services",
-  "apostille-authentication": "apostille-services",
-  "clia-certificate": "clia-certificate",
-  "regulatory-consulting": "legal-consulting",
-  "sole-proprietorship": "sole-proprietorship",
-  "series-llc": "series-llc",
-  "foreign-entity-certificate": "foreign-qualification",
-  "llc-reinstatement": "llc-reinstatement",
-  "trademark-filing": "trademark-filing",
-  "servicemark-filing": "servicemark-filing",
-  "operating-agreement": "operating-agreement",
-  "registered-agent": "registered-agent",
-  "business-licenses": "business-licenses",
-  "cage-code": "cage-code",
-  "duns-number": "duns-number",
-  "procurement": "procurement-consulting",
-  "procurement-registration": "procurement-registration",
-  "minority-certificate": "minority-certificate",
-  "licenses-permits": "licenses-permits",
-  "federal-income-tax": "federal-tax",
-  "state-income-tax": "state-tax",
-  "franchise-tax": "franchise-tax",
-  "franchise-tax-filing": "franchise-tax",
-  "sales-tax-registration": "sales-tax",
-  "payroll-tax-940-941": "payroll-tax",
-  "heavy-use-tax-2290": "heavy-use-tax",
-  "owner-operators": "owner-operators",
-  "trucker-authority": "trucker-authority",
-  "broker-authority": "broker-authority",
-  "ucr-registration": "ucr-registration",
-  "scac-code": "scac-code",
-  "scac-code-registration": "scac-code",
-  "dot-consortium": "dot-consortium",
-  "driver-qualification-file": "driver-file",
-  "process-agents-boc-3": "process-agent-boc3",
-  "international-fuel-tax-agreement-ifta": "ifta-registration",
-  "hazmat-registration": "dot-hazmat",
-  "new-entrant-audit": "new-entrant-audit",
-  "trucker-insurance": "trucker-insurance",
-  "broker-insurance": "broker-insurance"
-};
-
-// 2. Strict Programmatic Unified Service Key Extractor
 function getUnifiedServiceKey() {
   const path = window.location.pathname;
   let fileName = path.split("/").pop().replace(".html", "").trim().toLowerCase();
   
+  // 🎯 STEP 1: Keep the internal database mapping string identical so your lookups don't break
   if (!fileName || fileName === "index" || fileName === "index copy" || fileName === "home") {
+    
+    // 🎯 STEP 2: Explicitly force the URL history manager to display the clean domain filings4u.com
+    // This stops "homepage-main-landing" from being pushed to the address bar
+    if (typeof history !== 'undefined' && history.replaceState) {
+      history.replaceState(null, '', window.location.origin + window.location.search);
+    }
+    
     return "homepage-main-landing";
   }
-  
-  return window.FILINGS4U_ROUTER_URL_MAP[fileName] || fileName;
+    const urlMap = { 
+        "limited-liability-company": "llc-formation", 
+        "corporations": "corporation", 
+        "nonprofits": "nonprofit-organization", 
+        "doing-business-as-dba": "dba-registration", 
+        "annual-reports": "annual-reports", 
+        "employer-identification-number-ein": "employer-id-ein", 
+        "employer-id-ein": "employer-id-ein",
+        "dissolution": "entity-dissolution", 
+        "good-standing": "good-standing", 
+        "certificate-of-good-standing": "good-standing",
+        "apostille-services": "apostille-services", 
+        "apostille-authentication": "apostille-services",
+        "clia-certificate": "clia-certificate", 
+        "regulatory-consulting": "legal-consulting", 
+        "sole-proprietorship": "sole-proprietorship",
+        "series-llc": "series-llc",
+        "foreign-entity-certificate": "foreign-qualification",
+        "llc-reinstatement": "llc-reinstatement",
+        "trademark-filing": "trademark-filing",
+        "servicemark-filing": "servicemark-filing",
+        "operating-agreement": "operating-agreement",
+        "registered-agent": "registered-agent",
+        "business-licenses": "business-licenses",
+        "cage-code": "cage-code",
+        "duns-number": "duns-number",
+        "procurement": "procurement-consulting",
+        "procurement-registration": "procurement-registration",
+        "minority-certificate": "minority-certificate",
+        "licenses-permits": "licenses-permits",
+        "federal-income-tax": "federal-tax", 
+        "state-income-tax": "state-tax", 
+        "franchise-tax": "franchise-tax", 
+        "franchise-tax-filing": "franchise-tax",
+        "sales-tax-registration": "sales-tax", 
+        "payroll-tax-940-941": "payroll-tax", 
+        "heavy-use-tax-2290": "heavy-use-tax", 
+        "owner-operators": "owner-operators", 
+        "trucker-authority": "trucker-authority", 
+        "broker-authority": "broker-authority", 
+        "ucr-registration": "ucr-registration", 
+        "scac-code": "scac-code", 
+        "scac-code-registration": "scac-code",
+        "dot-consortium": "dot-consortium", 
+        "driver-qualification-file": "driver-file", 
+        "process-agents-boc-3": "process-agent-boc3", 
+        "international-fuel-tax-agreement-ifta": "ifta-registration", 
+        "hazmat-registration": "dot-hazmat", 
+        "new-entrant-audit": "new-entrant-audit",
+        "trucker-insurance": "trucker-insurance",
+        "broker-insurance": "broker-insurance"
+    }; 
+    return urlMap[fileName] || fileName; 
 }
-
-// 3. Automated HTML Layout Field Injection Engine
-function executeDynamicRegulatoryFieldInjection(serviceKey) {
-  const rootFieldContainer = document.getElementById("dynamic-onboarding-fields-root");
-  if (!rootFieldContainer) return;
-
-  const cleanKey = String(serviceKey || "").toLowerCase().trim();
-  
-  if (!cleanKey) {
-    throw new Error("[Fatal Lifecycle Error] Cannot resolve layout parameters: serviceKey string parameter context is completely missing.");
-  }
-
-  // Pure data layout injection router loops — maps 100% programmatically via your dictionary matrices
-  if (cleanKey === "series-llc") {
-    rootFieldContainer.innerHTML = typeof buildSeriesLlcRegistrationFieldsLayoutHtml === "function" ? buildSeriesLlcRegistrationFieldsLayoutHtml(cleanKey) : "";
-  } else if (cleanKey === "llc-formation") {
-    rootFieldContainer.innerHTML = typeof buildLlcFormationFieldsLayoutHtml === "function" ? buildLlcFormationFieldsLayoutHtml(cleanKey) : "";
-  } else if (cleanKey === "nonprofit-organization") {
-    rootFieldContainer.innerHTML = typeof buildNonprofitOrganizationFieldsLayoutHtml === "function" ? buildNonprofitOrganizationFieldsLayoutHtml(cleanKey) : "";
-  } else if (cleanKey === "corporation") {
-    rootFieldContainer.innerHTML = typeof buildCorporateFormationFieldsLayoutHtml === "function" ? buildCorporateFormationFieldsLayoutHtml(cleanKey) : "";
-  } else if (cleanKey === "dba-registration") {
-    rootFieldContainer.innerHTML = typeof buildDbaRegistrationFieldsLayoutHtml === "function" ? buildDbaRegistrationFieldsLayoutHtml(cleanKey) : "";
-  } else if (cleanKey === "sole-proprietorship") {
-    rootFieldContainer.innerHTML = typeof buildInformalEntityFieldsLayoutHtml === "function" ? buildInformalEntityFieldsLayoutHtml(cleanKey) : "";
-  } else if (cleanKey === "foreign-qualification") {
-    rootFieldContainer.innerHTML = typeof buildForeignQualificationFieldsLayoutHtml === "function" ? buildForeignQualificationFieldsLayoutHtml(cleanKey) : "";
-  } else if (cleanKey === "trademark-filing" || cleanKey === "servicemark-filing") {
-    rootFieldContainer.innerHTML = typeof buildIpRegistryFieldsLayoutHtml === "function" ? buildIpRegistryFieldsLayoutHtml(cleanKey) : "";
-  } else {
-    // Dynamically captures all 50+ other maintenance, regulatory, trucking, tax filing, and procurement services via standard extended modules
-    rootFieldContainer.innerHTML = typeof buildExtendedFamiliesFieldsLayoutHtml === "function" ? buildExtendedFamiliesFieldsLayoutHtml(cleanKey) : "";
-  }
-}
-
-// 4. Strict Programmatic Summary & Fee Calculation Engine
-function recalculateSummaryStepFields() {
-  // Sync directly to unified, explicit routing parameters across the platform
-  var safeServiceKey = window.routeActiveServiceKey || getUnifiedServiceKey();
-  var safePlanKey = window.routeActivePlanKey;
-
-  if (!safeServiceKey || !safePlanKey) {
-    throw new Error(`[Fatal Calculation Error] Critical workflow parameters missing. safeServiceKey: "${safeServiceKey}", safePlanKey: "${safePlanKey}".`);
-  }
-
-  safeServiceKey = safeServiceKey.toLowerCase().trim();
-  safePlanKey = safePlanKey.toLowerCase().trim();
-
-  // Explicit pricing key transformations to match plan tier criteria perfectly
-  if (safePlanKey === "basic") safePlanKey = "starter";
-  if (safePlanKey === "standard") safePlanKey = "compliance";
-  if (safePlanKey === "premium") safePlanKey = "enterprise";
-
-  if (!window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) {
-    throw new Error("[Fatal Calculation Error] window.GLOBAL_COMPANY_PRICING schema matrix layer is uninitialized.");
-  }
-
-  // Resolve data matrices strictly — prevents fallback guessing or structural type modifications
-  const finalCatalog = typeof globalCatalog !== 'undefined' ? globalCatalog : window.UPSELLS_ROUTER_DATABASE;
-
-  if (!finalCatalog || Object.keys(finalCatalog).length === 0) {
-    throw new Error("[Fatal Calculation Error] Core system catalog data matrix is empty or failed to load. Halting process.");
-  }
-
-  // Strict direct key match against the fully-qualified service tracking tokens
-  const planConfig = finalCatalog[safeServiceKey];
-
-  if (!planConfig) {
-    throw new Error(`[Fatal Calculation Error] Strict dictionary key verification failed for key token: "${safeServiceKey}".`);
-  }
-
-  if (typeof planConfig[safePlanKey] === 'undefined') {
-    throw new Error(`[Fatal Calculation Error] Unmapped processing plan tier structure "${safePlanKey}" for key profile: "${safeServiceKey}".`);
-  }
-
-  const filings4uBaseFee = parseFloat(planConfig[safePlanKey]);
-  
-  if (isNaN(filings4uBaseFee)) {
-    throw new Error(`[Fatal Calculation Error] Extracted fee parameter for tier "${safePlanKey}" evaluated to an invalid NaN token string.`);
-  }
-
-  console.log(`[Pricing Cleared] Service: "${safeServiceKey}" [Tier: "${safePlanKey}"]. Base processing fee strictly evaluated to: $${filings4uBaseFee.toFixed(2)}`);
-}
-
 
 
 
@@ -1852,31 +2362,54 @@ function compileSectionDLayoutHtml(data) {
  * Self-contained engine that handles 406 network errors and auto-generates layout lines.
  * ==========================================================================
  */
-async function renderMasterSystem() { 
+async function renderMasterSystem() {
+  try {
+    const activeSlug = getUnifiedServiceKey();
+    console.log("🎯 Content Engine Launching Query Sequence For: " + activeSlug);
+
+    let dbRow = null;
+
+    // 1. Fetch from database with direct, clean web-native REST lookups to bypass 406 script crashes
     try {
-        const activeSlug = getUnifiedServiceKey(); 
-        console.log("🎯 Content Engine Launching Query Sequence For: " + activeSlug);
+      const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
+      const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+      
+      // Target the direct endpoint URL explicitly passing your filtering parameters
+      const endpointUrl = `${backupUrl}/rest/v1/services?select=*&slug=eq.${activeSlug}`;
 
-        // 1. Fetch from database with defensive error handling to trap 406 network drops
-        let dbRow = null;
-        try {
-            const response = await CONTENT_ENGINE_ONLY_SUPABASE
-                .from('services') 
-                .select('*')
-                .eq('slug', activeSlug)
-                .single();
-            if (response && !response.error) {
-                dbRow = response.data;
-            }
-        } catch (netErr) {
-            console.warn("⚠️ Network Layer blocked Supabase REST call. Dropping into local automation matrix.");
+      const response = await fetch(endpointUrl, {
+        method: "GET",
+        headers: {
+          "apikey": backupKey,
+          "Authorization": `Bearer ${backupKey}`,
+          // 🎯 THE 406 ERROR RESOLUTION FIX: Forces the server to accept and transmit clean JSON
+          "Accept": "application/json"
         }
+      });
 
-        // 2. Generate clean semantic page name variants 
-        let serviceTitleString = activeSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        if (dbRow && dbRow.service_title) {
-            serviceTitleString = dbRow.service_title;
+      if (response.ok) {
+        const rawJsonPayloadArray = await response.json();
+        // Since lookups return an array layout, extract the first index record row cleanly
+        if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
+          dbRow = rawJsonPayloadArray[0];
         }
+      } else {
+        console.warn(`[Supabase 406 Handshake Refused] Server returned status: ${response.status}`);
+      }
+
+    } catch (netErr) {
+      console.warn("⚠️ Network Layer blocked Supabase REST call. Dropping into local automation matrix.", netErr);
+    }
+
+    // 2. Generate clean semantic page name variants automatically
+    let serviceTitleString = activeSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    
+    if (dbRow && dbRow.service_title) {
+      serviceTitleString = dbRow.service_title;
+    }
+    
+    // Remainder of your layout generation code block continues below cleanly...
+
 
         // 3. Build fully declared content lines to prevent blank or broken properties
         const dynamicContent = {
@@ -1951,88 +2484,220 @@ async function renderMasterSystem() {
             dynamicSectionsRoot.innerHTML = compileUpperLayoutBlueprintHtml(dynamicContent); 
         } 
 
-    // 🏛️ LAYOUT STEP 2: Position Pricing modules and trigger your native layout injection loops
-    const pricingRoot = document.getElementById("website-package-pricing-cards-root");
-    if (pricingRoot) {
-      pricingRoot.setAttribute("data-service-key", dynamicContent.pricingKey);
-      pricingRoot.style.cssText = "width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:60px 40px !important; box-sizing:border-box !important; display:block !important; background:#ffffff !important; position:relative !important; z-index:20 !important; background-image:none !important;";
+        // 🏛️ LAYOUT STEP 2: Position Pricing modules and trigger state-pricing integration
+        const pricingRoot = document.getElementById("website-package-pricing-cards-root"); 
+        if (pricingRoot) { 
+            pricingRoot.setAttribute("data-service-key", dynamicContent.pricingKey); 
+            pricingRoot.style.cssText = "width:100% !important; max-width:1450px !important; margin:0 auto !important; padding:60px 40px !important; box-sizing:border-box !important; display:block !important; background:#ffffff !important; position:relative !important; z-index:20 !important; background-image:none !important;"; 
+            
+            let priceTitle = pricingRoot.querySelector("h2"); 
+            if (priceTitle) priceTitle.style.setProperty("color", "#0a1f44", "important"); 
+            
+            if (typeof renderMainWebsitePricingCards === "function") { 
+                renderMainWebsitePricingCards(dynamicContent.pricingKey); 
+            } 
+        } 
 
-      let priceTitle = pricingRoot.querySelector("h2");
-      if (priceTitle) priceTitle.style.setProperty("color", "#0a1f44", "important");
-
-      // 🎯 THE COMPREHENSIVE RECOVERY FIX: Algorithmic key sync to match what state-pricing.js expects
-      if (typeof renderMainWebsitePackagePricingCards === "function") {
-        const globalCatalog = window.GLOBAL_COMPANY_PRICING?.packages;
-        let synchronizedKey = dynamicContent.pricingKey;
-        
-        if (globalCatalog && !globalCatalog[synchronizedKey]) {
-            if (synchronizedKey.endsWith('s')) {
-                const singularKey = synchronizedKey.slice(0, -1);
-                if (globalCatalog[singularKey]) synchronizedKey = singularKey;
-            } else {
-                const pluralKey = synchronizedKey + 's';
-                if (globalCatalog[pluralKey]) synchronizedKey = pluralKey;
-            }
-        }
-        renderMainWebsitePackagePricingCards(synchronizedKey);
-      }
-
-      // Assign clean wizard parameter query strings perfectly across all cards
-      setTimeout(() => {
-        const anchors = pricingRoot.querySelectorAll('a');
-        anchors.forEach(a => {
-          let plan = 'starter';
-          if (a.innerText.toLowerCase().includes('compliance') || a.innerText.toLowerCase().includes('elite')) plan = 'compliance';
-          if (a.innerText.toLowerCase().includes('enterprise')) plan = 'enterprise';
-          a.setAttribute('href', `wizard.html?service=${dynamicContent.pricingKey}&plan=${plan}`);
-        });
-      }, 250);
-    }
- 
-
-    // 🏛️ LAYOUT STEP 3: Position section D directly below white pricing cards
-    let sectionDElement = document.getElementById("dynamic-section-d-container");
-    try {
-        if (sectionDElement) {
-            sectionDElement.remove();
-        }
-        sectionDElement = document.createElement("div");
-        sectionDElement.id = "dynamic-section-d-container";
+        // 🏛️ LAYOUT STEP 3: Position section D directly below white pricing cards
+        let sectionDElement = document.getElementById("dynamic-section-d-container"); 
+        if (!sectionDElement) { 
+            sectionDElement = document.createElement("div"); 
+            sectionDElement.id = "dynamic-section-d-container"; 
+            if (pricingRoot) pricingRoot.parentNode.insertBefore(sectionDElement, pricingRoot.nextSibling); 
+        } 
         sectionDElement.className = "f4u-layout-section f4u-unified-navy";
-        
-        if (pricingRoot) {
-            pricingRoot.parentNode.insertBefore(sectionDElement, pricingRoot.nextSibling);
+        if (typeof compileSectionDLayoutHtml === "function") {
+            sectionDElement.innerHTML = compileSectionDLayoutHtml(dynamicContent); 
         }
-
-        sectionDElement.innerHTML = `
-            <div class="f4u-layout-container">
-                <div class="f4u-flex-grid">
-                    <div class="f4u-flex-column f4u-image-wrapper">
-                        <img src="${dynamicContent.secDImage}" class="f4u-responsive-graphic">
-                    </div>
-                    <div class="f4u-flex-column">
-                        <span style="color:#10b981; font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(16,185,129,0.08); padding:6px 14px; border-radius:20px; display:inline-block; margin-bottom:12px; border:1px solid rgba(16,185,129,0.15);">
-                            ${dynamicContent.secDPill}
-                        </span>
-                        <h2 style="color:#ffffff; font-size:2.5rem; font-weight:900; margin:0 0 18px 0; line-height:1.15; letter-spacing:-0.5px;">
-                            ${dynamicContent.secDHeadline}
-                        </h2>
-                        <p style="color:#cbd5e1; font-weight:700; font-size:1.05rem; margin:0 0 12px 0; line-height:1.4;">
-                            ${dynamicContent.secDSub}
-                        </p>
-                        <p style="color:#94a3b8; font-size:1rem; line-height:1.6; margin:0 0 28px 0;">
-                            ${dynamicContent.secDBody}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        `;
-    } catch (err) { 
-        console.error("❌ Error in refreshed Layout Step 3 execution loop:", err); 
-    }
-
 
         // 🏛️ LAYOUT STEP 4: Enforce contrast margins across subscribe blocks
         const subscribeContainer = document.getElementById("compliance-subscribe-form-container") || document.querySelector(".subscribe-section-wrapper"); 
         if (subscribeContainer && sectionDElement) { 
 subscribeContainer.style.cssText = "background:#ffffff !important; color:#0a1f44 !important; padding:80px 0 !important; margin:0 !important; width:100% !important; max-width:100% !important; position:relative !important; z-index:10 !important; background-image:none !important;";let subTitle = subscribeContainer.querySelector("h3, h2");if (subTitle) subTitle.style.setProperty("color", "#0a1f44", "important");let subText = subscribeContainer.querySelector("p");if (subText) subText.style.setProperty("color", "#475569", "important");sectionDElement.parentNode.insertBefore(subscribeContainer, sectionDElement.nextSibling);console.log("🏁 Content engine compiled completely without anomalies!");}} catch (globalCatchError) {console.error("❌ Content Engine Pipeline Exception Caught:", globalCatchError);}}document.addEventListener("DOMContentLoaded", renderMasterSystem);
+
+
+/**
+ * ============================================================================
+ * 🌐 DYNAMIC CONTENT ENGINE MODULE: COMPLIANCE SUBSCRIBE COMPONENT
+ * Injects the clean subscription markup frame directly into the page DOM
+ * ============================================================================
+ */
+function renderDynamicComplianceSubscribeSection(targetElementId) {
+  const mountAnchorNode = document.getElementById(targetElementId);
+  if (!mountAnchorNode) {
+    console.warn(`[Content Engine] Injection target element ID "#${targetElementId}" was not found in the DOM.`);
+    return;
+  }
+
+  // Inject the raw HTML structure directly into your placement zone
+  mountAnchorNode.innerHTML = `
+    <section class="compliance-subscribe-wrapper" style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; position: relative; overflow: hidden; margin-bottom: 0 !important; border-bottom: none !important;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#0a1f44 1px, transparent 1px); background-size: 20px 20px;"></div>
+      
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
+          
+          <!-- Left Text Info Area -->
+          <div style="width: 100%; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.12); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">Compliance Bulletins</span>
+            <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; line-height: 1.15; letter-spacing: -0.5px;">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
+            <p style="color: #475569; font-size: 1.05rem; line-height: 1.6; margin: 0; max-width: 580px;">Get actionable regulatory deadline text flashes, corporate filing advice, and federal state policy change updates sent straight to your box.</p>
+          </div>
+          
+          <!-- Right Submission Capture Form Layout -->
+          <div style="width: 100%; box-sizing: border-box;">
+            <form id="compliance-subscribe-form" style="display: flex; gap: 14px; width: 100%; background: rgba(10, 31, 68, 0.02); border: 1px solid rgba(10, 31, 68, 0.08); padding: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(10, 31, 68, 0.05); box-sizing: border-box;">
+              <input type="email" id="subscriber-email" placeholder="Enter your business email..." required aria-label="Business Email" style="flex: 1; padding: 16px 22px; font-size: 0.95rem; font-weight: 500; border-radius: 8px; border: 1px solid rgba(10, 31, 68, 0.15); background: #ffffff; color: #0a1f44; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); transition: all 0.25s ease;">
+              <button type="submit" id="subscribe-button" style="background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 0.95rem; padding: 0 32px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;">Subscribe</button>
+            </form>
+            
+            <div id="form-status-message" role="status" aria-live="polite" style="margin-top: 14px; font-size: 0.9rem; display: none; padding: 12px 16px; border-radius: 8px; font-weight: 600; line-height: 1.4;"></div>
+            
+            <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #64748b; padding-left: 4px;">
+              <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🛡️ ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+
+/**
+ * Injects the global corporate footer HTML directly into the page DOM
+ */
+function renderDynamicGlobalCorporateFooter(targetElementId) {
+  const footerNode = document.getElementById(targetElementId);
+  if (!footerNode) return;
+
+  footerNode.innerHTML = `
+    <footer class="site-footer" style="position: relative; overflow: hidden; background: #0a1f44; color: #ffffff; padding: 60px 0 30px 0; font-family: system-ui, sans-serif;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+      
+      <style>
+        .footer-container { display: grid; grid-template-columns: 2fr repeat(4, 1fr); gap: 40px; width: 100%; max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box; }
+        .footer-brand p { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin: 15px 0 0 0; max-width: 320px; }
+        .footer-col h4 { color: #ffffff; font-size: 1.05rem; font-weight: 700; margin: 0 0 20px 0; }
+        .footer-col ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 12px; }
+        .footer-col ul li a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: color 0.2s ease; }
+        .footer-col ul li a:hover { color: #10b981; }
+        .footer-bottom { max-width: 1450px; margin: 40px auto 0 auto; padding: 30px 40px 0 40px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; box-sizing: border-box; }
+        .footer-bottom .legal-links { display: flex; gap: 20px; }
+        .footer-bottom .legal-links a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; transition: color 0.2s ease; }
+        .footer-bottom .legal-links a:hover { color: #10b981; }
+        .scroll-to-top-btn { position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px; background: #10b981; color: #ffffff; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 99; }
+        .scroll-to-top-btn.visible { opacity: 1; visibility: visible; }
+        @media (max-width: 991px) {
+          .footer-container { grid-template-columns: 1fr 1fr !important; gap: 35px !important; }
+          .footer-brand { grid-column: span 2 !important; }
+          .footer-bottom { flex-direction: column !important; text-align: center !important; align-items: center !important; }
+          .footer-bottom .legal-links { justify-content: center !important; flex-wrap: wrap !important; }
+        }
+        @media (max-width: 480px) { .footer-container { grid-template-columns: 1fr !important; } .footer-brand { grid-column: span 1 !important; } }
+      </style>
+
+      <div class="footer-container">
+        <div class="footer-brand">
+          <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+            <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;">
+          </a>
+          <p>Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.</p>
+          <div style="margin-top: 25px; display: flex; gap: 15px;">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+              <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+              <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg>
+            </a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+              <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Formations</h4>
+          <ul>
+            <li><a href="limited-liability-company.html">LLC Formation</a></li>
+            <li><a href="corporations.html">Corporations</a></li>
+            <li><a href="nonprofits.html">Non-Profits</a></li>
+            <li><a href="registered-agent.html">Registered Agent</a></li>
+            <li><a href="employer-identification-number-ein.html">Tax ID (EIN)</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Fleet & DOT</h4>
+          <ul>
+            <li><a href="ucr-registration.html">UCR Registration</a></li>
+            <li><a href="international-fuel-tax-agreement-ifta.html">IFTA Filings</a></li>
+            <li><a href="trucker-authority.html">DOT Authority</a></li>
+            <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li>
+            <li><a href="heavy-use-tax-2290.html">Form 2290</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Tax & Filings</h4>
+          <ul>
+            <li><a href="federal-income-tax.html">Federal Income Tax</a></li>
+            <li><a href="state-income-tax.html">State Income Tax</a></li>
+            <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li>
+            <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li>
+            <li><a href="franchise-tax.html">Franchise Tax Filing</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="https://filings4u.com">Client Portal</a></li>
+            <li><a href="compliance.html">Compliance Hub</a></li>
+            <li><a href="contact.html">Contact Experts</a></li>
+            <li><a href="annual-reports.html">Annual Reports</a></li>
+            <li><a href="blog.html">Resource Library</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div>
+          <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;">
+            &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #ef4444; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a>
+          </p>
+        </div>
+        
+        <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;">
+          <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection
+        </div>
+        
+        <div class="legal-links">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="refund-policy.html">Refund Policy</a>
+        </div>
+      </div>
+    </footer>
+
+    <button id="scrollToTopBtn" aria-label="Scroll to top" class="scroll-to-top-btn">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+      </svg>
+    </button>
+  `;
+
+  // Attach functionality to the injected button node immediately
+  const topBtn = document.getElementById("scrollToTopBtn");
+  if (topBtn) {
+    window.addEventListener("scroll", () => topBtn.classList.toggle("visible", window.scrollY > 400));
+    topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  }
+}
+
+ document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderDynamicGlobalCorporateFooter === "function") {
+      renderDynamicGlobalCorporateFooter("global-platform-footer-zone");
+    }
+  });
