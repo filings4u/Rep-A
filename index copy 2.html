@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,12 +8,12 @@
     <meta name="theme-color" content="#10b981">
     <title>Professional Compliance Dashboard | filings4u</title>
     
-    <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
+    <!-- ðŸŽ¨ UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
      <link rel="stylesheet" href="assets/css/master.css">
     <link rel="stylesheet" href="assets/css/master-mobile.css">
     <link rel="icon" type="image/png" href="images/fav.png">
     
-    <!-- 🔍 VERIFIED FULL JQUERY CDN URL PATH -->
+    <!-- ðŸ” VERIFIED FULL JQUERY CDN URL PATH -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     
     <!-- Supabase Production Library Client -->
@@ -22,117 +22,19 @@
 </head>
 <body>
 
-<!-- 🌐 SITE-WIDE NAVIGATION HEADER --> 
-<nav> 
-  <div class="nav-content-wrapper"> 
-    <a href="index.html" class="logo-link"> 
-      <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;"> 
-    </a> 
-    
-<!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
-<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
-
-    <div class="nav-links"> 
-      <!-- FORMATIONS DROPDOWN --> 
-      <div class="nav-item-dropdown static-dropdown"> 
-        <a href="#">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
-          <div class="mega-column"> 
-            <span class="column-title">Popular Formations</span> 
-            <a href="limited-liability-company.html">LLC Formation</a> 
-            <a href="corporations.html">Corporations (C/S-Corp)</a> 
-            <a href="sole-proprietorship.html">Sole Proprietorship</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Specialty Structures</span> 
-            <a href="doing-business-as-dba.html">DBA Registration</a> 
-            <a href="nonprofits.html">Nonprofit Organization</a> 
-            <a href="series-llc.html">Series LLC</a> 
-          </div> 
-        </div> 
-      </div> 
-      
-      <!-- COMPLIANCE DROPDOWN --> 
-      <div class="nav-item-dropdown static-dropdown"> 
-        <a href="#">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
-          <div class="mega-column"> 
-            <span class="column-title">Entity Health</span> 
-            <a href="annual-reports.html">Annual Reports</a> 
-            <a href="operating-agreement.html">Operating Agreement</a> 
-            <a href="registered-agent.html">Registered Agent</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Licensing & Exit</span> 
-            <a href="business-licenses.html">Business Licenses</a> 
-            <a href="employer-identification-number-ein.html">Employer ID (EIN)</a> 
-            <a href="dissolution.html">Entity Dissolution</a> 
-          </div> 
-        </div> 
-      </div> 
-      
-      <!-- TAX FILINGS DROPDOWN --> 
-      <div class="nav-item-dropdown static-dropdown"> 
-        <a href="#">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-two-col"> 
-          <div class="mega-column"> 
-            <span class="column-title">Income & Operations</span> 
-            <a href="federal-income-tax.html">Federal Income Tax</a> 
-            <a href="state-income-tax.html">State Income Tax</a> 
-            <a href="franchise-tax.html">Franchise Tax Filing</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Sales & Payroll</span> 
-            <a href="sales-tax-registration.html">Sales Tax Registration</a> 
-            <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a> 
-            <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a> 
-          </div> 
-        </div> 
-      </div> 
-      
-      <!-- DOT & FLEET DROPDOWN --> 
-      <div class="nav-item-dropdown static-dropdown"> 
-        <a href="#">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a> 
-        <div class="dropdown-content mega-panel-three-col"> 
-          <div class="mega-column"> 
-            <span class="column-title">Authority Setup</span> 
-            <a href="owner-operators.html">Owner Operators</a> 
-            <a href="trucker-authority.html">Trucker Authority</a> 
-            <a href="broker-authority.html">Broker Authority</a> 
-            <a href="ucr-registration.html">UCR Registration</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Compliance & Regs</span> 
-            <a href="dot-consortium.html">DOT Consortium</a> 
-            <a href="driver-qualification-file.html">Driver Qualification File</a> 
-            <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a> 
-            <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a> 
-          </div> 
-          <div class="mega-column"> 
-            <span class="column-title">Insurance & Risk</span> 
-            <a href="licenses-permits.html">Licenses & Permits</a> 
-            <a href="trucker-insurance.html">Trucker Insurance</a> 
-            <a href="broker-insurance.html">Broker Insurance</a> 
-            <a href="new-entrant-audit.html">New Entrant Audit</a> 
-          </div> 
-        </div> 
-      </div> 
-      
-      <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Secure Portal</a> 
-    </div> 
-  </div> 
-</nav>
+<!-- ðŸŒ SITE-WIDE NAVIGATION HEADER --> 
+<div id="global-platform-navigation-zone"></div>
 
 <!-- SECTION 1: HERO CONTAINER (STRETCHED 1450PX ALIGNED BLOCK) -->
 <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
     
-    <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION: Forces the hero container outer edges to snap exactly to 1450px width boundaries -->
+    <!-- ðŸŽ¯ ABSOLUTE ALIGNMENT SYNCHRONIZATION: Forces the hero container outer edges to snap exactly to 1450px width boundaries -->
     <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
         
         <!-- FORCE 50/50 BALANCED GRID STRUT: This matches the layout blueprint of your lower sections exactly -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
             
-            <!-- 📝 TEXT COLUMN: Left side content allowed to expand completely to fill its half of the 1450px container -->
+            <!-- ðŸ“ TEXT COLUMN: Left side content allowed to expand completely to fill its half of the 1450px container -->
             <article class="content-area" style="width: 100%; box-sizing: border-box;">
                 <!-- Pill Tag Anchor -->
                 <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Enterprise Ecosystem</span>
@@ -154,7 +56,7 @@
                 <!-- Primary Action Call-to-Action Link -->
                 <a href="get-started.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">Get Started &rarr;</a>
             </article>
-            <!-- 📸 IMAGE COLUMN: Right side allowed to expand completely to fill its half of the 1450px container -->
+            <!-- ðŸ“¸ IMAGE COLUMN: Right side allowed to expand completely to fill its half of the 1450px container -->
             <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
                 <img src="images/hero-image.jpg" alt="Compliance Dashboard Preview" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
             </aside>
@@ -171,7 +73,7 @@
     <!-- Tech Vector Network Grid Background Layer --> 
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
     
-    <!-- 🎯 ABSOLUTE ALIGNMENT GUARD --> 
+    <!-- ðŸŽ¯ ABSOLUTE ALIGNMENT GUARD --> 
     <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
         
         <!-- Left-To-Right Executive Layout Header Strip --> 
@@ -184,12 +86,12 @@
                     <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> ALL CLEAR: SECURE REST GATEWAYS ACTIVE </div> 
             </div> 
         </div>
-        <!-- 📊 THE ENTERPRISE METRIC CARD CAROUSEL ROW GRID --> 
+        <!-- ðŸ“Š THE ENTERPRISE METRIC CARD CAROUSEL ROW GRID --> 
         <div class="metrics-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; margin: 0;"> 
             
             <!-- DATA CARD 01 --> 
             <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'"> 
-                <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🏢</span> 
+                <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">ðŸ¢</span> 
                 <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">142K+</div> 
                 <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Corporate Entities Formed</div> 
                 <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Authorized Articles of Organization across all 50 State Secretary registries.</p> 
@@ -197,7 +99,7 @@
 
             <!-- DATA CARD 02 --> 
             <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'"> 
-                <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🚛</span> 
+                <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">ðŸš›</span> 
                 <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">38,410</div> 
                 <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Active Transits Monitored</div> 
                 <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">USDOT & MC operating authorities actively synchronized with FMCSA core data links.</p> 
@@ -205,7 +107,7 @@
 
             <!-- DATA CARD 03 --> 
             <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'"> 
-                <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">⚡</span> 
+                <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">âš¡</span> 
                 <div style="font-size: 2.4rem; font-weight: 900; color: #10b981; font-family: monospace; line-height: 1;">1.8s</div> 
                 <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Average API Pipeline Turn</div> 
                 <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Secure, real-time rest requests to launch bank check intents and background pre-saves.</p> 
@@ -213,7 +115,7 @@
 
             <!-- DATA CARD 04 --> 
             <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'"> 
-                <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🔒</span> 
+                <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">ðŸ”’</span> 
                 <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">99.98%</div> 
                 <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Filing Accuracy Quotient</div> 
                 <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Sophisticated layout rules eliminate common syntax rejection errors from state systems.</p> 
@@ -227,17 +129,17 @@
 <!-- SECTION B: ALTERNATING FLOW (STRETCHED 1450PX ALIGNED BLOCK) -->
 <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
     
-    <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION: Forces the outer edges to snap exactly to 1450px width boundaries -->
+    <!-- ðŸŽ¯ ABSOLUTE ALIGNMENT SYNCHRONIZATION: Forces the outer edges to snap exactly to 1450px width boundaries -->
     <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
         
         <!-- FORCE 50/50 BALANCED GRID STRUT: This makes sure columns take up all available horizontal space -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
             
-            <!-- 📸 IMAGE COLUMN: Allowed to expand completely to fill its half of the 1450px container -->
+            <!-- ðŸ“¸ IMAGE COLUMN: Allowed to expand completely to fill its half of the 1450px container -->
             <div style="display: flex; justify-content: center; width: 100%;">
                 <img src="images/local-business.jpg" alt="Local business owner working on compliance" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
             </div>
-            <!-- 📝 TEXT COLUMN: Allowed to expand completely to fill its half of the 1450px container -->
+            <!-- ðŸ“ TEXT COLUMN: Allowed to expand completely to fill its half of the 1450px container -->
             <div style="width: 100%; box-sizing: border-box;">
                 <!-- Pill Tag Anchor -->
                 <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Main Street Growth</span>
@@ -267,7 +169,7 @@
     <!-- Tech Vector Network Grid Background Layer --> 
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
     
-    <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION --> 
+    <!-- ðŸŽ¯ ABSOLUTE ALIGNMENT SYNCHRONIZATION --> 
     <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
         
         <!-- HEADER MODULE -->
@@ -314,13 +216,13 @@
 <!-- SECTION C: STARTUP EXPLORATION BLOCK (TEXT LEFT, IMAGE RIGHT) -->
 <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
     
-    <!-- 🎯 ABSOLUTE ALIGNMENT SYNCHRONIZATION: Forces the outer edges to snap exactly to 1450px width boundaries -->
+    <!-- ðŸŽ¯ ABSOLUTE ALIGNMENT SYNCHRONIZATION: Forces the outer edges to snap exactly to 1450px width boundaries -->
     <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
         
         <!-- FORCE 50/50 BALANCED GRID STRUT: Text left, Image right -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
             
-            <!-- 📝 TEXT COLUMN: Left side content focused on early-stage startup launches -->
+            <!-- ðŸ“ TEXT COLUMN: Left side content focused on early-stage startup launches -->
             <div style="width: 100%; box-sizing: border-box;">
                 <!-- Pill Tag Anchor -->
                 <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Launch Infrastructure</span>
@@ -339,7 +241,7 @@
                 <!-- Interactive Action Link -->
                 <a href="formations.html" class="agency-link">Launch Your Startup &rarr;</a>
             </div>
-            <!-- 📸 IMAGE COLUMN: Right side allowed to expand completely to fill its half of the 1450px container -->
+            <!-- ðŸ“¸ IMAGE COLUMN: Right side allowed to expand completely to fill its half of the 1450px container -->
             <div style="display: flex; justify-content: center; width: 100%;">
                 <img src="images/startup-launch.jpg" alt="Entrepreneurs launching a new startup business venture" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);">
             </div>
@@ -353,15 +255,15 @@
   <!-- Tech Vector Network Grid Background Layer --> 
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div> 
   
-  <!-- 🎯 ABSOLUTE ALIGNMENT GUARD --> 
+  <!-- ðŸŽ¯ ABSOLUTE ALIGNMENT GUARD --> 
   <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 60px;"> 
     
-    <!-- 📸 IMAGE COLUMN: Sized container featuring a high-contrast deep back shadow -->
+    <!-- ðŸ“¸ IMAGE COLUMN: Sized container featuring a high-contrast deep back shadow -->
     <div style="flex: 1; min-width: 320px; max-width: 550px; display: flex; justify-content: center; box-sizing: border-box;"> 
       <img src="images/regulatory-compliance.jpg" alt="Entrepreneurs launching a new startup business venture" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65), 0 10px 20px rgba(0, 0, 0, 0.3);"> 
     </div> 
 
-    <!-- 📝 TEXT COLUMN: High-Contrast White and Infrastructure Green Typography --> 
+    <!-- ðŸ“ TEXT COLUMN: High-Contrast White and Infrastructure Green Typography --> 
     <div style="flex: 1; min-width: 320px; box-sizing: border-box;"> 
       <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">Guaranteed Audit Protection</span> 
       <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Institutional Shield. <br><span style="color: #10b981;">Never Miss A Filing.</span></h2> 
@@ -373,9 +275,9 @@
 </section>
 
 
-<!-- 🌐 SECTION E: ENTERPRISE SUBSCRIPTION CAPTURE MATRIX (WHITE BACKGROUND RE-ALIGNMENT) --> 
+<!-- ðŸŒ SECTION E: ENTERPRISE SUBSCRIPTION CAPTURE MATRIX (WHITE BACKGROUND RE-ALIGNMENT) --> 
 <section style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;"> 
-  <!-- 🎯 1450PX ALIGNMENT GUARD --> 
+  <!-- ðŸŽ¯ 1450PX ALIGNMENT GUARD --> 
   <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;"> 
     
     <!-- TWO-COLUMN BALANCED PIPELINE SPLIT CONTAINER --> 
@@ -403,7 +305,7 @@
         
         <!-- Security Microtext Stamp Link --> 
         <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #64748b; padding-left: 4px;"> 
-          <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🔒 ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures. 
+          <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">ðŸ”’ ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures. 
         </div> 
       </div> 
 
@@ -413,14 +315,14 @@
 
 
 
- <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+ <!-- ðŸ§± GLOBAL CORPORATE SITE FOOTER MATRIX --> 
 <footer class="site-footer" style="position: relative; overflow: hidden;"> 
   <!-- Tech Vector Network Grid Background Layer --> 
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
 
   <div class="footer-container"> 
     <div class="footer-brand"> 
-      <!-- 🔄 FIXED: Wrapped the brand logo in a link pointing to the homepage and increased height to 48px --> 
+      <!-- ðŸ”„ FIXED: Wrapped the brand logo in a link pointing to the homepage and increased height to 48px --> 
       <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"> 
         <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;"> 
       </a> 
@@ -460,7 +362,7 @@
         <li><a href="heavy-use-tax-2290.html">Form 2290</a></li> 
       </ul> 
     </div> 
-    <!-- 🔄 NEW SECTION: Tax & Filings --> 
+    <!-- ðŸ”„ NEW SECTION: Tax & Filings --> 
     <div class="footer-col"> 
       <h4>Tax & Filings</h4> 
       <ul> 
@@ -486,7 +388,7 @@
     <div> 
       <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;"> &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a> </p> 
     </div> 
-    <!-- 🔄 FIXED SECURE BADGE CONTAINER: Injected absolute block inline resets to override conflict issues --> 
+    <!-- ðŸ”„ FIXED SECURE BADGE CONTAINER: Injected absolute block inline resets to override conflict issues --> 
     <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
       <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection </div> 
     <div class="legal-links"> 
@@ -500,7 +402,7 @@
 
 <script src="assets/js/toggle.js"></script>
 
-<!-- 🔼 SCROLL TO TOP FLOATING INTERFACE -->
+<!-- ðŸ”¼ SCROLL TO TOP FLOATING INTERFACE -->
 <button id="scrollToTopBtn" aria-label="Scroll to top" class="scroll-to-top-btn">
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
