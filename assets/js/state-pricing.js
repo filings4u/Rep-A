@@ -1,8 +1,7 @@
 // ============================================================================ //
-// 🏛️ MODULE 1: BASE SYSTEM DATABASE INITIALIZATION (SERVICES 1 - 15)           //
+// MODULE 1: BASE SYSTEM DATABASE INITIALIZATION (SERVICES 1 - 12)
 // ============================================================================ //
 window.GLOBAL_COMPANY_PRICING = window.GLOBAL_COMPANY_PRICING || { packages: {}, addons: {} };
-
 
 Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
   "llc-formation": {
@@ -16,7 +15,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Everything in Elite (plus)", "Complete Enterprise Asset Suite", "White Glove Execution", "Instant Turnaround", "Corporate Binder & Seal"]
     }
   },
-  "corporation": {
+  "corporations": {
     name: "Corporations (C/S-Corp)",
     starter: 129.00,
     compliance: 249.00,
@@ -71,7 +70,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Everything in Elite (plus)", "Customized tax and legal strategy guidance"]
     }
   },
-  "foreign-qualification": {
+  "foreign-qualification-certificate": {
     name: "Foreign Qualification Certificate",
     starter: 149.00,
     compliance: 249.00,
@@ -82,7 +81,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Everything in Elite (plus)", "Compliance reminders and support"]
     }
   },
-  "llc-reinstatement": {
+  "llc-reinstatement-processing": {
     name: "LLC Reinstatement Processing",
     starter: 79.00,
     compliance: 149.00,
@@ -115,6 +114,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Everything in Elite (plus)", "Legal consultation on infringement issues"]
     }
   },
+
   "annual-reports": {
     name: "Annual Reports",
     starter: 89.00,
@@ -169,14 +169,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       compliance: ["Everything in Basic (plus)", "IRS form preparation"],
       enterprise: ["Everything in Elite (plus)", "Tax planning consultation"]
     }
-  }
-});
-// ============================================================================ //
-// 🏛️ MODULE 2: DATA INJECTION (SERVICES 16 - 32)                               //
-// ============================================================================ //
-window.GLOBAL_COMPANY_PRICING = window.GLOBAL_COMPANY_PRICING || { packages: {}, addons: {} };
-
-Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
+  },
   "entity-dissolution": {
     name: "Entity Dissolution",
     starter: 149.00,
@@ -188,7 +181,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Complete compliance assistance and tax filings"]
     }
   },
-  "good-standing": {
+  "certificate-of-good-standing": {
     name: "Certificate of Good Standing",
     starter: 49.00,
     compliance: 99.00,
@@ -199,7 +192,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Fast track filing service"]
     }
   },
-  "apostille-services": {
+  "apostille-authentication-services": {
     name: "Apostille Authentication Services",
     starter: 99.00,
     compliance: 179.00,
@@ -221,7 +214,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Full compliance support"]
     }
   },
-  "legal-consulting": {
+  "custom-regulatory-legal-consulting": {
     name: "Custom Regulatory Legal Consulting",
     starter: 150.00,
     compliance: 1000.00,
@@ -254,7 +247,8 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Full service with audit support"]
     }
   },
-  "franchise-tax": {
+
+  "franchise-tax-filing": {
     name: "Franchise Tax Filing",
     starter: 149.00,
     compliance: 249.00,
@@ -265,7 +259,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Full service with consultations"]
     }
   },
-  "sales-tax": {
+  "sales-tax-registration": {
     name: "Sales Tax Registration",
     starter: 99.00,
     compliance: 199.00,
@@ -276,7 +270,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Strategic sales tax planning"]
     }
   },
-  "payroll-tax": {
+  "payroll-tax-940-941": {
     name: "Payroll Tax (940/941)",
     starter: 199.00,
     compliance: 349.00,
@@ -287,7 +281,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Comprehensive payroll solutions"]
     }
   },
-  "heavy-use-tax": {
+  "heavy-use-tax-2290": {
     name: "Heavy Use Tax (2290)",
     starter: 99.00,
     compliance: 179.00,
@@ -318,6 +312,17 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       starter: ["Step-by-step guidance"],
       compliance: ["Everything in Basic (plus)", "Expedited processing"],
       enterprise: ["Comprehensive support"]
+    }
+  },
+  "procurement-procurement-registration": {
+    name: "Procurement Registration",
+    starter: 149.00,
+    compliance: 299.00,
+    enterprise: 499.00,
+    bullets: {
+      starter: ["Eligibility analysis and configuration checking"],
+      compliance: ["Everything in Basic (plus)", "Profile creation within government award systems"],
+      enterprise: ["Everything in Elite (plus)", "Priority tracking updates and annual validation audits"]
     }
   },
   "minority-certificate": {
@@ -363,14 +368,8 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       compliance: ["Everything in Basic (plus)", "Compliance support"],
       enterprise: ["Full service with network connections"]
     }
-  }
-});
-// ============================================================================ //
-// 🏛️ MODULE 3: DATA INJECTION (SERVICES 33 - 43 & SYSTEM ADDONS)              //
-// ============================================================================ //
-window.GLOBAL_COMPANY_PRICING = window.GLOBAL_COMPANY_PRICING || { packages: {}, addons: {} };
+  },
 
-Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
   "ucr-registration": {
     name: "UCR Registration",
     starter: 99.00,
@@ -382,7 +381,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Ongoing support services"]
     }
   },
-  "scac-code": {
+  "scac-code-registration": {
     name: "SCAC Code Registration",
     starter: 49.00,
     compliance: 99.00,
@@ -404,7 +403,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Full service with ongoing audits"]
     }
   },
-  "driver-file": {
+  "driver-qualification-file": {
     name: "Driver Qualification File",
     starter: 279.00,
     compliance: 349.00,
@@ -415,7 +414,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Comprehensive management of files"]
     }
   },
-  "process-agent-boc3": {
+  "process-agent-boc-3": {
     name: "Process Agent (BOC-3)",
     starter: 49.00,
     compliance: 99.00,
@@ -437,7 +436,7 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       enterprise: ["Full support with filing"]
     }
   },
-  "dot-hazmat": {
+  "hazmat-registration": {
     name: "DOT HAZMAT Registration",
     starter: 199.00,
     compliance: 349.00,
@@ -491,10 +490,53 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.packages, {
       compliance: ["Everything in Basic (plus)", "Mock audit and consultation"],
       enterprise: ["Comprehensive audit support"]
     }
+  },
+  // REVENUE ADDITION 3: IFTA Quarterly Tax Filing Services
+  "ifta-quarterly-returns": {
+    name: "IFTA Quarterly Fuel Tax Filing",
+    starter: 129.00,
+    compliance: 249.00,
+    enterprise: 449.00,
+    bullets: {
+      starter: ["Distance and fuel baseline log sorting"],
+      compliance: ["Everything in Basic (plus)", "State tax generation calculations", "Electronic return submission"],
+      enterprise: ["Everything in Elite (plus)", "Audit protection shield", "Multi-jurisdictional fleet management"]
+    }
+  },
+  // REVENUE ADDITION 4: Biennial MCS-150 Updates
+  "mcs-150-update": {
+    name: "Biennial MCS-150 Updating",
+    starter: 45.00,
+    compliance: 89.00,
+    enterprise: 139.00,
+    bullets: {
+      starter: ["USDOT registry validation diagnostics"],
+      compliance: ["Everything in Basic (plus)", "Direct FMCSA portal submission", "Electronic success notifications"],
+      enterprise: ["Everything in Elite (plus)", "Accelerated expedited submission track", "System change monitoring"]
+    }
+  },
+  // REVENUE ADDITION 5: BOC-3 Priority Amendment Changes
+  "boc-3-amendment": {
+    name: "BOC-3 Priority Amendment Filing",
+    starter: 39.00,
+    compliance: 79.00,
+    enterprise: 119.00,
+    bullets: {
+      starter: ["Legal name change analysis parameters"],
+      compliance: ["Everything in Basic (plus)", "Direct FMCSA register address updating", "Immediate certification outputs"],
+      enterprise: ["Everything in Elite (plus)", "Priority premium network tracking loop overrides"]
+    }
   }
 });
 
+// LAST ONE
+
+
+// ============================================================================ //
+// MODULE 5: SYSTEM ADDONS & REVENUE OPTIMIZATION DATABASE (SERVICES 1 - 25)
+// ============================================================================ //
 Object.assign(window.GLOBAL_COMPANY_PRICING.addons, {
+  // Existing baseline infrastructure nodes
   ra_service: 75.00,
   compliance_monitor: 99.00,
   corp_resolutions: 49.00,
@@ -504,8 +546,31 @@ Object.assign(window.GLOBAL_COMPANY_PRICING.addons, {
   ein_procure: 75.00,
   good_standing: 65.00,
   boc3_filing: 75.00,
-  fmcsa_audit: 149.00
+  fmcsa_audit: 149.00,
+
+  // NEW REVENUE VERTICAL: Corporate Branding, Web Frameworks, & Identity
+  professional_website: 399.00,
+  custom_identity_logo: 149.00,
+  enterprise_email_domain: 49.00,
+  business_phone_line: 79.00,
+  digital_marketing_starter: 199.00,
+
+  // NEW REVENUE VERTICAL: Continuous Commercial Regulatory Compliance Management
+  boi_annual_management: 89.00,
+  finra_regulatory_review: 249.00,
+  sam_registry_maintenance: 189.00,
+  trademark_monitoring_quarterly: 129.00,
+  corporate_tax_consultation: 150.00,
+
+  // NEW REVENUE VERTICAL: Logistics Telematics, Safety Systems, & Transit Auditing
+  eld_hardware_integration: 299.00,
+  ifta_logbook_audit_protection: 149.00,
+  driver_qualification_monitoring: 99.00,
+  hazmat_route_consulting: 349.00,
+  customs_bond_procurement: 199.00
 });
+
+// LAST ONE
 
 
 // ============================================================================ //

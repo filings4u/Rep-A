@@ -1,4 +1,122 @@
-﻿
+﻿/**
+ * PART 1: PRICING MATRIX EMERALD ANIMATION CSS INJECTOR
+ * Establishes custom hover scaling loops and smooth multi-layer shadow properties
+ */
+(function injectPricingGlowAnimations() {
+  if (document.getElementById("pricing-glow-animation-styles")) return;
+  const styleElement = document.createElement("style");
+  styleElement.id = "pricing-glow-animation-styles";
+  styleElement.innerHTML = `
+    .pricing-card-animated {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.4s ease !important;
+      transform: translateY(0);
+      will-change: transform, box-shadow;
+    }
+    .pricing-card-animated:hover {
+      transform: translateY(-8px) !important;
+    }
+    .pricing-card-animated.standard-glow:hover {
+      border-color: #10b981 !important;
+      box-shadow: 0 20px 40px -10px rgba(10, 31, 68, 0.05), 0 0 30px 4px rgba(16, 185, 129, 0.25) !important;
+    }
+    .pricing-card-animated.popular-glow {
+      box-shadow: 0 15px 30px rgba(10, 31, 68, 0.05), 0 0 20px 2px rgba(16, 185, 129, 0.15) !important;
+      animation: emeraldPulseBreathing 3s infinite ease-in-out;
+    }
+    .pricing-card-animated.popular-glow:hover {
+      border-color: #0e9f6e !important;
+      box-shadow: 0 25px 50px -12px rgba(10, 31, 68, 0.1), 0 0 40px 8px rgba(16, 185, 129, 0.45) !important;
+      animation-play-state: paused;
+    }
+    @keyframes emeraldPulseBreathing {
+      0% { box-shadow: 0 15px 30px rgba(10,31,68,0.05), 0 0 20px 2px rgba(16, 185, 129, 0.15); }
+      50% { box-shadow: 0 15px 30px rgba(10,31,68,0.05), 0 0 30px 6px rgba(16, 185, 129, 0.32); border-color: #34d399; }
+      100% { box-shadow: 0 15px 30px rgba(10,31,68,0.05), 0 0 20px 2px rgba(16, 185, 129, 0.15); }
+    }
+  `;
+  document.head.appendChild(styleElement);
+})();
+
+/**
+ * ASYNCHRONOUS DATA LOOKUP TUNNELER
+ * Connects directly into whatever global variable names are used inside assets/js/state-pricing.js
+ */
+function resolvePricingObjectWithRetry(slug) {
+  // Snaps directly into state-pricing.js objects (window.statePricingData or windows.servicesPricing)
+  const source = window.statePricingData || window.servicesPricing || window.pricingData || {};
+  const record = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
+  
+  if (record) {
+    return {
+      basicPrice: record.starterPrice || record.basicPrice || record.price || "99",
+      compliancePrice: record.compliancePrice || record.shieldPrice || "199",
+      enterprisePrice: record.enterprisePrice || record.suitePrice || "349",
+      basicFeatures: record.starterFeatures || record.basicFeatures || ["Standard registry declaration files processed securely."],
+      complianceFeatures: record.complianceFeatures || record.shieldFeatures || ["Includes proactive automated calendar sweeps and compliance alerts."],
+      enterpriseFeatures: record.enterpriseFeatures || record.suiteFeatures || ["Custom structural provisions, real-time banking setup, and lifetime storage."]
+    };
+  }
+  
+  // Clean fallback parameters so rows don't display empty text areas if lookups have slight delay
+  return {
+    basicPrice: "99", compliancePrice: "199", enterprisePrice: "349",
+    basicFeatures: ["Standard registry declaration files processed securely."],
+    complianceFeatures: ["Includes proactive automated calendar sweeps and compliance alerts."],
+    enterpriseFeatures: ["Custom structural provisions, real-time banking setup, and lifetime storage."]
+  };
+}
+
+
+/**
+ * PART 1: COMPLIANCE PRICING DATA COMPILER MAPPER (CORRECTED)
+ * Resolves local data payloads inside state-pricing.js straight into layout loops
+ */
+function resolveLocalServicePricingData(slug) {
+  // Safe deep lookup mapping for custom datasets inside state-pricing.js
+  const globalPricingSource = window.statePricingData || window.servicesPricing || window.pricingData || {};
+
+  // 🔍 SYSTEM CROSS-REFERENCE LOGIC
+  // Attempt to look up by raw hyphenated slug, underscored slug, or a fallback shortcut token extraction
+  let localData = globalPricingSource[slug] || globalPricingSource[slug.replace(/-/g, '_')];
+
+  if (!localData) {
+    // Shorthand mapper utility if your state-pricing.js uses cleaner, shorter keywords
+    if (slug.includes("ein") || slug.includes("employer-id-ein")) {
+      localData = globalPricingSource.ein || globalPricingSource.ein_number;
+    } else if (slug.includes("llc") || slug.includes("llc-formation")) {
+      localData = globalPricingSource.llc || globalPricingSource.llc_formation;
+    } else if (slug.includes("dba") || slug.includes("doing-business-as")) {
+      localData = globalPricingSource.dba;
+    } else if (slug.includes("registered-agent")) {
+      localData = globalPricingSource.registered_agent || globalPricingSource.agent;
+    } else if (slug.includes("operating-agreement")) {
+      localData = globalPricingSource.operating_agreement;
+    } else if (slug.includes("annual-reports")) {
+      localData = globalPricingSource.annual_reports || globalPricingSource.annual_report;
+    }
+  }
+
+  return {
+    hasCustomData: localData !== null && localData !== undefined,
+    
+    // Extract price strings safely or drop back to your standard layout default templates
+    basicPrice: localData?.starterPrice || localData?.basicPrice || localData?.price || "99",
+    compliancePrice: localData?.compliancePrice || localData?.shieldPrice || "199",
+    enterprisePrice: localData?.enterprisePrice || localData?.suitePrice || "349",
+    
+    // Extract array feature list rows cleanly. Handles strings and array variations perfectly
+    basicFeatures: localData?.starterFeatures || localData?.basicFeatures || ["Standard registry declaration files processed securely."],
+    complianceFeatures: localData?.complianceFeatures || localData?.shieldFeatures || ["Includes proactive automated calendar sweeps, compliance alerts, and guard sheets."],
+    enterpriseFeatures: localData?.enterpriseFeatures || localData?.suiteFeatures || ["Custom structural provisions, real-time banking integration, and lifetime archive storage."]
+  };
+}
+
+
+
+
+
 
 /**
  * ==========================================================================
@@ -95,6 +213,44 @@ function renderMasterMetricsEngine(targetId, meta) {
       </div>
     </section>
   `;
+}
+
+
+
+/**
+ * PART 1: PRICING LIFECYCLE PRELOAD TUNNELER
+ * Pauses rendering loops to wait for state-pricing.js arrays to mount into memory
+ */
+function resolvePricingObjectWithRetry(slug, delay = 50, retries = 50) {
+  // 1. Audit window object allocations used inside state-pricing.js
+  const source = window.statePricingData || window.servicesPricing || window.pricingData || {};
+  
+  // 2. Try parsing clean string tokens, underscored tokens, or array properties
+  const record = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
+  
+  if (record) {
+    return {
+      basicPrice: record.starterPrice || record.basicPrice || record.price || "99",
+      compliancePrice: record.compliancePrice || record.shieldPrice || "199",
+      enterprisePrice: record.enterprisePrice || record.suitePrice || "349",
+      basicFeatures: record.starterFeatures || record.basicFeatures || ["Standard registry declaration files processed securely."],
+      complianceFeatures: record.complianceFeatures || record.shieldFeatures || ["Includes proactive automated calendar sweeps and compliance alerts."],
+      enterpriseFeatures: record.enterpriseFeatures || record.suiteFeatures || ["Custom structural provisions, real-time banking setup, and lifetime storage."]
+    };
+  }
+
+  // 3. Loop fallback if scripts load out of sequence
+  if (retries > 0) {
+    setTimeout(() => resolvePricingObjectWithRetry(slug, delay, retries - 1), delay);
+  }
+
+  // 4. Baseline backup to keep layout matching your design rules if file contains syntax gaps
+  return {
+    basicPrice: "99", compliancePrice: "199", enterprisePrice: "349",
+    basicFeatures: ["Standard registry declaration files processed securely."],
+    complianceFeatures: ["Includes proactive automated calendar sweeps and compliance alerts."],
+    enterpriseFeatures: ["Custom structural provisions, real-time banking setup, and lifetime storage."]
+  };
 }
 
 
@@ -263,22 +419,29 @@ function renderMasterSubscribeEngine(targetId) {
   }
 }
 
-// --- PART 1: ENVIRONMENT PROPERTY COMPILER ---
+/**
+ * PART 1: PAGE ENVIRONMENT INTERFACE PROPERTY COMPILER
+ * Maps out your 4-part asset schema using the dynamic page slug text variable.
+ */
 function compileDynamicLayoutProperties(targetId, suffix) {
+  // 1. Extract the lowercase page name variable straight from the active HTML tag
   const slug = targetId.replace(suffix, "").toLowerCase().trim();
+  
+  // 2. Format the slug token string into clean Title Case words for headers
   const title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   
+  // 3. Return the exact paths by combining your directories, page names, and extensions
   return {
     slug: slug,
     title: title,
     heroImage: 'images/' + slug + '-hero.jpg',
     secbImage: 'images/' + slug + '-secb.jpg',
     seccImage: 'images/' + slug + '-secc.jpg',
-    secdImage: 'images/' + slug + '-secd.jpg',
-    seceImage: 'images/' + slug + '-sece.jpg',
-    secfImage: 'images/' + slug + '-secf.jpg'
+    secdImage: 'images/' + slug + '-secd.jpg'
   };
 }
+
+
 
 // --- CENTRAL DATA ORCHESTRATOR ROUTER SYSTEM ---
 async function renderMasterSystem() {
@@ -374,53 +537,159 @@ document.addEventListener("DOMContentLoaded", renderMasterSystem);
 
 
 
-// --- MODULE 1: GLOBAL PLATFORM HEADER FIXED BAR (SECTION 1) ---
-function renderMasterNavigationEngine(targetId) {
-  // Handled dynamically via master navigation include file
-  if (typeof renderDynamicGlobalCorporateNavigation === "function") {
-    renderDynamicGlobalCorporateNavigation(targetId);
-  }
+// --- MODULE 1: DYNAMIC BRANDED HERO ENGINE (SECTION 1 - WHITE) ---
+function renderMasterHeroEngine(targetId, meta) {
+  const zone = document.getElementById(targetId);
+  if (!zone) return;
+
+  zone.innerHTML = `
+    <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
+          
+          <!-- 📝 TEXT COLUMN -->
+          <article class="content-area" style="width: 100%; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${meta.title} Framework</span>
+            <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">
+              The Engine for <br><span style="color: #10b981;">Total ${meta.title}.</span>
+            </h1>
+            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your ${meta.title} processing.</p>
+            <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
+              <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
+              <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${meta.title} Sync: 140,000+ Profiles Active</span>
+            </div>
+            <a href="get-started.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">Get Started &rarr;</a>
+          </article>
+          
+          <!-- 📸 IMAGE COLUMN -->
+          <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
+            <img src="images/${meta.slug}-hero.jpg" alt="${meta.title} System Dashboard" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/hero-image.jpg';">
+          </aside>
+          
+        </div>
+      </div>
+    </main>
+  `;
 }
 
-// --- MODULE 2: HIGH-CONTRAST HERO ENVIRONMENT (SECTION 2) ---
-function renderMasterHeroEngine(targetId, meta) {
+// --- MODULE 2: INDUSTRIAL METRICS SYSTEM (SECTION 2 - NAVY DARK) ---
+function renderMasterMetricsEngine(targetId) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+
+  el.innerHTML = `
+    <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
+          <div style="text-align: left; max-width: 600px;">
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">Corporate Filing Infrastructure</h2>
+          </div>
+          <div style="text-align: right;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
+              <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> ALL CLEAR: SECURE REST GATEWAYS ACTIVE 
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; margin: 0;">
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🏢</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">142K+</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Corporate Entities Formed</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Authorized Articles of Organization across all 50 State Secretary registries.</p>
+          </div>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🚛</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">38,410</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Active Transits Monitored</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">USDOT & MC operating authorities actively synchronized with FMCSA core data links.</p>
+          </div>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">⚡</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #10b981; font-family: monospace; line-height: 1;">1.8s</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Average API Pipeline Turn</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Secure, real-time rest requests to launch bank check intents and background pre-saves.</p>
+          </div>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🔒</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">99.98%</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Filing Accuracy Quotient</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Sophisticated layout rules eliminate common syntax rejection errors from state systems.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  `;
+}
+
+
+// --- MODULE 3: ENTERPRISE GLOBAL STATUS MONITOR METRICS (SECTION 3) ---
+
+function renderMasterHeroEngine(targetId) {
   try {
     const zone = document.getElementById(targetId);
     if (!zone) return;
 
+    // Isolate slug identifiers directly (e.g. index-hero-zone becomes index)
+    const slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
+    const profile = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
+
+    if (!profile) {
+      console.warn(`Profile configuration missing for index-mapped key: ${slug}`);
+      return;
+    }
+
+    // Explicitly builds the requested absolute format layout: images/page-name-hero.jpg
+    const dynamicHeroImgSrc = `images/${slug}-hero.jpg`;
+
     zone.innerHTML = `
-      <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
-            <article class="content-area" style="width: 100%; box-sizing: border-box;">
-              <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${meta.title} Ecosystem</span>
-              <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">The Hub for <br><span style="color: #10b981;">Total ${meta.title}.</span></h1>
-              <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">Automate your corporate structures and setup authorizations from one single dashboard. We provide the technical handshake between you and state, federal, and local jurisdictions.</p>
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
-                <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
-                <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">Active Entity Sync: 10,000+ Verified</span>
-              </div>
-              <a href="get-started.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);">Get Started &rarr;</a>
-            </article>
-            <aside style="display: flex; justify-content: center; width: 100%;">
-              <img src="${meta.heroImage}" alt="${meta.title}" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25);" onerror="this.onerror=null; this.src='images/hero-image.jpg';">
-            </aside>
+      <section style="padding: 120px 0; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
+        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; box-sizing: border-box;">
+          <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
+            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block;">${profile.pill}</span>
+            <h1 style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">${profile.hero_title}</h1>
+            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${profile.hero_lead}</p>
+            <a href="get-started.html" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a>
+          </div>
+          <div style="flex: 1; min-width: 320px; text-align: center; box-sizing: border-box;">
+            <img src="${dynamicHeroImgSrc}" alt="${profile.name} Framework Layout Preview" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);">
           </div>
         </div>
-      </main>
+      </section>
     `;
-  } catch (err) { console.error("Hero error:", err); }
+  } catch (err) {
+    console.error("Hero rendering critical engine error:", err);
+  }
 }
 
-// --- MODULE 3: ENTERPRISE GLOBAL STATUS MONITOR METRICS (SECTION 3) ---
 function renderMasterMetricsEngine(targetId, dbRow) {
   try {
     const zone = document.getElementById(targetId);
     if (!zone) return;
 
-    // FIX: Safely parse fallback names to ensure code never freezes up here
     const slug = targetId.replace("-metrics-zone", "").toLowerCase().trim();
-    const cleanTitle = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    const metricsData = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
+    
+    if (!metricsData) return;
+
+    const cleanTitle = metricsData.title;
+    const statusBadge = metricsData.badge;
+    const operationalCards = metricsData.items;
+
+    let cardsHTML = "";
+    operationalCards.forEach(card => {
+      cardsHTML += `
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box;">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 12px;">${card.icon}</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1.1;">${card.val}</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">${card.lbl}</div>
+          <p style="font-size: 0.85rem; color: #94a3b8; margin: 8px 0 0 0; line-height: 1.4; font-weight: 400;">${card.desc}</p>
+        </div>
+      `;
+    });
 
     zone.innerHTML = `
       <section style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
@@ -428,78 +697,232 @@ function renderMasterMetricsEngine(targetId, dbRow) {
         <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
           <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
             <div style="text-align: left; max-width: 600px;">
-              <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">${cleanTitle} Filing Infrastructure</h2>
+              <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">${cleanTitle}</h2>
             </div>
             <div style="text-align: right;">
               <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
-                <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> SECURE DATA GATEWAYS ACTIVE
+                <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> ${statusBadge}
               </div>
             </div>
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box;">
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box;"><span style="font-size: 1.8rem; display: block;">🏢</span><div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace;">142K+</div><div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Entities Formed</div></div>
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box;"><span style="font-size: 1.8rem; display: block;">🚛</span><div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace;">38,410</div><div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Active Transits</div></div>
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box;"><span style="font-size: 1.8rem; display: block;">⚡</span><div style="font-size: 2.4rem; font-weight: 900; color: #10b981; font-family: monospace;">1.8s</div><div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Pipeline Speed</div></div>
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box;"><span style="font-size: 1.8rem; display: block;">🔒</span><div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace;">99.98%</div><div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Accuracy Quotient</div></div>
+            ${cardsHTML}
           </div>
         </div>
       </section>
     `;
-  } catch (err) { console.error("Metrics grid error:", err); }
+  } catch (err) {
+    console.error("Metrics execution critical error:", err);
+  }
 }
 
+// Global initialization entry loop tracking target nodes
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('[id$="-hero-zone"]').forEach(zone => {
+    renderMasterHeroEngine(zone.id);
+  });
+  document.querySelectorAll('[id$="-metrics-zone"]').forEach(zone => {
+    renderMasterMetricsEngine(zone.id, null);
+  });
+});
 
-// --- MODULE 4: 3-CARD LAYOUT PRICING PLAN MATRIX (SECTION 4) ---
-function renderMasterPricingEngine(targetId, meta) {
+
+// NEW: Automated Hero Rendering Addition Block
+function renderMasterHeroEngine(targetId) {
   try {
-    const el = document.getElementById(targetId);
-    if (!el) return;
+    const zone = document.getElementById(targetId);
+    if (!zone) return;
 
-    el.innerHTML = `
-      <article class="fw-section" style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif;">
-        <div class="site-width-alignment-guard" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; text-align: center; box-sizing: border-box;">
-          <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.08); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;">Infrastructure Selection</span>
-          <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; letter-spacing: -0.5px;">Standard ${meta.title} Processing Layout Options</h2>
-          <p style="color: #475569; font-size: 1.05rem; margin-bottom: 50px;">Select the management structure engineered for your profile needs.</p>
+    const slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
+    const profile = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
+
+    if (!profile) return;
+
+    // Dynamically building the absolute requested format: images/page-name-hero.jpg
+    const dynamicHeroImgSrc = `images/${slug}-hero.jpg`;
+
+    zone.innerHTML = `
+      <section style="padding: 120px 0; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif;">
+        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center;">
+          <div style="flex: 1; min-width: 320px;">
+            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">${profile.pill}</span>
+            <h1 style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15;">${profile.hero_title}</h1>
+            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${profile.hero_lead}</p>
+            <a href="get-started.html" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a>
+          </div>
+          <div style="flex: 1; min-width: 320px; text-align: center;">
+            <img src="${dynamicHeroImgSrc}" alt="${profile.name} Framework Layout Preview" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);">
+          </div>
+        </div>
+      </section>
+    `;
+  } catch (err) {
+    console.error("Hero rendering critical engine error:", err);
+  }
+}
+
+// Global initialization router execution loop
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('[id$="-metrics-zone"]').forEach(zone => {
+    renderMasterMetricsEngine(zone.id, null);
+  });
+  document.querySelectorAll('[id$="-hero-zone"]').forEach(zone => {
+    renderMasterHeroEngine(zone.id);
+  });
+});
+
+
+
+
+
+// --- MODULE 4: DYNAMIC PACKAGE PRICING GRID INJECTION LAYER ---
+function renderMasterPricingEngine(targetId) {
+  try {
+    const zone = document.getElementById(targetId);
+    if (!zone) return;
+
+    // Extract database slug properties cleanly
+    const slug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
+    const pricingData = window.GLOBAL_COMPANY_PRICING && window.GLOBAL_COMPANY_PRICING.packages[slug];
+
+    if (!pricingData) {
+      console.warn(`No price object config structured for selector profile: ${slug}`);
+      return;
+    }
+
+    // Helper functions to construct bullet strings securely without markup re-rendering bugs
+    const makeBulletsHTML = (array) => {
+      return array.map(b => `<li style="margin-bottom: 12px; color: #475569; font-size: 0.95rem; line-height: 1.4; list-style-type: none; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: #10b981; font-weight: bold;">✓</span>${b}</li>`).join("");
+    };
+
+    zone.innerHTML = `
+      <section style="padding: 80px 0; background: #f8fafc; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
+        <div class="site-width-alignment-guard" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
           
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; text-align: left;">
-            <!-- CARD 1 -->
-            <div style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+          <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: #0a1f44; margin: 0 0 12px 0;">Flexible Pricing Framework Options</h2>
+            <p style="color: #64748b; font-size: 1.1rem; margin: 0;">Select the optimal processing speed and protection depth your operation requires.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; align-items: stretch;">
+            
+            <!-- Tier 1: Starter -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
               <div>
-                <img src="${meta.seccImage}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;" onerror="this.onerror=null; this.src='images/local-business.jpg';">
-                <h3 style="color: #0a1f44; margin: 0 0 10px 0; font-size: 1.4rem;">Basic Setup Plan</h3>
-                <div style="font-size: 2rem; font-weight: bold; color: #0a1f44; margin-bottom: 15px;">$99 <span style="font-size: 1rem; color: #64748b; font-weight: normal;">+ state fees</span></div>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.5;">Standard registry declaration files processed securely.</p>
+                <h3 style="font-size: 1.5rem; font-weight: 700; color: #0a1f44; margin: 0 0 8px 0;">Starter Package</h3>
+                <div style="margin-bottom: 24px;"><span style="font-size: 2.5rem; font-weight: 800; color: #0a1f44;">$${pricingData.starter.toFixed(2)}</span><span style="color: #64748b; font-size: 0.95rem;"> / registration</span></div>
+                <ul style="padding: 0; margin: 0 0 30px 0;">${makeBulletsHTML(pricingData.bullets.starter)}</ul>
               </div>
-              <button onclick="window.location.href='order.html?service=${meta.slug}&plan=basic'" style="width: 100%; background: #10b981; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px;">Select Basic</button>
+              <a href="wizard.html?plan=starter&service=${slug}" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Starter Plan</a>
             </div>
-            <!-- CARD 2 -->
-            <div style="background: white; padding: 30px; border-radius: 12px; border: 2px solid #10b981; position: relative; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 15px rgba(0,0,0,0.04);">
-              <span style="position: absolute; top: -14px; right: 20px; background: #10b981; color: white; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: bold;">POPULAR</span>
+
+            <!-- Tier 2: Compliance (Most Popular Highlighted) -->
+            <div style="background: #ffffff; border: 2px solid #10b981; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
+              <span style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Most Popular Option</span>
               <div>
-                <img src="${meta.secdImage}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;" onerror="this.onerror=null; this.src='images/local-business.jpg';">
-                <h3 style="color: #0a1f44; margin: 0 0 10px 0; font-size: 1.4rem;">Complete Shield Matrix</h3>
-                <div style="font-size: 2rem; font-weight: bold; color: #0a1f44; margin-bottom: 15px;">$199 <span style="font-size: 1rem; color: #64748b; font-weight: normal;">+ state fees</span></div>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.5;">Includes proactive automated calendar sweeps, compliance alerts, and asset guard sheets.</p>
+                <h3 style="font-size: 1.5rem; font-weight: 700; color: #0a1f44; margin: 0 0 8px 0;">Compliance Guard</h3>
+                <div style="margin-bottom: 24px;"><span style="font-size: 2.5rem; font-weight: 800; color: #10b981;">$${pricingData.compliance.toFixed(2)}</span><span style="color: #64748b; font-size: 0.95rem;"> / registration</span></div>
+                <ul style="padding: 0; margin: 0 0 30px 0;">${makeBulletsHTML(pricingData.bullets.compliance)}</ul>
               </div>
-              <button onclick="window.location.href='order.html?service=${meta.slug}&plan=complete'" style="width: 100%; background: #0a1f44; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px;">Select Complete</button>
+              <a href="wizard.html?plan=compliance&service=${slug}" style="background: #10b981; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Compliance Plan</a>
             </div>
-            <!-- CARD 3 -->
-            <div style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+
+            <!-- Tier 3: Enterprise -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
               <div>
-                <img src="images/regulatory-compliance.jpg" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;">
-                <h3 style="color: #0a1f44; margin: 0 0 10px 0; font-size: 1.4rem;">Enterprise Suite</h3>
-                <div style="font-size: 2rem; font-weight: bold; color: #0a1f44; margin-bottom: 15px;">$349 <span style="font-size: 1rem; color: #64748b; font-weight: normal;">+ state fees</span></div>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.5;">Custom structural multi-member provisions, real-time banking integration setup, and lifetime storage.</p>
+                <h3 style="font-size: 1.5rem; font-weight: 700; color: #0a1f44; margin: 0 0 8px 0;">Enterprise Asset Suite</h3>
+                <div style="margin-bottom: 24px;"><span style="font-size: 2.5rem; font-weight: 800; color: #0a1f44;">$${pricingData.enterprise.toFixed(2)}</span><span style="color: #64748b; font-size: 0.95rem;"> / registration</span></div>
+                <ul style="padding: 0; margin: 0 0 30px 0;">${makeBulletsHTML(pricingData.bullets.enterprise)}</ul>
               </div>
-              <button onclick="window.location.href='order.html?service=${meta.slug}&plan=enterprise'" style="width: 100%; background: #4f46e5; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px;">Select Enterprise</button>
+              <a href="wizard.html?plan=enterprise&service=${slug}" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Enterprise Plan</a>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+    `;
+  } catch (err) {
+    console.error("Pricing cards runtime injection error:", err);
+  }
+}
+
+// Update the current global execution block to auto-run the pricing card loops too
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('[id$="-package-pricing-cards-root"]').forEach(zone => {
+    renderMasterPricingEngine(zone.id);
+  });
+});
+
+
+// --- MODULE 5: HOMEPAGE OPERATIONS ROUTER ENGINE ---
+function renderHomepageOperationsRouter(targetId) {
+  try {
+    const zone = document.getElementById(targetId);
+    if (!zone) return;
+
+    zone.innerHTML = `
+      <section style="padding: 80px 0; background: #f8fafc; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
+        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
+          <div style="text-align: center; margin-bottom: 60px;">
+            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block; margin-bottom: 12px;">Capabilities</span>
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: #0a1f44; margin: 0 0 14px 0;">Select Your Compliance Sector</h2>
+            <p style="color: #64748b; font-size: 1.1rem; margin: 0; max-width: 700px; margin: 0 auto;">Access specialized state registries, fiscal filings, and transportation mainframes through our unified enterprise automation gateways.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box;">
+            <!-- Sector 1 -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div>
+                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Corporate Framework</h3>
+                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Establish your statutory business structure legally across all fifty state secretarial offices. Includes automated structural checks, organizational file generation, and standing updates.</p>
+              </div>
+              <a href="llc-formation.html" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem;">Launch Corporate Gateway</a>
+            </div>
+            <!-- Sector 2 -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div>
+                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Tax & Financial</h3>
+                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Configure tax registrations and federal revenue numbers safely. Automated internal tracking parameters verify state ledger guidelines to avoid penalty processing delays.</p>
+              </div>
+              <a href="federal-tax.html" style="background: #10b981; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem;">Launch Tax Gateway</a>
+            </div>
+            <!-- Sector 3 -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div>
+                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Logistics Infrastructure</h3>
+                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Activate transport authorities and compliance profiles with federal safety networks. Bypasses standard administrative queues to register operational codes cleanly.</p>
+              </div>
+              <a href="trucker-authority.html" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem;">Launch Logistics Gateway</a>
             </div>
           </div>
         </div>
-      </article>
+      </section>
     `;
-  } catch (err) { console.error("Pricing card engine error:", err); }
+  } catch (err) {
+    console.error("Operations router layout crash error:", err);
+  }
 }
+
+// --- CONSOLIDATED DOM ROUTER ROUTING CONTROLLER ---
+document.addEventListener("DOMContentLoaded", () => {
+  const isHome = document.getElementById("index-package-pricing-cards-root");
+  
+  if (isHome) {
+    renderHomepageOperationsRouter("index-package-pricing-cards-root");
+  } else {
+    document.querySelectorAll('[id$="-package-pricing-cards-root"]').forEach(zone => {
+      if (typeof renderMasterPricingEngine === "function") renderMasterPricingEngine(zone.id);
+    });
+  }
+
+  document.querySelectorAll('[id$="-hero-zone"]').forEach(zone => {
+    if (typeof renderMasterHeroEngine === "function") renderMasterHeroEngine(zone.id);
+  });
+
+  document.querySelectorAll('[id$="-metrics-zone"]').forEach(zone => {
+    if (typeof renderMasterMetricsEngine === "function") renderMasterMetricsEngine(zone.id, null);
+  });
+});
 
 
 
@@ -632,13 +1055,13 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
               <div class="dropdown-content mega-panel-two-col">
                 <div class="mega-column">
                   <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Popular Formations</span>
-                  <a href="limited-liability-company.html">LLC Formation</a>
+                  <a href="llc-formation.html">LLC Formation</a>
                   <a href="corporations.html">Corporations (C/S-Corp)</a>
                   <a href="sole-proprietorship.html">Sole Proprietorship</a>
                 </div>
                 <div class="mega-column">
                   <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Specialty Structures</span>
-                  <a href="doing-business-as-dba.html">DBA Registration</a>
+                  <a href="dba-registration.html">DBA Registration</a>
                   <a href="nonprofits.html">Nonprofit Organization</a>
                   <a href="series-llc.html">Series LLC</a>
                 </div>
@@ -658,7 +1081,7 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
                 <div class="mega-column">
                   <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Licensing & Exit</span>
                   <a href="business-licenses.html">Business Licenses</a>
-                  <a href="employer-identification-number-ein.html">Employer ID (EIN)</a>
+                  <a href="employer-id-ein">Employer ID (EIN)</a>
                   <a href="dissolution.html">Entity Dissolution</a>
                 </div>
               </div>
@@ -670,8 +1093,8 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
               <div class="dropdown-content mega-panel-two-col">
                 <div class="mega-column">
                   <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Income & Operations</span>
-                  <a href="federal-income-tax.html">Federal Income Tax</a>
-                  <a href="state-income-tax.html">State Income Tax</a>
+                  <a href="federal-tax.html">Federal Income Tax</a>
+                  <a href="state-tax.html">State Income Tax</a>
                   <a href="franchise-tax.html">Franchise Tax Filing</a>
                 </div>
                 <div class="mega-column">
@@ -697,7 +1120,7 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
                 <div class="mega-column">
                   <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Compliance & Regs</span>
                   <a href="dot-consortium.html">DOT Consortium</a>
-                  <a href="driver-qualification-file.html">Driver Qualification File</a>
+                  <a href="driver-file.html">Driver Qualification File</a>
                   <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
                   <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a>
                 </div>
@@ -711,7 +1134,7 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
               </div>
             </div>
 
-            <a href="https://filings4u.com" class="btn-client-portal" style="background: #10b981; color: #ffffff; text-decoration: none; font-weight: 700; padding: 10px 20px; border-radius: 6px; font-size: 0.9rem; transition: background 0.2s;">Secure Portal</a>
+            <a href="https://portal.filings4u.com/client-dashboard.html" class="btn-client-portal" style="background: #10b981; color: #ffffff; text-decoration: none; font-weight: 700; padding: 10px 20px; border-radius: 6px; font-size: 0.9rem; transition: background 0.2s;">Client Portal</a>
           </div>
           
         </div>
@@ -760,11 +1183,11 @@ function renderDynamicGlobalCorporateFooter(targetId) {
     <div class="footer-col"> 
       <h4>Formations</h4> 
       <ul> 
-        <li><a href="limited-liability-company.html">LLC Formation</a></li> 
+        <li><a href="llc-formation.html">LLC Formation</a></li> 
         <li><a href="corporations.html">Corporations</a></li> 
         <li><a href="nonprofits.html">Non-Profits</a></li> 
         <li><a href="registered-agent.html">Registered Agent</a></li> 
-        <li><a href="employer-identification-number-ein.html">Tax ID (EIN)</a></li> 
+        <li><a href="employer-id-ein.html">Tax ID (EIN)</a></li> 
       </ul> 
     </div> 
     <div class="footer-col"> 
@@ -781,8 +1204,8 @@ function renderDynamicGlobalCorporateFooter(targetId) {
     <div class="footer-col"> 
       <h4>Tax & Filings</h4> 
       <ul> 
-        <li><a href="federal-income-tax.html">Federal Income Tax</a></li> 
-        <li><a href="state-income-tax.html">State Income Tax</a></li> 
+        <li><a href="federal-tax.html">Federal Income Tax</a></li> 
+        <li><a href="state-tax.html">State Income Tax</a></li> 
         <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li> 
         <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li> 
         <li><a href="franchise-tax.html">Franchise Tax Filing</a></li> 
@@ -860,3 +1283,84 @@ function executeGlobalLayoutSequencer() {
 // Global Document Hook to execute script safely on page bootstrap
 document.addEventListener("DOMContentLoaded", renderMasterSystem);
 
+// --- HOMEPAGE SPECIFIC REPLACEMENT MODULE: MULTI-VERTICAL OPERATIONS ROUTER ---
+function renderHomepageOperationsRouter(targetId) {
+  try {
+    const zone = document.getElementById(targetId);
+    if (!zone) return;
+
+    zone.innerHTML = `
+      <section style="padding: 80px 0; background: #f8fafc; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
+        <div class="site-width-alignment-guard" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
+          
+          <div style="text-align: center; margin-bottom: 60px;">
+            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block; margin-bottom: 12px;">Operational Capabilities</span>
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: #0a1f44; margin: 0 0 14px 0; letter-spacing: -0.5px;">Select Your Compliance Sector</h2>
+            <p style="color: #64748b; font-size: 1.1rem; margin: 0; max-width: 700px; margin: 0 auto;">Access specialized state registries, fiscal filings, and transportation mainframes through our unified enterprise automation gateways.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box;">
+            
+            <!-- Sector 1: Corporate -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div>
+                <div style="width: 48px; height: 48px; background: rgba(10,31,68,0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 1.5rem; color: #0a1f44; font-weight: bold;">01</div>
+                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Corporate Framework</h3>
+                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Establish your statutory business structure legally across all fifty state secretarial offices. Includes automated structural checks, organizational file generation, and standing updates.</p>
+                <div style="border-top: 1px dashed #e2e8f0; padding-top: 16px; margin-bottom: 24px;">
+                  <span style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Primary Gateways</span>
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">LLC Formations</span>
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">C/S-Corporations</span>
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">DBA Registrations</span>
+                  </div>
+                </div>
+              </div>
+              <a href="llc-formation.html" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem; transition: background 0.2s;">Launch Corporate Gateway</a>
+            </div>
+
+            <!-- Sector 2: Tax & Financial -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div>
+                <div style="width: 48px; height: 48px; background: rgba(16,185,129,0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 1.5rem; color: #10b981; font-weight: bold;">02</div>
+                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Tax & Financial</h3>
+                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Configure tax registrations and federal revenue numbers safely. Automated internal tracking parameters verify state ledger guidelines to avoid penalty processing delays.</p>
+                <div style="border-top: 1px dashed #e2e8f0; padding-top: 16px; margin-bottom: 24px;">
+                  <span style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Primary Gateways</span>
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">Employer ID (EIN)</span>
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">Sales Tax Setup</span>
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">Franchise Filings</span>
+                  </div>
+                </div>
+              </div>
+              <a href="federal-tax.html" style="background: #10b981; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem; transition: background 0.2s;">Launch Tax Gateway</a>
+            </div>
+
+            <!-- Sector 3: Logistics Infrastructure -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div>
+                <div style="width: 48px; height: 48px; background: rgba(10,31,68,0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 1.5rem; color: #0a1f44; font-weight: bold;">03</div>
+                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Logistics Infrastructure</h3>
+                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Activate transport authorities and compliance profiles with federal safety networks. Bypasses standard administrative queues to register operational codes cleanly.</p>
+                <div style="border-top: 1px dashed #e2e8f0; padding-top: 16px; margin-bottom: 24px;">
+                  <span style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Primary Gateways</span>
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">USDOT Authorities</span>
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">UCR Registrations</span>
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">DOT Consortiums</span>
+                  </div>
+                </div>
+              </div>
+              <a href="trucker-authority.html" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem; transition: background 0.2s;">Launch Logistics Gateway</a>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+    `;
+  } catch (err) {
+    console.error("Operations router rendering critical error:", err);
+  }
+}

@@ -1,66 +1,46 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#10b981">
-    <title>Professional Compliance Dashboard | filings4u</title>
-    
-   
-        <!-- 🎨 UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
-     <link rel="stylesheet" href="assets/css/master.css">
-    <link rel="stylesheet" href="assets/css/master-mobile.css">
-    <link rel="icon" type="image/png" href="images/fav.png">
-    
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/master.js"></script>
-<script src="assets/js/state-pricing.js"></script>
-<script src="assets/js/content-engine.js"></script>
-<script src="assets/js/subscription-listener.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#10b981">
+  <title>Professional Compliance Dashboard | filings4u</title>
+  
+  <!-- UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
+  <link rel="stylesheet" href="assets/css/master.css">
+  <link rel="stylesheet" href="assets/css/master-mobile.css">
+  <link rel="icon" type="image/png" href="images/fav.png">
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/master.js"></script>
+  <script src="assets/js/state-pricing.js"></script>
+  
+  <!-- DATA ARCHITECTURE CATALOG DEPLOYMENTS (Must load first) -->
+  <script src="assets/js/metrics-catalog.js"></script>
+  <script src="assets/js/content-engine.js"></script>
+  <script src="assets/js/subscription-listener.js"></script>
 </head>
 <body>
+  <script src="assets/js/toggle.js"></script>
 
+<!-- FRONTEND LAYOUT TARGET CONNECTIONS -->
 <div id="global-platform-navigation-zone"></div>
-<div id="dynamic-hero-zone"></div>
-<div id="dynamic-metrics-zone"></div>
-<div id="dynamic-alternating-flow-zone"></div>
-<div id="dynamic-expertise-zone"></div>
-<div id="dynamic-startup-launchpad-zone"></div>
-<div id="dynamic-trust-zone"></div>
+
+<div id="index-hero-zone"></div>
+<div id="index-metrics-zone"></div>
+<div id="index-package-pricing-cards-root"></div>
+<div id="index-alternating-flow-zone"></div>
+<div id="index-expertise-zone"></div>
+<div id="index-startup-launchpad-zone"></div>
+<div id="index-trust-zone"></div>
 <div id="dynamic-subscribe-placement-zone"></div>
+
 <div id="global-platform-footer-zone"></div>
+<!-- /FRONTEND LAYOUT TARGET CONNECTIONS -->
 
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // 1. Render universal base segments across pages instantly
-    if (typeof renderDynamicHeroSection === "function") renderDynamicHeroSection("dynamic-hero-zone");
-    if (typeof renderDynamicComplianceSubscribeSection === "function") renderDynamicComplianceSubscribeSection("dynamic-subscribe-placement-zone");
-    if (typeof renderDynamicGlobalCorporateFooter === "function") renderDynamicGlobalCorporateFooter("global-platform-footer-zone");
-    
-    // 2. ✨ PRODUCTION FIXED CONDITION PASS: 
-    // Captures the raw filename out of your browser directory path explicitly
-    const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
-
-    // Checks if you are on the homepage landing view, catching variations like index.html or empty folders
-    if (rawPathname === "" || rawPathname.includes("index") || rawPathname.includes("home")) {
-      console.log("[Content Engine] Homepage detected cleanly. Injected marketing blocks...");
-      
-      if (typeof renderDynamicMetricsSection === "function") renderDynamicMetricsSection("dynamic-metrics-zone");
-      if (typeof renderDynamicAlternatingFlowSection === "function") renderDynamicAlternatingFlowSection("dynamic-alternating-flow-zone");
-      if (typeof renderDynamicExpertiseSection === "function") renderDynamicExpertiseSection("dynamic-expertise-zone");
-      if (typeof renderDynamicStartupLaunchpadSection === "function") renderDynamicStartupLaunchpadSection("dynamic-startup-launchpad-zone");
-      if (typeof renderDynamicTrustSection === "function") renderDynamicTrustSection("dynamic-trust-zone");
-    } else {
-      console.log(`[Content Engine] Secondary view detected: "${rawPathname}". Skipping intermediate sales panels.`);
-    }
-  });
-</script>
-
-
- <script src="assets/js/toggle.js"></script>
 
 </body>
 </html>
