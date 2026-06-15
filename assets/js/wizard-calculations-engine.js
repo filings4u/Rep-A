@@ -2,146 +2,53 @@
 // 🏛️ CENTRAL SERVICE DESIGNATION PLAN CONFIGURATION DATABASE
 // ============================================================================ //
 const CENTRAL_SERVICE_PLAN_DB = {
-    "llc-formation": {
-        name: "LLC Formation",
-        prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 499.00 }
-    },
-    "corporation": {
-        name: "Corporations (C/S-Corp)",
-        prices: { "starter": 129.00, "compliance": 249.00, "enterprise": 599.00 }
-    },
-    "sole-proprietorship": {
-        name: "Sole Proprietorship",
-        prices: { "starter": 79.00, "compliance": 159.00, "enterprise": 239.00 }
-    },
-    "dba-registration": {
-        name: "DBA Registration",
-        prices: { "starter": 39.00, "compliance": 99.00, "enterprise": 159.00 }
-    },
-    "nonprofit-organization": {
-        name: "Nonprofit Organization",
-        prices: { "starter": 149.00, "compliance": 299.00, "enterprise": 499.00 }
-    },
-    "series-llc": {
-        name: "Series LLC",
-        prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 399.00 }
-    },
-    "foreign-qualification": {
-        name: "Foreign Qualification Certificate",
-        prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 349.00 }
-    },
-    "trucker-authority": {
-        name: "Trucker Authority",
-        prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 }
-    },
-    "broker-authority": {
-        name: "Broker Authority",
-        prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 }
-    },
-        "entity-dissolution": {
-        name: "Entity Dissolution",
-        prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 349.00 }
-    },
-    "good-standing": {
-        name: "Certificate of Good Standing",
-        prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 }
-    },
-    "apostille-services": {
-        name: "Apostille Authentication Services",
-        prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 299.00 }
-    },
-    "clia-certificate": {
-        name: "CLIA Certificate",
-        prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 }
-    },
-    "legal-consulting": {
-        name: "Custom Regulatory Legal Consulting",
-        prices: { "starter": 150.00, "compliance": 1000.00, "enterprise": 1000.00 }
-    },
-    "federal-tax": {
-        name: "Federal Income Tax",
-        prices: { "starter": 299.00, "compliance": 499.00, "enterprise": 799.00 }
-    },
-    "state-tax": {
-        name: "State Income Tax",
-        prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 549.00 }
-    },
-    "franchise-tax": {
-        name: "Franchise Tax Filing",
-        prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 399.00 }
-    },
-    "sales-tax": {
-        name: "Sales Tax Registration",
-        prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 }
-    },
-    "payroll-tax": {
-        name: "Payroll Tax (940/941)",
-        prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 }
-    },
-    "heavy-use-tax": {
-        name: "Heavy Use Tax (2290)",
-        prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 249.00 }
-    },
-    "cage-code": {
-        name: "CAGE Code",
-        prices: { "starter": 249.00, "compliance": 349.00, "enterprise": 449.00 }
-    },
-    "duns-number": {
-        name: "DUNS Number Procurement",
-        prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 179.00 }
-    },
-    "minority-certificate": {
-        name: "Minority Certificate",
-        prices: { "starter": 99.00, "compliance": 249.00, "enterprise": 399.00 }
-    },
-    "owner-operators": {
-        name: "Owner Operators",
-        prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 }
-    },
-    "ucr-registration": {
-        name: "UCR Registration",
-        prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 249.00 }
-    },
-    "scac-code": {
-        name: "SCAC Code Registration",
-        prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 }
-    },
-    "dot-consortium": {
-        name: "DOT Consortium",
-        prices: { "starter": 149.00, "compliance": 299.00, "enterprise": 499.00 }
-    },
-    "driver-file": {
-        name: "Driver Qualification File",
-        prices: { "starter": 279.00, "compliance": 349.00, "enterprise": 449.00 }
-    },
-    "process-agent-boc3": {
-        name: "Process Agent (BOC-3)",
-        prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 }
-    },
-    "ifta-registration": {
-        name: "IFTA Registration",
-        prices: { "starter": 159.00, "compliance": 279.00, "enterprise": 349.00 }
-    },
-    "dot-hazmat": {
-        name: "DOT HAZMAT Registration",
-        prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 }
-    },
-    "licenses-permits": {
-        name: "Licenses & Permits",
-        prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 299.00 }
-    },
-    "trucker-insurance": {
-        name: "Trucker Insurance",
-        prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 }
-    },
-    "broker-insurance": {
-        name: "Broker Insurance",
-        prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 }
-    },
-    "new-entrant-audit": {
-        name: "New Entrant Audit",
-        prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 }
-    },
+"llc-formation": { name: "LLC Formation", prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 499.00 } },
+    "corporations": { name: "Corporations (C/S-Corp)", prices: { "starter": 129.00, "compliance": 249.00, "enterprise": 599.00 } },
+    "sole-proprietorship": { name: "Sole Proprietorship", prices: { "starter": 79.00, "compliance": 159.00, "enterprise": 239.00 } },
+    "dba-registration": { name: "DBA Registration", prices: { "starter": 39.00, "compliance": 99.00, "enterprise": 159.00 } },
+    "nonprofit-organization": { name: "Nonprofit Organization", prices: { "starter": 149.00, "compliance": 299.00, "enterprise": 499.00 } },
+    "series-llc": { name: "Series LLC", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 399.00 } },
+    "foreign-qualification-certificate": { name: "Foreign Qualification Certificate", prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 349.00 } },
+    "llc-reinstatement-processing": { name: "LLC Reinstatement Processing", prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 249.00 } },
+    "trademark-filing": { name: "Trademark Filing", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
+    "servicemark-filing": { name: "Servicemark Filing", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 399.00 } },
+    "annual-reports": { name: "Annual Reports", prices: { "starter": 89.00, "compliance": 159.00, "enterprise": 249.00 } },
+    "operating-agreement": { name: "Operating Agreement", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 199.00 } },
+    "registered-agent": { name: "Registered Agent", prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 299.00 } },
+    "business-licenses": { name: "Business Licenses", prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 299.00 } },
+    "employer-id-ein": { name: "Employer ID (EIN)", prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 199.00 } },
+    "entity-dissolution": { name: "Entity Dissolution", prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 349.00 } },
+    "certificate-of-good-standing": { name: "Certificate of Good Standing", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 } },
+    "apostille-authentication-services": { name: "Apostille Authentication Services", prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 299.00 } },
+    "clia-certificate": { name: "CLIA Certificate", prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 } },
+    "custom-regulatory-legal-consulting": { name: "Custom Regulatory Legal Consulting", prices: { "starter": 150.00, "compliance": 1000.00, "enterprise": 1000.00 } },
+    "federal-tax": { name: "Federal Income Tax", prices: { "starter": 299.00, "compliance": 499.00, "enterprise": 799.00 } },
+    "state-tax": { name: "State Income Tax", prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 549.00 } },
+    "franchise-tax-filing": { name: "Franchise Tax Filing", prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 399.00 } },
+    "sales-tax-registration": { name: "Sales Tax Registration", prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 } },
+    "payroll-tax-940-941": { name: "Payroll Tax (940/941)", prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 } },
+    "heavy-use-tax-2290": { name: "Heavy Use Tax (2290)", prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 249.00 } },
+    "cage-code": { name: "CAGE Code", prices: { "starter": 249.00, "compliance": 349.00, "enterprise": 449.00 } },
+    "duns-number": { name: "DUNS Number Procurement", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 179.00 } },
+    "procurement-procurement-registration": { name: "Procurement Registration", prices: { "starter": 149.00, "compliance": 299.00, "enterprise": 499.00 } },
+    "minority-certificate": { name: "Minority Certificate", prices: { "starter": 99.00, "compliance": 249.00, "enterprise": 399.00 } },
+    "owner-operators": { name: "Owner Operators", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
+    "trucker-authority": { name: "Trucker Authority", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
+    "broker-authority": { name: "Broker Authority", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
+    "ucr-registration": { name: "UCR Registration", prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 249.00 } },
+    "scac-code-registration": { name: "SCAC Code Registration", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 } },
+    "dot-consortium": { name: "DOT Consortium", prices: { "starter": 149.00, "compliance": 299.00, "enterprise": 499.00 } },
+    "driver-qualification-file": { name: "Driver Qualification File", prices: { "starter": 279.00, "compliance": 349.00, "enterprise": 449.00 } },
+    "process-agent-boc-3": { name: "Process Agent (BOC-3)", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 } },
+    "ifta-registration": { name: "IFTA Registration", prices: { "starter": 159.00, "compliance": 279.00, "enterprise": 349.00 } },
+    "hazmat-registration": { name: "DOT HAZMAT Registration", prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 } },
+    "licenses-permits": { name: "Licenses & Permits", prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 299.00 } },
+    "trucker-insurance": { name: "Trucker Insurance", prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 } },
+    "broker-insurance": { name: "Broker Insurance", prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 } },
+    "new-entrant-audit": { name: "New Entrant Audit", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
+    "ifta-quarterly-returns": { name: "IFTA Quarterly Fuel Tax Filing", prices: { "starter": 129.00, "compliance": 249.00, "enterprise": 449.00 } },
+    "mcs-150-update": { name: "Biennial MCS-150 Updating", prices: { "starter": 45.00, "compliance": 89.00, "enterprise": 139.00 } },
+    "boc-3-amendment": { name: "BOC-3 Priority Amendment Filing", prices: { "starter": 39.00, "compliance": 79.00, "enterprise": 119.00 } }
 
 };
 

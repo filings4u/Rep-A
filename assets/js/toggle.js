@@ -1,100 +1,124 @@
 /**
  * ==========================================================================
- * 📱 FILINGS4U INTERACTIVE NAVIGATION CORE ENGINE
+ * 📱 FILINGS4U INTERACTIVE NAVIGATION & UTILITY MATRIX ENGINE
  * FILE LOCATION: assets/js/toggle.js
- * DESCRIPTION: Handles Right-to-Left slide-out drawer, white background dropdown loops,
- *              and mobile accordion sub-menus.
  * ==========================================================================
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. SELECT CORE ELEMENT INTERFACES
+(function() {
+  // 1. DYNAMIC ELEMENT OBSERVER BINDING CONTROLLER
+  function bindPlatformInteractions() {
     const menuTrigger = document.getElementById('mobile-menu-trigger');
     const navLinksDrawer = document.querySelector('.nav-links');
     const bodyNode = document.body;
+    const scrollBtn = document.getElementById('scrollToTopBtn');
 
-    // 2. CREATE ACTIVE DRAWER TOGGLE UTILITY
-    function toggleMobileMenu() {
-        // Toggle classes to fire your Right-to-Left slide-out CSS transitions
-        const isMenuOpening = !navLinksDrawer.classList.contains('active');
-        
-        navLinksDrawer.classList.toggle('active');
-        bodyNode.classList.toggle('nav-open');
-
-        // Manage accessibility state attributes
-        if (menuTrigger) {
-            menuTrigger.setAttribute('aria-expanded', isMenuOpening);
-            // Dynamic switch indicator icon text
-            menuTrigger.innerHTML = isMenuOpening ? '✕' : '☰';
-        }
+    // 🌟 FALLBACK EMULATOR CODE: Inject baseline styling directly if CSS parameters fail
+    if (scrollBtn && !scrollBtn.dataset.styled) {
+      scrollBtn.style.position = 'fixed';
+      scrollBtn.style.bottom = '30px';
+      scrollBtn.style.right = '30px';
+      scrollBtn.style.zIndex = '99999';
+      scrollBtn.style.cursor = 'pointer';
+      scrollBtn.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      scrollBtn.dataset.styled = "true";
     }
 
-    // Bind event tracking actions directly to the trigger button element
-    if (menuTrigger) {
-        menuTrigger.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevents instant bubbling layout triggers
-            toggleMobileMenu();
-        });
+    // 2. EXPOSED DRAWER INTERACTIVE LOGIC MODULE
+    window.toggleMobileMenu = function() {
+      if (!navLinksDrawer) return;
+
+      const isMenuOpening = !navLinksDrawer.classList.contains('active');
+      navLinksDrawer.classList.toggle('active');
+      bodyNode.classList.toggle('nav-open');
+
+      if (menuTrigger) {
+        menuTrigger.setAttribute('aria-expanded', isMenuOpening);
+        menuTrigger.innerHTML = isMenuOpening ? '✕' : '☰';
+      }
+    };
+
+    // Remove legacy event duplication blocks and bind clean fresh handlers
+    if (menuTrigger && !menuTrigger.dataset.bound) {
+      menuTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.toggleMobileMenu();
+      });
+      menuTrigger.dataset.bound = "true";
     }
 
-    // 3. SECURE PORTAL BUTTON DYNAMIC MOBILE CLASS & HOVER SWITCHER
-    const portalButton = document.querySelector('.btn-client-portal');
-    if (portalButton) {
-        function enforcePortalMobileStyles() {
-            if (window.innerWidth <= 991) {
-                portalButton.classList.add('mobile-portal-lock');
-            } else {
-                portalButton.classList.remove('mobile-portal-lock');
-            }
-        }
-        
-        // JAVASCRIPT DESKTOP HOVER INJECTION: Bypasses stubborn template inline styles
-        portalButton.addEventListener('mouseenter', function() {
-            if (window.innerWidth > 991) {
-                this.classList.add('desktop-portal-hover');
-            }
-        });
-        
-        portalButton.addEventListener('mouseleave', function() {
-            this.classList.remove('desktop-portal-hover');
-        });
-        
-        enforcePortalMobileStyles();
-        window.addEventListener('resize', enforcePortalMobileStyles);
-    }
-
-
-    // 4. MOBILE DROPDOWN ACCORDION HANDLING (CLICK TRAPS)
+    // 3. DROPDOWN COMPONENT ACCORDION HANDLERS (Screen size check wrapper)
     const dropdownTriggers = document.querySelectorAll('.static-dropdown > a');
-
     dropdownTriggers.forEach(trigger => {
-        trigger.addEventListener('click', function(e) {
-            // Only capture clicks if the screen is inside the mobile viewport breakpoint
-            if (window.innerWidth <= 991) {
-                e.preventDefault(); // Stop native redirect link action loops
-                
-                const parentDropdown = this.parentElement;
-                
-                // Toggle active visibility states for current target container
-                parentDropdown.classList.toggle('active-toggle');
-                
-                // Smoothly close any other active menus to prevent text layout clutter
-                document.querySelectorAll('.static-dropdown').forEach(item => {
-                    if (item !== parentDropdown) {
-                        item.classList.remove('active-toggle');
-                    }
-                });
+      if (trigger.dataset.bound) return;
+      trigger.addEventListener('click', function(e) {
+        if (window.innerWidth <= 991) {
+          e.preventDefault();
+          const parentDropdown = this.parentElement;
+          parentDropdown.classList.toggle('active-toggle');
+
+          document.querySelectorAll('.static-dropdown').forEach(item => {
+            if (item !== parentDropdown) {
+              item.classList.remove('active-toggle');
             }
-        });
+          });
+        }
+      });
+      trigger.dataset.bound = "true";
     });
 
-    // 5. EXTERNAL INTERACT LOGIC OVERRIDES
-    // Closes mobile menus instantly if user taps background viewport canvas rows
-    document.addEventListener('click', function(e) {
-        if (navLinksDrawer && navLinksDrawer.classList.contains('active')) {
-            if (!navLinksDrawer.contains(e.target) && e.target !== menuTrigger) {
-                toggleMobileMenu();
-            }
+    // 4. FLOATING CANVAS CLICK OVERRIDES
+    if (!document.datasetBoundClick) {
+      document.addEventListener('click', function(e) {
+        const activeDrawer = document.querySelector('.nav-links.active');
+        const triggerBtn = document.getElementById('mobile-menu-trigger');
+        if (activeDrawer && !activeDrawer.contains(e.target) && e.target !== triggerBtn) {
+          if (typeof window.toggleMobileMenu === 'function') window.toggleMobileMenu();
         }
-    });
-});
+      });
+      document.datasetBoundClick = true;
+    }
+
+    // 5. SCROLL VELOCITY ENGINE TO CEILING STRIPPER
+    if (scrollBtn && !scrollBtn.dataset.bound) {
+      // Passive track thread mapping layer execution parameters
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+          scrollBtn.style.display = 'flex';
+          scrollBtn.style.visibility = 'visible';
+          scrollBtn.style.opacity = '1';
+        } else {
+          scrollBtn.style.opacity = '0';
+          setTimeout(() => {
+            if (window.scrollY <= 300) {
+              scrollBtn.style.display = 'none';
+              scrollBtn.style.visibility = 'hidden';
+            }
+          }, 200);
+        }
+      }, { passive: true });
+
+      scrollBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      scrollBtn.dataset.bound = "true";
+    }
+  }
+
+  // 🌟 RUNTIME GUARD LAYER: Hooks interaction binding to early loads and ongoing DOM updates
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindPlatformInteractions);
+  } else {
+    bindPlatformInteractions();
+  }
+
+  // Active watcher observer checks for late injection mutations across page containers
+  const coreObserverEngine = new MutationObserver(() => {
+    bindPlatformInteractions();
+  });
+  
+  coreObserverEngine.observe(document.body, { 
+    childList: true, 
+    subtree: true 
+  });
+})();

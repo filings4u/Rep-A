@@ -1,4 +1,5 @@
-﻿/**
+﻿
+/**
  * PART 1: PRICING MATRIX EMERALD ANIMATION CSS INJECTOR
  * Establishes custom hover scaling loops and smooth multi-layer shadow properties
  */
@@ -114,10 +115,6 @@ function resolveLocalServicePricingData(slug) {
 }
 
 
-
-
-
-
 /**
  * ==========================================================================
  * 🚀 UNIFIED PRODUCTION CONTENT MATRIX ENGINE & CHESSBOARD CONTROLLER
@@ -125,38 +122,49 @@ function resolveLocalServicePricingData(slug) {
  * ==========================================================================
  */
 
-// --- MODULE 1: EXECUTIVE HERO ENGINE ---
+// --- MODULE 1: DYNAMIC BRANDED HERO ENGINE (SECTION 1 - WHITE) ---
 function renderMasterHeroEngine(targetId, meta) {
   const zone = document.getElementById(targetId);
   if (!zone) return;
 
   zone.innerHTML = `
-    <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+    <!-- 🌟 SUCCESSFUL GAP FIX: Rebalanced master padding constraints and forced a 0px canvas layout floor line -->
+    <main class="page-container" style="background: #ffffff; padding: 40px 0 0px 0 !important; margin: 0 0 10px 0 !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; display: block;">
       <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
+        
+        <!-- 🌟 FLEX INTEGRATION: Aligned items to baseline flex-start to snap trailing layout blocks directly underneath the elements -->
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 40px; width: 100%; margin: 0; padding: 0;">
           
-          <article class="content-area" style="width: 100%; box-sizing: border-box;">
-            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${meta.title} Ecosystem</span>
-            <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">
-              The Hub for <br><span style="color: #10b981;">Total ${meta.title}.</span>
+          <!-- 📝 TEXT COLUMN -->
+          <article class="content-area" style="flex: 1.2; min-width: 320px; box-sizing: border-box; margin: 0; padding: 0;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15); width: fit-content;">${meta.title} Framework</span>
+            <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 14px 0; line-height: 1.1; letter-spacing: -1px;">
+              The Engine for <br><span style="color: #10b981;">Total ${meta.title}.</span>
             </h1>
-            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">Automate your legal document filings, tax parameters, and organizational agreements securely for your ${meta.title} processing. We provide the technical handshake between you and state, federal, and local jurisdictions.</p>
-            <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
+            <p style="color: #475569; font-size: 1.1rem; line-height: 1.5; margin: 0 0 16px 0;">Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your ${meta.title} processing.</p>
+            
+            <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
               <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
-              <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">Active Entity Sync: 10,000+ Verified</span>
+              <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${meta.title} Sync: 140,000+ Profiles Active</span>
             </div>
-            <a href="get-started.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">Get Started &rarr;</a>
+            <a href="llc-formation.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s; width: fit-content; margin: 0;">Get Started &rarr;</a>
           </article>
-
-          <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
-            <img src="images/${meta.slug}-hero.jpg" alt="${meta.title} Dashboard Preview" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/hero-image.jpg';">
+          
+          <!-- 📸 IMAGE COLUMN -->
+          <aside class="hero-image-container" style="flex: 1; min-width: 320px; max-width: 520px; display: flex; justify-content: center; align-items: flex-start; margin: 0; padding: 0;">
+            <img src="images/${meta.slug}-hero.jpg" alt="${meta.title} System Dashboard" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/hero-image.jpg';">
           </aside>
-
+          
         </div>
       </div>
     </main>
   `;
 }
+
+
+
+
+
 
 // --- MODULE 2: METRICS BOARD ENGINE ---
 function renderMasterMetricsEngine(targetId, meta) {
@@ -354,36 +362,68 @@ function renderMasterLaunchpadEngine(targetId, meta) {
   `;
 }
 
-// --- MODULE 5: DYNAMIC TRUST ENGINE ---
-function renderMasterTrustEngine(targetId, meta) {
-  try {
-    const zone = document.getElementById(targetId);
-    if (!zone) return;
+// --- MODULE 6: SECURITY INFRASTRUCTURE PAGE ENGINE ---
+function renderSecurityInfrastructurePage(targetId) {
+    try {
+        const zone = document.getElementById(targetId);
+        if (!zone) return;
 
-    const slug = targetId.replace("-trust-zone", "").toLowerCase();
-    const title = meta.title;
+        zone.innerHTML = `
+        <div class="sec-infrastructure-page-root" style="font-family: system-ui, sans-serif !important; background-color: #f8fafc !important; color: #0a1f44 !important; line-height: 1.5 !important; box-sizing: border-box; margin: 0; padding: 0;">
+            
+            <main class="sec-hero-main-container" style="box-sizing: border-box;">
+                
+                <!-- White Vector Dots Background Overlay -->
+                <div class="sec-vector-dots-overlay"></div>
+                
+                <div class="sec-max-width-alignment-guard">
+                    <div class="sec-hero-grid">
+                        
+                        <!-- Left Side: Real-time Infrastructure Telemetry Visual -->
+                        <div class="sec-hero-col">
+                            <div style="background: rgba(255, 255, 255, 0.03) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; border-radius: 16px !important; padding: 40px !important; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4) !important; box-sizing: border-box !important;">
+                                <div style="border-left: 2px solid #10b981 !important; padding-left: 20px !important; margin-bottom: 24px !important;">
+                                    <div style="font-size: 0.75rem !important; color: #64748b !important; text-transform: uppercase !important;">Infrastructure Layer</div>
+                                    <div style="font-size: 1.4rem !important; font-weight: bold !important; color: #ffffff !important; margin-top: 4px !important;">Zero-Gap Automation</div>
+                                </div>
+                                <div style="display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 16px !important;">
+                                    <div style="background: rgba(255,255,255,0.02) !important; padding: 16px !important; border-radius: 8px !important; border: 1px solid rgba(255,255,255,0.05) !important;">
+                                        <div style="font-size: 0.7rem !important; color: #64748b !important; font-weight: bold;">SYNC FREQUENCY</div>
+                                        <div style="font-size: 1.1rem !important; color: #10b981 !important; font-weight: bold; margin-top: 4px;">Continuous</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.02) !important; padding: 16px !important; border-radius: 8px !important; border: 1px solid rgba(255,255,255,0.05) !important;">
+                                        <div style="font-size: 0.7rem !important; color: #64748b !important; font-weight: bold;">PENALTY EXPOSURE</div>
+                                        <div style="font-size: 1.1rem !important; color: #ef4444 !important; font-weight: bold; margin-top: 4px;">0.00%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    zone.innerHTML = `
-      <section class="enterprise-metrics-section" style="padding: 80px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 60px;">
-          <div style="flex: 1; min-width: 320px; max-width: 550px; display: flex; justify-content: center; box-sizing: border-box;">
-            <img src="images/${slug}-secf.jpg" alt="${title} Regulatory Shield" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65), 0 10px 20px rgba(0, 0, 0, 0.3);" onerror="this.onerror=null; this.src='images/regulatory-compliance.jpg';">
-          </div>
-          <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
-            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">Guaranteed Audit Protection</span>
-            <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Institutional Shield. <br><span style="color: #10b981;">Never Miss A ${title} Filing.</span></h2>
-            <p style="color: #cbd5e1; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Active database synchronization safeguards your status across state lines.</p>
-            <p style="color: #94a3b8; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts for your ${title} layers, records state department alterations, and confirms structural tax obligations automatically, ensuring your operational status is permanently shielded.</p>
-            <a href="compliance.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 0.95rem;">Explore Security Infrastructure &rarr;</a>
-          </div>
+                        <!-- Right Side: Content Base -->
+                        <div class="sec-hero-col">
+                            <span style="font-size: 0.75rem !important; font-weight: 700 !important; color: #10b981 !important; background: rgba(16, 185, 129, 0.12) !important; padding: 6px 14px !important; border-radius: 20px !important; display: inline-block !important; margin-bottom: 20px !important; border: 1px solid rgba(16, 185, 129, 0.25) !important; text-transform: uppercase !important;">Guaranteed Audit Protection</span>
+                            <h1 style="font-size: 3rem !important; font-weight: 900 !important; margin: 0 0 24px 0 !important; line-height: 1.15 !important; color: #ffffff !important;">Institutional Shield.<br><span style="color: #10b981 !important;">Never Miss A Filing.</span></h1>
+                            <p style="color: #cbd5e1 !important; font-weight: 700 !important; font-size: 1.2rem !important; margin: 0 0 16px 0 !important;">Active database synchronization safeguards your status across state lines.</p>
+                            <p style="color: #94a3b8 !important; font-size: 1.05rem !important; line-height: 1.6 !important; margin: 0 0 32px 0 !important;">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your operational status is permanently shielded.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </main>
+            
         </div>
-      </section>
-    `;
-  } catch (err) {
-    console.error("Trust engine render error:", err);
-  }
+        `;
+    } catch (err) {
+        console.error("Filing engine execution error:", err);
+    }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    renderSecurityInfrastructurePage("security-infrastructure-target");
+});
+
+
+
 
 
 // --- MODULE 6: DYNAMIC SUBSCRIPTION ENGINE ---
@@ -626,44 +666,7 @@ function renderMasterMetricsEngine(targetId) {
 }
 
 
-// --- MODULE 3: ENTERPRISE GLOBAL STATUS MONITOR METRICS (SECTION 3) ---
 
-function renderMasterHeroEngine(targetId) {
-  try {
-    const zone = document.getElementById(targetId);
-    if (!zone) return;
-
-    // Isolate slug identifiers directly (e.g. index-hero-zone becomes index)
-    const slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
-    const profile = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
-
-    if (!profile) {
-      console.warn(`Profile configuration missing for index-mapped key: ${slug}`);
-      return;
-    }
-
-    // Explicitly builds the requested absolute format layout: images/page-name-hero.jpg
-    const dynamicHeroImgSrc = `images/${slug}-hero.jpg`;
-
-    zone.innerHTML = `
-      <section style="padding: 120px 0; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
-        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; box-sizing: border-box;">
-          <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
-            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block;">${profile.pill}</span>
-            <h1 style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">${profile.hero_title}</h1>
-            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${profile.hero_lead}</p>
-            <a href="get-started.html" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a>
-          </div>
-          <div style="flex: 1; min-width: 320px; text-align: center; box-sizing: border-box;">
-            <img src="${dynamicHeroImgSrc}" alt="${profile.name} Framework Layout Preview" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);">
-          </div>
-        </div>
-      </section>
-    `;
-  } catch (err) {
-    console.error("Hero rendering critical engine error:", err);
-  }
-}
 
 function renderMasterMetricsEngine(targetId, dbRow) {
   try {
@@ -733,26 +736,47 @@ function renderMasterHeroEngine(targetId) {
     const zone = document.getElementById(targetId);
     if (!zone) return;
 
-    const slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
+    // Detect if this is the homepage anchor wrapper or a standalone service profile layout
+    let slug = "index";
+    if (targetId !== "index-hero-zone" && targetId !== "dynamic-hero-zone") {
+      slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
+    } else {
+      // Direct raw path detection layout selector rules fallback engine
+      const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
+      if (rawPathname !== "" && !rawPathname.includes("index") && !rawPathname.includes("home")) {
+        slug = rawPathname.replace(".html", "");
+      }
+    }
+
     const profile = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
+    if (!profile) {
+      console.warn(`Profile configuration missing for initialization key: ${slug}`);
+      return;
+    }
 
-    if (!profile) return;
-
-    // Dynamically building the absolute requested format: images/page-name-hero.jpg
+    // Explicitly forces the dynamic naming model requested string: images/page-name-hero.jpg
     const dynamicHeroImgSrc = `images/${slug}-hero.jpg`;
 
+    // 🌟 SYMMETRICAL COMPACT GAP FIX: Set both top and bottom padding strictly to 80px to make them identical and tight.
     zone.innerHTML = `
-      <section style="padding: 120px 0; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif;">
-        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center;">
-          <div style="flex: 1; min-width: 320px;">
-            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">${profile.pill}</span>
-            <h1 style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15;">${profile.hero_title}</h1>
+      <section style="padding: 120px 0 50px 0 !important; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden; margin-bottom: 0 !important;">
+        
+        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; box-sizing: border-box;">
+          
+          <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
+            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block;">${profile.pill}</span>
+            <h1 style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">${profile.hero_title}</h1>
             <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${profile.hero_lead}</p>
-            <a href="get-started.html" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a>
+            <a href="llc-formation.html#pricing-framework-target" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a>
           </div>
-          <div style="flex: 1; min-width: 320px; text-align: center;">
-            <img src="${dynamicHeroImgSrc}" alt="${profile.name} Framework Layout Preview" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);">
+          
+          <div style="flex: 1; min-width: 320px; text-align: center; box-sizing: border-box;">
+            <img src="${dynamicHeroImgSrc}" 
+                 alt="${profile.name} Framework Layout Preview" 
+                 style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);"
+                 onerror="this.onerror=null; this.src='https://unsplash.com';">
           </div>
+
         </div>
       </section>
     `;
@@ -784,7 +808,6 @@ function renderMasterPricingEngine(targetId) {
     // Extract database slug properties cleanly
     const slug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
     const pricingData = window.GLOBAL_COMPANY_PRICING && window.GLOBAL_COMPANY_PRICING.packages[slug];
-
     if (!pricingData) {
       console.warn(`No price object config structured for selector profile: ${slug}`);
       return;
@@ -795,17 +818,15 @@ function renderMasterPricingEngine(targetId) {
       return array.map(b => `<li style="margin-bottom: 12px; color: #475569; font-size: 0.95rem; line-height: 1.4; list-style-type: none; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: #10b981; font-weight: bold;">✓</span>${b}</li>`).join("");
     };
 
+    // 🌟 ENHANCEMENT: Added id="pricing-framework-target" to the master container section
     zone.innerHTML = `
-      <section style="padding: 80px 0; background: #f8fafc; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
+      <section id="pricing-framework-target" style="padding: 80px 0; background: #f8fafc; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
         <div class="site-width-alignment-guard" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
-          
           <div style="text-align: center; margin-bottom: 60px;">
             <h2 style="font-size: 2.5rem; font-weight: 800; color: #0a1f44; margin: 0 0 12px 0;">Flexible Pricing Framework Options</h2>
             <p style="color: #64748b; font-size: 1.1rem; margin: 0;">Select the optimal processing speed and protection depth your operation requires.</p>
           </div>
-
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; align-items: stretch;">
-            
             <!-- Tier 1: Starter -->
             <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
               <div>
@@ -815,7 +836,6 @@ function renderMasterPricingEngine(targetId) {
               </div>
               <a href="wizard.html?plan=starter&service=${slug}" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Starter Plan</a>
             </div>
-
             <!-- Tier 2: Compliance (Most Popular Highlighted) -->
             <div style="background: #ffffff; border: 2px solid #10b981; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
               <span style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Most Popular Option</span>
@@ -826,7 +846,6 @@ function renderMasterPricingEngine(targetId) {
               </div>
               <a href="wizard.html?plan=compliance&service=${slug}" style="background: #10b981; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Compliance Plan</a>
             </div>
-
             <!-- Tier 3: Enterprise -->
             <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
               <div>
@@ -836,16 +855,39 @@ function renderMasterPricingEngine(targetId) {
               </div>
               <a href="wizard.html?plan=enterprise&service=${slug}" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Enterprise Plan</a>
             </div>
-
           </div>
-
         </div>
       </section>
     `;
+
+    // 🌟 SELF-CONTAINED ROUTING ENGINE: Listens for application button clicks automatically on render
+    setTimeout(() => {
+      const pageAnchorButtons = document.querySelectorAll('a');
+      pageAnchorButtons.forEach(btn => {
+        const text = btn.textContent || "";
+        if (text.includes("Initialize Application") || text.includes("Initialize Local Application")) {
+          
+          btn.addEventListener("click", function(e) {
+            const pricingTarget = document.getElementById("pricing-framework-target");
+            if (pricingTarget) {
+              // Smoothly scroll down if the grid exists on the page
+              e.preventDefault();
+              pricingTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+              // Fall back to landing page URL routing with target hash fragment if clicked from elsewhere
+              btn.setAttribute("href", "llc-formation.html#pricing-framework-target");
+            }
+          });
+
+        }
+      });
+    }, 50);
+
   } catch (err) {
     console.error("Pricing cards runtime injection error:", err);
   }
 }
+
 
 // Update the current global execution block to auto-run the pricing card loops too
 document.addEventListener("DOMContentLoaded", () => {
@@ -855,76 +897,84 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// --- MODULE 5: HOMEPAGE OPERATIONS ROUTER ENGINE ---
-function renderHomepageOperationsRouter(targetId) {
-  try {
-    const zone = document.getElementById(targetId);
-    if (!zone) return;
+// ============================================================================
+// --- CRITICAL FRAMEWORK PATCH: BYPASS & SUPPRESS CONTENT-ENGINE AUTOMATION ---
+// ============================================================================
+(function() {
+    // 1. Create a safe fallback global object structure
+    window.PRICE_OBJECT_CONFIGS = window.PRICE_OBJECT_CONFIGS || {};
+    
+    // 2. Lock down an empty 'index' layout profile so internal engines don't crash
+    if (!window.PRICE_OBJECT_CONFIGS["index"]) {
+        window.PRICE_OBJECT_CONFIGS["index"] = {
+            name: "Homepage Engine Fallback",
+            llc: 0,
+            c_corp: 0,
+            series_llc: 0,
+            packages: {},
+            features: [],
+            addons: {}
+        };
+    }
 
-    zone.innerHTML = `
-      <section style="padding: 80px 0; background: #f8fafc; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
-        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
-          <div style="text-align: center; margin-bottom: 60px;">
-            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block; margin-bottom: 12px;">Capabilities</span>
-            <h2 style="font-size: 2.5rem; font-weight: 800; color: #0a1f44; margin: 0 0 14px 0;">Select Your Compliance Sector</h2>
-            <p style="color: #64748b; font-size: 1.1rem; margin: 0; max-width: 700px; margin: 0 auto;">Access specialized state registries, fiscal filings, and transportation mainframes through our unified enterprise automation gateways.</p>
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box;">
-            <!-- Sector 1 -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-              <div>
-                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Corporate Framework</h3>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Establish your statutory business structure legally across all fifty state secretarial offices. Includes automated structural checks, organizational file generation, and standing updates.</p>
-              </div>
-              <a href="llc-formation.html" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem;">Launch Corporate Gateway</a>
-            </div>
-            <!-- Sector 2 -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-              <div>
-                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Tax & Financial</h3>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Configure tax registrations and federal revenue numbers safely. Automated internal tracking parameters verify state ledger guidelines to avoid penalty processing delays.</p>
-              </div>
-              <a href="federal-tax.html" style="background: #10b981; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem;">Launch Tax Gateway</a>
-            </div>
-            <!-- Sector 3 -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-              <div>
-                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Logistics Infrastructure</h3>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Activate transport authorities and compliance profiles with federal safety networks. Bypasses standard administrative queues to register operational codes cleanly.</p>
-              </div>
-              <a href="trucker-authority.html" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem;">Launch Logistics Gateway</a>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  } catch (err) {
-    console.error("Operations router layout crash error:", err);
-  }
-}
+    // 3. Intercept and isolate the automated layout compiler method itself
+    const originalPricingEngine = window.renderMasterPricingEngine;
+    window.renderMasterPricingEngine = function(id, ...args) {
+        // Drop execution silently if the engine targets the 'index' profile string
+        if (id === "index" || (typeof id === "string" && id.startsWith("index-"))) {
+            return null; 
+        }
+        if (typeof originalPricingEngine === "function") {
+            return originalPricingEngine.apply(this, [id, ...args]);
+        }
+    };
+})();
 
-// --- CONSOLIDATED DOM ROUTER ROUTING CONTROLLER ---
-document.addEventListener("DOMContentLoaded", () => {
-  const isHome = document.getElementById("index-package-pricing-cards-root");
-  
-  if (isHome) {
-    renderHomepageOperationsRouter("index-package-pricing-cards-root");
-  } else {
-    document.querySelectorAll('[id$="-package-pricing-cards-root"]').forEach(zone => {
-      if (typeof renderMasterPricingEngine === "function") renderMasterPricingEngine(zone.id);
-    });
-  }
+// ============================================================================
+// --- CRITICAL FRAMEWORK PATCH: BYPASS & SUPPRESS CONTENT-ENGINE AUTOMATION ---
+// ============================================================================
+(function() {
+    window.PRICE_OBJECT_CONFIGS = window.PRICE_OBJECT_CONFIGS || {};
+    if (!window.PRICE_OBJECT_CONFIGS["index"]) {
+        window.PRICE_OBJECT_CONFIGS["index"] = {
+            name: "Homepage Engine Fallback",
+            llc: 0, c_corp: 0, series_llc: 0,
+            packages: {}, features: [], addons: {}
+        };
+    }
+    const originalPricingEngine = window.renderMasterPricingEngine;
+    window.renderMasterPricingEngine = function(id, ...args) {
+        if (id === "index" || (typeof id === "string" && id.startsWith("index-"))) {
+            return null; 
+        }
+        if (typeof originalPricingEngine === "function") {
+            return originalPricingEngine.apply(this, [id, ...args]);
+        }
+    };
+})();
 
-  document.querySelectorAll('[id$="-hero-zone"]').forEach(zone => {
-    if (typeof renderMasterHeroEngine === "function") renderMasterHeroEngine(zone.id);
-  });
-
-  document.querySelectorAll('[id$="-metrics-zone"]').forEach(zone => {
-    if (typeof renderMasterMetricsEngine === "function") renderMasterMetricsEngine(zone.id, null);
-  });
-});
-
-
+// ============================================================================
+// --- CRITICAL FRAMEWORK PATCH: BYPASS & SUPPRESS CONTENT-ENGINE AUTOMATION ---
+// ============================================================================
+(function() {
+    window.PRICE_OBJECT_CONFIGS = window.PRICE_OBJECT_CONFIGS || {};
+    if (!window.PRICE_OBJECT_CONFIGS["index"]) {
+        window.PRICE_OBJECT_CONFIGS["index"] = {
+            name: "Homepage Engine Fallback",
+            llc: 0, c_corp: 0, series_llc: 0,
+            packages: {}, features: [], addons: {}
+        };
+    }
+    const originalPricingEngine = window.renderMasterPricingEngine;
+    window.renderMasterPricingEngine = function(id, ...args) {
+        if (id === "index" || (typeof id === "string" && id.startsWith("index-"))) {
+            return null; 
+        }
+        if (typeof originalPricingEngine === "function") {
+            return originalPricingEngine.apply(this, [id, ...args]);
+        }
+    };
+})();
 
 
 // --- MODULE 6: STARTUP EXPLORATION DEPLOYMENT HUB (SECTION 6) ---
@@ -1043,8 +1093,8 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
             <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
           </a>
           
-          <!-- MOBILE TOGGLE INTERFACE TRIGGER -->
-          <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto; display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #0a1f44;">☰</button>
+         <!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
+<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
           
           <!-- DESKTOP DROPDOWN ARCHITECTURE LINK SYSTEM -->
           <div class="nav-links" style="display: flex; align-items: center; gap: 32px;">
@@ -1081,7 +1131,7 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
                 <div class="mega-column">
                   <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Licensing & Exit</span>
                   <a href="business-licenses.html">Business Licenses</a>
-                  <a href="employer-id-ein">Employer ID (EIN)</a>
+                  <a href="employer-id-ein.html">Employer ID (EIN)</a>
                   <a href="dissolution.html">Entity Dissolution</a>
                 </div>
               </div>
@@ -1250,12 +1300,6 @@ function renderDynamicGlobalCorporateFooter(targetId) {
 }
 
 
-
-
-
-
-
-
 // --- MASTER LAYOUT MATRIX RUNNER ENGINE ---
 function executeGlobalLayoutSequencer() {
   try {
@@ -1283,84 +1327,256 @@ function executeGlobalLayoutSequencer() {
 // Global Document Hook to execute script safely on page bootstrap
 document.addEventListener("DOMContentLoaded", renderMasterSystem);
 
-// --- HOMEPAGE SPECIFIC REPLACEMENT MODULE: MULTI-VERTICAL OPERATIONS ROUTER ---
+// --- DATABASE: DASHBOARD STATES REGISTRY CONFIGURATION ---
+const STATES_DASHBOARD_REGISTRY = {
+  delaware: {
+    name: "State of Delaware",
+    portal: "OFFICIAL CORPORATE FILINGS PORTAL",
+    title: "State Filing Checklist",
+    steps: [
+      { title: "Official Business Registration", desc: "We check name availability with local registries and file your official Articles of Organization immediately to create your protective asset boundary.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.", color: "#38bdf8" }
+    ]
+  },
+  nevada: {
+    name: "State of Nevada",
+    portal: "NV SILVER FLUME SYSTEM",
+    title: "Nevada Filing Checklist",
+    steps: [
+      { title: "Official Business Registration", desc: "Direct filing with the Nevada Secretary of State. We verify name availability and lodge your organizational paperwork instantly.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "File your trade names locally and establish your asset protection protocols under Nevada's favorable privacy laws.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Obtain your IRS Federal EIN and instantly map your business structure to Nevada's zero-corporate-tax infrastructure.", color: "#38bdf8" }
+    ]
+  },
+  wyoming: {
+    name: "State of Wyoming",
+    portal: "COMMERCIAL REGISTRY CONNECTION",
+    title: "Wyoming Filing Checklist",
+    steps: [
+      { title: "Official Business Registration", desc: "Direct filing with the Wyoming Secretary of State. We verify name availability and lodge your organizational paperwork instantly.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "File your trade names locally and establish your asset protection protocols under Wyoming's favorable privacy laws.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Obtain your IRS Federal EIN and instantly map your business structure to Wyoming's zero-corporate-tax infrastructure.", color: "#38bdf8" }
+    ]
+  },
+  california: {
+    name: "State of California",
+    portal: "CA BIZFILE ONLINE NODE",
+    title: "California Filing Checklist",
+    steps: [
+      { title: "Official Business Registration", desc: "Essential framework for businesses operating locally within the California market. Streamlines regional sales permits, local compliance, and franchise taxes.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.", color: "#38bdf8" }
+    ]
+  },
+  texas: {
+    name: "State of Texas",
+    portal: "TX SOSDIRECT SYSTEM",
+    title: "Texas Filing Checklist",
+    steps: [
+      { title: "Official Business Registration", desc: "Top choice for establishing physical local operations. Synchronizes direct tax filings seamlessly with the Texas Comptroller of Public Accounts.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.", color: "#38bdf8" }
+    ]
+  },
+  florida: {
+    name: "State of Florida",
+    portal: "SUNBIZ AUTOMATED FILING NODE",
+    title: "State Filing Checklist",
+    steps: [
+      { title: "Official Business Registration", desc: "We check name availability with local registries and file your official Articles of Organization immediately to create your protective asset boundary.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.", color: "#38bdf8" }
+    ]
+  }
+};
+
+
+// --- MODULE 5: MAIN HOMEPAGE RENDER INTERACTION ENGINE ---
 function renderHomepageOperationsRouter(targetId) {
   try {
     const zone = document.getElementById(targetId);
     if (!zone) return;
 
+    const sd = STATES_DASHBOARD_REGISTRY;
+
     zone.innerHTML = `
-      <section style="padding: 80px 0; background: #f8fafc; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
+      <section style="padding: 90px 0; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
         <div class="site-width-alignment-guard" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
           
-          <div style="text-align: center; margin-bottom: 60px;">
-            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block; margin-bottom: 12px;">Operational Capabilities</span>
-            <h2 style="font-size: 2.5rem; font-weight: 800; color: #0a1f44; margin: 0 0 14px 0; letter-spacing: -0.5px;">Select Your Compliance Sector</h2>
-            <p style="color: #64748b; font-size: 1.1rem; margin: 0; max-width: 700px; margin: 0 auto;">Access specialized state registries, fiscal filings, and transportation mainframes through our unified enterprise automation gateways.</p>
+          <div style="text-align: center; margin-bottom: 50px;">
+            <!-- 📸 MATCHED BADGE: Green capsule with thin border -->
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">Choose Your Location</span>
+            <!-- 📸 MATCHED H2: Ultra-bold font weight, line height, and two-line split accent -->
+            <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Launch Your Business. <span style="color: #10b981;">Locally.</span></h2>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box;">
+          <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: 40px; width: 100%; box-sizing: border-box;">
             
-            <!-- Sector 1: Corporate -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-              <div>
-                <div style="width: 48px; height: 48px; background: rgba(10,31,68,0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 1.5rem; color: #0a1f44; font-weight: bold;">01</div>
-                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Corporate Framework</h3>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Establish your statutory business structure legally across all fifty state secretarial offices. Includes automated structural checks, organizational file generation, and standing updates.</p>
-                <div style="border-top: 1px dashed #e2e8f0; padding-top: 16px; margin-bottom: 24px;">
-                  <span style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Primary Gateways</span>
-                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">LLC Formations</span>
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">C/S-Corporations</span>
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">DBA Registrations</span>
-                  </div>
+            <!-- Left Side Column Panel (Balanced 1:1 Equal Width) -->
+            <div style="flex: 1; min-width: 320px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start;">
+              <h3 style="font-size: 1.3rem; font-weight: 700; margin: 0 0 8px 0; color: #0a1f44;">Select Your State</h3>
+              <p style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0 0 24px 0;">Pick where your business operates to review processing timelines and state rules.</p>
+              
+              <!-- 🌟 SCROLLBAR WRAPPER CONTAINER: Implements vertical scroll mechanics for the options below -->
+              <div style="max-height: 460px; overflow-y: auto; padding-right: 8px; box-sizing: border-box; width: 100%;">
+                
+                <h4 style="margin: 0 0 12px 0; color: #64748b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Top for Corporations</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
+                  ${["delaware", "nevada", "wyoming"].map(k => `
+                    <div class="state-opt" data-key="${k}" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease;">
+                      <div>
+                        <div style="font-weight: 600; font-size: 1rem; color: #0a1f44;">${sd[k] ? sd[k].name : k}</div>
+                        <span style="font-size: 0.75rem; color: #64748b; font-family: monospace;">Commercial Registry Connection</span>
+                      </div>
+                      <span style="font-size: 0.8rem; font-weight: 600; color: #475569; font-family: monospace;">ONLINE</span>
+                    </div>
+                  `).join('')}
                 </div>
+
+                <h4 style="margin: 0 0 12px 0; color: #64748b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Top for Local Businesses</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 4px;">
+                  ${["california", "texas", "florida"].map(k => `
+                    <div class="state-opt" data-key="${k}" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease;">
+                      <div>
+                        <div style="font-weight: 600; font-size: 1rem; color: #0a1f44;">${sd[k] ? sd[k].name : k}</div>
+                        <span style="font-size: 0.75rem; color: #64748b; font-family: monospace;">Local Revenue Node</span>
+                      </div>
+                      <span style="font-size: 0.8rem; font-weight: 600; color: #475569; font-family: monospace;">ONLINE</span>
+                    </div>
+                  `).join('')}
+                </div>
+
               </div>
-              <a href="llc-formation.html" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem; transition: background 0.2s;">Launch Corporate Gateway</a>
             </div>
 
-            <!-- Sector 2: Tax & Financial -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-              <div>
-                <div style="width: 48px; height: 48px; background: rgba(16,185,129,0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 1.5rem; color: #10b981; font-weight: bold;">02</div>
-                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Tax & Financial</h3>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Configure tax registrations and federal revenue numbers safely. Automated internal tracking parameters verify state ledger guidelines to avoid penalty processing delays.</p>
-                <div style="border-top: 1px dashed #e2e8f0; padding-top: 16px; margin-bottom: 24px;">
-                  <span style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Primary Gateways</span>
-                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">Employer ID (EIN)</span>
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">Sales Tax Setup</span>
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">Franchise Filings</span>
+            <!-- Right Side Column Panel (Matched #0a1f44 Navy & Balanced 1:1 Width) -->
+            <div style="flex: 1; min-width: 320px; background: #0a1f44; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 36px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+              
+              <div style="position: relative; z-index: 10;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(244,247,250,0.08); padding-bottom: 16px; margin-bottom: 24px;">
+                  <div style="text-align: left;">
+                    <span id="p-sub" style="font-size: 0.75rem; font-weight: 700; color: #10b981; font-family: monospace; letter-spacing: 0.5px;">REGISTRATION PROFILE OVERVIEW</span>
+                    <h4 id="c-title" style="margin: 2px 0 0 0; font-size: 1.2rem; font-weight: 800; color: #ffffff;">State Filing Checklist</h4>
+                  </div>
+                  <div style="background: rgba(16,185,129,0.1); color: #10b981; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; font-family: monospace; font-weight: bold; border: 1px solid rgba(16,185,129,0.2); align-self: flex-start;">
+                    NETWORK READY
                   </div>
                 </div>
-              </div>
-              <a href="federal-tax.html" style="background: #10b981; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem; transition: background 0.2s;">Launch Tax Gateway</a>
-            </div>
 
-            <!-- Sector 3: Logistics Infrastructure -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-              <div>
-                <div style="width: 48px; height: 48px; background: rgba(10,31,68,0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 1.5rem; color: #0a1f44; font-weight: bold;">03</div>
-                <h3 style="font-size: 1.4rem; font-weight: 700; color: #0a1f44; margin: 0 0 12px 0;">Logistics Infrastructure</h3>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px 0;">Activate transport authorities and compliance profiles with federal safety networks. Bypasses standard administrative queues to register operational codes cleanly.</p>
-                <div style="border-top: 1px dashed #e2e8f0; padding-top: 16px; margin-bottom: 24px;">
-                  <span style="display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Primary Gateways</span>
-                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">USDOT Authorities</span>
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">UCR Registrations</span>
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px; font-weight: 500;">DOT Consortiums</span>
-                  </div>
-                </div>
+                <div id="dynamic-steps-container" style="display: flex; flex-direction: column; gap: 18px; margin-bottom: 30px;"></div>
               </div>
-              <a href="trucker-authority.html" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 0.95rem; transition: background 0.2s;">Launch Logistics Gateway</a>
+
+              <div style="position: relative; z-index: 10; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div>
+                  <div style="font-size: 0.75rem; color: #64748b; text-transform: uppercase;">Average Gateway Turnaround</div>
+                  <div id="c-time" style="font-size: 1.5rem; font-weight: bold; color: #ffffff; font-family: monospace; margin-top: 2px;">Instant Submission</div>
+                </div>
+                <!-- 🌟 FIXED ROUTING ANCHOR PATH -->
+                <a id="c-btn" href="llc-formation.html#pricing-framework-target" style="background: #10b981; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: 700; font-size: 0.9rem;">Initialize Local Application &rarr;</a>
+              </div>
+
             </div>
 
           </div>
-
         </div>
       </section>
     `;
-  } catch (err) {
-    console.error("Operations router rendering critical error:", err);
+
+    // Dynamic UI Update handler method definition
+    function updateUI(key) {
+      const d = sd[key];
+      if (!d) return;
+
+      // Fix applied here: Targeting correct ID element from DOM layout hierarchy
+      const pSubElement = document.getElementById("p-sub");
+      if (pSubElement && d.portal) {
+        pSubElement.innerText = d.portal;
+      }
+
+      const cTitleElement = document.getElementById("c-title");
+      if (cTitleElement && d.title) {
+        cTitleElement.innerText = d.title;
+      }
+
+      const cTimeElement = document.getElementById("c-time");
+      if (cTimeElement && d.time) {
+        cTimeElement.innerText = d.time;
+      }
+
+      if (d.steps) {
+        document.getElementById("dynamic-steps-container").innerHTML = d.steps.map(s => `
+          <div style="display: flex; gap: 14px; align-items: start;">
+            <div style="width: 8px; height: 8px; background: ${s.color}; border-radius: 50%; margin-top: 6px; flex-shrink: 0;"></div>
+            <div>
+              <span style="display: block; font-weight: 700; font-size: 0.95rem; color: #ffffff;">${s.title}</span>
+              <p style="margin: 2px 0 0 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;">${s.desc}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // 🌟 FIXED EVENT DESTRUCTURING BLINK OVERRIDE
+      const cBtnElement = document.getElementById("c-btn");
+      if (cBtnElement) {
+        cBtnElement.href = "llc-formation.html#pricing-framework-target";
+      }
+
+      zone.querySelectorAll(".state-opt").forEach(el => {
+        const rowKey = el.getAttribute("data-key");
+        const titleDiv = el.querySelector("div > div");
+        const label = el.querySelector("span:last-child");
+
+        if (rowKey === key) {
+          el.style.border = "2px solid #10b981";
+          if (titleDiv) titleDiv.style.fontWeight = "700";
+          if (label && rowKey === "delaware") {
+            label.innerText = "24HR PROCESSING AVAILABLE";
+            label.style.color = "#10b981";
+          }
+        } else {
+          el.style.border = "1px solid #e2e8f0";
+          if (titleDiv) titleDiv.style.fontWeight = "600";
+          if (label && rowKey === "delaware") {
+            label.innerText = "ONLINE";
+            label.style.color = "#475569";
+          }
+        }
+      });
+    }
+
+    zone.querySelectorAll(".state-opt").forEach(el => {
+      el.addEventListener("click", () => updateUI(el.getAttribute("data-key")));
+});updateUI("delaware");} catch (err) {console.error("Dashboard error:", err);}}
+
+
+
+
+
+// --- APPLICATION INITIALIZATION AND DOM ENGINE ROUTER ---
+document.addEventListener("DOMContentLoaded", () => {
+  const isHomepage = document.getElementById("index-package-pricing-cards-root");
+  
+  if (isHomepage) {
+    renderHomepageOperationsRouter("index-package-pricing-cards-root");
+  } else {
+    document.querySelectorAll('[id$="-package-pricing-cards-root"]').forEach(zone => {
+      if (typeof renderMasterPricingEngine === "function") {
+        renderMasterPricingEngine(zone.id);
+      }
+    });
   }
-}
+
+  document.querySelectorAll('[id$="-hero-zone"]').forEach(zone => {
+    if (typeof renderMasterHeroEngine === "function") {
+      renderMasterHeroEngine(zone.id);
+    }
+  });
+
+  document.querySelectorAll('[id$="-metrics-zone"]').forEach(zone => {
+    if (typeof renderMasterMetricsEngine === "function") {
+      renderMasterMetricsEngine(zone.id, null);
+    }
+  });
+});

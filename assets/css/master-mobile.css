@@ -1566,3 +1566,86 @@
     line-height: 1.2 !important;
   }
 }
+
+/* Global CSS rules for Module 6 Layout */
+.sec-infrastructure-page-root {
+    width: 100%;
+}
+
+.sec-hero-main-container {
+    background: #0a1f44;
+    color: #ffffff;
+    padding: 80px 0 50px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.sec-vector-dots-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: radial-gradient(#ffffff 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: 1;
+}
+
+.sec-max-width-alignment-guard {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 0 40px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
+
+/* 50/50 Desktop Flex Split */
+.sec-hero-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sec-hero-col {
+    flex: 1 1 calc(50% - 30px);
+    width: calc(50% - 30px);
+    max-width: calc(50% - 30px);
+    min-width: 320px;
+    box-sizing: border-box;
+}
+
+/* Responsive Mobile Rules */
+@media (max-width: 992px) {
+    .sec-hero-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .sec-hero-col {
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: 100%;
+    }
+    .sec-hero-col h1 {
+        font-size: 2.2rem !important;
+    }
+    .sec-hero-main-container {
+        padding: 80px 0 40px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .sec-hero-col h1 {
+        font-size: 1.8rem !important;
+    }
+    .sec-hero-main-container {
+        padding: 60px 0 30px 0;
+    }
+}

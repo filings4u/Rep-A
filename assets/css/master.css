@@ -3579,3 +3579,18 @@ footer.site-footer,
 }
 .responsive-hero-grid.hero-left-layout .hero-image-container { grid-column: 1 !important; }
 .responsive-hero-grid.hero-left-layout .content-area { grid-column: 2 !important; }
+
+
+ body {
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+    }
+    .state-opt:hover {
+      border-color: #10b981 !important;
+      box-shadow: 0 10px 20px rgba(10, 31, 68, 0.05) !important;
+      transform: translateY(-2px);
+    }
+
+
+    
