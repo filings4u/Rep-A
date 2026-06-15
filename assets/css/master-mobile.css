@@ -1863,3 +1863,21 @@
 }
 
 
+/* ==========================================================================
+   28. GLOBAL SITEWIDE HERO SPACING ARCHITECTURE (80PX TOP / 50PX BOTTOM)
+   ========================================================================== */
+
+/* Maintain identical, strict sitewide symmetry when scaled down onto mobile glass viewports */
+@media screen and (max-width: 991px) {
+    .sec-hero-main-container,
+    .hero-section-wrapper,
+    .hero-premium-block,
+    main.page-container,
+    main.f4u-comp-hero-panel,
+    section.f4u-comp-hero-panel,
+    [class*="-hero-zone"],
+    [id*="-hero-zone"] {
+        padding-top: 30px !important;
+        padding-bottom: 0px !important;
+    }
+}

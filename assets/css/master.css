@@ -3593,4 +3593,16 @@ footer.site-footer,
     }
 
 
-    
+/* Target every potential hero configuration across all dynamic layout engine tracks */
+.sec-hero-main-container,
+.hero-section-wrapper,
+.hero-premium-block,
+main.page-container,
+main.f4u-comp-hero-panel,
+section.f4u-comp-hero-panel,
+[class*="-hero-zone"],
+[id*="-hero-zone"] {
+    padding-top: 30px !important;
+    padding-bottom: 0px !important;
+    box-sizing: border-box !important;
+}
