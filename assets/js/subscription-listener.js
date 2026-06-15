@@ -12,8 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (subscribeForm && statusMessage && submitButton) {
     subscribeForm.addEventListener("submit", async (e) => {
       e.preventDefault(); // 🚫 STOPS THE PAGE FROM REFRESHING
-      
-      const emailInput = document.getElementById("subscriber-email");
+
+      // 🛠️ FIX: Updated to match your form's actual input ID 'subscribe-email-field'
+      const emailInput = document.getElementById("subscribe-email-field");
       if (!emailInput) return;
 
       const targetCleanEmail = emailInput.value.trim().toLowerCase();
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
         const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
-        
+
         // Execute the direct network connection to your Supabase subscribers table
         const response = await fetch(`${backupUrl}/rest/v1/subscribers`, {
           method: "POST",
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "Content-Type": "application/json",
             "Prefer": "return=minimal"
           },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             email: targetCleanEmail,
             created_at: new Date().toISOString()
           })
@@ -59,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         statusMessage.innerText = "🎉 Subscription successful! Welcome to your real-time compliance feed.";
         statusMessage.style.cssText = "display: block; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2); margin-top: 14px; padding: 12px 16px; border-radius: 8px; font-weight: 600;";
         emailInput.value = ""; // Reset input field smoothly
-        
       } catch (err) {
         console.error("[Supabase Pipeline Error]:", err);
         statusMessage.innerText = "⚠️ Server pipeline timed out. Please try again.";

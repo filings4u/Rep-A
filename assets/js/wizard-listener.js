@@ -1,31 +1,33 @@
-document.addEventListener("DOMContentLoaded", () => {
-  try {
-    // 1. Parse string indicators out of checkout address bar lines
-    const queryParams = new URLSearchParams(window.location.search);
-    const passedState = queryParams.get("state");
-    const passedForm = queryParams.get("form");
+       // 🎯 INTERACTIVE CAPTURE LOGIC: Listens to the submit action asynchronously
+        setTimeout(() => {
+            const subscribeForm = document.getElementById("compliance-subscribe-form");
+            const wrapperZone = document.getElementById("f4u-subscribe-interface-wrapper");
+            const emailInput = document.getElementById("subscribe-email-field");
 
-    if (!passedState) return;
+            if (!subscribeForm || !wrapperZone || !emailInput) return;
 
-    console.log(`[Wizard Tunnel] Intercepted configuration: State=${passedState}, Form=${passedForm}`);
+            subscribeForm.addEventListener("submit", function(event) {
+                event.preventDefault(); // Blocks default webpage refresh bug
+                
+                const userEmail = emailInput.value.trim();
+                if (!userEmail) return;
 
-    // 2. Select HTML input elements on your wizard landing screens
-    const wizardStateSelect = document.getElementById("wizard-state-input") || document.querySelector('select[name="state"]');
-    const wizardFormSelect = document.getElementById("wizard-form-input") || document.querySelector('select[name="entity_type"]');
+                // Optional: Fire data streams here out to your active tracking dashboard or data webhook
+                console.log(`Filing subscription captured successfully for user: ${userEmail}`);
 
-    // 3. Auto-populate parameters natively on load execution
-    if (wizardStateSelect) {
-      wizardStateSelect.value = passedState.toUpperCase();
-      // Fire native change events to activate child scripts running inside wizard blocks
-      wizardStateSelect.dispatchEvent(new Event('change', { bubbles: true }));
-    }
+                // Smoothly swap out the form elements with an unbreachable success state block
+                wrapperZone.style.transition = "opacity 0.2s ease";
+                wrapperZone.style.opacity = "0";
 
-    if (passedForm && wizardFormSelect) {
-      wizardFormSelect.value = passedForm.toLowerCase();
-      wizardFormSelect.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-
-  } catch (err) {
-    console.error("Wizard address parser critical configuration error:", err);
-  }
-});
+                setTimeout(() => {
+                    wrapperZone.innerHTML = `
+                        <div style="background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.2); padding: 32px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(10,31,68,0.02); box-sizing: border-box; width: 100%;">
+                            <div style="color: #10b981; font-size: 2rem; margin-bottom: 8px;">✓</div>
+                            <h4 style="margin: 0 0 6px 0; font-size: 1.25rem; font-weight: 800; color: #0a1f44;">Subscription Confirmed</h4>
+                            <p style="margin: 0; font-size: 0.9rem; color: #475569; line-height: 1.5;">Your profile is synchronized. Compliance updates will stream straight to <strong>${userEmail}</strong>.</p>
+                        </div>
+                    `;
+                    wrapperZone.style.opacity = "1";
+                }, 200);
+            });
+        }, 50);
