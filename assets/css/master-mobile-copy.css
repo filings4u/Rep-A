@@ -1,4 +1,4 @@
-/** 
+﻿/** 
  * ========================================================================== 
  * FILINGS4U COMPREHENSIVE PRODUCTION MOBILE ENGINE
  * FILE LOCATION: assets/css/master-mobile.css;
@@ -1641,6 +1641,14 @@
     }
 }
 
+@media (max-width: 480px) {
+    .sec-hero-col h1 {
+        font-size: 1.8rem !important;
+    }
+    .sec-hero-main-container {
+        padding: 60px 0 30px 0;
+    }
+}
 
 /* --- Decisive Global Mobile Centering & Width Control --- */
 @media (max-width: 992px) {
@@ -1676,189 +1684,44 @@
 }
 
 
-
-/* ==========================================================================
-   23. LEFT-SIDE FIXED SOCIAL PROOF CONTAINER
-   ========================================================================== */
-.f4u-side-social-proof {
-    position: fixed !important;
-    top: 90% !important;
-    left: 24px !important;
-    transform: translateY(-50%) !important;
-    width: max-content !important;
-    max-width: 280px !important;
-    background: #ffffff !important;
-    border: 1px solid rgba(10, 31, 68, 0.1) !important;
-    border-radius: 12px !important;
-    padding: 16px !important;
-    box-shadow: 0 15px 30px rgba(10, 31, 68, 0.08) !important;
-    z-index: 999 !important; /* Sits securely above background sections but below main nav dropdowns */
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important;
-    box-sizing: border-box !important;
+/* --- HERO SECTION SPACING RESTORATION --- */
+.responsive-hero-grid,
+.sec-hero-grid,
+main.page-container,
+.sec-hero-main-container,
+section[style*="padding"] {
+    padding-top: 20px !important;
+    padding-bottom: 30px !important;
 }
 
-.f4u-side-proof-header {
-    display: flex !important;
+
+/* --- FOOTER SECURE BADGE CONTAINER WIDTH FIX --- */
+.active-sync-badge-wrapper,
+.secure-badge-container,
+footer [class*="badge-wrapper"],
+footer [class*="badge-container"] {
+    width: max-content !important;      /* Forces container to wrap tightly around the inner items */
+    max-width: 100% !important;         /* Prevents overflow on very narrow viewports */
+    margin-left: auto !important;       /* Centers the container horizontally on the display grid */
+    margin-right: auto !important;
+    display: inline-flex !important;    /* Keeps items lined up cleanly inside the tight bounds */
     align-items: center !important;
-    gap: 8px !important;
+    justify-content: center !important;
 }
 
-.f4u-side-proof-stars {
-    color: #10b981 !important; /* Theme Emerald Green */
-    font-size: 0.95rem !important;
-    letter-spacing: 1px !important;
-    font-weight: bold !important;
-}
-
-.f4u-side-proof-text {
-    font-size: 0.85rem !important;
-    color: #475569 !important; /* Theme text-muted Slate */
-    line-height: 1.4 !important;
-    margin: 0 !important;
-    font-weight: 500 !important;
-}
-
-/* Responsive Rule: Safely hide on small screens to prevent overlap on mobile glass edges */
-@media (max-width: 1200px) {
-    .f4u-side-social-proof {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
+/* --- MOBILE HERO BOTTOM GAP COLLAPSE --- */
+@media (max-width: 992px) {
+    /* Collapse the hardcoded paragraph bottom space */
+    .responsive-hero-grid p,
+    .responsive-hero-grid div > p {
+        margin-bottom: 16px !important; 
     }
-}
 
-/* ==========================================================================
-   24. DYNAMIC SIDE SOCIAL PROOF ENGINE WITH DISMISS CORE
-   ========================================================================== */
-.f4u-floating-proof-card {
-    position: fixed !important;
-    bottom: 40px !important;
-    left: 24px !important;
-    width: 290px !important;
-    background: #ffffff !important;
-    border: 1px solid rgba(10, 31, 68, 0.1) !important;
-    border-radius: 12px !important;
-    padding: 16px !important;
-    box-shadow: 0 15px 35px rgba(10, 31, 68, 0.1) !important;
-    z-index: 999 !important;
-    box-sizing: border-box !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 8px !important;
-    transition: opacity 0.3s ease, transform 0.3s ease !important;
-}
-
-.f4u-proof-dismiss-btn {
-    position: absolute !important;
-    top: 10px !important;
-    right: 12px !important;
-    background: transparent !important;
-    border: none !important;
-    color: #94a3b8 !important;
-    font-size: 1.1rem !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    padding: 0 !important;
-    line-height: 1 !important;
-    z-index: 1000 !important;
-}
-.f4u-proof-dismiss-btn:hover {
-    color: #ef4444 !important;
-}
-
-.f4u-proof-stars-row {
-    color: #10b981 !important;
-    font-size: 0.9rem !important;
-    letter-spacing: 1px !important;
-    font-weight: bold !important;
-}
-
-.f4u-proof-live-text {
-    font-size: 0.85rem !important;
-    color: #475569 !important;
-    line-height: 1.4 !important;
-    margin: 0 !important;
-    min-height: 40px !important;
-}
-
-/* Fluid responsive protection: completely hide to stay clear of text columns on small devices */
-@media (max-width: 1024px) {
-    .f4u-floating-proof-card {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-}
-
-
-/* ==========================================================================
-   DYNAMIC SOCIAL PROOF CARD UTILITY SYSTEM
-   ========================================================================== */
-.f4u-proof-card-root {
-    position: fixed !important;
-    bottom: 30px !important;
-    left: 24px !important;
-    width: 290px !important;
-    background: #ffffff !important;
-    border: 1px solid rgba(10, 31, 68, 0.1) !important;
-    border-radius: 12px !important;
-    padding: 16px !important;
-    box-shadow: 0 15px 35px rgba(10, 31, 68, 0.1) !important;
-    z-index: 99999 !important; /* Locks layer securely above standard sections */
-    box-sizing: border-box !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 8px !important;
-    cursor: pointer !important;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-.f4u-proof-close-btn {
-    position: absolute !important;
-    top: 10px !important;
-    right: 12px !important;
-    background: transparent !important;
-    border: none !important;
-    color: #94a3b8 !important;
-    font-size: 1.2rem !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    padding: 0 !important;
-    line-height: 1 !important;
-    z-index: 100000 !important;
-}
-
-.f4u-proof-close-btn:hover {
-    color: #ef4444 !important;
-}
-
-.f4u-proof-stars {
-    color: #10b981 !important; /* Theme Emerald */
-    font-size: 0.9rem !important;
-    letter-spacing: 1px !important;
-    font-weight: bold !important;
-    line-height: 1 !important;
-}
-
-.f4u-proof-text-container {
-    font-size: 0.85rem !important;
-    color: #475569 !important; /* Theme Slate */
-    line-height: 1.4 !important;
-    margin: 0 !important;
-    min-height: 42px !important;
-    transition: opacity 0.2s ease !important;
-}
-
-/* Fluid Responsive Protection: Completely hides container on smaller device glass windows */
-@media (max-width: 1024px) {
-    .f4u-proof-card-root {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
+    /* Force the parent wrapper section to a tighter, matching bottom padding boundary */
+    .responsive-hero-grid,
+    .responsive-hero-grid,
+    section[style*="padding: 80px 0 60px 0"] {
+        padding-bottom: 0px !important;
     }
 }
 

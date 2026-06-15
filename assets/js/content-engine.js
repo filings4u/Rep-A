@@ -872,6 +872,7 @@ function renderMasterPricingEngine(targetId) {
           </div>
         </div>
       </section>
+      
     `;
 
     // 🌟 SELF-CONTAINED ROUTING ENGINE: Listens for application button clicks automatically on render
@@ -1593,4 +1594,92 @@ document.addEventListener("DOMContentLoaded", () => {
       renderMasterMetricsEngine(zone.id, null);
     }
   });
+});
+
+// --- DYNAMIC SOCIAL PROOF CAROUSEL ROTATION CONTROLLER ---
+document.addEventListener("DOMContentLoaded", function() {
+    const proofWidget = document.getElementById("f4u-dynamic-proof-widget");
+    const textTarget = document.getElementById("f4u-proof-text-node");
+    const closeBtn = document.getElementById("f4u-close-proof-node");
+    
+    if (!proofWidget || !textTarget || !closeBtn) return;
+
+    // 20-Row Data Matrix with Timestamps and Dynamic Product Targets
+    const proofTemplates = [
+        { text: "<strong>140,000+ Active Profiles</strong> currently protected across our automated state filing grid.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> New LLC profile registered and locked inside Delaware registry {MINUTES}.", dynamicTime: true, baseMinutes: 4, url: "llc-formation.html" },
+        { text: "<strong>Audit Protection Matrix Active:</strong> 0.00% entity penalty exposure rate maintained this month.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Corporate compliance synchronization completed in California {MINUTES}.", dynamicTime: true, baseMinutes: 12, url: "compliance.html" },
+        { text: "<strong>Asset Shield Multilocked:</strong> Anonymity proxy layers fully deployed on 4 new Nevada corporations.", dynamicTime: false, url: "llc-formation.html" },
+        { text: "<strong>State Dept Update:</strong> Automated background check matched against latest Q2 entity law changes.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Bi-annual reporting compliance documents validated and filed in Texas {MINUTES}.", dynamicTime: true, baseMinutes: 8, url: "compliance.html" },
+        { text: "<strong>Instant Gateway Sync:</strong> Structural franchise tax check cleared across 12 tracking accounts.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Dissolution Shield Active:</strong> Accidental corporate forfeiture blocked for Wyoming entity layout.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Registered Agent appointment update completely processed in Florida {MINUTES}.", dynamicTime: true, baseMinutes: 18, url: "llc-formation.html" },
+        { text: "<strong>Network Integration Secure:</strong> Real-time zero-gap database lock established for 14 enterprise records.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> New operating agreement parameter profile successfully compiled in New York.", dynamicTime: false, url: "llc-formation.html" },
+        { text: "<strong>State Registry Update:</strong> Automated verification scanned 50 state department portals in 0.4 seconds.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Penalty Exposure Defeated:</strong> Automatic deadline checker saved $1,250 in late processing fees.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Foreign qualification cross-state certificate locked inside Illinois {MINUTES}.", dynamicTime: true, baseMinutes: 15, url: "llc-formation.html" },
+        { text: "<strong>Corporate Shield Sealed:</strong> Asset protection protocols confirmed for 8 newly formed entity layers.", dynamicTime: false, url: "llc-formation.html" },
+        { text: "<strong>Filing Confirmed:</strong> Annual list of managers successfully structured and submitted in Utah {MINUTES}.", dynamicTime: true, baseMinutes: 6, url: "compliance.html" },
+        { text: "<strong>Active Tracking Online:</strong> Continuous background checker monitoring shifts across all active profiles.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Articles of organization verified and approved in Georgia {MINUTES}.", dynamicTime: true, baseMinutes: 22, url: "llc-formation.html" },
+        { text: "<strong>Guaranteed Status Verified:</strong> Good Standing certificates auto-renewed for 19 corporate entities.", dynamicTime: false, url: "compliance.html" }
+    ];
+
+    const pageLoadTime = Date.now();
+    let currentIndex = 0;
+    let rotationTimeout;
+
+    function getFormattedMessage(item) {
+        if (!item.dynamicTime) return item.text;
+        const currentMsElapsed = Date.now() - pageLoadTime;
+        const extraMinutes = Math.floor(currentMsElapsed / 60000);
+        const liveMinutes = item.baseMinutes + extraMinutes;
+        const timeString = liveMinutes === 1 ? "1 min ago" : `${liveMinutes} mins ago`;
+        return item.text.replace("{MINUTES}", timeString);
+    }
+
+    function rotateProofMessage() {
+        // Step 1: Smooth exit slide
+        proofWidget.style.opacity = "0";
+        proofWidget.style.transform = "translateY(20px)";
+        
+        setTimeout(() => {
+            const activeItem = proofTemplates[currentIndex];
+            
+            // Step 2: Inject values and route configuration attributes
+            textTarget.innerHTML = getFormattedMessage(activeItem);
+            proofWidget.setAttribute("data-url", activeItem.url);
+            
+            // Step 3: Smooth entry slide
+            proofWidget.style.opacity = "1";
+            proofWidget.style.transform = "translateY(0)";
+            
+            currentIndex = (currentIndex + 1) % proofTemplates.length;
+            
+            // 🌟 FIXED 5-SECOND TIMER
+            rotationTimeout = setTimeout(rotateProofMessage, 5000);
+        }, 400);
+    }
+
+    // Handle full-box link routing click safely
+    proofWidget.addEventListener("click", function(e) {
+        if (e.target === closeBtn) return;
+        const targetUrl = proofWidget.getAttribute("data-url");
+        if (targetUrl) { window.location.href = targetUrl; }
+    });
+
+    // Close button dismiss behavior
+    closeBtn.addEventListener("click", function(e) {
+        e.stopPropagation();
+        clearTimeout(rotationTimeout);
+        proofWidget.style.opacity = "0";
+        proofWidget.style.transform = "translateY(20px)";
+        setTimeout(() => { proofWidget.style.display = "none"; }, 400);
+    });
+
+    // Initialize the starting rotation sequence
+    rotateProofMessage();
 });
