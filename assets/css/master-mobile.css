@@ -1575,7 +1575,7 @@
 .sec-hero-main-container {
     background: #0a1f44;
     color: #ffffff;
-    padding: 80px 0 50px 0;
+    padding: 120px 0 50px 0;
     position: relative;
     overflow: hidden;
 }
@@ -1649,3 +1649,4 @@
         padding: 60px 0 30px 0;
     }
 }
+

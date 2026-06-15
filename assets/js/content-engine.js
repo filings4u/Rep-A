@@ -124,42 +124,48 @@ function resolveLocalServicePricingData(slug) {
 
 // --- MODULE 1: DYNAMIC BRANDED HERO ENGINE (SECTION 1 - WHITE) ---
 function renderMasterHeroEngine(targetId, meta) {
-  const zone = document.getElementById(targetId);
-  if (!zone) return;
-
-  zone.innerHTML = `
+    const zone = document.getElementById(targetId);
+    if (!zone) return;
+    
+    zone.innerHTML = `
     <!-- 🌟 SUCCESSFUL GAP FIX: Rebalanced master padding constraints and forced a 0px canvas layout floor line -->
     <main class="page-container" style="background: #ffffff; padding: 40px 0 0px 0 !important; margin: 0 0 10px 0 !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; display: block;">
-      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-        
-        <!-- 🌟 FLEX INTEGRATION: Aligned items to baseline flex-start to snap trailing layout blocks directly underneath the elements -->
-        <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 40px; width: 100%; margin: 0; padding: 0;">
-          
-          <!-- 📝 TEXT COLUMN -->
-          <article class="content-area" style="flex: 1.2; min-width: 320px; box-sizing: border-box; margin: 0; padding: 0;">
-            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15); width: fit-content;">${meta.title} Framework</span>
-            <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 14px 0; line-height: 1.1; letter-spacing: -1px;">
-              The Engine for <br><span style="color: #10b981;">Total ${meta.title}.</span>
-            </h1>
-            <p style="color: #475569; font-size: 1.1rem; line-height: 1.5; margin: 0 0 16px 0;">Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your ${meta.title} processing.</p>
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
             
-            <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
-              <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
-              <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${meta.title} Sync: 140,000+ Profiles Active</span>
+            <!-- 🌟 GLOBAL CSS HOOK: Using your precise class name (.responsive-hero-grid) to flip the image to the top on mobile -->
+            <div class="responsive-hero-grid" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 40px; width: 100%; margin: 0; padding: 0;">
+                
+                <!-- 📝 TEXT COLUMN (Left on Desktop, Drops to order: 2 naturally on mobile) -->
+                <article class="content-area" style="flex: 1.2; min-width: 320px; box-sizing: border-box; margin: 0; padding: 0;">
+                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15); width: fit-content;">${meta.title} Framework</span>
+                    
+                    <!-- 🌟 GLOBAL CSS HOOK: Using your precise class name (.hero-headline) to adjust mobile text sizing -->
+                    <h1 class="hero-headline" style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 14px 0; line-height: 1.1; letter-spacing: -1px;"> 
+                        The Engine for <br><span style="color: #10b981;">Total ${meta.title}.</span> 
+                    </h1>
+                    
+                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.5; margin: 0 0 16px 0;">Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your ${meta.title} processing.</p>
+                    <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+                        <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
+                        <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${meta.title} Sync: 140,000+ Profiles Active</span>
+                    </div>
+                    <a href="llc-formation.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s; width: fit-content; margin: 0;">Get Started &rarr;</a>
+                </article>
+
+                <!-- 📸 IMAGE COLUMN (Right on Desktop, Flips to top on mobile via your global .hero-image-container rule) -->
+                <aside class="hero-image-container" style="flex: 1; min-width: 320px; max-width: 520px; display: flex; justify-content: center; align-items: flex-start; margin: 0; padding: 0;">
+                    
+                    <!-- 🌟 GLOBAL CSS HOOK: Using your precise class name (.hero-display-img) for fluid responsive image constraints -->
+                    <img src="images/${meta.slug}-hero.jpg" class="hero-display-img" alt="${meta.title} System Dashboard" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/hero-image.jpg';">
+                </aside>
+
             </div>
-            <a href="llc-formation.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s; width: fit-content; margin: 0;">Get Started &rarr;</a>
-          </article>
-          
-          <!-- 📸 IMAGE COLUMN -->
-          <aside class="hero-image-container" style="flex: 1; min-width: 320px; max-width: 520px; display: flex; justify-content: center; align-items: flex-start; margin: 0; padding: 0;">
-            <img src="images/${meta.slug}-hero.jpg" alt="${meta.title} System Dashboard" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/hero-image.jpg';">
-          </aside>
-          
         </div>
-      </div>
     </main>
-  `;
+    `;
 }
+
+
 
 
 
@@ -732,58 +738,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // NEW: Automated Hero Rendering Addition Block
 function renderMasterHeroEngine(targetId) {
-  try {
-    const zone = document.getElementById(targetId);
-    if (!zone) return;
+    try {
+        const zone = document.getElementById(targetId);
+        if (!zone) return;
 
-    // Detect if this is the homepage anchor wrapper or a standalone service profile layout
-    let slug = "index";
-    if (targetId !== "index-hero-zone" && targetId !== "dynamic-hero-zone") {
-      slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
-    } else {
-      // Direct raw path detection layout selector rules fallback engine
-      const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
-      if (rawPathname !== "" && !rawPathname.includes("index") && !rawPathname.includes("home")) {
-        slug = rawPathname.replace(".html", "");
-      }
+        // Detect if this is the homepage anchor wrapper or a standalone service profile layout
+        let slug = "index";
+        if (targetId !== "index-hero-zone" && targetId !== "dynamic-hero-zone") {
+            slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
+        } else {
+            // Direct raw path detection layout selector rules fallback engine
+            const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
+            if (rawPathname !== "" && !rawPathname.includes("index") && !rawPathname.includes("home")) {
+                slug = rawPathname.replace(".html", "");
+            }
+        }
+
+        const profile = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
+        if (!profile) {
+            console.warn(`Profile configuration missing for initialization key: ${slug}`);
+            return;
+        }
+
+        // Explicitly forces the dynamic naming model requested string: images/page-name-hero.jpg
+        const dynamicHeroImgSrc = `images/${slug}-hero.jpg`;
+
+        // 🌟 SYMMETRICAL COMPACT GAP FIX: Set both top and bottom padding strictly to 80px to make them identical and tight.
+        // 🌟 GLOBAL CSS HOOKS: Integrated your custom mobile classes to cleanly stack image at top and text at bottom.
+        zone.innerHTML = `
+        <section style="padding: 80px 0 80px 0 !important; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden; margin-bottom: 0 !important;">
+            
+            <!-- .responsive-hero-grid parent hook -->
+            <div class="responsive-hero-grid" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; box-sizing: border-box;">
+                
+                <!-- TEXT COLUMN (Falls to bottom on mobile via your global flex rules) -->
+                <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
+                    <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block;">${profile.pill}</span>
+                    
+                    <!-- .hero-headline utility hook -->
+                    <h1 class="hero-headline" style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">${profile.hero_title}</h1>
+                    
+                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${profile.hero_lead}</p>
+                    <a href="llc-formation.html#pricing-framework-target" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a>
+                </div>
+                
+                <!-- IMAGE COLUMN (Flips to top on mobile via your .hero-image-container order: 1 important stylesheet assignment) -->
+                <div class="hero-image-container" style="flex: 1; min-width: 320px; text-align: center; box-sizing: border-box;">
+                    
+                    <!-- .hero-display-img framework selector hook -->
+                    <img src="${dynamicHeroImgSrc}" class="hero-display-img" alt="${profile.name} Framework Layout Preview" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);" onerror="this.onerror=null; this.src='https://unsplash.com';">
+                </div>
+                
+            </div>
+        </section>
+        `;
+    } catch (err) {
+        console.error("Hero rendering critical engine error:", err);
     }
-
-    const profile = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
-    if (!profile) {
-      console.warn(`Profile configuration missing for initialization key: ${slug}`);
-      return;
-    }
-
-    // Explicitly forces the dynamic naming model requested string: images/page-name-hero.jpg
-    const dynamicHeroImgSrc = `images/${slug}-hero.jpg`;
-
-    // 🌟 SYMMETRICAL COMPACT GAP FIX: Set both top and bottom padding strictly to 80px to make them identical and tight.
-    zone.innerHTML = `
-      <section style="padding: 120px 0 50px 0 !important; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden; margin-bottom: 0 !important;">
-        
-        <div style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; box-sizing: border-box;">
-          
-          <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
-            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block;">${profile.pill}</span>
-            <h1 style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">${profile.hero_title}</h1>
-            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${profile.hero_lead}</p>
-            <a href="llc-formation.html#pricing-framework-target" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a>
-          </div>
-          
-          <div style="flex: 1; min-width: 320px; text-align: center; box-sizing: border-box;">
-            <img src="${dynamicHeroImgSrc}" 
-                 alt="${profile.name} Framework Layout Preview" 
-                 style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);"
-                 onerror="this.onerror=null; this.src='https://unsplash.com';">
-          </div>
-
-        </div>
-      </section>
-    `;
-  } catch (err) {
-    console.error("Hero rendering critical engine error:", err);
-  }
 }
+
+
 
 // Global initialization router execution loop
 document.addEventListener("DOMContentLoaded", () => {
