@@ -3903,224 +3903,211 @@ function updateDynamicPricingMatrixVanilla() {
   }
 }
 
-
-
-
 document.addEventListener("DOMContentLoaded", updateDynamicPricingMatrixVanilla);
 
 
 
+// ============================================================================
+// 📊 MODULE 3: PRODUCTION SUMMARY MATRIX FIELD INJECTOR (PART 1)
+// ============================================================================
+function recalculateSummaryStepFields() {
+    var safeServiceKey = window.routeActiveServiceKey || "";
+    var safePlanKey = window.routeActivePlanKey || "starter";
 
+    safeServiceKey = safeServiceKey.toLowerCase().trim();
+    safePlanKey = safePlanKey.toLowerCase().trim();
 
-
-// ============================================================================ //
-// 📊 MODULE 3: PRODUCTION SUMMARY MATRIX FIELD INJECTOR (PART 1)               //
-// ============================================================================ //
-
-function recalculateSummaryStepFields() { 
-  var safeServiceKey = window.routeActiveServiceKey || "llc-formation";
-  var safePlanKey = window.routeActivePlanKey || "starter";
-  safeServiceKey = safeServiceKey.toLowerCase().trim();
-  safePlanKey = safePlanKey.toLowerCase().trim();
-
-  if (safePlanKey === "basic") safePlanKey = "starter";
-  if (safePlanKey === "standard") safePlanKey = "compliance";
-  if (safePlanKey === "premium") safePlanKey = "enterprise";
-
-    // 🏛️ LINE 4010-4015 REPLACEMENT ENGINE
     if (!window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) {
         console.warn("[Pricing Engine] GLOBAL_COMPANY_PRICING package layer is missing.");
+        return;
     }
+
+    var rawLookup = typeof serviceKey !== 'undefined' ? serviceKey : (typeof selectedSlug !== 'undefined' ? selectedSlug : safeServiceKey);
     
-    // 🔄 FIXED: Created a safe fallback variable here as well to match your inner function parameters
-    var unifiedLookupKey = typeof serviceKey !== 'undefined' ? serviceKey : (typeof selectedSlug !== 'undefined' ? selectedSlug : "llc");
-    unifiedLookupKey = String(unifiedLookupKey).toLowerCase().trim();
+    var unifiedLookupKey = String(rawLookup)
+        .toLowerCase()
+        .trim()
+        .replace(/-formation$/, '')
+        .replace(/-processing$/, '')
+        .replace(/s$/, '') 
+        .replace(/-organization$/, '');
 
-    if (unifiedLookupKey === 'llc-formation' || unifiedLookupKey === 'limited-liability-company') unifiedLookupKey = 'llc';
-    if (unifiedLookupKey === 'corporations' || unifiedLookupKey === 'corporation') unifiedLookupKey = 'corporation';
-    if (unifiedLookupKey === 'annual-reports') unifiedLookupKey = 'annual-report';
-    if (unifiedLookupKey === 'hazmat-registration') unifiedLookupKey = 'dot-hazmat';
-
-    const planConfig = window.GLOBAL_COMPANY_PRICING.packages[unifiedLookupKey];
-
-
-  if (!planConfig) {
-    console.warn("[Pricing Error] Key match failed: " + safeServiceKey);
-    return;
-  }
-
-  const filings4uBaseFee = parseFloat(planConfig[safePlanKey]) || 0;
-
-  var stateDisplayLabel = "";
-  var baseStateFilingFee = 0;
-  var chosenStateElement = document.querySelector('select[name="formation_state"]') || 
-                           document.querySelector('select[name="business_state"]') || 
-                           document.getElementById('wizard-target-jurisdiction') || 
-                           document.querySelector('select');
-
-  if (chosenStateElement && chosenStateElement.selectedIndex >= 0) {
-    var selectedOption = chosenStateElement.options[chosenStateElement.selectedIndex];
-    if (selectedOption) {
-      var optionValue = (selectedOption.value || "").toUpperCase().trim();
-      var optionText = (selectedOption.text || "");
-      if (optionValue.length === 2) {
-        stateDisplayLabel = optionValue;
-      } else {
-        var match = optionText.match(/\b([A-Z]{2})\b/i);
-        stateDisplayLabel = match ? match[1].toUpperCase() : optionText.substring(0, 2).toUpperCase().trim();
-      }
+    const planConfig = window.GLOBAL_COMPANY_PRICING.packages[unifiedLookupKey] || window.GLOBAL_COMPANY_PRICING.packages[safeServiceKey];
+    if (!planConfig) {
+        console.warn("[Pricing Error] Dynamic key match failed for: " + safeServiceKey);
+        return;
     }
-  }
 
-  if (!stateDisplayLabel && window.selectedFormationStateCode) {
-    stateDisplayLabel = window.selectedFormationStateCode.toUpperCase().trim();
-  }
-  var serviceTypeKey = "llc";
-  if (safeServiceKey.includes("corp") || safeServiceKey === "corporation") {
-    serviceTypeKey = "c_corp";
-  } else if (safeServiceKey.includes("series")) {
-    serviceTypeKey = "series_llc";
-  } else if (safeServiceKey.includes("nonprofit")) {
-    serviceTypeKey = "non_profit";
-  } else if (safeServiceKey.includes("proprietor")) {
-    serviceTypeKey = "partnership";
-  }
+    const filings4uBaseFee = parseFloat(planConfig[safePlanKey]) || 0;
+    var stateDisplayLabel = "";
+    var baseStateFilingFee = 0;
+    var chosenStateElement = document.querySelector('select[name="formation_state"]') || document.querySelector('select[name="business_state"]') || document.getElementById('wizard-target-jurisdiction') || document.querySelector('select');
 
-  if (stateDisplayLabel && typeof STATE_FILING_FEES !== "undefined" && STATE_FILING_FEES) {
-    var stateMap = STATE_FILING_FEES[stateDisplayLabel];
-    if (stateMap) {
-      baseStateFilingFee = parseFloat(stateMap[serviceTypeKey]) || 0;
+    // ✅ FIX: Verify chosenStateElement is not null before checking indexes
+    if (chosenStateElement && chosenStateElement.selectedIndex >= 0) {
+        var selectedOption = chosenStateElement.options[chosenStateElement.selectedIndex];
+        if (selectedOption) {
+            var optionValue = (selectedOption.value || "").toUpperCase().trim();
+            var optionText = (selectedOption.text || "");
+            if (optionValue.length === 2) {
+                stateDisplayLabel = optionValue;
+            } else {
+                var match = optionText.match(/\b([A-Z]{2})\b/i);
+                stateDisplayLabel = match ? match[1].toUpperCase() : optionText.substring(0, 2).toUpperCase().trim();
+            }
+        }
     }
-  }
 
-  let incrementalAddonTotal = 0;
-  var userFriendlyTierName = "Basic";
-  if (safePlanKey === "compliance") userFriendlyTierName = "Standard";
-  if (safePlanKey === "enterprise") userFriendlyTierName = "Premium";
+    if (!stateDisplayLabel && window.selectedFormationStateCode) {
+        stateDisplayLabel = window.selectedFormationStateCode.toUpperCase().trim();
+    }
 
-  let itemizedRowsHtml = `
+    var serviceTypeKey = "llc";
+    if (safeServiceKey.includes("corp")) {
+        serviceTypeKey = "c_corp";
+    } else if (safeServiceKey.includes("series")) {
+        serviceTypeKey = "series_llc";
+    } else if (safeServiceKey.includes("nonprofit") || safeServiceKey.includes("non-profit")) {
+        serviceTypeKey = "non_profit";
+    } else if (safeServiceKey.includes("proprietor") || safeServiceKey.includes("partner")) {
+        serviceTypeKey = "partnership";
+    }
+
+    if (stateDisplayLabel && typeof STATE_FILING_FEES !== "undefined" && STATE_FILING_FEES) {
+        var stateMap = STATE_FILING_FEES[stateDisplayLabel];
+        if (stateMap) {
+            baseStateFilingFee = parseFloat(stateMap[serviceTypeKey]) || 0;
+        }
+    }
+
+    let incrementalAddonTotal = 0;
+    let userFriendlyTierName = safePlanKey.charAt(0).toUpperCase() + safePlanKey.slice(1);
+
+    let itemizedRowsHtml = `
     <div style="padding: 6px 0 12px 0; border-bottom: 2px solid var(--navy, #0a1f44); margin-bottom: 12px;">
-      <strong style="color: var(--navy, #0a1f44); font-size: 1.15rem; font-weight: 900; display: block; letter-spacing: -0.3px;">
-        ${planConfig.name || "Business Formation"} - ${userFriendlyTierName} Package
-      </strong>
+        <strong style="color: var(--navy, #0a1f44); font-size: 1.15rem; font-weight: 900; display: block; letter-spacing: -0.3px;">
+            ${planConfig.name || "Business Service"} - ${userFriendlyTierName} Package
+        </strong>
     </div>
     <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-      <span>filings4U Fee</span>
-      <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$${filings4uBaseFee.toFixed(2)}</span>
+        <span>filings4U Fee</span>
+        <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$${filings4uBaseFee.toFixed(2)}</span>
     </div>`;
-  const addonSelectors = document.querySelectorAll('.addon-checkbox:checked, .upsell-checkbox:checked, input[type="checkbox"]:checked');
-  addonSelectors.forEach(function(checkbox) {
-    if (checkbox.hasAttribute('data-price')) {
-      const addonPriceValue = parseFloat(checkbox.getAttribute('data-price')) || 0;
-      const addonLabelString = checkbox.getAttribute('data-name') || checkbox.name || "Add-On Service Asset";
-      
-      if (!checkbox.id.includes('registered-agent') && !checkbox.id.includes('ein')) {
-        incrementalAddonTotal += addonPriceValue;
-        itemizedRowsHtml += `
-          <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-            <span>+ ${addonLabelString}</span>
-            <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$${addonPriceValue.toFixed(2)}</span>
-          </div>`;
-      }
-    }
-  });
 
-  if (window.customSelectedRegisteredAgentServiceActive === true || String(window.customSelectedRegisteredAgentServiceActive) === "true") {
-    incrementalAddonTotal += 75.00;
-    itemizedRowsHtml += `
-      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-        <span>+ Registered Agent Shield</span>
-        <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$75.00</span>
-      </div>`;
-  }
-
-  if (window.customSelectedEinProcurementServiceActive === true || String(window.customSelectedEinProcurementServiceActive) === "true") {
-    incrementalAddonTotal += 79.00;
-    itemizedRowsHtml += `
-      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-        <span>+ EIN Procurement Processing</span>
-        <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$79.00</span>
-      </div>`;
-  }
-
-  if (baseStateFilingFee > 0 && stateDisplayLabel) {
-    itemizedRowsHtml += `
-      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-        <span>State Filing Fee (${stateDisplayLabel})</span>
-        <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$${baseStateFilingFee.toFixed(2)}</span>
-      </div>`;
-  }
-
-  const totalSubtotalSelectionCost = filings4uBaseFee + incrementalAddonTotal;
-  const totalGrandSummaryAmount = totalSubtotalSelectionCost + baseStateFilingFee;
-
-  const summaryRowsContainer = document.getElementById('summary-purchase-rows-container');
-  if (summaryRowsContainer) {
-    summaryRowsContainer.innerHTML = itemizedRowsHtml;
-  }
-
-  const subtotalDisplayNode = document.getElementById('summary-subtotal-display');
-  if (subtotalDisplayNode) {
-    subtotalDisplayNode.textContent = `$${totalSubtotalSelectionCost.toFixed(2)}`;
-  }
-
-  const stateFeesDisplayNode = document.getElementById('summary-gov-fees-display');
-  if (stateFeesDisplayNode) {
-    stateFeesDisplayNode.textContent = `$${baseStateFilingFee.toFixed(2)}`;
-  }
-
-  const grandTotalDisplayNode = document.getElementById('summary-grand-total-display');
-  if (grandTotalDisplayNode) {
-    grandTotalDisplayNode.textContent = `$${totalGrandSummaryAmount.toFixed(2)}`;
-  }
-
-  window.wizardCalculatedFinalTotalAmount = totalGrandSummaryAmount;
-  const secondaryGatewayDisplay = document.getElementById("payment-gateway-total-display") || 
-                                   document.getElementById("wizard-sticky-total-value");
-  if (secondaryGatewayDisplay) {
-    secondaryGatewayDisplay.textContent = `$${totalGrandSummaryAmount.toFixed(2)}`;
-  }
-
-  if (chosenStateElement && !chosenStateElement.hasAttribute('data-has-calc-listener')) {
-    chosenStateElement.setAttribute('data-has-calc-listener', 'true');
-    chosenStateElement.addEventListener('change', function() {
-      recalculateSummaryStepFields();
+    const addonSelectors = document.querySelectorAll('.addon-checkbox:checked, .upsell-checkbox:checked, input[type="checkbox"]:checked');
+    addonSelectors.forEach(function(checkbox) {
+        if (checkbox && checkbox.hasAttribute('data-price')) {
+            const addonPriceValue = parseFloat(checkbox.getAttribute('data-price')) || 0;
+            const addonLabelString = checkbox.getAttribute('data-name') || checkbox.name || "Add-On Service Asset";
+            if (checkbox.id && !checkbox.id.includes('registered-agent') && !checkbox.id.includes('ein')) {
+                incrementalAddonTotal += addonPriceValue;
+                itemizedRowsHtml += `
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
+                    <span>+ ${addonLabelString}</span>
+                    <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$${addonPriceValue.toFixed(2)}</span>
+                </div>`;
+            }
+        }
     });
-  }
-
-  document.querySelectorAll('.addon-checkbox, .upsell-checkbox').forEach(function(inputControl) {
-    if (!inputControl.hasAttribute('data-has-calc-listener')) {
-      inputControl.setAttribute('data-has-calc-listener', 'true');
-      inputControl.addEventListener('change', function() {
-        recalculateSummaryStepFields();
-      });
+    if (window.customSelectedRegisteredAgentServiceActive === true || String(window.customSelectedRegisteredAgentServiceActive) === "true") {
+        incrementalAddonTotal += 75.00;
+        itemizedRowsHtml += `
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
+            <span>+ Registered Agent Shield</span>
+            <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$75.00</span>
+        </div>`;
     }
-  });
+
+    if (window.customSelectedEinProcurementServiceActive === true || String(window.customSelectedEinProcurementServiceActive) === "true") {
+        incrementalAddonTotal += 79.00;
+        itemizedRowsHtml += `
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
+            <span>+ EIN Procurement Processing</span>
+            <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$79.00</span>
+        </div>`;
+    }
+
+    if (baseStateFilingFee > 0 && stateDisplayLabel) {
+        itemizedRowsHtml += `
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border, #e2e8f0); font-size: 0.9rem; color: var(--slate); font-weight: 500;">
+            <span>State Filing Fee (${stateDisplayLabel})</span>
+            <span style="font-family: monospace; font-weight: 600; color: var(--navy);">$${baseStateFilingFee.toFixed(2)}</span>
+        </div>`;
+    }
+
+    const totalSubtotalSelectionCost = filings4uBaseFee + incrementalAddonTotal;
+    const totalGrandSummaryAmount = totalSubtotalSelectionCost + baseStateFilingFee;
+
+    const summaryRowsContainer = document.getElementById('summary-purchase-rows-container');
+    if (summaryRowsContainer) {
+        summaryRowsContainer.innerHTML = itemizedRowsHtml;
+    }
+
+    const subtotalDisplayNode = document.getElementById('summary-subtotal-display');
+    if (subtotalDisplayNode) {
+        subtotalDisplayNode.textContent = `$${totalSubtotalSelectionCost.toFixed(2)}`;
+    }
+
+    const stateFeesDisplayNode = document.getElementById('summary-gov-fees-display');
+    if (stateFeesDisplayNode) {
+        stateFeesDisplayNode.textContent = `$${baseStateFilingFee.toFixed(2)}`;
+    }
+
+    const grandTotalDisplayNode = document.getElementById('summary-grand-total-display');
+    if (grandTotalDisplayNode) {
+        grandTotalDisplayNode.textContent = `$${totalGrandSummaryAmount.toFixed(2)}`;
+    }
+
+    window.wizardCalculatedFinalTotalAmount = totalGrandSummaryAmount;
+
+    const secondaryGatewayDisplay = document.getElementById("payment-gateway-total-display") || document.getElementById("wizard-sticky-total-value");
+    if (secondaryGatewayDisplay) {
+        secondaryGatewayDisplay.textContent = `$${totalGrandSummaryAmount.toFixed(2)}`;
+    }
+
+    // ✅ SAFE CHECK: Only add event listener if element exists on current screen
+    if (chosenStateElement && !chosenStateElement.hasAttribute('data-has-calc-listener')) {
+        chosenStateElement.setAttribute('data-has-calc-listener', 'true');
+        chosenStateElement.addEventListener('change', function() {
+            recalculateSummaryStepFields();
+        });
+    }
+
+    // ✅ SAFE CHECK: Only process nodes that exist on the active page DOM
+    document.querySelectorAll('.addon-checkbox, .upsell-checkbox').forEach(function(inputControl) {
+        if (inputControl && !inputControl.hasAttribute('data-has-calc-listener')) {
+            inputControl.setAttribute('data-has-calc-listener', 'true');
+            inputControl.addEventListener('change', function() {
+                recalculateSummaryStepFields();
+            });
+        }
+    });
 }
+
 document.addEventListener("DOMContentLoaded", function() {
-  recalculateSummaryStepFields();
+    recalculateSummaryStepFields();
 });
 
 (function() {
-  var originalNextStepFunc = window.goToNextWizardStep;
-  if (typeof originalNextStepFunc === "function") {
-    window.goToNextWizardStep = function(targetStepIndex) {
-      originalNextStepFunc(targetStepIndex);
-      if (targetStepIndex === 5 || targetStepIndex === "5") {
-        recalculateSummaryStepFields();
-      }
-    };
-  }
+    var originalNextStepFunc = window.goToNextWizardStep;
+    if (typeof originalNextStepFunc === "function") {
+        window.goToNextWizardStep = function(targetStepIndex) {
+            originalNextStepFunc(targetStepIndex);
+            if (targetStepIndex === 5 || targetStepIndex === "5") {
+                recalculateSummaryStepFields();
+            }
+        };
+    }
 
-  var originalPrevStepFunc = window.goToPreviousWizardStep;
-  if (typeof originalPrevStepFunc === "function") {
-    window.goToPreviousWizardStep = function(targetStepIndex) {
-      originalPrevStepFunc(targetStepIndex);
-      if (targetStepIndex === 5 || targetStepIndex === "5") {
-        recalculateSummaryStepFields();
-      }
-    };
-  }
+    var originalPrevStepFunc = window.goToPreviousWizardStep;
+    if (typeof originalPrevStepFunc === "function") {
+        window.goToPreviousWizardStep = function(targetStepIndex) {
+            originalPrevStepFunc(targetStepIndex);
+            if (targetStepIndex === 5 || targetStepIndex === "5") {
+                recalculateSummaryStepFields();
+            }
+        };
+    }
 })();
 
 function autoInjectMainWebsitePricingPlan() {
@@ -4150,98 +4137,127 @@ function autoInjectMainWebsitePricingPlan() {
     }
   }
 
-  if (CENTRAL_SERVICE_PLAN_DB[urlService]) {
-    CENTRAL_SERVICE_PLAN_DB[urlService].gov_fee = extractedGovFee;
-  }
+if (CENTRAL_SERVICE_PLAN_DB[urlService]) {
+  CENTRAL_SERVICE_PLAN_DB[urlService].gov_fee = extractedGovFee;
+}
 
-  window.routeActiveServiceKey = urlService;
-  window.routeActivePlanKey = urlPlan.toLowerCase();
-  window.selectedFormationStateCode = urlState.toUpperCase();
+window.routeActiveServiceKey = urlService;
+window.routeActivePlanKey = urlPlan.toLowerCase();
+window.selectedFormationStateCode = urlState.toUpperCase();
 
-  const planConfig = CENTRAL_SERVICE_PLAN_DB[urlService];
-  const planPrice = planConfig.prices[urlPlan.toLowerCase()] || 0;
+const planConfig = CENTRAL_SERVICE_PLAN_DB[urlService];
+const planPrice = planConfig.prices[urlPlan.toLowerCase()] || 0;
 
-  let tierTitleDisplay = "Standard";
-  if (urlPlan.toLowerCase() === "compliance") tierTitleDisplay = "Elite";
-  if (urlPlan.toLowerCase() === "enterprise") tierTitleDisplay = "Enterprise";
 
-  textInputService.value = `${planConfig.name} - ${tierTitleDisplay} Package`;
-  const featuresListContainer = document.getElementById("step-1-package-features-list");
-  if (featuresListContainer) {
-    if (urlPlan.toLowerCase() === "starter") {
-      featuresListContainer.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Articles of Incorporation</div>
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Standard Corporate Bylaws</div>
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Digital Document Access</div>`;
-    } else if (urlPlan.toLowerCase() === "compliance") {
-      featuresListContainer.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Everything in Standard</div>
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> <strong>1-Year Registered Agent</strong></div>
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Custom Share Ledgers</div>
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Federal Tax ID (EIN)</div>`;
-    } else if (urlPlan.toLowerCase() === "enterprise") {
-      featuresListContainer.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Everything in Elite</div>
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> S-Corp Election Filing</div>
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Corporate Seal & Kit</div>
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i> Compliance Monitoring</div>`;
+// ==========================================================================
+// 🎯 DYNAMIC EXTRACTOR: ZERO FALLBACK HARDCODING FOR 44+ SERVICES
+// ==========================================================================
+const activePlanKeyString = urlPlan.toLowerCase().trim(); // e.g., "starter", "compliance", "enterprise"
+
+// 1. DYNAMIC TITLE GENERATION: Auto-capitalize the plan name directly from the URL
+let tierTitleDisplay = activePlanKeyString.charAt(0).toUpperCase() + activePlanKeyString.slice(1);
+if (activePlanKeyString === "compliance") tierTitleDisplay = "Compliance Guard";
+if (activePlanKeyString === "enterprise") tierTitleDisplay = "Enterprise Asset Suite";
+
+textInputService.value = `${planConfig.name} - ${tierTitleDisplay}`;
+
+// 2. DYNAMIC BULLETS INTERCEPTOR: Strict data capture with zero fallbacks
+let dynamicBulletsArray = [];
+
+// Safely pluck the array directly matching this tier from your state-pricing.js object
+const incomingBullets = planConfig?.bullets?.[activePlanKeyString];
+
+if (Array.isArray(incomingBullets) && incomingBullets.length > 0) {
+    // Exact mapping of whatever array length exists in your file
+    dynamicBulletsArray = [...incomingBullets];
+} else {
+    // 🛑 CRITICAL STAGE: No data or direct/malicious wizard entry detected.
+    // Leaving this completely empty so your redirect logic triggers perfectly.
+    dynamicBulletsArray = [];
+    
+    // TODO: Insert your homepage redirect logic here in the next step
+    // window.location.href = "/"; 
+    // return;
+}
+
+// ==========================================================================
+// 🏗️ INJECT SAFELY INTO THE SIDEBAR ELEMENT CONTAINER
+// ==========================================================================
+const featuresListContainer = document.getElementById("step-1-package-features-list");
+if (featuresListContainer) {
+    let sidebarMarkup = "";
+    for (let i = 0; i < dynamicBulletsArray.length; i++) {
+        sidebarMarkup += `
+        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600; margin-bottom: 8px;">
+            <i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i>
+            ${dynamicBulletsArray[i]}
+        </div>`;
     }
-  }
+    featuresListContainer.innerHTML = sidebarMarkup;
+}
 
-  let step1OverviewBox = document.getElementById("step-1-selected-plan-overview");
-  if (!step1OverviewBox) {
+// ==========================================================================
+// 🏗️ INJECT SAFELY INTO THE MAIN CONTAINER OVERVIEW BOX
+// ==========================================================================
+let step1OverviewBox = document.getElementById("step-1-selected-plan-overview");
+if (!step1OverviewBox) {
     step1OverviewBox = document.createElement("div");
     step1OverviewBox.id = "step-1-selected-plan-overview";
     step1OverviewBox.style.cssText = "margin-top: 24px; padding: 24px; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; box-shadow: var(--card-shadow); clear: both;";
-
+    
     const leftColumnContainer = document.querySelector("#step-panel-1 .form-grid-layout");
     if (leftColumnContainer) {
-      leftColumnContainer.innerHTML = "";
-      leftColumnContainer.appendChild(step1OverviewBox);
+        leftColumnContainer.innerHTML = "";
+        leftColumnContainer.appendChild(step1OverviewBox);
     }
-  }
-
-  let packageFeaturesHtml = "";
-  if (urlPlan.toLowerCase() === "starter") {
-    packageFeaturesHtml = `<li>Articles of Incorporation</li><li>Standard Corporate Bylaws</li><li>Digital Document Access</li>`;
-  } else if (urlPlan.toLowerCase() === "compliance") {
-    packageFeaturesHtml = `<li>Everything in Standard</li><li><strong>1-Year Registered Agent</strong></li><li>Custom Share Ledgers</li><li>Federal Tax ID (EIN)</li>`;
-  } else if (urlPlan.toLowerCase() === "enterprise") {
-    packageFeaturesHtml = `<li>Everything in Elite</li><li>S-Corp Election Filing</li><li>Corporate Seal & Kit</li><li>Compliance Monitoring</li>`;
-  }
-
-  step1OverviewBox.innerHTML = `
-    <div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 14px;">
-      <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Active track</span>
-      <h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.4rem; font-weight: 900;">${planConfig.name} - ${tierTitleDisplay} Package</h3>
-    </div>
-    <div>
-      <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 8px;">Package Details</label>
-      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;">
-        ${packageFeaturesHtml.replace(/<li>/g, '<li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-circle-check" style="color: var(--primary);"></i>')}
-      </ul>
-    </div>
-    <div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 6px; display: flex; flex-direction: column; gap: 10px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-weight: 800; color: var(--navy); font-size: 0.95rem;">Base Fee:</span>
-        <strong style="font-family: monospace; color: var(--primary); font-size: 1.35rem;">$${planPrice.toFixed(2)}</strong>
-      </div>
-    </div>`;
-
-   // Place this directly inside the tail of your existing autoInjectMainWebsitePricingPlan() function
-  if (typeof updateDynamicPricingMatrixVanilla === "function") updateDynamicPricingMatrixVanilla();
-  if (typeof populatePurchaseSummaryReviewMatrix === "function") populatePurchaseSummaryReviewMatrix();
-
-  // HERE IS THE HOOK TRIGGER CALL:
-  if (typeof renderTargetUpsellsListPanel === "function") {
-    renderTargetUpsellsListPanel(urlService);
-  }
 }
 
+// Build list elements row markup safely using a basic execution loop
+let mainBoxListMarkup = "";
+for (let j = 0; j < dynamicBulletsArray.length; j++) {
+    mainBoxListMarkup += `
+    <li style="display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>
+        ${dynamicBulletsArray[j]}
+    </li>`;
+}
 
-document.addEventListener("DOMContentLoaded", function() {
-  autoInjectMainWebsitePricingPlan();
-});
+// ✅ SECURELY EXTRACT THE CLICKED CARD PARAGRAPH DESCRIPTION NATIVELY
+const dynamicPlanDescriptionText = sessionStorage.getItem('wiz_cached_desc') || "Your selected service plan parameters are being processed into our fulfillment priority lane registries securely.";
+
+step1OverviewBox.innerHTML = `
+<div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 14px;">
+    <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Active track</span>
+    <h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.4rem; font-weight: 900;">${planConfig.name} - ${tierTitleDisplay}</h3>
+</div>
+
+<!-- ✅ INJECTED DISPATCH PLAN OVERVIEW PARAGRAPH BLOCKS -->
+<div style="margin-top: 14px; margin-bottom: 14px;">
+    <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 6px;">Plan Overview</label>
+    <p style="margin: 0; color: #475569; font-size: 0.88rem; line-height: 1.5; text-align: left;">${dynamicPlanDescriptionText}</p>
+</div>
+
+<div>
+    <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 8px;">Package Details</label>
+    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;">
+        ${mainBoxListMarkup}
+    </ul>
+</div>
+
+<div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 6px; display: flex; flex-direction: column; gap: 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: 800; color: var(--navy); font-size: 0.95rem;">Base Fee:</span>
+        <strong style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$${planPrice.toFixed(2)}</strong>
+    </div>
+</div>`;
+
+if (typeof updateDynamicPricingMatrixVanilla === "function") updateDynamicPricingMatrixVanilla();
+if (typeof populatePurchaseSummaryReviewMatrix === "function") populatePurchaseSummaryReviewMatrix();
+if (typeof renderTargetUpsellsListPanel === "function") {
+    renderTargetUpsellsListPanel(urlService);
+}
+}
+
 
 
 // ============================================================================ //

@@ -45,74 +45,69 @@
  * Connects directly into whatever global variable names are used inside assets/js/state-pricing.js
  */
 function resolvePricingObjectWithRetry(slug) {
-  // Snaps directly into state-pricing.js objects (window.statePricingData or windows.servicesPricing)
-  const source = window.statePricingData || window.servicesPricing || window.pricingData || {};
-  const record = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
-  
-  if (record) {
+    const source = window.statePricingData || window.servicesPricing || window.pricingData || {};
+    
+    // Normalize slug dynamically to cover hyphenated, underscored, and uppercase configurations without hardcoding
+    const record = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
+
+    if (record) {
+        return {
+            starterPrice: record.starter || record.starterPrice || "0",
+            compliancePrice: record.compliance || record.compliancePrice || "0",
+            enterprisePrice: record.enterprise || record.enterprisePrice || "0",
+            starterFeatures: record.bullets?.starter || record.starterFeatures || [],
+            complianceFeatures: record.bullets?.compliance || record.complianceFeatures || [],
+            enterpriseFeatures: record.bullets?.enterprise || record.enterpriseFeatures || []
+        };
+    }
+
+    // Zero-fallback empty object if lookup has slight latency or fails
     return {
-      basicPrice: record.starterPrice || record.basicPrice || record.price || "99",
-      compliancePrice: record.compliancePrice || record.shieldPrice || "199",
-      enterprisePrice: record.enterprisePrice || record.suitePrice || "349",
-      basicFeatures: record.starterFeatures || record.basicFeatures || ["Standard registry declaration files processed securely."],
-      complianceFeatures: record.complianceFeatures || record.shieldFeatures || ["Includes proactive automated calendar sweeps and compliance alerts."],
-      enterpriseFeatures: record.enterpriseFeatures || record.suiteFeatures || ["Custom structural provisions, real-time banking setup, and lifetime storage."]
+        starterPrice: "0",
+        compliancePrice: "0",
+        enterprisePrice: "0",
+        starterFeatures: [],
+        complianceFeatures: [],
+        enterpriseFeatures: []
     };
-  }
-  
-  // Clean fallback parameters so rows don't display empty text areas if lookups have slight delay
-  return {
-    basicPrice: "99", compliancePrice: "199", enterprisePrice: "349",
-    basicFeatures: ["Standard registry declaration files processed securely."],
-    complianceFeatures: ["Includes proactive automated calendar sweeps and compliance alerts."],
-    enterpriseFeatures: ["Custom structural provisions, real-time banking setup, and lifetime storage."]
-  };
 }
-
-
 /**
  * PART 1: COMPLIANCE PRICING DATA COMPILER MAPPER (CORRECTED)
  * Resolves local data payloads inside state-pricing.js straight into layout loops
  */
 function resolveLocalServicePricingData(slug) {
-  // Safe deep lookup mapping for custom datasets inside state-pricing.js
-  const globalPricingSource = window.statePricingData || window.servicesPricing || window.pricingData || {};
-
-  // 🔍 SYSTEM CROSS-REFERENCE LOGIC
-  // Attempt to look up by raw hyphenated slug, underscored slug, or a fallback shortcut token extraction
-  let localData = globalPricingSource[slug] || globalPricingSource[slug.replace(/-/g, '_')];
-
-  if (!localData) {
-    // Shorthand mapper utility if your state-pricing.js uses cleaner, shorter keywords
-    if (slug.includes("ein") || slug.includes("employer-id-ein")) {
-      localData = globalPricingSource.ein || globalPricingSource.ein_number;
-    } else if (slug.includes("llc") || slug.includes("llc-formation")) {
-      localData = globalPricingSource.llc || globalPricingSource.llc_formation;
-    } else if (slug.includes("dba") || slug.includes("doing-business-as")) {
-      localData = globalPricingSource.dba;
-    } else if (slug.includes("registered-agent")) {
-      localData = globalPricingSource.registered_agent || globalPricingSource.agent;
-    } else if (slug.includes("operating-agreement")) {
-      localData = globalPricingSource.operating_agreement;
-    } else if (slug.includes("annual-reports")) {
-      localData = globalPricingSource.annual_reports || globalPricingSource.annual_report;
+    const globalPricingSource = window.statePricingData || window.servicesPricing || window.pricingData || {};
+    
+    // Completely dynamic resolution strategy: Checks raw string, underscored string, or stripped string variants
+    let localData = globalPricingSource[slug] || globalPricingSource[slug.replace(/-/g, '_')];
+    
+    if (!localData && slug) {
+        const cleanedSlug = slug.toLowerCase().trim()
+            .replace(/-formation$/, '')
+            .replace(/-processing$/, '')
+            .replace(/s$/, '')
+            .replace(/-organization$/, '');
+            
+        // Look up using generic token patterns to capture any of the 44+ services dynamically
+        localData = globalPricingSource[cleanedSlug] || 
+                    globalPricingSource[Object.keys(globalPricingSource).find(key => key.includes(cleanedSlug))];
     }
-  }
 
-  return {
-    hasCustomData: localData !== null && localData !== undefined,
-    
-    // Extract price strings safely or drop back to your standard layout default templates
-    basicPrice: localData?.starterPrice || localData?.basicPrice || localData?.price || "99",
-    compliancePrice: localData?.compliancePrice || localData?.shieldPrice || "199",
-    enterprisePrice: localData?.enterprisePrice || localData?.suitePrice || "349",
-    
-    // Extract array feature list rows cleanly. Handles strings and array variations perfectly
-    basicFeatures: localData?.starterFeatures || localData?.basicFeatures || ["Standard registry declaration files processed securely."],
-    complianceFeatures: localData?.complianceFeatures || localData?.shieldFeatures || ["Includes proactive automated calendar sweeps, compliance alerts, and guard sheets."],
-    enterpriseFeatures: localData?.enterpriseFeatures || localData?.suiteFeatures || ["Custom structural provisions, real-time banking integration, and lifetime archive storage."]
-  };
+    return {
+        hasCustomData: localData !== null && localData !== undefined,
+        
+        // Dynamic fee mapping straight from your official database keys
+        starterPrice: localData?.starter || localData?.starterPrice || "0",
+        compliancePrice: localData?.compliance || localData?.compliancePrice || "0",
+        enterprisePrice: localData?.enterprise || localData?.enterprisePrice || "0",
+        
+        // Dynamic array feature list extraction tracking your nested bullets schema flawlessly
+        starterFeatures: localData?.bullets?.starter || localData?.starterFeatures || [],
+        complianceFeatures: localData?.bullets?.compliance || localData?.complianceFeatures || [],
+        enterpriseFeatures: localData?.bullets?.enterprise || localData?.enterpriseFeatures || []
+    };
 }
+
 
 
 /**
@@ -164,13 +159,6 @@ function renderMasterHeroEngine(targetId, meta) {
     </main>
     `;
 }
-
-
-
-
-
-
-
 
 // --- MODULE 2: METRICS BOARD ENGINE ---
 function renderMasterMetricsEngine(targetId, meta) {
@@ -233,38 +221,45 @@ function renderMasterMetricsEngine(targetId, meta) {
 
 /**
  * PART 1: PRICING LIFECYCLE PRELOAD TUNNELER
- * Pauses rendering loops to wait for state-pricing.js arrays to mount into memory
+ * Snaps directly into data objects using zero-fallback parameters for Starter, Compliance, and Enterprise
  */
 function resolvePricingObjectWithRetry(slug, delay = 50, retries = 50) {
-  // 1. Audit window object allocations used inside state-pricing.js
-  const source = window.statePricingData || window.servicesPricing || window.pricingData || {};
-  
-  // 2. Try parsing clean string tokens, underscored tokens, or array properties
-  const record = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
-  
-  if (record) {
+    // 1. Audit window object allocations used inside state-pricing.js
+    const source = window.statePricingData || window.servicesPricing || window.pricingData || {};
+    
+    // 2. Try parsing clean string tokens, underscored tokens, or uppercase variations
+    const record = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
+
+    if (record) {
+        return {
+            starterPrice: record.starter || record.starterPrice || "0",
+            compliancePrice: record.compliance || record.compliancePrice || "0",
+            enterprisePrice: record.enterprise || record.enterprisePrice || "0",
+            starterFeatures: record.bullets?.starter || record.starterFeatures || [],
+            complianceFeatures: record.bullets?.compliance || record.complianceFeatures || [],
+            enterpriseFeatures: record.bullets?.enterprise || record.enterpriseFeatures || []
+        };
+    }
+
+    // 3. Loop fallback if scripts load out of sequence (Triggers a background check)
+    if (retries > 0) {
+        setTimeout(() => {
+            // Fires calculation updates in the background once loaded
+            const recheck = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
+            if (recheck && typeof recalculateSummaryStepFields === "function") {
+                recalculateSummaryStepFields();
+            }
+        }, delay);
+    }
+    // 4. Clean empty structural object to prevent UI crashes while scripts mount
     return {
-      basicPrice: record.starterPrice || record.basicPrice || record.price || "99",
-      compliancePrice: record.compliancePrice || record.shieldPrice || "199",
-      enterprisePrice: record.enterprisePrice || record.suitePrice || "349",
-      basicFeatures: record.starterFeatures || record.basicFeatures || ["Standard registry declaration files processed securely."],
-      complianceFeatures: record.complianceFeatures || record.shieldFeatures || ["Includes proactive automated calendar sweeps and compliance alerts."],
-      enterpriseFeatures: record.enterpriseFeatures || record.suiteFeatures || ["Custom structural provisions, real-time banking setup, and lifetime storage."]
+        starterPrice: "0",
+        compliancePrice: "0",
+        enterprisePrice: "0",
+        starterFeatures: [],
+        complianceFeatures: [],
+        enterpriseFeatures: []
     };
-  }
-
-  // 3. Loop fallback if scripts load out of sequence
-  if (retries > 0) {
-    setTimeout(() => resolvePricingObjectWithRetry(slug, delay, retries - 1), delay);
-  }
-
-  // 4. Baseline backup to keep layout matching your design rules if file contains syntax gaps
-  return {
-    basicPrice: "99", compliancePrice: "199", enterprisePrice: "349",
-    basicFeatures: ["Standard registry declaration files processed securely."],
-    complianceFeatures: ["Includes proactive automated calendar sweeps and compliance alerts."],
-    enterpriseFeatures: ["Custom structural provisions, real-time banking setup, and lifetime storage."]
-  };
 }
 
 
@@ -298,8 +293,7 @@ function renderMasterPricingEngine(targetId, meta) {
               <div style="color: #0a1f44; font-size: 2.2rem; font-weight: 900; margin-bottom: 15px;">$99 <span style="font-size: 1rem; font-weight: 500; color: #64748b;">+ state fees</span></div>
               <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0 0 30px 0;">Standard registry declaration files processed securely with immediate dispatch validation arrays.</p>
             </div>
-            <button onclick="window.location.href='order.html?service=${meta.slug}&plan=basic'" style="width: 100%; background: #10b981; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Basic Setup</button>
-          </div>
+            <button onclick="sessionStorage.setItem('wiz_cached_desc', 'Standard registry declaration files processed securely with immediate dispatch validation arrays.'); window.location.href='wizard.html?service=${meta.slug}&plan=starter'" style="width: 100; background: #10b981; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Starter Plan</button>          </div>
 
           <!-- PLAN CARD 2: SHIELD -->
           <div style="background: #ffffff; border: 2px solid #10b981; border-radius: 16px; padding: 35px 30px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); position: relative; box-sizing: border-box;">
@@ -310,8 +304,7 @@ function renderMasterPricingEngine(targetId, meta) {
               <div style="color: #0a1f44; font-size: 2.2rem; font-weight: 900; margin-bottom: 15px;">$199 <span style="font-size: 1rem; font-weight: 500; color: #64748b;">+ state fees</span></div>
               <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0 0 30px 0;">Includes proactive automated calendar sweeps, compliance risk metrics alerts, and asset guard protection sheets.</p>
             </div>
-            <button onclick="window.location.href='order.html?service=${meta.slug}&plan=complete'" style="width: 100%; background: #0a1f44; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Complete Shield</button>
-          </div>
+            <button onclick="sessionStorage.setItem('wiz_cached_desc', 'Includes proactive automated calendar sweeps, compliance risk metrics alerts, and asset guard protection sheets.'); window.location.href='wizard.html?service=${meta.slug}&plan=compliance'" style="width: 100; background: #0a1f44; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Compliance Plan</button>          </div>
 
           <!-- PLAN CARD 3: ENTERPRISE -->
           <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 35px 30px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.02); box-sizing: border-box;">
@@ -321,8 +314,7 @@ function renderMasterPricingEngine(targetId, meta) {
               <div style="color: #0a1f44; font-size: 2.2rem; font-weight: 900; margin-bottom: 15px;">$349 <span style="font-size: 1rem; font-weight: 500; color: #64748b;">+ state fees</span></div>
               <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0 0 30px 0;">Custom structural multi-member provisions, real-time banking gateway data mapping integration, and lifetime revision sheets storage.</p>
             </div>
-            <button onclick="window.location.href='order.html?service=${meta.slug}&plan=enterprise'" style="width: 100%; background: #4f46e5; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Enterprise Suite</button>
-          </div>
+            <button onclick="sessionStorage.setItem('wiz_cached_desc', 'Custom structural multi-member provisions, real-time banking gateway data mapping integration, and lifetime revision sheets storage.'); window.location.href='wizard.html?service=${meta.slug}&plan=enterprise'" style="width: 100; background: #4f46e5; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Enterprise Plan</button>          </div>
 
         </div>
       </div>
