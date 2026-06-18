@@ -233,6 +233,7 @@
             transition: background 0.2s;
         }
         .btn-wizard-alt:hover { background: var(--light-bg); }
+        
 
         /* 💾 SAVE PROGRESS UTILITY BUTTON HOVER matrix */
 .btn-wizard-save-progress {
@@ -1165,4 +1166,44 @@
   #dynamic-onboarding-fields-root {
     grid-template-columns: 1fr !important; /* Drop to 1 full width column to prevent squeeze */
   }
+}
+
+/* ============================================================================ */
+/* ⚡ GEOMETRIC CONTAINMENT RESTORATION FOR ALL INTERACTIVE CHECKBOXES          */
+/* ============================================================================ */
+
+.wizard-panel input[type="checkbox"],
+.form-grid-layout input[type="checkbox"],
+.addon-checkbox,
+.upsell-checkbox {
+  /* Forces the browser to ignore the text padding and render a standard checkmark */
+  appearance: checkbox !important;
+  -webkit-appearance: checkbox !important;
+  -moz-appearance: checkbox !important;
+  
+  /* CRITICAL: Overrides the giant form padding and text-field styles */
+  padding: 0 !important;
+  background: transparent !important;
+  
+  /* Strictly clamps the box dimensions back to standard scannable size */
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  
+  /* UI and alignment properties */
+  accent-color: var(--primary, #10b981) !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
+
+/* Fixes alignment inside your white choice cards */
+.form-grid-layout div[style*="display: flex; align-items: flex-start;"] {
+  display: inline-flex !important;
+  align-items: center !important; /* Vertically centers the checkbox with the label */
+  gap: 12px !important;
 }
