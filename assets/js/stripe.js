@@ -194,3 +194,16 @@ async function executeOnboardingTransactionPayloadSubmitVanilla() {
         }
     }
 }
+
+function executeOnboardingTransactionPayloadSubmitVanilla(targetStepIndex) {
+    // 1. Process your validation logic here...
+    // 2. Fire Stripe element charge operations...
+    stripe.confirmPayment({ /* payment parameters */ }).then(function(result) {
+        if (!result.error) {
+            // Secure payment verified! Release the navigation block to show final panel safely:
+            window.goToNextWizardStep(targetStepIndex);
+        } else {
+            console.error("[Checkout Failure] " + result.error.message);
+        }
+    });
+}

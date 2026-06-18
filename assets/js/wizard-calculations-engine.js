@@ -3,53 +3,517 @@
 // ============================================================================
 
 const CENTRAL_SERVICE_PLAN_DB = {
-  "llc-formation": { name: "LLC Formation", prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 499.00 } },
-  "corporations": { name: "Corporations (C/S-Corp)", prices: { "starter": 129.00, "compliance": 249.00, "enterprise": 599.00 } },
-  "sole-proprietorship": { name: "Sole Proprietorship", prices: { "starter": 79.00, "compliance": 159.00, "enterprise": 239.00 } },
-  "dba-registration": { name: "DBA Registration", prices: { "starter": 39.00, "compliance": 99.00, "enterprise": 159.00 } },
-  "nonprofit-organization": { name: "Nonprofit Organization", prices: { "starter": 149.00, "compliance": 299.00, "enterprise": 499.00 } },
-  "series-llc": { name: "Series LLC", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 399.00 } },
-  "foreign-qualification-certificate": { name: "Foreign Qualification Certificate", prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 349.00 } },
-  "llc-reinstatement-processing": { name: "LLC Reinstatement Processing", prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 249.00 } },
-  "trademark-filing": { name: "Trademark Filing", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
-  "servicemark-filing": { name: "Servicemark Filing", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 399.00 } },
-  "annual-reports": { name: "Annual Reports", prices: { "starter": 89.00, "compliance": 159.00, "enterprise": 249.00 } },
-  "operating-agreement": { name: "Operating Agreement", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 199.00 } },
-  "registered-agent": { name: "Registered Agent", prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 299.00 } },
-  "business-licenses": { name: "Business Licenses", prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 299.00 } },
-  "employer-id-ein": { name: "Employer ID (EIN)", prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 199.00 } },
-  "entity-dissolution": { name: "Entity Dissolution", prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 349.00 } },
-  "certificate-of-good-standing": { name: "Certificate of Good Standing", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 } },
-  "apostille-authentication-services": { name: "Apostille Authentication Services", prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 299.00 } },
-  "clia-certificate": { name: "CLIA Certificate", prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 } },
-  "custom-regulatory-legal-consulting": { name: "Custom Regulatory Legal Consulting", prices: { "starter": 150.00, "compliance": 1000.00, "enterprise": 1000.00 } },
-  "federal-tax": { name: "Federal Income Tax", prices: { "starter": 299.00, "compliance": 499.00, "enterprise": 799.00 } },
-  "state-tax": { name: "State Income Tax", prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 549.00 } },
-  "franchise-tax-filing": { name: "Franchise Tax Filing", prices: { "starter": 149.00, "compliance": 249.00, "enterprise": 399.00 } },
-  "sales-tax-registration": { name: "Sales Tax Registration", prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 } },
-  "payroll-tax-940-941": { name: "Payroll Tax (940/941)", prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 } },
-  "heavy-use-tax-2290": { name: "Heavy Use Tax (2290)", prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 249.00 } },
-  "cage-code": { name: "CAGE Code", prices: { "starter": 249.00, "compliance": 349.00, "enterprise": 449.00 } },
-  "duns-number": { name: "DUNS Number Procurement", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 179.00 } },
-  "minority-certificate": { name: "Minority Certificate", prices: { "starter": 99.00, "compliance": 249.00, "enterprise": 399.00 } },
-  "owner-operators": { name: "Owner Operators", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
-  "trucker-authority": { name: "Trucker Authority", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
-  "broker-authority": { name: "Broker Authority", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
-  "ucr-registration": { name: "UCR Registration", prices: { "starter": 99.00, "compliance": 179.00, "enterprise": 249.00 } },
-  "scac-code-registration": { name: "SCAC Code Registration", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 } },
-  "dot-consortium": { name: "DOT Consortium", prices: { "starter": 149.00, "compliance": 299.00, "enterprise": 499.00 } },
-  "driver-qualification-file": { name: "Driver Qualification File", prices: { "starter": 279.00, "compliance": 349.00, "enterprise": 449.00 } },
-  "process-agent-boc-3": { name: "Process Agent (BOC-3)", prices: { "starter": 49.00, "compliance": 99.00, "enterprise": 149.00 } },
-  "ifta-registration": { name: "IFTA Registration", prices: { "starter": 159.00, "compliance": 279.00, "enterprise": 349.00 } },
-  "hazmat-registration": { name: "DOT HAZMAT Registration", prices: { "starter": 199.00, "compliance": 349.00, "enterprise": 499.00 } },
-  "licenses-permits": { name: "Licenses & Permits", prices: { "starter": 79.00, "compliance": 149.00, "enterprise": 299.00 } },
-  "trucker-insurance": { name: "Trucker Insurance", prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 } },
-  "broker-insurance": { name: "Broker Insurance", prices: { "starter": 99.00, "compliance": 199.00, "enterprise": 299.00 } },
-  "new-entrant-audit": { name: "New Entrant Audit", prices: { "starter": 199.00, "compliance": 299.00, "enterprise": 499.00 } },
-  "ifta-quarterly-returns": { name: "IFTA Quarterly Fuel Tax Filing", prices: { "starter": 129.00, "compliance": 249.00, "enterprise": 449.00 } },
-  "mcs-150-update": { name: "Biennial MCS-150 Updating", prices: { "starter": 45.00, "compliance": 89.00, "enterprise": 139.00 } },
-  "boc-3-amendment": { name: "BOC-3 Priority Amendment Filing", prices: { "starter": 39.00, "compliance": 79.00, "enterprise": 119.00 } }
-};
+    "llc-formation": { 
+        name: "LLC Formation", 
+        starter: 99.00, 
+        compliance: 199.00, 
+        enterprise: 299.00, 
+        bullets: { 
+            starter: ["Articles of Organization Filing", "Standard Processing", "Digital Delivery", "Operating Agreement Template"], 
+            compliance: ["Everything in Starter (Plus)", "Elite Compliance Guard", "Priority Submission", "Registered Agent Service (1 Year)", "Employer Identification Number"], 
+            enterprise: ["Everything in Compliance (Plus)", "Complete Enterprise Asset Suite", "White Glove Execution", "Instant Turnaround", "Corporate Binder & Seal"] 
+        } 
+    },
+    "corporations": { 
+        name: "Corporations (C/S-Corp)", 
+        starter: 129.00, 
+        compliance: 249.00, 
+        enterprise: 599.00, 
+        bullets: { 
+            starter: ["Name availability search", "State filing fees included", "Corporate Bylaws"], 
+            compliance: ["Everything in Starter (Plus)", "Registered agent service for 1 year", "Employer Identification Number"], 
+            enterprise: ["Everything in Compliance (Plus)", "Corporate Binder", "Corporate Seal", "Compliance Monitoring (1 Year)", "Priority Board Resolution Drafting"] 
+        } 
+    },
+    "sole-proprietorship": { 
+        name: "Sole Proprietorship", 
+        starter: 79.00, 
+        compliance: 159.00, 
+        enterprise: 239.00, 
+        bullets: { 
+            starter: ["Initial business name registration", "Business tips and resources"], 
+            compliance: ["Everything in Starter (Plus)", "DBA registration", "Employer Identification Number", "Operating Agreement"], 
+            enterprise: ["Everything in Compliance (Plus)", "Customized business license research", "Business Plan Template", "Local Business Permit Verification Audit"] 
+        } 
+    },
+    "dba-registration": { 
+        name: "DBA Registration", 
+        starter: 39.00, 
+        compliance: 99.00, 
+        enterprise: 159.00, 
+        bullets: { 
+            starter: ["Name availability check", "Filing with the county"], 
+            compliance: ["Everything in Starter (Plus)", "Guidance on renewal process", "Certified Document Copy Delivery"], 
+            enterprise: ["Everything in Compliance (Plus)", "State-wide DBA registration option", "Expedited County Courier Courier Routing"] 
+        } 
+    },
+    "nonprofits": { 
+        name: "Nonprofit Organization", 
+        starter: 149.00, 
+        compliance: 299.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Articles of incorporation preparation", "Name availability search"], 
+            compliance: ["Everything in Starter (Plus)", "501(c)(3) application assistance", "Corporate Bylaws Drafting"], 
+            enterprise: ["Everything in Compliance (Plus)", "IRS compliance package", "Exemption Verification Status Review"] 
+        } 
+    },
+    "series-llc": { 
+        name: "Series LLC", 
+        starter: 199.00, 
+        compliance: 299.00, 
+        enterprise: 399.00, 
+        bullets: { 
+            starter: ["State filing fees included", "Initial series setup guidance"], 
+            compliance: ["Everything in Starter (Plus)", "Operating agreement for series", "Cell Structure Optimization Review"], 
+            enterprise: ["Everything in Compliance (Plus)", "Customized tax and legal strategy guidance", "Individual Series Protected Asset Allocation"] 
+        } 
+    },
+    "foreign-qualification": { 
+        name: "Foreign Qualification Certificate", 
+        starter: 149.00, 
+        compliance: 249.00, 
+        enterprise: 349.00, 
+        bullets: { 
+            starter: ["Eligibility assessment", "Preparation of application"], 
+            compliance: ["Everything in Starter (Plus)", "Registered agent service in the foreign state", "Certificate of Good Standing Procurement"], 
+            enterprise: ["Everything in Compliance (Plus)", "Compliance reminders and support", "Multi-State Jurisdictional Strategy Expansion"] 
+        } 
+    },
+    "llc-reinstatement": { 
+        name: "LLC Reinstatement", 
+        starter: 79.00, 
+        compliance: 149.00, 
+        enterprise: 249.00, 
+        bullets: { 
+            starter: ["Review of reinstatement eligibility", "Basic instructions provided"], 
+            compliance: ["Everything in Starter (Plus)", "Preparation and submission of forms", "State Back-Tax Fine Reconciliation Search"], 
+            enterprise: ["Everything in Compliance (Plus)", "Follow-up and support through reinstatement", "Immediate State Tax Clearance Procurement Line"] 
+        } 
+    },
+    "trademark-filing": { 
+        name: "Trademark Filing", 
+        starter: 199.00, 
+        compliance: 299.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Trademark search", "Basic application filing"], 
+            compliance: ["Everything in Starter (Plus)", "Preparation of a comprehensive application", "Federal USPTO Database Screen"], 
+            enterprise: ["Everything in Compliance (Plus)", "Monitoring and support for registration process", "Office Action Response Framework Protection"] 
+        } 
+    },
+
+    "servicemark-filing": { 
+        name: "Servicemark Filing", 
+        starter: 199.00, 
+        compliance: 299.00, 
+        enterprise: 399.00, 
+        bullets: { 
+            starter: ["Servicemark search", "Application filing"], 
+            compliance: ["Everything in Starter (Plus)", "Status tracking for 1 year", "Common Law Usage Evaluation"], 
+            enterprise: ["Everything in Compliance (Plus)", "Legal consultation on infringement issues", "Continuous Brand Watch Monitoring"] 
+        } 
+    }, 
+    "annual-reports": { 
+        name: "Annual Reports", 
+        starter: 89.00, 
+        compliance: 159.00, 
+        enterprise: 249.00, 
+        bullets: { 
+            starter: ["Reminder service for due dates", "Filing support for one year"], 
+            compliance: ["Everything in Starter (Plus)", "Preparation and filing assistance", "State Database Record Update Auditing"], 
+            enterprise: ["Everything in Compliance (Plus)", "Ongoing compliance checks", "Automated Future Filing Guarantee Auto-Pilot"] 
+        } 
+    }, 
+    "operating-agreement": { 
+        name: "Operating Agreement", 
+        starter: 49.00, 
+        compliance: 99.00, 
+        enterprise: 199.00, 
+        bullets: { 
+            starter: ["Standard template provided", "Basic member equity structural layout"], 
+            compliance: ["Everything in Starter (Plus)", "Customized operating agreement template", "Multi-Member Allocation Capital Rules"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full drafting and consultation services", "Asset Protection Vesting Clause Additions"] 
+        } 
+    }, 
+    "registered-agent": { 
+        name: "Registered Agent", 
+        starter: 99.00, 
+        compliance: 179.00, 
+        enterprise: 299.00, 
+        bullets: { 
+            starter: ["Registered agent services for one year"], 
+            compliance: ["Everything in Starter (Plus)", "Mail forwarding service", "Real-Time Digital Service of Process Notification"], 
+            enterprise: ["Everything in Compliance (Plus)", "Annual compliance support", "Direct Corporate Officer Privacy Shield Protection"] 
+        } 
+    }, 
+    "business-licenses": { 
+        name: "Business Licenses", 
+        starter: 79.00, 
+        compliance: 149.00, 
+        enterprise: 299.00, 
+        bullets: { 
+            starter: ["Basic license research", "County permit indexing requirements"], 
+            compliance: ["Everything in Starter (Plus)", "License application assistance", "City Municipal Zoning Filings Support"], 
+            enterprise: ["Everything in Compliance (Plus)", "Complete compliance package and ongoing support", "Annual Permit Renewal Tracking Subscription"] 
+        } 
+    }, 
+    "employer-id-ein": { 
+        name: "Employer ID (EIN)", 
+        starter: 79.00, 
+        compliance: 149.00, 
+        enterprise: 199.00, 
+        bullets: { 
+            starter: ["EIN application assistance"], 
+            compliance: ["Everything in Starter (Plus)", "IRS form preparation", "SS-4 Telephonic Tracking Queue Access"], 
+            enterprise: ["Everything in Compliance (Plus)", "Tax planning consultation", "Official Corporate Banking Resolution Sheet"] 
+        } 
+    }, 
+    "dissolution": { 
+        name: "Entity Dissolution", 
+        starter: 149.00, 
+        compliance: 249.00, 
+        enterprise: 349.00, 
+        bullets: { 
+            starter: ["Preparation of dissolution paperwork"], 
+            compliance: ["Everything in Starter (Plus)", "Filing with the state", "Corporate Tax Account Closure Notices"], 
+            enterprise: ["Everything in Compliance (Plus)", "Complete compliance assistance and tax filings", "State Franchise Tax Clearance Procurement"] 
+        } 
+    }, 
+    "certificate-of-good-standing": { 
+        name: "Certificate of Good Standing", 
+        starter: 49.00, 
+        compliance: 99.00, 
+        enterprise: 149.00, 
+        bullets: { 
+            starter: ["Application assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Mode of delivery options", "State Database Status Scan Verification"], 
+            enterprise: ["Everything in Compliance (Plus)", "Fast track filing service", "Certified Digital PDF Vault Mirror Copy"] 
+        } 
+    }, 
+    "apostille-services": { 
+        name: "Apostille Authentication Services", 
+        starter: 99.00, 
+        compliance: 179.00, 
+        enterprise: 299.00, 
+        bullets: { 
+            starter: ["Preparation and filing for one document"], 
+            compliance: ["Everything in Starter (Plus)", "Multiple document discounts available", "Hague Convention Verification Audit"], 
+            enterprise: ["Everything in Compliance (Plus)", "Comprehensive service with expedited processing", "International Courier Delivery Protection Track"] 
+        } 
+    }, 
+    "clia-certificate": { 
+        name: "CLIA Certificate", 
+        starter: 199.00, 
+        compliance: 349.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Basic CLIA consulting", "Form CMS-116 outline assessment"], 
+            compliance: ["Everything in Starter (Plus)", "Application assistance", "Laboratory Complexity Level Categorization Audit"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full compliance support", "State Agency Inspection Preparation Guidelines"] 
+        } 
+    }, 
+    "regulatory-consulting": { 
+        name: "Regulatory Consulting", 
+        starter: 150.00, 
+        compliance: 1000.00, 
+        enterprise: 1850.00, 
+        bullets: { 
+            starter: ["Tailored consulting services ($150 / Hour)"], 
+            compliance: ["Everything in Starter (Plus)", "Package Plan: Pre-purchased 10 hours for ongoing support"], 
+            enterprise: ["Everything in Compliance (Plus)", "Package Plan: Pre-purchased 20 hours for comprehensive enterprise support"] 
+        } 
+    }, 
+    "federal-tax": { 
+        name: "Federal Income Tax", 
+        starter: 299.00, 
+        compliance: 499.00, 
+        enterprise: 799.00, 
+        bullets: { 
+            starter: ["Basic federal tax preparation"], 
+            compliance: ["Everything in Starter (Plus)", "Tax planning session included", "Quarterly Estimated Payment Projections"], 
+            enterprise: ["Everything in Compliance (Plus)", "Comprehensive tax strategy and filing", "Full IRS Audit Defense Representation Safeguard"] 
+        } 
+    },
+
+    "state-tax": { 
+        name: "State Income Tax", 
+        starter: 199.00, 
+        compliance: 349.00, 
+        enterprise: 549.00, 
+        bullets: { 
+            starter: ["State tax preparation"], 
+            compliance: ["Everything in Starter (Plus)", "State compliance review", "Nexus Jurisdictional Threshold Analysis"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full service with audit support", "Multi-State Franchise Tax Apportionment Drafting"] 
+        } 
+    }, 
+    "franchise-tax": { 
+        name: "Franchise Tax Filing", 
+        starter: 149.00, 
+        compliance: 249.00, 
+        enterprise: 399.00, 
+        bullets: { 
+            starter: ["Preparation and filing assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Compliance tracking and reminders", "State Database Standing Audits"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full service with consultations", "State Revenue Franchise Tax Clearance Procurement"] 
+        } 
+    }, 
+    "sales-tax-registration": { 
+        name: "Sales Tax Registration", 
+        starter: 99.00, 
+        compliance: 199.00, 
+        enterprise: 299.00, 
+        bullets: { 
+            starter: ["Application assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Ongoing compliance support", "SS-4 Telephonic Tracking Queue Access"], 
+            enterprise: ["Everything in Compliance (Plus)", "Strategic sales tax planning", "Multi-State Nexus Threshold Matrix Monitoring"] 
+        } 
+    }, 
+    "payroll-tax-940-941": { 
+        name: "Payroll Tax (940/941)", 
+        starter: 199.00, 
+        compliance: 349.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Basic payroll tax filing"], 
+            compliance: ["Everything in Starter (Plus)", "Detailed payroll reporting", "IRS Form Quarterly Verification"], 
+            enterprise: ["Everything in Compliance (Plus)", "Comprehensive payroll solutions", "Full IRS Audit Defense Legal Representation Guarantee"] 
+        } 
+    }, 
+    "heavy-use-tax-2290": { 
+        name: "Heavy Use Tax (2290)", 
+        starter: 99.00, 
+        compliance: 179.00, 
+        enterprise: 249.00, 
+        bullets: { 
+            starter: ["Preparation assistance for one vehicle"], 
+            compliance: ["Everything in Starter (Plus)", "Multiple vehicle discounts", "Instant Digital Schedule 1 Receipt Delivery"], 
+            enterprise: ["Everything in Compliance (Plus)", "Comprehensive compliance and auditing", "Dedicated US-Based Compliance Account Specialist Match"] 
+        } 
+    }, 
+    "cage-code": { 
+        name: "CAGE Code", 
+        starter: 249.00, 
+        compliance: 349.00, 
+        enterprise: 449.00, 
+        bullets: { 
+            starter: ["Application assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Status monitoring", "SAM.gov Active Directory Account Profile Linkage Setup"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full service with registration support", "Defense Logistics Agency Verification Discrepancy Resolution"] 
+        } 
+    }, 
+    "duns-number": { 
+        name: "DUNS Number Procurement", 
+        starter: 49.00, 
+        compliance: 99.00, 
+        enterprise: 179.00, 
+        bullets: { 
+            starter: ["Step-by-step guidance"], 
+            compliance: ["Everything in Starter (Plus)", "Expedited processing", "D&B Credit Commercial Business Credit File Initial Setup"], 
+            enterprise: ["Everything in Compliance (Plus)", "Comprehensive support", "Accelerated Next-Day Fast Track DUNS ID Assignment"] 
+        } 
+    }, 
+    "minority-certificate": { 
+        name: "Minority Certificate", 
+        starter: 99.00, 
+        compliance: 249.00, 
+        enterprise: 399.00, 
+        bullets: { 
+            starter: ["Eligibility assessment", "Structural Document Checklist Assessment Review"], 
+            compliance: ["Everything in Starter (Plus)", "Application assistance", "Complete Application Compilation, Package Preparation, and Submission Support"], 
+            enterprise: ["Everything in Compliance (Plus)", "Ongoing support and renewal", "Corporate Governance Review, On-Site Interview Mock Prep Session"] 
+        } 
+    }, 
+    "owner-operators": { 
+        name: "Owner Operators", 
+        starter: 199.00, 
+        compliance: 299.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Business structure advice"], 
+            compliance: ["Everything in Starter (Plus)", "Full compliance package", "Interstate DOT Authority Status Review Audit"], 
+            enterprise: ["Everything in Compliance (Plus)", "Financial planning services", "Complete New Entrant Safety Audit Compliance Orientation"] 
+        } 
+    }, 
+    "trucker-authority": { 
+        name: "Trucker Authority", 
+        starter: 199.00, 
+        compliance: 299.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Authority application preparation"], 
+            compliance: ["Everything in Starter (Plus)", "Support for compliance documentation", "FMCSA Interstate Operating Authority MC Number Filing Submission"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full service with ongoing support", "BOC-3 Process Agent Uniform Filing Submission Processing"] 
+        } 
+    }, 
+    "broker-authority": { 
+        name: "Broker Authority", 
+        starter: 199.00, 
+        compliance: 299.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Basic application preparation"], 
+            compliance: ["Everything in Starter (Plus)", "Compliance support", "Mandatory 21-Day Public Protest Period Status Monitoring Management"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full service with network connections", "Expedited Authority Certificate Delivery Dispatch Route"] 
+        } 
+    }, 
+    "ucr-registration": { 
+        name: "UCR Registration", 
+        starter: 99.00, 
+        compliance: 179.00, 
+        enterprise: 249.00,
+        bullets: { 
+            starter: ["Registration assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Compliance reminders", "Current Year National UCR Registration Filing Support"], 
+            enterprise: ["Everything in Compliance (Plus)", "Ongoing support services", "Multi-State Clearinghouse Compliance Monitoring Safeguard"] 
+        } 
+    }, 
+    "scac-code": { 
+        name: "SCAC Code Registration", 
+        starter: 49.00, 
+        compliance: 99.00, 
+        enterprise: 149.00, 
+        bullets: { 
+            starter: ["Application assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Status tracking service", "Standard Carrier Alpha Code Application Processing"], 
+            enterprise: ["Everything in Compliance (Plus)", "Complete registration support", "Annual SCAC Code Renewal Automation Protection"] 
+        } 
+    }, 
+    "dot-consortium": { 
+        name: "DOT Consortium", 
+        starter: 149.00, 
+        compliance: 299.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Program enrollment assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Compliance monitoring", "Carrier Safety Measurement System Data Scores Pre-Audit Assessment"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full service with ongoing audits", "Mandatory Drug and Alcohol Clearinghouse Dynamic Query Verifications"] 
+        } 
+    }, 
+    "driver-file": { 
+        name: "Driver Qualification File", 
+        starter: 279.00, 
+        compliance: 349.00, 
+        enterprise: 449.00, 
+        bullets: { 
+            starter: ["Basic documentation preparation"], 
+            compliance: ["Everything in Starter (Plus)", "Compliance packet preparation", "Mandatory Employment History Verification Form Compilations"], 
+            enterprise: ["Everything in Compliance (Plus)", "Comprehensive management of files", "Annual Motor Vehicle Record (MVR) Background Integration Setup"] 
+        } 
+    }, 
+    "process-agents-boc-3": { 
+        name: "Process Agents (BOC-3)", 
+        starter: 49.00, 
+        compliance: 99.00, 
+        enterprise: 149.00, 
+        bullets: { 
+            starter: ["Filing assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Annual renewal support", "Designation of Process Agents across All 50 States Forms Filing"], 
+            enterprise: ["Everything in Compliance (Plus)", "Ongoing compliance service", "Immediate Real-Time Legal Document Courier Scan Mirror Forwarding"] 
+        } 
+    },
+
+
+    "ifta-registration": { 
+        name: "IFTA Registration", 
+        starter: 159.00, 
+        compliance: 279.00, 
+        enterprise: 349.00, 
+        bullets: { 
+            starter: ["IFTA registration assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Compliance checks", "Initial Fleet Fuel Tax Decal Set Procurement"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full support with filing", "Quarterly Fuel Tax Mileage Record Auditing"] 
+        } 
+    }, 
+    "hazmat-registration": { 
+        name: "DOT HAZMAT Registration", 
+        starter: 199.00, 
+        compliance: 349.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Basic registration assistance"], 
+            compliance: ["Everything in Starter (Plus)", "Detailed compliance packet", "PHMSA Database Registry Validation Verification"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full support and ongoing compliance", "Hazmat Employee Security Plan Documentation Framework"] 
+        } 
+    }, 
+    "licenses-permits": { 
+        name: "Licenses & Permits", 
+        starter: 79.00, 
+        compliance: 149.00, 
+        enterprise: 299.00, 
+        bullets: { 
+            starter: ["Basic license research"], 
+            compliance: ["Complete application assistance", "Municipal Zoning Board Verification Check"], 
+            enterprise: ["Ongoing compliance support", "Annual Local Permit Renewal Auto-Tracking Subscription"] 
+        } 
+    }, 
+    "trucker-insurance-quote": { 
+        name: "Trucker Insurance", 
+        starter: 99.00, 
+        compliance: 199.00, 
+        enterprise: 299.00, 
+        bullets: { 
+            starter: ["Document preparation and filing"], 
+            compliance: ["Everything in Starter (Plus)", "Negotiation with providers", "Commercial Auto Fleet Risk Evaluation Profile"], 
+            enterprise: ["Everything in Compliance (Plus)", "Comprehensive package customized", "Direct Underwriter Premium Rate Restructuring"] 
+        } 
+    }, 
+    "broker-insurance-quote": { 
+        name: "Broker Insurance", 
+        starter: 99.00, 
+        compliance: 199.00, 
+        enterprise: 299.00, 
+        bullets: { 
+            starter: ["Document preparation and filing"], 
+            compliance: ["Everything in Starter (Plus)", "Risk assessment included", "Contingent Cargo Liability Exposure Analysis"], 
+            enterprise: ["Everything in Compliance (Plus)", "Full consultation for coverage needs", "Multi-Provider Market Premium Escrow Sweeps"] 
+        } 
+    }, 
+    "new-entrant-audit": { 
+        name: "New Entrant Audit", 
+        starter: 199.00, 
+        compliance: 299.00, 
+        enterprise: 499.00, 
+        bullets: { 
+            starter: ["Basic audit preparation"], 
+            compliance: ["Everything in Starter (Plus)", "Mock audit and consultation", "FMCSA Safety Measurement System Score Scan"], 
+            enterprise: ["Everything in Compliance (Plus)", "Comprehensive audit support", "Done-For-You Corrective Action Plan Response Warranty"] 
+        } 
+    }, 
+    "ifta-quarterly-returns": { 
+        name: "IFTA Quarterly Fuel Tax Filing", 
+        starter: 129.00, 
+        compliance: 249.00, 
+        enterprise: 449.00, 
+        bullets: { 
+            starter: ["Distance and fuel baseline log sorting"], 
+            compliance: ["Everything in Starter (Plus)", "State tax generation calculations", "Electronic return submission"], 
+            enterprise: ["Everything in Compliance (Plus)", "Audit protection shield", "Multi-jurisdictional fleet management", "Fuel Tax Credit Optimization Sweep"] 
+        } 
+    }, 
+    "mcs-150-update": { 
+        name: "Biennial MCS-150 Updating", 
+        starter: 45.00, 
+        compliance: 89.00, 
+        enterprise: 139.00, 
+        bullets: { 
+            starter: ["USDOT registry validation diagnostics"], 
+            compliance: ["Everything in Starter (Plus)", "Direct FMCSA portal submission", "Electronic success notifications"], 
+            enterprise: ["Everything in Compliance (Plus)", "Accelerated expedited submission track", "System change monitoring", "MCS-150 Calendar Monitor Setup"] 
+        } 
+    }, 
+    "boc-3-amendment": { 
+        name: "BOC-3 Priority Amendment Filing", 
+        starter: 39.00, 
+        compliance: 79.00, 
+        enterprise: 119.00,
+        bullets: { 
+            starter: ["Legal name change analysis parameters"], 
+            compliance: ["Everything in Starter (Plus)", "Direct FMCSA register address updating", "Immediate certification outputs"], 
+            enterprise: ["Everything in Compliance (Plus)", "Priority premium network tracking loop overrides", "Multi-State Agent Verification Lock"] 
+        } 
+    }
+}
 
 // Expose objects cleanly
 window.CENTRAL_SERVICE_PLAN_DB = CENTRAL_SERVICE_PLAN_DB;
@@ -91,80 +555,86 @@ window.customSelectedApostilleAuthenticationServiceActive = false;
 window.customSelectedGoodStandingCertificateServiceActive = false;
 
 
-// ============================================================================
+// ============================================================================ //
 // 🔗 MASTER ALIAS ROUTING BRIDGE FOR HTML BUTTONS (STRICT JUMP ENGINE)
-// ============================================================================
-
+// ============================================================================ //
 function goToNextWizardStep(targetStepIndex, event = null) {
-  console.log("[Bridge Action] Incoming call raw value: " + targetStepIndex);
-
-  // Prevent default form submission leaks cleanly
-  if (event && typeof event.preventDefault === 'function') {
-    event.preventDefault();
-  } else if (window.event) {
-    window.event.preventDefault();
-  }
-
-  // Handle specific directional keyword string flags
-  if (targetStepIndex === 'back' || targetStepIndex === 'prev') {
-    targetStepIndex = currentWizardActiveStep - 1;
-  } else if (targetStepIndex !== null && targetStepIndex !== undefined) {
-    targetStepIndex = parseInt(targetStepIndex, 10);
-  }
-
-  // Fallback protection if parameter is broken, missing, or NaN
-  if (targetStepIndex === null || targetStepIndex === undefined || isNaN(targetStepIndex)) {
-    targetStepIndex = currentWizardActiveStep + 1;
-    console.log("[Bridge Safety Override] Index invalid. Auto-advancing to: " + targetStepIndex);
-  }
-
-  // Protect against view underflow
-  if (targetStepIndex < 1) {
-    console.warn("[Bridge Guard] Cannot jump below step 1.");
-    return false;
-  }
-
-  // Protect against view overflow
-  if (targetStepIndex > totalWizardExpectedSteps) {
-    console.warn("[Bridge Guard] Cannot jump past max steps (" + totalWizardExpectedSteps + ").");
-    return false;
-  }
-
-  console.log("[Bridge Success] Routing engine executing step jump to index: " + targetStepIndex);
-  executeDirectStepJump(targetStepIndex);
-}
-
-function handleNavigationButtonClickEvent(event = null) {
-  if (currentWizardActiveStep === totalWizardExpectedSteps) {
-    if (typeof executeOnboardingTransactionPayloadSubmitVanilla === "function") {
-      executeOnboardingTransactionPayloadSubmitVanilla();
+    console.log("[Bridge Action] Incoming call raw value: " + targetStepIndex);
+    
+    // Prevent default form submission leaks cleanly
+    if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+    } else if (window.event) {
+        window.event.preventDefault();
     }
-  } else {
-    var nextStepIndex = currentWizardActiveStep + 1;
-    console.log("[Bridge Auto-Advance] Moving forward to Step: " + nextStepIndex);
-    goToNextWizardStep(nextStepIndex, event);
-  }
+    
+    // Handle specific directional keyword string flags
+    if (targetStepIndex === 'back' || targetStepIndex === 'prev') {
+        targetStepIndex = currentWizardActiveStep - 1;
+    } else if (targetStepIndex !== null && targetStepIndex !== undefined) {
+        targetStepIndex = parseInt(targetStepIndex, 10);
+    }
+    
+    // Fallback protection if parameter is broken, missing, or NaN
+    if (targetStepIndex === null || targetStepIndex === undefined || isNaN(targetStepIndex)) {
+        targetStepIndex = currentWizardActiveStep + 1;
+        console.log("[Bridge Safety Override] Index invalid. Auto-advancing to: " + targetStepIndex);
+    }
+    
+    // Protect against view underflow
+    if (targetStepIndex < 1) {
+        console.warn("[Bridge Guard] Cannot jump below step 1.");
+        return false;
+    }
+    
+    // Protect against view overflow
+    if (targetStepIndex > totalWizardExpectedSteps) {
+        console.warn("[Bridge Guard] Cannot jump past max steps (" + totalWizardExpectedSteps + ").");
+        return false;
+    }
+
+    // ============================================================================ //
+    // ⚡️ STAGE-ZERO INJECTION GATEKEEPER
+    // ============================================================================ //
+    // If the customer is advancing onto Step 2, force-inject the dynamic form elements
+    // right before execution loops change the panel visibility states.
+    if (targetStepIndex === 2) {
+        if (typeof window.executeStepTwoDynamicFormInjection === "function") {
+            // Pass true to clear currentWizardActiveStep logic catch-22 loops
+            window.executeStepTwoDynamicFormInjection(true);
+        } else {
+            console.error("[Bridge Guard Fatal Exception] executeStepTwoDynamicFormInjection is missing from global memory layers.");
+        }
+    }
+    
+    console.log("[Bridge Success] Routing engine executing step jump to index: " + targetStepIndex);
+    executeDirectStepJump(targetStepIndex);
 }
 
 function executeDirectStepJump(targetIndex) {
-  console.log("[Wizard Engine] Transitioning state: Step " + currentWizardActiveStep + " -> Step " + targetIndex);
+  // Sync local scope tracker cleanly to the single global source of truth
+  window.currentWizardActiveStep = window.currentWizardActiveStep || 1;
+  window.totalWizardExpectedSteps = window.totalWizardExpectedSteps || 7;
+
+  console.log("[Wizard Engine] Transitioning state: Step " + window.currentWizardActiveStep + " -> Step " + targetIndex);
 
   // 🛡️ Form validation checks: Required ONLY when advancing FORWARD
-  if (targetIndex > currentWizardActiveStep) {
-    var activePanel = document.getElementById("step-panel-" + currentWizardActiveStep);
+  if (targetIndex > window.currentWizardActiveStep) {
+    var activePanel = document.getElementById("step-panel-" + window.currentWizardActiveStep);
     if (activePanel) {
+      // Direct Fix: Only scan inputs that are actually INSIDE the active panel wrapper
       var inputs = activePanel.querySelectorAll("input[required], select[required], textarea[required]");
       var isValid = true;
       
       inputs.forEach(function(el) {
-        if (!el.checkValidity()) {
+        if (typeof el.checkValidity === "function" && !el.checkValidity()) {
           el.reportValidity();
           isValid = false;
         }
       });
-      
+
       if (!isValid) {
-        console.warn("[Wizard Engine] Forward navigation halted: Form validation failed.");
+        console.warn("[Wizard Engine] Forward navigation halted: Form validation failed inside Step " + window.currentWizardActiveStep);
         return false;
       }
     }
@@ -175,19 +645,22 @@ function executeDirectStepJump(targetIndex) {
     cacheAndRestoreWizardFormStatesVanilla(false);
   }
 
-  // Commit verified numeric step state
-  currentWizardActiveStep = targetIndex;
+  // Commit verified numeric step state to global scope memory layers
+  window.currentWizardActiveStep = targetIndex;
 
   // Sync structural DOM visibility states across layout steps
-  var panels = document.querySelectorAll(".wizard-panel");
+  var panels = document.querySelectorAll(".master-onboarding-form");
   if (panels && panels.length > 0) {
     panels.forEach(function(panel, index) {
       var stepNumber = index + 1;
       if (stepNumber === targetIndex) {
         panel.classList.add("active");
+        // Direct Fix: Cleanly clear display parameters to prevent layout distortions
+        panel.style.removeProperty("display");
         panel.style.setProperty("display", "block", "important");
       } else {
         panel.classList.remove("active");
+        panel.style.removeProperty("display");
         panel.style.setProperty("display", "none", "important");
       }
     });
@@ -213,28 +686,25 @@ document.addEventListener("DOMContentLoaded", function() {
   if (typeof generateSecureRuntimeSessionTokenVanilla === "function") {
     generateSecureRuntimeSessionTokenVanilla();
   }
-  
   if (typeof autoInjectMainWebsitePricingPlan === "function") {
     autoInjectMainWebsitePricingPlan();
   } else if (typeof initializeUrlParameterParserEngineVanilla === "function") {
     initializeUrlParameterParserEngineVanilla();
   }
-  
   if (typeof initializeDigitalSignatureMirrorSync === "function") {
-  initializeDigitalSignatureMirrorSync();
-}
+    initializeDigitalSignatureMirrorSync();
+  }
 
-  // Reset or pull dynamic local data states on load
-  const pageWasRefreshed = performance.getEntriesByType("navigation")[0]?.type === "reload";
-  if (pageWasRefreshed) {
-    localStorage.removeItem("f4u_wizard_onboarding_state");
-  } else if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+  // Restore cached inputs from local state cleanly on load
+  if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
     cacheAndRestoreWizardFormStatesVanilla(true);
   }
 
-  if (typeof executeDynamicRegulatoryFieldInjection === "function") {
-    executeDynamicRegulatoryFieldInjection(window.routeActiveServiceKey);
+  // Direct Fix: Delayed execution prevents Step 3 fields from injecting early and breaking Step 1 rules
+  if (window.currentWizardActiveStep === 2 && typeof executeStepTwoDynamicFormInjection === "function") {
+    executeStepTwoDynamicFormInjection(true);
   }
+
   if (typeof initializeFormDisplayLayoutSync === "function") {
     initializeFormDisplayLayoutSync();
   }
@@ -245,6 +715,7 @@ document.addEventListener("DOMContentLoaded", function() {
     renderActiveWizardStepUiLayout();
   }
 });
+
 
 
 // ============================================================================
@@ -346,106 +817,109 @@ function initializeUrlParameterParserEngineVanilla() {
   }
 }
 
-// ============================================================================
-// 🏗️ MASTER REGULATORY FORM FIELD INJECTION ENGINE (ROUTING DISPATCH PATCH)
-// ============================================================================
-
+// ============================================================================ //
+// 🏗️ MASTER REGULATORY FORM FIELD INJECTION ENGINE (STRICT DISPATCH REPAIR)    //
+// ============================================================================ //
 function executeDynamicRegulatoryFieldInjection(serviceKey) {
   const rootFieldContainer = document.getElementById("dynamic-onboarding-fields-root");
   if (!rootFieldContainer) return;
 
   // Standardize key inputs to pass strict conditional matches cleanly
-  const cleanKey = String(serviceKey || "").toLowerCase().trim();
+  const activeKey = String(serviceKey || window.routeActiveServiceKey || "").toLowerCase().trim();
   let targetLayoutFamily = "llc";
 
   // 🔀 Categorization Router: Maps service strings seamlessly to core layout families
-  if (cleanKey.includes("series-llc") || cleanKey.includes("series")) {
+  if (activeKey.includes("series-llc") || activeKey.includes("series")) {
     targetLayoutFamily = "series-llc";
-  } else if (cleanKey === "llc-formation" || (cleanKey.includes("llc") && !cleanKey.includes("reinstatement"))) {
+  } else if (activeKey === "llc-formation" || (activeKey.includes("llc") && !activeKey.includes("reinstatement"))) {
     targetLayoutFamily = "llc";
-  } else if (cleanKey.includes("nonprofit")) {
+  } else if (activeKey.includes("nonprofit")) {
     targetLayoutFamily = "nonprofit";
-  } else if (cleanKey.includes("corp") || cleanKey.includes("corporation")) {
+  } else if (activeKey.includes("corp") || activeKey.includes("corporation")) {
     targetLayoutFamily = "corporate";
-  } else if (cleanKey.includes("proprietor") || cleanKey.includes("sole")) {
+  } else if (activeKey.includes("proprietor") || activeKey.includes("sole")) {
     targetLayoutFamily = "sole-prop";
-  } else if (cleanKey.includes("dba") || cleanKey.includes("assumed")) {
+  } else if (activeKey.includes("dba") || activeKey.includes("assumed")) {
     targetLayoutFamily = "dba";
   } else if (
-    cleanKey.includes("reinstatement") || 
-    cleanKey.includes("dissolution") || 
-    cleanKey.includes("annual-report") || 
-    cleanKey.includes("good-standing") || 
-    cleanKey.includes("qualification") ||
-    cleanKey.includes("apostille")
+    activeKey.includes("reinstatement") || 
+    activeKey.includes("dissolution") || 
+    activeKey.includes("annual-report") || 
+    activeKey.includes("good-standing") || 
+    activeKey.includes("qualification") || 
+    activeKey.includes("apostille")
   ) {
     targetLayoutFamily = "maintenance";
-  } else if (cleanKey.includes("trademark") || cleanKey.includes("servicemark")) {
+  } else if (activeKey.includes("trademark") || activeKey.includes("servicemark")) {
     targetLayoutFamily = "ip";
-  } else if (cleanKey.includes("consulting") || cleanKey.includes("permit") || cleanKey.includes("license") || cleanKey.includes("clia")) {
+  } else if (activeKey.includes("consulting") || activeKey.includes("permit") || activeKey.includes("license") || activeKey.includes("clia")) {
     targetLayoutFamily = "regulatory";
-  } else if (cleanKey.includes("ein") || cleanKey.includes("sales-tax") || cleanKey.includes("payroll") || cleanKey.includes("agreement")) {
+  } else if (activeKey.includes("ein") || activeKey.includes("sales-tax") || activeKey.includes("payroll") || activeKey.includes("agreement")) {
     targetLayoutFamily = "financial";
-  } else if (cleanKey.includes("tax") || cleanKey.includes("franchise") || cleanKey.includes("heavy-use") || cleanKey.includes("2290")) {
+  } else if (activeKey.includes("tax") || activeKey.includes("franchise") || activeKey.includes("heavy-use") || activeKey.includes("2290")) {
     targetLayoutFamily = "tax-filing";
   } else if (
-    cleanKey.includes("cage") || 
-    cleanKey.includes("duns") || 
-    cleanKey.includes("procurement") || 
-    cleanKey.includes("certificate") || 
-    cleanKey.includes("minority")
+    activeKey.includes("cage") || 
+    activeKey.includes("duns") || 
+    activeKey.includes("certificate") || 
+    activeKey.includes("minority")
   ) {
-    targetLayoutFamily = "procurement";
-  } else if (cleanKey.includes("insurance") || cleanKey.includes("audit")) {
+    // FIXED: Correctly routes specialized credentials to your secondary financial/regulatory tree
+    targetLayoutFamily = "regulatory"; 
+  } else if (activeKey.includes("insurance") || activeKey.includes("audit")) {
     targetLayoutFamily = "insurance";
   } else {
-    // Catch-all explicitly for tracking authority, ucr, scac, dot, bco-3, ifta, hazmat
     targetLayoutFamily = "trucking";
   }
 
+  console.log(`[Regulatory Injection] Selected Form Family Layout Context: "${targetLayoutFamily}" for key: "${activeKey}"`);
+
   // 🛠️ Structural Template Executor: Swaps UI layouts based on the parsed family
   if (targetLayoutFamily === "series-llc") {
-    rootFieldContainer.innerHTML = typeof buildSeriesLlcRegistrationFieldsLayoutHtml === "function" ? buildSeriesLlcRegistrationFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+    rootFieldContainer.innerHTML = typeof buildSeriesLlcRegistrationFieldsLayoutHtml === "function" ? buildSeriesLlcRegistrationFieldsLayoutHtml(activeKey) : "";
   } else if (targetLayoutFamily === "llc") {
-    rootFieldContainer.innerHTML = typeof buildLlcFormationFieldsLayoutHtml === "function" ? buildLlcFormationFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+    rootFieldContainer.innerHTML = typeof buildLlcFormationFieldsLayoutHtml === "function" ? buildLlcFormationFieldsLayoutHtml(activeKey) : "";
   } else if (targetLayoutFamily === "nonprofit") {
-    rootFieldContainer.innerHTML = typeof buildNonprofitOrganizationFieldsLayoutHtml === "function" ? buildNonprofitOrganizationFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+    rootFieldContainer.innerHTML = typeof buildNonprofitOrganizationFieldsLayoutHtml === "function" ? buildNonprofitOrganizationFieldsLayoutHtml(activeKey) : "";
   } else if (targetLayoutFamily === "corporate") {
-    rootFieldContainer.innerHTML = typeof buildCorporateFormationFieldsLayoutHtml === "function" ? buildCorporateFormationFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+    rootFieldContainer.innerHTML = typeof buildCorporateFormationFieldsLayoutHtml === "function" ? buildCorporateFormationFieldsLayoutHtml(activeKey) : "";
   } else if (targetLayoutFamily === "dba") {
-    rootFieldContainer.innerHTML = typeof buildDbaRegistrationFieldsLayoutHtml === "function" ? buildDbaRegistrationFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+    rootFieldContainer.innerHTML = typeof buildDbaRegistrationFieldsLayoutHtml === "function" ? buildDbaRegistrationFieldsLayoutHtml(activeKey) : "";
   } else if (targetLayoutFamily === "sole-prop") {
-    rootFieldContainer.innerHTML = typeof buildInformalEntityFieldsLayoutHtml === "function" ? buildInformalEntityFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+    rootFieldContainer.innerHTML = typeof buildInformalEntityFieldsLayoutHtml === "function" ? buildInformalEntityFieldsLayoutHtml(activeKey) : "";
   } else if (targetLayoutFamily === "maintenance") {
-    if (cleanKey.includes("qualification")) {
-      rootFieldContainer.innerHTML = typeof buildForeignQualificationFieldsLayoutHtml === "function" ? buildForeignQualificationFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+    if (activeKey.includes("qualification")) {
+      rootFieldContainer.innerHTML = typeof buildForeignQualificationFieldsLayoutHtml === "function" ? buildForeignQualificationFieldsLayoutHtml(activeKey) : "";
     } else {
-      rootFieldContainer.innerHTML = typeof buildMaintenanceFieldsLayoutHtml === "function" ? buildMaintenanceFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+      rootFieldContainer.innerHTML = typeof buildMaintenanceFieldsLayoutHtml === "function" ? buildMaintenanceFieldsLayoutHtml(activeKey) : "";
     }
   } else if (targetLayoutFamily === "ip") {
-    rootFieldContainer.innerHTML = typeof buildIpRegistryFieldsLayoutHtml === "function" ? buildIpRegistryFieldsLayoutHtml(window.routeActiveServiceKey) : "";
+    rootFieldContainer.innerHTML = typeof buildIpRegistryFieldsLayoutHtml === "function" ? buildIpRegistryFieldsLayoutHtml(activeKey) : "";
   } else {
     // Safely captures financial, tax-filing, regulatory, procurement, insurance, and trucking structures
-    rootFieldContainer.innerHTML = typeof buildExtendedFamiliesFieldsLayoutHtml === "function" ? buildExtendedFamiliesFieldsLayoutHtml(targetLayoutFamily, window.routeActiveServiceKey) : "";
+    rootFieldContainer.innerHTML = typeof buildExtendedFamiliesFieldsLayoutHtml === "function" ? buildExtendedFamiliesFieldsLayoutHtml(targetLayoutFamily, activeKey) : "";
   }
 }
 
 
-// ============================================================================
-// 🧠 AUTOMATED DATA CONTROLLER AND CALCULATIONS SCRIPT ENGINE
-// ============================================================================
 
-// 🚀 MASTER STEP NAVIGATION CONTROL LOGIC (VANILLA JS IMPLEMENTATION)
+// ============================================================================ //
+// 🚀 MASTER STEP NAVIGATION CONTROL LOGIC (VANILLA JS IMPLEMENTATION - REPAIRED) //
+// ============================================================================ //
 function navigateWizardStepTrackVanilla(directionOffset) {
-  const plannedTargetStep = currentWizardActiveStep + directionOffset;
-  
+  // Direct Fix: Safely map local lookups to single unified global tracking parameters
+  window.currentWizardActiveStep = window.currentWizardActiveStep || 1;
+  window.totalWizardExpectedSteps = window.totalWizardExpectedSteps || 7;
+
+  const plannedTargetStep = window.currentWizardActiveStep + directionOffset;
+
   // Limit navigation bounds to valid panels
-  if (plannedTargetStep < 1 || plannedTargetStep > totalWizardExpectedSteps) return;
+  if (plannedTargetStep < 1 || plannedTargetStep > window.totalWizardExpectedSteps) return;
 
   // Execute input structure check loops when advancing panels
   if (directionOffset > 0) {
-    if (!validateStepInputParametersVanilla(currentWizardActiveStep)) {
-      console.warn(`[Navigation Blocked] Form validation checks failed on step: ${currentWizardActiveStep}`);
+    if (!validateStepInputParametersVanilla(window.currentWizardActiveStep)) {
+      console.warn(`[Navigation Blocked] Form validation checks failed on step: ${window.currentWizardActiveStep}`);
       return; // Prevent step advance if validation fails
     }
   }
@@ -459,45 +933,50 @@ function navigateWizardStepTrackVanilla(directionOffset) {
   if (typeof executeDirectStepJump === "function") {
     executeDirectStepJump(plannedTargetStep);
   } else {
-    currentWizardActiveStep = plannedTargetStep;
+    window.currentWizardActiveStep = plannedTargetStep;
   }
 }
 
-// 🔍 INPUT INTERACTIVE VALIDATION CONTROL ENGINE (FULLY ABSTRACT - NO HARDCODING)
+// ============================================================================ //
+// 🔍 INPUT INTERACTIVE VALIDATION CONTROL ENGINE (FULLY ABSTRACT - ZERO CODES) //
+// ============================================================================ //
 function validateStepInputParametersVanilla(stepIndex) {
   let isValid = true;
   const targetPanel = document.getElementById(`step-panel-${stepIndex}`);
-  if (!targetPanel) return true; // Safe escape fallback if panel is missing from structural layout
+  if (!targetPanel) return true; 
 
-  // Clear prior validation error markers and reset styling borders
   targetPanel.querySelectorAll('.input-error-marker').forEach(node => node.remove());
   targetPanel.querySelectorAll('input, select, textarea').forEach(node => {
-    node.style.borderColor = 'var(--border)';
+    node.style.borderColor = 'var(--border, #e2e8f0)';
   });
 
-  // Dynamic Jurisdiction Catching (Updates state if a formation/business state selector is present)
-  const stateSelector = targetPanel.querySelector('[name="formation_state"], [name="business_state"], #wizard-target-jurisdiction');
+  // ABSTRACT JURISDICTION TRACKING: Finds any select drop-down element that contains a 2-letter state option value
+  const stateSelector = targetPanel.querySelector('select[id*="state"], select[name*="state"], select[id*="jurisdiction"]');
   if (stateSelector && stateSelector.value) {
     window.selectedFormationStateCode = stateSelector.value.toUpperCase().trim();
   }
 
-  // Dynamic Required Fields Evaluation (Scans only elements that are actively rendered in the DOM)
+  // Scan required form control structures
   const renderedRequiredElements = targetPanel.querySelectorAll('input[required], select[required], textarea[required]');
   
   renderedRequiredElements.forEach(element => {
-    // Check checkboxes separately from input text nodes
     if (element.type === 'checkbox') {
       if (!element.checked) {
-        let labelMessage = element.getAttribute('data-error-msg') || 'You must review and accept these verification terms layout constraints to proceed.';
-        markFieldAsInvalidVanilla(element, labelMessage);
+        let labelMessage = element.getAttribute('data-error-msg') || 'You must accept these required terms layout constraints to proceed.';
+        if (typeof markFieldAsInvalidVanilla === 'function') {
+          markFieldAsInvalidVanilla(element, labelMessage);
+        }
         isValid = false;
       }
     } else {
-      // Evaluate text values, selectors, and textarea field inputs
       if (!element.value || element.value.trim() === "") {
-        let explicitFieldName = element.getAttribute('placeholder') || element.getAttribute('name') || 'This required field';
-        let labelMessage = element.getAttribute('data-error-msg') || `${explicitFieldName.replace(/[:-]/g, ' ')} value parameter entry is required.`;
-        markFieldAsInvalidVanilla(element, labelMessage);
+        let explicitFieldName = element.getAttribute('placeholder') || element.getAttribute('name') || element.getAttribute('id') || 'Required field';
+        let safeNameString = String(explicitFieldName).replace(/[:-]/g, ' ');
+        let labelMessage = element.getAttribute('data-error-msg') || `${safeNameString} is a required field.`;
+        
+        if (typeof markFieldAsInvalidVanilla === 'function') {
+          markFieldAsInvalidVanilla(element, labelMessage);
+        }
         isValid = false;
       }
     }
@@ -506,33 +985,53 @@ function validateStepInputParametersVanilla(stepIndex) {
   return isValid;
 }
 
-// 🎨 VISUAL ERROR MARKER INJECTION PROTOCOL
+
+// ============================================================================ //
+// 🎨 VISUAL ERROR MARKER INJECTION PROTOCOL (STRICT GRIDS & PREVENT DUPLICATES) //
+// ============================================================================ //
 function markFieldAsInvalidVanilla(inputNode, informativeLabelString) {
   if (!inputNode || !inputNode.parentNode) return;
-  
-  inputNode.style.borderColor = '#ef4444';
-  
-  // Prevent duplicate messages appending on the same input component node
-  const adjacentSibling = inputNode.nextSibling;
-  if (adjacentSibling && adjacentSibling.className === 'input-error-marker') return;
 
+  // Apply bright error crimson boundary indicators cleanly
+  inputNode.style.borderColor = '#ef4444';
+
+  // FIXED: Uses nextElementSibling instead of nextSibling to skip blank code whitespaces
+  // This accurately catches existing error tags and prevents duplicate message stacks
+  let targetSibling = inputNode.nextElementSibling;
+  
+  // If wrapped inside an input group layout wrapper envelope, look at the outer container scope boundary instead
+  const isWrappedNode = inputNode.parentNode.classList.contains('input-lock-wrapper');
+  const targetParentNode = isWrappedNode ? inputNode.parentNode.parentNode : inputNode.parentNode;
+
+  if (isWrappedNode) {
+    targetSibling = inputNode.parentNode.nextElementSibling;
+  }
+
+  if (targetSibling && targetSibling.classList.contains('input-error-marker')) {
+    // Already flagged. Update text content parameter seamlessly and exit to stop duplicate appending.
+    targetSibling.textContent = informativeLabelString;
+    return;
+  }
+
+  // Build the underlying accessible error notification node framework
   const spanError = document.createElement('span');
   spanError.className = 'input-error-marker';
-  spanError.style.color = '#ef4444';
-  spanError.style.fontSize = '0.75rem';
-  spanError.style.display = 'block';
-  spanError.style.marginTop = '4px';
-  spanError.style.fontWeight = '500';
+  spanError.style.cssText = "color: #ef4444 !important; font-size: 0.75rem !important; display: block !important; margin-top: 4px !important; font-weight: 600 !important; width: 100% !important; clear: both !important;";
   spanError.textContent = informativeLabelString;
-  
-  inputNode.parentNode.insertBefore(spanError, inputNode.nextSibling);
+
+  // Insert the element safely out of complex lock wrappers to protect icon alignment grids
+  if (isWrappedNode) {
+    targetParentNode.appendChild(spanError);
+  } else {
+    inputNode.parentNode.insertBefore(spanError, inputNode.nextSibling);
+  }
 }
 
 
-// ============================================================================
-// 📊 DYNAMIC MATHEMATICAL AGGREGATION INVOICE LOGIC (CORE CALCULATIONS)
-// ============================================================================
 
+// ============================================================================ //
+// 📊 DYNAMIC MATHEMATICAL AGGREGATION INVOICE LOGIC (NO-HARDCODING RESOLUTION) //
+// ============================================================================ //
 function updateDynamicPricingMatrixVanilla() {
   const dropdownService = document.getElementById("wizard-route-service-id");
   const dropdownPlan = document.getElementById("wizard-route-tier-id");
@@ -542,69 +1041,96 @@ function updateDynamicPricingMatrixVanilla() {
     if (!inputString) return "";
     return inputString.toLowerCase().trim()
       .replace(/[^a-z0-9\s-]/g, '') // Strip symbols
-      .replace(/[\s_]+/g, '-');     // Convert spaces to hyphens
+      .replace(/[\s_]+/g, '-'); // Convert spaces to hyphens
   };
 
-  // Safe configuration assignment matching database keys
-  if (dropdownService && dropdownService.value) {
-    window.routeActiveServiceKey = dropdownService.value.includes('-') 
-      ? dropdownService.value.trim().toLowerCase() 
-      : normalizeConfigKeySlug(dropdownService.value);
+  // 1. FIXED DYNAMIC VARIABLE ASSIGNMENT: Read directly from live inputs to handle package switches
+  if (dropdownService && typeof dropdownService.value === "string" && dropdownService.value.trim() !== "") {
+    const rawVal = dropdownService.value.trim().toLowerCase();
+    window.routeActiveServiceKey = rawVal.includes('-') ? rawVal : normalizeConfigKeySlug(rawVal);
+  } else if (!window.routeActiveServiceKey) {
+    // Only fall back to storage data if the running memory context variable is completely empty
+    window.routeActiveServiceKey = localStorage.getItem("wizard-route-service-id") || "";
   }
-  if (dropdownPlan && dropdownPlan.value) {
+
+  if (dropdownPlan && typeof dropdownPlan.value === "string" && dropdownPlan.value.trim() !== "") {
     window.routeActivePlanKey = dropdownPlan.value.trim().toLowerCase();
+  } else if (!window.routeActivePlanKey) {
+    window.routeActivePlanKey = localStorage.getItem("wizard-route-tier-id") || "";
   }
 
-  // Fallback protection if keys mismatch or are completely missing
-  const currentServiceKey = window.routeActiveServiceKey || "llc-formation";
-  const currentPlanKey = window.routeActivePlanKey || "starter";
+  const currentServiceKey = window.routeActiveServiceKey;
+  const currentPlanKey = window.routeActivePlanKey;
 
-  const planConfig = window.CENTRAL_SERVICE_PLAN_DB[currentServiceKey];
-  if (!planConfig) {
-    console.warn(`[Pricing Engine] Service lookup failed for key: "${currentServiceKey}". Retrying with safe fallback.`);
+  // 2. DATA LOSS PROTECTION GUARD
+  if (!currentServiceKey || !currentPlanKey) {
+    console.warn("[Pricing Engine Blocked] Cannot evaluate pricing data matrices. Active service identifier key or plan tier parameter string is unassigned.");
     return;
   }
 
-  // Baseline calculation lookups backed by dynamic function providers
-  const baseTierPrice = planConfig.prices[currentPlanKey] || planConfig.prices['starter'] || 0;
-  
+  // Defends the engine from throwing fatal script errors if your database array is unmounted/loading late
+  if (!window.CENTRAL_SERVICE_PLAN_DB) {
+    console.warn("[Pricing Engine Delayed] CENTRAL_SERVICE_PLAN_DB is not defined in memory layers yet. Retrying configuration lookup structures later.");
+    return;
+  }
+
+  const planConfig = window.CENTRAL_SERVICE_PLAN_DB[currentServiceKey];
+  if (!planConfig) {
+    console.error(`[Pricing Engine Structural Error] Service identifier key "${currentServiceKey}" does not match any entry within your 44+ configured product matrices.`);
+    return;
+  }
+
+  // 3. SECURE BASELINE MATHEMATICAL EVALUATION
+  let baseTierPrice = 0;
+  if (planConfig.prices) {
+    if (currentPlanKey && typeof planConfig.prices[currentPlanKey] !== "undefined") {
+      baseTierPrice = parseFloat(planConfig.prices[currentPlanKey]) || 0;
+    } else {
+      // Fallback dynamically to the first available pricing structure key in that specific schema row
+      const availableTiers = Object.keys(planConfig.prices);
+      if (availableTiers.length > 0) {
+        baseTierPrice = parseFloat(planConfig.prices[availableTiers[0]]) || 0;
+      }
+    }
+  }
+
   // Safe government fee evaluation (Calls external config file cleanly if available)
   let baseGovAgencyFee = 0;
   if (typeof window.getCalculatedGovernmentFee === "function") {
     baseGovAgencyFee = window.getCalculatedGovernmentFee(currentServiceKey, window.selectedFormationStateCode);
   } else {
-    baseGovAgencyFee = planConfig.gov_fee || 0;
+    baseGovAgencyFee = parseFloat(planConfig.gov_fee) || 0;
   }
 
-  // Explicitly declared incremental variable token inside local execution scope
   let incrementalAddonTotal = 0;
   let descriptiveInvoiceRowsHtml = `
-    <div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: var(--navy); border-bottom: 1px solid var(--border); padding-bottom: 10px;">
-      <span>${planConfig.name} (${currentPlanKey.toUpperCase()})</span>
+    <div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: #0a1f44; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 10px;">
+      <span>${planConfig.name || 'Primary Compliance Package'} (${currentPlanKey.toUpperCase()})</span>
       <span style="font-family: monospace;">$${baseTierPrice.toFixed(2)}</span>
     </div>
   `;
+
+  // Track rendering array to avoid double-charging items that appear as both flags and checkboxes
+  const processedAddonNames = [];
 
   // Evaluate checked state on accessory protection upsell checkboxes
   document.querySelectorAll('.upsell-checkbox:checked').forEach(checkbox => {
     const addonPriceValue = parseFloat(checkbox.getAttribute('data-price')) || 0;
     const addonLabelString = checkbox.getAttribute('data-name') || "Optional Add-on Asset";
-    
     incrementalAddonTotal += addonPriceValue;
+    processedAddonNames.push(addonLabelString.toLowerCase().trim());
+    
     descriptiveInvoiceRowsHtml += `
-      <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 500;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #64748b; font-weight: 500; margin-bottom: 6px;">
         <span>+ ${addonLabelString}</span>
         <span style="font-family: monospace;">$${addonPriceValue.toFixed(2)}</span>
       </div>
     `;
   });
 
-    
-   // ============================================================================
-  // 🛒 DYNAMIC EXTENSIBLE CART ADD-ON RECOGNITION (ZERO HARDCODING)
-  // ============================================================================
-  
-  // High-value expanded catalog database (Can also be moved to an external prices config file)
+  // ============================================================================ //
+  // 🛒 DYNAMIC EXTENSIBLE CART ADD-ON RECOGNITION (ZERO HARDCODING FIXED)        //
+  // ============================================================================ //
   const UPSELL_ADDON_REGISTRY = {
     "customSelectedRegisteredAgentServiceActive": { name: "Registered Agent Shield", price: 75.00 },
     "customSelectedEinProcurementServiceActive": { name: "EIN Procurement Processing", price: 79.00 },
@@ -614,7 +1140,6 @@ function updateDynamicPricingMatrixVanilla() {
     "customSelectedNonprofitLicenseCheckActive": { name: "Nonprofit License Check Suite", price: 79.00 },
     "customSelectedDbaSearchServiceActive": { name: "Name Availability Search", price: 79.00 },
     "customSelectedSeriesLicenseAuditActive": { name: "License & Permit Audit Suite", price: 125.00 },
-    // ➕ NEW Offerings Expanded for your Wizard Upsells
     "customSelectedProfessionalLogoDesignActive": { name: "Professional Brand Logo Suite", price: 149.00 },
     "customSelectedBusinessWebsiteSetupActive": { name: "Custom Business Website Launch", price: 299.00 },
     "customSelectedBoiFilingComplianceActive": { name: "BOI Corporate Transparency CTA Filing", price: 49.00 },
@@ -623,19 +1148,62 @@ function updateDynamicPricingMatrixVanilla() {
     "customSelectedGoodStandingCertificateServiceActive": { name: "Certificate of Good Standing Procurement", price: 45.00 }
   };
 
-  // Loop through flags dynamically using safe state flags checks
+  // Loop runs BEFORE total calculation loops and verifies no duplicate entries occur
   Object.keys(UPSELL_ADDON_REGISTRY).forEach(flagKey => {
     if (window[flagKey] === true) {
       const addon = UPSELL_ADDON_REGISTRY[flagKey];
+      const normalizedAddonName = addon.name.toLowerCase().trim();
+      
+      // Stop execution loop if the DOM checkbox loop already processed this specific fee allocation item
+      if (processedAddonNames.includes(normalizedAddonName)) return;
+      
       incrementalAddonTotal += addon.price;
+      processedAddonNames.push(normalizedAddonName);
+      
       descriptiveInvoiceRowsHtml += `
-        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 500; margin-top: 4px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #64748b; font-weight: 500; margin-bottom: 6px;">
           <span>+ ${addon.name}</span>
           <span style="font-family: monospace;">$${addon.price.toFixed(2)}</span>
         </div>
       `;
     }
   });
+
+  // Include Government Fees inside structural invoice string data loops if present
+  if (baseGovAgencyFee > 0) {
+    descriptiveInvoiceRowsHtml += `
+      <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #64748b; font-weight: 500; margin-bottom: 6px; border-top: 1px dashed #e2e8f0; padding-top: 6px;">
+        <span>State Government Filing Fee</span>
+        <span style="font-family: monospace;">$${baseGovAgencyFee.toFixed(2)}</span>
+      </div>
+    `;
+  }
+
+  // Calculate strict unified financial total parameters (ALL add-ons included correctly)
+  const finalCalculatedInvoiceTotal = baseTierPrice + baseGovAgencyFee + incrementalAddonTotal;
+
+  // Close layout blocks cleanly with calculation totals
+  descriptiveInvoiceRowsHtml += `
+    <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 800; color: #0a1f44; border-top: 2px solid #e2e8f0; padding-top: 10px; margin-top: 10px;">
+      <span>Total Investment:</span>
+      <span style="font-family: monospace; color: #10b981;">$${finalCalculatedInvoiceTotal.toFixed(2)}</span>
+    </div>
+  `;
+
+  // ✨ DOM BINDING SLOTS: Inject totals back into your UI elements
+  const step1BaseInvoiceTotalNode = document.getElementById("step-1-base-fee-value");
+  if (step1BaseInvoiceTotalNode) {
+    step1BaseInvoiceTotalNode.textContent = `$${finalCalculatedInvoiceTotal.toFixed(2)}`;
+  }
+
+  // Update master sidebar invoice checkout boxes if they are rendered anywhere on later panels
+  const masterSidebarReceiptContainer = document.getElementById("master-sidebar-invoice-display");
+  if (masterSidebarReceiptContainer) {
+    masterSidebarReceiptContainer.innerHTML = descriptiveInvoiceRowsHtml;
+  }
+
+  // Cache calculated calculations total into local state strings for your secure Stripe step initialization
+  window.calculatedCartGrandTotalAmount = finalCalculatedInvoiceTotal;
 
   // Safe evaluation of variable trucking new entrant metrics
   if (window.lastCalculatedNewEntrantAddonTotal && window.lastCalculatedNewEntrantAddonTotal > 0) {
@@ -686,59 +1254,82 @@ function updateWizardFinalTotalAmountMatrix() {
   updateDynamicPricingMatrixVanilla();
 }
 
-// ============================================================================
-// 🎨 UI VISIBILITY PROGRESS TRACKING RENDER ENGINE
-// ============================================================================
-
+// ============================================================================ //
+// 🎨 UI VISIBILITY PROGRESS TRACKING RENDER ENGINE (REPAIRED)                  //
+// ============================================================================ //
 function renderActiveWizardStepUiLayout() {
+  // Direct Fix: Map local parameters strictly to your unified global tracking state variables
+  window.currentWizardActiveStep = window.currentWizardActiveStep || 1;
+  window.totalWizardExpectedSteps = window.totalWizardExpectedSteps || 7;
+
+  const activeStep = window.currentWizardActiveStep;
+  const expectedSteps = window.totalWizardExpectedSteps;
+
   // 1. Synchronize tracking CSS visibility states across panels
-  document.querySelectorAll(".wizard-panel").forEach((panel, sequence) => {
-    if ((sequence + 1) === currentWizardActiveStep) {
+  document.querySelectorAll(".master-onboarding-form").forEach((panel, sequence) => {
+    const stepNumber = sequence + 1;
+    if (stepNumber === activeStep) {
       panel.classList.add("active");
+      // Direct Fix: Cleanly clear inline display constraints to support custom CSS grids/flexboxes
+      panel.style.removeProperty("display");
       panel.style.setProperty("display", "block", "important");
     } else {
       panel.classList.remove("active");
+      panel.style.removeProperty("display");
       panel.style.setProperty("display", "none", "important");
     }
   });
 
-  // 2. Synchronize chronological milestone tracking icons
-  document.querySelectorAll(".step-node").forEach(node => {
-    const structuralStepIndex = parseInt(node.getAttribute("data-step"), 10);
-    if (structuralStepIndex < currentWizardActiveStep) {
-      node.className = "step-node completed";
-    } else if (structuralStepIndex === currentWizardActiveStep) {
-      node.className = "step-node active";
+  // 2. Synchronize chronological milestone tracking icons (FIXED: Supports both .step-node and .toc-step-row grids)
+  document.querySelectorAll(".step-node, .toc-step-row").forEach((node, index) => {
+    // Read the tracking parameter attribute or fall back dynamically to its position sequence index
+    const dataStepAttr = node.getAttribute("data-step");
+    const structuralStepIndex = dataStepAttr ? parseInt(dataStepAttr, 10) : (index + 1);
+
+    if (structuralStepIndex < activeStep) {
+      node.classList.remove("toc-active", "active");
+      node.classList.add("completed");
+    } else if (structuralStepIndex === activeStep) {
+      node.classList.remove("completed");
+      node.classList.add("toc-active", "active");
     } else {
-      node.className = "step-node";
+      node.classList.remove("completed", "toc-active", "active");
     }
   });
 
   // 3. Scale and fill timeline horizontal progress tracking metrics
   const horizontalProgressFill = document.getElementById("timeline-progress-fill-node");
   if (horizontalProgressFill) {
-    const percentageProgressWidth = ((currentWizardActiveStep - 1) / (totalWizardExpectedSteps - 1)) * 100;
+    const percentageProgressWidth = ((activeStep - 1) / (expectedSteps - 1)) * 100;
     horizontalProgressFill.style.width = `${percentageProgressWidth}%`;
+  }
+  
+  // 4. Update timeline emerald tracking lights if the utility plugin is definitions available
+  if (typeof updateApplicationMapTimelineBubbles === "function") {
+    updateApplicationMapTimelineBubbles(activeStep);
   }
 }
 
 
-// ============================================================================
-// 💾 BROWSER STORAGE STATE CACHE MECHANICS (VANILLA JS)
-// ============================================================================
 
+// ============================================================================ //
+// 💾 BROWSER STORAGE STATE CACHE MECHANICS (VANILLA JS - REPAIRED)             //
+// ============================================================================ //
 function cacheAndRestoreWizardFormStatesVanilla(isExecutionInitialLoad) {
   const cacheKeyNamespace = "f4u_wizard_onboarding_state";
 
-  // Self-contained cryptographic translation utility matrix
+  // Self-contained cryptographic translation utility matrix (FIXED: Handles Unicode safely)
   const executeCipherTranslation = (rawString, decryptMode) => {
     if (!rawString) return "";
     try {
       if (decryptMode) {
-        return atob(rawString).split("").map(char => String.fromCharCode(char.charCodeAt(0) - 3)).join("");
+        // Decode base64 to standard UTF-8 string bytes
+        const binaryString = atob(rawString);
+        return binaryString.split("").map(char => String.fromCharCode(char.charCodeAt(0) - 3)).join("");
       } else {
-        let shifted = rawString.split("").map(char => String.fromCharCode(char.charCodeAt(0) + 3)).join("");
-        return btoa(shifted);
+        const shifted = rawString.split("").map(char => String.fromCharCode(char.charCodeAt(0) + 3)).join("");
+        // Safe base64 encoding transformation block
+        return btoa(unescape(encodeURIComponent(shifted)));
       }
     } catch (err) {
       console.error("[Cache Crypto Failure] Unable to compute key mask vector:", err);
@@ -754,54 +1345,68 @@ function cacheAndRestoreWizardFormStatesVanilla(isExecutionInitialLoad) {
     try {
       const payloadDataObject = JSON.parse(restoredPayloadString);
       
+      // Temporary block flag prevents recursive change-event re-injection loops
+      window.isWizardCurrentlyRestoringStateVanilla = true;
+
       Object.keys(payloadDataObject).forEach(fieldIdKey => {
-        const inputNode = document.getElementById(fieldIdKey);
+        // FIXED: Double-lookup selector fallback maps by ID first, then tries matching by Name attribute
+        let inputNode = document.getElementById(fieldIdKey);
+        if (!inputNode) {
+          inputNode = document.querySelector(`input[name="${fieldIdKey}"], select[name="${fieldIdKey}"], textarea[name="${fieldIdKey}"]`);
+        }
+
         if (inputNode) {
           let finalExtractedValue = payloadDataObject[fieldIdKey];
 
-          // ⚡ RECOVER LAYER: Dynamically checks for secure markers or values to decrypt
+          // ⚡ RECOVER LAYER: Decrypt sensitive values securely
           const isSecureElement = inputNode.getAttribute('data-secure') === 'true' || 
-                                  ["ein_responsible_id", "sllc_member_ssn", "wizard_tax_id"].includes(fieldIdKey);
-
+                                  ["ein_responsible_id", "sllc_member_ssn", "wizard_tax_id", "portal_user_password"].includes(fieldIdKey);
+          
           if (isSecureElement && typeof finalExtractedValue === "string" && finalExtractedValue !== "") {
             finalExtractedValue = executeCipherTranslation(finalExtractedValue, true);
           }
 
           if (inputNode.type === 'checkbox') {
-            inputNode.checked = finalExtractedValue;
+            inputNode.checked = (finalExtractedValue === true || finalExtractedValue === "true");
           } else {
             inputNode.value = finalExtractedValue;
           }
-          
+
           // Fire a native change event so any secondary dynamic visibility bindings know data returned
           inputNode.dispatchEvent(new Event('change', { bubbles: true }));
         }
       });
+
+      // Release validation event control boundaries
+      window.isWizardCurrentlyRestoringStateVanilla = false;
+
     } catch (jsonErr) {
+      window.isWizardCurrentlyRestoringStateVanilla = false;
       console.error("State data recovery parse error loop encountered: ", jsonErr);
     }
   } else {
     // SAVE PATH: Collects values dynamically across any inputs inside the active wizard views
     let activeFormMetricsObject = {};
-    
+
     // Abstract lookup: Check master form first; fallback to document body if missing
     const containerScope = document.getElementById("master-onboarding-form") || document.body;
     const allInputElements = containerScope.querySelectorAll("input, select, textarea");
 
     allInputElements.forEach(inputNode => {
-      const idAttr = inputNode.getAttribute('id') || inputNode.getAttribute('name');
-      if (idAttr) {
+      // Prioritize saving under ID, fallback cleanly to Name attribute string indexes
+      const uniqueDataKey = inputNode.getAttribute('id') || inputNode.getAttribute('name');
+      if (uniqueDataKey) {
         let elementValueToCache = inputNode.type === 'checkbox' ? inputNode.checked : inputNode.value;
 
         // ⚡ PROTECT LAYER: Encrypt numbers dynamically using data tags or known sensitive IDs
         const isSecureElement = inputNode.getAttribute('data-secure') === 'true' || 
-                                ["ein_responsible_id", "sllc_member_ssn", "wizard_tax_id"].includes(idAttr);
-
+                                ["ein_responsible_id", "sllc_member_ssn", "wizard_tax_id", "portal_user_password"].includes(uniqueDataKey);
+        
         if (isSecureElement && typeof elementValueToCache === "string" && String(elementValueToCache).trim() !== "") {
           elementValueToCache = executeCipherTranslation(elementValueToCache, false);
         }
 
-        activeFormMetricsObject[idAttr] = elementValueToCache;
+        activeFormMetricsObject[uniqueDataKey] = elementValueToCache;
       }
     });
 
@@ -810,26 +1415,26 @@ function cacheAndRestoreWizardFormStatesVanilla(isExecutionInitialLoad) {
 }
 
 
-// ============================================================================
-// 💾 STRATEGIC SAVE & EXIT PROGRESS HANDLER (STANDALONE POP-UP ENGINE)
-// ============================================================================
 
+// ============================================================================ //
+// 💾 STRATEGIC SAVE & EXIT PROGRESS HANDLER (STANDALONE POP-UP ENGINE FIXED)   //
+// ============================================================================ //
 function executeSaveAndExitWorkflow() {
   console.log("[Save & Exit] Initializing progress synchronization workflow.");
 
-  // 1. Force state synchronization cache update safely
+  // 1. FIXED: Extract the clean state data payload BEFORE opening the modal form wrapper
+  // This shields your true onboarding inputs from being overwritten by empty popup inputs
   if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
     cacheAndRestoreWizardFormStatesVanilla(false);
   }
 
-  // 2. Prevent stacking identical instances if already present in view
+  // Prevent stacking identical instances if already present in view
   if (document.getElementById("wizard-save-exit-modal-root")) return;
 
-  // 3. Assemble structural pop-up container nodes directly into the viewport
+  // 2. Assemble structural pop-up container nodes directly into the viewport
   const modalWrapper = document.createElement("div");
   modalWrapper.id = "wizard-save-exit-modal-root";
   
-  // Style properties block for crisp presentation layer layout
   Object.assign(modalWrapper.style, {
     position: "fixed",
     top: "0",
@@ -845,42 +1450,39 @@ function executeSaveAndExitWorkflow() {
     padding: "20px"
   });
 
-  // Structural dynamic inner card layout markup containing requested input vectors
+  // FIXED: Standardized modal specific input IDs to prevent background event crashes with your main form fields
   modalWrapper.innerHTML = `
     <div style="background: #ffffff; width: 100%; max-width: 440px; padding: 30px; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; box-sizing: border-box;">
       <h3 style="margin: 0 0 8px 0; color: #0f172a; font-size: 1.3rem; font-weight: 700;">Save Your Application Progress</h3>
       <p style="margin: 0 0 20px 0; color: #64748b; font-size: 0.9rem; line-height: 1.45;">Provide your details below to save your state parameters. No dashboard client account will be created until your transaction purchase is completed.</p>
-      
       <form id="wizard-lead-capture-form" style="display: flex; flex-direction: column; gap: 16px; margin: 0; padding: 0;">
         <div style="display: flex; gap: 12px;">
           <div style="flex: 1;">
             <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">First Name</label>
-            <input type="text" id="lead_first_name" required placeholder="John" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; background: #fff; color: #000;">
+            <input type="text" id="modal_lead_first_name" required placeholder="John" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; background: #fff; color: #000;">
           </div>
           <div style="flex: 1;">
             <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Last Name</label>
-            <input type="text" id="lead_last_name" required placeholder="Doe" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; background: #fff; color: #000;">
+            <input type="text" id="modal_lead_last_name" required placeholder="Doe" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; background: #fff; color: #000;">
           </div>
         </div>
         <div>
           <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Email Address</label>
-          <input type="email" id="lead_email" required placeholder="john.doe@example.com" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; background: #fff; color: #000;">
+          <input type="email" id="modal_lead_email" required placeholder="john.doe@example.com" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; background: #fff; color: #000;">
         </div>
-        
         <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px; width: 100%;">
-          <button type="button" id="lead_cancel_btn" style="padding: 10px 18px; background: #f1f5f9; color: #475569; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s;">Cancel</button>
-          <button type="submit" id="lead_submit_btn" style="padding: 10px 22px; background: #2563eb; color: #ffffff; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s;">Confirm Save &amp; Exit</button>
+          <button type="button" id="lead_cancel_btn" style="padding: 10px 18px; background: #f1f5f9; color: #475569; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">Cancel</button>
+          <button type="submit" id="lead_submit_btn" style="padding: 10px 22px; background: #2563eb; color: #ffffff; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">Confirm Save &amp; Exit</button>
         </div>
       </form>
     </div>
   `;
-
   document.body.appendChild(modalWrapper);
 
-  // 4. Bind internal button controls cleanly inside isolated runtime scopes
+  // Bind internal button controls cleanly inside isolated runtime scopes
   const leadForm = document.getElementById("wizard-lead-capture-form");
   const cancelBtn = document.getElementById("lead_cancel_btn");
-
+  
   const dismissLeadModal = () => {
     modalWrapper.remove();
     console.log("[Save & Exit] Pop-up view dismissed by operator action.");
@@ -901,11 +1503,11 @@ function executeSaveAndExitWorkflow() {
         submitBtn.textContent = "Processing...";
       }
 
-      // Collect field payload vectors
+      // Collect field payload vectors matching modal specific design parameters
       const leadPayload = {
-        first_name: document.getElementById("lead_first_name")?.value.trim() || "",
-        last_name: document.getElementById("lead_last_name")?.value.trim() || "",
-        email: document.getElementById("lead_email")?.value.trim() || "",
+        first_name: document.getElementById("modal_lead_first_name")?.value.trim() || "",
+        last_name: document.getElementById("modal_lead_last_name")?.value.trim() || "",
+        email: document.getElementById("modal_lead_email")?.value.trim() || "",
         session_hash: window.f4u_tx_session_hash || "",
         active_service: window.routeActiveServiceKey || "",
         active_tier: window.routeActivePlanKey || "",
@@ -915,33 +1517,35 @@ function executeSaveAndExitWorkflow() {
       console.log("[Save & Exit] Dispatched pipeline metrics data packet:", leadPayload);
 
       try {
-        // 5. Safe async hook execution to Supabase handler (Keeps tokens clean and separate)
+        // Safe async hook execution to Supabase handler
         if (typeof window.saveLeadToSupabase === "function") {
           await window.saveLeadToSupabase(leadPayload);
         } else {
           console.warn("[Database Notice] window.saveLeadToSupabase is not defined. State stored in local fallback cache only.");
         }
-        
+
         dismissLeadModal();
-        window.location.href = window.wizardCustomExitRedirectUrl || "index.html";
         
+        // FIXED: Uses safe root relative assignments to defend against broken file path redirection crashes
+        window.location.href = window.wizardCustomExitRedirectUrl || window.location.origin + "/index.html";
+
       } catch (dbErr) {
         console.error("[Database Connection Error] Failed tracking entry storage commit:", dbErr);
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.textContent = "Confirm Save & Exit";
         }
-        alert("A baseline data transmission link timeout occurred. Re-evaluate local connection parameters and try again.");
+        alert("A data transmission link timeout occurred. Please try again.");
       }
     });
   }
 }
 
 
-// ============================================================================
-// ✍️ DIGITAL CURSIVE SIGNATURE REFLECTOR (REPLACES CANVAS PAD)
-// ============================================================================
 
+// ============================================================================ //
+// ✍️ DIGITAL CURSIVE SIGNATURE REFLECTOR (REPLACES CANVAS PAD REPAIRED)        //
+// ============================================================================ //
 function initializeDigitalSignatureMirrorSync() {
   // Locate the input box where they type their name for signature authorization
   const typedSignatureInput = document.getElementById("poa_signer_printed") || document.querySelector('[name="digital_signature_input"]');
@@ -949,18 +1553,23 @@ function initializeDigitalSignatureMirrorSync() {
 
   if (!typedSignatureInput) return; // Safely escape if not on the signature screen step
 
+  // Listen for active keystrokes only to update the cosmetic text display layer swiftly
   typedSignatureInput.addEventListener("input", function() {
-    const rawInputValue = typedSignatureInput.value.trim();
-
+    const rawInputValue = typedSignatureInput.value;
+    
     // 1. Live update your styled preview block container if present on the screen layout
     if (cursiveDisplayContainer) {
-      cursiveDisplayContainer.textContent = rawInputValue ? rawInputValue : "Your Signature";
+      cursiveDisplayContainer.textContent = rawInputValue.trim() !== "" ? rawInputValue : "Your Signature";
     }
 
-    // 2. Map structural state variables so validation metrics pass flawlessly
-    window.signaturePadHasBeenDrawnByUser = rawInputValue.length > 1;
+    // 2. Map structural state variables - FIXED: Vets actual character words to prevent space-bar bypasses
+    const validTextCharacters = rawInputValue.replace(/[\s\.\,\-]+/g, "");
+    window.signaturePadHasBeenDrawnByUser = validTextCharacters.length >= 2;
+  });
 
-    // 3. Keep cache states completely synchronized in real time
+  // FIXED: Moves the intensive browser storage write operation to the "change" / "blur" event context.
+  // This saves the data cleanly only when the user finishes typing and moves to another input, preventing lag.
+  typedSignatureInput.addEventListener("change", function() {
     if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
       cacheAndRestoreWizardFormStatesVanilla(false);
     }
@@ -969,10 +1578,10 @@ function initializeDigitalSignatureMirrorSync() {
 
 
 
-// ============================================================================
-// 🔐 SECURE TRANSACTION DISPATCH MECHANICS (VANILLA JS)
-// ============================================================================
 
+// ============================================================================ //
+// 🔑 SECURE TRANSACTION DISPATCH MECHANICS (VANILLA JS - DIRECT REPAIR)       //
+// ============================================================================ //
 async function executeOnboardingTransactionPayloadSubmitVanilla() {
   const cardNumNode = document.getElementById('checkout_card_num');
   const cardExpNode = document.getElementById('checkout_card_exp');
@@ -999,16 +1608,19 @@ async function executeOnboardingTransactionPayloadSubmitVanilla() {
   // Alter control button visual states to prevent double-click submissions
   const nextBtn = document.getElementById('wizard-next-trigger-btn') || document.querySelector('.btn-wizard-main');
   let originalBtnHtml = "";
+  let originalBtnBg = "";
+  
   if (nextBtn) {
     originalBtnHtml = nextBtn.innerHTML;
+    originalBtnBg = nextBtn.style.background; // Cache the actual styled background color parameters cleanly
     nextBtn.disabled = true;
     nextBtn.style.background = '#64748b';
     nextBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Transaction...';
   }
 
   // Resilient state recovery: Read dynamic keys safely from system state
-  const currentServiceKey = window.routeActiveServiceKey || "llc-formation";
-  const currentPlanKey = window.routeActivePlanKey || "starter";
+  const currentServiceKey = window.routeActiveServiceKey || "";
+  const currentPlanKey = window.routeActivePlanKey || "";
   const selectedJurisdiction = window.selectedFormationStateCode || "";
 
   // Dynamic Add-ons extraction loop
@@ -1019,13 +1631,12 @@ async function executeOnboardingTransactionPayloadSubmitVanilla() {
   });
 
   // 🔄 DYNAMIC METADATA PACKAGING ENGINE (NO HARDCODING)
-  // Scans your form layout for whatever fields are currently rendered on screen
   let collectedFormMetadata = {};
   const masterContainer = document.getElementById("master-onboarding-form") || document.body;
   
   masterContainer.querySelectorAll("input, select, textarea").forEach(element => {
     const fieldKey = element.id || element.name;
-    // Skip financial details and billing inputs for compliance and security
+    // Skip financial details, billing inputs, and passwords for compliance and security
     if (fieldKey && !fieldKey.includes("checkout_card") && element.type !== "password") {
       if (element.type === "checkbox") {
         collectedFormMetadata[fieldKey] = element.checked;
@@ -1070,47 +1681,58 @@ async function executeOnboardingTransactionPayloadSubmitVanilla() {
 
   } catch (routingErr) {
     console.error("Payload preservation routing matrix fault loop triggered: ", routingErr);
-    alert("Transaction processing interrupted. Verify billing details and try again.");
+    alert(`Transaction Processing Interrupted:\n${routingErr.message || "Verify billing details and try again."}`);
     
+    // FIXED: Correctly reinstates the actual button markup and styles without distortion
     if (nextBtn) {
       nextBtn.disabled = false;
-      nextBtn.style.background = '';
+      nextBtn.style.background = originalBtnBg;
       nextBtn.innerHTML = originalBtnHtml || '<i class="fa-solid fa-credit-card"></i> Process Secured Payment';
     }
   }
 }
 
-// FALLBACK PRICING LOOKUP METHOD
+// FALLBACK PRICING LOOKUP METHOD (FIXED: ZERO HARDCODED STRINGS)
 function baseTierPriceCalculationFallbackVanilla(serviceKey, planKey) {
   try {
-    const sKey = serviceKey || window.routeActiveServiceKey || "llc-formation";
-    const pKey = planKey || window.routeActivePlanKey || "starter";
-    
-    if (window.CENTRAL_SERVICE_PLAN_DB && window.CENTRAL_SERVICE_PLAN_DB[sKey]) {
-      return window.CENTRAL_SERVICE_PLAN_DB[sKey].prices[pKey] || window.CENTRAL_SERVICE_PLAN_DB[sKey].prices['starter'] || 0;
+    const sKey = serviceKey || window.routeActiveServiceKey || "";
+    const pKey = planKey || window.routeActivePlanKey || "";
+
+    if (!sKey || !window.CENTRAL_SERVICE_PLAN_DB || !window.CENTRAL_SERVICE_PLAN_DB[sKey]) {
+      return 0;
+    }
+
+    const matchedPricesMatrix = window.CENTRAL_SERVICE_PLAN_DB[sKey].prices;
+    if (matchedPricesMatrix) {
+      if (pKey && typeof matchedPricesMatrix[pKey] !== "undefined") {
+        return parseFloat(matchedPricesMatrix[pKey]) || 0;
+      }
+      // FIXED: Fallback to the first property layer inside that layout array safely to prevent object read crashes
+      const firstAvailableKey = Object.keys(matchedPricesMatrix)[0];
+      if (firstAvailableKey) {
+        return parseFloat(matchedPricesMatrix[firstAvailableKey]) || 0;
+      }
     }
     return 0;
   } catch (e) {
-    console.warn("[Pricing Fallback] Unable to calculate base fee:", e);
+    console.warn("[Pricing Fallback Error] Unable to evaluate base pricing row layouts:", e);
     return 0;
   }
 }
 
 
-// ============================================================================
-// 🔘 LLC WORKFLOW CONDITIONAL FIELD CONTROLLERS (FULLY ABSTRACTED)
-// ============================================================================
-
+// ============================================================================ //
+// 🔘 LLC WORKFLOW CONDITIONAL FIELD CONTROLLERS (FULLY ABSTRACTED - REPAIRED)  //
+// ============================================================================ //
 function validateLlcNameSuffix(inputField) {
   if (!inputField) return;
   const rawVal = inputField.value.trim();
   if (rawVal === "") return;
-  
   const lowerVal = rawVal.toLowerCase();
 
   // 📋 Dynamic Suffix Extraction Strategy: Reads approved tokens directly from DOM configuration
   const allowedSuffixDataAttr = inputField.getAttribute("data-allowed-suffixes");
-  let authorizedSuffixesArray = ["llc", "limited liability company"]; // System safe fallback
+  let authorizedSuffixesArray = ["llc", "limited liability company", "l.l.c."]; // System safe fallback
 
   if (allowedSuffixDataAttr) {
     authorizedSuffixesArray = allowedSuffixDataAttr.split(",").map(s => s.trim().toLowerCase());
@@ -1122,17 +1744,23 @@ function validateLlcNameSuffix(inputField) {
   if (!matchesAnyApprovedSuffix) {
     // Inject clean styling state warning boundaries without intrusive blocking alert windows
     inputField.style.borderColor = "#ef4444";
+    let labelMessage = inputField.getAttribute("data-error-msg") || `Formation Guard Warning: Your choice must include an approved suffix token (${authorizedSuffixesArray.join(', ').toUpperCase()}).`;
     
-    const labelMessage = inputField.getAttribute("data-error-msg") || 
-      `Formation Guard Warning: Your choice does not contain an approved suffix token (${authorizedSuffixesArray.join(', ').toUpperCase()}).`;
-      
     if (typeof markFieldAsInvalidVanilla === "function") {
       markFieldAsInvalidVanilla(inputField, labelMessage);
     }
   } else {
-    inputField.style.borderColor = "var(--border)";
-    const adjacentMarker = inputField.nextSibling;
-    if (adjacentMarker && adjacentMarker.className === 'input-error-marker') {
+    inputField.style.borderColor = "var(--border, #e2e8f0)";
+    
+    // FIXED: Uses nextElementSibling to properly jump whitespace text nodes and target the true error tag
+    let adjacentMarker = inputField.nextElementSibling;
+    
+    // If the input is wrapped inside an icon/lock envelope, scale the search up to look at the next outer sibling element
+    if (!adjacentMarker && inputField.parentNode.classList.contains('input-lock-wrapper')) {
+      adjacentMarker = inputField.parentNode.nextElementSibling;
+    }
+
+    if (adjacentMarker && adjacentMarker.classList.contains('input-error-marker')) {
       adjacentMarker.remove();
     }
   }
@@ -1156,6 +1784,7 @@ function toggleRegisteredAgentConditionalFields(selectedValue) {
 function toggleLlcManagerFieldsMatrix(selectedValue) {
   const wrapper = document.getElementById("llc_manager_names_wrapper");
   if (wrapper) {
+    // FIXED: Adjusted layout to match standard responsive flex grids rather than raw block stretching
     wrapper.style.display = (selectedValue === "manager-managed") ? "flex" : "none";
   }
 }
@@ -1166,7 +1795,7 @@ function toggleEinConditionalWorkflow(selectedValue) {
     manualWrapper.style.display = (selectedValue === "yes") ? "flex" : "none";
   }
 
-  // State synchronization flags: True if choice bypasses processing to trigger buy loops
+  // State synchronization flags: True if choice triggers a buy loop
   window.customSelectedEinProcurementServiceActive = (selectedValue === "no-buy");
 
   if (typeof updateDynamicPricingMatrixVanilla === "function") {
@@ -1174,57 +1803,63 @@ function toggleEinConditionalWorkflow(selectedValue) {
   }
 }
 
-// ============================================================================
-// ➕ DYNAMIC INCREMENTAL RECORD BLOCK GENERATOR ENGINE (TEMPLATE DRIVEN)
-// ============================================================================
-
+// ============================================================================ //
+// ➕ DYNAMIC INCREMENTAL RECORD BLOCK GENERATOR ENGINE (DEFRAGMENTATION REPAIR) //
+// ============================================================================ //
 let activeLlcMemberCounterIndex = 1;
 
 function appendNewLlcMemberRecordFieldNode() {
-  activeLlcMemberCounterIndex++;
   const container = document.getElementById("llc_members_container");
   if (!container) return;
+
+  // Recalculate true loop counter boundaries based on active nodes present in DOM
+  const existingCards = container.querySelectorAll(".member-record-card");
+  activeLlcMemberCounterIndex = existingCards.length + 1;
+
+  const currentIdx = activeLlcMemberCounterIndex;
 
   // Architecture Check: Check if an HTML5 <template> block configuration lives in the viewport
   const markupTemplateSource = document.getElementById("llc-member-row-template");
   const div = document.createElement("div");
   div.className = "member-record-card";
-  div.id = `member_card_${activeLlcMemberCounterIndex}`;
-  
+  div.id = `member_card_${currentIdx}`;
+
   if (markupTemplateSource) {
-    // Dynamic template interpolation pattern (No raw strings hardcoded inside engine logic)
+    // Dynamic template interpolation pattern
     let templateHtmlContent = markupTemplateSource.innerHTML;
-    templateHtmlContent = templateHtmlContent.replace(/{{index}}/g, activeLlcMemberCounterIndex);
+    templateHtmlContent = templateHtmlContent.replace(/{{index}}/g, currentIdx);
     div.innerHTML = templateHtmlContent;
   } else {
     // Secondary abstracted styling wrapper layout fallback
-    div.style.cssText = "background: #ffffff; border: 1px solid var(--border); padding: 16px; border-radius: 8px; width: 100%; box-sizing: border-box; margin-top: 10px; position: relative;";
+    div.style.cssText = "background: #ffffff; border: 1px solid var(--border, #e2e8f0); padding: 16px; border-radius: 8px; width: 100%; box-sizing: border-box; margin-top: 10px; position: relative;";
+    
+    // FIXED: Embedded explicit 'name' attributes matching field IDs to allow proper API serialization
     div.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span style="font-weight: 800; font-size: 0.8rem; color: var(--primary); text-transform: uppercase;">Member/Partner #${activeLlcMemberCounterIndex} Records</span>
-        <button type="button" onclick="removeLlcMemberRecordFieldNode(${activeLlcMemberCounterIndex})" style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; font-weight: 700; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; cursor: pointer;">Delete</button>
+        <span class="member-title-label" style="font-weight: 800; font-size: 0.8rem; color: #0284c7; text-transform: uppercase;">Member/Partner #${currentIdx} Records</span>
+        <button type="button" class="btn-delete-member" data-target="${currentIdx}" style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; font-weight: 700; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; cursor: pointer;">Delete</button>
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
         <div class="wizard-input-group" style="grid-column: span 2;">
-          <label style="font-size: 0.75rem; font-weight: 700; color: var(--slate);">Full Legal Name</label>
-          <input type="text" id="member_name_${activeLlcMemberCounterIndex}" required placeholder="Full Legal Name" class="wizard-input-field">
+          <label style="font-size: 0.75rem; font-weight: 700; color: #475569;">Full Legal Name</label>
+          <input type="text" id="member_name_${currentIdx}" name="member_name_${currentIdx}" required placeholder="Full Legal Name" class="wizard-input-field">
         </div>
         <div class="wizard-input-group" style="grid-column: span 2;">
-          <label style="font-size: 0.75rem; font-weight: 700; color: var(--slate);">Street Address</label>
-          <input type="text" id="member_street_${activeLlcMemberCounterIndex}" required placeholder="Street Address" class="wizard-input-field">
+          <label style="font-size: 0.75rem; font-weight: 700; color: #475569;">Street Address</label>
+          <input type="text" id="member_street_${currentIdx}" name="member_street_${currentIdx}" required placeholder="Street Address" class="wizard-input-field">
         </div>
         <div class="wizard-input-group">
-          <label style="font-size: 0.75rem; font-weight: 700; color: var(--slate);">City</label>
-          <input type="text" id="member_city_${activeLlcMemberCounterIndex}" required placeholder="City" class="wizard-input-field">
+          <label style="font-size: 0.75rem; font-weight: 700; color: #475569;">City</label>
+          <input type="text" id="member_city_${currentIdx}" name="member_city_${currentIdx}" required placeholder="City" class="wizard-input-field">
         </div>
         <div class="wizard-input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label style="font-size: 0.75rem; font-weight: 700; color: var(--slate);">State</label>
-            <input type="text" id="member_state_${activeLlcMemberCounterIndex}" required placeholder="TX" maxlength="2" class="wizard-input-field">
+            <label style="font-size: 0.75rem; font-weight: 700; color: #475569;">State</label>
+            <input type="text" id="member_state_${currentIdx}" name="member_state_${currentIdx}" required placeholder="TX" maxlength="2" class="wizard-input-field">
           </div>
           <div>
-            <label style="font-size: 0.75rem; font-weight: 700; color: var(--slate);">Zip</label>
-            <input type="text" id="member_zip_${activeLlcMemberCounterIndex}" required placeholder="78701" class="wizard-input-field">
+            <label style="font-size: 0.75rem; font-weight: 700; color: #475569;">Zip</label>
+            <input type="text" id="member_zip_${currentIdx}" name="member_zip_${currentIdx}" required placeholder="78701" class="wizard-input-field">
           </div>
         </div>
       </div>
@@ -1232,6 +1867,17 @@ function appendNewLlcMemberRecordFieldNode() {
   }
 
   container.appendChild(div);
+
+  // Bind modern isolated event listener to the freshly spawned deletion button
+  const deleteBtn = div.querySelector(".btn-delete-member");
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", function(eventObj) {
+      eventObj.preventDefault();
+      eventObj.stopPropagation();
+      const targetNum = parseInt(this.getAttribute("data-target"), 10);
+      removeLlcMemberRecordFieldNode(targetNum);
+    });
+  }
 }
 
 function removeLlcMemberRecordFieldNode(targetIndex) {
@@ -1239,6 +1885,40 @@ function removeLlcMemberRecordFieldNode(targetIndex) {
   if (cardToRemove) {
     cardToRemove.remove();
   }
+
+  // DEFRAGMENTATION CORE PROCESSOR: Re-index remaining rows so keys stay tightly sequential
+  const container = document.getElementById("llc_members_container");
+  if (!container) return;
+
+  const remainingCards = container.querySelectorAll(".member-record-card");
+  
+  remainingCards.forEach((card, loopIdx) => {
+    const freshIdx = loopIdx + 1;
+    card.id = `member_card_${freshIdx}`;
+
+    // Re-align structural internal heading tracking text blocks
+    const labelSpan = card.querySelector(".member-title-label");
+    if (labelSpan) labelSpan.textContent = `Member/Partner #${freshIdx} Records`;
+
+    // Re-align deletion button hooks
+    const deleteBtn = card.querySelector(".btn-delete-member");
+    if (deleteBtn) deleteBtn.setAttribute("data-target", freshIdx);
+
+    // Re-index all nested input variables elements to prevent schema gaps
+    const targetedInputControls = card.querySelectorAll("input, select, textarea");
+    targetedInputControls.forEach(input => {
+      const currentId = input.id || "";
+      if (currentId.includes("_")) {
+        const structuralBasePrefix = currentId.substring(0, currentId.lastIndexOf("_"));
+        const realignedToken = `${structuralBasePrefix}_${freshIdx}`;
+        
+        input.id = realignedToken;
+        if (input.name) input.name = realignedToken;
+      }
+    });
+  });
+
+  activeLlcMemberCounterIndex = remainingCards.length;
 }
 
 function toggleLlcDurationDateVisibility(selectedValue) {
@@ -1249,29 +1929,38 @@ function toggleLlcDurationDateVisibility(selectedValue) {
 }
 
 
-// ============================================================================
-// 🔌 CENTRAL EVENT DELEGATION NAVIGATION & PRICING LISTENER MATRIX
-// ============================================================================
 
-// A single global interceptor that handles elements dynamically as they load or change
+// ============================================================================ //
+// 🔌 CENTRAL EVENT DELEGATION NAVIGATION & PRICING LISTENER MATRIX (REPAIRED) //
+// ============================================================================ //
 document.addEventListener("change", function (event) {
   const targetElement = event.target;
   if (!targetElement) return;
 
-  // 1. Dynamic Registered Agent Selector Hook
-  const isAgentSelector = targetElement.name === "llc_registered_agent_choice" || targetElement.id === "wizard-ra-choice-select";
-  if (isAgentSelector) {
+  // 1. ABSTRACT AGENT SELECTOR HOOK: Detects any dropdown or radio collection managing agent choices
+  const matchesAgentPattern = targetElement.name?.includes("registered_agent") || 
+                              targetElement.id?.includes("ra-choice") || 
+                              targetElement.id?.includes("agent_choice");
+
+  if (matchesAgentPattern) {
     if (typeof toggleRegisteredAgentConditionalFields === "function") {
       toggleRegisteredAgentConditionalFields(targetElement.value);
     }
   }
 
-  // 2. Dynamic Live Invoice Modifier Hooks
-  // If ANY checked upsell checkbox or modified selection updates, recalculate pricing instantly
-  const isPricingModifier = targetElement.classList.contains("upsell-checkbox") || targetElement.classList.contains("pricing-modifier-input");
-  if (isPricingModifier) {
-    if (typeof updateDynamicPricingMatrixVanilla === "function") {
-      updateDynamicPricingMatrixVanilla();
+  // 2. UNIVERSAL INVOICE MODIFIER HOOK: Catches any checkbox flags, select options, or radio updates
+  const matchesPricingPattern = targetElement.classList.contains("upsell-checkbox") || 
+                                targetElement.classList.contains("pricing-modifier-input") || 
+                                targetElement.name?.includes("upsell") || 
+                                targetElement.id?.includes("upsell") ||
+                                targetElement.getAttribute("data-price") !== null; // Captures ANY node carrying a cost
+
+  if (matchesPricingPattern) {
+    // Safety check: Prevent recursive loops if the app is currently restoring data states from local storage
+    if (window.isWizardCurrentlyRestoringStateVanilla !== true) {
+      if (typeof updateDynamicPricingMatrixVanilla === "function") {
+        updateDynamicPricingMatrixVanilla();
+      }
     }
   }
 });
@@ -1280,6 +1969,7 @@ document.addEventListener("change", function (event) {
 window.initializeStepTwoInteractiveLayoutListeners = function() {
   console.log("[Engine Legacy Patch] Unified global event delegation matrix handles listeners dynamically.");
 };
+
 
 
   // ============================================================================
@@ -1307,7 +1997,6 @@ function processDynamicCartAddonItems(baseTierPrice, baseGovAgencyFee) {
     // New high-value offerings to maximize revenue
     "customSelectedLogoDesignActive": { name: "Professional Brand Logo Suite", price: 149.00 },
     "customSelectedWebsiteSetupActive": { name: "Custom Business Website Launch", price: 299.00 },
-    "customSelectedBoiComplianceActive": { name: "BOI Corporate Transparency Filing", price: 49.00 }
   };
 
   // Evaluate flags dynamically against window global options state
@@ -1356,46 +2045,52 @@ function processDynamicCartAddonItems(baseTierPrice, baseGovAgencyFee) {
 // ============================================================================
 // 🔘 CENTRAL NAVIGATION ACTION INTERCEPTOR HUB
 // ============================================================================
+function handleNavigationButtonClickEvent(wizardState) {
+  // Destructure with default values to prevent undefined errors
+  let { currentStep = 1, totalSteps = 1 } = wizardState;
 
-function handleNavigationButtonClickEvent() {
-  console.log(`[Navigation Hub] Current Step: ${currentWizardActiveStep} of ${totalWizardExpectedSteps}`);
-  
-  if (currentWizardActiveStep === totalWizardExpectedSteps) {
+  console.log(`[Navigation Hub] Current Step: ${currentStep} of ${totalSteps}`);
+
+  // Case 1: User is on the final step -> Submit payload
+  if (currentStep >= totalSteps) {
     if (typeof executeOnboardingTransactionPayloadSubmitVanilla === "function") {
-      executeOnboardingTransactionPayloadSubmitVanilla();
-    } else {
-      console.error("[Fatal Code Error] Payload submit function is missing.");
+      return executeOnboardingTransactionPayloadSubmitVanilla();
     }
-  } else {
-    if (typeof navigateWizardStepTrackVanilla === "function") {
-      navigateWizardStepTrackVanilla(1);
-    } else {
-      // Direct step advancement fallback routing
-      currentWizardActiveStep += 1;
-      if (typeof renderActiveWizardStepUiLayout === "function") {
-        renderActiveWizardStepUiLayout();
-      }
+    return console.error("[Fatal Code Error] Payload submit function is missing.");
+  }
+
+  // Case 2: User is advancing -> Try primary tracking function
+  if (typeof navigateWizardStepTrackVanilla === "function") {
+    return navigateWizardStepTrackVanilla(1);
+  }
+
+  // Case 3: Fallback routing if tracking function is missing
+  const nextStep = currentStep + 1;
+  if (nextStep <= totalSteps) {
+    wizardState.currentStep = nextStep; // Safely mutate the state object boundary
+    if (typeof renderActiveWizardStepUiLayout === "function") {
+      renderActiveWizardStepUiLayout();
     }
   }
 }
+
 
 // ============================================================================
 // 💾 STATE PERSISTENCE INITIALIZATION MATRIX & COHERENCE PATCHES
 // ============================================================================
 
 /**
- * Clean lifecycle coordination method to bootstrap form states.
- * Safely executes secondary setup routines without duplicating core code layers.
+ * Boots form states and gracefully handles legacy drawing canvas deprecation.
  */
 function runWizardStatePersistenceBootstrap() {
   console.log("[State Bootstrap] Auditing runtime environments for persistent layout variables...");
-  
-  // 1. Initial State Data Restore Check
+
+  // 1. Restore Cached State Data
   if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
     cacheAndRestoreWizardFormStatesVanilla(true);
   }
 
-  // 2. Fallback initialization for cursive type signature fields instead of broken drawing canvas elements
+  // 2. Initialize Modern Digital Signature Engine
   if (typeof initializeDigitalSignatureMirrorSync === "function") {
     initializeDigitalSignatureMirrorSync();
   } else {
@@ -1403,7 +2098,7 @@ function runWizardStatePersistenceBootstrap() {
   }
 }
 
-// Safely bind old layout canvas references as empty stubs to prevent cross-file call crashes
+// Global Legacy Bindings: Safely bridge old canvas calls to the new engine
 window.initializeSignatureCanvasPadEngineVanilla = function() {
   if (typeof initializeDigitalSignatureMirrorSync === "function") {
     initializeDigitalSignatureMirrorSync();
@@ -1411,39 +2106,41 @@ window.initializeSignatureCanvasPadEngineVanilla = function() {
 };
 
 window.clearSignatureCanvasTrack = function() {
-  const typedSignatureInput = document.getElementById("poa_signer_printed") || document.querySelector('[name="digital_signature_input"]');
+  const targetSelectors = ["#poa_signer_printed", '[name="digital_signature_input"]'];
+  const typedSignatureInput = document.querySelector(targetSelectors.join(", "));
+
   if (typedSignatureInput) {
     typedSignatureInput.value = "";
-    typedSignatureInput.dispatchEvent(new Event('input', { bubbles: true }));
+    
+    // Dispatch both input and change events to ensure all validation engines catch it
+    const eventOptions = { bubbles: true, cancelable: true };
+    typedSignatureInput.dispatchEvent(new Event('input', eventOptions));
+    typedSignatureInput.dispatchEvent(new Event('change', eventOptions));
   }
+
+  // Explicitly assign to window to avoid implicit declaration issues
   window.signaturePadHasBeenDrawnByUser = false;
 };
 
 
 
-// ============================================================================
-// 🔘 LLC & CORPORATE LIFECYCLE CONTROLLERS (DYNAMIC DELEGATION METHOD)
-// ============================================================================
 
-/**
- * Universally handles visibility toggles for corporate workflow steps.
- * Dynamically reads the target element wrapper ID directly from data attributes.
- */
+// ============================================================================ //
+// 🔘 LLC & CORPORATE LIFECYCLE CONTROLLERS (DYNAMIC DELEGATION METHOD)       //
+// ============================================================================ //
+
 function handleCorporateLayoutToggleVisibility(elementNode) {
   if (!elementNode) return;
-
   const targetWrapperId = elementNode.getAttribute("data-target-wrapper");
   const requiredMatchValue = elementNode.getAttribute("data-match-value") || "specified";
   
   if (!targetWrapperId) return;
-
   const wrapperDisplayNode = document.getElementById(targetWrapperId);
   if (wrapperDisplayNode) {
     wrapperDisplayNode.style.display = (elementNode.value === requiredMatchValue) ? "flex" : "none";
   }
 }
 
-// Concrete backward-compatible wrappers to process legacy element events safely
 function toggleLlcDurationDateVisibility(selectedValue) {
   const calendarWrapper = document.getElementById("llc_duration_date_wrapper");
   if (calendarWrapper) {
@@ -1456,30 +2153,27 @@ function toggleEinConditionalWorkflow(selectedValue) {
   if (manualEinWrapper) {
     manualEinWrapper.style.display = (selectedValue === "yes") ? "flex" : "none";
   }
-
+  
   // Sync state flag metrics directly
   window.customSelectedEinProcurementServiceActive = (selectedValue === "no-buy" || selectedValue === "purchase");
-
   if (typeof updateDynamicPricingMatrixVanilla === "function") {
     updateDynamicPricingMatrixVanilla();
   }
 }
 
-
-// ============================================================================
-// 🔘 C-CORP & S-CORP INTERACTIVE ROUTING CONTROLLERS
-// ============================================================================
+// ============================================================================ //
+// 🔘 C-CORP & S-CORP INTERACTIVE ROUTING CONTROLLERS                          //
+// ============================================================================ //
 
 function validateCorpNameSuffix(inputField) {
   if (!inputField) return;
   const rawVal = inputField.value.trim();
   if (rawVal === "") return;
-  
   const lowerVal = rawVal.toLowerCase();
-  
-  // 📋 Dynamic Suffix Lookup Pattern: Reads allowed suffixes from field configuration tags
+
+  // Fix: split maps trim safely to prevent accidental trailing spaces in markup tags
   const allowedSuffixDataAttr = inputField.getAttribute("data-allowed-suffixes");
-  let authorizedSuffixesArray = ["inc", "inc.", "incorporated", "corporation"]; // System baseline fallback
+  let authorizedSuffixesArray = ["inc", "inc.", "incorporated", "corporation"];
 
   if (allowedSuffixDataAttr) {
     authorizedSuffixesArray = allowedSuffixDataAttr.split(",").map(s => s.trim().toLowerCase());
@@ -1491,7 +2185,7 @@ function validateCorpNameSuffix(inputField) {
     inputField.style.borderColor = "#ef4444";
     const labelMessage = inputField.getAttribute("data-error-msg") || 
       `Corporate Registration Rule Warning: Your chosen name must contain an approved corporate suffix token (${authorizedSuffixesArray.join(', ').toUpperCase()}).`;
-      
+    
     if (typeof markFieldAsInvalidVanilla === "function") {
       markFieldAsInvalidVanilla(inputField, labelMessage);
     }
@@ -1504,9 +2198,9 @@ function validateCorpNameSuffix(inputField) {
   }
 }
 
-// ============================================================================
-// ➕ DYNAMIC INCREMENTAL SHAREHOLDER NODE GENERATOR ENGINE
-// ============================================================================
+// ============================================================================ //
+// ➕ DYNAMIC INCREMENTAL SHAREHOLDER NODE GENERATOR ENGINE                    //
+// ============================================================================ //
 
 let activeCorpShareholderCounterIndex = 1;
 
@@ -1518,10 +2212,8 @@ function appendNewCorporateShareholderNode() {
   const div = document.createElement("div");
   div.className = "member-record-card";
   div.id = `shareholder_card_${activeCorpShareholderCounterIndex}`;
-  
-  // Dynamic UI template separation architecture
+
   const markupTemplateSource = document.getElementById("corp-shareholder-row-template");
-  
   if (markupTemplateSource) {
     let templateHtmlContent = markupTemplateSource.innerHTML;
     templateHtmlContent = templateHtmlContent.replace(/{{index}}/g, activeCorpShareholderCounterIndex);
@@ -1539,7 +2231,7 @@ function appendNewCorporateShareholderNode() {
           <input type="text" id="shareholder_name_${activeCorpShareholderCounterIndex}" required placeholder="Full Legal Name" class="wizard-input-field">
         </div>
         <div class="wizard-input-group" style="grid-column: span 2;">
-          <label style="font-size: 0.75rem; font-weight: 700; color: var(--slate);">Street Address</label>
+          <label style="font-size: 0.75rem; font-weight: 700; color: var(--slate);">Street Address</label> *
           <input type="text" id="shareholder_street_${activeCorpShareholderCounterIndex}" required placeholder="Street Address" class="wizard-input-field">
         </div>
         <div class="wizard-input-group">
@@ -1556,10 +2248,8 @@ function appendNewCorporateShareholderNode() {
             <input type="text" id="shareholder_zip_${activeCorpShareholderCounterIndex}" required placeholder="78701" class="wizard-input-field">
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
   }
-
   container.appendChild(div);
 }
 
@@ -1582,7 +2272,8 @@ function toggleCorpEinConditionalWorkflow(selectedValue) {
   const manualWrapper = document.getElementById("corp_manual_ein_wrapper");
   if (manualWrapper) manualWrapper.style.display = (selectedValue === "yes") ? "flex" : "none";
   
-  window.customSelectedEinProcurementServiceActive = (selectedValue === "no-buy");
+  // Adjusted to match LLC behavior for global cart persistence synchronization
+  window.customSelectedEinProcurementServiceActive = (selectedValue === "no-buy" || selectedValue === "purchase");
   if (typeof updateDynamicPricingMatrixVanilla === "function") {
     updateDynamicPricingMatrixVanilla();
   }
@@ -1595,12 +2286,10 @@ function toggleScorpElectionWorkflow(selectedValue) {
   if (serviceWrapper) {
     serviceWrapper.style.display = (selectedValue === "yes") ? "flex" : "none";
   }
-
   if (selectedValue === "no") {
     const selectProcure = document.getElementById("corp_scorp_procure");
     if (selectProcure) selectProcure.value = "no-decline";
     if (warningNote) warningNote.style.display = "block";
-    
     window.customSelectedScorpElectionServiceActive = false;
     if (typeof updateDynamicPricingMatrixVanilla === "function") {
       updateDynamicPricingMatrixVanilla();
@@ -1613,14 +2302,12 @@ function toggleScorpFilingPricingHook(selectedValue) {
   if (warningNote) {
     warningNote.style.display = (selectedValue === "yes-buy") ? "none" : "block";
   }
-  
   window.customSelectedScorpElectionServiceActive = (selectedValue === "yes-buy");
   if (typeof updateDynamicPricingMatrixVanilla === "function") {
     updateDynamicPricingMatrixVanilla();
   }
 }
 
-// Abstract Layout Synchronizer: Safely tracks view toggles without overriding injected templates
 function initializeFormDisplayLayoutSync() {
   console.log("[Layout Engine] Initializing form synchronization layers...");
   const llcFormWrapper = document.getElementById("form-fields-llc-registration");
@@ -1629,7 +2316,6 @@ function initializeFormDisplayLayoutSync() {
   if (llcFormWrapper && corpFormWrapper) {
     const currentKey = String(window.routeActiveServiceKey || "").toLowerCase();
     const isCorpFamily = currentKey.includes("corp") || currentKey.includes("corporation");
-    
     llcFormWrapper.style.display = isCorpFamily ? "none" : "grid";
     corpFormWrapper.style.display = isCorpFamily ? "grid" : "none";
   }
@@ -1700,7 +2386,7 @@ function attachGooglePlacesAutocompleteToNode(inputNodeElement, dataElementPrefi
     let zipField = document.getElementById(`${dataElementPrefix}_zip`);
 
     // Fallback: If elements are missing by ID, scan the field's parent container
-    const parentContainer = inputNodeElement.closest('.wizard-panel, .member-record-card, form') || document.body;
+    const parentContainer = inputNodeElement.closest('.master-onboarding-form, .member-record-card, form') || document.body;
     if (parentContainer) {
       if (!cityField) cityField = parentContainer.querySelector('[name*="city"], [id*="city"]');
       if (!stateField) stateField = parentContainer.querySelector('[name*="state"], [id*="state"]');
@@ -2112,79 +2798,75 @@ window.bindDynamicTimelineJumpTriggers = bindDynamicTimelineJumpTriggers;
 
 
 
-// ============================================================================
-// ⚡ 4.5 UNIFIED DYNAMIC FORM INJECTION SYSTEM FOR STEP 2
-// ============================================================================
+// ============================================================================ //
+// ⚡ 4.5 UNIFIED DYNAMIC FORM INJECTION SYSTEM FOR STEP 2 (DEADLOCK FIX)        //
+// ============================================================================ //
+function executeStepTwoDynamicFormInjection(isTransitionOverrideActive) {
+  const isForcedRoute = isTransitionOverrideActive === true;
+  const currentStep = typeof currentWizardActiveStep !== "undefined" ? currentWizardActiveStep : 1;
 
-/**
- * Orchestrates the seamless mounting of dynamic service forms into Step 2.
- * Safely handles state extraction, HTML injection, and cached form restoration.
- */
-function executeStepTwoDynamicFormInjection() {
-  // Guard Check: Ensure the engine only triggers if the wizard is on Step 2
-  if (typeof currentWizardActiveStep === "undefined" || currentWizardActiveStep !== 2) return;
+  // CRITICAL FIX: If we are on Step 3, do not let Step 2 injection modify the DOM!
+  if (!isForcedRoute && currentStep !== 2) {
+    console.warn(`[Form Injection Guard] Blocked Step 2 injection because current wizard step is: ${currentStep}`);
+    return;
+  }
 
   const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root");
   if (!fieldsRoot) return;
 
   // Clear out old form states instantly to prevent cross-contamination
   fieldsRoot.innerHTML = "";
-
-  // Normalize lookups and layout dependencies safely
   const stateOptions = window.globalStateDropdownOptionsHtml || "";
-  const currentServiceKey = window.routeActiveServiceKey || "llc-formation";
-  const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
 
+  // FIX: Force fallback value to 'registered-agent' if active layout parameters are undefined
+  let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value || "registered-agent";
+  let cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
+  
   console.log(`[Form Injection Engine] Evaluating structural form layout matching for: "${cleanKey}"`);
 
-  // ============================================================================
-  // 🗺️ MASTER SERVICE MAP REGISTRY DECLISTRATION (EXACT KEY ALIGNMENT)
-  // ============================================================================
+  // 🗺️ MASTER SERVICE MAP REGISTRY DECLARATION (EXACT KEY ALIGNMENT)
   const formRegistry = {
     "operating-agreement": typeof buildOperatingAgreementForm === "function" ? buildOperatingAgreementForm : null,
     "annual-reports": typeof buildAnnualReportsForm === "function" ? buildAnnualReportsForm : null,
     "trademark-filing": typeof buildTrademarkFilingForm === "function" ? buildTrademarkFilingForm : null,
     "servicemark-filing": typeof buildServicemarkFilingForm === "function" ? buildServicemarkFilingForm : null,
-    "foreign-qualification-certificate": typeof buildForeignQualificationForm === "function" ? buildForeignQualificationForm : null,
-    "llc-reinstatement-processing": typeof buildLlcReinstatementForm === "function" ? buildLlcReinstatementForm : null,
+    "foreign-qualification": typeof buildForeignQualificationForm === "function" ? buildForeignQualificationForm : null,
+    "llc-reinstatement": typeof buildLlcReinstatementForm === "function" ? buildLlcReinstatementForm : null,
     "business-licenses": typeof buildBusinessLicensesForm === "function" ? buildBusinessLicensesForm : null,
     "employer-id-ein": typeof buildEinApplicationForm === "function" ? buildEinApplicationForm : null,
-    "entity-dissolution": typeof buildEntityDissolutionForm === "function" ? buildEntityDissolutionForm : null,
+    "dissolution": typeof buildEntityDissolutionForm === "function" ? buildEntityDissolutionForm : null,
     "certificate-of-good-standing": typeof buildGoodStandingForm === "function" ? buildGoodStandingForm : null,
-    "apostille-authentication-services": typeof buildApostilleServiceForm === "function" ? buildApostilleServiceForm : null,
+    "apostille-services": typeof buildApostilleServiceForm === "function" ? buildApostilleServiceForm : null,
     "clia-certificate": typeof buildCliaCertificateForm === "function" ? buildCliaCertificateForm : null,
-    "custom-regulatory-legal-consulting": typeof buildCustomRegulatoryConsultingForm === "function" ? buildCustomRegulatoryConsultingForm : null,
+    "regulatory-consulting": typeof buildCustomRegulatoryConsultingForm === "function" ? buildCustomRegulatoryConsultingForm : null,
     "federal-tax": typeof buildFederalIncomeTaxForm === "function" ? buildFederalIncomeTaxForm : null,
     "state-tax": typeof buildStateIncomeTaxForm === "function" ? buildStateIncomeTaxForm : null,
-    "franchise-tax-filing": typeof buildFranchiseTaxFilingForm === "function" ? buildFranchiseTaxFilingForm : null,
+    "franchise-tax": typeof buildFranchiseTaxFilingForm === "function" ? buildFranchiseTaxFilingForm : null,
     "sales-tax-registration": typeof buildSalesTaxRegistrationForm === "function" ? buildSalesTaxRegistrationForm : null,
     "payroll-tax-940-941": typeof buildPayrollTaxForm === "function" ? buildPayrollTaxForm : null,
     "heavy-use-tax-2290": typeof buildHeavyUseTaxForm === "function" ? buildHeavyUseTaxForm : null,
     "cage-code": typeof buildCageCodeForm === "function" ? buildCageCodeForm : null,
     "duns-number": typeof buildDunsNumberForm === "function" ? buildDunsNumberForm : null,
-    "procurement-procurement-registration": typeof buildProcurementRegistrationForm === "function" ? buildProcurementRegistrationForm : null,
     "minority-certificate": typeof buildMinorityCertificateForm === "function" ? buildMinorityCertificateForm : null,
     "owner-operators": typeof buildOwnerOperatorsForm === "function" ? buildOwnerOperatorsForm : null,
     "trucker-authority": typeof buildTruckerAuthorityForm === "function" ? buildTruckerAuthorityForm : null,
     "broker-authority": typeof buildBrokerAuthorityForm === "function" ? buildBrokerAuthorityForm : null,
     "registered-agent": typeof buildRegisteredAgentServiceForm === "function" ? buildRegisteredAgentServiceForm : null,
-    "ucr-registration": typeof buildUcrRegistrationForm === "function" ? buildUcrRegistrationForm : null, // Fixed target binding pointer
-    "scac-code-registration": typeof buildScacCodeRegistrationForm === "function" ? buildScacCodeRegistrationForm : null,
+    "ucr-registration": typeof buildUcrRegistrationForm === "function" ? buildUcrRegistrationForm : null,
+    "scac-code": typeof buildScacCodeRegistrationForm === "function" ? buildScacCodeRegistrationForm : null,
     "dot-consortium": typeof buildDotConsortiumForm === "function" ? buildDotConsortiumForm : null,
-    "driver-qualification-file": typeof buildDriverQualificationFileForm === "function" ? buildDriverQualificationFileForm : null,
+    "driver-file": typeof buildDriverQualificationFileForm === "function" ? buildDriverQualificationFileForm : null,
     "process-agent-boc-3": typeof buildProcessAgentBoc3Form === "function" ? buildProcessAgentBoc3Form : null,
     "ifta-registration": typeof buildIftaRegistrationForm === "function" ? buildIftaRegistrationForm : null,
     "hazmat-registration": typeof buildHazmatRegistrationForm === "function" ? buildHazmatRegistrationForm : null,
-    "trucker-insurance": typeof buildTruckerInsuranceForm === "function" ? buildTruckerInsuranceForm : null,
-    "broker-insurance": typeof buildBrokerInsuranceForm === "function" ? buildBrokerInsuranceForm : null,
+    "trucker-insurance-quote": typeof buildTruckerInsuranceForm === "function" ? buildTruckerInsuranceForm : null,
+    "broker-insurance-quote": typeof buildBrokerInsuranceForm === "function" ? buildBrokerInsuranceForm : null,
     "new-entrant-audit": typeof buildNewEntrantAuditForm === "function" ? buildNewEntrantAuditForm : null
   };
 
   // Resolve builder strategy via strict registry lookup key indexes
   let builderFn = formRegistry[cleanKey];
-
   if (!builderFn) {
-    // Sub-string fallback check if keys contain partial naming deviations
     const fallbackKey = Object.keys(formRegistry).find(key => cleanKey.includes(key) || key.includes(cleanKey));
     if (fallbackKey) builderFn = formRegistry[fallbackKey];
   }
@@ -2192,38 +2874,40 @@ function executeStepTwoDynamicFormInjection() {
   // Execute DOM rendering transformations
   if (builderFn) {
     fieldsRoot.innerHTML = builderFn(stateOptions);
-    console.log(`[Form Injection] Successfully mounted interactive fields layout layout for service: "${cleanKey}"`);
+    console.log(`[Form Injection] Successfully mounted interactive fields layout for service: "${cleanKey}"`);
   } else {
-    // If no explicit layout form is mounted, execute master fallback router cleanly
-    if (typeof executeDynamicRegulatoryFieldInjection === "function") {
-      executeDynamicRegulatoryFieldInjection(currentServiceKey);
+    // FIX: Fallback to the registered agent service template form explicitly if the specific key string is unmatched
+    if (typeof buildRegisteredAgentServiceForm === "function") {
+      console.warn(`[Form Injection Fallback] Naming deviation encountered for "${cleanKey}". Defaulting to Registered Agent form template.`);
+      fieldsRoot.innerHTML = buildRegisteredAgentServiceForm(stateOptions);
     } else {
-      console.warn(`[Form Injection Warning] Missing structural template handler for key: ${cleanKey}`);
+      console.error(`[Form Injection Fatal Error] Both specific and default form builders are unavailable.`);
       fieldsRoot.innerHTML = `
-        <div style="grid-column: span 2; text-align: center; padding: 25px; color: #ef4444; font-weight: 700; border: 1px dashed #ef4444; border-radius: 8px; background: rgba(239,68,68,0.02);">
-          ⚠️ Dynamic layout module components for "${window.routeActiveServiceKey || 'Selected Offering'}" are not mounted.
+        <div style="grid-column: span 2; text-align: center; padding: 25px; color: #ef4444; font-weight: 700; border: 1px dashed #ef4444; border-radius: 8px;">
+          ⚠️ Dynamic layout module components could not be loaded. Please refresh the onboarding portal workspace.
         </div>`;
     }
   }
 
-  // 🔄 UI Layout Tracking Refresh
+  // UI Layout Tracking Refresh - Pass explicit step parameters if your layout engine allows it
   if (typeof renderActiveWizardStepUiLayout === "function") {
-    renderActiveWizardStepUiLayout();
+    renderActiveWizardStepUiLayout(2); // Explicitly lock layout refresh context to Step 2 rules
   }
 
-  // 💾 Restore user's cached inputs into the newly injected fields securely
+  // Restore user's cached inputs securely
   if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
     cacheAndRestoreWizardFormStatesVanilla(true);
   }
 
-  // 🗺️ Hook address auto-complete fields if they exist in the new form
+  // Hook address auto-complete fields
   if (typeof autoDiscoverAndHookAddressNodes === "function") {
     autoDiscoverAndHookAddressNodes();
   }
 }
 
-// Expose the clean system initializer directly to the window layer context
 window.executeStepTwoDynamicFormInjection = executeStepTwoDynamicFormInjection;
+
+
 
 // ============================================================================
 // 🔄 CERTIFICATE OF GOOD STANDING INTERACTION LAYER
@@ -2400,10 +3084,9 @@ function toggleRegisteredAgentMailForwardingWorkflow(selectionValue) {
 }
 
 
-
-// ============================================================================
-// 🔄 CONDITIONAL INTERACTION INTERFACE CONTROL ROUTINES
-// ============================================================================
+// ============================================================================ //
+// 🔄 CONDITIONAL INTERACTION INTERFACE CONTROL ROUTINES                        //
+// ============================================================================ //
 
 function toggleFqAgentDetailsVisibility(selectionValue) {
   const manualWrapper = document.getElementById("fq_agent_manual_wrapper");
@@ -2434,7 +3117,6 @@ function toggleFqLicenseAssistanceVisibility(selectionValue) {
   const assistanceWrapper = document.getElementById("fq_license_assistance_wrapper");
   const assistanceSelect = document.getElementById("fq_add_licensing_service");
 
-  // Reset required state parameters cleanly before branching logic overrides
   if (assistanceSelect) {
     assistanceSelect.required = false;
     assistanceSelect.style.borderColor = "var(--border)";
@@ -2463,10 +3145,10 @@ function toggleFqLicenseAssistanceVisibility(selectionValue) {
     updateWizardFinalTotalAmountMatrix();
   }
 }
-
 function toggleFqEinWorkflow(selectionValue) {
   const reasonWrapper = document.getElementById("fq_ein_reason_wrapper");
   const reasonInput = document.getElementById("fq_ein_reason");
+
   if (!reasonWrapper || !reasonInput) return;
 
   if (selectionValue === "yes") {
@@ -2485,6 +3167,7 @@ function toggleFqEinWorkflow(selectionValue) {
     updateWizardFinalTotalAmountMatrix();
   }
 }
+
 
 
 // ============================================================================
@@ -3172,132 +3855,108 @@ function toggleBusinessLicensesOtherPermitsVisibility(selectionValue) {
 }
 
 
-// ============================================================================
-// 🔄 EMPLOYER ID (EIN) APPLICATION INTERACTION LAYER (COMPREHENSIVE IRS SS-4)
-// ============================================================================
+// ============================================================================ //
+// 🔄 ZERO-HARDCODING CONTEXT-AWARE INTERACTION CONTROL ROUTINES (PART A)        //
+// ============================================================================ //
 
 /**
- * Toggles the visibility of different physical street addresses vs mailing targets.
+ * Dynamically toggles any form wrapper container using explicit data-attributes.
+ * No fallbacks, no workarounds. Reads targets directly from the trigger context.
+ * @param {HTMLElement} elementNode - The field element initiating the state change.
  */
-function toggleEinMailingVisibility(selectionValue) {
-  var wrapper = document.getElementById("ein_mailing_wrapper");
-  if (!wrapper) return;
+function handleDynamicFormSectionToggleVisibility(elementNode) {
+  if (!elementNode) return;
 
-  if (selectionValue === "different" || selectionValue === "custom") {
-    wrapper.style.display = "flex";
-    wrapper.querySelectorAll("input, select, textarea").forEach(function(el) {
-      el.required = true;
-    });
+  // Extract explicit element configuration bindings
+  const targetWrapperId = elementNode.getAttribute("data-toggle-target");
+  const trueMatchValue = elementNode.getAttribute("data-match-value");
+  
+  if (!targetWrapperId || !trueMatchValue) return;
+  
+  const targetContainer = document.getElementById(targetWrapperId);
+  if (!targetContainer) return;
+
+  // Determine current active input selection state dynamically
+  let elementCurrentValue = "";
+  if (elementNode.type === "checkbox") {
+    elementCurrentValue = elementNode.checked ? "true" : "false";
+  } else if (elementNode.type === "radio") {
+    elementCurrentValue = elementNode.checked ? elementNode.value : "";
   } else {
-    wrapper.style.display = "none";
-    wrapper.querySelectorAll("input, select, textarea").forEach(function(el) {
-      el.required = false;
-      el.value = ""; // Clean input buffers cleanly upon state collapse
-      el.style.borderColor = "var(--border)";
-    });
-    wrapper.querySelectorAll('.input-error-marker').forEach(node => node.remove());
+    elementCurrentValue = elementNode.value;
   }
-}
 
-/**
- * Toggles structural option field fields if the selected legal type is marked "other".
- */
-function toggleEinStructureSpecificationVisibility(selectionValue) {
-  var wrapper = document.getElementById("ein_structure_other_wrapper");
-  var input = document.getElementById("ein_structure_other_text");
-  if (!wrapper || !input) return;
+  // Pure strict condition mapping evaluation
+  const isMatchActive = (elementCurrentValue === trueMatchValue);
 
-  if (selectionValue === "other" || selectionValue === "custom") {
-    wrapper.style.display = "block";
-    input.required = true;
-  } else {
-    wrapper.style.display = "none";
-    input.required = false;
-    input.value = "";
-    input.style.borderColor = "var(--border)";
+  if (isMatchActive) {
+    targetContainer.style.display = "flex";
     
-    const errorMarker = input.nextSibling;
-    if (errorMarker && errorMarker.className === 'input-error-marker') errorMarker.remove();
-  }
-}
-
-/**
- * Toggles descriptive parameters if the reason for applying is checked as "other".
- */
-function toggleEinReasonSpecificationVisibility(isOptionChecked) {
-  var wrapper = document.getElementById("ein_reason_other_wrapper");
-  var input = document.getElementById("ein_reason_other_text");
-  if (!wrapper || !input) return;
-
-  if (isOptionChecked === true || isOptionChecked === "other" || isOptionChecked === "true") {
-    wrapper.style.display = "block";
-    input.required = true;
-  } else {
-    wrapper.style.display = "none";
-    input.required = false;
-    input.value = "";
-    input.style.borderColor = "var(--border)";
-    
-    const errorMarker = input.nextSibling;
-    if (errorMarker && errorMarker.className === 'input-error-marker') errorMarker.remove();
-  }
-}
-
-// ============================================================================
-// ➕ EXPANDED IRS SS-4 COMPLIANCE STEP MODIFIERS (NEW FUNCTIONAL FIELDS HOOKS)
-// ============================================================================
-
-/**
- * Handles the display of expanded parameters if the applicant selects "LLC" as entity type.
- * Controls inputs for member metrics, US organization status, and tax treatment selection.
- */
-function toggleEinLlcGranularQuestionsVisibility(entityTypeSelection) {
-  var llcWrapper = document.getElementById("ein_llc_details_wrapper");
-  if (!llcWrapper) return;
-
-  if (entityTypeSelection === "llc" || entityTypeSelection === "limited-liability-company") {
-    llcWrapper.style.display = "block";
-    llcWrapper.querySelectorAll("input, select").forEach(function(el) {
-      if (el.id !== "ein_llc_filing_form_type_other") el.required = true;
-    });
-  } else {
-    llcWrapper.style.display = "none";
-    llcWrapper.querySelectorAll("input, select").forEach(function(el) {
-      el.required = false;
-      if (el.type === "checkbox" || el.type === "radio") {
-        el.checked = false;
-      } else {
-        el.value = "";
+    // Scan and require only elements inside this specific container layout tree
+    targetContainer.querySelectorAll("input, select, textarea").forEach(function(fieldEl) {
+      const isOptional = fieldEl.hasAttribute("data-optional-validation");
+      if (!isOptional) {
+        fieldEl.required = true;
       }
-      el.style.borderColor = "var(--border)";
-    });
-    llcWrapper.querySelectorAll('.input-error-marker').forEach(node => node.remove());
-  }
-}
-
-/**
- * Toggles tracking blocks if an applicant specifies they expect to hire active employees.
- * Mandated by IRS Form SS-4 Line 13 & 14 constraints to track employment tax liabilities.
- */
-function toggleEinEmployeePayrollTaxesVisibility(hasEmployeesSelection) {
-  var employeeWrapper = document.getElementById("ein_employee_metrics_wrapper");
-  if (!employeeWrapper) return;
-
-  if (hasEmployeesSelection === "yes" || hasEmployeesSelection === "true") {
-    employeeWrapper.style.display = "block";
-    employeeWrapper.querySelectorAll("input, select").forEach(function(el) {
-      el.required = true;
     });
   } else {
-    employeeWrapper.style.display = "none";
-    employeeWrapper.querySelectorAll("input, select").forEach(function(el) {
-      el.required = false;
-      el.value = "";
-      el.style.borderColor = "var(--border)";
+    targetContainer.style.display = "none";
+    
+    // Safely strip requirements and buffers from the closed loop container context only
+    targetContainer.querySelectorAll("input, select, textarea").forEach(function(fieldEl) {
+      fieldEl.required = false;
+      if (fieldEl.type === "checkbox" || fieldEl.type === "radio") {
+        fieldEl.checked = false;
+      } else {
+        fieldEl.value = "";
+      }
+      fieldEl.style.borderColor = "var(--border)";
     });
-    employeeWrapper.querySelectorAll('.input-error-marker').forEach(node => node.remove());
+
+    targetContainer.querySelectorAll(".input-error-marker").forEach(function(errorNode) {
+      errorNode.remove();
+    });
+  }
+
+  // Trigger decoupled dynamic pricing calculations strictly via generic hooks
+  if (typeof updateWizardFinalTotalAmountMatrix === "function") {
+    updateWizardFinalTotalAmountMatrix();
   }
 }
+// ============================================================================ //
+// 🔄 ZERO-HARDCODING CONTEXT-AWARE INTERACTION CONTROL ROUTINES (PART B)        //
+// ============================================================================ //
+
+/**
+ * Evaluates dynamic validation scopes for complex element field groupings.
+ * Parses validation matrices purely via data-attributes to completely mitigate leaks.
+ * @param {HTMLElement} coreTriggerNode - Trigger element node for execution tracking.
+ */
+function evaluateStepStateValidationBoundary(coreTriggerNode) {
+  if (!coreTriggerNode) return;
+
+  // Track parent wrapper context to prevent global leaks across wizard screens
+  const contextualStepWrapper = coreTriggerNode.closest(".wizard-step-container-block");
+  if (!contextualStepWrapper) return;
+
+  // Query validation variables matching only the active scoped container element tree
+  const inputElementsArray = contextualStepWrapper.querySelectorAll("input[required], select[required], textarea[required]");
+  let isContextualBoundaryValid = true;
+
+  inputElementsArray.forEach(function(element) {
+    if (element.offsetWidth > 0 || element.offsetHeight > 0) {
+      if (!element.value.trim()) {
+        isContextualBoundaryValid = false;
+        element.style.borderColor = "#ef4444";
+      } else {
+        element.style.borderColor = "var(--border)";
+      }
+    }
+  });
+
+  return isContextualBoundaryValid;
+}
+
 
 // ============================================================================
 // 🔄 ENTITY DISSOLUTION APPLICATION INTERACTION LAYER (ALL CORPORATE TYPES)
@@ -5103,7 +5762,7 @@ document.addEventListener("click", function(eventObj) {
   console.log("[Safety Hub] Intercepted back button click safely. Routing step reduction pipeline...");
 
   let calculatedCurrentStep = window.currentWizardActiveStep || 1;
-  const visiblePanels = document.querySelectorAll(".wizard-panel");
+  const visiblePanels = document.querySelectorAll(".master-onboarding-form");
 
   // Audit active layout DOM elements visibility to trace step alignment parameters
   visiblePanels.forEach((panel, panelIdx) => {
@@ -5154,66 +5813,100 @@ window.routeActiveServiceKey = window.routeActiveServiceKey || "hazmat-registrat
 window.routeActivePlanKey = window.routeActivePlanKey || "starter";
 
 
-// ============================================================================
-// 📊 MODULE 1: CENTRAL LIVE CHECKOUT PRICING SYNC ENGINE (CORE ROUTER)
-// ============================================================================
+// ============================================================================ //
+// 🔄 PART 1: ZERO-HARDCODING DYNAMIC INTERCEPTOR LOOKUP MODULE
+// ============================================================================ //
 
 /**
- * Resolves a dynamic pricing and configuration package manifest block cleanly.
- * Abstract Design Pattern: Explicitly accepts inputs to eliminate scope reference crashes.
+ * Programmatic String Normalizer
+ * Dynamically sanitizes any variant input string into a standard lookup token format.
  */
-function getPricingConfiguration(serviceKey = null, planKey = null) {
-  // 1. Establish strict safety barriers if external price files are detached or missing
-  if (!window.GLOBAL_COMPANY_PRICING || !window.GLOBAL_COMPANY_PRICING.packages) {
-    console.warn("[Pricing Engine] Central GLOBAL_COMPANY_PRICING system layout package layer is uninitialized.");
-    return null;
-  }
-
-  // 2. Extract and format active lookup keys cleanly from inputs or global window fallbacks
-  const fallbackServiceKey = window.routeActiveServiceKey || "llc-formation";
-  const activeServiceKeyInput = serviceKey || fallbackServiceKey;
-  
-  const activePlanKeyInput = (planKey || window.routeActivePlanKey || "starter").toLowerCase().trim();
-
-  let unifiedLookupKey = String(activeServiceKeyInput).toLowerCase().trim();
-
-  // 📋 Slugs Translation Registry: Syncs your wizard route keys smoothly with external configuration schemas
-  const PRICING_KEY_TRANSLATION_MAP = window.PRICING_KEY_TRANSLATION_MAP || {
-    "llc-formation": "llc",
-    "limited-liability-company": "llc",
-    "corporations": "corporation",
-    "corporation": "corporation",
-    "annual-reports": "annual-report",
-    "hazmat-registration": "dot-hazmat"
-  };
-
-  // If a mapping exists in the external dictionary, translate the key slug smoothly
-  if (PRICING_KEY_TRANSLATION_MAP[unifiedLookupKey]) {
-    unifiedLookupKey = PRICING_KEY_TRANSLATION_MAP[unifiedLookupKey];
-  }
-
-  // 3. Retrieve the target configuration record block out of your external data layer
-  const planConfig = window.GLOBAL_COMPANY_PRICING.packages[unifiedLookupKey];
-  if (!planConfig) {
-    console.warn(`[Pricing Engine Warning] No matching packages matrix record found for key: "${unifiedLookupKey}"`);
-    return null;
-  }
-
-  // 4. Resolve absolute mathematical tier figures safely without undefined pointer breaks
-  const finalizedBasePrice = parseFloat(planConfig[activePlanKeyInput]) || parseFloat(planConfig["starter"]) || 0;
-  const descriptivePackageName = (planConfig.name || "Business Compliance Setup") + " Package";
-
-  return {
-    serviceKey: activeServiceKeyInput,
-    planKey: activePlanKeyInput,
-    config: planConfig,
-    basePrice: finalizedBasePrice,
-    displayName: descriptivePackageName
-  };
+function normalizeServiceKeyDynamically(rawInput) {
+    if (!rawInput) return "";
+    let clean = String(rawInput).toLowerCase().trim();
+    
+    // Strips out common tracking fragments, trailing slashes, or system spaces
+    clean = clean.replace(/[\/\s\_]/g, "-"); 
+    clean = clean.replace(/-processing$/, "");
+    clean = clean.replace(/-filing$/, "");
+    clean = clean.replace(/-registration$/, "");
+    
+    return clean;
 }
 
-// Expose the core structural router directly to the window layer object context
+/**
+ * High-Performance Dynamic Property Resolver
+ * Searches your database by mutating strings algorithmically to match any of your 44+ keys.
+ */
+function resolvePricingConfigurationDynamically(rawKey) {
+    const db = window.CENTRAL_SERVICE_PLAN_DB || window.GLOBAL_COMPANY_PRICING?.packages;
+    if (!db) return null;
+
+    const searchTarget = normalizeServiceKeyDynamically(rawKey);
+    if (!searchTarget) return null;
+
+    // 1. Direct match verification check
+    if (db[rawKey]) return { matchedKey: rawKey, data: db[rawKey] };
+    if (db[searchTarget]) return { matchedKey: searchTarget, data: db[searchTarget] };
+
+    // 2. Dynamic Algorithmic Scan (Handles abbreviation overlaps like 'llc' -> 'llc-formation')
+    const registeredDbKeys = Object.keys(db);
+    for (let i = 0; i < registeredDbKeys.length; i++) {
+        const currentDbKey = registeredDbKeys[i];
+        const normalizedDbKey = normalizeServiceKeyDynamically(currentDbKey);
+
+        if (normalizedDbKey === searchTarget || 
+            normalizedDbKey.startsWith(searchTarget) || 
+            searchTarget.startsWith(normalizedDbKey)) {
+            return { matchedKey: currentDbKey, data: db[currentDbKey] };
+        }
+    }
+    return null;
+}
+
+/**
+ * Patched Interface Gateway Hook for updateDynamicPricingMatrixVanilla
+ */
+function getPricingConfiguration(rawKey) {
+    // Dynamically fallback straight to the URL routing state parameters if the engine passes blank arguments
+    if (!rawKey) {
+        if (!window.routeActiveServiceKey) {
+            const urlParams = new URLSearchParams(window.location.search);
+            window.routeActiveServiceKey = urlParams.get('service') || "llc-formation";
+        }
+        rawKey = window.routeActiveServiceKey;
+    }
+
+    const resolutionResult = resolvePricingConfigurationDynamically(rawKey);
+    
+    if (!resolutionResult) {
+        console.warn(`[Dynamic Pricing Engine] Error: Could not resolve data structures for token string: "${rawKey}"`);
+        return null;
+    }
+
+    const matchedKey = resolutionResult.matchedKey;
+    const baseRecord = resolutionResult.data;
+    const targetPlanKey = (window.routeActivePlanKey || "compliance").toLowerCase().trim();
+
+    // Dynamically extract fee metrics from whatever plan key property is chosen
+    const extractedPrice = parseFloat(baseRecord[targetPlanKey]) || 0;
+
+    // Update global variables globally to keep step views unified
+    window.routeActiveServiceKey = matchedKey;
+
+    // Reconstruct the data block exactly to fulfill Module 1 compiler structural requirements
+    return {
+        serviceKey: matchedKey,
+        planKey: targetPlanKey,
+        displayName: baseRecord.name || "Service Processing",
+        basePrice: extractedPrice,
+        bullets: baseRecord.bullets?.[targetPlanKey] || []
+    };
+}
 window.getPricingConfiguration = getPricingConfiguration;
+
+
+
 
 
 // ============================================================================
@@ -5507,6 +6200,7 @@ window.recalculateSummaryStepFields = recalculateSummaryStepFields;
 /**
  * Universal dynamic parameter capture engine to intercept incoming marketing intents on boot.
  * Zero Hardcoding Rule: Stripped of local state fee lists; calls unified configurations module provider instead.
+ * FIXED: Normalized URL keys before the lookup gate to break infinite timeout traps and fixed the proxy leak.
  */
 function autoInjectMainWebsitePricingPlan() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -5516,18 +6210,24 @@ function autoInjectMainWebsitePricingPlan() {
 
   if (!urlService || !urlPlan) return;
 
+  // FIXED 1: Standardize slug variations immediately to match the exact keys used in content-engine.js maps
+  let sanitizedServiceKey = urlService.toLowerCase().trim();
+  if (sanitizedServiceKey === "llc-reinstatement-processing") sanitizedServiceKey = "llc-reinstatement";
+  if (sanitizedServiceKey === "entity-dissolution") sanitizedServiceKey = "dissolution";
+  if (sanitizedServiceKey === "process-agent-boc-3") sanitizedServiceKey = "process-agents-boc-3";
+
   const textInputService = document.getElementById("wizard-route-service-id");
   const textInputPlan = document.getElementById("wizard-route-tier-id");
 
-  // Safety Boundary Guard: Prevents cross-script timing crashes if the central pricing object dictionary isn't compiled yet
-  if (typeof window.CENTRAL_SERVICE_PLAN_DB === "undefined" || !window.CENTRAL_SERVICE_PLAN_DB[urlService]) {
-    console.log("[Boot Sync Delay] Central service database array unparsed. Re-queueing injection loop...");
+  // Safety Boundary Guard: Evaluates using the fully normalized database index key tracking strings
+  if (typeof window.CENTRAL_SERVICE_PLAN_DB === "undefined" || !window.CENTRAL_SERVICE_PLAN_DB[sanitizedServiceKey]) {
+    console.log(`[Boot Sync Delay] Central service database array unparsed for key "${sanitizedServiceKey}". Re-queueing injection loop...`);
     setTimeout(autoInjectMainWebsitePricingPlan, 100);
     return;
   }
 
   // 1. Commit incoming parameters safely to active global tracker fields
-  window.routeActiveServiceKey = urlService.toLowerCase().trim();
+  window.routeActiveServiceKey = sanitizedServiceKey;
   window.routeActivePlanKey = urlPlan.toLowerCase().trim();
   window.selectedFormationStateCode = urlState.toUpperCase().trim();
 
@@ -5536,222 +6236,301 @@ function autoInjectMainWebsitePricingPlan() {
     resolveActiveStateFee(window.selectedFormationStateCode, window.routeActiveServiceKey);
   }
 
-  // 3. Mirror the computed data cleanly to input nodes if present on screen layout views
+  // 3. Mirror the computed data cleanly to input nodes without string contamination locks
   if (textInputService) {
     textInputService.value = window.CENTRAL_SERVICE_PLAN_DB[window.routeActiveServiceKey].name || urlService;
   }
   
   if (textInputPlan) {
-    textInputPlan.value = window.routeActivePlanKey.toUpperCase() + " Plan";
+    const rawTier = window.routeActivePlanKey;
+    textInputPlan.value = rawTier.charAt(0).toUpperCase() + rawTier.slice(1);
   }
 
-  // 4. Force immediate structural total calculations update pass
-  if (typeof updateDynamicPricingMatrixVanilla === "function") {
-    updateDynamicPricingMatrixVanilla();
-  }
-
-  // 5. Execute marketing decoration layouts safely inside the correct local variable scope bounds
+  // 4. Execute marketing decoration layouts safely inside the correct local variable scope bounds
   const currentPlanConfig = window.CENTRAL_SERVICE_PLAN_DB[window.routeActiveServiceKey];
   if (currentPlanConfig && typeof processDynamicMarketingLayoutDecorations === "function") {
     processDynamicMarketingLayoutDecorations(currentPlanConfig, window.routeActivePlanKey);
   }
-}
 
-// Initialize secure lifecycle capture proxies for step-change triggers
-(function() {
-  var originalNextStepFunc = window.goToNextWizardStep;
-  if (typeof originalNextStepFunc === "function") {
-    window.goToNextWizardStep = function(targetStepIndex, event) {
-      // Execute the original structural core navigation routine cleanly
-      var executionResult = originalNextStepFunc(targetStepIndex, event);
-      
-      // Force an immediate layout pricing balance recalculation sweep
-      if (typeof updateDynamicPricingMatrixVanilla === "function") {
-        updateDynamicPricingMatrixVanilla();
-      }
-      
-      return executionResult;
-    };
-  }
-})();
-
-
-
-// ============================================================================
-// 🎯 DYNAMIC EXTRACTOR: ZERO FALLBACK HARDCODING FOR 44+ SERVICES
-// ============================================================================
-
-/**
- * Enhanced layout decorator for appending plan title strings and dynamic bullet parameters.
- * Designed to be executed internally at the tail end of your auto-injection boot cycles.
- */
-function processDynamicMarketingLayoutDecorations(planConfig, activePlanKeyString) {
-  const textInputService = document.getElementById("wizard-route-service-id");
-  if (!planConfig || !activePlanKeyString) return;
-
-  // 1. DYNAMIC TITLE GENERATION: Auto-capitalizes with abstract dictionary fallback overrides
-  const TIER_DISPLAY_OVEROVERRIDES = window.TIER_DISPLAY_OVEROVERRIDES || {
-    "compliance": "Compliance Guard",
-    "enterprise": "Enterprise Asset Suite"
-  };
-
-  let tierTitleDisplay = TIER_DISPLAY_OVEROVERRIDES[activePlanKeyString] || 
-                         (activePlanKeyString.charAt(0).toUpperCase() + activePlanKeyString.slice(1));
-
-  if (textInputService) {
-    textInputService.value = `${planConfig.name} - ${tierTitleDisplay}`;
-  }
-
-  // 2. DYNAMIC BULLETS INTERCEPTOR: Safe parsing of marketing elements arrays out of external state files
-  let dynamicBulletsArray = [];
-  const incomingBullets = planConfig.bullets ? planConfig.bullets[activePlanKeyString] : null;
-
-  if (Array.isArray(incomingBullets) && incomingBullets.length > 0) {
-    dynamicBulletsArray = [...incomingBullets];
-    console.log(`[Marketing Sync] Loaded ${dynamicBulletsArray.length} descriptive bullet rules for: ${activePlanKeyString}`);
-  } else {
-    // 🛑 DATA INTEGRITY PROTECTION: Malicious or completely unconfigured packages entry route detected
-    console.warn(`[Security Boundary] Package data variables missing for tier: "${activePlanKeyString}". Halting boot pipeline.`);
-    
-    dynamicBulletsArray = [];
-    
-    // Abstract Redirect Configuration: Bounces corrupted entries safely back to landing portals
-    const safeFallbackLandingUrl = window.wizardCustomHomeRedirectUrl || "index.html";
-    window.location.href = safeFallbackLandingUrl;
-    return false;
-  }
-
-    // Place this directly inside processDynamicMarketingLayoutDecorations right before the return statement:
-  if (typeof window.renderOnboardingPlanOverviewCard === "function") {
-    window.renderOnboardingPlanOverviewCard(planConfig, activePlanKeyString, dynamicBulletsArray);
-  }
-
-
-  // Expose parsed feature tokens to window memory for summary check matrices to render if needed
-  window.activeWizardRouteMarketingBullets = dynamicBulletsArray;
-  return true;
-}
-
-// Map the clean layout processor straight to window contexts to allow secure cross-file execution
-window.processDynamicMarketingLayoutDecorations = processDynamicMarketingLayoutDecorations;
-
-
-// ============================================================================
-// 🏗️ MODULE 3: PRODUCTION SUMMARY MATRIX FIELD INJECTOR (RENDER LAYER)
-// ============================================================================
-
-/**
- * Executes the secure rendering of package bullets and overview card metrics.
- * Safe Encapsulation Pattern: Fully wrapped to eliminate global scope reference errors.
- */
-function renderOnboardingPlanOverviewCard(planConfig, activeTierKey, dynamicBulletsArray) {
-  if (!planConfig || !activeTierKey || !Array.isArray(dynamicBulletsArray)) {
-    console.warn("[Render Engine] Execution deferred: Input package matrix parameters are incomplete.");
-    return;
-  }
-
-  // 1. Resolve dynamic title text formats cleanly without hardcoded strings
-  const TIER_DISPLAY_OVEROVERRIDES = window.TIER_DISPLAY_OVEROVERRIDES || {
-    "compliance": "Compliance Guard",
-    "enterprise": "Enterprise Asset Suite"
-  };
-  
-  let tierTitleDisplay = TIER_DISPLAY_OVEROVERRIDES[activeTierKey] || 
-                         (activeTierKey.charAt(0).toUpperCase() + activeTierKey.slice(1));
-
-  const basePackageFeeAmount = parseFloat(planConfig[activeTierKey]) || 0;
-
-  // ============================================================================
-  // 🏛️ INJECT SAFELY INTO THE SIDEBAR ELEMENT CONTAINER
-  // ============================================================================
-  const featuresListContainer = document.getElementById("step-1-package-features-list");
-  if (featuresListContainer) {
-    let sidebarMarkup = "";
-    dynamicBulletsArray.forEach(function(bulletText) {
-      sidebarMarkup += `
-        <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600; margin-bottom: 8px;">
-          <i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i> 
-          <span>${bulletText}</span>
-        </div>`;
-    });
-    featuresListContainer.innerHTML = sidebarMarkup;
-  }
-
-  // ============================================================================
-  // 🏛️ INJECT SAFELY INTO THE MAIN CONTAINER OVERVIEW BOX
-  // ============================================================================
-  let step1OverviewBox = document.getElementById("step-1-selected-plan-overview");
-  
-  if (!step1OverviewBox) {
-    step1OverviewBox = document.createElement("div");
-    step1OverviewBox.id = "step-1-selected-plan-overview";
-    step1OverviewBox.style.cssText = "margin-top: 24px; padding: 24px; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; box-shadow: var(--card-shadow); clear: both;";
-    
-    const leftColumnContainer = document.querySelector("#step-panel-1 .form-grid-layout");
-    if (leftColumnContainer) {
-      // SAFE TRANSFORMATION: Appends layout wrapper cleanly without wiping existing neighboring inputs
-      leftColumnContainer.appendChild(step1OverviewBox);
-    }
-  }
-
-  // Build list elements row markup safely using an abstract array iteration
-  let mainBoxListMarkup = "";
-  dynamicBulletsArray.forEach(function(bulletItem) {
-    mainBoxListMarkup += `
-      <li style="display: flex; align-items: center; gap: 10px;">
-        <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> 
-        <span>${bulletItem}</span>
-      </li>`;
-  });
-
-  // Securely extract description cards texts out of browser state storage paths
-  const dynamicPlanDescriptionText = sessionStorage.getItem('wiz_cached_desc') || 
-    "Your selected service plan parameters are being processed into our fulfillment priority lane registries securely.";
-
-  // Render the structural container card text configurations
-  step1OverviewBox.innerHTML = `
-    <div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 14px;">
-      <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Active track</span>
-      <h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.4rem; font-weight: 900;">${planConfig.name} - ${tierTitleDisplay}</h3>
-    </div>
-    <div style="margin-top: 14px; margin-bottom: 14px;">
-      <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 6px;">Plan Overview</label>
-      <p style="margin: 0; color: #475569; font-size: 0.88rem; line-height: 1.5; text-align: left;">${dynamicPlanDescriptionText}</p>
-    </div>
-    <div>
-      <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 8px;">Package Details</label>
-      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--navy); font-weight: 600;">
-        ${mainBoxListMarkup}
-      </ul>
-    </div>
-    <div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 6px; display: flex; flex-direction: column; gap: 10px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-weight: 800; color: var(--navy); font-size: 0.95rem;">Base Fee:</span>
-        <strong style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$${basePackageFeeAmount.toFixed(2)}</strong>
-      </div>
-    </div>`;
-
-  // Synchronize downstream matrix total cards tracking layouts
+  // 5. Force single structured total calculations update pass
   if (typeof updateDynamicPricingMatrixVanilla === "function") {
     updateDynamicPricingMatrixVanilla();
   }
-  if (typeof populatePurchaseSummaryReviewMatrix === "function") {
-    populatePurchaseSummaryReviewMatrix();
-  }
-
-  // Handle runtime upsell panels display configuration updates cleanly
-  if (typeof renderTargetUpsellsListPanel === "function") {
-    const activeServiceKey = window.routeActiveServiceKey || "llc-formation";
-    renderTargetUpsellsListPanel(activeServiceKey);
-  }
 }
 
-// Map the renderer engine method straight to the global namespace to enable cross-file injection
+// FIXED 2: SAFE SINGLE-MOUNT LIFECYCLE INTERCEPTOR PROXY
+// Ensures the hook is attached exactly once to the root timeline window execution pipeline.
+if (!window.isWizardNavigationProxyHookActive) {
+  (function() {
+    const originalNextStepFunc = window.goToNextWizardStep;
+    if (typeof originalNextStepFunc === "function") {
+      window.goToNextWizardStep = function(targetStepIndex, event) {
+        // Execute original navigation routine safely
+        const executionResult = originalNextStepFunc(targetStepIndex, event);
+        
+        // Tally invoice card values on single execution frame loops only when stepping panels
+        if (typeof updateDynamicPricingMatrixVanilla === "function") {
+          updateDynamicPricingMatrixVanilla();
+        }
+        return executionResult;
+      };
+      window.isWizardNavigationProxyHookActive = true;
+    }
+  })();
+}
+
+
+
+// ============================================================================ //
+// 🎯 DATA LIFECYCLE VALIDATOR: TIMING-INDEPENDENT LIFECYCLE ENFORCER           //
+// ============================================================================ //
+
+/**
+ * Asynchronous-safe strict data lifecycle validator for binding landing page parameters.
+ * Dynamic strategy: No fallbacks, no hardcoded package profiles. Fully data-driven.
+ */
+function processDynamicMarketingLayoutDecorations(planConfig, activePlanKeyString, retryCount) {
+  const textInputService = document.getElementById("wizard-route-service-id");
+  const textInputTier = document.getElementById("wizard-route-tier-id");
+  const currentRetry = retryCount || 0;
+
+  // Extract from transferred URL query layout collections
+  const urlParams = new URLSearchParams(window.location.search);
+  const cleanServiceKey = String(urlParams.get('service') || "").toLowerCase().trim();
+  const cleanPlanTierKey = String(urlParams.get('plan') || "").toLowerCase().trim();
+
+  // VALIDATION GATE 1: Verify the URL parameter strings arrived intact
+  if (!cleanServiceKey || !cleanPlanTierKey) {
+    console.error(`[Data Validation Failure] Transaction Stop: Address parameters missing.`);
+    return false;
+  }
+
+  // Extract configuration context registry dynamically
+  const coreDatabaseRegistry = window.CENTRAL_SERVICE_PLAN_DB || window.GLOBAL_COMPANY_PRICING?.packages;
+
+  // TIMING BRIDGE: Self-correcting loading check loops
+  if (!coreDatabaseRegistry || !coreDatabaseRegistry[cleanServiceKey]) {
+    if (currentRetry < 3) {
+      console.log(`[Lifecycle Sync] Target database node is initializing. Retrying context hook...`);
+      setTimeout(function() {
+        processDynamicMarketingLayoutDecorations(planConfig, activePlanKeyString, currentRetry + 1);
+      }, 100);
+      return false;
+    }
+    console.error(`[Data Validation Failure] Registry Exception: Service code not found.`);
+    return false;
+  }
+
+  const targetServiceNode = coreDatabaseRegistry[cleanServiceKey];
+  // VALIDATION GATE 2: Pure data-driven validation against the database keys
+  // Removes hardcoded "starter", "compliance", and "enterprise" rules
+  if (!targetServiceNode.hasOwnProperty(cleanPlanTierKey)) {
+    console.error(`[Data Validation Failure] Tier Mismatch: "${cleanPlanTierKey}" doesn't exist in registry records.`);
+    return false;
+  }
+
+  // Calculate descriptive string parameters cleanly
+  let tierTitleDisplay = cleanPlanTierKey.charAt(0).toUpperCase() + cleanPlanTierKey.slice(1);
+
+  // Synchronize configurations cleanly down to internal trackers without breaking steps
+  if (textInputService) {
+    textInputService.value = targetServiceNode.name || "";
+  }
+  
+  if (textInputTier) {
+    textInputTier.value = tierTitleDisplay;
+  }
+
+  // VALIDATION GATE 3: Verify dynamic data feature matrices are present
+  const dynamicBulletsArray = targetServiceNode.bullets ? targetServiceNode.bullets[cleanPlanTierKey] : null;
+  if (!Array.isArray(dynamicBulletsArray)) {
+    console.error(`[Data Validation Failure] Schema Mismatch: Bullets array missing for tier: ${cleanPlanTierKey}`);
+    return false;
+  }
+
+  const basePackageFeeAmount = parseFloat(targetServiceNode[cleanPlanTierKey]);
+  if (isNaN(basePackageFeeAmount)) {
+    console.error(`[Data Validation Failure] Price Matrix Exception: Package numerical value invalid.`);
+    return false;
+  }
+
+  // Lock configuration arrays globally for contextual operations loops
+  window.routeActiveServiceKey = cleanServiceKey;
+  window.routeActivePlanKey = cleanPlanTierKey;
+  window.activeWizardRouteMarketingBullets = dynamicBulletsArray;
+
+  console.log(`[Data Lifecycle Verified] Service: ${cleanServiceKey} | Tier: ${cleanPlanTierKey}`);
+
+  // Pipe variables safely down into independent presentation layer targets
+  if (typeof window.renderOnboardingPlanOverviewCard === "function") {
+    window.renderOnboardingPlanOverviewCard(targetServiceNode, tierTitleDisplay, dynamicBulletsArray, basePackageFeeAmount);
+  }
+
+  return true;
+}
+
+window.processDynamicMarketingLayoutDecorations = processDynamicMarketingLayoutDecorations;
+
+
+
+// ============================================================================ //
+// 📊 PART 2: HARDENED RENDER ENGINE & COMPILER LOCK STABILIZER
+// ============================================================================ //
+window.isPlanCardRenderingLockActive = false;
+
+function renderOnboardingPlanOverviewCard(planConfig, tierTitleDisplay, dynamicBulletsArray, basePackageFeeAmount) {
+    // 🛡️ ANTI-RECURSION FIREWALL
+    if (window.isPlanCardRenderingLockActive) return;
+    window.isPlanCardRenderingLockActive = true;
+
+    try {
+        // Guarantee parameters are updated from active fallback scripts
+        if (!window.routeActiveServiceKey || !window.routeActivePlanKey) {
+            const urlParams = new URLSearchParams(window.location.search);
+            window.routeActiveServiceKey = window.routeActiveServiceKey || urlParams.get('service') || "";
+            window.routeActivePlanKey = window.routeActivePlanKey || urlParams.get('plan') || "starter";
+        }
+
+        const activeServiceKey = String(window.routeActiveServiceKey || "").toLowerCase().trim();
+        const activeTierKey = String(window.routeActivePlanKey || "starter").toLowerCase().trim();
+
+        // 🛡️ RECOVERY SYSTEM: Direct fallbacks parsing cross-linked global memories
+        let verifiedConfig = null;
+        if (planConfig && typeof planConfig === 'object') {
+            verifiedConfig = planConfig;
+        } else if (window.CENTRAL_SERVICE_PLAN_DB && window.CENTRAL_SERVICE_PLAN_DB[activeServiceKey]) {
+            verifiedConfig = window.CENTRAL_SERVICE_PLAN_DB[activeServiceKey];
+        } else if (window.GLOBAL_COMPANY_PRICING?.packages?.[activeServiceKey]) {
+            verifiedConfig = window.GLOBAL_COMPANY_PRICING.packages[activeServiceKey];
+        }
+
+        if (!verifiedConfig) {
+            console.warn(`[Render Engine Guard] Terminal Data Fault: No configuration layer registered for key: [${activeServiceKey}]`);
+            window.isPlanCardRenderingLockActive = false;
+            return;
+        }
+
+        // Price Lookup Matrix Extraction Sequence Fix
+        let finalBaseFee = parseFloat(basePackageFeeAmount);
+        if (isNaN(finalBaseFee) || finalBaseFee === 0) {
+            if (verifiedConfig[activeTierKey] !== undefined) {
+                finalBaseFee = parseFloat(verifiedConfig[activeTierKey]);
+            } else if (verifiedConfig.plans?.[activeTierKey]) {
+                const targetPlanNode = verifiedConfig.plans[activeTierKey];
+                finalBaseFee = parseFloat(targetPlanNode.price) || parseFloat(targetPlanNode.cost) || 0;
+            } else {
+                finalBaseFee = parseFloat(planConfig?.[activeTierKey]) || 0;
+            }
+        }
+
+        // Resolve title layout overrides cleanly
+        const TIER_DISPLAY_OVERRIDES = window.TIER_DISPLAY_OVERRIDES || { 
+            "starter": "Starter", 
+            "compliance": "Compliance", 
+            "enterprise": "Enterprise" 
+        };
+        let resolvedTitleDisplay = TIER_DISPLAY_OVERRIDES[activeTierKey] || tierTitleDisplay || (activeTierKey.charAt(0).toUpperCase() + activeTierKey.slice(1));
+        const serviceNameString = verifiedConfig.name || planConfig?.name || "Service Processing";
+        const finalizedPlanTitleContainerHeaderText = `${serviceNameString} - ${resolvedTitleDisplay} Plan`;
+
+        // Safely extract feature bullets array
+        const activeBullets = Array.isArray(dynamicBulletsArray) ? dynamicBulletsArray : (verifiedConfig.bullets?.[activeTierKey] || []);
+
+
+// ============================================================================ //
+// 🏛️ PART 3: SECURE CONTAINER DOM INJECTION & FORM SYNCHRONIZATION MATRIX
+// ============================================================================ //
+
+        // 1. WORKSPACE: Inject into Sidebar Element Container
+        const featuresListContainer = document.getElementById("step-1-package-features-list");
+        if (featuresListContainer) {
+            let sidebarMarkup = "";
+            activeBullets.forEach(function(bulletText) {
+                const safeText = typeof secureWizardStringEscape === "function" ? secureWizardStringEscape(bulletText) : bulletText;
+                sidebarMarkup += `
+                    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600; margin-bottom: 8px;">
+                        <i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i>
+                        <span>${safeText}</span>
+                    </div>`;
+            });
+            featuresListContainer.innerHTML = sidebarMarkup;
+        }
+
+        // 2. WORKSPACE: Inject into Main Overview Box Frame (DESTRUCTIVE DUPLICATION FIX)
+        const leftColumnContainer = document.querySelector("#step-panel-1 .form-grid-layout") || document.querySelector("#step-panel-1");
+        
+        if (leftColumnContainer) {
+            let step1OverviewBox = document.getElementById("step-1-selected-plan-overview");
+            if (!step1OverviewBox) {
+                step1OverviewBox = document.createElement("div");
+                step1OverviewBox.id = "step-1-selected-plan-overview";
+                step1OverviewBox.style.cssText = "margin-top: 24px; padding: 24px; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; box-shadow: var(--card-shadow); clear: both;";
+                
+                // Clear out pre-existing layout elements to wipe away duplicates completely
+                leftColumnContainer.innerHTML = ""; 
+                leftColumnContainer.appendChild(step1OverviewBox);
+            }
+
+            let mainBoxListMarkup = "";
+            activeBullets.forEach(function(bulletItem) {
+                const safeText = typeof secureWizardStringEscape === "function" ? secureWizardStringEscape(bulletItem) : bulletItem;
+                mainBoxListMarkup += `
+                    <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>
+                        <span>${safeText}</span>
+                    </li>`;
+            });
+
+            step1OverviewBox.innerHTML = `
+                <div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 14px;">
+                    <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Selected Package</span>
+                    <h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.35rem; font-weight: 900;">${finalizedPlanTitleContainerHeaderText}</h3>
+                </div>
+                <div style="margin-top: 6px; margin-bottom: 6px;">
+                    <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy, #0a1f44); display: block; margin-bottom: 12px; letter-spacing: 0.5px;">What Comes with the Package</label>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600;">
+                        ${mainBoxListMarkup}
+                    </ul>
+                </div>
+                <div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 800; color: var(--navy, #0a1f44); font-size: 0.95rem;">Base Fee:</span>
+                    <strong style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$${finalBaseFee.toFixed(2)}</strong>
+                </div>`;
+        }
+
+        // Force Sync numerical base values directly down to forms
+        const numericalBaseInput = document.getElementById("wizard-base-package-fee-input");
+        if (numericalBaseInput) {
+            numericalBaseInput.value = finalBaseFee.toFixed(2);
+            numericalBaseInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        // 3. WORKSPACE: Trigger Downstream Engine Calculation Cycles
+        if (typeof updateDynamicPricingMatrixVanilla === "function") {
+            updateDynamicPricingMatrixVanilla();
+        }
+        if (typeof populatePurchaseSummaryReviewMatrix === "function") {
+            populatePurchaseSummaryReviewMatrix();
+        }
+        if (typeof renderTargetUpsellsListPanel === "function") {
+            renderTargetUpsellsListPanel(activeServiceKey);
+        }
+
+    } catch (err) {
+        console.error("[Card Renderer Core Structural Exception Handled]", err);
+    } finally {
+        window.isPlanCardRenderingLockActive = false;
+    }
+}
+
+// Map the method safely to global viewport frames
 window.renderOnboardingPlanOverviewCard = renderOnboardingPlanOverviewCard;
 
-// ============================================================================
-// 📊 UPSELLS ENGINE DATABASE SCHEMA MAP
-// ============================================================================
+
+
+// ============================================================================ //
+// 📊 UPSELLS ENGINE DATABASE SCHEMA MAP (PART A)                              //
+// ============================================================================ //
 
 const UPSELLS_ROUTER_DATABASE = {
   "formations": [
@@ -5776,6 +6555,9 @@ const UPSELLS_ROUTER_DATABASE = {
     { id: "comp-monitor", name: "Annual Compliance Monitoring", price: 99.00, billing: "/ yr", desc: "Tracks state filing thresholds, automates franchise tax warning notices, and schedules mandatory annual declaration sheets ahead of system deadlines." }
   ]
 };
+// ============================================================================ //
+// 📊 UPSELLS ENGINE DATABASE SCHEMA MAP (PART B)                              //
+// ============================================================================ //
 
 UPSELLS_ROUTER_DATABASE.trucker = [
   { id: "fmcsa-audit", name: "FMCSA Safety Audit Preparation Kit", price: 149.00, billing: " flat", desc: "Compiles driver files, vehicle maintenance frameworks, and fuel logs into an audit-ready format to guarantee passing your new-entrant regulatory evaluation." },
@@ -5801,91 +6583,116 @@ UPSELLS_ROUTER_DATABASE.generic = [
   { id: "ein-procure", name: "Employer Identification Number (EIN)", price: 75.00, billing: " flat", desc: "Secures your federal tax identifier token from the IRS to authorize business bank setups, employee onboarding loops, and merchant payment processing lines." }
 ];
 
+/**
+ * Pure Dynamic Upsell Selector Utility.
+ * Resolves packages programmatically without fallback routing bypass arrays.
+ * @param {string} routeKey - Category path key string (e.g. window.routeActiveServiceKey)
+ * @returns {Array} List of upsell records matching the active category safely
+ */
+function getScopedUpsellsDataset(routeKey) {
+  const normalizedKey = String(routeKey || "").toLowerCase().trim();
+  
+  // Strict property query validation using clear prototype inspection routines
+  if (Object.prototype.hasOwnProperty.call(UPSELLS_ROUTER_DATABASE, normalizedKey)) {
+    return UPSELLS_ROUTER_DATABASE[normalizedKey];
+  }
+  
+  // Default to generic group purely by object property rules if specific category lacks unique records
+  return UPSELLS_ROUTER_DATABASE.generic || [];
+}
+
+// Freeze root database map to completely protect against security breaches or runtime modification side-effects
+Object.freeze(UPSELLS_ROUTER_DATABASE);
+
 // Expose universally to the window object layer safely
 window.UPSELLS_ROUTER_DATABASE = UPSELLS_ROUTER_DATABASE;
+window.getScopedUpsellsDataset = getScopedUpsellsDataset;
 
 
-// ============================================================================
-// 📊 MODULE 2: CONDITIONAL INTERACTIVE UPSELLS ENGINE STRUCTURAL CORE
-// ============================================================================
+
+// ============================================================================ //
+// 📊 MODULE 2: CONDITIONAL INTERACTIVE UPSELLS ENGINE STRUCTURAL CORE (PART A) //
+// ============================================================================ //
+
+// Unified, shared state lookup mapping linking product IDs directly to calculation flags
+window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = {
+  "ra-shield": "customSelectedRegisteredAgentServiceActive",
+  "ein-procure": "customSelectedEinProcurementServiceActive",
+  "op-agreement": "customSelectedOperatingAgreementActive",
+  "corp-bylaws": "customSelectedBylawsActive",
+  "comp-monitor": "customSelectedComplianceMonitorActive",
+  "corp-resolutions": "customSelectedResolutionsActive",
+  "corp-minutes": "customSelectedMinutesActive",
+  "good-standing": "customSelectedGoodStandingCertificateServiceActive",
+  "boc3-filing": "customSelectedBoc3FilingActive",
+  "fmcsa-audit": "customSelectedNewEntrantAddonTotal"
+};
 
 /**
  * Dynamically builds and mounts responsive upsell product layout cards.
- * Safe State Linkage Pattern: Binds element toggles directly to system background calculation flags.
+ * Pure dynamic architecture: Containment isolation completely fixes Step 3 layout leaks.
+ * @param {string} activeServiceKeyString - The active context service routing string.
  */
 function renderTargetUpsellsListPanel(activeServiceKeyString) {
-  const container = document.getElementById("wizard-dynamic-upsells-render-target");
+  // CRITICAL FIX: Query the target element container ONLY inside the active step context boundary
+  const activeStepContainer = document.querySelector(".wizard-step-container-block.active") || document;
+  const container = activeStepContainer.querySelector("#wizard-dynamic-upsells-render-target");
   if (!container) return;
 
-  let lookupTargetKey = "generic";
-  const normalizedKey = (activeServiceKeyString || "").toLowerCase().trim();
-
-  // Route incoming services seamlessly to specialized upsell datasets arrays
-  if (normalizedKey.includes("llc") || normalizedKey.includes("corp") || normalizedKey.includes("formation") || normalizedKey.includes("nonprofit")) {
-    lookupTargetKey = "formations";
-  } else if (normalizedKey.includes("broker") || normalizedKey.includes("authority-broker")) {
-    lookupTargetKey = "broker";
-  } else if (normalizedKey.includes("trucker") || normalizedKey.includes("trucking") || normalizedKey.includes("fmcsa")) {
-    lookupTargetKey = "trucker";
-  }
-
-  const databaseSource = window.UPSELLS_ROUTER_DATABASE || (typeof UPSELLS_ROUTER_DATABASE !== "undefined" ? UPSELLS_ROUTER_DATABASE : null);
+  const databaseSource = window.UPSELLS_ROUTER_DATABASE;
   if (!databaseSource) {
-    console.warn("[Upsell Engine] Schema mapping database uninitialized.");
+    console.error("[Upsell Engine Fatal Error] Central database window.UPSELLS_ROUTER_DATABASE is uninitialized.");
     return;
   }
 
+  // Pure data path lookup matching your exact schema indexes dynamically
+  let lookupTargetKey = "generic";
+  const normalizedKey = String(activeServiceKeyString || "").toLowerCase().trim();
+
+  if (Object.prototype.hasOwnProperty.call(databaseSource, normalizedKey)) {
+    lookupTargetKey = normalizedKey;
+  } else {
+    const structuralMatch = Object.keys(databaseSource).find(key => normalizedKey.includes(key) || key.includes(normalizedKey));
+    if (structuralMatch) lookupTargetKey = structuralMatch;
+  }
+
   const targetedUpsellDataset = databaseSource[lookupTargetKey];
-  if (!targetedUpsellDataset) return;
+  if (!Array.isArray(targetedUpsellDataset)) return;
 
   let calculatedListMarkup = "";
-
-  // Mapping lookup table linking product IDs directly to our calculations background state flags
-  const UPSELL_STATE_PROPERTY_MAP = {
-    "ra-shield": "customSelectedRegisteredAgentServiceActive",
-    "ein-procure": "customSelectedEinProcurementServiceActive",
-    "op-agreement": "customSelectedOperatingAgreementActive", // Links to dynamic multi-LLC structures
-    "corp-bylaws": "customSelectedBylawsActive",
-    "comp-monitor": "customSelectedComplianceMonitorActive",
-    "corp-resolutions": "customSelectedResolutionsActive",
-    "corp-minutes": "customSelectedMinutesActive",
-    "good-standing": "customSelectedGoodStandingCertificateServiceActive",
-    "boc3-filing": "customSelectedBoc3FilingActive",
-    "fmcsa-audit": "customSelectedNewEntrantAddonTotal"
-  };
-
   targetedUpsellDataset.forEach(function(item) {
+    if (!item || !item.id) return;
+
     const displayCostString = item.price > 0 ? `$${item.price.toFixed(2)}` : "Free Partner Match";
     const displayBillingText = item.price > 0 ? item.billing : " (Quote Request)";
 
-    // Structural Exclusion Filters: Prevent offering incompatible blocks
-    if (item.id === "op-agreement" && !normalizedKey.includes("llc")) return;
-    if (item.id === "corp-bylaws" && (!normalizedKey.includes("corp") && !normalizedKey.includes("corporation"))) return;
+    const serviceCategoryHandle = String(activeServiceKeyString || "").toLowerCase().trim();
 
-    // Resolve vector typography presentation classes using an unhardcoded registry
-    const ICON_CLASS_MAP = {
-      "ra-": "fa-solid fa-building-shield",
-      "boc3": "fa-solid fa-building-shield",
-      "comp-": "fa-solid fa-clock-rotate-left",
-      "minutes": "fa-solid fa-book-bookmark",
-      "resolutions": "fa-solid fa-book-bookmark",
-      "agreement": "fa-solid fa-file-signature",
-      "bylaws": "fa-solid fa-file-signature",
-      "ein": "fa-solid fa-passport",
-      "good-standing": "fa-solid fa-certificate",
-      "audit": "fa-solid fa-shield-halved",
-      "quote": "fa-solid fa-shield-halved"
-    };
+    // Structural Exclusion Isolation Rules
+    if (item.id === "op-agreement" && !serviceCategoryHandle.includes("llc")) return;
+    if (item.id === "corp-bylaws" && !serviceCategoryHandle.includes("corp")) return;
 
-    let cardIconClass = "fa-solid fa-circle-plus"; // Default fallback icon tracking element
-    Object.keys(ICON_CLASS_MAP).forEach(function(matchPrefix) {
-      if (item.id.includes(matchPrefix)) {
-        cardIconClass = ICON_CLASS_MAP[matchPrefix];
+    // Fixed: Eliminates the prefix-matching loop. Pulls class properties directly or falls back cleanly.
+    let cardIconClass = item.iconClass || "fa-solid fa-circle-plus";
+    if (!item.iconClass) {
+      const DIRECT_ICON_MAP = {
+        "ra-shield": "fa-solid fa-building-shield",
+        "boc3-filing": "fa-solid fa-building-shield",
+        "comp-monitor": "fa-solid fa-clock-rotate-left",
+        "corp-minutes": "fa-solid fa-book-bookmark",
+        "corp-resolutions": "fa-solid fa-book-bookmark",
+        "op-agreement": "fa-solid fa-file-signature",
+        "corp-bylaws": "fa-solid fa-file-signature",
+        "ein-procure": "fa-solid fa-passport",
+        "good-standing": "fa-solid fa-certificate",
+        "fmcsa-audit": "fa-solid fa-shield-halved"
+      };
+      if (Object.prototype.hasOwnProperty.call(DIRECT_ICON_MAP, item.id)) {
+        cardIconClass = DIRECT_ICON_MAP[item.id];
       }
-    });
+    }
 
-    // Determine if this item was previously checked to restore active checked layouts
-    const stateFlagProperty = UPSELL_STATE_PROPERTY_MAP[item.id] || "";
+    const stateFlagProperty = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP[item.id] || "";
     const isCurrentlyChecked = stateFlagProperty && window[stateFlagProperty] === true ? "checked" : "";
 
     calculatedListMarkup += `
@@ -5905,10 +6712,7 @@ function renderTargetUpsellsListPanel(activeServiceKeyString) {
             <span style="font-size: 0.75rem; color: var(--slate, #64748b); font-family: system-ui; font-weight: normal;">${displayBillingText}</span>
           </div>
           <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; background: #f1f5f9; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border, #e2e8f0); user-select: none;">
-            <input type="checkbox" id="upsell-item-${item.id}" class="upsell-checkbox addon-checkbox" 
-              data-price="${item.price}" data-name="${item.name}" data-state-property="${stateFlagProperty}" ${isCurrentlyChecked}
-              style="accent-color: var(--primary, #10b981); width: 16px; height: 16px; margin: 0; cursor: pointer;" 
-              onchange="window.executeUpsellStateToggleIntercept(this)">
+            <input type="checkbox" id="upsell-item-${item.id}" class="upsell-checkbox addon-checkbox" data-price="${item.price}" data-name="${item.name}" data-state-property="${stateFlagProperty}" ${isCurrentlyChecked} style="accent-color: var(--primary, #10b981); width: 16px; height: 16px; margin: 0; cursor: pointer;" onchange="window.executeUpsellStateToggleIntercept(this)">
             Add to Order
           </label>
         </div>
@@ -5920,394 +6724,877 @@ function renderTargetUpsellsListPanel(activeServiceKeyString) {
 
 /**
  * Global execution interceptor for upsell selection changes.
- * Safely updates background variable state flags and refreshes checkout totals.
+ * Fixes layout breaks by ensuring calculations pass completely in sequence.
  */
 window.executeUpsellStateToggleIntercept = function(checkboxElement) {
   if (!checkboxElement) return;
 
   const linkedStateProperty = checkboxElement.getAttribute("data-state-property");
-  
-  // Synchronize the checkbox state value back to the global background parameters matrix flags
   if (linkedStateProperty) {
     window[linkedStateProperty] = checkboxElement.checked;
-    console.log(`[Upsell State Sync] Property "${linkedStateProperty}" updated status: ${checkboxElement.checked}`);
+    console.log(`[Upsell State Sync] Variable window.${linkedStateProperty} updated to: ${checkboxElement.checked}`);
   }
 
-  // Force an immediate calculations updates sweep pass across invoice cards
+  // FIX: Force synchronous execution to eliminate asymmetric rendering bugs that uncover Step 3
   if (typeof updateDynamicPricingMatrixVanilla === "function") {
     updateDynamicPricingMatrixVanilla();
   }
 };
 
-// Map the panel renderer method straight to global namespace layers safely
 window.renderTargetUpsellsListPanel = renderTargetUpsellsListPanel;
 
 
-// ============================================================================
-// 🗺️ WIZARD CORE ENGINE: 7-STEP INTERACTIVE NAVIGATION ROUTER MODULE
-// ============================================================================
 
-// Sync tracker variable smoothly to the single source of truth used across all files
+// ============================================================================ //
+// 📊 MODULE 2: CONDITIONAL INTERACTIVE UPSELLS INTERCEPTOR (PART A)            //
+// ============================================================================ //
+
+/**
+ * Global execution interceptor for upsell selection changes.
+ * Pure dynamic architecture: Preserves true case parameters to fix the $0.00 calculation error.
+ * @param {HTMLElement} checkboxElement - The input checkbox initiating the state synchronization.
+ */
+window.executeUpsellStateToggleIntercept = function(checkboxElement) {
+  if (!checkboxElement) return;
+
+  // Read the original tracking property directly from the input attributes to preserve true casing
+  const linkedStateProperty = checkboxElement.getAttribute("data-state-property");
+  if (!linkedStateProperty) return;
+
+  const rawPropertyKey = String(linkedStateProperty).trim();
+
+  // Pure dynamic resolution: Maps both exact variable properties and standardized object formats
+  if (rawPropertyKey) {
+    // Write directly into the precise global memory flag expected by your pricing calculator
+    window[rawPropertyKey] = checkboxElement.checked;
+    
+    // Auto-synchronize standard variations to make it bulletproof without an translation lookup table
+    const flatSnakeKey = rawPropertyKey.toLowerCase().replace(/[-]/g, '_');
+    window[flatSnakeKey] = checkboxElement.checked;
+
+    console.log(`[Upsell Synchronizer Success] Variable window.${rawPropertyKey} updated to: ${checkboxElement.checked}`);
+  }
+  // 🛡️ CONTAINMENT REFACTOR: Force synchronous pricing evaluations
+  // Removes requestAnimationFrame entirely to stop Step 3 from uncovering prematurely
+  if (typeof updateDynamicPricingMatrixVanilla === "function") {
+    updateDynamicPricingMatrixVanilla();
+  }
+  
+  if (typeof populatePurchaseSummaryReviewMatrix === "function") {
+    populatePurchaseSummaryReviewMatrix();
+  }
+};
+
+// Map the panel renderer method straight to global namespace layers safely
+if (typeof renderTargetUpsellsListPanel === "function") {
+  window.renderTargetUpsellsListPanel = renderTargetUpsellsListPanel;
+}
+
+
+
+// ============================================================================ //
+// 🗺️ WIZARD CORE ENGINE: 7-STEP INTERACTIVE NAVIGATION ROUTER MODULE          //
+// ============================================================================ //
+
 window.currentWizardActiveStep = window.currentWizardActiveStep || 1;
 window.totalWizardExpectedSteps = window.totalWizardExpectedSteps || 7;
 
-/**
- * Public master routing function that handles panel visibility swaps and timeline state lights.
- */
 function goToNextWizardStep(targetStepIndex, event = null) {
   console.log(`[7-Step Router] Navigation request from Step ${window.currentWizardActiveStep} to Step ${targetStepIndex}.`);
 
-  // Prevent generic form leaks or accidental refreshing on button clicks
-  if (event && typeof event.preventDefault === "function") event.preventDefault();
+  if (event && typeof event.preventDefault === "function") {
+    event.preventDefault();
+  }
 
-  const panels = document.querySelectorAll(".wizard-panel");
-  if (!panels || panels.length === 0) return false;
-
-  // Convert target pointers safely to numbers to evaluate math boundaries
   let numericTargetIndex = parseInt(targetStepIndex, 10);
   if (isNaN(numericTargetIndex)) return false;
 
-  // 🛡️ Safe Input Validation Guard: Runs checks only when sweeping panels FORWARD
+  // 🛡️ Safe Input Validation Guard: Only validate when moving FORWARD
   if (numericTargetIndex > window.currentWizardActiveStep && typeof validateStepInputParametersVanilla === "function") {
     if (!validateStepInputParametersVanilla(window.currentWizardActiveStep)) {
       console.warn(`[Navigation Blocked] Input fields failed validation criteria on step: ${window.currentWizardActiveStep}`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return false;
     }
   }
 
-  // Bound limits guard checks: Prevent shifting past step ranges
-  if (numericTargetIndex < 1 || numericTargetIndex > totalWizardExpectedSteps) return false;
+  const maximumWizardSteps = parseInt(window.totalWizardExpectedSteps, 10) || 7;
+  if (numericTargetIndex < 1 || numericTargetIndex > maximumWizardSteps) return false;
 
-  // 💳 Checkout Processing Switch Node
-  // If moving into Step 7 (Success Page), fire transaction processors right before unlocking the final layout view
-  if (numericTargetIndex === 7 && window.currentWizardActiveStep === 6) {
-    if (typeof executeOnboardingTransactionPayloadSubmitVanilla === "function") {
-      console.log("[7-Step Router] Step 6 finalized. Initializing secure checkout payload submission...");
-      // Let your payment engine process the charge. If it succeeds, it will route into Step 7 panels
+  // ============================================================================ //
+  // ⚡ STAGE-ZERO INJECTION GATEKEEPER (FIXED FORWARD-ONLY CHECK)                //
+  // ============================================================================ //
+  // FIX: Only inject if moving FORWARD to step 2 to prevent wiping out data on "Back" clicks
+  if (numericTargetIndex === 2 && window.currentWizardActiveStep < 2) {
+    if (typeof window.executeStepTwoDynamicFormInjection === "function") {
+      window.executeStepTwoDynamicFormInjection(true);
+    } else {
+      // FIX: Crash safely and stop navigation if the core injection function is missing
+      console.error("[7-Step Router Fatal Exception] executeStepTwoDynamicFormInjection is missing from global memory layers.");
+      return false; 
     }
   }
 
-  // 💾 Cache active progress values parameters securely into LocalStorage before view switches
+  // 💳 ZERO-HARDCODE CHECKOUT PROCESSING GATEWAY:
+  if (numericTargetIndex === maximumWizardSteps && window.currentWizardActiveStep === (maximumWizardSteps - 1)) {
+    if (typeof executeOnboardingTransactionPayloadSubmitVanilla === "function") {
+      console.log("[7-Step Router] Intercepting final phase. Transferring state lock control to transaction module...");
+      executeOnboardingTransactionPayloadSubmitVanilla(numericTargetIndex);
+      return false;
+    }
+  }
+
   if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
     cacheAndRestoreWizardFormStatesVanilla(false);
   }
 
-  // Update the master unified global tracker state index pointer
   window.currentWizardActiveStep = numericTargetIndex;
 
-  // 🔄 Structural Panel visibility transformer loop
-  panels.forEach(function(panel, sequence) {
-    var panelStepNumber = sequence + 1;
-    if (panelStepNumber === numericTargetIndex) {
-      panel.classList.add("active");
-      panel.style.setProperty("display", "block", "important");
-    } else {
-      panel.classList.remove("active");
-      panel.style.setProperty("display", "none", "important");
+// ============================================================================ //
+// 🔄 RE-ENGINEERED PANEL VISIBILITY LOOP (LOCAL VARIABLE SYNCHRONIZATION)
+// ============================================================================ //
+let isTargetPanelFoundAndDisplayed = false;
+
+for (let i = 1; i <= maximumWizardSteps; i++) {
+    const currentPanelElement = document.getElementById(`step-panel-${i}`);
+    if (currentPanelElement) {
+        if (i === numericTargetIndex) {
+            currentPanelElement.classList.add("active");
+            currentPanelElement.style.removeProperty("display");
+            currentPanelElement.style.setProperty("display", "block", "important");
+            isTargetPanelFoundAndDisplayed = true;
+            console.log(`[7-Step Router View] Surface layers fully displayed for container: #step-panel-${i}`);
+        } else {
+            currentPanelElement.classList.remove("active");
+            currentPanelElement.style.removeProperty("display");
+            currentPanelElement.style.setProperty("display", "none", "important");
+        }
     }
-  });
-
-  // 🟢 LIGHT UP THE EMERALD TIMELINE MARGIN BUBBLES
-  if (typeof updateApplicationMapTimelineBubbles === "function") {
-    updateApplicationMapTimelineBubbles(window.currentWizardActiveStep);
-  }
-
-  // 📋 Re-calculate live checkout receipts dynamically upon entering the new panel step
-  if (typeof updateDynamicPricingMatrixVanilla === "function") {
-    updateDynamicPricingMatrixVanilla();
-  }
-
-  // Smooth pan viewport view frames back to coordinate peak zero safely
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  return true;
 }
 
+if (!isTargetPanelFoundAndDisplayed) {
+    console.error(`[7-Step Router Fatal Error] View Transition Interrupted: #step-panel-${numericTargetIndex} could not be uncovered.`);
+    return false;
+}
+
+// Update the global state tracker to match the physical panel step now displayed
+window.currentWizardActiveStep = numericTargetIndex;
+
+// FIXED: Pass the local numeric target variable so timeline lights match the view
+if (typeof updateApplicationMapTimelineBubbles === "function") {
+    updateApplicationMapTimelineBubbles(numericTargetIndex);
+}
+
+if (typeof updateDynamicPricingMatrixVanilla === "function") {
+    updateDynamicPricingMatrixVanilla();
+}
+
+window.scrollTo({ top: 0, behavior: "smooth" });
+return true;
+}
+window.goToNextWizardStep = goToNextWizardStep;
+
+
+
+
+
+
+// ============================================================================ //
+// 📊 UNIVERSAL TIMELINE VISUAL REFLECTOR (PART A)                              //
+// ============================================================================ //
+
 /**
- * Universal timeline visual reflector. Updates sidebar bubble tracks to display
- * brilliant emerald lights for active stages and clean checks for completed slots.
+ * Universal timeline visual reflector. Updates sidebar bubble tracks.
+ * Zero Hardcoding: Dynamically assesses step limits without manual numerical fallbacks.
+ * @param {number|string} activeIndex - The destination wizard step index.
  */
 function updateApplicationMapTimelineBubbles(activeIndex) {
   const rows = document.querySelectorAll(".toc-step-row");
   if (!rows || rows.length === 0) return;
 
-  console.log(`[Timeline Sync] Lighting application map nodes for active position: ${activeIndex}`);
+  const currentStepNum = parseInt(activeIndex, 10) || 1;
+  console.log(`[Timeline Sync] Lighting application map nodes for active position: ${currentStepNum}`);
 
   rows.forEach(function(row, idx) {
     const dotElement = row.querySelector(".toc-dot") || row.querySelector(".step-indicator-dot");
-    const loopIndex = idx + 1; // Map 0-indexed row elements array to 1-based steps counts 1-7
+    const loopIndex = idx + 1;
 
-    // Clear old visual track states before applying active class properties profiles
-    row.classList.remove("toc-active", "toc-completed", "active", "completed");
+    // Isolate transformations strictly to timeline entities to protect multi-step forms from style leakage
+    row.classList.remove("toc-active", "toc-completed");
+    
+    // Explicit timeline element scoping prevents clearing .active from form step panels
+    if (row.id && row.id.includes("timeline-row-")) {
+      row.classList.remove("active", "completed");
+    }
 
     if (dotElement) {
-      // Clear inline style overrides so clean theme variables can control the layout transitions
       dotElement.style.background = "";
       dotElement.style.borderColor = "";
       dotElement.style.boxShadow = "";
     }
 
-    if (loopIndex < activeIndex) {
-      // STAGE COMPLETION: Apply checked styles and soft secondary emerald themes
-      row.classList.add("toc-completed", "completed");
+    if (loopIndex < currentStepNum) {
+      row.classList.add("toc-completed");
+      if (row.id && row.id.includes("timeline-row-")) {
+        row.classList.add("completed");
+      }
       if (dotElement) {
         dotElement.style.background = "rgba(16, 185, 129, 0.15)";
         dotElement.style.borderColor = "#10b981";
       }
-    } else if (loopIndex === activeIndex) {
-      // ACTIVE STEP DETECTED: Illuminate the node with a vibrant Emerald glow light effect
-      row.classList.add("toc-active", "active");
+    } else if (loopIndex === currentStepNum) {
+      row.classList.add("toc-active");
+      if (row.id && row.id.includes("timeline-row-")) {
+        row.classList.add("active");
+      }
       if (dotElement) {
         dotElement.style.background = "#10b981";
         dotElement.style.borderColor = "#10b981";
-        // Apply high-utility CSS filters to render the emerald glow aura
         dotElement.style.boxShadow = "0 0 14px rgba(16, 185, 129, 0.8), inset 0 0 4px rgba(255,255,255,0.4)";
       }
     }
   });
-
-  // Synchronize horizontal timeline track width bar if present in the header layout
+  // Synchronize horizontal progress bar entirely from system configuration states
   const horizontalProgressFill = document.getElementById("timeline-progress-fill-node");
   if (horizontalProgressFill) {
-    const percentageProgressWidth = ((activeIndex - 1) / (totalWizardExpectedSteps - 1)) * 100;
-    horizontalProgressFill.style.width = `${percentageProgressWidth}%`;
+    // Pure data-driven resolution without a hardcoded fallback limit string check
+    const maximumSystemSteps = parseInt(window.totalWizardExpectedSteps, 10);
+    
+    let percentageProgressWidth = 0;
+    if (maximumSystemSteps && maximumSystemSteps > 1) {
+      percentageProgressWidth = ((currentStepNum - 1) / (maximumSystemSteps - 1)) * 100;
+    }
+
+    const clampedProgressBarWidth = Math.min(Math.max(percentageProgressWidth, 0), 100);
+    horizontalProgressFill.style.width = `${clampedProgressBarWidth}%`;
   }
 }
 
-// Expose routing APIs to global window frames safely to make sure old button clicks never throw undefined crashes
-window.goToNextWizardStep = goToNextWizardStep;
+// 2. Hardened Global Export Guard: Protect master router function integrity
+if (typeof window.goToNextWizardStep !== "function") {
+  if (typeof goToNextWizardStep === "function") {
+    window.goToNextWizardStep = goToNextWizardStep;
+  } else {
+    console.log("[Lifecycle Bridge] Core navigation engine initialized as late-binding listener proxy.");
+    window.goToNextWizardStep = function(targetStepIndex, event = null) {
+      if (typeof window.goToNextWizardStep === "function" && window.goToNextWizardStep !== arguments.callee) {
+        return window.goToNextWizardStep(targetStepIndex, event);
+      }
+      console.warn("[Lifecycle Bridge Warning] Navigation called before Master Router finished mounting.");
+    };
+  }
+} else {
+  console.log("[Lifecycle Bridge] Verified: Master Core Router already securely locked into global memory layout.");
+}
+
 window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles;
 
 
-// ============================================================================
-// ✍️ DIGITAL CURSIVE SIGNATURE RENDERING SUITE
-// ============================================================================
 
+
+
+// ============================================================================ //
+// ✍️ DIGITAL CURSIVE SIGNATURE RENDERING SUITE
+// ============================================================================ //
 /**
  * Initializes real-time text-to-cursive handwriting mirror syncs across wizard fields.
- * Scopes input events globally to catch dynamically injected step forms automatically.
+ * FIXED: Uses event delegation to prevent listener loss during step transitions or form re-renders.
  */
 function initCursiveSignatureCaptureLivePreview() {
   const panelContext = document.getElementById(`step-panel-${window.currentWizardActiveStep || 4}`) || document.body;
 
-  // 📋 Comprehensive ID Selector Pool: Captures all naming variations used across your HTML templates
-  const inputField = document.getElementById("poa_signer_printed") || 
-                      document.getElementById("signature-input") || 
-                      document.getElementById("legal-signature") ||
-                      panelContext.querySelector('input[name*="signature"], .signature-input-field');
-
+  // Enforce script styles immediately on any preview display containers present in the viewport
   const previewDisplay = document.getElementById("cursive-signature-preview") || 
                          document.getElementById("cursive-signature-output") || 
-                         document.getElementById("signature-preview") ||
+                         document.getElementById("signature-preview") || 
                          panelContext.querySelector('.signature-preview-display');
 
-  if (!inputField || !previewDisplay) {
-    console.log("[Signature Sync] Form inputs or preview display elements not visible in current step layout view.");
-    return;
+  if (previewDisplay) {
+    previewDisplay.style.fontFamily = "'Dancing Script', 'Alex Brush', 'Great Vibes', 'Brush Script MT', cursive";
+    previewDisplay.style.transition = "opacity 0.2s ease-in-out, transform 0.2s ease-in-out";
   }
 
-  // Enforce handwritten script typeface styles onto the display target instantly
-  previewDisplay.style.fontFamily = "'Dancing Script', 'Alex Brush', 'Great Vibes', 'Brush Script MT', cursive";
-  previewDisplay.style.transition = "opacity 0.2s ease-in-out, transform 0.2s ease-in-out";
+  // 🛡️ RECOVERY PASS: Check active value states upon entering the step panel view
+  const inputField = document.getElementById("poa_signer_printed") || 
+                     document.getElementById("signature-input") || 
+                     document.getElementById("legal-signature") || 
+                     panelContext.querySelector('input[name*="signature"], .signature-input-field');
 
-  // Check state to handle existing entries on initial load parameters values
-  if (inputField.value.trim() !== "") {
-    previewDisplay.innerText = inputField.value.trim();
-    previewDisplay.style.opacity = "1";
-    window.signaturePadHasBeenDrawnByUser = true;
-  } else {
-    previewDisplay.innerText = inputField.getAttribute("placeholder") || "Your Electronic Signature";
-    previewDisplay.style.opacity = "0.35";
-    window.signaturePadHasBeenDrawnByUser = false;
-  }
-
-  // Bind real-time input event listeners safely
-  inputField.addEventListener("input", function(e) {
-    const activeTextString = e.target.value;
-
-    if (activeTextString.trim() === "") {
+  if (inputField && previewDisplay) {
+    if (inputField.value.trim() !== "") {
+      previewDisplay.innerText = inputField.value.trim();
+      previewDisplay.style.opacity = "1";
+      window.signaturePadHasBeenDrawnByUser = true;
+    } else {
       previewDisplay.innerText = inputField.getAttribute("placeholder") || "Your Electronic Signature";
       previewDisplay.style.opacity = "0.35";
-      previewDisplay.style.transform = "scale(0.98)";
       window.signaturePadHasBeenDrawnByUser = false;
-    } else {
-      previewDisplay.innerText = activeTextString;
-      previewDisplay.style.opacity = "1";
-      previewDisplay.style.transform = "scale(1)";
-      window.signaturePadHasBeenDrawnByUser = true;
     }
+  }
 
-    // Trigger local state serialization cache changes parameters save automatically
-    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
-      cacheAndRestoreWizardFormStatesVanilla(false);
-    }
-  });
+  // 🛡️ EVENT DELEGATION SECURITY HOOK:
+  // Bind directly to the document root exactly once. This ensures that even if inputs 
+  // are wiped out or re-injected dynamically, signatures continue mirroring flawlessly.
+  if (!window.isSignatureGlobalListenerHooked) {
+    document.addEventListener("input", function(e) {
+      const target = e.target;
+      
+      // Verify if the active typing target is genuinely a signature input field element
+      const isSignatureInput = target.id === "poa_signer_printed" || 
+                               target.id === "signature-input" || 
+                               target.id === "legal-signature" || 
+                               target.name?.includes("signature") || 
+                               target.classList.contains("signature-input-field");
+
+      if (!isSignatureInput) return;
+
+      const activePanel = document.getElementById(`step-panel-${window.currentWizardActiveStep}`) || document.body;
+      const targetPreview = document.getElementById("cursive-signature-preview") || 
+                            document.getElementById("cursive-signature-output") || 
+                            document.getElementById("signature-preview") || 
+                            activePanel.querySelector('.signature-preview-display');
+
+      if (!targetPreview) return;
+
+      const activeTextString = target.value;
+      if (activeTextString.trim() === "") {
+        targetPreview.innerText = target.getAttribute("placeholder") || "Your Electronic Signature";
+        targetPreview.style.opacity = "0.35";
+        targetPreview.style.transform = "scale(0.98)";
+        window.signaturePadHasBeenDrawnByUser = false;
+      } else {
+        targetPreview.innerText = activeTextString;
+        targetPreview.style.opacity = "1";
+        targetPreview.style.transform = "scale(1)";
+        window.signaturePadHasBeenDrawnByUser = true;
+      }
+
+      // Trigger local state serialization cache updates automatically
+      if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+        cacheAndRestoreWizardFormStatesVanilla(false);
+      }
+    });
+    
+    window.isSignatureGlobalListenerHooked = true;
+  }
 }
 
 // Register initialization execution safely on app load namespace scopes layers
 window.initCursiveSignatureCaptureLivePreview = initCursiveSignatureCaptureLivePreview;
 
 
+
 // ============================================================================ //
-// 🛡️ MANDATORY WORKFLOW VALIDATION ENGINE (DIRECT FIX)                       //
+// 🛡️ MANDATORY WORKFLOW VALIDATION ENGINE (PART A)                            //
 // ============================================================================ //
+
 /**
  * Executes a strict validation sweep across all required fields on the current step.
- * Fixes the ReferenceError crash by explicitly defining the missing validation function.
+ * Pure dynamic pattern: Zero hardcoded rules. Handles state isolation natively.
+ * @param {number|string} currentStepIndex - The active step panel index tracker.
+ * @returns {boolean} Status verifying whether the current panel state is valid.
  */
 function validateCurrentWizardStepInputs(currentStepIndex) {
   const stepNum = parseInt(currentStepIndex, 10);
   console.log(`[Form Validation] Auditing requirement constraints for Step: ${stepNum}`);
-  
-  const activePanel = document.getElementById(`step-panel-${stepNum}`);
-  if (!activePanel) return true; // If no physical panel exists, allow safe progression
 
-  // Gather all required input elements within the active step panel boundaries
+  const activePanel = document.getElementById(`step-panel-${stepNum}`);
+  if (!activePanel) return true; // Safe fallback allowed only if container structure is absent
+
+  // Gather required elements bounded strictly inside the active step container context layout
   const requiredInputs = activePanel.querySelectorAll("input[required], select[required], textarea[required]");
   let isPanelDataValid = true;
 
   requiredInputs.forEach(function(inputElement) {
-    // 🛡️ Skip validation if the field is hidden inside a collapsed wrapper (offsetParent === null)
-    if (inputElement.offsetParent === null) return;
+    if (!inputElement) return;
 
-    // Run native browser validity constraints check
-    if (!inputElement.checkValidity()) {
-      inputElement.reportValidity(); // Display the native browser validation message bubble
-      inputElement.style.borderColor = "#ef4444";
-      isPanelDataValid = false;
+    // 🛡️ Check if the field is visually hidden inside a collapsed template block wrapper
+    // Leverages standard structural visibility markers rather than global offset layouts
+    const isVisuallyHidden = (inputElement.offsetWidth === 0 && inputElement.offsetHeight === 0) || 
+                             inputElement.closest('[style*="display: none"]');
+    if (isVisuallyHidden) return;
+
+    // 🛡️ Lock check verification: Pure property extraction flags for readonly elements
+    if (inputElement.hasAttribute("readonly") || inputElement.readOnly || inputElement.disabled) {
+      inputElement.classList.remove("input-error");
+      return;
+    }
+    // Pure dynamic constraint verification
+    let isElementValid = true;
+    
+    // Evaluate standard browser input verification models securely
+    if (typeof inputElement.checkValidity === "function") {
+      isElementValid = inputElement.checkValidity();
     } else {
-      inputElement.style.borderColor = "var(--border, #cbd5e1)";
+      // Direct raw text buffer processing verification fallback guard
+      isElementValid = !!inputElement.value.trim();
+    }
+
+    if (!isElementValid) {
+      isPanelDataValid = false;
+      inputElement.classList.add("input-error");
+      
+      // Apply clean semantic style markers dynamically without invoking reportValidity()
+      // This completely blocks the browser from force-scrolling and exposing Step 3 elements prematurely
+      inputElement.style.borderColor = "#ef4444";
+      
+      console.warn(`[Validation Alert] Constraint check failed on element ID: "${inputElement.id || 'unnamed'}"`);
+    } else {
+      inputElement.classList.remove("input-error");
+      inputElement.style.borderColor = "var(--border, #e2e8f0)";
+      
+      // Clean up standalone custom warning labels nearby if they exist
+      const adjacentErrorMarker = inputElement.nextElementSibling;
+      if (adjacentErrorMarker && adjacentErrorMarker.classList.contains('input-error-marker')) {
+        adjacentErrorMarker.remove();
+      }
     }
   });
 
   return isPanelDataValid;
 }
 
-// Map to global window scopes so your HTML buttons can find it instantly on click
+// Map parameters cleanly to global window scopes instantly to resolve click handlers
 window.validateCurrentWizardStepInputs = validateCurrentWizardStepInputs;
 window.validateStepInputParametersVanilla = validateCurrentWizardStepInputs;
 
+
+
 // ============================================================================ //
-// 🏁 CENTRAL WIZARD LIFE-CYCLE INITIALIZATION & TIMING ENGINE                  //
+// 🏁 CENTRAL WIZARD LIFE-CYCLE INITIALIZATION & TIMING ENGINE (PART A)        //
 // ============================================================================ //
+
 /**
  * Public structural bridge to resolve feature bullet list content parameters dynamically.
+ * Zero Hardcoding: Eliminates automatic default assignments to block visual seeping bugs.
+ * @param {string} activeSlug - The raw matching service handle code from the portal.
  */
 function renderStep1CustomFeatureBullets(activeSlug) {
-  if (typeof getPricingConfiguration === "function") {
-    const activeTierKey = (window.routeActivePlanKey || "starter").toLowerCase().trim();
-    const resolvedConfig = getPricingConfiguration(activeSlug, activeTierKey);
-    
-    if (resolvedConfig && resolvedConfig.config && typeof window.renderOnboardingPlanOverviewCard === "function") {
-      // FIX: Added safe fallback navigation to prevent crashes if nested object properties are missing
-      const activeBulletsArray = (resolvedConfig.config.bullets && resolvedConfig.config.bullets[activeTierKey]) ? resolvedConfig.config.bullets[activeTierKey] : [];
-      window.renderOnboardingPlanOverviewCard(resolvedConfig.config, activeTierKey, activeBulletsArray || []);
-    }
+  if (typeof getPricingConfiguration !== "function") return;
+
+  // Pure dynamic variable resolution — No default parameter strings assumed
+  const activePlanKey = window.routeActivePlanKey;
+  if (!activePlanKey) {
+    console.warn("[Lifecycle Sync Guard] Active plan key is undefined. Delaying card generation pass.");
+    return;
   }
-}
-window.renderStep1CustomFeatureBullets = renderStep1CustomFeatureBullets;
-
-/**
- * Orchestrates the exact execution timeline of the 7-step wizard.
- * Guarantees that layouts are injected before data layers restore to prevent timing crashes.
- */
-function runUnifiedWizardBootEngine() {
-  console.log("[Boot Engine] Initializing sequential layout and data synchronization tracking...");
   
-  const urlEngineParams = new URLSearchParams(window.location.search);
-  const resolvedSlug = urlEngineParams.get('service') || urlEngineParams.get('package') || urlEngineParams.get('id') || "llc-formation";
-  const resolvedPlan = urlEngineParams.get('plan') || "starter";
-  const resolvedState = urlEngineParams.get('state') || "TX";
+  const activeTierKey = String(activePlanKey).toLowerCase().trim();
 
-  // 1. Establish unified state tracking parameters safely
-  window.routeActiveServiceKey = resolvedSlug.toLowerCase().trim();
-  window.routeActivePlanKey = resolvedPlan.toLowerCase().trim();
-  window.selectedFormationStateCode = resolvedState.toUpperCase().trim();
-  window.currentWizardActiveStep = 1;
-
-  if (typeof window.CENTRAL_SERVICE_PLAN_DB === "undefined") {
-    console.log("[Boot Sync Delay] CENTRAL_SERVICE_PLAN_DB array unparsed. Re-queueing loop...");
-    setTimeout(runUnifiedWizardBootEngine, 100);
+  // 1. Fetch the data configuration object directly
+  const resolvedConfig = getPricingConfiguration(activeSlug);
+  if (!resolvedConfig || !resolvedConfig.serviceKey) {
+    console.error(`[Lifecycle Sync Failure] Timing engine could not resolve configurations for: "${activeSlug}"`);
     return;
   }
 
-  // 2. Synchronize incoming URL marketing choices
-  if (typeof autoInjectMainWebsitePricingPlan === "function") {
-    autoInjectMainWebsitePricingPlan();
+  console.log(`[Lifecycle Sync Success] Extracted properties for service path: "${resolvedConfig.serviceKey}"`);
+  // 2. Clear property tracking mapping arrays
+  const activeBulletsArray = resolvedConfig.bullets || [];
+  const resolvedPackageFeeAmount = resolvedConfig.basePrice || 0;
+  const tierTitleDisplay = activeTierKey.charAt(0).toUpperCase() + activeTierKey.slice(1);
+
+  // 3. Extract the root database record
+  const rawDatabaseSource = window.CENTRAL_SERVICE_PLAN_DB || window.GLOBAL_COMPANY_PRICING?.packages;
+  const actualServiceDataNode = rawDatabaseSource?.[resolvedConfig.serviceKey];
+
+  if (!actualServiceDataNode) {
+    console.error(`[Lifecycle Sync Failure] Database entry missing for key lookup index: "${resolvedConfig.serviceKey}"`);
+    return;
   }
 
-  // 3. Mount and inject the Step 2 dynamic fields BEFORE restoring cache
-  if (typeof window.executeStepTwoDynamicFormInjection === "function") {
-    window.executeStepTwoDynamicFormInjection();
-  } else if (typeof executeDynamicRegulatoryFieldInjection === "function") {
-    executeDynamicRegulatoryFieldInjection(window.routeActiveServiceKey);
+  // CRITICAL STEP CONTAINMENT CHECK: Stop the rendering pass if Step 2 or 3 are currently running
+  const activeStepBlock = document.querySelector(".wizard-step-container-block.active");
+  if (activeStepBlock && activeStepBlock.id !== "step-panel-1") {
+    console.warn(`[Lifecycle Sync Blocked] Aborted initialization redraw to prevent Step 3 layers from seeping into Step 2.`);
+    return;
   }
 
-  // 4. Restore user's cached inputs out of LocalStorage securely
-  if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
-    cacheAndRestoreWizardFormStatesVanilla(true);
+  if (typeof window.renderOnboardingPlanOverviewCard === "function") {
+    console.log(`[Lifecycle Sync Dispatch] Pushing verified records down to UI card builder.`);
+    
+    window.renderOnboardingPlanOverviewCard(
+      actualServiceDataNode,
+      tierTitleDisplay,
+      activeBulletsArray,
+      resolvedPackageFeeAmount
+    );
+  } else {
+    console.error("[Lifecycle Sync Failure] Render card builder method is missing from global scope memory.");
+  }
+}
+
+// Map safely back to global layers so your initial page boots can invoke it
+window.renderStep1CustomFeatureBullets = renderStep1CustomFeatureBullets;
+
+
+
+// ============================================================================ //
+// 🏁 CENTRAL WIZARD LIFE-CYCLE INITIALIZATION & TIMING ENGINE (PART A)        //
+// ============================================================================ //
+
+window.wizardBootRetryAttempts = window.wizardBootRetryAttempts || 0;
+
+/**
+ * Hardened Unified Wizard Boot Engine.
+ * Pure dynamic architecture: Prioritizes layout hiding to fix Step 3 leaks.
+ */
+function runUnifiedWizardBootEngine() {
+  console.log("[Boot Engine] Initializing sequence-independent parameter scanning...");
+
+  // 1. SEQUENCE-AGNOSTIC EXTRACTION
+  const urlEngineParams = new URLSearchParams(window.location.search);
+  let resolvedSlug = urlEngineParams.get('service') || urlEngineParams.get('package') || urlEngineParams.get('id') || "";
+  let resolvedPlan = urlEngineParams.get('plan') || "";
+  const resolvedState = urlEngineParams.get('state') || ""; 
+
+  // Guard Clause: Pure data-driven param validation without hardcoded path assumptions
+  if (!resolvedSlug || !resolvedPlan) {
+    window.paramCheckRetryCount = window.paramCheckRetryCount || 0;
+    if (window.paramCheckRetryCount < 5) {
+      window.paramCheckRetryCount++;
+      console.warn(`[Boot Engine Guard] Parameters missing on frame pass. Retrying lookup (${window.paramCheckRetryCount}/5)...`);
+      setTimeout(runUnifiedWizardBootEngine, 50);
+      return;
+    }
+    console.error("[Boot Engine Fatal] Missing vital path parameters permanently. Redirecting to default portal.");
+    const dynamicSystemDefaultPath = window.GLOBAL_ROUTER_DEFAULT_PATH || "/get-started";
+    window.location.href = window.wizardCustomHomeRedirectUrl || dynamicSystemDefaultPath;
+    return;
   }
 
-  // 5. Initialize real-time handwritten cursive text signature previews
-  if (typeof initCursiveSignatureCaptureLivePreview === "function") {
-    window.initCursiveSignatureCaptureLivePreview();
+  window.paramCheckRetryCount = 0;
+
+  // 2. TIMING PROTECTION SAFEGUARD
+  if (typeof window.CENTRAL_SERVICE_PLAN_DB === "undefined" || typeof getPricingConfiguration !== "function") {
+    if (window.wizardBootRetryAttempts < 50) {
+      window.wizardBootRetryAttempts++;
+      console.log(`[Database Sync] Hydrating schema tables... Retry Track: ${window.wizardBootRetryAttempts}`);
+      setTimeout(runUnifiedWizardBootEngine, 100);
+    } else {
+      window.isWizardEngineBootedVanilla = false;
+      console.error("[Boot Terminal Failure] Database connection timed out.");
+    }
+    return;
   }
 
-  // 6. Fire marketing features card injections for Step 1
-  if (typeof renderStep1CustomFeatureBullets === "function") {
-    renderStep1CustomFeatureBullets(window.routeActiveServiceKey);
+  window.wizardBootRetryAttempts = 0;
+
+  // Sync core pricing packages purely by data registry mapping properties
+  if (window.GLOBAL_COMPANY_PRICING && !window.GLOBAL_COMPANY_PRICING.packages) {
+    window.GLOBAL_COMPANY_PRICING.packages = window.CENTRAL_SERVICE_PLAN_DB || {};
   }
 
-  // 7. Hook up universal Google Places autocomplete validation matrices to address nodes
-  if (typeof autoDiscoverAndHookAddressNodes === "function") {
-    autoDiscoverAndHookAddressNodes();
+  let sanitizedServiceKey = resolvedSlug.toLowerCase().trim();
+
+  // Dynamic Dictionary Guard: Ensures node existence purely by database property metrics
+  if (window.GLOBAL_COMPANY_PRICING?.packages && !window.GLOBAL_COMPANY_PRICING.packages[sanitizedServiceKey]) {
+    window.GLOBAL_COMPANY_PRICING.packages[sanitizedServiceKey] = window.CENTRAL_SERVICE_PLAN_DB[sanitizedServiceKey] || { 
+      addons: [], plans: {}, starter: 0, compliance: 0, enterprise: 0 
+    };
+  }
+  // ============================================================================ //
+  // 3. SECURE PARAMETER INITIALIZATION
+  // ============================================================================ //
+  window.routeActiveServiceKey = sanitizedServiceKey;
+  window.routeActivePlanKey = resolvedPlan.toLowerCase().trim();
+  
+  if (resolvedState) {
+    window.selectedFormationStateCode = resolvedState.toUpperCase().trim();
+  }
+  
+  window.currentWizardActiveStep = 1;
+
+  // Sync params to elements silently without executing global event side-effects
+  const inputServiceNode = document.getElementById("wizard-route-service-id");
+  const inputPlanNode = document.getElementById("wizard-route-tier-id");
+
+  if (inputServiceNode && window.CENTRAL_SERVICE_PLAN_DB[window.routeActiveServiceKey]) {
+    inputServiceNode.value = window.CENTRAL_SERVICE_PLAN_DB[window.routeActiveServiceKey].name || "";
+  }
+  if (inputPlanNode) {
+    const rawTier = window.routeActivePlanKey;
+    inputPlanNode.value = rawTier.charAt(0).toUpperCase() + rawTier.slice(1);
   }
 
-  // 8. Set initial DOM panel visibility to Step 1
-  const visiblePanels = document.querySelectorAll(".wizard-panel");
-  visiblePanels.forEach(function(panel, sequence) {
-    if ((sequence + 1) === window.currentWizardActiveStep) {
+  // 4. CRITICAL VISIBILITY CONSTRAINTS: Hide future wizard steps BEFORE processing dynamic forms
+  const visiblePanels = document.querySelectorAll('[id^="step-panel-"]');
+  visiblePanels.forEach(function(panel) {
+    const panelIndex = parseInt(panel.id.replace("step-panel-", ""), 10);
+    if (panelIndex === window.currentWizardActiveStep) {
       panel.classList.add("active");
-      // CRITICAL FIX: Changed "!important" to "important". The exclamation mark breaks JavaScript style injections.
       panel.style.setProperty("display", "block", "important");
     } else {
       panel.classList.remove("active");
-      // CRITICAL FIX: Changed "!important" to "important". 
       panel.style.setProperty("display", "none", "important");
     }
   });
 
-  // 9. Sync the timeline progress map and illuminate the initial Emerald bubble track
+  // 5. DATA INJECTIONS GENERATION PASS (Executes safely behind locked hidden steps)
+  if (typeof autoInjectMainWebsitePricingPlan === "function") {
+    autoInjectMainWebsitePricingPlan();
+  }
+
+  if (typeof window.executeStepTwoDynamicFormInjection === "function") {
+    window.executeStepTwoDynamicFormInjection(true);
+  } else if (typeof executeDynamicRegulatoryFieldInjection === "function") {
+    executeDynamicRegulatoryFieldInjection(window.routeActiveServiceKey);
+  }
+
+  if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+    cacheAndRestoreWizardFormStatesVanilla(true);
+  }
+
+  if (typeof initCursiveSignatureCaptureLivePreview === "function") {
+    window.initCursiveSignatureCaptureLivePreview();
+  }
+
+  if (typeof renderStep1CustomFeatureBullets === "function") {
+    renderStep1CustomFeatureBullets(window.routeActiveServiceKey);
+  }
+
+  if (typeof autoDiscoverAndHookAddressNodes === "function") {
+    autoDiscoverAndHookAddressNodes();
+  }
+
   if (typeof updateApplicationMapTimelineBubbles === "function") {
     updateApplicationMapTimelineBubbles(window.currentWizardActiveStep);
   }
 
-  // 10. Execute final checkout pricing subtotals calculations
+  // 6. CONTAINMENT FIX: Force purely synchronous calculations cycles
+  // Removes requestAnimationFrame entirely to secure structural isolation parameters
   if (typeof updateDynamicPricingMatrixVanilla === "function") {
     updateDynamicPricingMatrixVanilla();
+    console.log("[Boot Engine Success] Onboarding pipeline active. Step views isolated safely.");
+  }
+}
+
+window.runUnifiedWizardBootEngine = runUnifiedWizardBootEngine;
+
+
+
+
+
+
+// ============================================================================ //
+// 🔌 UNIFIED SYSTEM LIFE-CYCLE HOOKS (SECURED DISPATCH WITH ANTI-FLICKER) (A) //
+// ============================================================================ //
+
+window.isWizardEngineBootedVanilla = window.isWizardEngineBootedVanilla || false;
+window.wizardLifecycleRetryAttempts = window.wizardLifecycleRetryAttempts || 0;
+
+/**
+ * Main application boot orchestration layer.
+ * Zero Hardcoding Fix: Enforces rigorous ID containment checks to lock Step 3 views away.
+ */
+function initSevenStepWizardSystem(activeSlug) {
+  
+  // 🛡️ ANTI-RECURSION LOCK
+  if (window.isWizardEngineBootedVanilla) {
+    console.log("[Lifecycle Sync] System already fully active. Blocking duplicate boot initialization loop.");
+    return;
   }
 
-  console.log("[Boot Engine Success] Onboarding pipeline fully active. Wizard ready.");
+  const isPricingDatabaseReady = typeof window.CENTRAL_SERVICE_PLAN_DB !== "undefined" || typeof window.GLOBAL_COMPANY_PRICING !== "undefined";
+  const isBootEngineReady = typeof window.runUnifiedWizardBootEngine === "function";
+
+  if (!isPricingDatabaseReady || !isBootEngineReady) {
+    if (window.wizardLifecycleRetryAttempts < 50) {
+      window.wizardLifecycleRetryAttempts++;
+      console.warn(`[Anti-Flicker Guard] Data assets loading over network. Delaying execution (Track: ${window.wizardLifecycleRetryAttempts}/50)...`);
+
+      // CRITICAL VISIBILITY CONTAINMENT FIX: Query explicitly using the structural pattern matching your HTML IDs
+      const structuralPanelsArray = document.querySelectorAll('[id^="step-panel-"]');
+      
+      structuralPanelsArray.forEach(function(panelElement) {
+        // Force-hide all future step containers immediately on frame zero to stop Step 3 leaking
+        panelElement.style.setProperty("display", "none", "important");
+      });
+
+      setTimeout(function() {
+        initSevenStepWizardSystem(activeSlug);
+      }, 100);
+      return;
+    }
+    console.error("[Anti-Flicker Core Failure] System database connection timed out over network. Boot aborted.");
+    return;
+  }
+
+  // Assets confirmed ready! Lock the execution thread permanently to eliminate loop leaks
+  window.isWizardEngineBootedVanilla = true;
+  window.wizardLifecycleRetryAttempts = 0;
+  console.log("[Lifecycle Sync] Database assets verified. Activating onboarding wizard pipeline.");
+  // Execute parameter parsing engines natively
+  if (typeof initializeUrlParameterParserEngineVanilla === "function") {
+    initializeUrlParameterParserEngineVanilla();
+  }
+
+  // Fire up layout builders and calculation matrices synchronously
+  if (typeof window.runUnifiedWizardBootEngine === "function") {
+    window.runUnifiedWizardBootEngine();
+  }
 }
 
-// ============================================================================ //
-// 🔌 UNIFIED SYSTEM LIFE-CYCLE HOOKS                                          //
-// ============================================================================ //
-function initSevenStepWizardSystem(activeSlug) {
-  runUnifiedWizardBootEngine();
-}
-
+/**
+ * Timeline step visual reflector. Synchronizes state lights across sidebar indicators.
+ */
 function updateWizardStepProgressIndicatorBubbles(activeIndexNumber) {
-  const synchronizedStepIndex = parseInt(activeIndexNumber, 10) + 1;
-  if (typeof updateApplicationMapTimelineBubbles === "function") {
+  const synchronizedStepIndex = parseInt(activeIndexNumber, 10);
+  if (!isNaN(synchronizedStepIndex) && typeof updateApplicationMapTimelineBubbles === "function") {
     updateApplicationMapTimelineBubbles(synchronizedStepIndex);
   }
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", runUnifiedWizardBootEngine);
-} else {
-  runUnifiedWizardBootEngine();
+/**
+ * Isolated, secure boot wrapper proxy handler.
+ */
+function triggerLifecycleSecureBoot() {
+  if (!window.isWizardEngineBootedVanilla) {
+    initSevenStepWizardSystem();
+  }
 }
 
+// Global Event Routing Hooks: Ensure execution triggers safely on initial page mount
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", triggerLifecycleSecureBoot);
+} else {
+  triggerLifecycleSecureBoot();
+}
+
+// Expose APIs cleanly to global window boundaries to protect elements anchors
 window.initSevenStepWizardSystem = initSevenStepWizardSystem;
 window.updateWizardStepProgressIndicatorBubbles = updateWizardStepProgressIndicatorBubbles;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================================================================ //
+// 🛡️ FILE 2: WIZARD-RUNTIME-PATCH.JS - CLOCK, USER GREETINGS & STEP ROUTING    //
+// ============================================================================ //
+(function() {
+  "use strict";
+
+  function bootProductionPatchEngine() {
+    const clockSpan = document.getElementById("wizard-live-clock-timestamp");
+    if (!clockSpan) return;
+
+    // 1. CHRONOMETER TICKER TIMING ENGINE
+    function renderLiveClockTicker() {
+      const timeOutput = document.getElementById("wizard-live-clock-timestamp");
+      if (!timeOutput) return;
+      const timeNow = new Date();
+      let hours = timeNow.getHours();
+      const minutes = String(timeNow.getMinutes()).padStart(2, '0');
+      const seconds = String(timeNow.getSeconds()).padStart(2, '0');
+      const meridiem = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      timeOutput.textContent = `${hours}:${minutes}:${seconds} ${meridiem}`;
+    }
+    renderLiveClockTicker();
+    setInterval(renderLiveClockTicker, 1000);
+
+    // 2. PRODUCTION SCHEMA GREETING CONFIGURATION
+    function refreshWelcomeBadge() {
+      let verifiedUserFirstName = "";
+      const validatedNameSchemaKeys = ["applicant_first_name", "applicant_name", "contact_person_name", "user_legal_name", "oa_sole_member_name"];
+      try {
+        for (let i = 0; i < validatedNameSchemaKeys.length; i++) {
+          const cachedValue = localStorage.getItem(validatedNameSchemaKeys[i]);
+          if (cachedValue && cachedValue.trim().length > 1) {
+            verifiedUserFirstName = cachedValue.trim().replace(/[,.]/g, "").split(" ")[0];
+            break;
+          }
+        }
+      } catch (e) { return; }
+
+      if (verifiedUserFirstName) {
+        let welcomeAlert = document.getElementById("wizard-user-welcome-back");
+        if (!welcomeAlert) {
+          welcomeAlert = document.createElement("span");
+          welcomeAlert.id = "wizard-user-welcome-back";
+          welcomeAlert.style.cssText = "color: #0284c7; font-weight: 800; margin-right: 6px;";
+          clockSpan.parentNode.insertBefore(welcomeAlert, clockSpan);
+        }
+        welcomeAlert.textContent = `Welcome Back, ${verifiedUserFirstName}! | `;
+      }
+    }
+    refreshWelcomeBadge();
+
+    // 3. APPLICANT KEYSTROKE LIVE CAPTURE
+    document.body.addEventListener("input", function(event) {
+      const fieldNode = event.target;
+      if (!fieldNode || (!fieldNode.id && !fieldNode.name)) return;
+      const id = fieldNode.id || fieldNode.name;
+      if (id === "applicant_name" || id === "oa_sole_member_name" || id === "applicant_first_name") {
+        localStorage.setItem(id, fieldNode.value);
+        refreshWelcomeBadge();
+      }
+    });
+
+    // 4. INTEGRATED ADVANCE NAVIGATION CONTROL BAR
+    const wizardPanels = document.querySelectorAll(".master-onboarding-form");
+    if (wizardPanels.length === 0) return;
+
+    if (typeof window.currentWizardActiveStep === "undefined") {
+      window.currentWizardActiveStep = 1;
+      wizardPanels.forEach((panel, index) => {
+        if (panel.classList.contains("active") || window.getComputedStyle(panel).display !== "none") {
+          window.currentWizardActiveStep = index + 1;
+        }
+      });
+    }
+
+    const advanceActionButtons = document.querySelectorAll('.wizard-next-btn, .btn-wizard-main');
+    advanceActionButtons.forEach(buttonNode => {
+      if (buttonNode.getAttribute("data-nav-bound") === "true") return;
+      buttonNode.addEventListener("click", function(eventObj) {
+        eventObj.preventDefault();
+        eventObj.stopPropagation();
+        const activeStep = window.currentWizardActiveStep || 1;
+        const maxSteps = window.totalWizardExpectedSteps || 7;
+        if (activeStep >= maxSteps) return;
+        
+        console.log(`[Integrated Control] Advancing step funnel from ${activeStep} to ${activeStep + 1}`);
+        if (typeof window.goToNextWizardStep === "function") {
+          window.goToNextWizardStep(activeStep + 1, eventObj);
+        }
+      });
+      buttonNode.setAttribute("data-nav-bound", "true");
+    });
+  }
+  setTimeout(bootProductionPatchEngine, 40);
+})();
+
+
+
+

@@ -411,3 +411,758 @@
 .toc-completed .toc-step-title { 
     color: var(--navy) !important; 
 }
+
+.wizard-panel .input-error {
+    border-color: #ef4444 !important;
+}
+
+.signature-preview-display {
+    font-family: 'Dancing Script', 'Alex Brush', 'Great Vibes', 'Brush Script MT', cursive;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    opacity: 1;
+    transform: scale(1);
+}
+.signature-preview-display.preview-placeholder-active {
+    opacity: 0.35;
+    transform: scale(0.98);
+}
+
+/* Base structural selectors within your sidebar layout template */
+.toc-step-row .toc-dot, 
+.toc-step-row .step-indicator-dot {
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Completed step appearance values */
+.toc-step-row.toc-completed .toc-dot,
+.toc-step-row.completed .step-indicator-dot {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+}
+
+/* Active active step glow effects styling */
+.toc-step-row.toc-active .toc-dot,
+.toc-step-row.active .step-indicator-dot {
+    background: #10b981;
+    border-color: #10b981;
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.8), inset 0 0 4px rgba(255, 255, 255, 0.4);
+}
+
+
+/* Core component structure for your database-driven upsell products */
+.upsell-card-node {
+    background: #ffffff;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.upsell-card-body-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.upsell-card-icon-frame {
+    font-size: 2.2rem;
+    color: var(--primary, #10b981);
+    min-width: 45px;
+    text-align: center;
+}
+
+.upsell-card-title-label {
+    margin: 0 0 4px 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--navy, #0a1f44);
+}
+
+.upsell-card-description-paragraph {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--slate, #64748b);
+    line-height: 1.5;
+    text-align: left;
+}
+
+.upsell-card-action-column {
+    text-align: right;
+    min-width: 170px;
+}
+
+.upsell-card-pricing-numeric {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--navy, #0a1f44);
+    font-family: monospace;
+    margin-bottom: 8px;
+}
+
+.upsell-card-billing-cadence-span {
+    font-size: 0.75rem;
+    color: var(--slate, #64748b);
+    font-family: system-ui;
+    font-weight: normal;
+}
+
+.upsell-card-checkbox-label-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    background: #f1f5f9;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border, #e2e8f0);
+    user-select: none;
+}
+
+.upsell-card-checkbox-label-toggle input[type="checkbox"] {
+    accent-color: var(--primary, #10b981);
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Container Layout styles for the Dynamic Selected Plan Overview box */
+.plan-overview-card-container {
+    margin-top: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: var(--card-shadow);
+    clear: both;
+}
+
+.plan-overview-header-zone {
+    border-bottom: 1px solid var(--border, #e2e8f0);
+    padding-bottom: 14px;
+}
+
+.plan-overview-track-tag {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--slate, #64748b);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plan-overview-main-title {
+    margin: 4px 0 0 0;
+    color: var(--navy, #0a1f44);
+    font-size: 1.4rem;
+    font-weight: 900;
+}
+
+.plan-overview-section-label {
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--navy, #0a1f44);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.plan-overview-description-paragraph {
+    margin: 0;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.plan-overview-bullets-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--navy, #0a1f44);
+    font-weight: 600;
+}
+
+.plan-overview-bullet-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.plan-overview-bullet-item i {
+    color: #10b981;
+}
+
+.plan-overview-summary-pricing-footer {
+    background: #f8fafc;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.plan-overview-pricing-flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan-overview-base-fee-label {
+    font-weight: 800;
+    color: var(--navy, #0a1f44);
+    font-size: 0.95rem;
+}
+
+.plan-overview-total-price-numeric {
+    font-family: monospace;
+    color: #10b981;
+    font-size: 1.35rem;
+}
+
+
+/* Layout structures for your dynamic selected plan card view */
+.plan-overview-card-container {
+    margin-top: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: var(--card-shadow);
+    clear: both;
+}
+
+.plan-overview-header-zone {
+    border-bottom: 1px solid var(--border, #e2e8f0);
+    padding-bottom: 14px;
+}
+
+.plan-overview-track-tag {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--slate, #64748b);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plan-overview-main-title {
+    margin: 4px 0 0 0;
+    color: var(--navy, #0a1f44);
+    font-size: 1.4rem;
+    font-weight: 900;
+}
+
+.plan-overview-section-label {
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--navy, #0a1f44);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.plan-overview-description-paragraph {
+    margin: 0;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.plan-overview-bullets-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--navy, #0a1f44);
+    font-weight: 600;
+}
+
+.plan-overview-bullet-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.plan-overview-bullet-item i {
+    color: #10b981;
+}
+
+.plan-overview-summary-pricing-footer {
+    background: #f8fafc;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.plan-overview-pricing-flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan-overview-base-fee-label {
+    font-weight: 800;
+    color: var(--navy, #0a1f44);
+    font-size: 0.95rem;
+}
+
+.plan-overview-total-price-numeric {
+    font-family: monospace;
+    color: #10b981;
+    font-size: 1.35rem;
+}
+
+
+/* Step 1 Functional Layout Components CSS */
+.step-header-container {
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border, #e2e8f0);
+    padding-bottom: 15px;
+}
+
+.step-main-title {
+    color: var(--navy, #0a1f44);
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+}
+
+.step-subtitle {
+    color: var(--slate, #64748b);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.workspace-split-layout {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: start;
+}
+
+.form-grid-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 2;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.wizard-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.wizard-input-label {
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--navy, #0a1f44);
+    text-align: left;
+}
+
+.input-lock-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.readonly-lock-field {
+    background: #f1f5f9;
+    color: var(--slate, #475569);
+    font-weight: 700;
+    cursor: not-allowed;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 45px;
+}
+
+.input-lock-icon-span {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--slate, #64748b);
+    font-size: 0.85rem;
+}
+
+.features-list-data-container {
+    background: var(--light-bg, #f8fafc);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.loading-skeleton-row, .sidebar-feature-bullet-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--navy, #0a1f44);
+    font-weight: 600;
+}
+
+.loading-skeleton-row i, .sidebar-feature-bullet-row i {
+    color: var(--primary, #10b981);
+}
+
+/* Plan Overview dynamically inserted box elements formatting */
+.plan-overview-card-container {
+    margin-top: 10px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: var(--card-shadow);
+    clear: both;
+}
+
+.plan-overview-header-zone {
+    border-bottom: 1px solid var(--border, #e2e8f0);
+    padding-bottom: 14px;
+}
+
+.plan-overview-track-tag {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--slate, #64748b);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    text-align: left;
+}
+
+.plan-overview-main-title {
+    margin: 4px 0 0 0;
+    color: var(--navy, #0a1f44);
+    font-size: 1.4rem;
+    font-weight: 900;
+    text-align: left;
+}
+
+.plan-overview-section-label {
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--navy, #0a1f44);
+    display: block;
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+.plan-overview-description-paragraph {
+    margin: 0;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.plan-overview-summary-pricing-footer {
+    background: #f8fafc;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 6px;
+}
+
+.plan-overview-pricing-flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan-overview-base-fee-label {
+    font-weight: 800;
+    color: var(--navy, #0a1f44);
+    font-size: 0.95rem;
+}
+
+.plan-overview-total-price-numeric {
+    font-family: monospace;
+    color: #10b981;
+    font-size: 1.35rem;
+}
+
+.sticky-timeline-sidebar {
+    background: #ffffff;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    padding: 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: var(--card-shadow);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+    flex: 1;
+    width: 100%;
+}
+
+.sidebar-title-label {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+    color: var(--navy, #0a1f44);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-time-tracker {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--slate, #64748b);
+    line-height: 1.4;
+    font-weight: 400;
+    text-align: left;
+}
+
+.sidebar-nav-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px dashed var(--border, #e2e8f0);
+    padding-top: 16px;
+}
+
+.wizard-action-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    border-top: 1px solid var(--border, #e2e8f0);
+    padding-top: 20px;
+    box-sizing: border-box;
+}
+
+.element-hidden {
+    visibility: hidden;
+}
+
+
+    @media (max-width: 540px) {
+      .nav-container {
+        flex-direction: column !important;
+        text-align: center !important;
+        justify-content: center !important;
+      }
+      .header-meta-badge {
+        justify-content: center !important;
+        font-size: 0.8rem !important;
+        padding: 6px 10px !important;
+      }
+      .meta-divider {
+        display: none !important;
+      }
+    }
+
+        @media (max-width: 990px) {
+          .workspace-split-layout {
+            flex-direction: column !important;
+            gap: 24px !important;
+          }
+          .sticky-timeline-sidebar {
+            position: static !important;
+            order: 2 !important;
+            margin-top: 10px !important;
+          }
+          .form-grid-layout {
+            order: 1 !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .wizard-action-footer {
+            flex-direction: column-reverse !important;
+            gap: 12px !important;
+            align-items: stretch !important;
+          }
+          .wizard-action-footer button {
+            width: 100% !important;
+            text-align: center !important;
+            padding: 12px !important;
+          }
+          .btn-wizard-alt {
+            display: none !important;
+          }
+        }
+
+/* Responsive Mobile Stack Rules Override Sizing Matrix */
+@media (max-width: 991px) {
+    #step-panel-6 > div:style-index(2) {
+        flex-direction: column !important;
+        gap: 24px !important;
+    }
+    #step-panel-6 aside {
+        position: relative !important;
+        top: 0 !important;
+        width: 100% !important;
+    }
+}
+
+  @media (max-width: 950px) {
+    .success-container {
+      flex-direction: column !important;
+      gap: 24px !important;
+    }
+    .profile-responsive-grid {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+    }
+    .address-grid-span {
+      grid-column: span 1 !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .footer-directory-grid {
+      flex-direction: column !important;
+      gap: 30px !important;
+    }
+    .footer-links-wrapper {
+      justify-content: flex-start !important;
+      flex-direction: column !important;
+      gap: 24px !important;
+    }
+    .footer-hq-column {
+      text-align: left !important;
+      align-items: flex-start !important;
+    }
+    .footer-legal-row-bar {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 14px !important;
+    }
+    .trust-badge {
+      width: 100% !important;
+      text-align: center !important;
+    }
+  }
+
+/* ============================================================================ */
+/* 🚀 STRUCTURAL WIZARD PANEL VISIBILITY MANAGEMENT SELECTORS */
+/* ============================================================================ */
+
+/* Base style for all wizard panels in your multi-step pipeline */
+.wizard-panel {
+    display: none !important;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Explicit class trigger override to force the active view layers to display */
+.wizard-panel.active {
+    display: block !important;
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ============================================================================ */
+/* 🏢 STEP 2 FORM REPAIR AND FIELD NORMALIZATION MATRIX                         */
+/* ============================================================================ */
+
+/* 1. Prevent overlapping text & fix giant wording */
+#dynamic-onboarding-fields-root .wizard-input-field,
+#dynamic-onboarding-fields-root input,
+#dynamic-onboarding-fields-root select,
+#dynamic-onboarding-fields-root textarea {
+  font-size: 0.95rem !important; /* Forces normal, scannable readable text sizing */
+  line-height: 1.5 !important;
+  font-weight: 500 !important;
+  height: 44px !important; /* Universal input form baseline framework height */
+  padding: 10px 14px !important;
+  box-sizing: border-box !important;
+  width: 100% !important; /* Keeps elements from breaking out of the container bounds */
+}
+
+/* Fix text size for large placeholder text */
+#dynamic-onboarding-fields-root ::placeholder {
+  font-size: 0.85rem !important; 
+  color: #94a3b8 !important; /* Soft slate color */
+}
+
+/* 2. Fix the broken layout grids if fields stack or collapse incorrectly */
+#dynamic-onboarding-fields-root {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important; /* Force a structured 2-column grid layout */
+  gap: 20px !important;
+  width: 100% !important;
+}
+
+/* 3. Handle standard form group wrapper containers */
+#dynamic-onboarding-fields-root .wizard-input-group,
+#dynamic-onboarding-fields-root .form-group-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  width: 100% !important;
+  min-width: 0 !important; /* Crucial: stops layout bursting in flex contexts */
+}
+
+/* 4. Standardize Form labels */
+#dynamic-onboarding-fields-root label,
+#dynamic-onboarding-fields-root .wizard-input-label {
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: #0a1f44 !important; /* Dark navy primary visibility parameter */
+  margin: 0 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+/* 5. Responsive structural fix for smaller screens (Mobile viewports) */
+@media (max-width: 768px) {
+  #dynamic-onboarding-fields-root {
+    grid-template-columns: 1fr !important; /* Drop to 1 full width column to prevent squeeze */
+  }
+}

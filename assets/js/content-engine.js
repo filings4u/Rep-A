@@ -805,87 +805,130 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+// ============================================================================
 // --- MODULE 4: DYNAMIC PACKAGE PRICING GRID INJECTION LAYER ---
+// ============================================================================
+
+/**
+ * Universal text escaping utility.
+ * Stops script-tag execution loops and layout tampering vulnerabilities.
+ */
+function secureGridStringEscape(primitiveValue) {
+    if (primitiveValue === null || primitiveValue === undefined) return "";
+    return String(primitiveValue)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// ============================================================================ //
+// 🛠️ MODULE 4: AUTOMATED WEBSITE SALES-CARD RENDER ENGINE (SYNCHRONIZED READY) //
+// ============================================================================ //
 function renderMasterPricingEngine(targetId) {
   try {
     const zone = document.getElementById(targetId);
     if (!zone) return;
 
-    // Extract database slug properties cleanly
-    const slug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
-    const pricingData = window.GLOBAL_COMPANY_PRICING && window.GLOBAL_COMPANY_PRICING.packages[slug];
+    // Extract and clean raw database slug keys out of DOM container selectors
+    let slug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
+
+    // 🛡️ MAPPING ADAPTER: Harmonize landing page container slugs to match state-pricing.js keys exactly
+    if (slug === "llc-reinstatement-processing") slug = "llc-reinstatement";
+    if (slug === "entity-dissolution") slug = "dissolution";
+    if (slug === "process-agent-boc-3") slug = "process-agents-boc-3";
+
+    // CENTRAL DATA HOOK: Bind strictly to your established system source of truth
+    const dbSource = window.CENTRAL_SERVICE_PLAN_DB || {};
+    const pricingData = dbSource[slug];
+
     if (!pricingData) {
       console.warn(`No price object config structured for selector profile: ${slug}`);
       return;
     }
 
-    // Helper functions to construct bullet strings securely without markup re-rendering bugs
-    const makeBulletsHTML = (array) => {
-      return array.map(b => `<li style="margin-bottom: 12px; color: #475569; font-size: 0.95rem; line-height: 1.4; list-style-type: none; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: #10b981; font-weight: bold;">✓</span>${b}</li>`).join("");
+    // Helper function to safely construct sanitized bullet strings securely
+    const makeBulletsHTML = (bulletArray) => {
+      if (!Array.isArray(bulletArray)) return "";
+      return bulletArray.map(b => {
+        const safeBulletText = secureGridStringEscape(b);
+        return `<li class="pricing-card-bullet-item"><span>✓</span>${safeBulletText}</li>`;
+      }).join("");
     };
 
-    // 🌟 ENHANCEMENT: Added id="pricing-framework-target" to the master container section
+    // ZERO HARDCODED STYLES: Inline presentation metrics replaced entirely with clean CSS selector classes
+    // FIXED: URLs updated to match the correct application standard: wizard.html?service=${slug}&plan=tier
     zone.innerHTML = `
-      <section id="pricing-framework-target" style="padding: 80px 0; background: #f8fafc; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
-        <div class="site-width-alignment-guard" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
-          <div style="text-align: center; margin-bottom: 60px;">
-            <h2 style="font-size: 2.5rem; font-weight: 800; color: #0a1f44; margin: 0 0 12px 0;">Flexible Pricing Framework Options</h2>
-            <p style="color: #64748b; font-size: 1.1rem; margin: 0;">Select the optimal processing speed and protection depth your operation requires.</p>
+      <section id="pricing-framework-target" class="pricing-grid-master-section">
+        <div class="site-width-alignment-guard prgrid-container">
+          <div class="pricing-grid-header-block">
+            <h2 class="pricing-grid-main-title">Flexible Pricing Framework Options</h2>
+            <p class="pricing-grid-subtitle">Select the optimal processing speed and protection depth your operation requires.</p>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; align-items: stretch;">
+          <div class="pricing-cards-responsive-grid">
+            
             <!-- Tier 1: Starter -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-              <div>
-                <h3 style="font-size: 1.5rem; font-weight: 700; color: #0a1f44; margin: 0 0 8px 0;">Starter Package</h3>
-                <div style="margin-bottom: 24px;"><span style="font-size: 2.5rem; font-weight: 800; color: #0a1f44;">$${pricingData.starter.toFixed(2)}</span><span style="color: #64748b; font-size: 0.95rem;"> / registration</span></div>
-                <ul style="padding: 0; margin: 0 0 30px 0;">${makeBulletsHTML(pricingData.bullets.starter)}</ul>
+            <div class="pricing-card-node text-center-mobile">
+              <div class="pricing-card-upper-content">
+                <h3 class="pricing-card-tier-title">Starter Package</h3>
+                <div class="pricing-card-rate-row">
+                  <span class="pricing-card-price-integer">$${(parseFloat(pricingData.starter) || 0).toFixed(2)}</span>
+                  <span class="pricing-card-cadence-label"> / registration</span>
+                </div>
+                <ul class="pricing-card-bullets-list">${makeBulletsHTML(pricingData.bullets?.starter)}</ul>
               </div>
-              <a href="wizard.html?plan=starter&service=${slug}" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Starter Plan</a>
+              <a href="wizard.html?service=${slug}&plan=starter" class="pricing-card-action-btn starter-btn-theme">Select Starter Plan</a>
             </div>
-            <!-- Tier 2: Compliance (Most Popular Highlighted) -->
-            <div style="background: #ffffff; border: 2px solid #10b981; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
-              <span style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Most Popular Option</span>
-              <div>
-                <h3 style="font-size: 1.5rem; font-weight: 700; color: #0a1f44; margin: 0 0 8px 0;">Compliance Guard</h3>
-                <div style="margin-bottom: 24px;"><span style="font-size: 2.5rem; font-weight: 800; color: #10b981;">$${pricingData.compliance.toFixed(2)}</span><span style="color: #64748b; font-size: 0.95rem;"> / registration</span></div>
-                <ul style="padding: 0; margin: 0 0 30px 0;">${makeBulletsHTML(pricingData.bullets.compliance)}</ul>
+
+            <!-- Tier 2: Compliance (Most Popular Highlighted Option) -->
+            <div class="pricing-card-node pricing-card-highlighted text-center-mobile">
+              <span class="pricing-card-popular-badge">Most Popular Option</span>
+              <div class="pricing-card-upper-content">
+                <h3 class="pricing-card-tier-title">Compliance Guard</h3>
+                <div class="pricing-card-rate-row">
+                  <span class="pricing-card-price-integer color-primary">$${(parseFloat(pricingData.compliance) || 0).toFixed(2)}</span>
+                  <span class="pricing-card-cadence-label"> / registration</span>
+                </div>
+                <ul class="pricing-card-bullets-list">${makeBulletsHTML(pricingData.bullets?.compliance)}</ul>
               </div>
-              <a href="wizard.html?plan=compliance&service=${slug}" style="background: #10b981; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Compliance Plan</a>
+              <a href="wizard.html?service=${slug}&plan=compliance" class="pricing-card-action-btn compliance-btn-theme">Select Compliance Plan</a>
             </div>
+
             <!-- Tier 3: Enterprise -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-              <div>
-                <h3 style="font-size: 1.5rem; font-weight: 700; color: #0a1f44; margin: 0 0 8px 0;">Enterprise Asset Suite</h3>
-                <div style="margin-bottom: 24px;"><span style="font-size: 2.5rem; font-weight: 800; color: #0a1f44;">$${pricingData.enterprise.toFixed(2)}</span><span style="color: #64748b; font-size: 0.95rem;"> / registration</span></div>
-                <ul style="padding: 0; margin: 0 0 30px 0;">${makeBulletsHTML(pricingData.bullets.enterprise)}</ul>
+            <div class="pricing-card-node text-center-mobile">
+              <div class="pricing-card-upper-content">
+                <h3 class="pricing-card-tier-title">Enterprise Asset Suite</h3>
+                <div class="pricing-card-rate-row">
+                  <span class="pricing-card-price-integer">$${(parseFloat(pricingData.enterprise) || 0).toFixed(2)}</span>
+                  <span class="pricing-card-cadence-label"> / registration</span>
+                </div>
+                <ul class="pricing-card-bullets-list">${makeBulletsHTML(pricingData.bullets?.enterprise)}</ul>
               </div>
-              <a href="wizard.html?plan=enterprise&service=${slug}" style="background: #0a1f44; color: #ffffff; text-align: center; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; display: block; font-size: 1rem;">Select Enterprise Plan</a>
+              <a href="wizard.html?service=${slug}&plan=enterprise" class="pricing-card-action-btn enterprise-btn-theme">Select Enterprise Plan</a>
             </div>
+
           </div>
         </div>
       </section>
-      
     `;
 
-    // 🌟 SELF-CONTAINED ROUTING ENGINE: Listens for application button clicks automatically on render
+    // 🌟 SELF-CONTAINED ROUTING ENGINE: Handle scrolling intercepts safely
     setTimeout(() => {
       const pageAnchorButtons = document.querySelectorAll('a');
       pageAnchorButtons.forEach(btn => {
         const text = btn.textContent || "";
         if (text.includes("Initialize Application") || text.includes("Initialize Local Application")) {
-          
           btn.addEventListener("click", function(e) {
             const pricingTarget = document.getElementById("pricing-framework-target");
             if (pricingTarget) {
-              // Smoothly scroll down if the grid exists on the page
               e.preventDefault();
               pricingTarget.scrollIntoView({ behavior: "smooth", block: "start" });
             } else {
-              // Fall back to landing page URL routing with target hash fragment if clicked from elsewhere
-              btn.setAttribute("href", "llc-formation.html#pricing-framework-target");
+              // Automatically fall back to clean service page links with specific anchors
+              btn.setAttribute("href", `${slug}.html#pricing-framework-target`);
             }
           });
-
         }
       });
     }, 50);
@@ -895,13 +938,13 @@ function renderMasterPricingEngine(targetId) {
   }
 }
 
-
-// Update the current global execution block to auto-run the pricing card loops too
+// Global hook to catch grid target roots automatically across all landing pages
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('[id$="-package-pricing-cards-root"]').forEach(zone => {
     renderMasterPricingEngine(zone.id);
   });
 });
+
 
 
 // ============================================================================
@@ -1246,13 +1289,13 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
                   <a href="dot-consortium.html">DOT Consortium</a>
                   <a href="driver-file.html">Driver Qualification File</a>
                   <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
-                  <a href="international-fuel-tax-agreement-ifta.html">IFTA Registration</a>
+                  <a href="ifta-registration.html">IFTA Registration</a>
                 </div>
                 <div class="mega-column">
                   <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Insurance & Risk</span>
                   <a href="licenses-permits.html">Licenses & Permits</a>
-                  <a href="trucker-insurance.html">Trucker Insurance</a>
-                  <a href="broker-insurance.html">Broker Insurance</a>
+                  <a href="trucker-insurance-quote.html">Trucker Insurance</a>
+                  <a href="broker-insurance-quote.html">Broker Insurance</a>
                   <a href="new-entrant-audit.html">New Entrant Audit</a>
                 </div>
               </div>
@@ -1318,7 +1361,7 @@ function renderDynamicGlobalCorporateFooter(targetId) {
       <h4>Fleet & DOT</h4> 
       <ul> 
         <li><a href="ucr-registration.html">UCR Registration</a></li> 
-        <li><a href="international-fuel-tax-agreement-ifta.html">IFTA Filings</a></li> 
+        <li><a href="ifta-registration.html">IFTA Filings</a></li> 
         <li><a href="trucker-authority.html">DOT Authority</a></li> 
         <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li> 
         <li><a href="heavy-use-tax-2290.html">Form 2290</a></li> 
@@ -1338,7 +1381,7 @@ function renderDynamicGlobalCorporateFooter(targetId) {
     <div class="footer-col"> 
       <h4>Support</h4> 
       <ul> 
-        <li><a href="https://portal.filings4u.com/portal-login.html">Client Portal</a></li> 
+        <li><a href="https://portal.filings4u.com/client-dashboard.html">Client Portal</a></li> 
         <li><a href="compliance.html">Compliance Hub</a></li> 
         <li><a href="contact.html">Contact Experts</a></li> 
         <li><a href="annual-reports.html">Annual Reports</a></li> 

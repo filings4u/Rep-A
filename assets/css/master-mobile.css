@@ -1881,3 +1881,18 @@
         padding-bottom: 0px !important;
     }
 }
+
+
+/* 📱 MOBILE VIEWPORT TRACK OVERRIDE QUERY BLOCK */
+@media screen and (max-width: 768px) {
+    .prgrid-container {
+        padding: 0 20px;
+    }
+    .pricing-grid-main-title {
+        font-size: 2rem;
+    }
+    .text-center-mobile .pricing-card-tier-title,
+    .text-center-mobile .pricing-card-rate-row {
+        text-align: center;
+    }
+}

@@ -93,3 +93,40 @@
         font-weight: 700 !important;
     }
 }
+
+/* 📱 SECURED MOBILE VIEWPORT OVERRIDE QUERY BLOCK */
+@media screen and (max-width: 768px) {
+    .upsell-card-node {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+    }
+    .upsell-card-action-column {
+        text-align: left;
+        min-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px dashed var(--border, #e2e8f0);
+        padding-top: 12px;
+    }
+    .upsell-card-pricing-numeric {
+        margin-bottom: 0;
+    }
+}
+
+/* 📱 RESPONSIVE RESPONSIVE PHONE SYSTEM ADAPTATIONS */
+@media screen and (max-width: 991px) {
+    .workspace-split-layout {
+        flex-direction: column;
+        gap: 25px;
+    }
+    .form-grid-layout, .sticky-timeline-sidebar {
+        flex: none;
+        width: 100%;
+    }
+    .sticky-timeline-sidebar {
+        position: static;
+    }
+}
