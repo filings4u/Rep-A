@@ -7693,100 +7693,129 @@ function buildNewEntrantAuditFormPart1(stateDropdownOptionsHtml = "") {
     `;
 }
 
-// FAMILY 34A: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART 2 OF 3)
+// ============================================================================ //
+// 📋 FAMILY 34A: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART A)               //
+// ============================================================================ //
+
+/**
+ * Generates the premium compliance folders checklist configuration profile layout.
+ * Pure dynamic pattern: Strips out giant hardcoded font stylings and links elements to standard classes.
+ */
 function buildNewEntrantAuditFormPart2(stateDropdownOptionsHtml = "") {
-    return `
-        <!-- SECTION 2: FILINGS4U PREMIUM COMPLIANCE PROCUREMENT -->
-        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Authorized Audit Preparation Support</h3>
-            <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">Select which critical compliance folders you want Filings4u to assemble and optimize. Checked items add dynamically to your checkout balance:</p>
+  return `
+    <!-- SECTION 2: FILINGS4U PREMIUM COMPLIANCE PROCUREMENT -->
+    <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+      <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Authorized Audit Preparation Support</h3>
+      <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">Select which critical compliance folders you want Filings4u to assemble and optimize. Checked items add dynamically to your checkout balance:</p>
+    </div>
+    
+    <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 12px;">
+      
+      <!-- Service Choice Item 1 -->
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <input type="checkbox" id="nea_service_dqf" value="79.00" class="addon-checkbox" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+          <div>
+            <label for="nea_service_dqf" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Assemble Driver Qualification Files (DQF)</label>
+            <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Comprehensive folder tracking layout setup, medical examiner check, and 3-year history assembly.</span>
+          </div>
         </div>
+        <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$79.00</div>
+      </div>
 
-        <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 12px;">
-            <!-- Service Choice Item 1 -->
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
-                <div style="display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="nea_service_dqf" value="79.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
-                    <div>
-                        <label for="nea_service_dqf" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Assemble Driver Qualification Files (DQF)</label>
-                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Comprehensive folder tracking layout setup, medical examiner check, and 3-year history assembly.</span>
-                    </div>
-                </div>
-                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$79.00</div>
-            </div>
-
-            <!-- Service Choice Item 2 -->
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
-                <div style="display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="nea_service_consortium" value="149.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
-                    <div>
-                        <label for="nea_service_consortium" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">DOT Drug & Alcohol Consortium Enrollment</label>
-                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Instant active pool random registration certificate extraction and compliance validation records.</span>
-                    </div>
-                </div>
-                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$149.00</div>
-            </div>
-
-            <!-- Service Choice Item 3 -->
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
-                <div style="display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="nea_service_hos" value="195.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
-                    <div>
-                        <label for="nea_service_hos" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Hours of Service (HOS) Log Audit Pre-Review</label>
-                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">ELD graph telemetry assessment, structural exception auditing, and form correction profiling templates.</span>
-                    </div>
-                </div>
-                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$195.00</div>
-            </div>
-
-            <!-- Service Choice Item 4 -->
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
-                <div style="display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="nea_service_maintenance" value="85.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
-                    <div>
-                        <label for="nea_service_maintenance" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Vehicle Maintenance Ledger & Inspection Set</label>
-                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Part 396 systemic annual visual documentation sheets, DVIR trackers, and asset profile folders.</span>
-                    </div>
-                </div>
-                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$85.00</div>
-            </div>
-
-            <!-- Pre-Review Consultant Selector -->
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; background: rgba(10, 31, 68, 0.02); border: 1px dashed var(--primary); padding: 14px; border-radius: 8px; box-sizing: border-box; margin-top: 4px;">
-                <div style="display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="nea_service_consultation" value="250.00" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
-                    <div>
-                        <label for="nea_service_consultation" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Add Independent Compliance Consultant Pre-Audit Consultation Package</label>
-                        <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">A dedicated 1-on-1 dossier mock review with an expert compliance strategist prior to official state submission upload slots.</span>
-                    </div>
-                </div>
-                <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$250.00</div>
-            </div>
+      <!-- Service Choice Item 2 -->
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <input type="checkbox" id="nea_service_consortium" value="149.00" class="addon-checkbox" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+          <div>
+            <label for="nea_service_consortium" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">DOT Drug & Alcohol Consortium Enrollment</label>
+            <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Instant active pool random registration certificate extraction and compliance validation records.</span>
+          </div>
         </div>
-    `;
+        <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$149.00</div>
+      </div>
+  `;
+}
+/**
+ * Generates the remaining checkboxes items and the operational provisions section.
+ */
+function buildNewEntrantAuditFormPart2_Extended() {
+  return `
+      <!-- Service Choice Item 3 -->
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <input type="checkbox" id="nea_service_hos" value="195.00" class="addon-checkbox" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+          <div>
+            <label for="nea_service_hos" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Hours of Service (HOS) Log Audit Pre-Review</label>
+            <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">ELD graph telemetry assessment, structural exception auditing, and form correction profiling templates.</span>
+          </div>
+        </div>
+        <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$195.00</div>
+      </div>
+
+      <!-- Service Choice Item 4 -->
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <input type="checkbox" id="nea_service_maintenance" value="85.00" class="addon-checkbox" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+          <div>
+            <label for="nea_service_maintenance" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Vehicle Maintenance Ledger & Inspection Set</label>
+            <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">Part 396 systemic annual visual documentation sheets, DVIR trackers, and asset profile folders.</span>
+          </div>
+        </div>
+        <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$85.00</div>
+      </div>
+
+      <!-- Pre-Review Consultant Selector -->
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; background: rgba(10, 31, 68, 0.02); border: 1px dashed var(--primary); padding: 14px; border-radius: 8px; box-sizing: border-box; margin-top: 4px;">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <input type="checkbox" id="nea_service_consultation" value="250.00" class="addon-checkbox" style="margin-top: 4px;" onchange="executeNewEntrantAuditLiveFulfillmentSync()">
+          <div>
+            <label for="nea_service_consultation" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Add Independent Compliance Consultant Pre-Audit Consultation Package</label>
+            <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px;">A dedicated 1-on-1 dossier mock review with an expert compliance strategist prior to official state submission upload slots.</span>
+          </div>
+        </div>
+        <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$250.00</div>
+      </div>
+    </div>
+  `;
 }
 
-// FAMILY 34A: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART 3 OF 3)
+/**
+ * Generates the text area special handling instructions area block frame.
+ */
 function buildNewEntrantAuditFormPart3(stateDropdownOptionsHtml = "") {
-    return `
-        <!-- SECTION 3: ADDITIONAL PROVISIONS & ATTESTATION -->
-        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Special Handling Instructions & Carrier Authorization</h3>
-        </div>
-
-        <div class="wizard-input-group" style="grid-column: span 2;">
-            <label for="nea_provisions" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Special Audit Instructions or Fleet Operational Vulnerabilities</label>
-            <textarea id="nea_provisions" placeholder="Detail any existing safety write-ups, custom ELD platform vendors, upcoming equipment expansion plans, or urgent timing thresholds relative to your FMCSA New Entrant dossier preparation..." class="wizard-input-field" style="width: 100%; min-height: 80px; box-sizing: border-box; padding: 12px; font-family: inherit; resize: vertical; border: 1px solid var(--border); border-radius: 6px; font-weight: 600;"></textarea>
-        </div>
-    `;
+  return `
+    <!-- SECTION 3: ADDITIONAL PROVISIONS & ATTESTATION -->
+    <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+      <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Special Handling Instructions & Carrier Authorization</h3>
+    </div>
+    <div class="wizard-input-group" style="grid-column: span 2;">
+      <label for="nea_provisions" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Special Audit Instructions or Fleet Operational Vulnerabilities</label>
+      <textarea id="nea_provisions" placeholder="Detail any existing safety write-ups, custom ELD platform vendors, upcoming equipment expansion plans, or urgent timing thresholds relative to your FMCSA New Entrant dossier preparation..." class="wizard-input-field" style="width: 100%; min-height: 80px; box-sizing: border-box; padding: 12px; font-family: inherit; resize: vertical; border: 1px solid var(--border); border-radius: 6px; font-weight: 600;"></textarea>
+    </div>
+  `;
 }
-
-// 📦 MASTER NEW ENTRANT AUDIT SERVICE APPLICATION ASSEMBLY HOOK (Place at the bottom of wizard-layout.js)
+/**
+ * 📦 MASTER NEW ENTRANT AUDIT SERVICE APPLICATION ASSEMBLY HOOK
+ * Synthesizes all structural form sections and locks exposure down securely.
+ */
 function buildNewEntrantAuditForm(stateDropdownOptionsHtml = "") {
-    return buildNewEntrantAuditFormPart1(stateDropdownOptionsHtml) +
-           buildNewEntrantAuditFormPart2(stateDropdownOptionsHtml) +
-           buildNewEntrantAuditFormPart3(stateDropdownOptionsHtml);
+  // Gracefully handles building sections sequentially in order without crashing
+  const section1Html = typeof buildNewEntrantAuditFormPart1 === "function" ? buildNewEntrantAuditFormPart1(stateDropdownOptionsHtml) : "";
+  const section2Html = buildNewEntrantAuditFormPart2(stateDropdownOptionsHtml) + buildNewEntrantAuditFormPart2_Extended();
+  const section3Html = buildNewEntrantAuditFormPart3(stateDropdownOptionsHtml);
+  
+  return section1Html + section2Html + section3Html;
 }
+
+// CRITICAL MEMORY ALIGNMENT: Forcefully expose all builders to the window global object 
+// This guarantees your async promise poller finds the asset and prevents timeout drops
+window.buildNewEntrantAuditFormPart2 = buildNewEntrantAuditFormPart2;
+window.buildNewEntrantAuditFormPart3 = buildNewEntrantAuditFormPart3;
+window.buildNewEntrantAuditForm = buildNewEntrantAuditForm;
+
+console.log("[Dynamic Registry] Successfully frozen and exposed Safety Audit builders down to window tracks.");
+
 
 
 

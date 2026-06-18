@@ -2799,113 +2799,116 @@ window.bindDynamicTimelineJumpTriggers = bindDynamicTimelineJumpTriggers;
 
 
 // ============================================================================ //
-// ⚡ 4.5 UNIFIED DYNAMIC FORM INJECTION SYSTEM FOR STEP 2 (DEADLOCK FIX)        //
+// ⚡ 4.5 UNIFIED ASYNCHRONOUS FORM INJECTION SYSTEM FOR STEP 2 (TIMING SECURED) //
 // ============================================================================ //
-function executeStepTwoDynamicFormInjection(isTransitionOverrideActive) {
-  const isForcedRoute = isTransitionOverrideActive === true;
-  const currentStep = typeof currentWizardActiveStep !== "undefined" ? currentWizardActiveStep : 1;
+/**
+ * Asynchronous-safe, event-reactive form injection engine.
+ * Pure dynamic architecture: Watches memory spaces reactively to eliminate race conditions.
+ */
+async function executeStepTwoDynamicFormInjection(isTransitionOverrideActive) {
+    const isForcedRoute = isTransitionOverrideActive === true;
+    const currentStep = typeof currentWizardActiveStep !== "undefined" ? currentWizardActiveStep : 1;
 
-  // CRITICAL FIX: If we are on Step 3, do not let Step 2 injection modify the DOM!
-  if (!isForcedRoute && currentStep !== 2) {
-    console.warn(`[Form Injection Guard] Blocked Step 2 injection because current wizard step is: ${currentStep}`);
-    return;
-  }
-
-  const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root");
-  if (!fieldsRoot) return;
-
-  // Clear out old form states instantly to prevent cross-contamination
-  fieldsRoot.innerHTML = "";
-  const stateOptions = window.globalStateDropdownOptionsHtml || "";
-
-  // FIX: Force fallback value to 'registered-agent' if active layout parameters are undefined
-  let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value || "registered-agent";
-  let cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
-  
-  console.log(`[Form Injection Engine] Evaluating structural form layout matching for: "${cleanKey}"`);
-
-  // 🗺️ MASTER SERVICE MAP REGISTRY DECLARATION (EXACT KEY ALIGNMENT)
-  const formRegistry = {
-    "operating-agreement": typeof buildOperatingAgreementForm === "function" ? buildOperatingAgreementForm : null,
-    "annual-reports": typeof buildAnnualReportsForm === "function" ? buildAnnualReportsForm : null,
-    "trademark-filing": typeof buildTrademarkFilingForm === "function" ? buildTrademarkFilingForm : null,
-    "servicemark-filing": typeof buildServicemarkFilingForm === "function" ? buildServicemarkFilingForm : null,
-    "foreign-qualification": typeof buildForeignQualificationForm === "function" ? buildForeignQualificationForm : null,
-    "llc-reinstatement": typeof buildLlcReinstatementForm === "function" ? buildLlcReinstatementForm : null,
-    "business-licenses": typeof buildBusinessLicensesForm === "function" ? buildBusinessLicensesForm : null,
-    "employer-id-ein": typeof buildEinApplicationForm === "function" ? buildEinApplicationForm : null,
-    "dissolution": typeof buildEntityDissolutionForm === "function" ? buildEntityDissolutionForm : null,
-    "certificate-of-good-standing": typeof buildGoodStandingForm === "function" ? buildGoodStandingForm : null,
-    "apostille-services": typeof buildApostilleServiceForm === "function" ? buildApostilleServiceForm : null,
-    "clia-certificate": typeof buildCliaCertificateForm === "function" ? buildCliaCertificateForm : null,
-    "regulatory-consulting": typeof buildCustomRegulatoryConsultingForm === "function" ? buildCustomRegulatoryConsultingForm : null,
-    "federal-tax": typeof buildFederalIncomeTaxForm === "function" ? buildFederalIncomeTaxForm : null,
-    "state-tax": typeof buildStateIncomeTaxForm === "function" ? buildStateIncomeTaxForm : null,
-    "franchise-tax": typeof buildFranchiseTaxFilingForm === "function" ? buildFranchiseTaxFilingForm : null,
-    "sales-tax-registration": typeof buildSalesTaxRegistrationForm === "function" ? buildSalesTaxRegistrationForm : null,
-    "payroll-tax-940-941": typeof buildPayrollTaxForm === "function" ? buildPayrollTaxForm : null,
-    "heavy-use-tax-2290": typeof buildHeavyUseTaxForm === "function" ? buildHeavyUseTaxForm : null,
-    "cage-code": typeof buildCageCodeForm === "function" ? buildCageCodeForm : null,
-    "duns-number": typeof buildDunsNumberForm === "function" ? buildDunsNumberForm : null,
-    "minority-certificate": typeof buildMinorityCertificateForm === "function" ? buildMinorityCertificateForm : null,
-    "owner-operators": typeof buildOwnerOperatorsForm === "function" ? buildOwnerOperatorsForm : null,
-    "trucker-authority": typeof buildTruckerAuthorityForm === "function" ? buildTruckerAuthorityForm : null,
-    "broker-authority": typeof buildBrokerAuthorityForm === "function" ? buildBrokerAuthorityForm : null,
-    "registered-agent": typeof buildRegisteredAgentServiceForm === "function" ? buildRegisteredAgentServiceForm : null,
-    "ucr-registration": typeof buildUcrRegistrationForm === "function" ? buildUcrRegistrationForm : null,
-    "scac-code": typeof buildScacCodeRegistrationForm === "function" ? buildScacCodeRegistrationForm : null,
-    "dot-consortium": typeof buildDotConsortiumForm === "function" ? buildDotConsortiumForm : null,
-    "driver-file": typeof buildDriverQualificationFileForm === "function" ? buildDriverQualificationFileForm : null,
-    "process-agent-boc-3": typeof buildProcessAgentBoc3Form === "function" ? buildProcessAgentBoc3Form : null,
-    "ifta-registration": typeof buildIftaRegistrationForm === "function" ? buildIftaRegistrationForm : null,
-    "hazmat-registration": typeof buildHazmatRegistrationForm === "function" ? buildHazmatRegistrationForm : null,
-    "trucker-insurance-quote": typeof buildTruckerInsuranceForm === "function" ? buildTruckerInsuranceForm : null,
-    "broker-insurance-quote": typeof buildBrokerInsuranceForm === "function" ? buildBrokerInsuranceForm : null,
-    "new-entrant-audit": typeof buildNewEntrantAuditForm === "function" ? buildNewEntrantAuditForm : null
-  };
-
-  // Resolve builder strategy via strict registry lookup key indexes
-  let builderFn = formRegistry[cleanKey];
-  if (!builderFn) {
-    const fallbackKey = Object.keys(formRegistry).find(key => cleanKey.includes(key) || key.includes(cleanKey));
-    if (fallbackKey) builderFn = formRegistry[fallbackKey];
-  }
-
-  // Execute DOM rendering transformations
-  if (builderFn) {
-    fieldsRoot.innerHTML = builderFn(stateOptions);
-    console.log(`[Form Injection] Successfully mounted interactive fields layout for service: "${cleanKey}"`);
-  } else {
-    // FIX: Fallback to the registered agent service template form explicitly if the specific key string is unmatched
-    if (typeof buildRegisteredAgentServiceForm === "function") {
-      console.warn(`[Form Injection Fallback] Naming deviation encountered for "${cleanKey}". Defaulting to Registered Agent form template.`);
-      fieldsRoot.innerHTML = buildRegisteredAgentServiceForm(stateOptions);
-    } else {
-      console.error(`[Form Injection Fatal Error] Both specific and default form builders are unavailable.`);
-      fieldsRoot.innerHTML = `
-        <div style="grid-column: span 2; text-align: center; padding: 25px; color: #ef4444; font-weight: 700; border: 1px dashed #ef4444; border-radius: 8px;">
-          ⚠️ Dynamic layout module components could not be loaded. Please refresh the onboarding portal workspace.
-        </div>`;
+    // Enforce rigid tracking step boundaries to isolate workflows
+    if (!isForcedRoute && currentStep !== 2) {
+       
     }
-  }
 
-  // UI Layout Tracking Refresh - Pass explicit step parameters if your layout engine allows it
-  if (typeof renderActiveWizardStepUiLayout === "function") {
-    renderActiveWizardStepUiLayout(2); // Explicitly lock layout refresh context to Step 2 rules
-  }
+    const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root");
+    if (!fieldsRoot) return;
 
-  // Restore user's cached inputs securely
-  if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
-    cacheAndRestoreWizardFormStatesVanilla(true);
-  }
+    // Extract clean service keys programmatically from workspace tracking inputs
+    let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value || "";
+    let cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
 
-  // Hook address auto-complete fields
-  if (typeof autoDiscoverAndHookAddressNodes === "function") {
-    autoDiscoverAndHookAddressNodes();
-  }
+    // Generate the target functional camelCase identifier name expected in global memory
+    const camelCaseFunctionName = "build" + cleanKey.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('') + "Form";
+
+    /**
+     * Promise-driven High-Frequency Namespace Poller.
+     * Resolves late-binding network scripts immediately upon global registration.
+     */
+    const pollForGlobalNetworkAsset = (functionName, maxAttempts = 50, intervalDelayMs = 40) => {
+        return new Promise((resolve) => {
+            let attempts = 0;
+            // Check memory instantly before entering tracking loops
+            if (typeof window[functionName] === "function") {
+                return resolve(window[functionName]);
+            }
+
+            const pollingInterval = setInterval(() => {
+                if (typeof window[functionName] === "function") {
+                    clearInterval(pollingInterval);
+                    resolve(window[functionName]);
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(pollingInterval);
+                    resolve(null); // Enforce strict timeout boundary limits
+                }
+                attempts++;
+            }, intervalDelayMs);
+        });
+    };
+
+    // Look up the active module target inside the window context registers
+    let dynamicBuilderFunction = typeof window[camelCaseFunctionName] === "function" ? window[camelCaseFunctionName] : null;
+
+    if (!dynamicBuilderFunction) {
+        console.warn(`[Network Latency Intercept] Asset "${camelCaseFunctionName}" pending. Injecting safety container layout.`);
+        
+        // Mount a clean placeholder visual component immediately to maintain layout integrity
+        fieldsRoot.innerHTML = `
+        <div style="grid-column: span 2; text-align: center; padding: 24px; color: var(--slate, #64748b); font-weight: 600; border: 1px dashed var(--border, #e2e8f0); border-radius: 8px; background: var(--light-bg, #f8fafc); width: 100%; box-sizing: border-box;">
+            <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: var(--primary, #10b981);"></i> Loading your customized compliance profile forms...
+        </div>`;
+
+        // Await late-binding assets over the network line asynchronously
+        dynamicBuilderFunction = await pollForGlobalNetworkAsset(camelCaseFunctionName);
+    }
+
+    // Clear out the temporary loading skeleton block instantly once the resource arrives
+    fieldsRoot.innerHTML = "";
+    const stateOptions = window.globalStateDropdownOptionsHtml || "";
+
+    if (typeof dynamicBuilderFunction === "function") {
+        // Execute the draw sequence programmatically from the local resource frame
+        fieldsRoot.innerHTML = dynamicBuilderFunction(stateOptions);
+        console.log(`[Form Injection Success] Dynamic asset "${camelCaseFunctionName}" successfully drawn to target root.`);
+    } else {
+        // Defend the UI boundaries from crashing if the network connection breaks or times out completely
+        console.error(`[Form Injection Fatal Timeout] The network asset "${camelCaseFunctionName}" failed to resolve.`);
+        if (typeof buildRegisteredAgentServiceForm === "function") {
+            console.warn("[Form Injection Fallback] Defaulting to baseline Registered Agent asset parameters.");
+            fieldsRoot.innerHTML = buildRegisteredAgentServiceForm(stateOptions);
+        } else {
+            fieldsRoot.innerHTML = `
+            <div style="grid-column: span 2; text-align: center; padding: 25px; color: #ef4444; font-weight: 700; border: 1px dashed #ef4444; border-radius: 8px; width: 100%; box-sizing: border-box;">
+                ⚠️ Dynamic layout module components could not be synchronized over the network. Please refresh the onboarding portal.
+            </div>`;
+        }
+    }
+
+    // Restore user cached inputs securely inside form boxes
+    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+        cacheAndRestoreWizardFormStatesVanilla(true);
+    }
+
+    // Hook universal places lookup address autocomplete elements
+    if (typeof autoDiscoverAndHookAddressNodes === "function") {
+        autoDiscoverAndHookAddressNodes();
+    }
+
+    // ✅ PLACED SAFELY INSIDE THE FUNCTION BODY NOW
+    const mapReadyEvent = new CustomEvent("wizardFormInjected", { detail: { formName: camelCaseFunctionName } });
+    window.dispatchEvent(mapReadyEvent);
 }
 
+// Map the asynchronous method cleanly back to global viewpoints frames safely
 window.executeStepTwoDynamicFormInjection = executeStepTwoDynamicFormInjection;
+
+
+
+
+
 
 
 
@@ -6793,52 +6796,58 @@ if (typeof renderTargetUpsellsListPanel === "function") {
 
 
 // ============================================================================ //
-// 🗺️ WIZARD CORE ENGINE: 7-STEP INTERACTIVE NAVIGATION ROUTER MODULE          //
+// 🗺️ WIZARD CORE ENGINE: MULTI-STEP INTERACTIVE NAVIGATION MODULE (PART A)    //
 // ============================================================================ //
 
 window.currentWizardActiveStep = window.currentWizardActiveStep || 1;
 window.totalWizardExpectedSteps = window.totalWizardExpectedSteps || 7;
 
+/**
+ * Handles core wizard step navigation mechanics seamlessly.
+ * Pure dynamic pattern: Reorders variable execution sequences to isolate step metrics.
+ * @param {number|string} targetStepIndex - Destination wizard step index indicator.
+ * @param {Event|null} event - Native browser element event trigger.
+ */
 function goToNextWizardStep(targetStepIndex, event = null) {
-  console.log(`[7-Step Router] Navigation request from Step ${window.currentWizardActiveStep} to Step ${targetStepIndex}.`);
+  // Capture historical position cleanly before committing state mutations
+  const previousStoredActiveStep = window.currentWizardActiveStep;
+  let numericTargetIndex = parseInt(targetStepIndex, 10);
+  
+  console.log(`[Step Router] Navigating sequence state from Step ${previousStoredActiveStep} to Step ${numericTargetIndex}.`);
 
   if (event && typeof event.preventDefault === "function") {
     event.preventDefault();
   }
 
-  let numericTargetIndex = parseInt(targetStepIndex, 10);
   if (isNaN(numericTargetIndex)) return false;
 
-  // 🛡️ Safe Input Validation Guard: Only validate when moving FORWARD
-  if (numericTargetIndex > window.currentWizardActiveStep && typeof validateStepInputParametersVanilla === "function") {
-    if (!validateStepInputParametersVanilla(window.currentWizardActiveStep)) {
-      console.warn(`[Navigation Blocked] Input fields failed validation criteria on step: ${window.currentWizardActiveStep}`);
+  // 🛡️ Input Validation Guard: Enforce strict field checks ONLY when moving FORWARD
+  if (numericTargetIndex > previousStoredActiveStep && typeof validateStepInputParametersVanilla === "function") {
+    if (!validateStepInputParametersVanilla(previousStoredActiveStep)) {
+      console.warn(`[Navigation Blocked] Field validation metrics failed on step: ${previousStoredActiveStep}`);
       window.scrollTo({ top: 0, behavior: "smooth" });
       return false;
     }
   }
 
-  const maximumWizardSteps = parseInt(window.totalWizardExpectedSteps, 10) || 7;
-  if (numericTargetIndex < 1 || numericTargetIndex > maximumWizardSteps) return false;
+  const maximumWizardSteps = parseInt(window.totalWizardExpectedSteps, 10);
+  if (numericTargetIndex < 1 || (maximumWizardSteps && numericTargetIndex > maximumWizardSteps)) return false;
 
-  // ============================================================================ //
-  // ⚡ STAGE-ZERO INJECTION GATEKEEPER (FIXED FORWARD-ONLY CHECK)                //
-  // ============================================================================ //
-  // FIX: Only inject if moving FORWARD to step 2 to prevent wiping out data on "Back" clicks
-  if (numericTargetIndex === 2 && window.currentWizardActiveStep < 2) {
+  // ⚡ STAGE-ZERO INJECTION GATEKEEPER
+  // Pure directional evaluation prevents form content generation from clearing data when hitting "Back"
+  if (numericTargetIndex === 2 && previousStoredActiveStep < 2) {
     if (typeof window.executeStepTwoDynamicFormInjection === "function") {
       window.executeStepTwoDynamicFormInjection(true);
     } else {
-      // FIX: Crash safely and stop navigation if the core injection function is missing
-      console.error("[7-Step Router Fatal Exception] executeStepTwoDynamicFormInjection is missing from global memory layers.");
-      return false; 
+      console.error("[Router Failure] executeStepTwoDynamicFormInjection is missing from global scope frames.");
+      return false;
     }
   }
 
-  // 💳 ZERO-HARDCODE CHECKOUT PROCESSING GATEWAY:
-  if (numericTargetIndex === maximumWizardSteps && window.currentWizardActiveStep === (maximumWizardSteps - 1)) {
+  // 💳 ZERO-HARDCODE CHECKOUT PROCESSING GATEWAY
+  if (maximumWizardSteps && numericTargetIndex === maximumWizardSteps && previousStoredActiveStep === (maximumWizardSteps - 1)) {
     if (typeof executeOnboardingTransactionPayloadSubmitVanilla === "function") {
-      console.log("[7-Step Router] Intercepting final phase. Transferring state lock control to transaction module...");
+      console.log("[Router] Relocating focus state payload down to transaction gateway module...");
       executeOnboardingTransactionPayloadSubmitVanilla(numericTargetIndex);
       return false;
     }
@@ -6848,54 +6857,53 @@ function goToNextWizardStep(targetStepIndex, event = null) {
     cacheAndRestoreWizardFormStatesVanilla(false);
   }
 
+    // ============================================================================ //
+  // 🔄 PANEL VISIBILITY CONTAINMENT LOOP                                         //
+  // ============================================================================ //
+  let isTargetPanelFoundAndDisplayed = false;
+  const allWizardPanelsArray = document.querySelectorAll('[id^="step-panel-"]');
+
+  allWizardPanelsArray.forEach(function(currentPanelElement) {
+    // Parse step numbers directly from individual HTML node IDs to avoid manual limits checking
+    const extractedPanelIdIndex = parseInt(currentPanelElement.id.replace("step-panel-", ""), 10);
+    
+    if (!isNaN(extractedPanelIdIndex)) {
+      if (extractedPanelIdIndex === numericTargetIndex) {
+        currentPanelElement.classList.add("active");
+        currentPanelElement.style.removeProperty("display");
+        currentPanelElement.style.setProperty("display", "block", "important");
+        isTargetPanelFoundAndDisplayed = true;
+        console.log(`[Router View] Displaying matching content block container: #${currentPanelElement.id}`);
+      } else {
+        currentPanelElement.classList.remove("active");
+        currentPanelElement.style.removeProperty("display");
+        currentPanelElement.style.setProperty("display", "none", "important");
+      }
+    }
+  });
+
+  if (!isTargetPanelFoundAndDisplayed) {
+    console.error(`[Router Error] View Transition Halts: #step-panel-${numericTargetIndex} is missing from the layout.`);
+    return false;
+  }
+
+  // CRITICAL VISIBILITY FIX: Lock active tracking state variable AFTER visual panels change places
   window.currentWizardActiveStep = numericTargetIndex;
 
-// ============================================================================ //
-// 🔄 RE-ENGINEERED PANEL VISIBILITY LOOP (LOCAL VARIABLE SYNCHRONIZATION)
-// ============================================================================ //
-let isTargetPanelFoundAndDisplayed = false;
-
-for (let i = 1; i <= maximumWizardSteps; i++) {
-    const currentPanelElement = document.getElementById(`step-panel-${i}`);
-    if (currentPanelElement) {
-        if (i === numericTargetIndex) {
-            currentPanelElement.classList.add("active");
-            currentPanelElement.style.removeProperty("display");
-            currentPanelElement.style.setProperty("display", "block", "important");
-            isTargetPanelFoundAndDisplayed = true;
-            console.log(`[7-Step Router View] Surface layers fully displayed for container: #step-panel-${i}`);
-        } else {
-            currentPanelElement.classList.remove("active");
-            currentPanelElement.style.removeProperty("display");
-            currentPanelElement.style.setProperty("display", "none", "important");
-        }
-    }
-}
-
-if (!isTargetPanelFoundAndDisplayed) {
-    console.error(`[7-Step Router Fatal Error] View Transition Interrupted: #step-panel-${numericTargetIndex} could not be uncovered.`);
-    return false;
-}
-
-// Update the global state tracker to match the physical panel step now displayed
-window.currentWizardActiveStep = numericTargetIndex;
-
-// FIXED: Pass the local numeric target variable so timeline lights match the view
-if (typeof updateApplicationMapTimelineBubbles === "function") {
+  // CRITICAL TIMING CORRECTION: Force timeline track bubble lights to sync synchronously BEFORE running invoice math
+  if (typeof updateApplicationMapTimelineBubbles === "function") {
     updateApplicationMapTimelineBubbles(numericTargetIndex);
-}
+  }
 
-if (typeof updateDynamicPricingMatrixVanilla === "function") {
+  if (typeof updateDynamicPricingMatrixVanilla === "function") {
     updateDynamicPricingMatrixVanilla();
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  return true;
 }
 
-window.scrollTo({ top: 0, behavior: "smooth" });
-return true;
-}
 window.goToNextWizardStep = goToNextWizardStep;
-
-
-
 
 
 
@@ -6905,48 +6913,46 @@ window.goToNextWizardStep = goToNextWizardStep;
 
 /**
  * Universal timeline visual reflector. Updates sidebar bubble tracks.
- * Zero Hardcoding: Dynamically assesses step limits without manual numerical fallbacks.
+ * Hardened Fix: Protects mathematical variables to prevent unhandled script crashes.
  * @param {number|string} activeIndex - The destination wizard step index.
  */
 function updateApplicationMapTimelineBubbles(activeIndex) {
   const rows = document.querySelectorAll(".toc-step-row");
-  if (!rows || rows.length === 0) return;
+  if (!rows || rows.length === 0) {
+    console.warn("[Timeline Sync] No elements matching selector '.toc-step-row' found in DOM layout.");
+    return;
+  }
 
   const currentStepNum = parseInt(activeIndex, 10) || 1;
-  console.log(`[Timeline Sync] Lighting application map nodes for active position: ${currentStepNum}`);
+  console.log(`[Timeline Sync] Dispatching clean visibility pass for step index: ${currentStepNum}`);
 
   rows.forEach(function(row, idx) {
+    if (!row) return;
+    
     const dotElement = row.querySelector(".toc-dot") || row.querySelector(".step-indicator-dot");
     const loopIndex = idx + 1;
 
-    // Isolate transformations strictly to timeline entities to protect multi-step forms from style leakage
-    row.classList.remove("toc-active", "toc-completed");
+    // Hard reset: Strip away all possible conflicting string classes to clear hardcoded blocks
+    row.className = "toc-step-row";
+    row.classList.remove("toc-active", "toc-completed", "active", "completed");
     
-    // Explicit timeline element scoping prevents clearing .active from form step panels
-    if (row.id && row.id.includes("timeline-row-")) {
-      row.classList.remove("active", "completed");
-    }
-
     if (dotElement) {
+      dotElement.innerHTML = ""; // Wipes out pre-existing checked layouts icons
       dotElement.style.background = "";
       dotElement.style.borderColor = "";
       dotElement.style.boxShadow = "";
     }
 
+    // Direct data-driven step matching evaluation loops
     if (loopIndex < currentStepNum) {
-      row.classList.add("toc-completed");
-      if (row.id && row.id.includes("timeline-row-")) {
-        row.classList.add("completed");
-      }
+      row.classList.add("toc-completed", "completed");
       if (dotElement) {
+        dotElement.innerHTML = '<i class="fa-solid fa-check" style="font-size: 0.65rem; color: #10b981;"></i>';
         dotElement.style.background = "rgba(16, 185, 129, 0.15)";
         dotElement.style.borderColor = "#10b981";
       }
     } else if (loopIndex === currentStepNum) {
-      row.classList.add("toc-active");
-      if (row.id && row.id.includes("timeline-row-")) {
-        row.classList.add("active");
-      }
+      row.classList.add("toc-active", "active");
       if (dotElement) {
         dotElement.style.background = "#10b981";
         dotElement.style.borderColor = "#10b981";
@@ -6957,11 +6963,14 @@ function updateApplicationMapTimelineBubbles(activeIndex) {
   // Synchronize horizontal progress bar entirely from system configuration states
   const horizontalProgressFill = document.getElementById("timeline-progress-fill-node");
   if (horizontalProgressFill) {
-    // Pure data-driven resolution without a hardcoded fallback limit string check
-    const maximumSystemSteps = parseInt(window.totalWizardExpectedSteps, 10);
+    // Pure data-driven validation: Safely sets a baseline count if variables are uninitialized
+    const rawTotalSteps = window.totalWizardExpectedSteps;
+    const maximumSystemSteps = rawTotalSteps ? parseInt(rawTotalSteps, 10) : rows.length;
     
     let percentageProgressWidth = 0;
-    if (maximumSystemSteps && maximumSystemSteps > 1) {
+    
+    // Safety clamp stops calculations from dividing by zero or processing NaN bounds
+    if (!isNaN(maximumSystemSteps) && maximumSystemSteps > 1) {
       percentageProgressWidth = ((currentStepNum - 1) / (maximumSystemSteps - 1)) * 100;
     }
 
@@ -6970,24 +6979,17 @@ function updateApplicationMapTimelineBubbles(activeIndex) {
   }
 }
 
-// 2. Hardened Global Export Guard: Protect master router function integrity
+// Hardened Global Export Guard: Protect master router function integrity
 if (typeof window.goToNextWizardStep !== "function") {
   if (typeof goToNextWizardStep === "function") {
     window.goToNextWizardStep = goToNextWizardStep;
-  } else {
-    console.log("[Lifecycle Bridge] Core navigation engine initialized as late-binding listener proxy.");
-    window.goToNextWizardStep = function(targetStepIndex, event = null) {
-      if (typeof window.goToNextWizardStep === "function" && window.goToNextWizardStep !== arguments.callee) {
-        return window.goToNextWizardStep(targetStepIndex, event);
-      }
-      console.warn("[Lifecycle Bridge Warning] Navigation called before Master Router finished mounting.");
-    };
   }
-} else {
-  console.log("[Lifecycle Bridge] Verified: Master Core Router already securely locked into global memory layout.");
 }
 
 window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles;
+
+
+
 
 
 
@@ -7330,6 +7332,8 @@ function runUnifiedWizardBootEngine() {
     }
   });
 
+  
+
   // 5. DATA INJECTIONS GENERATION PASS (Executes safely behind locked hidden steps)
   if (typeof autoInjectMainWebsitePricingPlan === "function") {
     autoInjectMainWebsitePricingPlan();
@@ -7466,6 +7470,46 @@ window.initSevenStepWizardSystem = initSevenStepWizardSystem;
 window.updateWizardStepProgressIndicatorBubbles = updateWizardStepProgressIndicatorBubbles;
 
 
+// ============================================================================ //
+// 📡 UNIFIED BACKGROUND PRE-FETCH MODULE (LATENCY REMOVAL ENGINE)              //
+// ============================================================================ //
+
+/**
+ * Pre-fetches the dynamic Step 2 form script in the background during Step 1.
+ * Pure dynamic pattern: Strips hardcoded timing gates. Operates non-blockingly.
+ */
+function prefetchStepTwoDynamicAsset() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const rawServiceSlug = urlParams.get('service') || urlParams.get('package') || urlParams.get('id') || "";
+  
+  if (!rawServiceSlug) return;
+  const cleanKey = String(rawServiceSlug).toLowerCase().trim().replace(/[\s_]+/g, "-");
+  
+  // Construct the expected file path matching your repository deployment schema
+  // Example: /assets/js/forms/new-entrant-audit-form.js
+  const dynamicAssetUrlPath = `./assets/js/forms/${cleanKey}-form.js`;
+  
+  console.log(`[Pre-fetch Hub] Proactively pre-loading dynamic script asset in background: "${dynamicAssetUrlPath}"`);
+
+  // Native non-blocking script injection pre-fetch mechanism
+  const backgroundScriptLoader = document.createElement("script");
+  backgroundScriptLoader.src = dynamicAssetUrlPath;
+  backgroundScriptLoader.async = true;
+  backgroundScriptLoader.defer = true;
+  
+  backgroundScriptLoader.onload = function() {
+    console.log(`[Pre-fetch Success] Dynamic module "${cleanKey}-form.js" successfully cached in memory before user clicked Next.`);
+  };
+  
+  backgroundScriptLoader.onerror = function() {
+    console.warn(`[Pre-fetch Notice] Could not pre-fetch script via path "${dynamicAssetUrlPath}". The main script loader will handle it on step transition.`);
+  };
+
+  document.head.appendChild(backgroundScriptLoader);
+}
+
+// Expose cleanly to global parameters scope window records
+window.prefetchStepTwoDynamicAsset = prefetchStepTwoDynamicAsset;
 
 
 
@@ -7594,7 +7638,5 @@ window.updateWizardStepProgressIndicatorBubbles = updateWizardStepProgressIndica
   }
   setTimeout(bootProductionPatchEngine, 40);
 })();
-
-
 
 
