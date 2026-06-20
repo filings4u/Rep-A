@@ -46,3 +46,30 @@ function validateAndLaunchAgentChatSession(event) {
         `;
     }
 }
+
+
+// ============================================================================ //
+// ⏱️ REAL-TIME CHRONOLOGICAL CLOCK COMPONENT (12-HOUR TIME REGIME)
+// ============================================================================ //
+function initializeDynamicChronometerWidget12Hr() {
+  const clockNode = document.getElementById("wizard-live-clock-timestamp");
+  if (!clockNode) return; // Prevent interval loops if element is missing
+
+  function refreshLiveTime() {
+    const nowTimestamp = new Date();
+    let hourDigits = nowTimestamp.getHours();
+    const minuteDigits = nowTimestamp.getMinutes().toString().padStart(2, '0');
+    const secondDigits = nowTimestamp.getSeconds().toString().padStart(2, '0');
+    const timePeriodMeridiem = hourDigits >= 12 ? 'PM' : 'AM';
+
+    hourDigits = hourDigits % 12;
+    hourDigits = hourDigits ? hourDigits : 12; 
+
+    const formattedTimeStr = `${hourDigits}:${minuteDigits}:${secondDigits} ${timePeriodMeridiem}`;
+    if (clockNode) clockNode.textContent = formattedTimeStr;
+  }
+
+  refreshLiveTime();
+  setInterval(refreshLiveTime, 1000);
+}
+window.initializeDynamicChronometerWidget12Hr = initializeDynamicChronometerWidget12Hr;

@@ -1,43 +1,51 @@
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#10b981">
-  <title>Secured Enterprise Compliance Deployment Wizard | filings4u</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#10b981">
+    <title>Secured Enterprise Compliance Deployment Wizard | filings4u</title>
 
-  <!-- 1. CORE THIRD-PARTY API DEPENDENCIES & SECURITY FILTERS -->
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  
- <script src="assets/js/wizard-anti-crash.js" defer></script>
+    <!-- 1. CORE THIRD-PARTY API DEPENDENCIES & SECURITY FILTERS -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="assets/js/wizard-anti-crash.js" defer></script>
 
-  <!-- 2. DATA LAYER MODULE CONFIGURATIONS (LOADED EARLY FOR SYSTEM AVAILABILITY) -->
-  <script src="assets/js/stripe.js" defer></script>
-  <script src="assets/js/state-pricing.js"></script>
-  <script src="assets/js/government-pricing.js"></script>
+    <!-- 2. STYLESHEETS & FONTS TYPOGRAPHY ASSETS -->
+    <link rel="icon" type="image/png" href="images/fav.png">
+    <link rel="stylesheet" href="assets/css/wizard.css">
+    <link rel="stylesheet" href="assets/css/wizard-mobile.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- ✍️ EXTENSIBLE CURSIVE FONTS: Unlocks cursive typography for signature previews -->
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+ 
 
-  <!-- 3. STYLESHEETS & FONTS TYPOGRAPHY ASSETS -->
-  <link rel="icon" type="image/png" href="images/fav.png">
-  <link rel="stylesheet" href="assets/css/wizard.css">
-  <link rel="stylesheet" href="assets/css/wizard-mobile.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
-  <!-- ✍️ EXTENDED CURSIVE FONTS: Unlocks high-utility cursive text scaling for signature previews from Block 66 -->
-  <link href="https://googleapis.com/css2?family=Alex+Brush&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome vector iconography rendering links asset block -->
-  <link rel="stylesheet" href="https://cloudflare.com">
+<!-- SYSTEM REFILED COMPLIANT APPLICATION SCRIPT TAG LOADING MATRIX -->
 
-  <!-- 4. LOCAL SCRIPTS CORE CONTROLLERS (DEFERRED TO PREVENT INITIALIZATION CRASHES) -->
-  <script src="assets/js/wizard-calculations-engine.js" defer></script>
-  <script src="assets/js/wizard-layout.js" defer></script>
-  <script src="assets/js/wizard-chat-widget.js" defer></script>
+<!-- 1. The Core Data Foundations -->
+<script src="assets/js/wizard-pricing-db.js" defer></script>
 
+<!-- 2. The Core Mathematical Calculations Engine -->
+<script src="assets/js/wizard-calculations.js" defer></script>
+
+<!-- 3. Navigation State Handlers and Step UI Routers -->
+<script src="assets/js/wizard-steps.js" defer></script>
+
+<!-- 4. Global UI Visual Framework & Templates Layouts -->
+<script src="assets/js/wizard-layout.js" defer></script>
+
+<!-- 5. Dynamic Marketplace Extensions and Checkout Itemization Summaries -->
+<script src="assets/js/wizard-upsells.js" defer></script>
+
+<!-- 6. Real-Time Customer Support Chat Interface Widget -->
+<script src="assets/js/wizard-chat-widget.js" defer></script>
 
 </head>
+
 
 <body>
   <!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE -->
@@ -209,8 +217,6 @@
 <div class="wizard-action-footer">
     <button type="button" class="btn-wizard-alt element-hidden">Back</button>
     <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-    
-    <!-- FIXED: Added 'event' as the second parameter argument to block native browser submit reloads -->
     <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(2, event)">Continue to Form</button>
 </div>
 
@@ -224,7 +230,7 @@
        <!-- ============================================================================ -->
       <!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES                  -->
       <!-- ============================================================================ -->
-      <div class="wizard-panel" id="step-panel-2" style="display: none;">
+      <div class="wizard-panel master-onboarding-form" id="step-panel-2" data-step="2" style="display: none;">
         
         <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px;">
           <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
@@ -324,7 +330,7 @@
 
         <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR -->
         <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;">
-          <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1)" style="cursor: pointer;">Back</button>
+<button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1, event)" style="cursor: pointer;">Back</button>
           <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
           <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)" style="cursor: pointer;">Continue to Tiers</button>
         </div>
@@ -335,7 +341,7 @@
       <!-- ============================================================================ -->
       <!-- 🚀 STEP 3 PANEL: SPLIT DESIGN COMPLIANCE ADD-ONS MARKET                    -->
       <!-- ============================================================================ -->
-      <div class="wizard-panel" id="step-panel-3" style="display: none;">
+      <div class="wizard-panel master-onboarding-form" id="step-panel-3" data-step="3" style="display: none;">
         
         <!-- Unified Responsive Workspace Grid Framework Layout -->
         <div class="workspace-split-layout" style="display: flex; gap: 30px; width: 100%; box-sizing: border-box; align-items: start;">
@@ -441,7 +447,7 @@
         <!-- 🔘 STEP 3 NAVIGATION CONTROL BAR -->
         <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;">
           <!-- FIXED: Changed broken goToPreviousWizardStep reference to look up goToNextWizardStep(2) instead -->
-          <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(2)" style="cursor: pointer;">Back</button>
+<button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(2, event)" style="cursor: pointer;">Back</button>
           <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
           <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(4)" style="cursor: pointer;">Continue</button>
         </div>
@@ -449,137 +455,129 @@
       </div> <!-- /End Step 3 Panel Wrapper View -->
 
 
-      <!-- ============================================================================ -->
-      <!-- 📋 STEP 4 PANEL: POWER OF ATTORNEY AND DIGITAL COVENANTS                    -->
-      <!-- ============================================================================ -->
-      <div class="wizard-panel" id="step-panel-4" style="display: none;">
-        
-        <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px;">
-          <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Digital Power of Attorney Execution</h2>
-          <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Please review the legal mandates, agency provisions, and electronic signature allocations below.</p>
-        </div>
-
-        <!-- Unified Responsive Workspace Framework Layout Grid -->
-        <div class="workspace-split-layout" style="display: flex; gap: 30px; width: 100%; box-sizing: border-box; align-items: start;">
-          
-          <!-- LEFT MAIN COLUMN: TALL LEGAL AGREEMENT WRAPPER BLOCK -->
-          <div style="background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; min-height: 480px; flex: 2; min-width: 0; width: 100%;">
-            
-            <!-- High-Density Legal Text Scrolling Panel Frame Context -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; font-size: 0.82rem; color: #334155; line-height: 1.6; max-height: 250px; overflow-y: scroll; font-family: system-ui, sans-serif; text-align: justify; margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
-              <p style="margin-top: 0; font-weight: 800; color: var(--navy, #0a1f44);">LIMITED POWER OF ATTORNEY & CORPORATE AGENCY AGREEMENT</p>
-              <p>KNOW ALL MEN BY THESE PRESENTS, that the undersigned Principal hereby nominates, constitutes, and appoints <strong>Filings4U LLC</strong> and its authorized operational agents, officers, and designees, as the true and lawful Attorney-in-Fact and Corporate Agent for the limited purpose of executing, modifying, translating, and processing official regulatory structural items, corporate charter setup applications, state administrative filings, and licensing certificates.</p>
-              <p>The Principal hereby grants and conveys unto said Attorney-in-Fact full power and operational authority to do and perform any and all acts necessary, incidental, or mandatory to the performance and execution of the powers herein expressly granted, as fully to all intents and purposes as the Principal might or could do if personally present. This includes, without limitation, the authority to submit electronic credentials, sign registry certificates, file articles of organization, coordinate tax filings, manage operating declarations, and represent tracking documentation across state departments, the Internal Revenue Service, and federal transportation administration bodies.</p>
-              <p>This Limited Power of Attorney is executed electronically pursuant to the provisions of the Electronic Signatures in Global and National Commerce Act (ESIGN) and Uniform Electronic Transactions Act (UETA). The Principal agrees that using digital input validations constitutes an un-revoked operational token, confirming ratification of all filings completed under this mandate. This proxy configuration remains functional unless dissolved by written structural notice or system revocation alerts submitted to Filings4U management processing networks.</p>
-            </div>
-
-            <!-- Live Execution Fields & Signature Preview Target Container Block -->
-            <div class="signature-fields-responsive-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; align-items: end;">
-              <div>
-                <label for="poa_signer_printed" style="display: block; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy, #0a1f44); margin-bottom: 6px; letter-spacing: 0.3px;">Type Full Name to Sign</label>
-                <!-- FIXED ID: Re-mapped to poa_signer_printed to connect directly with your Block 12, 16, & 66 engines -->
-                <input type="text" id="poa_signer_printed" required placeholder="Johnathan Doe" style="width: 100%; padding: 12px; border: 1px solid var(--border, #e2e8f0); border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; color: var(--navy, #0a1f44); font-weight: 600;">
-              </div>
-              <div>
-                <label style="display: block; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy, #0a1f44); margin-bottom: 6px; letter-spacing: 0.3px;">Cursive Digital Preview Output Token</label>
-                <!-- FIXED ID: Re-mapped to cursive-signature-preview to hook cleanly to initCursiveSignatureCaptureLivePreview() -->
-                <div id="cursive-signature-preview" style="width: 100%; height: 45px; padding: 0 12px; background: #fff; border: 1px solid var(--border, #e2e8f0); border-radius: 6px; display: flex; align-items: center; box-sizing: border-box; font-family: 'Dancing Script', 'Caveat', cursive, sans-serif; font-size: 1.65rem; color: #0066cc; user-select: none; white-space: nowrap; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);">Your Signature</div>
-              </div>
-            </div>
-
-          </div> <!-- /LEFT MAIN COLUMN -->
-
-          <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
-                <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
-    <aside class="sticky-timeline-sidebar">
-  <div class="sidebar-header-box">
-    <h3 class="sidebar-title-label">
-      <i class="fa-solid fa-list-check"></i> Application Map
-    </h3>
-    <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
+  <!-- ============================================================================ -->
+<!-- 📋 STEP 4 PANEL: POWER OF ATTORNEY AND DIGITAL COVENANTS                     -->
+<!-- ============================================================================ -->
+<div class="wizard-panel master-onboarding-form" id="step-panel-4" data-step="4" style="display: none;">
+  <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px; position: relative;">
+    <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Digital Power of Attorney Execution</h2>
+    <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Please scroll to the bottom of the legal mandate to review and unlock the signature input panel.</p>
   </div>
-  
-  <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline">
+
+  <!-- Unified Responsive Workspace Framework Layout Grid -->
+  <div class="workspace-split-layout" style="display: flex; gap: 30px; width: 100%; box-sizing: border-box; align-items: start;">
     
-    <!-- Step 1 Layout Row Block -->
-    <div id="timeline-row-1" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">1. Selected Package</span>
-        <span class="toc-step-desc">Items and inclusions</span>
+    <!-- LEFT MAIN COLUMN: TALL LEGAL AGREEMENT WRAPPER BLOCK -->
+    <div style="background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; min-height: 480px; flex: 2; min-width: 0; width: 100%;">
+      
+      <!-- Legal Text Box Frame (Contains your unedited full agreement) -->
+      <div id="poa-scroll-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; font-size: 0.85rem; color: #334155; line-height: 1.6; max-height: 220px; overflow-y: scroll; font-family: system-ui, sans-serif; text-align: justify; margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+        LIMITED POWER OF ATTORNEY & CORPORATE AGENCY AGREEMENTWHEREAS, the undersigned Principal (hereinafter referred to as the "Principal"), on behalf of themselves and any business entity currently existing or to be formed through the services requested, does hereby nominatively appoint, designate, and empower filings4u, LLC (hereinafter referred to as the "Attorney-in-Fact"), an Illinois limited liability company and subsidiary of Roseland Companies, LLC, along with its authorized operational agents, officers, employees, and designees, as its true and lawful Attorney-in-Fact and Corporate Agent in accordance with the strict terms and limitations set forth herein.<br><br>
+        1. EXPRESS LIMITED SCOPE OF APPOINTMENT<br>
+        The scope of this appointment is strictly restricted and expressly limited to administrative, regulatory, and compliance-related document processing. The Attorney-in-Fact is granted the authority to execute, sign, modify, amend, translate, submit, and process applications, registrations, forms, and renewals on behalf of the Principal across the following commercial vectors:<br>
+        Entity Formation & Corporate Management: Articles of Organization (LLCs), Articles of Incorporation, DBAs, Nonprofits, Series LLCs, Foreign Qualifications, Reinstatements, Good Standings, Bylaws, and Resolutions.<br>
+        Intellectual Property & Operational Compliance: Trademark/Servicemark filings, Annual Reports, Operating Agreements, Registered Agent service maintenance, Business Licenses, EIN procurement, CLIA Certificates, and NDAs.<br>
+        Tax Registration & Filings: Federal/State tax configurations, Franchise Tax reporting, Sales Tax registrations, Payroll Tax (940/941) setups, Heavy Highway Vehicle Use Tax (Form 2290), and 1099-NEC/MISC processing.<br>
+        Government Procurement: CAGE Code Registrations, DUNS Number processing, SAM.gov transitions, MBE Certifications, and WOSB Certifications.<br>
+        Transportation & Trucking Compliance: Trucker/Broker Motor Carrier Authorities (MC/DOT Numbers), Unified Carrier Registrations (UCR), Standard Carrier Alpha Codes (SCAC), DOT Drug & Alcohol Consortium enrollment, Driver Qualification Files, Process Agent designations (BOC-3 filings), IFTA registrations, HAZMAT registrations, IRP plates, and ELD coordination.<br><br>
+        2. GRANT OF OPERATIONAL POWERS<br>
+        The Principal hereby grants, conveys, and delivers unto the said Attorney-in-Fact full operational power, authority, and jurisdiction to undertake, execute, and perform any and all acts deemed necessary, incidental, or legally obligatory to fulfill the service requests initiated by the Principal within the filings4u, LLC digital wizard interface. This grant explicitly includes: The authority to submit electronic credentials for identity verification purposes; The right to sign public registry certificates as an "Organizer," "Incorporator," "Authorized Representative," or "Preparer"; The capacity to act as a third-party designee before state departments, Departments of Revenue, the Internal Revenue Service (IRS), the FMCSA, the DOT, and equivalent international ministries.<br><br>
+        3. INTERNATIONAL & CROSS-BORDER ADAPTABILITY<br>
+        This authorization extends past domestic US parameters to include Canadian federal and provincial registries (including Corporations Canada and provincial revenue ministries) and other international regulatory structures where the Principal explicitly directs filings4u, LLC to act.<br><br>
+        4. ELECTRONIC SIGNATURES, ESIGN ACT COMPLIANCE, AND INTENT<br>
+        This Agreement is executed electronically in strict conformity with the federal Electronic Signatures in Global and National Commerce Act (ESIGN), the Uniform Electronic Transactions Act (UETA), and applicable international electronic commerce frameworks. The Principal expressly understands, agrees, and consents that typing their name into the designated input field—resulting in a script-generated cursive font rendering of their name on the screen—constitutes their valid, legally binding electronic signature. The Principal affirms that this mechanical action represents an explicit intent to sign, execute, and deliver this Limited Power of Attorney and that such digital authentication carries the identical legal weight, validity, and enforceability of a handwritten "wet" ink signature.<br><br>
+        5. NO LEGAL SERVICES RENDERED (UPL DISCLAIMER)<br>
+        The Principal acknowledges and agrees that filings4u, LLC is a document preparation, filing, and administrative compliance service provider. filings4u, LLC, its officers, employees, and parent entities do not provide legal advice, legal opinions, or architectural legal strategies.<br><br>
+        6. RATIFICATION, REVOCATION, AND DURATION<br>
+        This agreement shall remain in full force and effect from the date of electronic execution until explicitly revoked. Revocation may occur via written physical notification delivered to filings4u, LLC corporate networks or electronic cancellation processed through verified client portal pathways.<br><br>
+        7. AFFIRMATION AND ACCEPTANCE<br>
+        By executing this document through digital input validation, the Principal affirms that they possess the legal capacity, administrative ownership, or explicit corporate authorization required to execute this contract on behalf of themselves or the commercial entity represented.<br><br>
+        Corporate Entity Information:<br>
+        filings4u, LLC | A Subsidiary of Roseland Companies, LLC<br>
+        filings4u Compliance Hub | Roseland Companies Management<br>
+        Contact Support: support@filings4u.com
       </div>
-    </div>
 
-    <!-- Step 2 Layout Row Block -->
-    <div id="timeline-row-2" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">2. Service Form</span>
-        <span class="toc-step-desc">Purchase configuration profile</span>
-      </div>
-    </div>
+ <!-- Live Execution Fields & Signature Preview Target Container Block --> 
+<div style="display: flex; flex-direction: column; gap: 14px;"> 
+    
+    <!-- MICROCOPY 1: Above Signature Instructional Label & Dynamic Tooltip Block --> 
+    <div style="display: flex; align-items: center; justify-content: space-between;"> 
+        <div style="display: flex; flex-direction: column; gap: 2px;"> 
+            <label for="poa_typed_signature" style="display: block; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy, #0a1f44); letter-spacing: 0.3px; margin: 0;">Full Legal Name</label> 
+            <span style="display: block; font-size: 0.725rem; color: var(--slate, #64748b); line-height: 1.2;">Type your name exactly as it appears on your government-issued ID. Our system will generate your digital signature.</span> 
+        </div> 
+        
+        <!-- Contextual Tooltip Icon Container --> 
+        <div class="poa-tooltip-anchor" style="position: relative; margin-left: 12px;"> 
+            <button type="button" id="poa-info-btn" style="background: #f1f5f9; border: 1px solid var(--border, #e2e8f0); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--navy, #0a1f44); font-weight: bold; cursor: pointer; font-size: 0.85rem;" onclick="window.togglePoaContextualTooltipDisplay(event)">ⓘ</button> 
+            <div id="poa-tooltip-card" style="display: none; position: absolute; bottom: 36px; right: 0; width: 320px; background: #0a1f44; color: #ffffff; padding: 16px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); font-size: 0.775rem; line-height: 1.4; z-index: 1000; text-align: left; box-sizing: border-box;"> 
+                <div id="poa-tooltip-content-target">Loading authorization context data...</div> </div> 
+        </div> 
+    </div> 
+    
+    <!-- Input Box and Cursive Output Row Layout --> 
+    <div class="signature-fields-responsive-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; align-items: end;"> 
+        <div> 
+            <!-- 🟢 FIXED: Changed ID to poa_typed_signature and stripped the hardcoded disabled attribute --> 
+            <input type="text" id="poa_typed_signature" name="poa_typed_signature" required placeholder="e.g., Johnathan R. Doe" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border, #e2e8f0); border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; color: var(--navy, #0a1f44); font-weight: 600; background: #ffffff; transition: all 0.2s;"> 
+        </div> 
+        <div> 
+            <div id="cursive-signature-preview" style="width: 100%; height: 38px; padding: 0 12px; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 6px; display: flex; align-items: center; box-sizing: border-box; font-family: 'Dancing Script', 'Caveat', cursive, sans-serif; font-size: 1.5rem; color: #0066cc; user-select: none; white-space: nowrap; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);">Your Signature</div> 
+        </div> 
+    </div> 
+    
+    <!-- MICROCOPY 3: Below Signature Real-Time Legal Affirmation --> 
+    <p style="margin: 0; font-size: 0.725rem; color: var(--slate, #475569); line-height: 1.4; text-align: left; background: #f8fafc; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border, #e2e8f0);"> 📝 <strong>Legal Acknowledgment:</strong> By typing your name above, you are creating a legally binding digital signature. You explicitly authorize filings4u, LLC to act as your administrative attorney-in-fact to execute and submit the regulatory documents selected in this wizard. </p> 
+    
+    <!-- MICROCOPY 4: The Mandatory Gatekeeper Checkbox Alignment --> 
+    <div style="display: flex; align-items: flex-start; gap: 10px; margin-top: 4px; text-align: left;"> 
+        <!-- 🟢 FIXED: Changed ID to poa_consent_checkbox and stripped the hardcoded disabled attribute --> 
+        <input type="checkbox" id="poa_consent_checkbox" name="poa_consent_checkbox" class="addon-checkbox" style="margin-top: 3px;" onchange="if(typeof window.evaluatePoaInputStateMatrix === 'function') window.evaluatePoaInputStateMatrix()"> 
+        <label for="poa_consent_checkbox" style="font-size: 0.775rem; font-weight: 600; color: var(--navy, #0a1f44); cursor: pointer; line-height: 1.4; user-select: none;"> I agree to the Limited Power of Attorney & Corporate Agency Agreement, expressly consent to conduct this transaction electronically under the ESIGN Act, and authorize filings4u, LLC to sign and file these documents on my behalf. </label> 
+    </div> 
+</div> 
+</div>
 
-    <!-- Step 3 Layout Row Block -->
-    <div id="timeline-row-3" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">3. Add-Ons</span>
-        <span class="toc-step-desc">Compliance assets & shields</span>
-      </div>
-    </div>
-    <!-- Step 4 Layout Row Block -->
-    <div id="timeline-row-4" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">4. Power of Attorney</span>
-        <span class="toc-step-desc">Digital signature execution</span>
-      </div>
-    </div>
+<!-- Engineering Compliance Hidden Metadata Elements Framework (V2026.1) --> 
+<input type="hidden" id="poa_meta_version" value="v2026.1"> 
+<input type="hidden" id="poa_meta_intent_string" value=""> 
+<input type="hidden" id="poa_meta_font_style" value="Dancing Script, Caveat, cursive"> 
+<input type="hidden" id="poa_meta_timestamp_utc" value=""> 
+<input type="hidden" id="poa_meta_user_agent" value=""> 
 
-    <!-- Step 5 Layout Row Block -->
-    <div id="timeline-row-5" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">5. Purchase Summary</span>
-        <span class="toc-step-desc">Order item breakdowns</span>
-      </div>
-    </div>
+<!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD --> 
+<aside class="sticky-timeline-sidebar"> 
+    <div class="sidebar-header-box"> 
+        <h3 class="sidebar-title-label"><i class="fa-solid fa-list-check"></i> Application Map</h3> 
+        <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p> 
+    </div> 
+    <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline"> 
+        <div id="timeline-row-1" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div> 
+        <div id="timeline-row-2" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div> 
+        <div id="timeline-row-3" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div> 
+        <div id="timeline-row-4" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div> 
+        <div id="timeline-row-5" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div> 
+        <div id="timeline-row-6" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div> 
+        <div id="timeline-row-7" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div> 
+    </nav> 
+</aside> 
+</div> 
 
-    <!-- Step 6 Layout Row Block -->
-    <div id="timeline-row-6" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">6. Secure Payment</span>
-        <span class="toc-step-desc">Encrypted checkout gateway</span>
-      </div>
-    </div>
+<!-- 🔘 STEP 4 NAVIGATION CONTROL BAR --> 
+<div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box; position: relative;"> 
+    <button type="button" class="btn-wizard-alt" onclick="goToPreviousWizardStep()" style="cursor: pointer;">Back</button> 
+    <button type="button" class="btn-wizard-save-progress" onclick="if(typeof executeSaveAndExitWorkflow==='function') executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button> 
+    
+  <!-- 🟢 FIXED ATTR: Button is permanently active on mount, ready to register click events and fire warnings -->
+<button type="button" id="poa-next-btn" class="btn-wizard-main" style="opacity: 1; cursor: pointer; pointer-events: auto !important;" onclick="if(typeof window.runActivePoaClickValidationGate === 'function') { window.runActivePoaClickValidationGate(event); } else { if(typeof goToNextWizardStep === 'function') goToNextWizardStep(5, event); }">Continue to Summary</button>
 
-    <!-- Step 7 Layout Row Block -->
-    <div id="timeline-row-7" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">7. Success Portal</span>
-        <span class="toc-step-desc">Account creation systems</span>
-      </div>
-    </div>
-
-  </nav>
-</aside>
-
-        </div> <!-- /End Framework Split Layout Container -->
-
-        <!-- 🔘 STEP 4 NAVIGATION CONTROL BAR -->
-        <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;">
-          <!-- FIXED: Re-mapped broken goToPreviousWizardStep reference to call our unified master router function -->
-          <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(3)" style="cursor: pointer;">Back</button>
-          <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-          <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(5)" style="cursor: pointer;">Continue to Summary</button>
-        </div>
-
-      </div> <!-- /End Step 4 Panel Wrapper View -->
+</div> 
+</div>
 
 
-      <!-- ============================================================================ -->
+
+     <!-- ============================================================================ -->
       <!-- 📋 STEP 5 PANEL: DYNAMIC PURCHASE SUMMARY                                   -->
       <!-- ============================================================================ -->
       <div class="wizard-panel" id="step-panel-5" style="display: none;">
@@ -717,7 +715,7 @@
       <!-- ============================================================================ -->
       <!-- 💳 STEP 6 PANEL: EMBEDDED FLAT CHECKOUT INTERFACE                           -->
       <!-- ============================================================================ -->
-      <div class="wizard-panel" id="step-panel-6" style="display: none;">
+      <div class="wizard-panel master-onboarding-form" id="step-panel-6" data-step="6" style="display: none;">
         
         <!-- Header Block Component -->
         <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px;">
@@ -842,9 +840,8 @@
 
         <!-- 🔘 STEP 6 FOOTER ACTION BAR -->
         <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;">
-          <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(5)" style="cursor: pointer;">Back</button>
+          <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(5, event)" style="cursor: pointer;">Back</button>
           <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-          <!-- FIXED ID HOOK: Matches selector references from Block 12 exactly -->
           <button type="button" id="wizard-next-trigger-btn" class="btn-wizard-main" onclick="executeOnboardingTransactionPayloadSubmitVanilla()" style="cursor: pointer; background: var(--primary, #10b981); color: #ffffff; border: none; box-shadow: 0 4px 12px rgba(16,185,129,0.25);">Complete Order &amp; Submit</button>
         </div>
 
