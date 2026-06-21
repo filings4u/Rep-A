@@ -44,42 +44,43 @@
 <!-- 6. Real-Time Customer Support Chat Interface Widget -->
 <script src="assets/js/wizard-chat-widget.js" defer></script>
 
+<script src="assets/js/stripe.js" defer></script>
+
 </head>
 
 
 <body>
-  <!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE -->
-  <nav style="background: #ffffff; border-bottom: 1px solid var(--border, #cbd5e1); padding: 12px 0;">
-    <div class="nav-container" style="max-width: 1450px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; box-sizing: border-box;">
-      
-      <!-- Responsive Logo Anchor Alignment -->
-      <a href="index.html" style="display: block;">
-        <img src="images/logo.png" alt="filings4u" style="height: 38px; width: auto; max-width: 100%; object-fit: contain; display: block;">
-      </a>
-      
-      <!-- Meta Controls Group Layer (Clock & Telephony Hub) -->
-      <div style="display: flex; align-items: center; box-sizing: border-box;">
-        <div class="header-meta-badge" style="font-size: 0.85rem; font-weight: 400; color: var(--navy, #0f172a); background: var(--light-bg, #f8fafc); padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border, #cbd5e1); display: flex; flex-wrap: wrap; align-items: center; gap: 12px;">
-          
-          <!-- FIXED: Font set to regular weight, removed <strong> tag -->
-          <a href="tel:+17732457079" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; font-weight: 400;">
-            <i class="fa-solid fa-phone" style="color: var(--primary, #10b981); margin-right: 6px;"></i>
-            <span>773-245-7079</span>
-          </a>
-          
-          <!-- Visual Separator Splitter Line Element -->
-          <span class="meta-divider" style="width: 1px; height: 14px; background: #cbd5e1;"></span>
-          
-          <!-- FIXED: Live clock set to regular weight, removed parent bold markers -->
-          <span style="display: inline-flex; align-items: center; font-weight: 400;">
-            <i class="fa-regular fa-clock" style="color: var(--primary, #10b981); margin-right: 6px;"></i>
-            <span id="wizard-live-clock-timestamp">Initializing clock...</span>
-          </span>
-          
-        </div>
-      </div>
-    </div>
-  </nav>
+
+<!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE (1450PX MARGIN FLUSH) --> 
+<div class="f4u-full-canvas-header" style="background: #ffffff; border-bottom: 1px solid #cbd5e1; padding: 12px 0; width: 100% !important; box-sizing: border-box; clear: both; display: block;"> 
+  <div class="nav-container" style="width: 100% !important; max-width: 1370px !important; margin: 0 auto !important; padding: 0 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; box-sizing: border-box;"> 
+    
+    <!-- Left Side: Flush Left Edge Alignment --> 
+    <a href="index.html" style="display: block; margin: 0 !important; padding: 0 !important;"> 
+      <img src="images/logo.png" alt="filings4u" style="height: 38px; width: auto; max-width: 100%; object-fit: contain; display: block;"> 
+    </a> 
+    
+    <!-- Right Side: Flush Right Edge Alignment --> 
+    <div style="display: flex !important; align-items: center !important; box-sizing: border-box; margin: 0 !important; padding: 0 !important;"> 
+      <div class="header-meta-badge" style="font-size: 0.85rem; font-weight: 400; color: #0f172a; background: #f8fafc; padding: 8px 14px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex; align-items: center; box-sizing: border-box; margin-right: 0 !important;"> 
+        <!-- Support Phone Call Link --> 
+        <a href="tel:+17732457079" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; font-weight: 400;"> 
+          <i class="fa-solid fa-phone" style="color: #10b981; margin-right: 6px;"></i> <span>773-245-7079</span> 
+        </a> 
+        <!-- Visual Separator Splitter Line Element --> 
+        <span class="meta-divider" style="width: 1px; height: 14px; background: #cbd5e1; margin: 0 12px;"></span> 
+        <!-- Live 12-Hour Ticking Clock Container Element --> 
+        <span style="display: inline-flex; align-items: center; font-weight: 400;"> 
+          <i class="fa-regular fa-clock" style="color: #10b981; margin-right: 6px;"></i> <span id="wizard-live-clock-timestamp">Initializing clock...</span> 
+        </span> 
+      </div> 
+    </div> 
+    
+  </div> 
+</div>
+
+
+
 
 
 <!-- MAIN WORKSPACE CONTAINER UNIT -->
@@ -715,137 +716,57 @@
       <!-- ============================================================================ -->
       <!-- 💳 STEP 6 PANEL: EMBEDDED FLAT CHECKOUT INTERFACE                           -->
       <!-- ============================================================================ -->
-      <div class="wizard-panel master-onboarding-form" id="step-panel-6" data-step="6" style="display: none;">
-        
-        <!-- Header Block Component -->
-        <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px;">
-          <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Encrypted Payment Entry</h2>
-          <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide tokenized card verification parameters to authorize and execute your secure checkout connection.</p>
-        </div>
-
-        <!-- Unified Responsive Workspace Grid Flex Framework Layout -->
-        <div class="workspace-split-layout" style="display: flex; gap: 30px; width: 100%; box-sizing: border-box; align-items: start;">
-          
-          <!-- COLUMN A (LEFT): SECURE FLAT STRIPE MOUNT HUB -->
-          <div style="flex: 2; background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; min-width: 0; width: 100%;">
-            
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
-              <div>
-                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy, #0a1f44);">Secure Credit Card Details</h3>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--slate, #64748b); line-height: 1.4; font-weight: 400;">All numbers remain completely shielded inside tokenized merchant processing vault pipelines.</p>
-              </div>
-              <div style="text-align: right; min-width: 100px;">
-                <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">Filing Total:</span>
-                <div style="font-size: 1.4rem; font-weight: 900; color: var(--primary, #10b981); font-family: monospace;" id="payment-gateway-total-display">$0.00</div>
-              </div>
-            </div>
-
-            <!-- 💳 SECURE CARDS CONTAINER CELL -->
-            <div class="wizard-input-group" style="margin-bottom: 8px; display: flex; flex-direction: column; gap: 10px;">
-              <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate, #64748b); display: block; margin-bottom: 2px;">
-                Secure Credit or Debit Card Payment
-              </label>
-              <div style="background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); width: 100%; box-sizing: border-box;">
-                <!-- CRUCIAL TARGET: Stripe Elements embeds card inputs completely FLAT inside this cell node -->
-                <div id="stripe-payment-element-mount-point"></div>
-              </div>
-            </div>
-
-            <!-- PCI Security Compliance Badge Groupings -->
-            <div style="border-top: 1px solid var(--border, #e2e8f0); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 0.75rem; color: var(--slate, #64748b); font-weight: 600;">
-              <div style="display: flex; align-items: center; gap: 8px; font-weight: 400;"><i class="fa-solid fa-shield-halved" style="color: var(--primary, #10b981);"></i> PCI-DSS Level 1 Compliant Architecture Seam</div>
-              <div style="display: flex; align-items: center; gap: 8px; font-weight: 400;"><i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i> Official Corporate Guarantee Protection Included</div>
-            </div>
-            
-          </div> <!-- /COLUMN A LEFT MAIN CONTAINER -->
-
-          <!-- COLUMN B (RIGHT): MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
-         <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
-    <aside class="sticky-timeline-sidebar">
-  <div class="sidebar-header-box">
-    <h3 class="sidebar-title-label">
-      <i class="fa-solid fa-list-check"></i> Application Map
-    </h3>
-    <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
+<div class="wizard-panel master-onboarding-form" id="step-panel-6" data-step="6" style="display: none;" onstylechange="if(this.style.display !== 'none') { window.syncTotalToPaymentDisplay(); window.initializeFlatStripeCheckoutElement(); }">
+  <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px;">
+    <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Encrypted Payment Entry</h2>
+    <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide tokenized card verification parameters to authorize and execute your secure checkout connection.</p>
   </div>
-  
-  <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline">
-    
-    <!-- Step 1 Layout Row Block -->
-    <div id="timeline-row-1" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">1. Selected Package</span>
-        <span class="toc-step-desc">Items and inclusions</span>
-      </div>
-    </div>
-
-    <!-- Step 2 Layout Row Block -->
-    <div id="timeline-row-2" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">2. Service Form</span>
-        <span class="toc-step-desc">Purchase configuration profile</span>
-      </div>
-    </div>
-
-    <!-- Step 3 Layout Row Block -->
-    <div id="timeline-row-3" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">3. Add-Ons</span>
-        <span class="toc-step-desc">Compliance assets & shields</span>
-      </div>
-    </div>
-    <!-- Step 4 Layout Row Block -->
-    <div id="timeline-row-4" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">4. Power of Attorney</span>
-        <span class="toc-step-desc">Digital signature execution</span>
-      </div>
-    </div>
-
-    <!-- Step 5 Layout Row Block -->
-    <div id="timeline-row-5" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">5. Purchase Summary</span>
-        <span class="toc-step-desc">Order item breakdowns</span>
-      </div>
-    </div>
-
-    <!-- Step 6 Layout Row Block -->
-    <div id="timeline-row-6" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">6. Secure Payment</span>
-        <span class="toc-step-desc">Encrypted checkout gateway</span>
-      </div>
-    </div>
-
-    <!-- Step 7 Layout Row Block -->
-    <div id="timeline-row-7" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">7. Success Portal</span>
-        <span class="toc-step-desc">Account creation systems</span>
-      </div>
-    </div>
-
-  </nav>
-</aside>
-
-        </div> <!-- /End Framework Split Layout Container -->
-
-        <!-- 🔘 STEP 6 FOOTER ACTION BAR -->
-        <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;">
-          <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(5, event)" style="cursor: pointer;">Back</button>
-          <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-          <button type="button" id="wizard-next-trigger-btn" class="btn-wizard-main" onclick="executeOnboardingTransactionPayloadSubmitVanilla()" style="cursor: pointer; background: var(--primary, #10b981); color: #ffffff; border: none; box-shadow: 0 4px 12px rgba(16,185,129,0.25);">Complete Order &amp; Submit</button>
+  <div class="workspace-split-layout" style="display: flex; gap: 30px; width: 100%; box-sizing: border-box; align-items: start;">
+    <div style="flex: 2; background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; min-width: 0; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h3 style="margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; color: var(--navy, #0a1f44);">Secure Credit Card Details</h3>
+          <p style="margin: 0; font-size: 0.8rem; color: var(--slate, #64748b); line-height: 1.4; font-weight: 400;">All numbers remain completely shielded inside tokenized merchant processing vault pipelines.</p>
         </div>
+        <div style="text-align: right; min-width: 100px;">
+          <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">Filing Total:</span>
+          <div style="font-size: 1.4rem; font-weight: 900; color: var(--primary, #10b981); font-family: monospace;" id="payment-gateway-total-display">Calculating...</div>
+        </div>
+      </div>
+      <div class="wizard-input-group" style="margin-bottom: 8px; display: flex; flex-direction: column; gap: 10px;">
+        <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate, #64748b); display: block; margin-bottom: 2px;">Secure Credit or Debit Card Payment</label>
+        <div style="background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); width: 100%; box-sizing: border-box;">
+          <div id="stripe-payment-element-mount-point"></div>
+        </div>
+      </div>
+      <div style="border-top: 1px solid var(--border, #e2e8f0); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 0.75rem; color: var(--slate, #64748b); font-weight: 600;">
+        <div style="display: flex; align-items: center; gap: 8px; font-weight: 400;"><i class="fa-solid fa-shield-halved" style="color: var(--primary, #10b981);"></i> PCI-DSS Level 1 Compliant Architecture Seam</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-weight: 400;"><i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i> Official Corporate Guarantee Protection Included</div>
+      </div>
+    </div>
+    <aside class="sticky-timeline-sidebar">
+      <div class="sidebar-header-box">
+        <h3 class="sidebar-title-label"><i class="fa-solid fa-list-check"></i> Application Map</h3>
+        <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
+      </div>
+      <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline">
+        <div id="timeline-row-1" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div>
+        <div id="timeline-row-2" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div>
+        <div id="timeline-row-3" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div>
+        <div id="timeline-row-4" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div>
+        <div id="timeline-row-5" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div>
+        <div id="timeline-row-6" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div>
+        <div id="timeline-row-7" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div>
+      </nav>
+    </aside>
+  </div>
+  <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;">
+    <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(5, event)" style="cursor: pointer;">Back</button>
+    <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+    <button type="button" id="wizard-next-trigger-btn" class="btn-wizard-main" onclick="window.executeOnboardingTransactionPayloadSubmitVanilla()" style="cursor: pointer; background: var(--primary, #10b981); color: #ffffff; border: none; box-shadow: 0 4px 12px rgba(16,185,129,0.25);">Complete Order &amp; Submit</button>
+  </div>
+</div>
 
-      </div> <!-- /End Step 6 Panel Wrapper View -->
 
       <!-- ============================================================================ -->
       <!-- 🎉 STEP 7 PANEL: SUCCESS PORTAL & ACCOUNT CREATION                          -->
@@ -989,7 +910,7 @@
 <footer class="footer-master-container" style="position: relative; width: 100%; box-sizing: border-box; overflow: hidden;">
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.02; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
   
-  <div class="footer-width-limiter" style="max-width: 1450px; margin: 0 auto; padding: 40px 20px; box-sizing: border-box; width: 100%;">
+  <div class="footer-width-limiter" style="max-width: 1370px; margin: 0 auto; padding: 40px 20px; box-sizing: border-box; width: 100%;">
     
     <!-- MAIN DIRECTORY FLEX WRAPPER (Responsive wrapping enabled) -->
     <div class="footer-directory-grid" style="display: flex; justify-content: space-between; gap: 30px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap;">
@@ -1047,49 +968,51 @@
 
   </div> <!-- /End Width Limiter Wrapper -->
 </footer>
-<!-- 💬 HIGH-CONTRAST INTERACTIVE SPECIALIST HELP TRIGGERBubble -->
-<div class="chat-bubble-widget" onclick="toggleSupportFlyoutContainer(true)" title="Chat with an Expert" style="cursor: pointer; box-sizing: border-box;">
-  <!-- FIXED SVG NAMESPACE: Restored valid standard xmlns URI to enable proper icon rendering on touch screens -->
-  <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px; display: block; margin: 0; padding: 0;">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-  </svg>
+
+<!-- 💬 HIGH-CONTRAST INTERACTIVE SPECIALIST HELP TRIGGER BUBBLE --> 
+<div class="chat-bubble-widget" onclick="toggleSupportFlyoutContainer(true)" title="Chat with an Expert" style="cursor: pointer; box-sizing: border-box; position: fixed; bottom: 20px; right: 20px; background: #0a1f44; border-radius: 50%; padding: 16px; box-shadow: 0 4px 12px rgba(10,31,68,0.15); z-index: 999999;"> 
+    <!-- 🟢 FIXED SVG NAMESPACE: Updated to valid standard W3C namespace to clear XML validation errors --> 
+    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px; display: block; margin: 0; padding: 0;"> 
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path> 
+    </svg> 
+</div> 
+
+<!-- 🪟 FLOATING DRAGGABLE SUPPORT CONTAINER MODULE --> 
+<!-- Changed styles from side slide-out to absolute centered viewport floating block layout -->
+<div class="support-slide-container" id="support-chat-flyout-panel" style="box-sizing: border-box; display: none; position: fixed; top: 15%; right: 40px; width: 360px; height: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(10,31,68,0.15), 0 10px 10px -5px rgba(10,31,68,0.04); border: 1px solid #e2e8f0; z-index: 9999999; flex-direction: column; overflow: hidden;"> 
+    
+    <!-- 🟢 DRAG HANDLE: The header acts as the primary coordinate control bar anchor node -->
+    <header id="support-chat-drag-handle" style="background: #0a1f44; color: #ffffff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; cursor: move; user-select: none;"> 
+        <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; display: flex; align-items: center; gap: 8px; pointer-events: none;"> 
+            <i class="fa-solid fa-comments" style="color: #10b981;"></i> filings4u Support 
+        </h3> 
+        <button type="button" onclick="toggleSupportFlyoutContainer(false)" style="background: transparent; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; font-weight: 400; line-height: 1;">&times;</button> 
+    </header> 
+    
+    <div style="padding: 24px; display: flex; flex-direction: column; box-sizing: border-box;" id="chat-preflight-input-form"> 
+        <p style="margin: 0 0 16px 0; font-size: 0.825rem; color: #64748b; line-height: 1.45; font-weight: 400; text-align: left;">Provide your verified details parameters to bypass automated queues and bridge instantly to an expert compliance broker.</p> 
+        <form onsubmit="if(typeof validateAndLaunchAgentChatSession==='function'){ validateAndLaunchAgentChatSession(event); } else { event.preventDefault(); }" style="display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 0;"> 
+            <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
+                <label for="chat_first_name" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b;">First Name</label> 
+                <input type="text" id="chat_first_name" required class="wizard-input-field" placeholder="John" style="width: 100%; height: 40px; padding: 0 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;"> 
+            </div> 
+            <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
+                <label for="chat_last_name" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b;">Last Name</label> 
+                <input type="text" id="chat_last_name" required class="wizard-input-field" placeholder="Doe" style="width: 100%; height: 40px; padding: 0 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;"> 
+            </div> 
+            <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
+                <label for="chat_phone" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b;">Phone Number</label> 
+                <input type="tel" id="chat_phone" required class="wizard-input-field" placeholder="(555) 000-0000" style="width: 100%; height: 40px; padding: 0 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;"> 
+            </div> 
+            <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
+                <label for="chat_email" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b;">Business Email</label> 
+                <input type="email" id="chat_email" required class="wizard-input-field" placeholder="john@company.com" style="width: 100%; height: 40px; padding: 0 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;"> 
+            </div> 
+            <button type="submit" class="btn-wizard-main" style="width: 100%; margin-top: 8px; padding: 12px 0; background: #0a1f44; color: #ffffff; border: none; font-weight: 700; border-radius: 6px; cursor: pointer; box-sizing: border-box; box-shadow: 0 2px 4px rgba(10,31,68,0.1);"> Connect to Live Agent </button> 
+        </form> 
+    </div> 
 </div>
 
-<!-- 🪟 SLIDE-OUT SUPPORT FLYOUT CONTAINER MODULE -->
-<div class="support-slide-container" id="support-chat-flyout-panel" style="box-sizing: border-box;">
-  <header style="background: var(--navy); color: #ffffff; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
-    <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px;">
-      <i class="fa-solid fa-comments" style="color: var(--primary);"></i> Live Specialist Desk
-    </h3>
-    <button type="button" onclick="toggleSupportFlyoutContainer(false)" style="background: transparent; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; font-weight: 400; line-height: 1;">&times;</button>
-  </header>
-  
-  <div style="padding: 24px; flex: 1; overflow-y: auto; box-sizing: border-box;" id="chat-preflight-input-form">
-    <p style="margin: 0 0 20px 0; font-size: 0.85rem; color: var(--slate); line-height: 1.45; font-weight: 400;">Provide your verified details parameters to bypass automated queues and bridge instantly to an expert compliance broker.</p>
-    
-    <form onsubmit="validateAndLaunchAgentChatSession(event)" style="display: flex; flex-direction: column; gap: 16px; margin: 0; padding: 0;">
-      <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px;">
-        <label for="chat_first_name" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate);">First Name</label>
-        <input type="text" id="chat_first_name" required class="wizard-input-field" placeholder="John" style="width: 100%; box-sizing: border-box;">
-      </div>
-      <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px;">
-        <label for="chat_last_name" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate);">Last Name</label>
-        <input type="text" id="chat_last_name" required class="wizard-input-field" placeholder="Doe" style="width: 100%; box-sizing: border-box;">
-      </div>
-      <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px;">
-        <label for="chat_phone" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate);">Phone Number</label>
-        <input type="tel" id="chat_phone" required class="wizard-input-field" placeholder="(555) 000-0000" style="width: 100%; box-sizing: border-box;">
-      </div>
-      <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px;">
-        <label for="chat_email" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate);">Business Email</label>
-        <input type="email" id="chat_email" required class="wizard-input-field" placeholder="john@company.com" style="width: 100%; box-sizing: border-box;">
-      </div>
-      <button type="submit" class="btn-wizard-main" style="width: 100%; margin-top: 10px; padding: 14px 0; cursor: pointer; box-sizing: border-box;">
-        Connect to Live Agent Hub
-      </button>
-    </form>
-  </div>
-</div>
 
 <!-- 📦 REPAIRED EXTERNAL TRANSITION INJECTION HOOK: Formatted properly to resolve script include errors -->
 <script src="assets/js/toggle.js" defer></script>

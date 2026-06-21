@@ -513,55 +513,118 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = executeOnboardingTrans
 // 💳 MASTER TRANSACTION SUBMISSION ROUTER (COMBINED & WRAPPED)
 // ============================================================================ //
 async function executeOnboardingTransactionPayloadSubmitVanilla() {
+  console.log("[Stripe Dispatch] Packing customer inputs and preparing secure gateway channels...");
   
-  // ... (Your Part A code that sets up cardNum, collectedFormMetadata, etc. goes here) ...
+  let liveStripe = window.stripeInstance;
+  let liveElements = window.stripeElementsContainer;
+  let livePaymentElement = window.stripePaymentElementInstance;
 
-  const baseServiceFeeAmount = typeof baseTierPriceCalculationFallbackVanilla === "function" 
-    ? baseTierPriceCalculationFallbackVanilla(currentServiceKey, currentPlanKey) 
-    : 0.00;
+  if (!liveStripe && typeof Stripe !== "undefined") {
+    window.stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
+    liveStripe = window.stripeInstance;
+  }
 
-  const finalVerifiedGrandTotalAmount = window.wizardCalculatedFinalTotalAmount || baseServiceFeeAmount;
+  if (!liveStripe || !livePaymentElement || !liveElements) {
+    alert("Stripe Integration Failure: The secure gateway payment component has not finished mounting inside Step 6.");
+    return;
+  }
+
+  var activeNextButtonReference = document.getElementById('wizard-next-trigger-btn') || document.getElementById('poa-next-btn') || document.querySelector("#step-panel-6 .btn-wizard-main");
+  if (activeNextButtonReference) {
+    activeNextButtonReference.disabled = true;
+    activeNextButtonReference.style.background = '#64748b';
+    activeNextButtonReference.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Secure Payment...';
+  }
+
+  let auxiliaryAddonsArray = [];
+  if (window.currentCartState && Array.isArray(window.currentCartState.addons)) {
+    window.currentCartState.addons.forEach(addon => {
+      if(addon.id) auxiliaryAddonsArray.push(addon.id);
+    });
+  } else {
+    document.querySelectorAll('.addon-checkbox:checked, .upsell-checkbox:checked').forEach(checkbox => {
+      auxiliaryAddonsArray.push(checkbox.id || checkbox.getAttribute('data-id'));
+    });
+  }
+
+  const extractProductionFieldValue = (elementIdentifier) => {
+    const targetNode = document.getElementById(elementIdentifier) || document.querySelector(`[name="${elementIdentifier}"]`) || document.querySelector(`[name="${elementIdentifier}[]"]`);
+    return targetNode ? targetNode.value.trim() : '';
+  };
+
+  const safeServiceKey = window.routeActiveServiceKey || "";
+  const safePlanKey = window.routeActivePlanKey || "";
+  const targetRunningGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0;
+  const targetRunningGovFee = window.computedWizardStateGovernmentFee || 0;
 
   const primarySubmissionPayloadData = {
-    manifest_id: window.f4u_session_hash || "F4U-OFFLINE",
-    target_service_id: currentServiceKey,
-    deployment_speed_tier: currentPlanKey,
-    authority_jurisdiction: selectedJurisdiction,
+    transaction_hash_id: window.f4u_tx_session_hash || "",
+    target_service_id: safeServiceKey,
+    deployment_speed_tier: safePlanKey,
+    authority_jurisdiction: extractProductionFieldValue('wizard-target-jurisdiction') || extractProductionFieldValue('formation_state'),
+    legal_entity_name: extractProductionFieldValue('llc_proposed_name') || extractProductionFieldValue('ent_legal_name') || extractProductionFieldValue('company_name'),
+    taxpayer_ein: extractProductionFieldValue('llc_existing_ein_field') || extractProductionFieldValue('ent_ein') || '',
+    office_address_street: extractProductionFieldValue('ent_address_street') || extractProductionFieldValue('member_street_1'),
+    office_address_city: extractProductionFieldValue('ent_address_city') || extractProductionFieldValue('member_city_1'),
+    office_address_zip: extractProductionFieldValue('ent_address_zip') || extractProductionFieldValue('member_zip_1'),
+    communications_email: extractProductionFieldValue('company_email') || extractProductionFieldValue('portal_user_email'),
     active_addons_list: auxiliaryAddonsArray,
-    form_data_payload: collectedFormMetadata,
-    financials_subtotal_amount: baseServiceFeeAmount,
-    financials_grand_total_charge: finalVerifiedGrandTotalAmount,
+    printed_signature_auth: extractProductionFieldValue('poa_typed_signature') || extractProductionFieldValue('signature_input'),
+    digital_signature_raster_vector: localStorage.getItem("poa-signature-pad-data") || null,
+    financials_subtotal_amount: targetRunningGrandTotal - targetRunningGovFee,
+    financials_grand_total_charge: targetRunningGrandTotal,
     client_session_timestamp: new Date().toISOString()
   };
 
-  console.log("[Transaction Dispatch] Final billing payload generated:", primarySubmissionPayloadData);
+  try {
+    sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(primarySubmissionPayloadData));
+  } catch (sessionCacheError) {
+    console.error("[Storage Error] Receipt serialization failed:", sessionCacheError);
+  }
 
-  // ============================================================================ //
-  // 💳 PART B: SECURE TRANSACTION SERIALIZER & PAYLOAD ASSEMBLER EXECUTION
-  // ============================================================================ //
   if (typeof window.processFinalSecureCheckoutSubmission === "function") {
-    // 🟢 This await is now safely wrapped inside an 'async function' block!
-    await window.processFinalSecureCheckoutSubmission(
-      primarySubmissionPayloadData,
-      cardNum,
-      cardExp,
-      cardCvv,
-      nextBtn,
-      originalBtnBg,
-      originalBtnHtml
-    );
+    try {
+      await window.processFinalSecureCheckoutSubmission(primarySubmissionPayloadData);
+    } catch (backendError) {
+      console.error("[Database Sync Error] Pre-checkout registry failed:", backendError);
+    }
   } else {
-    console.error("[Fatal Code Error] window.processFinalSecureCheckoutSubmission is missing from runtime memory.");
-    if (nextBtn) {
-      nextBtn.disabled = false;
-      nextBtn.style.removeProperty("background");
-      nextBtn.innerHTML = originalBtnHtml;
+    console.warn("[Database Sync Warning] window.processFinalSecureCheckoutSubmission missing from memory runtime mapping layers.");
+  }
+
+  const baseOriginPath = window.location.origin + window.location.pathname.replace('wizard.html', '');
+  const successRedirectionUrl = baseOriginPath + "success.html";
+  const communicationEmailValue = primarySubmissionPayloadData.communications_email || '';
+
+  try {
+    const { error } = await liveStripe.confirmPayment({
+      elements: liveElements,
+      confirmParams: {
+        return_url: successRedirectionUrl,
+        receipt_email: communicationEmailValue
+      }
+    });
+
+    if (error) {
+      alert("Payment Transaction Rejected: " + error.message);
+      if (activeNextButtonReference) {
+        activeNextButtonReference.disabled = false;
+        activeNextButtonReference.style.background = '#10b981';
+        activeNextButtonReference.innerHTML = ' Complete Order & Submit';
+      }
+    }
+  } catch (stripeGatewayException) {
+    console.error("[Stripe Connection Error] Critical network exception caught:", stripeGatewayException);
+    if (activeNextButtonReference) {
+      activeNextButtonReference.disabled = false;
+      activeNextButtonReference.style.background = '#10b981';
+      activeNextButtonReference.innerHTML = ' Complete Order & Submit';
     }
   }
-} // <--- Closes the master async function wrapper cleanly
+}
 
-// Expose the final unified dispatcher cleanly back into global window boundaries 
 window.executeOnboardingTransactionPayloadSubmitVanilla = executeOnboardingTransactionPayloadSubmitVanilla;
+
 
 
 // ============================================================================ //
