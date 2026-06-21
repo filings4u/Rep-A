@@ -576,3 +576,15 @@
     width: 100% !important;
   }
 }
+
+
+@media screen and (max-width: 768px) {
+  /* Inject a safety cushion buffer space above the container to push it down below the navigation menu */
+  .wizard-container,
+  #wizard-master-shell,
+  .workspace-split-layout,
+  #step-panel-1, #step-panel-2, #step-panel-3, #step-panel-4, #step-panel-5 {
+    margin-top: 24px !important; /* Creates a clean, separate vertical gap from the menu line */
+    padding-top: 0 !important;
+  }
+}
