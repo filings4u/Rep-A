@@ -1,105 +1,55 @@
-// ============================================================================ // 
-// 🏛️ PART 3: SECURE CONTAINER DOM INJECTION & FORM SYNCHRONIZATION MATRIX       // 
-// ============================================================================ // 
-/** 
- * Global template builder to parse and mount the Step 1 Selected Plan Summary Box. 
- * ABSOLUTELY ZERO HARDCODED STRINGS, FEES, OR PACKAGE NAMES. 
- */ 
-function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, activeBullets = [], finalBaseFee = 0.00) { 
-    // Anti-recursion lock guard tracking parsing runs 
-    if (window.isPlanCardRenderingLockActive) return; 
-    window.isPlanCardRenderingLockActive = true; 
-
-    try { 
-        // Resolve dynamic naming metrics safely without hardcoded assumption dependencies 
-        const serviceName = serviceDataNode?.name || "Service Allocation"; 
-        const tierName = tierTitleDisplay || "Selected Package"; 
-        const finalizedPlanTitleContainerHeaderText = `${serviceName} (${tierName.toUpperCase()})`; 
-        const activeServiceKey = window.routeActiveServiceKey || ""; 
-
-        // 1. WORKSPACE: Inject into Sidebar Element Container 
-        const featuresListContainer = document.getElementById("step-1-package-features-list"); 
-        if (featuresListContainer) { 
-            let sidebarMarkup = ""; 
-            activeBullets.forEach(function(bulletText) { 
-                const safeText = typeof secureWizardStringEscape === "function" ? secureWizardStringEscape(bulletText) : bulletText; 
-                sidebarMarkup += ` 
-                 <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600; margin-bottom: 8px;"> 
-                    <i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i> 
-                    <span>${safeText}</span> 
-                 </div>`; 
-            }); 
-            featuresListContainer.innerHTML = sidebarMarkup; 
-        } 
-
-        // 2. WORKSPACE: Inject into Main Overview Box Frame (DESTRUCTIVE DUPLICATION FIX) 
-        const leftColumnContainer = document.querySelector("#step-panel-1 .form-grid-layout") || document.querySelector("#step-panel-1"); 
-        if (leftColumnContainer) { 
-            let step1OverviewBox = document.getElementById("step-1-selected-plan-overview"); 
-            if (!step1OverviewBox) { 
-                step1OverviewBox = document.createElement("div"); 
-                step1OverviewBox.id = "step-1-selected-plan-overview"; 
-                step1OverviewBox.style.cssText = "margin-top: 24px; padding: 24px; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; box-shadow: var(--card-shadow); clear: both;"; 
-                
-                // Clear out pre-existing layout elements to wipe away duplicates completely 
-                leftColumnContainer.innerHTML = ""; 
-                leftColumnContainer.appendChild(step1OverviewBox); 
-            } 
-
-            let mainBoxListMarkup = ""; 
-            activeBullets.forEach(function(bulletItem) { 
-                const safeText = typeof secureWizardStringEscape === "function" ? secureWizardStringEscape(bulletItem) : bulletItem; 
-                mainBoxListMarkup += ` 
-                 <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;"> 
-                    <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> 
-                    <span>${safeText}</span> 
-                 </li>`; 
-            }); 
-
-            step1OverviewBox.innerHTML = ` 
-             <div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 14px;"> 
-                <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Selected Package</span> 
-                <h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.35rem; font-weight: 900;">${finalizedPlanTitleContainerHeaderText}</h3> 
-             </div> 
-             <div style="margin-top: 6px; margin-bottom: 6px;"> 
-                <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy, #0a1f44); display: block; margin-bottom: 12px; letter-spacing: 0.5px;">What Comes with the Package</label> 
-                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600;"> 
-                    ${mainBoxListMarkup} 
-                </ul> 
-             </div> 
-             <div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center;"> 
-                <span style="font-weight: 800; color: var(--navy, #0a1f44); font-size: 0.95rem;">Base Fee:</span> 
-                <strong style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$${finalBaseFee.toFixed(2)}</strong> 
-             </div>`; 
-        } 
-
-        // Force Sync numerical base values directly down to forms 
-        const numericalBaseInput = document.getElementById("wizard-base-package-fee-input"); 
-        if (numericalBaseInput) { 
-            numericalBaseInput.value = finalBaseFee.toFixed(2); 
-            numericalBaseInput.dispatchEvent(new Event('change', { bubbles: true })); 
-        } 
-
-        // 3. WORKSPACE: Trigger Downstream Engine Calculation Cycles 
-        if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
-            window.updateDynamicPricingMatrixVanilla(); 
-        } 
-        if (typeof window.populatePurchaseSummaryReviewMatrix === "function") { 
-            window.populatePurchaseSummaryReviewMatrix(); 
-        } 
-
-        // 🟢 REMOVED DOUBLE-RENDER CALL: 
-        // Wiped out the broken trailing renderTargetUpsellsListPanel call completely.
-        // This stops items from duplicating on your layout screens.
-
-    } catch (err) { 
-        console.error("[Card Renderer Core Structural Exception Handled]", err); 
-    } finally { 
-        window.isPlanCardRenderingLockActive = false; 
-    } 
-} 
-
+function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, activeBullets = [], finalBaseFee = 0.00) {
+  if (window.isPlanCardRenderingLockActive) return;
+  window.isPlanCardRenderingLockActive = true;
+  try {
+    const serviceName = serviceDataNode?.name || "Service Allocation";
+    const tierName = tierTitleDisplay || "Selected Package";
+    const finalizedPlanTitleContainerHeaderText = serviceName + " (" + tierName.toUpperCase() + ")";
+    const featuresListContainer = document.getElementById("step-1-package-features-list");
+    if (featuresListContainer) {
+      let sidebarMarkup = "";
+      activeBullets.forEach(function(bulletText) {
+        const safeText = typeof secureWizardStringEscape === "function" ? secureWizardStringEscape(bulletText) : bulletText;
+        sidebarMarkup += '<div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600; margin-bottom: 8px;"><i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i><span>' + safeText + '</span></div>';
+      });
+      featuresListContainer.innerHTML = sidebarMarkup;
+    }
+    const leftColumnContainer = document.querySelector("#step-panel-1 .form-grid-layout") || document.querySelector("#step-panel-1");
+    if (leftColumnContainer) {
+      let step1OverviewBox = document.getElementById("step-1-selected-plan-overview");
+      if (!step1OverviewBox) {
+        step1OverviewBox = document.createElement("div");
+        step1OverviewBox.id = "step-1-selected-plan-overview";
+        step1OverviewBox.style.cssText = "margin-top: 24px; padding: 24px; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; box-shadow: var(--card-shadow); clear: both;";
+        leftColumnContainer.innerHTML = "";
+        leftColumnContainer.appendChild(step1OverviewBox);
+      }
+      let mainBoxListMarkup = "";
+      activeBullets.forEach(function(bulletItem) {
+        const safeText = typeof secureWizardStringEscape === "function" ? secureWizardStringEscape(bulletItem) : bulletItem;
+        mainBoxListMarkup += '<li style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span>' + safeText + '</span></li>';
+      });
+      step1OverviewBox.innerHTML = '<div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 14px;"><span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Selected Package</span><h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.15rem; font-weight: 800;">' + finalizedPlanTitleContainerHeaderText + '</h3></div><div style="margin-top: 6px; margin-bottom: 6px;"><label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy, #0a1f44); display: block; margin-bottom: 12px; letter-spacing: 0.5px;">What Comes with the Package</label><ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600;">' + mainBoxListMarkup + '</ul></div><div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center;"><span style="font-weight: 800; color: var(--navy, #0a1f44); font-size: 0.95rem;">Base Fee:</span><strong style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$' + finalBaseFee.toFixed(2) + '</strong></div>';
+    }
+    const numericalBaseInput = document.getElementById("wizard-base-package-fee-input");
+    if (numericalBaseInput) {
+      numericalBaseInput.value = finalBaseFee.toFixed(2);
+      numericalBaseInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+      window.updateDynamicPricingMatrixVanilla();
+    }
+    if (typeof window.populatePurchaseSummaryReviewMatrix === "function") {
+      window.populatePurchaseSummaryReviewMatrix();
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    window.isPlanCardRenderingLockActive = false;
+  }
+}
 window.renderOnboardingPlanOverviewCard = renderOnboardingPlanOverviewCard;
+
 
 
 /** 
@@ -8361,100 +8311,43 @@ function buildBrokerInsuranceForm(stateDropdownOptionsHtml = "") {
            buildBrokerInsuranceFormPart3(stateDropdownOptionsHtml);
 }
 
-// FAMILY 34A: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART 1 OF 3)
 function buildNewEntrantAuditFormPart1(stateDropdownOptionsHtml = "") {
-    return `
-        <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: NEW ENTRANT SAFETY ASSURANCE PROGRAM -->
-        <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
-            <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> FMCSA New Entrant Safety Assurance Program</strong>
-            All newly registered motor carriers are placed into a 18-month federal monitoring window. The FMCSA mandates a compulsory **New Entrant Safety Audit** within this timeframe to verify robust administrative tracking of driver logs, vehicle records, drug screens, and security structures. Failing this audit results in immediate, permanent revocation of operating authority.
-        </div>
-
-        <!-- SECTION 1: CARRIER IDENTITY PROFILE -->
-        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Motor Carrier Audit Identification Profile</h3>
-        </div>
-
-        <div class="wizard-input-group" style="grid-column: span 2;">
-            <label for="nea_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Official Motor Carrier Name <span style="color: #ef4444;">*</span></label>
-            <input type="text" id="nea_legal_name" required placeholder="Enter exact name registered on your USDOT portal" class="wizard-input-field">
-        </div>
-
-        <div class="wizard-input-group" style="grid-column: span 1;">
-            <label for="nea_usdot_number" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">USDOT Number <span style="color: #ef4444;">*</span></label>
-            <input type="text" id="nea_usdot_number" required placeholder="e.g. 1234567" class="wizard-input-field">
-        </div>
-
-        <div class="wizard-input-group" style="grid-column: span 1;">
-            <label for="nea_audit_trigger_status" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">FMCAS Safety Audit Notice Status <span style="color: #ef4444;">*</span></label>
-            <select id="nea_audit_trigger_status" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleNewEntrantAuditLetterDetails(this.value)">
-                <option value="preemptive" selected>Preemptive Check (Proactively setting up compliance before receiving state tracking letters)</option>
-                <option value="letter-received">Official Audit Letter Received (FMCSA has issued an explicit document request deadline)</option>
-            </select>
-        </div>
-
-        <!-- Hidden Conditional Container: Official Audit Notice Letter Deadline Details -->
-        <div id="nea_letter_deadline_wrapper" class="wizard-input-group" style="grid-column: span 2; display: none;">
-            <label for="nea_audit_deadline" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">FMCSA Mandatory Submission Deadline Date <span style="color: #ef4444;">*</span></label>
-            <input type="date" id="nea_audit_deadline" class="wizard-input-field">
-        </div>
-
-        <!-- INTERACTIVE STRATEGIC COMPLIANCE MODAL TRIGGER BUTTON -->
-        <div style="grid-column: span 2; margin: 12px 0;">
-            <button type="button" onclick="triggerNewEntrantAuditComplianceChecklistPopup()" style="background: var(--navy); color: #ffffff; font-weight: 800; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
-                <i class="fa-solid fa-list-check"></i> Launch New Entrant Audit Requirements Checklist & Price Guide
-            </button>
-        </div>
-
-        <!-- POPUP MODAL ELEMENT FOR AUDIT REQUIREMENTS CHECKLIST -->
-        <div id="nea_checklist_modal_backdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
-            <div style="background: #ffffff; border-radius: 12px; width: 100%; max-width: 650px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.3); overflow: hidden; animation: fadeIn 0.25s ease-out;">
-                <div style="background: var(--navy); color: #ffffff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fa-solid fa-shield"></i> FMCSA Audit Audit Requirements Guide</h4>
-                    <button type="button" onclick="closeNewEntrantAuditComplianceChecklistPopup()" style="background: transparent; border: none; color: #ffffff; font-size: 1.25rem; cursor: pointer; font-weight: 700;">&times;</button>
-                </div>
-                <div style="padding: 20px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5; color: #334155; display: flex; flex-direction: column; gap: 16px;">
-                    <p style="margin: 0; font-weight: 600; color: var(--navy);">To pass the New Entrant Safety Audit, you must present up-to-date, compliant records for the following parameters. Review what you need vs. Filings4u's flat-rate assembly options:</p>
-                    
-                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
-                        <div style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between;">
-                            <span>1. Driver Qualification File (DQF)</span>
-                            <span style="color: var(--primary); font-family: monospace;">$79.00 / File</span>
-                        </div>
-                        <span style="font-size: 0.8rem; color: var(--slate);">Mandatory Part 391 medical certificates, 3-year safety histories, and annual motor vehicle driving records.</span>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
-                        <div style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between;">
-                            <span>2. DOT Drug & Alcohol Consortium Enrollment</span>
-                            <span style="color: var(--primary); font-family: monospace;">$149.00 / Yr</span>
-                        </div>
-                        <span style="font-size: 0.8rem; color: var(--slate);">Part 382 workplace pre-employment screening documentation and proof of random testing pool active enrollment.</span>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
-                        <div style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between;">
-                            <span>3. Extended Hours of Service (HOS) Log Audit</span>
-                            <span style="color: var(--primary); font-family: monospace;">$195.00</span>
-                        </div>
-                        <span style="font-size: 0.8rem; color: var(--slate);">Part 395 structural review of Electronic Logging Device (ELD) outputs and records of duty status patterns.</span>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
-                        <div style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between;">
-                            <span>4. Vehicle Maintenance & Periodic Inspection Files</span>
-                            <span style="color: var(--primary); font-family: monospace;">$85.00 / Truck</span>
-                        </div>
-                        <span style="font-size: 0.8rem; color: var(--slate);">Part 396 systemic records of annual visual test inspections, repairs, and daily driver vehicle inspection reports (DVIR).</span>
-                    </div>
-                </div>
-                <div style="background: #f8fafc; border-top: 1px solid var(--border); padding: 12px 20px; display: flex; justify-content: flex-end;">
-                    <button type="button" onclick="closeNewEntrantAuditComplianceChecklistPopup()" style="background: var(--navy); color: #ffffff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; cursor: pointer;">Got It, Close Guide</button>
-                </div>
-            </div>
-        </div>
-    `;
+  return `
+    <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
+      <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> FMCSA New Entrant Safety Assurance Program</strong> All newly registered motor carriers are placed into a 18-month federal monitoring window. The FMCSA mandates a compulsory **New Entrant Safety Audit** within this timeframe to verify robust administrative tracking of driver logs, vehicle records, drug screens, and security structures. Failing this audit results in immediate, permanent revocation of operating authority.
+    </div>
+    <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+      <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Motor Carrier Audit Identification Profile</h3>
+    </div>
+    <div class="wizard-input-group" style="grid-column: span 2;">
+      <label for="nea_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Official Motor Carrier Name <span style="color: #ef4444;">*</span></label>
+      <input type="text" id="nea_legal_name" required placeholder="Enter exact name registered on your USDOT portal" class="wizard-input-field">
+    </div>
+    <div class="wizard-input-group" style="grid-column: span 1;">
+      <label for="nea_usdot_number" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">USDOT Number <span style="color: #ef4444;">*</span></label>
+      <input type="text" id="nea_usdot_number" required placeholder="e.g. 1234567" class="wizard-input-field">
+    </div>
+    <div class="wizard-input-group" style="grid-column: span 1;">
+      <label for="nea_audit_trigger_status" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">FMCAS Safety Audit Notice Status <span style="color: #ef4444;">*</span></label>
+      <select id="nea_audit_trigger_status" required class="wizard-input-field" style="font-weight: 600;" onchange="var wrapper = document.getElementById('nea_letter_deadline_wrapper'); var input = document.getElementById('nea_audit_deadline'); if(this.value === 'letter-received') { if(wrapper) wrapper.style.display = 'block'; if(input) input.required = true; } else { if(wrapper) wrapper.style.display = 'none'; if(input) { input.required = false; input.value = ''; } }">
+        <option value="preemptive" selected>Preemptive Check (Proactively setting up compliance before receiving state tracking letters)</option>
+        <option value="letter-received">Official Audit Letter Received (FMCSA has issued an explicit document request deadline)</option>
+      </select>
+    </div>
+    <div id="nea_letter_deadline_wrapper" class="wizard-input-group" style="grid-column: span 2; display: none;">
+      <label for="nea_audit_deadline" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">FMCSA Mandatory Submission Deadline Date <span style="color: #ef4444;">*</span></label>
+      <input type="date" id="nea_audit_deadline" class="wizard-input-field">
+    </div>
+    <div style="grid-column: span 2; margin: 12px 0;">
+      <button type="button" onclick="window.launchNewEntrantAuditRequirementsGuideModal()" style="background: var(--navy); color: #ffffff; font-weight: 800; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+        <i class="fa-solid fa-list-check"></i> Launch New Entrant Audit Requirements Checklist & Price Guide
+      </button>
+    </div>
+  `;
 }
+window.buildNewEntrantAuditFormPart1 = buildNewEntrantAuditFormPart1;
+
+
 
 // ============================================================================ //
 // 📋 FAMILY 34A: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART A)               //

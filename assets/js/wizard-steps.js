@@ -1913,69 +1913,48 @@ if (document.readyState !== "loading") {
 window.forceStep5PurchaseSummaryRenderCycle = forceStep5PurchaseSummaryRenderCycle;
 window.initStep5PurchaseSummaryVisibilityTracker = initStep5PurchaseSummaryVisibilityTracker;
 
-// ============================================================================ //
-// 🚀 INJECTOR ENGINE: DIRECT LIVE ARRAY INJECTION WITH NATIVE REMOVE BUTTONS //
-// ============================================================================ //
 function directInjectCartAddonsToSummaryStep5() {
   console.log("[Summary Engine] Recalculating itemized matrix rows pass...");
   const rowsTargetNode = document.getElementById("summary-purchase-rows-container");
   if (!rowsTargetNode) return;
-
   let runningSubtotalAmount = 0;
   let itemsMarkupString = "";
-
-  // 1. Compile baseline plan pricing data nodes dynamically from application state
   const ctx = window._tempCalcContext || {};
   const basePackagePriceValue = parseFloat(ctx.baseTierPrice) || 0;
-  
-  // 🌟 DYNAMIC STRIPPING: Remove fallback string literals. If no data exists, keep it empty.
   const safePlanName = ctx.planConfig?.name || '';
   const safePlanTier = ctx.currentPlanKey ? String(ctx.currentPlanKey).toUpperCase() : '';
-
   runningSubtotalAmount += basePackagePriceValue;
-
-  // 2. Discover ALL checked option inputs across the application views
-  const activeCheckboxes = document.querySelectorAll(
-    '#step-panel-2 input[type="checkbox"]:checked, #step-panel-3 input[type="checkbox"]:checked, #step-2 input[type="checkbox"]:checked, #step-3 input[type="checkbox"]:checked, .upsell-checkbox:checked, .nea-service-checkbox:checked'
-  );
-  
+  const activeCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
   const processedNamesRegistry = [];
-
   activeCheckboxes.forEach(checkbox => {
-    if (!checkbox) return;
-
-    // Resolve clean item labeling properties and values dynamically from attributes
+    if (!checkbox || !checkbox.id) return;
+    if (checkbox.id.startsWith("modal_input_box_")) return;
     const labelString = checkbox.getAttribute("data-name") || checkbox.getAttribute("data-label") || checkbox.id;
     if (!labelString || processedNamesRegistry.includes(labelString) || labelString.toLowerCase().includes("optional add-on")) return;
-
     const priceValue = parseFloat(checkbox.getAttribute("data-price")) || parseFloat(checkbox.value) || 0;
+    if (priceValue <= 0) return;
     runningSubtotalAmount += priceValue;
     processedNamesRegistry.push(labelString);
-
-    // 🟢 ADVANCED: Append your item rows complete with an interactive 'Remove Item' text button link!
-    itemsMarkupString += `
-      <div class="summary-receipt-row-item" data-source-checkbox-id="${checkbox.id}" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #475569; padding: 10px 0; border-bottom: 1px dashed #e2e8f0; width: 100%; box-sizing: border-box;">
-        <div style="display: flex; flex-direction: column; gap: 2px;">
-          <span style="font-weight: 600; color: #0a1f44;">+ ${labelString}</span>
-          <!-- Interactive Trash Action Link -->
-          <button type="button" onclick="window.removeSelectedAddonItemStraightFromSummaryCard('${checkbox.id}')" style="background: transparent; border: none; color: #ef4444; font-size: 0.725rem; font-weight: 700; cursor: pointer; padding: 0; text-align: left; width: fit-content; display: flex; align-items: center; gap: 4px; margin-top: 2px; transition: opacity 0.1s;"><i class="fa-solid fa-trash-can"></i> Remove from Invoice</button>
-        </div>
-        <span style="font-family: monospace; font-weight: 700; color: #0a1f44; font-size: 0.95rem;">$${priceValue.toFixed(2)}</span>
-      </div>`;
+    itemsMarkupString += '<div class="summary-receipt-row-item" data-source-checkbox-id="' + checkbox.id + '" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #475569; padding: 10px 0; border-bottom: 1px dashed #e2e8f0; width: 100%; box-sizing: border-box;"><div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-weight: 600; color: #0a1f44;">+ ' + labelString + '</span><button type="button" onclick="window.removeSelectedAddonItemStraightFromSummaryCard(\'' + checkbox.id + '\')" style="background: transparent; border: none; color: #ef4444; font-size: 0.725rem; font-weight: 700; cursor: pointer; padding: 0; text-align: left; width: fit-content; display: flex; align-items: center; gap: 4px; margin-top: 2px; transition: opacity 0.1s;"><i class="fa-solid fa-trash-can"></i> Remove from Invoice</button></div><span style="font-family: monospace; font-weight: 700; color: #0a1f44; font-size: 0.95rem;">$' + priceValue.toFixed(2) + '</span></div>';
   });
-
-  // 3. Render out content templates right onto your Step 5 summary rows
-  // 🌟 DYNAMIC FORMATTING: Only format the tier parenthesis block if a tier string exists
-  const tierDisplayString = safePlanTier ? ` (${safePlanTier})` : '';
-  
-  const baselineHeaderRow = `
-    <div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: #0a1f44; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 4px;">
-      <span>${safePlanName}${tierDisplayString}</span>
-      <span style="font-family: monospace;">$${basePackagePriceValue.toFixed(2)}</span>
-    </div>`;
-
+  const tierDisplayString = safePlanTier ? ' (' + safePlanTier + ')' : '';
+  const baselineHeaderRow = '<div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: #0a1f44; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 4px;"><span>' + safePlanName + tierDisplayString + '</span><span style="font-family: monospace;">$' + basePackagePriceValue.toFixed(2) + '</span></div>';
   rowsTargetNode.innerHTML = baselineHeaderRow + itemsMarkupString;
 }
+
+window.removeSelectedAddonItemStraightFromSummaryCard = function(sourceCheckboxId) {
+  if (!sourceCheckboxId) return;
+  const targetCheckbox = document.getElementById(sourceCheckboxId);
+  if (targetCheckbox) {
+    targetCheckbox.checked = false;
+    targetCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (typeof window.directInjectCartAddonsToSummaryStep5 === "function") {
+    window.directInjectCartAddonsToSummaryStep5();
+  }
+};
+
+window.directInjectCartAddonsToSummaryStep5 = directInjectCartAddonsToSummaryStep5;
 
 
 /**
@@ -2030,125 +2009,115 @@ window.removeSelectedAddonItemStraightFromSummaryCard = removeSelectedAddonItemS
 
 window.hasUserScrolledToBottomPoa = window.hasUserScrolledToBottomPoa || false;
 
-/**
- * Launches a pristine, isolated compliance requirements modal popup box.
- * 🟢 IMPLEMENTED ABSOLUTELY CLEAN DOM CONTAINMENT LOCK:
- * Forcefully wipes out any cross-file asynchronous data leaks or extra text boxes.
- */
 function launchNewEntrantAuditRequirementsGuideModal() {
-    console.log("[Modal Engine] Initializing isolated requirements guidelines card...");
+  let modalRoot = document.getElementById("f4u-price-guide-modal-root");
+  if (!modalRoot) {
+    modalRoot = document.createElement("div");
+    modalRoot.id = "f4u-price-guide-modal-root";
+    modalRoot.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;";
+    document.body.appendChild(modalRoot);
+  }
 
-    let modalRoot = document.getElementById("f4u-price-guide-modal-root");
-    if (!modalRoot) {
-        modalRoot = document.createElement("div");
-        modalRoot.id = "f4u-price-guide-modal-root";
-        modalRoot.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 31, 68, 0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 99999; opacity: 0; transition: opacity 0.2s ease-in-out; box-sizing: border-box; padding: 20px;";
-        document.body.appendChild(modalRoot);
-    }
+  const checklistItemsSource = [
+    { id: "assemble-dqf", targetId: "nea_service_dqf", name: "1. Driver Qualification File (DQF)", price: 79.00, desc: "Mandatory Part 391 medical certificates, 3-year safety histories, and annual motor vehicle driving records." },
+    { id: "drug-consortium", targetId: "nea_service_consortium", name: "2. DOT Drug & Alcohol Consortium Enrollment", price: 149.00, desc: "Part 382 workplace pre-employment screening documentation and proof of random testing pool active enrollment." },
+    { id: "hos-review", targetId: "nea_service_hos", name: "3. Extended Hours of Service (HOS) Log Audit", price: 195.00, desc: "Part 395 structural review of Electronic Logging Device (ELD) outputs and records of duty status patterns." },
+    { id: "maintenance-ledger", targetId: "nea_service_maintenance", name: "4. Vehicle Maintenance & Periodic Inspection Files", price: 85.00, desc: "Part 396 systemic records of annual visual test inspections, repairs, and daily driver vehicle inspection reports (DVIR)." }
+  ];
 
-    // 🟢 EXPLICIT ISOLATED SCHEMAS REGISTRY: The ONLY items authorized to appear in this popup
-    const checklistItemsSource = [
-        { id: "assemble-dqf", targetId: "nea_service_dqf", name: "Assemble Driver Qualification Files (DQF)", price: 79.00, desc: "Compiles mandatory 3-year historical driving data, employment history verifications, and medical certificate records required for road clearing." },
-        { id: "drug-consortium", targetId: "nea_service_consortium", name: "DOT Drug & Alcohol Consortium Enrollment", price: 149.00, desc: "Integrates active driver names into the mandatory random testing pool registry and issues immediate enrollment verification certificates." },
-        { id: "hos-review", targetId: "nea_service_hos", name: "Hours of Service (HOS) Log Audit Pre-Review", price: 195.00, desc: "Deep telemetry audit scanning across ELD tracking hardware files to detect graph exceptions and implement correction compliance patterns." },
-        { id: "maintenance-ledger", targetId: "nea_service_maintenance", name: "Vehicle Maintenance Ledger & Inspection Set", price: 85.00, desc: "Acquires systematic Part 396 annual tracking sheets, vehicle condition folders, and preventive maintenance inspection log sets." },
-        { id: "expert-consultation", targetId: "nea_service_consultation", name: "Independent Pre-Audit Consultation Package", price: 250.00, desc: "Private 1-on-1 dossier mock review session with a senior compliance safety strategist before your official federal state upload deadline." }
-    ];
+  let contentRowsHtml = "";
+  checklistItemsSource.forEach(item => {
+    const backgroundFormCheckbox = document.getElementById(item.targetId) || document.querySelector("input[id*='" + item.targetId + "']");
+    const isChecked = backgroundFormCheckbox ? backgroundFormCheckbox.checked : false;
+    
+    contentRowsHtml += '<div style="display: flex; flex-direction: column; gap: 12px; background: rgba(10, 31, 68, 0.02); padding: 14px; border-radius: 8px; border: 1px solid var(--border, #e2e8f0); width: 100%; box-sizing: border-box; text-align: left;"><div style="display: flex; justify-content: space-between; font-weight: 700; color: var(--navy, #0a1f44); align-items: center;"><div style="display: flex; align-items: center; gap: 10px;"><input type="checkbox" id="modal_input_box_' + item.id + '" style="width: 16px; height: 16px; cursor: pointer; accent-color: #10b981; margin: 0;" ' + (isChecked ? 'checked' : '') + ' onchange="window.syncModalCheckboxActionDirectToForm(\'' + item.targetId + '\', this.checked)"><label for="modal_input_box_' + item.id + '" style="cursor: pointer; margin: 0;">' + item.name + '</label></div><span style="color: var(--primary, #10b981); font-family: monospace;">$' + item.price.toFixed(2) + '</span></div><span style="font-size: 0.8rem; color: var(--slate, #64748b); display: block; padding-left: 26px;">' + item.desc + '</span></div>';
+  });
 
-    let contentRowsHtml = "";
-
-    checklistItemsSource.forEach(item => {
-        const backgroundFormCheckbox = document.getElementById(item.targetId) || 
-                                       document.getElementById(item.id) || 
-                                       document.querySelector(`input[id*="${item.id}"]`);
-                                       
-        const isChecked = backgroundFormCheckbox ? backgroundFormCheckbox.checked : false;
-
-        contentRowsHtml += `
-         <div class="modal-checklist-row" style="display: flex; align-items: start; gap: 14px; padding: 14px 0; border-bottom: 1px solid #e2e8f0; width: 100%; box-sizing: border-box;">
-            <input type="checkbox" id="modal_input_box_${item.id}" style="width: 20px; height: 20px; cursor: pointer; margin-top: 2px; accent-color: #10b981; flex-shrink: 0;" ${isChecked ? 'checked' : ''} onchange="window.syncModalCheckboxActionDirectToForm('${item.targetId}', this.checked)">
-            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0;">
-                <label for="modal_input_box_${item.id}" style="font-weight: 800; color: #0a1f44; font-size: 0.925rem; cursor: pointer; text-align: left; display: block; margin: 0;">${item.name}</label>
-                <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.8rem; line-height: 1.45; text-align: left; font-weight: 500;">${item.desc}</p>
-            </div>
-            <strong style="font-family: monospace; color: #10b981; font-size: 1.05rem; padding-left: 8px; font-weight: 700; flex-shrink: 0;">$${item.price.toFixed(2)}</strong>
-         </div>`;
-    });
-
-    // 🟢 CONTAINMENT BLOCK INTRODUCED: 
-    // Uses structural inner wrappers to lock out loose background file scripts from appending raw data nodes
-    modalRoot.innerHTML = `
-        <div style="background: #ffffff; border-radius: 12px; width: 100%; max-width: 580px; box-shadow: 0 20px 25px rgba(10, 31, 68, 0.15); border-left: 4px solid #0a1f44; box-sizing: border-box; display: flex; flex-direction: column; padding: 24px; font-family: system-ui, sans-serif; transform: translateY(-10px); transition: transform 0.2s; max-height: 90vh;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
-                <div style="text-align: left;">
-                    <h3 style="margin: 0; color: #0a1f44; font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-clipboard-list" style="color: #10b981;"></i> New Entrant Audit Checklist</h3>
-                    <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.8rem; font-weight: 500;">Check individual items to add or remove them from your purchase summary card.</p>
-                </div>
-                <button type="button" onclick="window.closeNewEntrantAuditPriceGuideModal()" style="background: transparent; border: none; color: #64748b; font-size: 1.4rem; cursor: pointer; line-height: 1; padding: 4px;"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="modal-pristine-rows-wrapper" style="max-height: 380px; overflow-y: auto; padding-right: 6px; display: flex; flex-direction: column; width: 100%; box-sizing: border-box;">
-                ${contentRowsHtml}
-            </div>
-            <button type="button" onclick="window.closeNewEntrantAuditPriceGuideModal()" style="margin-top: 24px; background: #0a1f44; color: #ffffff; border: none; padding: 14px; font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 0.9rem; width: 100%; box-shadow: 0 4px 6px rgba(10,31,68,0.15);">Apply Changes & Close</button>
-        </div>`;
-
-    modalRoot.style.display = "flex";
-    setTimeout(() => { modalRoot.style.opacity = "1"; modalRoot.firstChild.style.transform = "translateY(0)"; }, 10);
+  modalRoot.innerHTML = '<div style="background: #ffffff; border-radius: 12px; width: 100%; max-width: 650px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.3); overflow: hidden;"><div style="background: var(--navy, #0a1f44); color: #ffffff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;"><h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fa-solid fa-shield"></i> FMCSA Audit Requirements Guide</h4><button type="button" onclick="window.closeNewEntrantAuditPriceGuideModal()" style="background: transparent; border: none; color: #ffffff; font-size: 1.25rem; cursor: pointer; font-weight: 700;">&times;</button></div><div style="padding: 20px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5; color: #334155; display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box;"><p style="margin: 0; font-weight: 600; color: var(--navy, #0a1f44); text-align: left;">To pass the New Entrant Safety Audit, you must present up-to-date, compliant records for the following parameters. Review what you need vs. Filings4u\'s flat-rate assembly options:</p><div id="modal-pristine-rows-wrapper" style="display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box;">' + contentRowsHtml + '</div></div><div style="background: #f8fafc; border-top: 1px solid var(--border, #e2e8f0); padding: 12px 20px; display: flex; justify-content: flex-end;"><button type="button" onclick="window.closeNewEntrantAuditPriceGuideModal()" style="background: var(--navy, #0a1f44); color: #ffffff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; cursor: pointer;">Got It, Close Guide</button></div></div>';
+  modalRoot.style.display = "flex";
+  modalRoot.style.opacity = "1";
 }
 
 function syncModalCheckboxActionDirectToForm(backgroundFormId, isChecked) {
-    if (!backgroundFormId) return;
-    const backgroundCheckboxNode = document.getElementById(backgroundFormId) || 
-                                   document.querySelector(`input[id*="${backgroundFormId}"]`) ||
-                                   document.querySelector(`input[name*="${backgroundFormId}"]`);
-
-    if (backgroundCheckboxNode) {
-        backgroundCheckboxNode.checked = isChecked;
-        backgroundCheckboxNode.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-    if (typeof window.executeNewEntrantAuditLiveFulfillmentSync === "function") {
-        window.executeNewEntrantAuditLiveFulfillmentSync();
-    }
+  if (!backgroundFormId) return;
+  const backgroundCheckboxNode = document.getElementById(backgroundFormId) || document.querySelector("input[id*='" + backgroundFormId + "']") || document.querySelector("input[class*='" + backgroundFormId + "']");
+  if (backgroundCheckboxNode) {
+    backgroundCheckboxNode.checked = isChecked;
+    backgroundCheckboxNode.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+    window.updateDynamicPricingMatrixVanilla();
+  }
+  if (typeof window.populatePurchaseSummaryReviewMatrix === "function") {
+    window.populatePurchaseSummaryReviewMatrix();
+  }
+  if (typeof window.executeNewEntrantAuditLiveFulfillmentSync === "function") {
+    window.executeNewEntrantAuditLiveFulfillmentSync();
+  }
 }
 
 function closeNewEntrantAuditPriceGuideModal() {
-    const modalRoot = document.getElementById("f4u-price-guide-modal-root");
-    if (modalRoot) {
-        modalRoot.style.opacity = "0";
-        modalRoot.firstChild.style.transform = "translateY(-10px)";
-        setTimeout(() => { modalRoot.style.display = "none"; }, 200);
-    }
+  const modalRoot = document.getElementById("f4u-price-guide-modal-root");
+  if (modalRoot) {
+    modalRoot.style.display = "none";
+  }
 }
 
-// Legacy button name handshakes
+window.launchNewEntrantAuditRequirementsGuideModal = launchNewEntrantAuditRequirementsGuideModal;
+window.syncModalCheckboxActionDirectToForm = syncModalCheckboxActionDirectToForm;
+window.closeNewEntrantAuditPriceGuideModal = closeNewEntrantAuditPriceGuideModal;
+
+
+
+function syncModalCheckboxActionDirectToForm(backgroundFormId, isChecked) {
+  if (!backgroundFormId) return;
+  const backgroundCheckboxNode = document.getElementById(backgroundFormId) || document.querySelector("input[id*='" + backgroundFormId + "']") || document.querySelector("input[class*='" + backgroundFormId + "']");
+  if (backgroundCheckboxNode) {
+    backgroundCheckboxNode.checked = isChecked;
+    backgroundCheckboxNode.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+    window.updateDynamicPricingMatrixVanilla();
+  }
+  if (typeof window.populatePurchaseSummaryReviewMatrix === "function") {
+    window.populatePurchaseSummaryReviewMatrix();
+  }
+  if (typeof window.executeNewEntrantAuditLiveFulfillmentSync === "function") {
+    window.executeNewEntrantAuditLiveFulfillmentSync();
+  }
+}
+
+function closeNewEntrantAuditPriceGuideModal() {
+  const modalRoot = document.getElementById("f4u-price-guide-modal-root");
+  if (modalRoot) {
+    modalRoot.style.opacity = "0";
+    modalRoot.firstChild.style.transform = "translateY(-10px)";
+    setTimeout(() => {
+      modalRoot.style.display = "none";
+    }, 200);
+  }
+}
+
 function triggerNewEntrantAuditComplianceChecklistPopup() {
-    launchNewEntrantAuditRequirementsGuideModal();
+  launchNewEntrantAuditRequirementsGuideModal();
 }
 
-// 🟢 CRITICAL SAFETY INSULATOR: Resolves your missing reference variables to unfreeze Step 2 button clicks instantly
 function toggleNewEntrantAuditLetterDetails(selectedValue) {
-    console.log(`[Form Controller] Dynamic selection state captured: ${selectedValue}`);
+  console.log(selectedValue);
 }
 
-/**
- * 🟢 REPAIRED FUNNEL ADVANCEMENT ENGINE
- * Bypasses missing function hangs and moves panel layout forward smoothly onto Step 3.
- */
 function processStepTwoFunnelAdvancementGate(event) {
-    if (event && typeof event.preventDefault === "function") {
-        event.preventDefault();
-    }
-    console.log("[Navigation Gate] Step 2 parameters cleared. Moving onto Step 3.");
-    
-    if (typeof window.saveWizardFormStatesVanilla === "function") {
-        window.saveWizardFormStatesVanilla();
-    }
-    if (typeof window.switchWizardActiveViewLayout === "function") {
-        window.switchWizardActiveViewLayout(3);
-    }
+  if (event && typeof event.preventDefault === "function") {
+    event.preventDefault();
+  }
+  if (typeof window.saveWizardFormStatesVanilla === "function") {
+    window.saveWizardFormStatesVanilla();
+  }
+  if (typeof window.switchWizardActiveViewLayout === "function") {
+    window.switchWizardActiveViewLayout(3);
+  }
 }
 
-// Global scope registration mapping
 window.launchNewEntrantAuditRequirementsGuideModal = launchNewEntrantAuditRequirementsGuideModal;
 window.syncModalCheckboxActionDirectToForm = syncModalCheckboxActionDirectToForm;
 window.closeNewEntrantAuditPriceGuideModal = closeNewEntrantAuditPriceGuideModal;
@@ -2156,16 +2125,14 @@ window.triggerNewEntrantAuditComplianceChecklistPopup = triggerNewEntrantAuditCo
 window.toggleNewEntrantAuditLetterDetails = toggleNewEntrantAuditLetterDetails;
 window.processStepTwoFunnelAdvancementGate = processStepTwoFunnelAdvancementGate;
 
-// Bind forward button click listener handlers on app startup
 document.addEventListener("DOMContentLoaded", () => {
-    const continueBtnStep2 = document.querySelector("#step-panel-2 .btn-wizard-main") || 
-                             document.querySelector("#step-2 .btn-wizard-main") ||
-                             document.querySelector("button[onclick*='goToNextWizardStep(3)']");
-                             
-    if (continueBtnStep2) {
-        continueBtnStep2.removeAttribute("onclick");
-        continueBtnStep2.addEventListener("click", processStepTwoFunnelAdvancementGate);
-continueBtnStep2.style.cursor = "pointer";console.log("[Navigation Hub] Step 2 continue button successfully unfrozen.");}});
+  const continueBtnStep2 = document.querySelector("#step-panel-2 .btn-wizard-main") || document.querySelector("#step-2 .btn-wizard-main") || document.querySelector("button[onclick*='goToNextWizardStep(3)']");
+  if (continueBtnStep2) {
+    continueBtnStep2.removeAttribute("onclick");
+    continueBtnStep2.addEventListener("click", processStepTwoFunnelAdvancementGate);
+    continueBtnStep2.style.cursor = "pointer";
+  }
+});
 
 
 

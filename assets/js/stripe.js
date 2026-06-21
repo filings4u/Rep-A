@@ -4,92 +4,86 @@ window.stripeInstance = window.stripeInstance || null;
 window.stripeElementsContainer = window.stripeElementsContainer || null;
 window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
 
-async function initializeFlatStripeCheckoutElement() {
-  console.log("[Stripe Loader] Initiating payment element mount sequence...");
-  const mountPoint = document.getElementById("stripe-payment-element-mount-point");
-  if (!mountPoint) {
-    console.warn("[Stripe Error] Mount point target node not found in DOM.");
-    return;
-  }
+(function() {
+  const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4';
 
-  if (typeof Stripe === "undefined") {
-    console.error("[Stripe Error] Stripe.js SDK script missing or not loaded yet.");
-    mountPoint.innerHTML = "<p style='color: red; font-size: 0.85rem; font-weight: 600;'>Payment system offline. Please refresh.</p>";
-    return;
-  }
+  window.stripeInstance = window.stripeInstance || null;
+  window.stripeElementsContainer = window.stripeElementsContainer || null;
+  window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
 
-  try {
-    if (!window.stripeInstance) {
-      window.stripeInstance = Stripe(ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
-    }
+  async function initializeFlatStripeCheckoutElement() {
+    console.log("[Stripe Loader] Initiating payment element mount sequence...");
+    const mountPoint = document.getElementById("stripe-payment-element-mount-point");
+    if (!mountPoint) return;
 
-    const currentGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0;
-    const totalAmountCents = Math.round(currentGrandTotal * 100);
-
-    if (totalAmountCents <= 0) {
-      console.warn("[Stripe Loader] Grand total is $0.00. Postponing intent registration.");
-      window.stripePaymentElementInstance = null; 
-      window.stripeElementsContainer = null;
-      mountPoint.innerHTML = "<p style='color: #64748b; font-size: 0.85rem;'>Awaiting package selections to verify invoicing bounds...</p>";
+    if (typeof Stripe === "undefined") {
+      mountPoint.innerHTML = "<p style='color: red; font-size: 0.85rem; font-weight: 600;'>Payment system offline. Please refresh.</p>";
       return;
     }
 
-    if (window.stripePaymentElementInstance) {
-      console.log("[Stripe Loader] Stripe element already exists. Skipping duplicate generation.");
-      return;
-    }
+    try {
+      if (!window.stripeInstance) {
+        window.stripeInstance = Stripe(ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
+      }
 
-    const checkoutOptions = {
-      mode: 'payment',
-      amount: totalAmountCents,
-      currency: 'usd',
-      appearance: {
-        theme: 'stripe',
-        variables: {
-          colorPrimary: '#10b981',
-          colorBackground: '#ffffff',
-          colorText: '#0a1f44',
-          colorDanger: '#ef4444',
-          fontFamily: 'system-ui, sans-serif',
-          borderRadius: '8px'
+      if (typeof window.directInjectCartAddonsToSummaryStep5 === "function") {
+        window.directInjectCartAddonsToSummaryStep5();
+      }
+
+      const currentGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0;
+      const totalAmountCents = Math.round(currentGrandTotal * 100);
+
+      if (totalAmountCents <= 0) {
+        window.stripePaymentElementInstance = null; 
+        window.stripeElementsContainer = null;
+        mountPoint.innerHTML = "<p style='color: #64748b; font-size: 0.85rem;'>Awaiting package selections to verify invoicing bounds...</p>";
+        return;
+      }
+
+      if (window.stripePaymentElementInstance) {
+        window.stripePaymentElementInstance.destroy();
+        window.stripePaymentElementInstance = null;
+      }
+
+      const checkoutOptions = {
+        mode: 'payment',
+        amount: totalAmountCents,
+        currency: 'usd',
+        appearance: {
+          theme: 'stripe',
+          variables: {
+            colorPrimary: '#10b981',
+            colorBackground: '#ffffff',
+            colorText: '#0a1f44',
+            colorDanger: '#ef4444',
+            fontFamily: 'system-ui, sans-serif',
+            borderRadius: '8px'
+          }
         }
-      }
-    };
+      };
 
-    window.stripeElementsContainer = window.stripeInstance.elements(checkoutOptions);
+      window.stripeElementsContainer = window.stripeInstance.elements(checkoutOptions);
+      window.stripePaymentElementInstance = window.stripeElementsContainer.create("payment", {
+        layout: {
+          type: 'accordion',
+          defaultCollapsed: false,
+          radios: false,
+          spacedAccordionItems: false
+        }
+      });
 
-    window.stripePaymentElementInstance = window.stripeElementsContainer.create("payment", {
-      layout: {
-        type: 'accordion',
-        defaultCollapsed: false,
-        radios: false,
-        spacedAccordionItems: false
-      }
-    });
+      mountPoint.innerHTML = "";
+      window.stripePaymentElementInstance.mount("#stripe-payment-element-mount-point");
 
-    mountPoint.innerHTML = "";
-    window.stripePaymentElementInstance.mount("#stripe-payment-element-mount-point");
-    console.log("[Stripe Success] Secure payment gateway field container safely mounted.");
-
-  } catch (mountError) {
-    console.error("[Stripe Core Exception] Failed loading interface framework:", mountError);
-    mountPoint.innerHTML = "<p style='color: #ef4444; font-size: 0.85rem;'>Secure gateway loading failed. Please refresh and try again.</p>";
-  }
-
-  window.stripePaymentElementInstance.on('change', function(event) {
-  if (event.complete || !event.empty) {
-    const secureCardWrapperCell = document.querySelector("#stripe-payment-element-mount-point")?.parentElement;
-    if (secureCardWrapperCell) {
-      secureCardWrapperCell.style.borderColor = "#e2e8f0";
-      secureCardWrapperCell.style.borderWidth = "1px";
-      secureCardWrapperCell.style.boxShadow = "none";
+    } catch (mountError) {
+      console.error(mountError);
+      mountPoint.innerHTML = "<p style='color: #ef4444; font-size: 0.85rem;'>Secure gateway loading failed. Please refresh and try again.</p>";
     }
   }
-});
 
-}
+  window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
+})();
 
-window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
 
 
 async function executeOnboardingTransactionPayloadSubmitVanilla() {
