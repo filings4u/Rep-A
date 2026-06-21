@@ -313,3 +313,120 @@
     gap: 10px !important;
   }
 }
+
+
+@media screen and (max-width: 768px) {
+  /* 1. Force the master mobile layout and all wizard panels to stretch full width flush to screen edges */
+  .wizard-container, 
+  .wizard-panel, 
+  .master-onboarding-form, 
+  .workspace-split-layout,
+  #wizard-master-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 16px !important;  
+    padding-right: 16px !important; 
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 2. Lock Header Logo to Left Edge, Metadata Badge Block to Right Edge */
+  .f4u-full-canvas-header .nav-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .f4u-full-canvas-header .nav-container > a {
+    display: block !important;
+    margin: 0 !important;
+    text-align: left !important;
+  }
+
+  .f4u-full-canvas-header .nav-container img {
+    height: 28px !important; /* Scaled down tightly for phone viewports */
+    width: auto !important;
+  }
+
+  .f4u-full-canvas-header .header-meta-badge {
+    margin: 0 !important;
+    padding: 6px 10px !important;
+    gap: 8px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    width: auto !important;
+  }
+
+  /* 3. Re-scale All Text & Form Labels down to Compact Mobile Dimensions */
+  h2, .wizard-panel h2 {
+    font-size: 1.25rem !important;
+    letter-spacing: -0.3px !important;
+  }
+  
+  h3, .wizard-panel h3 {
+    font-size: 1.05rem !important;
+  }
+
+  p, span, label, li, a {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .wizard-input-field, 
+  input[type="text"], 
+  input[type="tel"], 
+  input[type="email"], 
+  input[type="number"], 
+  input[type="date"], 
+  select, 
+  textarea {
+    font-size: 14px !important;
+    min-height: 40px !important;
+    padding: 8px 12px !important;
+  }
+
+  /* 4. Decrease Master White Space Padding Constraints on Footer Container */
+  .footer-master-container .footer-width-limiter {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* 5. Keep Brand Column Stacked Tightly Over the Link Matrix */
+  .footer-directory-grid {
+    flex-direction: column !important;
+    padding-bottom: 15px !important;
+    gap: 15px !important;
+    width: 100% !important;
+  }
+
+  /* 6. Overhaul Corporate Link Blocks into a Perfect Symmetric 2x2 Layout Grid */
+  .footer-directory-grid .footer-links-wrapper {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Perfect 2-column configuration split */
+    gap: 16px 12px !important;
+    width: 100% !important;
+    justify-content: start !important;
+  }
+
+  /* 7. Pivot All Right-Aligned Text Columns Back to Left Grid Margin for Phone Scannability */
+  .footer-links-wrapper .footer-hq-column {
+    text-align: left !important;
+    align-items: flex-start !important;
+  }
+
+  /* 8. Compress Whitespace inside Sub-Footer Legal Element Bars */
+  .footer-legal-row-bar {
+    padding-top: 15px !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+}

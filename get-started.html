@@ -24,32 +24,37 @@
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: system-ui, sans-serif; color: #0f172a;">
   <script src="assets/js/toggle.js"></script>
+
+
+
+
   <!-- FRONTEND LAYOUT TARGET CONNECTIONS -->
-  <div id="global-platform-navigation-zone"></div>
-  
-  <!-- 🌟 AUTOMATED SYSTEM BOUNDS -->
-  <!-- Throws the smooth margin-top: 120px and bottom padding parameters -->
-  <div id="get-started-hero-zone"></div>
-  
-  <!-- Displays the 3-column performance counters matrix dynamically -->
-  <div id="get-started-metrics-zone"></div>
-  <!-- Renders out your dynamic 3-card landing page pricing arrays -->
-  <div id="universal-matrix-cards-injection-box" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; width: 100%; box-sizing: border-box;"></div>
-  
-  <!-- Renders the on-demand concierge stream feed activity logs -->
-  <div id="get-started-launchpad-zone"></div>
-  
-  <!-- Mounts the institutional audit trust shield asset matrices -->
-  <div id="get-started-trust-zone"></div>
-  <!-- Dynamic subscription email capture field block -->
-  <div id="dynamic-subscribe-placement-zone"></div>
-  
-  <!-- Global site footer target zone connection -->
-  <div id="global-platform-footer-zone"></div>
-  <!-- /FRONTEND LAYOUT TARGET CONNECTIONS -->
+<div id="global-platform-navigation-zone"></div>
+
+<!-- 🌟 AUTOMATED SYSTEM BOUNDS -->
+<div id="get-started-hero-zone"></div>
+<div id="get-started-metrics-zone"></div>
+<!-- 🏢 CUSTOM TARGET: Main width-limiting block constrained to 1450px -->
+<div id="get-started-universal-pricing-grid-root" style="max-width: 1450px; margin: 40px auto 60px auto; padding: 0 24px; box-sizing: border-box; width: 100%;">
+  <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; text-align: left;">
+    <h2 style="color: #0a1f44; font-size: 1.35rem; font-weight: 800; margin: 0; letter-spacing: -0.3px;">Explore Our Compliance Setup Solutions</h2>
+    <p style="color: #64748b; font-size: 0.85rem; margin: 4px 0 0 0;">Compare available starter rates across our dynamic system service index catalog layers.</p>
+  </div>
+
+  <!-- Unified Card Injector: Corrected duplicate ID clashing. Uses the compact 220px dense matrix style layout -->
+  <div id="universal-matrix-cards-injection-box" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; width: 100%; box-sizing: border-box;">
+    <!-- Compiled script blocks drop items programmatically here on browser initialization -->
+  </div>
+</div>
 
 
-   <script>
+<div id="dynamic-subscribe-placement-zone"></div>
+<div id="global-platform-footer-zone"></div>
+<!-- /FRONTEND LAYOUT TARGET CONNECTIONS -->
+
+
+
+     <script>
     document.addEventListener("DOMContentLoaded", function() {
       const parentTargetBox = document.getElementById("universal-matrix-cards-injection-box");
       if (!parentTargetBox) return;
@@ -65,15 +70,15 @@
         const starterVal = parseFloat(dataNode.starter) || 0;
 
         compiledMarkup += `
-          <div class="pricing-card-node text-center-mobile" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(10,31,68,0.01); height: 100%; box-sizing: border-box;">
-            <div class="pricing-card-upper-content" style="text-align: left;">
-              <h3 class="pricing-card-tier-title" style="color: #0a1f44; font-size: 1.05rem; font-weight: 800; margin: 0 0 8px 0; min-height: 44px; display: flex; align-items: center;">${baseName}</h3>
-              <div class="pricing-card-rate-row" style="margin-bottom: 14px;">
-                <span class="pricing-card-price-integer" style="font-size: 1.6rem; font-weight: 800; color: #0a1f44; font-family: monospace;">$${starterVal.toFixed(2)}</span>
-                <span class="pricing-card-cadence-label" style="font-size: 0.8rem; color: #64748b;"> / plan entry</span>
+          <div class="pricing-card-node text-center-mobile" style="background: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #0a1f44; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(10,31,68,0.02); height: 100%; box-sizing: border-box; transition: transform 0.15s ease-in-out;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
+            <div class="pricing-card-upper-content" style="text-align: left; width: 100%;">
+              <h3 class="pricing-card-tier-title" style="color: #0a1f44; font-size: 0.875rem; font-weight: 800; margin: 0 0 10px 0; min-height: 36px; display: flex; align-items: center; line-height: 1.3;">${baseName}</h3>
+              <div class="pricing-card-rate-row" style="margin-bottom: 12px; display: flex; align-items: baseline; gap: 4px;">
+                <span class="pricing-card-price-integer" style="font-size: 1.35rem; font-weight: 800; color: #0a1f44; font-family: monospace;">$${starterVal.toFixed(2)}</span>
+                <span class="pricing-card-cadence-label" style="font-size: 0.75rem; color: #64748b; font-weight: 500;">/ base</span>
               </div>
             </div>
-            <a href="wizard.html?service=${serviceKey}&plan=starter" class="pricing-card-action-btn starter-btn-theme" style="background: #0a1f44; color: #ffffff; padding: 12px; border-radius: 6px; text-decoration: none; font-weight: 700; text-align: center; display: block; font-size: 0.85rem; margin-top: auto; border: none; cursor: pointer;">Initialize Setup &rarr;</a>
+            <a href="wizard.html?service=${serviceKey}&plan=starter" class="pricing-card-action-btn starter-btn-theme" style="background: #0a1f44; color: #ffffff; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: 700; text-align: center; display: block; font-size: 0.8rem; margin-top: auto; border: none; cursor: pointer; transition: background 0.1s;">Initialize Setup &rarr;</a>
           </div>
         `;
       }
