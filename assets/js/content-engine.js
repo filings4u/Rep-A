@@ -461,33 +461,22 @@ function renderMasterSubscribeEngine(targetId) {
  * PART 1: PAGE ENVIRONMENT INTERFACE PROPERTY COMPILER
  * Maps out your 4-part asset schema using the dynamic page slug text variable.
  */
-function compileDynamicLayoutProperties(targetId, suffix) {
-  // 1. Extract the lowercase page name variable straight from the active HTML tag
-  const slug = targetId.replace(suffix, "").toLowerCase().trim();
-  
-  // 2. Format the slug token string into clean Title Case words for headers
-  const title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  
-  // 3. Return the exact paths by combining your directories, page names, and extensions
+function compileDynamicLayoutProperties(targetElementId, suffixPatternString) {
+  var calculatedSlugValue = targetElementId.replace(suffixPatternString, "").trim().toLowerCase();
   return {
-    slug: slug,
-    title: title,
-    heroImage: 'images/' + slug + '-hero.jpg',
-    secbImage: 'images/' + slug + '-secb.jpg',
-    seccImage: 'images/' + slug + '-secc.jpg',
-    secdImage: 'images/' + slug + '-secd.jpg'
+    slug: calculatedSlugValue,
+    title: calculatedSlugValue.split("-").map(function(wordItem) {
+      return wordItem.charAt(0).toUpperCase() + wordItem.slice(1);
+    }).join(" ")
   };
 }
 
-
-
-// --- CENTRAL DATA ORCHESTRATOR ROUTER SYSTEM ---
 async function renderMasterSystem() {
   try {
     const activeSlug = window.location.pathname.split("/").pop().replace(".html", "").trim().toLowerCase();
     const cleanPageKey = (!activeSlug || activeSlug === "home" || activeSlug === "index") ? "index" : activeSlug;
-
     let dbRow = null;
+    
     try {
       const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
       const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
@@ -495,8 +484,13 @@ async function renderMasterSystem() {
       
       const response = await fetch(endpoint, {
         method: "GET",
-        headers: { "apikey": backupKey, "Authorization": "Bearer " + backupKey, "Accept": "application/json" }
+        headers: {
+          "apikey": backupKey,
+          "Authorization": "Bearer " + backupKey,
+          "Accept": "application/json"
+        }
       });
+      
       if (response.ok) {
         const rawJsonPayloadArray = await response.json();
         if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
@@ -504,68 +498,154 @@ async function renderMasterSystem() {
         }
       }
     } catch (netErr) {
-      console.warn("⚠️ Database query fallback active.", netErr);
+      console.warn(netErr);
     }
-
     const heroTarget = document.querySelector('[id$="-hero-zone"]');
     if (!heroTarget) return;
-
+    
     const meta = compileDynamicLayoutProperties(heroTarget.id, "-hero-zone");
+    meta.slug = cleanPageKey;
+    
     if (dbRow && dbRow.service_title) {
       meta.title = dbRow.service_title;
+    } else {
+      meta.title = meta.title.replace("-registration", "").replace("registration", "").replace("-quote", "").trim();
     }
-
+    
     document.title = meta.title + " Registration & Filing Services | filings4u";
-
-    // 🎯 SECTION 1: Global Site Navigation (White Background)
+    
     if (typeof renderDynamicGlobalCorporateNavigation === "function") {
       renderDynamicGlobalCorporateNavigation("global-platform-navigation-zone");
     }
-
-    // 🎯 SECTION 2: Dynamic Branded Page Hero (White Background)
     if (typeof renderMasterHeroEngine === "function") {
-      renderMasterHeroEngine(heroTarget.id, meta);
+      renderMasterHeroEngine(heroTarget.id, dbRow || meta);
     }
-
-    // 🎯 SECTION 3: Enterprise Metrics Dashboard Board (Navy Dark Background)
     if (typeof renderMasterMetricsEngine === "function") {
-      renderMasterMetricsEngine(meta.slug + "-metrics-zone", dbRow);
+      renderMasterMetricsEngine(cleanPageKey + "-metrics-zone", dbRow);
     }
-
-    // 🎯 SECTION 4: Live 3-Card Layout Pricing Matrix (White Background)
     if (typeof renderMasterPricingEngine === "function") {
-      renderMasterPricingEngine(meta.slug + "-package-pricing-cards-root", meta);
+      renderMasterPricingEngine(heroTarget.id.replace("-hero-zone", "-package-pricing-cards-root"), dbRow || meta);
     }
-
-    // 🎯 SECTION 5: On-Demand Concierge Stream Feed Logs (Navy Dark Background)
     if (typeof renderMasterConciergeFeedEngine === "function") {
-      renderMasterConciergeFeedEngine(meta.slug + "-launchpad-zone", meta);
+      renderMasterConciergeFeedEngine(cleanPageKey + "-launchpad-zone", dbRow || meta);
     }
-
-
-    // 🎯 SECTION 7: Institutional Audit Trust Shield Matrix (Navy Dark Background) -> FIXED TARGET CONTAINER
     if (typeof renderMasterTrustShieldMatrix === "function") {
-      renderMasterTrustShieldMatrix(meta.slug + "-trust-zone", meta);
+      renderMasterTrustShieldMatrix(cleanPageKey + "-trust-zone", dbRow || meta);
     }
-
-    // 🎯 SECTION 8: Email Subscription Capture Interface Module (White Background)
     if (typeof renderMasterSubscribeEngine === "function") {
-      renderMasterSubscribeEngine("dynamic-subscribe-placement-zone", meta);
+      renderMasterSubscribeEngine("dynamic-subscribe-placement-zone", dbRow || meta);
     }
-
-    // 🎯 SITE FOOTER: Global Corporate Site Footer Matrix (Navy Dark Background)
     if (typeof renderDynamicGlobalCorporateFooter === "function") {
       renderDynamicGlobalCorporateFooter("global-platform-footer-zone");
     }
-
-    console.log("🏁 Balanced 8-section layout system initialized for: " + meta.slug);
   } catch (err) {
-    console.error("❌ Component System Crash Redirected:", err);
+    console.error(err);
   }
 }
 
-// Bind load system to DOM setup lifecycle events safely
 document.addEventListener("DOMContentLoaded", renderMasterSystem);
+window.compileDynamicLayoutProperties = compileDynamicLayoutProperties;
+window.renderMasterSystem = renderMasterSystem;
+function renderMasterPricingEngine(targetId, metaDataRecord) {
+  try {
+    const zone = document.getElementById(targetId);
+    if (!zone) return;
+
+    var slug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
+    if (metaDataRecord && metaDataRecord.slug) {
+      slug = metaDataRecord.slug;
+    }
+
+    const universalSourceMatrix = window.CENTRAL_SERVICE_PLAN_DB || {};
+    
+    /* 🌟 HARMONIZATION FIX: Checks both standard array definitions and handles key fallbacks for quote fields */
+    var pricingDatasetNode = universalSourceMatrix[slug];
+    if (!pricingDatasetNode && slug.endsWith("-quote")) {
+      pricingDatasetNode = universalSourceMatrix[slug.replace("-quote", "")];
+    }
+    if (!pricingDatasetNode && !slug.endsWith("-quote")) {
+      pricingDatasetNode = universalSourceMatrix[slug + "-quote"];
+    }
+    if (!pricingDatasetNode) {
+      pricingDatasetNode = (metaDataRecord && metaDataRecord.pricing) ? metaDataRecord.pricing : metaDataRecord;
+    }
+
+    if (!pricingDatasetNode || Object.keys(pricingDatasetNode).length === 0 || (!pricingDatasetNode.starter && !pricingDatasetNode.compliance && !pricingDatasetNode.enterprise && !pricingDatasetNode.tiers)) {
+      console.warn("[Pricing Error] Missing structured price dataset object configuration nodes for key: " + slug);
+      return;
+    }
+
+    const compileBulletsSubLoopMarkup = function(bulletArrayData) {
+      if (!Array.isArray(bulletArrayData)) return "";
+      return bulletArrayData.map(function(singleBulletString) {
+        const structuralEscapedString = typeof secureGridStringEscape === "function" ? secureGridStringEscape(singleBulletString) : singleBulletString;
+        return '<li class="pricing-card-bullet-item"><span>✓</span>' + structuralEscapedString + '</li>';
+      }).join("");
+    };
+
+    const coreTiersRegistryList = pricingDatasetNode.tiers || [
+      { key: "starter", name: pricingDatasetNode.starter_label || "Starter Package", price: parseFloat(pricingDatasetNode.starter) || 0, highlighted: false },
+      { key: "compliance", name: pricingDatasetNode.compliance_label || "Compliance Guard", price: parseFloat(pricingDatasetNode.compliance) || 0, highlighted: true },
+      { key: "enterprise", name: pricingDatasetNode.enterprise_label || "Enterprise Asset Suite", price: parseFloat(pricingDatasetNode.enterprise) || 0, highlighted: false }
+    ];
+
+    const frameworkSectionTitleText = pricingDatasetNode.section_title || "Flexible Pricing Framework Options";
+    const frameworkSectionSubtitleText = pricingDatasetNode.section_subtitle || "Select the optimal processing speed and protection depth your operation requires.";
+    const dynamicCadenceDescriptorLabel = pricingDatasetNode.cadence_label || " / registration";
+    const dynamicPopularBadgeTextString = pricingDatasetNode.popular_badge_text || "Most Popular Option";
+    const dynamicButtonActionVerbText = pricingDatasetNode.button_text || "Select Plan Option";
+
+    var pricingCardsGeneratedHtmlArrayString = "";
+
+    coreTiersRegistryList.forEach(function(tierRecordObj) {
+      const tierUniqueKeyId = tierRecordObj.key;
+      const tierPresentationName = tierRecordObj.name;
+      const numericPriceValueFloat = parseFloat(tierRecordObj.price) || 0;
+      const isCardHighlightedActive = tierRecordObj.highlighted || false;
+      
+      const targetedBulletsSourceArray = pricingDatasetNode.bullets && pricingDatasetNode.bullets[tierUniqueKeyId] ? pricingDatasetNode.bullets[tierUniqueKeyId] : [];
+      
+      var conditionalBadgeMarkupCell = "";
+      var structuralHighlightClassNameSelector = "pricing-card-node text-center-mobile";
+      var integerColorHighlightClassNameSelector = "pricing-card-price-integer";
+
+      if (isCardHighlightedActive) {
+        conditionalBadgeMarkupCell = '<span class="pricing-card-popular-badge">' + dynamicPopularBadgeTextString + '</span>';
+        structuralHighlightClassNameSelector = "pricing-card-node pricing-card-highlighted text-center-mobile";
+        integerColorHighlightClassNameSelector = "pricing-card-price-integer color-primary";
+      }
+
+      pricingCardsGeneratedHtmlArrayString += '<div class="' + structuralHighlightClassNameSelector + '">' + conditionalBadgeMarkupCell + '<div class="pricing-card-upper-content"><h3 class="pricing-card-tier-title">' + tierPresentationName + '</h3><div class="pricing-card-rate-row"><span class="' + integerColorHighlightClassNameSelector + '">$' + numericPriceValueFloat.toFixed(2) + '</span><span class="pricing-card-cadence-label">' + dynamicCadenceDescriptorLabel + '</span></div><ul class="pricing-card-bullets-list">' + compileBulletsSubLoopMarkup(targetedBulletsSourceArray) + '</ul></div><a href="wizard.html?service=' + slug + '&plan=' + tierUniqueKeyId + '" class="pricing-card-action-btn ' + tierUniqueKeyId + '-btn-theme">' + dynamicButtonActionVerbText + '</a></div>';
+    });
+
+    zone.innerHTML = '<section id="pricing-framework-target" class="pricing-grid-master-section"><div class="site-width-alignment-guard prgrid-container"><div class="pricing-grid-header-block"><h2 class="pricing-grid-main-title">' + frameworkSectionTitleText + '</h2><p class="pricing-grid-subtitle">' + frameworkSectionSubtitleText + '</p></div><div class="pricing-cards-responsive-grid">' + pricingCardsGeneratedHtmlArrayString + '</div></div></section>';
+
+    setTimeout(function() {
+      const livePageAnchorNodesArray = document.querySelectorAll('a');
+      livePageAnchorNodesArray.forEach(function(individualAnchorElement) {
+        const internalAnchorTextContent = individualAnchorElement.textContent || "";
+        if (internalAnchorTextContent.trim() !== "") {
+          individualAnchorElement.addEventListener("click", function(clickInterceptEvent) {
+            if (individualAnchorElement.getAttribute("href") === "#pricing-framework-target") {
+              const viewScrollTargetElementNode = document.getElementById("pricing-framework-target");
+              if (viewScrollTargetElementNode) {
+                clickInterceptEvent.preventDefault();
+                viewScrollTargetElementNode.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }
+          });
+        }
+      });
+    }, 60);
+
+  } catch (runtimeExceptionError) {
+    console.error(runtimeExceptionError);
+  }
+}
+
+window.renderMasterPricingEngine = renderMasterPricingEngine;
+
+
 
 
 
@@ -724,66 +804,58 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// NEW: Automated Hero Rendering Addition Block
-function renderMasterHeroEngine(targetId) {
-    try {
-        const zone = document.getElementById(targetId);
-        if (!zone) return;
+function renderMasterHeroEngine(targetId, metaDataRecord) {
+  try {
+    const zone = document.getElementById(targetId);
+    if (!zone) return;
 
-        // Detect if this is the homepage anchor wrapper or a standalone service profile layout
-        let slug = "index";
-        if (targetId !== "index-hero-zone" && targetId !== "dynamic-hero-zone") {
-            slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
-        } else {
-            // Direct raw path detection layout selector rules fallback engine
-            const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
-            if (rawPathname !== "" && !rawPathname.includes("index") && !rawPathname.includes("home")) {
-                slug = rawPathname.replace(".html", "");
-            }
-        }
-
-        const profile = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
-        if (!profile) {
-            console.warn(`Profile configuration missing for initialization key: ${slug}`);
-            return;
-        }
-
-        // Explicitly forces the dynamic naming model requested string: images/page-name-hero.jpg
-        const dynamicHeroImgSrc = `images/${slug}-hero.jpg`;
-
-        // 🌟 SYMMETRICAL COMPACT GAP FIX: Set both top and bottom padding strictly to 80px to make them identical and tight.
-        // 🌟 GLOBAL CSS HOOKS: Integrated your custom mobile classes to cleanly stack image at top and text at bottom.
-        zone.innerHTML = `
-        <section style="padding: 80px 0 80px 0 !important; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden; margin-bottom: 0 !important;">
-            
-            <!-- .responsive-hero-grid parent hook -->
-            <div class="responsive-hero-grid" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; box-sizing: border-box;">
-                
-                <!-- TEXT COLUMN (Falls to bottom on mobile via your global flex rules) -->
-                <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
-                    <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block;">${profile.pill}</span>
-                    
-                    <!-- .hero-headline utility hook -->
-                    <h1 class="hero-headline" style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">${profile.hero_title}</h1>
-                    
-                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${profile.hero_lead}</p>
-                    <a href="llc-formation.html#pricing-framework-target" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a>
-                </div>
-                
-                <!-- IMAGE COLUMN (Flips to top on mobile via your .hero-image-container order: 1 important stylesheet assignment) -->
-                <div class="hero-image-container" style="flex: 1; min-width: 320px; text-align: center; box-sizing: border-box;">
-                    
-                    <!-- .hero-display-img framework selector hook -->
-                    <img src="${dynamicHeroImgSrc}" class="hero-display-img" alt="${profile.name} Framework Layout Preview" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);" onerror="this.onerror=null; this.src='https://unsplash.com';">
-                </div>
-                
-            </div>
-        </section>
-        `;
-    } catch (err) {
-        console.error("Hero rendering critical engine error:", err);
+    let slug = "index";
+    if (targetId !== "index-hero-zone" && targetId !== "dynamic-hero-zone") {
+      slug = targetId.replace("-hero-zone", "").toLowerCase().trim();
+    } else {
+      const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
+      if (rawPathname !== "" && !rawPathname.includes("index") && !rawPathname.includes("home")) {
+        slug = rawPathname.replace(".html", "");
+      }
     }
+
+    const liveRecordSource = metaDataRecord || (window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug]) || {};
+    
+    const displayPillText = liveRecordSource.pill || "Statutory Data Security Covenant";
+    const displayHeroTitle = liveRecordSource.hero_title || liveRecordSource.service_title || liveRecordSource.title || "Compliance Portal";
+    const displayHeroLead = liveRecordSource.hero_lead || liveRecordSource.description || "Automated Inter-Jurisdictional Regulatory Licensing, Onboarding Compliance Systems, and Provisioning Pipelines.";
+    const dynamicHeroImgSrc = "images/" + slug + "-hero.jpg";
+
+    var computedActionLinkDestination = "#pricing-framework-target";
+    if (slug === "index") {
+      computedActionLinkDestination = "get-started.html";
+    }
+
+    zone.innerHTML = '<section style="padding: 0 !important; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden; margin-top: 30px !important; margin-bottom: 50px !important;"><div class="responsive-hero-grid" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; box-sizing: border-box;"><div style="flex: 1; min-width: 320px; box-sizing: border-box; padding: 40px 0;"><span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block;">' + displayPillText + '</span><h1 class="hero-headline" style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">' + displayHeroTitle + '</h1><p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">' + displayHeroLead + '</p><a href="' + computedActionLinkDestination + '" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a></div><div class="hero-image-container" style="flex: 1; min-width: 320px; text-align: center; box-sizing: border-box; padding: 40px 0;"><img src="' + dynamicHeroImgSrc + '" class="hero-display-img" alt="Framework Layout Preview" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);" onerror="this.onerror=null; this.src=\'images/default-hero.jpg\';"></div></div></section>';
+
+    if (slug !== "index") {
+      setTimeout(function() {
+        const heroActionAnchor = zone.querySelector('a[href="#pricing-framework-target"]');
+        if (heroActionAnchor) {
+          heroActionAnchor.addEventListener("click", function(clickEvent) {
+            const scrollDestinationNode = document.getElementById("pricing-framework-target");
+            if (scrollDestinationNode) {
+              clickEvent.preventDefault();
+              scrollDestinationNode.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          });
+        }
+      }, 40);
+    }
+
+  } catch (err) {
+    console.error("Hero rendering critical engine error:", err);
+  }
 }
+
+window.renderMasterHeroEngine = renderMasterHeroEngine;
+
+
 
 
 
@@ -819,127 +891,102 @@ function secureGridStringEscape(primitiveValue) {
         .replace(/'/g, "&#039;");
 }
 
-// ============================================================================ //
-// 🛠️ MODULE 4: AUTOMATED WEBSITE SALES-CARD RENDER ENGINE (SYNCHRONIZED READY) //
-// ============================================================================ //
-function renderMasterPricingEngine(targetId) {
+function renderMasterPricingEngine(targetId, metaDataRecord) {
   try {
     const zone = document.getElementById(targetId);
     if (!zone) return;
 
-    // Extract and clean raw database slug keys out of DOM container selectors
-    let slug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
+    var currentActiveSlug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
+    if (metaDataRecord && metaDataRecord.slug) {
+      currentActiveSlug = metaDataRecord.slug;
+    }
 
-    // 🛡️ MAPPING ADAPTER: Harmonize landing page container slugs to match state-pricing.js keys exactly
-    if (slug === "llc-reinstatement-processing") slug = "llc-reinstatement";
-    if (slug === "entity-dissolution") slug = "dissolution";
-    if (slug === "process-agent-boc-3") slug = "process-agents-boc-3";
+    const universalSourceMatrix = window.CENTRAL_SERVICE_PLAN_DB || {};
+    const pricingDatasetNode = universalSourceMatrix[currentActiveSlug] || (metaDataRecord && metaDataRecord.pricing) || {};
 
-    // CENTRAL DATA HOOK: Bind strictly to your established system source of truth
-    const dbSource = window.CENTRAL_SERVICE_PLAN_DB || {};
-    const pricingData = dbSource[slug];
-
-    if (!pricingData) {
-      console.warn(`No price object config structured for selector profile: ${slug}`);
+    if (!pricingDatasetNode || Object.keys(pricingDatasetNode).length === 0) {
+      console.warn(currentActiveSlug);
       return;
     }
 
-    // Helper function to safely construct sanitized bullet strings securely
-    const makeBulletsHTML = (bulletArray) => {
-      if (!Array.isArray(bulletArray)) return "";
-      return bulletArray.map(b => {
-        const safeBulletText = secureGridStringEscape(b);
-        return `<li class="pricing-card-bullet-item"><span>✓</span>${safeBulletText}</li>`;
+    const compileBulletsSubLoopMarkup = function(bulletArrayData) {
+      if (!Array.isArray(bulletArrayData)) return "";
+      return bulletArrayData.map(function(singleBulletString) {
+        const structuralEscapedString = typeof secureGridStringEscape === "function" ? secureGridStringEscape(singleBulletString) : singleBulletString;
+        return '<li class="pricing-card-bullet-item"><span>✓</span>' + structuralEscapedString + '</li>';
       }).join("");
     };
 
-    // ZERO HARDCODED STYLES: Inline presentation metrics replaced entirely with clean CSS selector classes
-    // FIXED: URLs updated to match the correct application standard: wizard.html?service=${slug}&plan=tier
-    zone.innerHTML = `
-      <section id="pricing-framework-target" class="pricing-grid-master-section">
-        <div class="site-width-alignment-guard prgrid-container">
-          <div class="pricing-grid-header-block">
-            <h2 class="pricing-grid-main-title">Flexible Pricing Framework Options</h2>
-            <p class="pricing-grid-subtitle">Select the optimal processing speed and protection depth your operation requires.</p>
-          </div>
-          <div class="pricing-cards-responsive-grid">
-            
-            <!-- Tier 1: Starter -->
-            <div class="pricing-card-node text-center-mobile">
-              <div class="pricing-card-upper-content">
-                <h3 class="pricing-card-tier-title">Starter Package</h3>
-                <div class="pricing-card-rate-row">
-                  <span class="pricing-card-price-integer">$${(parseFloat(pricingData.starter) || 0).toFixed(2)}</span>
-                  <span class="pricing-card-cadence-label"> / registration</span>
-                </div>
-                <ul class="pricing-card-bullets-list">${makeBulletsHTML(pricingData.bullets?.starter)}</ul>
-              </div>
-              <a href="wizard.html?service=${slug}&plan=starter" class="pricing-card-action-btn starter-btn-theme">Select Starter Plan</a>
-            </div>
+    const coreTiersRegistryList = pricingDatasetNode.tiers || [
+      { key: "starter", name: pricingDatasetNode.starter_label || "Starter Package", price: parseFloat(pricingDatasetNode.starter) || 0, highlighted: false },
+      { key: "compliance", name: pricingDatasetNode.compliance_label || "Compliance Guard", price: parseFloat(pricingDatasetNode.compliance) || 0, highlighted: true },
+      { key: "enterprise", name: pricingDatasetNode.enterprise_label || "Enterprise Asset Suite", price: parseFloat(pricingDatasetNode.enterprise) || 0, highlighted: false }
+    ];
 
-            <!-- Tier 2: Compliance (Most Popular Highlighted Option) -->
-            <div class="pricing-card-node pricing-card-highlighted text-center-mobile">
-              <span class="pricing-card-popular-badge">Most Popular Option</span>
-              <div class="pricing-card-upper-content">
-                <h3 class="pricing-card-tier-title">Compliance Guard</h3>
-                <div class="pricing-card-rate-row">
-                  <span class="pricing-card-price-integer color-primary">$${(parseFloat(pricingData.compliance) || 0).toFixed(2)}</span>
-                  <span class="pricing-card-cadence-label"> / registration</span>
-                </div>
-                <ul class="pricing-card-bullets-list">${makeBulletsHTML(pricingData.bullets?.compliance)}</ul>
-              </div>
-              <a href="wizard.html?service=${slug}&plan=compliance" class="pricing-card-action-btn compliance-btn-theme">Select Compliance Plan</a>
-            </div>
+    const frameworkSectionTitleText = pricingDatasetNode.section_title || "Flexible Pricing Framework Options";
+    const frameworkSectionSubtitleText = pricingDatasetNode.section_subtitle || "Select the optimal processing speed and protection depth your operation requires.";
+    const dynamicCadenceDescriptorLabel = pricingDatasetNode.cadence_label || " / registration";
+    const dynamicPopularBadgeTextString = pricingDatasetNode.popular_badge_text || "Most Popular Option";
+    const dynamicButtonActionVerbText = pricingDatasetNode.button_text || "Select Plan Option";
 
-            <!-- Tier 3: Enterprise -->
-            <div class="pricing-card-node text-center-mobile">
-              <div class="pricing-card-upper-content">
-                <h3 class="pricing-card-tier-title">Enterprise Asset Suite</h3>
-                <div class="pricing-card-rate-row">
-                  <span class="pricing-card-price-integer">$${(parseFloat(pricingData.enterprise) || 0).toFixed(2)}</span>
-                  <span class="pricing-card-cadence-label"> / registration</span>
-                </div>
-                <ul class="pricing-card-bullets-list">${makeBulletsHTML(pricingData.bullets?.enterprise)}</ul>
-              </div>
-              <a href="wizard.html?service=${slug}&plan=enterprise" class="pricing-card-action-btn enterprise-btn-theme">Select Enterprise Plan</a>
-            </div>
+    var pricingCardsGeneratedHtmlArrayString = "";
 
-          </div>
-        </div>
-      </section>
-    `;
+    coreTiersRegistryList.forEach(function(tierRecordObj) {
+      const tierUniqueKeyId = tierRecordObj.key;
+      const tierPresentationName = tierRecordObj.name;
+      const numericPriceValueFloat = parseFloat(tierRecordObj.price) || 0;
+      const isCardHighlightedActive = tierRecordObj.highlighted || false;
+      
+      const targetedBulletsSourceArray = pricingDatasetNode.bullets && pricingDatasetNode.bullets[tierUniqueKeyId] ? pricingDatasetNode.bullets[tierUniqueKeyId] : [];
+      
+      var conditionalBadgeMarkupCell = "";
+      var structuralHighlightClassNameSelector = "pricing-card-node text-center-mobile";
+      var integerColorHighlightClassNameSelector = "pricing-card-price-integer";
 
-    // 🌟 SELF-CONTAINED ROUTING ENGINE: Handle scrolling intercepts safely
-    setTimeout(() => {
-      const pageAnchorButtons = document.querySelectorAll('a');
-      pageAnchorButtons.forEach(btn => {
-        const text = btn.textContent || "";
-        if (text.includes("Initialize Application") || text.includes("Initialize Local Application")) {
-          btn.addEventListener("click", function(e) {
-            const pricingTarget = document.getElementById("pricing-framework-target");
-            if (pricingTarget) {
-              e.preventDefault();
-              pricingTarget.scrollIntoView({ behavior: "smooth", block: "start" });
-            } else {
-              // Automatically fall back to clean service page links with specific anchors
-              btn.setAttribute("href", `${slug}.html#pricing-framework-target`);
+      if (isCardHighlightedActive) {
+        conditionalBadgeMarkupCell = '<span class="pricing-card-popular-badge">' + dynamicPopularBadgeTextString + '</span>';
+        structuralHighlightClassNameSelector = "pricing-card-node pricing-card-highlighted text-center-mobile";
+        integerColorHighlightClassNameSelector = "pricing-card-price-integer color-primary";
+      }
+
+      pricingCardsGeneratedHtmlArrayString += '<div class="' + structuralHighlightClassNameSelector + '">' + conditionalBadgeMarkupCell + '<div class="pricing-card-upper-content"><h3 class="pricing-card-tier-title">' + tierPresentationName + '</h3><div class="pricing-card-rate-row"><span class="' + integerColorHighlightClassNameSelector + '">$' + numericPriceValueFloat.toFixed(2) + '</span><span class="pricing-card-cadence-label">' + dynamicCadenceDescriptorLabel + '</span></div><ul class="pricing-card-bullets-list">' + compileBulletsSubLoopMarkup(targetedBulletsSourceArray) + '</ul></div><a href="wizard.html?service=' + currentActiveSlug + '&plan=' + tierUniqueKeyId + '" class="pricing-card-action-btn ' + tierUniqueKeyId + '-btn-theme">' + dynamicButtonActionVerbText + '</a></div>';
+    });
+
+    zone.innerHTML = '<section id="pricing-framework-target" class="pricing-grid-master-section"><div class="site-width-alignment-guard prgrid-container"><div class="pricing-grid-header-block"><h2 class="pricing-grid-main-title">' + frameworkSectionTitleText + '</h2><p class="pricing-grid-subtitle">' + frameworkSectionSubtitleText + '</p></div><div class="pricing-cards-responsive-grid">' + pricingCardsGeneratedHtmlArrayString + '</div></div></section>';
+
+    setTimeout(function() {
+      const livePageAnchorNodesArray = document.querySelectorAll('a');
+      livePageAnchorNodesArray.forEach(function(individualAnchorElement) {
+        const internalAnchorTextContent = individualAnchorElement.textContent || "";
+        if (internalAnchorTextContent.trim() !== "") {
+          individualAnchorElement.addEventListener("click", function(clickInterceptEvent) {
+            if (individualAnchorElement.getAttribute("href") === "#pricing-framework-target") {
+              const viewScrollTargetElementNode = document.getElementById("pricing-framework-target");
+              if (viewScrollTargetElementNode) {
+                clickInterceptEvent.preventDefault();
+                viewScrollTargetElementNode.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
             }
           });
         }
       });
-    }, 50);
+    }, 60);
 
-  } catch (err) {
-    console.error("Pricing cards runtime injection error:", err);
+  } catch (runtimeExceptionError) {
+    console.error(runtimeExceptionError);
   }
 }
 
-// Global hook to catch grid target roots automatically across all landing pages
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll('[id$="-package-pricing-cards-root"]').forEach(zone => {
-    renderMasterPricingEngine(zone.id);
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('[id$="-package-pricing-cards-root"]').forEach(function(dynamicTargetZoneCell) {
+    if (typeof window.renderMasterSystem !== "function") {
+      renderMasterPricingEngine(dynamicTargetZoneCell.id);
+    }
   });
 });
+
+window.renderMasterPricingEngine = renderMasterPricingEngine;
+
 
 
 
