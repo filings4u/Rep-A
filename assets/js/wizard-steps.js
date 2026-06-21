@@ -2234,3 +2234,28 @@ if (step6PanelContainerNode) {
 }
 
 window.forceStep6StripePaymentGatewayRefreshPass = forceStep6StripePaymentGatewayRefreshPass;
+
+
+(function() {
+  document.addEventListener("click", function(event) {
+    const targetElement = event.target;
+    if (!targetElement) return;
+    if (targetElement.classList.contains("btn-wizard-main") || targetElement.classList.contains("btn-wizard-alt") || targetElement.getAttribute("onclick")?.includes("goToNextWizardStep")) {
+      setTimeout(function() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 50);
+    }
+  });
+
+  const masterLayoutPanels = document.querySelectorAll(".wizard-panel");
+  masterLayoutPanels.forEach(function(panel) {
+    const panelObserver = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === "style" && panel.style.display !== "none") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    });
+    panelObserver.observe(panel, { attributes: true });
+  });
+})();
