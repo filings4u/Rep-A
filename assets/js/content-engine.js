@@ -1331,7 +1331,7 @@ function renderDynamicGlobalCorporateFooter(targetId) {
       <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"> 
         <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;"> 
       </a> 
-      <p>Providing enterprise-grade compliance infrastructure for the modern logistics and corporate landscape.</p> 
+      <p>Providing enterprise-grade filing and compliance solutions for local and corporate entities.</p> 
       <div style="margin-top: 25px; display: flex; gap: 15px;"> 
         <!-- LinkedIn --> 
         <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
