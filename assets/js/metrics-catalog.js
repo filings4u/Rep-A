@@ -109,10 +109,10 @@ catalogServices.forEach(s => {
         ];
     } else if (vertical === "logistics") {
         cards = [
-            { icon: "0 0 14px rgba(16, 185, 129, 0.8), inset 0 0 4px rgba(255,255,255,0.4)", val: `${seedA}K+`, lbl: "Active Registrations", desc: `Operating credential profiles approved for immediate deployment pipelines.` },
-            { icon: "0 0 14px rgba(16, 185, 129, 0.8), inset 0 0 4px rgba(255,255,255,0.4)", val: "100%", lbl: "FMCSA Access Rating", desc: `Pre-checked background application files clear enforcement lock parameters.` },
-            { icon: "0 0 14px rgba(16, 185, 129, 0.8), inset 0 0 4px rgba(255,255,255,0.4)", val: `${seedC}M`, lbl: "Daily Certified Loads", desc: `Commercial logistics freight moving under unified transportation codes.` },
-            { icon: "0 0 14px rgba(16, 185, 129, 0.8), inset 0 0 4px rgba(255,255,255,0.4)", val: "Real-Time", lbl: "USDOT Central Node", desc: `Synchronized network loops update credential status to federal mainframes.` }
+            { icon: "🏢", val: `${seedA}K+`, lbl: "Active Registrations", desc: `Operating credential profiles approved for immediate deployment pipelines.` },
+            { icon: "⚡", val: "100%", lbl: "FMCSA Access Rating", desc: `Pre-checked background application files clear enforcement lock parameters.` },
+            { icon: "🛡️", val: `${seedC}M`, lbl: "Daily Certified Loads", desc: `Commercial logistics freight moving under unified transportation codes.` },
+            { icon: "🔒", val: "Real-Time", lbl: "USDOT Central Node", desc: `Synchronized network loops update credential status to federal mainframes.` }
         ];
     } else {
         cards = [

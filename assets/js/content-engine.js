@@ -542,10 +542,6 @@ async function renderMasterSystem() {
       renderMasterConciergeFeedEngine(meta.slug + "-launchpad-zone", meta);
     }
 
-    // 🎯 SECTION 6: Startup Launchpad Exploration Split Block (White Background) -> FIXED TARGET CONTAINER
-    if (typeof renderMasterStartupLaunchpadEngine === "function") {
-      renderMasterStartupLaunchpadEngine(meta.slug + "-trust-zone", meta);
-    }
 
     // 🎯 SECTION 7: Institutional Audit Trust Shield Matrix (Navy Dark Background) -> FIXED TARGET CONTAINER
     if (typeof renderMasterTrustShieldMatrix === "function") {
