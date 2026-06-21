@@ -1896,3 +1896,90 @@
         text-align: center;
     }
 }
+
+
+@media screen and (max-width: 768px) {
+  /* 1. Downscale Main Landing Section Margins & Whitespace Padding */
+  section, 
+  .pricing-grid-master-section, 
+  .responsive-hero-grid,
+  [id$="-hero-zone"], 
+  [id$="-metrics-zone"] {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    gap: 16px !important;
+  }
+
+  /* 2. Tighten Container Gaps on Master Index Layout Grids */
+  .pricing-cards-responsive-grid,
+  .footer-directory-grid,
+  [style*="display: grid"],
+  #universal-matrix-cards-injection-box {
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  /* 3. Downsize Structural Typography Elements to Compact Phone Scale */
+  h1, .hero-headline {
+    font-size: 1.6rem !important;
+    line-height: 1.2 !important;
+    margin: 8px 0 !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  h2, .pricing-grid-main-title {
+    font-size: 1.3rem !important;
+    line-height: 1.25 !important;
+    margin: 0 0 6px 0 !important;
+    letter-spacing: -0.3px !important;
+  }
+
+  h3, .pricing-card-tier-title {
+    font-size: 1rem !important;
+    margin-bottom: 6px !important;
+  }
+
+  h4 {
+    font-size: 0.9rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* 4. Optimize Global Paragraph Lead text and List Labels */
+  p, .pricing-grid-subtitle {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 12px !important;
+  }
+
+  span, label, li, a {
+    font-size: 0.8rem !important;
+    line-height: 1.35 !important;
+  }
+
+  /* 5. Compact Pricing Card Components and Badges */
+  .pricing-card-node {
+    padding: 16px !important;
+    border-radius: 8px !important;
+  }
+
+  .pricing-card-price-integer {
+    font-size: 1.5rem !important;
+  }
+
+  .pricing-card-bullet-item {
+    font-size: 0.8rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* 6. Tighten Button Real Estate Dimensions */
+  .pricing-card-action-btn,
+  [style*="padding: 14px 28px"] {
+    padding: 10px 16px !important;
+    font-size: 0.85rem !important;
+    min-height: 40px !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+}
