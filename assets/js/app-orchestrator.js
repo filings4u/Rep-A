@@ -1,6 +1,6 @@
 /**
  * filings4u Platform Architecture
- * Module: app-orchestrator.js (Performance-Optimized Synchronizer)
+ * Module: app-orchestrator.js (Part 1 - Strategic Static Sheet Synchronizer)
  */
 
 function compileDynamicLayoutProperties(targetElementId, suffixPatternString) {
@@ -15,7 +15,6 @@ function compileDynamicLayoutProperties(targetElementId, suffixPatternString) {
 
 async function renderMasterSystem() {
     // ─── INSTANT REFRESH BOOT SEQUENCE ───
-    // We execute the top navigation menu immediately here before the async network fetch stall happens
     try {
         if (typeof renderDynamicGlobalCorporateNavigation === "function" && document.getElementById("filings4u-global-navigation-root")) {
             renderDynamicGlobalCorporateNavigation();
@@ -30,29 +29,37 @@ async function renderMasterSystem() {
         
         let dbRow = null;
 
-        // Query database endpoints securely
-        try {
-            const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
-            const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
-            const endpoint = backupUrl + '/rest/v1/services?select=*&slug=eq.' + cleanPageKey;
-            
-            const response = await fetch(endpoint, {
-                method: "GET",
-                headers: {
-                    "apikey": backupKey,
-                    "Authorization": "Bearer " + backupKey,
-                    "Accept": "application/json"
-                }
-            });
+           // STATIC SHEET BYPASS FILTER: Skip Supabase if page is a legal document profile
+        const staticLegalPages = ["privacy", "privacy-policy", "terms", "terms-of-service", "refund-policy", "about", "contact"];
+        const isStaticLegalSheet = staticLegalPages.includes(cleanPageKey);
 
-            if (response.ok) {
-                const rawJsonPayloadArray = await response.json();
-                if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
-                    dbRow = rawJsonPayloadArray; 
+
+
+        if (!isStaticLegalSheet) {
+            // Only run network queries for service pipeline product rows
+            try {
+                const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
+                const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
+                const endpoint = backupUrl + '/rest/v1/services?select=*&slug=eq.' + cleanPageKey;
+                
+                const response = await fetch(endpoint, {
+                    method: "GET",
+                    headers: {
+                        "apikey": backupKey,
+                        "Authorization": "Bearer " + backupKey,
+                        "Accept": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    const rawJsonPayloadArray = await response.json();
+                    if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
+                        dbRow = rawJsonPayloadArray;
+                    }
                 }
+            } catch (netErr) {
+                console.warn("API Lookup bypassed. Running local compilation mappings.", netErr);
             }
-        } catch (netErr) {
-            console.warn("API Lookup bypassed. Running local compilation mappings.", netErr);
         }
 
         // Handle text properties fallback loops
@@ -67,7 +74,6 @@ async function renderMasterSystem() {
         }
 
         document.title = meta.title + " Registration & Filing Services | filings4u";
-
         // ─── SEQUENTIAL LAYOUT FLOW DRAWERS ───
 
         // MODULE 2: HERO COMPONENT
@@ -91,12 +97,39 @@ async function renderMasterSystem() {
             }
         } catch(e) { console.warn("Homepage layout switcher container element skipped on this active sub-view page profile."); }
 
-                // MODULE 4-B: PRIVACY COVENANT SHEET RENDERING SYSTEM (Only runs on privacy page)
+        // MODULE 4-B: PRIVACY POLICY ENGINE TRIGGER
         try {
             if (typeof renderMasterPrivacyPolicyEngine === "function" && document.getElementById("filings4u-privacy-policy-root")) {
                 renderMasterPrivacyPolicyEngine("filings4u-privacy-policy-root");
             }
         } catch(e) { console.error("Privacy text layout block execution crash:", e); }
+
+                // MODULE 4-C: TERMS OF SERVICE AGREEMENT MATRIX (Only executes on terms page)
+        try {
+            if (typeof renderMasterTermsOfServiceEngine === "function" && document.getElementById("filings4u-terms-of-service-root")) {
+                renderMasterTermsOfServiceEngine("filings4u-terms-of-service-root");
+            }
+        } catch(e) { console.error("Terms text layout block execution crash:", e); }
+                // MODULE 4-D: COVENANT REFUND POLICY ENGINE (Only executes on refund view pages)
+        try {
+            if (typeof renderMasterRefundPolicyEngine === "function" && document.getElementById("filings4u-refund-policy-root")) {
+                renderMasterRefundPolicyEngine("filings4u-refund-policy-root");
+            }
+        } catch(e) { console.error("Refund text layout block execution crash:", e); }
+                // MODULE 4-E: CORPORATE ABOUT INFRASTRUCTURE ENGINE (Only executes on about pages)
+        try {
+            if (typeof renderMasterAboutEngine === "function" && document.getElementById("filings4u-about-hero-root")) {
+                renderMasterAboutEngine("filings4u-about-hero-root");
+            }
+        } catch(e) { console.error("About text layout block execution crash:", e); }
+        // MODULE 4-F: DYNAMIC SPLIT-CONTAINER CONTACT ENGINE (Only executes on contact views)
+        try {
+            if (typeof renderMasterContactEngine === "function" && document.getElementById("filings4u-contact-root")) {
+                renderMasterContactEngine("filings4u-contact-root");
+            }
+        } catch(e) { console.error("Contact split block execution crash:", e); }
+
+
 
 
         // MODULE 5: 3-CARD PRICING LAYOUT GRID

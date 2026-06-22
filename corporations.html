@@ -17,23 +17,47 @@
   <script src="assets/js/master.js"></script>
   <script src="assets/js/state-pricing.js"></script>
   
-  <!-- DATA ARCHITECTURE CATALOG DEPLOYMENTS (Must load first) -->
-  <script src="assets/js/metrics-catalog.js"></script>
-  <script src="assets/js/content-engine.js"></script>
-  <script src="assets/js/subscription-listener.js"></script>
-</head>
-<body>
-  <script src="assets/js/toggle.js"></script>
+<!-- UPDATE SCRIPT PATHS WITH THEIR DIRECTORY IF SITUATED IN A SUBFOLDER -->
+<script src="assets/js/patch.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/hero.js"></script>
+<script src="assets/js/section1.js"></script>
+<script src="assets/js/section2.js"></script>
+<script src="assets/js/section4.js"></script>
+<script src="assets/js/section5.js"></script>
+<script src="assets/js/section6.js"></script>
+<script src="assets/js/footer.js"></script>
+<script src="assets/js/app-orchestrator.js"></script>
+  
+</head> 
+<body> 
+    <script src="assets/js/toggle.js"></script> 
+    
+  <!-- ISOLATED CONTAINER ROOT TARGET FOR NAVIGATION -->
+<div id="filings4u-global-navigation-root"></div>
 
-<!-- FRONTEND LAYOUT TARGET CONNECTIONS -->
-<div id="global-platform-navigation-zone"></div>
-<div id="corporations-hero-zone"></div>
-<div id="corporations-metrics-zone"></div>
-<div id="corporations-package-pricing-cards-root"></div>
-<div id="corporations-launchpad-zone"></div>
-<div id="corporations-trust-zone"></div>
-<div id="dynamic-subscribe-placement-zone"></div>
-<div id="global-platform-footer-zone"></div>
-<!-- /FRONTEND LAYOUT TARGET CONNECTIONS -->
-</body>
+<!-- ISOLATED NEW ENGINE TARGET POINT FOR HERO SECTIONS -->
+<div id="filings4u-global-hero-root"></div>
+
+<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 1 (METRICS) -->
+<div id="filings4u-metrics-board-root"></div>
+
+<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 2 (PRICING) -->
+<div id="filings4u-pricing-board-root"></div>
+
+<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 3 (PROCESSING OPTIONS) -->
+<div id="filings4u-processing-packages-root"></div>
+
+<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 4 (LAUNCHPAD FEATURES) -->
+<div id="filings4u-launchpad-feature-root"></div>
+
+<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 5 (SECURITY SHIELD) -->
+<div id="filings4u-security-shield-root"></div>
+
+<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 6 (SUBSCRIBE NEWSLETTER) -->
+<div id="filings4u-subscribe-newsletter-root"></div>
+
+<!-- ISOLATED NEW ENGINE TARGET POINT FOR THE GLOBAL FOOTER -->
+<div id="filings4u-global-footer-root"></div>
+</body> 
 </html>
