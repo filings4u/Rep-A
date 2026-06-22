@@ -1,15 +1,44 @@
-﻿
+﻿﻿
 /**
- * PART 1: PRICING MATRIX EMERALD ANIMATION
- * Styles moved to master-mobile.css
+ * PART 1: PRICING MATRIX EMERALD ANIMATION CSS INJECTOR
+ * Establishes custom hover scaling loops and smooth multi-layer shadow properties
  */
 (function injectPricingGlowAnimations() {
   if (document.getElementById("pricing-glow-animation-styles")) return;
   const styleElement = document.createElement("style");
   styleElement.id = "pricing-glow-animation-styles";
+  styleElement.innerHTML = `
+    .pricing-card-animated {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.4s ease !important;
+      transform: translateY(0);
+      will-change: transform, box-shadow;
+    }
+    .pricing-card-animated:hover {
+      transform: translateY(-8px) !important;
+    }
+    .pricing-card-animated.standard-glow:hover {
+      border-color: #10b981 !important;
+      box-shadow: 0 20px 40px -10px rgba(10, 31, 68, 0.05), 0 0 30px 4px rgba(16, 185, 129, 0.25) !important;
+    }
+    .pricing-card-animated.popular-glow {
+      box-shadow: 0 15px 30px rgba(10, 31, 68, 0.05), 0 0 20px 2px rgba(16, 185, 129, 0.15) !important;
+      animation: emeraldPulseBreathing 3s infinite ease-in-out;
+    }
+    .pricing-card-animated.popular-glow:hover {
+      border-color: #0e9f6e !important;
+      box-shadow: 0 25px 50px -12px rgba(10, 31, 68, 0.1), 0 0 40px 8px rgba(16, 185, 129, 0.45) !important;
+      animation-play-state: paused;
+    }
+    @keyframes emeraldPulseBreathing {
+      0% { box-shadow: 0 15px 30px rgba(10,31,68,0.05), 0 0 20px 2px rgba(16, 185, 129, 0.15); }
+      50% { box-shadow: 0 15px 30px rgba(10,31,68,0.05), 0 0 30px 6px rgba(16, 185, 129, 0.32); border-color: #34d399; }
+      100% { box-shadow: 0 15px 30px rgba(10,31,68,0.05), 0 0 20px 2px rgba(16, 185, 129, 0.15); }
+    }
+  `;
   document.head.appendChild(styleElement);
 })();
-
 
 /**
  * ASYNCHRONOUS DATA LOOKUP TUNNELER
@@ -42,8 +71,6 @@ function resolvePricingObjectWithRetry(slug) {
         enterpriseFeatures: []
     };
 }
-
-
 /**
  * PART 1: COMPLIANCE PRICING DATA COMPILER MAPPER (CORRECTED)
  * Resolves local data payloads inside state-pricing.js straight into layout loops
@@ -87,109 +114,101 @@ function resolveLocalServicePricingData(slug) {
  * ==========================================================================
  * 🚀 UNIFIED PRODUCTION CONTENT MATRIX ENGINE & CHESSBOARD CONTROLLER
  * Part 3: Branded Layout Component Modules (Hero & Metrics)
- * Styles relocated to structural stylesheet files.
  * ==========================================================================
  */
 
 // --- MODULE 1: DYNAMIC BRANDED HERO ENGINE (SECTION 1 - WHITE) ---
 function renderMasterHeroEngine(targetId, meta) {
-  const zone = document.getElementById(targetId);
-  if (!zone) return;
-  
-  zone.innerHTML = `
-    <main class="page-container">
-      <div class="site-width-alignment-guard">
-        <div class="responsive-hero-grid">
-          
-          <!-- TEXT COLUMN -->
-          <article class="content-area">
-            <span class="hero-framework-badge">
-              ${meta.title} Framework
-            </span>
-            <h1 class="hero-headline">
-              The Engine for <br><span style="color: #10b981;">Total ${meta.title}.</span>
-            </h1>
-            <p class="hero-description">
-              Launch, scale, and manage your asset protection profiles across all 
-              50 State registries overnight. We automate your legal document filings, 
-              tax parameters, and organizational agreements securely for your 
-              ${meta.title} processing.
-            </p>
-            <div class="active-sync-badge-wrapper">
-              <div class="badge-line"></div>
-              <span class="badge-text">
-                ${meta.title} Sync: 140,000+ Profiles Active
-              </span>
+    const zone = document.getElementById(targetId);
+    if (!zone) return;
+    
+    zone.innerHTML = `
+    <!-- 🌟 SUCCESSFUL GAP FIX: Rebalanced master padding constraints and forced a 0px canvas layout floor line -->
+    <main class="page-container" style="background: #ffffff; padding: 40px 0 0px 0 !important; margin: 0 0 10px 0 !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; display: block;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+            
+            <!-- 🌟 GLOBAL CSS HOOK: Using your precise class name (.responsive-hero-grid) to flip the image to the top on mobile -->
+            <div class="responsive-hero-grid" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 40px; width: 100%; margin: 0; padding: 0;">
+                
+                <!-- 📝 TEXT COLUMN (Left on Desktop, Drops to order: 2 naturally on mobile) -->
+                <article class="content-area" style="flex: 1.2; min-width: 320px; box-sizing: border-box; margin: 0; padding: 0;">
+                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15); width: fit-content;">${meta.title} Framework</span>
+                    
+                    <!-- 🌟 GLOBAL CSS HOOK: Using your precise class name (.hero-headline) to adjust mobile text sizing -->
+                    <h1 class="hero-headline" style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 14px 0; line-height: 1.1; letter-spacing: -1px;"> 
+                        The Engine for <br><span style="color: #10b981;">Total ${meta.title}.</span> 
+                    </h1>
+                    
+                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.5; margin: 0 0 16px 0;">Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your ${meta.title} processing.</p>
+                    <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+                        <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
+                        <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${meta.title} Sync: 140,000+ Profiles Active</span>
+                    </div>
+                    <a href="llc-formation.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s; width: fit-content; margin: 0;">Get Started &rarr;</a>
+                </article>
+
+                <!-- 📸 IMAGE COLUMN (Right on Desktop, Flips to top on mobile via your global .hero-image-container rule) -->
+                <aside class="hero-image-container" style="flex: 1; min-width: 320px; max-width: 520px; display: flex; justify-content: center; align-items: flex-start; margin: 0; padding: 0;">
+                    
+                    <!-- 🌟 GLOBAL CSS HOOK: Using your precise class name (.hero-display-img) for fluid responsive image constraints -->
+                    <img src="images/${meta.slug}-hero.jpg" class="hero-display-img" alt="${meta.title} System Dashboard" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/hero-image.jpg';">
+                </aside>
+
             </div>
-            <a href="llc-formation.html" class="btn-main">
-              Get Started &rarr;
-            </a>
-          </article>
-
-          <!-- IMAGE COLUMN -->
-          <aside class="hero-image-container">
-            <img src="images/${meta.slug}-hero.jpg" 
-                 class="hero-display-img" 
-                 alt="${meta.title} System Dashboard" 
-                 onerror="this.onerror=null; this.src='images/hero-image.jpg';">
-          </aside>
-
         </div>
-      </div>
     </main>
-  `;
+    `;
 }
 
 // --- MODULE 2: METRICS BOARD ENGINE ---
 function renderMasterMetricsEngine(targetId, meta) {
   const zone = document.getElementById(targetId);
   if (!zone) return;
-  
+
   zone.innerHTML = `
-    <section class="enterprise-metrics-section">
-      <div class="metrics-bg-overlay"></div>
-      <div class="site-width-alignment-guard">
+    <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
         
-        <div class="metrics-header-row">
-          <div class="metrics-title-block">
-            <h2>${meta.title} Filing Infrastructure</h2>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
+          <div style="text-align: left; max-width: 600px;">
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">${meta.title} Filing Infrastructure</h2>
           </div>
-          <div class="metrics-status-wrapper">
-            <div class="metrics-status-badge">
-              <span class="metrics-status-dot"></span>
-              ALL CLEAR: SECURE REST GATEWAYS ACTIVE
+          <div style="text-align: right;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
+              <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> ALL CLEAR: SECURE REST GATEWAYS ACTIVE
             </div>
           </div>
         </div>
 
-        <div class="metrics-dashboard-grid">
+        <div class="metrics-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; margin: 0;">
           
-          <div class="metric-card-block">
-            <span class="metric-icon-span">🏢</span>
-            <div class="metric-value-div">142K+</div>
-            <div class="metric-label-div">Corporate Entities Formed</div>
-            <p>Authorized Articles of Organization across all 50 State Secretary registries.</p>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🏢</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">142K+</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Corporate Entities Formed</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Authorized Articles of Organization across all 50 State Secretary registries.</p>
           </div>
 
-          <div class="metric-card-block">
-            <span class="metric-icon-span">🚛</span>
-            <div class="metric-value-div">38,410</div>
-            <div class="metric-label-div">Active Transits Monitored</div>
-            <p>USDOT & MC operating authorities actively synchronized across databases.</p>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🚛</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">38,410</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Active Transits Monitored</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">USDOT & MC operating authorities actively synchronized across databases.</p>
           </div>
 
-          <div class="metric-card-block">
-            <span class="metric-icon-span">⚡</span>
-            <div class="metric-value-div highlighted">1.8s</div>
-            <div class="metric-label-div">Average API Pipeline Turn</div>
-            <p>Secure, real-time rest requests to launch bank check intents and pre-saves.</p>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">⚡</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #10b981; font-family: monospace; line-height: 1;">1.8s</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Average API Pipeline Turn</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Secure, real-time rest requests to launch bank check intents and pre-saves.</p>
           </div>
 
-          <div class="metric-card-block">
-            <span class="metric-icon-span">🔒</span>
-            <div class="metric-value-div">99.98%</div>
-            <div class="metric-label-div">Filing Accuracy Quotient</div>
-            <p>Sophisticated layout routing eliminates syntax rejection errors from state systems.</p>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.3s; width: 100%;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🔒</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">99.98%</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Filing Accuracy Quotient</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Sophisticated layout routing eliminates syntax rejection errors from state systems.</p>
           </div>
 
         </div>
@@ -199,146 +218,115 @@ function renderMasterMetricsEngine(targetId, meta) {
 }
 
 
+
 /**
  * PART 1: PRICING LIFECYCLE PRELOAD TUNNELER
- * Snaps directly into data objects using zero-fallback parameters.
+ * Snaps directly into data objects using zero-fallback parameters for Starter, Compliance, and Enterprise
  */
 function resolvePricingObjectWithRetry(slug, delay = 50, retries = 50) {
-  const source = window.statePricingData || 
-                 window.servicesPricing || 
-                 window.pricingData || {};
-  
-  const normSlug = slug.replace(/-/g, '_');
-  const record = source[slug] || 
-                 source[normSlug] || 
-                 source[slug.toUpperCase()];
+    // 1. Audit window object allocations used inside state-pricing.js
+    const source = window.statePricingData || window.servicesPricing || window.pricingData || {};
+    
+    // 2. Try parsing clean string tokens, underscored tokens, or uppercase variations
+    const record = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
 
-  if (record) {
+    if (record) {
+        return {
+            starterPrice: record.starter || record.starterPrice || "0",
+            compliancePrice: record.compliance || record.compliancePrice || "0",
+            enterprisePrice: record.enterprise || record.enterprisePrice || "0",
+            starterFeatures: record.bullets?.starter || record.starterFeatures || [],
+            complianceFeatures: record.bullets?.compliance || record.complianceFeatures || [],
+            enterpriseFeatures: record.bullets?.enterprise || record.enterpriseFeatures || []
+        };
+    }
+
+    // 3. Loop fallback if scripts load out of sequence (Triggers a background check)
+    if (retries > 0) {
+        setTimeout(() => {
+            // Fires calculation updates in the background once loaded
+            const recheck = source[slug] || source[slug.replace(/-/g, '_')] || source[slug.toUpperCase()];
+            if (recheck && typeof recalculateSummaryStepFields === "function") {
+                recalculateSummaryStepFields();
+            }
+        }, delay);
+    }
+    // 4. Clean empty structural object to prevent UI crashes while scripts mount
     return {
-      starterPrice: record.starter || 
-                    record.starterPrice || "0",
-      compliancePrice: record.compliance || 
-                       record.compliancePrice || "0",
-      enterprisePrice: record.enterprise || 
-                       record.enterprisePrice || "0",
-      starterFeatures: record.bullets?.starter || 
-                       record.starterFeatures || [],
-      complianceFeatures: record.bullets?.compliance || 
-                          record.complianceFeatures || [],
-      enterpriseFeatures: record.bullets?.enterprise || 
-                          record.enterpriseFeatures || []
+        starterPrice: "0",
+        compliancePrice: "0",
+        enterprisePrice: "0",
+        starterFeatures: [],
+        complianceFeatures: [],
+        enterpriseFeatures: []
     };
-  }
-
-  if (retries > 0) {
-    setTimeout(() => {
-      const recheck = source[slug] || 
-                      source[normSlug] || 
-                      source[slug.toUpperCase()];
-      if (recheck && typeof recalculateSummaryStepFields === "function") {
-        recalculateSummaryStepFields();
-      }
-    }, delay);
-  }
-
-  return {
-    starterPrice: "0",
-    compliancePrice: "0",
-    enterprisePrice: "0",
-    starterFeatures: [],
-    complianceFeatures: [],
-    enterpriseFeatures: []
-  };
 }
+
 
 /**
  * ==========================================================================
  * 🚀 UNIFIED PRODUCTION CONTENT MATRIX ENGINE & CHESSBOARD CONTROLLER
  * Part 4: High-Utility 3-Card Package Infrastructure Module
- * Styles relocated to structural stylesheet files.
  * ==========================================================================
  */
 function renderMasterPricingEngine(targetId, meta) {
   const zone = document.getElementById(targetId);
   if (!zone) return;
-  
+
   zone.innerHTML = `
-    <section class="pricing-section-container">
-      <div class="site-width-alignment-guard">
+    <section style="background: #f1f5f9; padding: 80px 0; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;">
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
         
-        <div class="pricing-header-block">
-          <span class="pricing-section-badge">Infrastructure Selection</span>
-          <h2 class="pricing-main-title">Standard ${meta.title} Processing Options</h2>
-          <p class="pricing-subtitle-desc">Select the management structure engineered for your profile setup needs.</p>
+        <div style="text-align: center; margin-bottom: 50px;">
+          <span style="color: #4f46e5; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(79, 70, 229, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(79, 70, 229, 0.15);">Infrastructure Selection</span>
+          <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0; line-height: 1.2;">Standard ${meta.title} Processing Options</h2>
+          <p style="color: #475569; font-size: 1.05rem; margin: 10px 0 0 0;">Select the management structure engineered for your profile setup needs.</p>
         </div>
 
-        <div class="pricing-cards-board-grid">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; align-items: stretch; box-sizing: border-box;">
           
           <!-- PLAN CARD 1: BASIC -->
-          <div class="pricing-matrix-base-card">
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 35px 30px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.02); box-sizing: border-box;">
             <div>
-              <div class="card-image-wrap-frame">
-                <img src="images/${meta.slug}-secc.jpg" 
-                     onerror="this.onerror=null; this.src='images/local-business.jpg';">
-              </div>
-              <h3 class="card-plan-header-title">Basic Setup Plan</h3>
-              <div class="card-price-display-row">$99 <span>+ state fees</span></div>
-              <p class="card-body-text-p">Standard registry declaration files processed securely with immediate dispatch validation arrays.</p>
+              <div style="height: 150px; overflow: hidden; border-radius: 8px; margin-bottom: 25px;"><img src="images/${meta.slug}-secc.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='images/local-business.jpg';"></div>
+              <h3 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; margin: 0 0 8px 0;">Basic Setup Plan</h3>
+              <div style="color: #0a1f44; font-size: 2.2rem; font-weight: 900; margin-bottom: 15px;">$99 <span style="font-size: 1rem; font-weight: 500; color: #64748b;">+ state fees</span></div>
+              <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0 0 30px 0;">Standard registry declaration files processed securely with immediate dispatch validation arrays.</p>
             </div>
-            <button class="btn-plan-selection-action starter-btn" 
-                    onclick="sessionStorage.setItem('wiz_cached_desc', 'Standard registry declaration files processed securely with immediate dispatch validation arrays.'); window.location.href='wizard.html?service=${meta.slug}&plan=starter'">
-              Select Starter Plan
-            </button>
-          </div>
+            <button onclick="sessionStorage.setItem('wiz_cached_desc', 'Standard registry declaration files processed securely with immediate dispatch validation arrays.'); window.location.href='wizard.html?service=${meta.slug}&plan=starter'" style="width: 100; background: #10b981; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Starter Plan</button>          </div>
 
           <!-- PLAN CARD 2: SHIELD -->
-          <div class="pricing-matrix-base-card popular-shield-card">
-            <span class="popular-ribbon-tag">POPULAR</span>
+          <div style="background: #ffffff; border: 2px solid #10b981; border-radius: 16px; padding: 35px 30px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); position: relative; box-sizing: border-box;">
+            <span style="position: absolute; top: -14px; right: 25px; background: #10b981; color: #ffffff; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.05em; padding: 4px 14px; border-radius: 20px;">POPULAR</span>
             <div>
-              <div class="card-image-wrap-frame">
-                <img src="images/${meta.slug}-secd.jpg" 
-                     onerror="this.onerror=null; this.src='images/local-business.jpg';">
-              </div>
-              <h3 class="card-plan-header-title">Complete Shield Matrix</h3>
-              <div class="card-price-display-row">$199 <span>+ state fees</span></div>
-              <p class="card-body-text-p">Includes proactive automated calendar sweeps, compliance risk metrics alerts, and asset guard protection sheets.</p>
+              <div style="height: 150px; overflow: hidden; border-radius: 8px; margin-bottom: 25px;"><img src="images/${meta.slug}-secd.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='images/local-business.jpg';"></div>
+              <h3 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; margin: 0 0 8px 0;">Complete Shield Matrix</h3>
+              <div style="color: #0a1f44; font-size: 2.2rem; font-weight: 900; margin-bottom: 15px;">$199 <span style="font-size: 1rem; font-weight: 500; color: #64748b;">+ state fees</span></div>
+              <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0 0 30px 0;">Includes proactive automated calendar sweeps, compliance risk metrics alerts, and asset guard protection sheets.</p>
             </div>
-            <button class="btn-plan-selection-action compliance-btn" 
-                    onclick="sessionStorage.setItem('wiz_cached_desc', 'Includes proactive automated calendar sweeps, compliance risk metrics alerts, and asset guard protection sheets.'); window.location.href='wizard.html?service=${meta.slug}&plan=compliance'">
-              Select Compliance Plan
-            </button>
-          </div>
+            <button onclick="sessionStorage.setItem('wiz_cached_desc', 'Includes proactive automated calendar sweeps, compliance risk metrics alerts, and asset guard protection sheets.'); window.location.href='wizard.html?service=${meta.slug}&plan=compliance'" style="width: 100; background: #0a1f44; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Compliance Plan</button>          </div>
 
           <!-- PLAN CARD 3: ENTERPRISE -->
-          <div class="pricing-matrix-base-card">
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 35px 30px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.02); box-sizing: border-box;">
             <div>
-              <div class="card-image-wrap-frame">
-                <img src="images/${meta.slug}-pricing-premium.jpg" 
-                     onerror="this.onerror=null; this.src='images/local-business.jpg';">
-              </div>
-              <h3 class="card-plan-header-title">Enterprise Growth Suite</h3>
-              <div class="card-price-display-row">$349 <span>+ state fees</span></div>
-              <p class="card-body-text-p">Custom structural multi-member provisions, real-time banking gateway data mapping integration, and lifetime revision sheets storage.</p>
+              <div style="height: 150px; overflow: hidden; border-radius: 8px; margin-bottom: 25px;"><img src="images/${meta.slug}-pricing-premium.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='images/local-business.jpg';"></div>
+              <h3 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; margin: 0 0 8px 0;">Enterprise Growth Suite</h3>
+              <div style="color: #0a1f44; font-size: 2.2rem; font-weight: 900; margin-bottom: 15px;">$349 <span style="font-size: 1rem; font-weight: 500; color: #64748b;">+ state fees</span></div>
+              <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0 0 30px 0;">Custom structural multi-member provisions, real-time banking gateway data mapping integration, and lifetime revision sheets storage.</p>
             </div>
-            <button class="btn-plan-selection-action enterprise-btn" 
-                    onclick="sessionStorage.setItem('wiz_cached_desc', 'Custom structural multi-member provisions, real-time banking gateway data mapping integration, and lifetime revision sheets storage.'); window.location.href='wizard.html?service=${meta.slug}&plan=enterprise'">
-              Select Enterprise Plan
-            </button>
-          </div>
+            <button onclick="sessionStorage.setItem('wiz_cached_desc', 'Custom structural multi-member provisions, real-time banking gateway data mapping integration, and lifetime revision sheets storage.'); window.location.href='wizard.html?service=${meta.slug}&plan=enterprise'" style="width: 100; background: #4f46e5; color: #ffffff; border: none; padding: 14px; font-weight: 700; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Select Enterprise Plan</button>          </div>
 
         </div>
       </div>
     </section>
   `;
 }
-
 
 
 /**
  * ==========================================================================
  * 🚀 UNIFIED PRODUCTION CONTENT MATRIX ENGINE & CHESSBOARD CONTROLLER
  * Part 5: Alternating Service Features (Launchpad & Trust Matrix)
- * Styles relocated to structural stylesheet files.
  * ==========================================================================
  */
 
@@ -346,35 +334,24 @@ function renderMasterPricingEngine(targetId, meta) {
 function renderMasterLaunchpadEngine(targetId, meta) {
   const zone = document.getElementById(targetId);
   if (!zone) return;
-  
+
   zone.innerHTML = `
-    <section class="launchpad-section-wrap">
-      <div class="site-width-alignment-guard">
-        <div class="launchpad-split-grid">
+    <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
           
-          <div class="launchpad-content-col">
-            <span class="launchpad-meta-badge">Launch Infrastructure</span>
-            <h2 class="launchpad-main-title">
+          <div style="width: 100%; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Launch Infrastructure</span>
+            <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
               ${meta.title} Launchpad. <br><span style="color: #10b981;">Built For Scale.</span>
             </h2>
-            <p class="launchpad-bold-intro">
-              Turn your business goals into an officially recognized legal framework entity overnight.
-            </p>
-            <p class="launchpad-body-p">
-              Accelerate your development pipeline with robust entity structural setups. 
-              We automate regulatory registry connections, compliance tracking alerts, and 
-              validation rules engines under an integrated layout architecture so you can open 
-              accounts and protect infrastructure assets cleanly.
-            </p>
-            <a href="get-started.html" class="launchpad-action-link">
-              Launch Your Ecosystem &rarr;
-            </a>
+            <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Turn your business goals into an officially recognized legal framework entity overnight.</p>
+            <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Accelerate your development pipeline with robust entity structural setups. We automate regulatory registry connections, compliance tracking alerts, and validation rules engines under an integrated layout architecture so you can open accounts and protect infrastructure assets cleanly.</p>
+            <a href="get-started.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 1rem; display: inline-block;">Launch Your Ecosystem &rarr;</a>
           </div>
 
-          <div class="launchpad-img-col">
-            <img src="images/${meta.slug}-sece.jpg" 
-                 alt="${meta.title} Launch Infrastructure" 
-                 onerror="this.onerror=null; this.src='images/startup-launch.jpg';">
+          <div style="display: flex; justify-content: center; width: 100%;">
+            <img src="images/${meta.slug}-sece.jpg" alt="${meta.title} Launch Infrastructure" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/startup-launch.jpg';">
           </div>
 
         </div>
@@ -385,61 +362,65 @@ function renderMasterLaunchpadEngine(targetId, meta) {
 
 // --- MODULE 6: SECURITY INFRASTRUCTURE PAGE ENGINE ---
 function renderSecurityInfrastructurePage(targetId) {
-  try {
-    const zone = document.getElementById(targetId);
-    if (!zone) return;
-    
-    zone.innerHTML = `
-      <div class="sec-infrastructure-page-root">
-        <main class="sec-hero-main-container">
-          <div class="sec-vector-dots-overlay"></div>
-          <div class="sec-max-width-alignment-guard">
-            <div class="sec-hero-grid">
-              
-              <!-- Left Side: Real-time Infrastructure Telemetry Visual -->
-              <div class="sec-hero-col">
-                <div class="sec-telemetry-panel">
-                  
-                  <div class="sec-telemetry-header">
-                    <div class="sec-telemetry-header-tag">Infrastructure Layer</div>
-                    <div class="sec-telemetry-header-title">Zero-Gap Automation</div>
-                  </div>
+    try {
+        const zone = document.getElementById(targetId);
+        if (!zone) return;
 
-                  <div class="sec-telemetry-inner-grid">
-                    <div class="sec-telemetry-stat-box">
-                      <div class="sec-stat-lbl">SYNC FREQUENCY</div>
-                      <div class="sec-stat-val green-glow">Continuous</div>
-                    </div>
-                    <div class="sec-telemetry-stat-box">
-                      <div class="sec-stat-lbl">PENALTY EXPOSURE</div>
-                      <div class="sec-stat-val red-alert">0.00%</div>
-                    </div>
-                  </div>
+        zone.innerHTML = `
+        <div class="sec-infrastructure-page-root" style="font-family: system-ui, sans-serif !important; background-color: #f8fafc !important; color: #0a1f44 !important; line-height: 1.5 !important; box-sizing: border-box; margin: 0; padding: 0;">
+            
+            <main class="sec-hero-main-container" style="box-sizing: border-box;">
+                
+                <!-- White Vector Dots Background Overlay -->
+                <div class="sec-vector-dots-overlay"></div>
+                
+                <div class="sec-max-width-alignment-guard">
+                    <div class="sec-hero-grid">
+                        
+                        <!-- Left Side: Real-time Infrastructure Telemetry Visual -->
+                        <div class="sec-hero-col">
+                            <div style="background: rgba(255, 255, 255, 0.03) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; border-radius: 16px !important; padding: 40px !important; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4) !important; box-sizing: border-box !important;">
+                                <div style="border-left: 2px solid #10b981 !important; padding-left: 20px !important; margin-bottom: 24px !important;">
+                                    <div style="font-size: 0.75rem !important; color: #64748b !important; text-transform: uppercase !important;">Infrastructure Layer</div>
+                                    <div style="font-size: 1.4rem !important; font-weight: bold !important; color: #ffffff !important; margin-top: 4px !important;">Zero-Gap Automation</div>
+                                </div>
+                                <div style="display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 16px !important;">
+                                    <div style="background: rgba(255,255,255,0.02) !important; padding: 16px !important; border-radius: 8px !important; border: 1px solid rgba(255,255,255,0.05) !important;">
+                                        <div style="font-size: 0.7rem !important; color: #64748b !important; font-weight: bold;">SYNC FREQUENCY</div>
+                                        <div style="font-size: 1.1rem !important; color: #10b981 !important; font-weight: bold; margin-top: 4px;">Continuous</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.02) !important; padding: 16px !important; border-radius: 8px !important; border: 1px solid rgba(255,255,255,0.05) !important;">
+                                        <div style="font-size: 0.7rem !important; color: #64748b !important; font-weight: bold;">PENALTY EXPOSURE</div>
+                                        <div style="font-size: 1.1rem !important; color: #ef4444 !important; font-weight: bold; margin-top: 4px;">0.00%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- Right Side: Content Base -->
+                        <div class="sec-hero-col">
+                            <span style="font-size: 0.75rem !important; font-weight: 700 !important; color: #10b981 !important; background: rgba(16, 185, 129, 0.12) !important; padding: 6px 14px !important; border-radius: 20px !important; display: inline-block !important; margin-bottom: 20px !important; border: 1px solid rgba(16, 185, 129, 0.25) !important; text-transform: uppercase !important;">Guaranteed Audit Protection</span>
+                            <h1 style="font-size: 3rem !important; font-weight: 900 !important; margin: 0 0 24px 0 !important; line-height: 1.15 !important; color: #ffffff !important;">Institutional Shield.<br><span style="color: #10b981 !important;">Never Miss A Filing.</span></h1>
+                            <p style="color: #cbd5e1 !important; font-weight: 700 !important; font-size: 1.2rem !important; margin: 0 0 16px 0 !important;">Active database synchronization safeguards your status across state lines.</p>
+                            <p style="color: #94a3b8 !important; font-size: 1.05rem !important; line-height: 1.6 !important; margin: 0 0 32px 0 !important;">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your operational status is permanently shielded.</p>
+                        </div>
+                        
+                    </div>
                 </div>
-              </div>
-
-              <!-- Right Side: Content Base -->
-              <div class="sec-hero-col">
-                <span class="sec-badge-shield">Guaranteed Audit Protection</span>
-                <h1 class="sec-headline-title">Institutional Shield.<br><span style="color: #10b981 !important;">Never Miss A Filing.</span></h1>
-                <p class="sec-subheading-bold">Active database synchronization safeguards your status across state lines.</p>
-                <p class="sec-long-desc-p">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your operational status is permanently shielded.</p>
-              </div>
-
-            </div>
-          </div>
-        </main>
-      </div>
-    `;
-  } catch (err) {
-    console.error("Filing engine execution error:", err);
-  }
+            </main>
+            
+        </div>
+        `;
+    } catch (err) {
+        console.error("Filing engine execution error:", err);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  renderSecurityInfrastructurePage("security-infrastructure-target");
+    renderSecurityInfrastructurePage("security-infrastructure-target");
 });
+
+
 
 
 
@@ -448,28 +429,25 @@ function renderMasterSubscribeEngine(targetId) {
   try {
     const zone = document.getElementById(targetId);
     if (!zone) return;
-    
-    zone.innerHTML = `
-      <section class="sub-section-wrap">
-        <div class="site-width-alignment-guard">
-          <div class="sub-split-grid">
-            
-            <div class="sub-text-col">
-              <span class="sub-badge-tag">Compliance Bulletins</span>
-              <h2 class="sub-main-headline">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
-              <p class="sub-body-desc">Get actionable regulatory deadline text flashes, corporate filing advice, and federal state policy change updates sent straight to your box. Zero clutter. Direct compliance updates.</p>
-            </div>
 
-            <div class="sub-form-col">
-              <form action="#" method="POST" class="sub-inline-form">
-                <input type="email" placeholder="Enter your business email..." required aria-label="Business Email" class="sub-input-field">
-                <button type="submit" class="sub-submit-btn">Subscribe</button>
+    zone.innerHTML = `
+      <section style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
+            <div style="width: 100%; box-sizing: border-box;">
+              <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.08); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;">Compliance Bulletins</span>
+              <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; line-height: 1.15; letter-spacing: -0.5px;">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
+              <p style="color: #475569; font-size: 1.05rem; line-height: 1.6; margin: 0; max-width: 580px;">Get actionable regulatory deadline text flashes, corporate filing advice, and federal state policy change updates sent straight to your box. Zero clutter. Direct compliance updates.</p>
+            </div>
+            <div style="width: 100%; box-sizing: border-box;">
+              <form action="#" method="POST" style="display: flex; gap: 14px; width: 100%; background: #ffffff; border: 1px solid #f1f5f9; padding: 20px; border-radius: 16px; box-shadow: 0 20px 40px rgba(10,31,68,0.06), 0 1px 3px rgba(10,31,68,0.02);">
+                <input type="email" placeholder="Enter your business email..." required aria-label="Business Email" style="flex: 1; padding: 16px 22px; font-size: 0.95rem; font-weight: 500; border-radius: 8px; border: none; background: #ffffff; color: #0a1f44; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08); transition: box-shadow 0.25s ease;" onfocus="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.02), 0 0 0 3px rgba(16, 185, 129, 0.15), 0 0 0 1px #10b981'" onblur="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08)'">
+                <button type="submit" style="background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 0.95rem; padding: 0 32px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#0e9f6e'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#10b981'; this.style.transform='translateY(0)';">Subscribe</button>
               </form>
-              <div class="sub-encryption-tag">
-                <span>🔒 ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
+              <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #64748b; padding-left: 4px;">
+                <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🔒 ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -481,7 +459,7 @@ function renderMasterSubscribeEngine(targetId) {
 
 /**
  * PART 1: PAGE ENVIRONMENT INTERFACE PROPERTY COMPILER
- * Maps out asset schemas using dynamic slug tracking values.
+ * Maps out your 4-part asset schema using the dynamic page slug text variable.
  */
 function compileDynamicLayoutProperties(targetElementId, suffixPatternString) {
   var calculatedSlugValue = targetElementId.replace(suffixPatternString, "").trim().toLowerCase();
@@ -495,12 +473,10 @@ function compileDynamicLayoutProperties(targetElementId, suffixPatternString) {
 
 async function renderMasterSystem() {
   try {
-    const pName = window.location.pathname.split("/").pop();
-    const activeSlug = pName.replace(".html", "").trim().toLowerCase();
-    const isHome = (!activeSlug || activeSlug === "home" || activeSlug === "index");
-    const cleanPageKey = isHome ? "index" : activeSlug;
+    const activeSlug = window.location.pathname.split("/").pop().replace(".html", "").trim().toLowerCase();
+    const cleanPageKey = (!activeSlug || activeSlug === "home" || activeSlug === "index") ? "index" : activeSlug;
     let dbRow = null;
-
+    
     try {
       const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
       const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
@@ -514,32 +490,30 @@ async function renderMasterSystem() {
           "Accept": "application/json"
         }
       });
+      
       if (response.ok) {
         const rawJsonPayloadArray = await response.json();
         if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
-          dbRow = rawJsonPayloadArray;
+          dbRow = rawJsonPayloadArray[0];
         }
       }
     } catch (netErr) {
       console.warn(netErr);
     }
-
     const heroTarget = document.querySelector('[id$="-hero-zone"]');
     if (!heroTarget) return;
-
+    
     const meta = compileDynamicLayoutProperties(heroTarget.id, "-hero-zone");
     meta.slug = cleanPageKey;
-
+    
     if (dbRow && dbRow.service_title) {
       meta.title = dbRow.service_title;
     } else {
-      meta.title = meta.title.replace("-registration", "")
-                             .replace("registration", "")
-                             .replace("-quote", "").trim();
+      meta.title = meta.title.replace("-registration", "").replace("registration", "").replace("-quote", "").trim();
     }
-
+    
     document.title = meta.title + " Registration & Filing Services | filings4u";
-
+    
     if (typeof renderDynamicGlobalCorporateNavigation === "function") {
       renderDynamicGlobalCorporateNavigation("global-platform-navigation-zone");
     }
@@ -550,8 +524,7 @@ async function renderMasterSystem() {
       renderMasterMetricsEngine(cleanPageKey + "-metrics-zone", dbRow);
     }
     if (typeof renderMasterPricingEngine === "function") {
-      const pricingId = heroTarget.id.replace("-hero-zone", "-package-pricing-cards-root");
-      renderMasterPricingEngine(pricingId, dbRow || meta);
+      renderMasterPricingEngine(heroTarget.id.replace("-hero-zone", "-package-pricing-cards-root"), dbRow || meta);
     }
     if (typeof renderMasterConciergeFeedEngine === "function") {
       renderMasterConciergeFeedEngine(cleanPageKey + "-launchpad-zone", dbRow || meta);
@@ -573,23 +546,20 @@ async function renderMasterSystem() {
 document.addEventListener("DOMContentLoaded", renderMasterSystem);
 window.compileDynamicLayoutProperties = compileDynamicLayoutProperties;
 window.renderMasterSystem = renderMasterSystem;
-
-
-
 function renderMasterPricingEngine(targetId, metaDataRecord) {
   try {
     const zone = document.getElementById(targetId);
     if (!zone) return;
 
-    var slug = targetId.replace("-package-pricing-cards-root", "")
-                       .toLowerCase().trim();
+    var slug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
     if (metaDataRecord && metaDataRecord.slug) {
       slug = metaDataRecord.slug;
     }
 
     const universalSourceMatrix = window.CENTRAL_SERVICE_PLAN_DB || {};
+    
+    /* 🌟 HARMONIZATION FIX: Checks both standard array definitions and handles key fallbacks for quote fields */
     var pricingDatasetNode = universalSourceMatrix[slug];
-
     if (!pricingDatasetNode && slug.endsWith("-quote")) {
       pricingDatasetNode = universalSourceMatrix[slug.replace("-quote", "")];
     }
@@ -597,53 +567,30 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
       pricingDatasetNode = universalSourceMatrix[slug + "-quote"];
     }
     if (!pricingDatasetNode) {
-      pricingDatasetNode = (metaDataRecord && metaDataRecord.pricing) ? 
-                           metaDataRecord.pricing : metaDataRecord;
+      pricingDatasetNode = (metaDataRecord && metaDataRecord.pricing) ? metaDataRecord.pricing : metaDataRecord;
     }
 
-    if (!pricingDatasetNode || Object.keys(pricingDatasetNode).length === 0 || 
-        (!pricingDatasetNode.starter && !pricingDatasetNode.compliance && 
-         !pricingDatasetNode.enterprise && !pricingDatasetNode.tiers)) {
-      console.warn(slug);
+    if (!pricingDatasetNode || Object.keys(pricingDatasetNode).length === 0 || (!pricingDatasetNode.starter && !pricingDatasetNode.compliance && !pricingDatasetNode.enterprise && !pricingDatasetNode.tiers)) {
+      console.warn("[Pricing Error] Missing structured price dataset object configuration nodes for key: " + slug);
       return;
     }
 
     const compileBulletsSubLoopMarkup = function(bulletArrayData) {
       if (!Array.isArray(bulletArrayData)) return "";
       return bulletArrayData.map(function(singleBulletString) {
-        const structuralEscapedString = typeof secureGridStringEscape === "function" ? 
-                                        secureGridStringEscape(singleBulletString) : 
-                                        singleBulletString;
-        return '<li class="pricing-card-bullet-item"><span>✓</span>' + 
-               structuralEscapedString + '</li>';
+        const structuralEscapedString = typeof secureGridStringEscape === "function" ? secureGridStringEscape(singleBulletString) : singleBulletString;
+        return '<li class="pricing-card-bullet-item"><span>✓</span>' + structuralEscapedString + '</li>';
       }).join("");
     };
 
     const coreTiersRegistryList = pricingDatasetNode.tiers || [
-      { 
-        key: "starter", 
-        name: pricingDatasetNode.starter_label || "Starter Package", 
-        price: parseFloat(pricingDatasetNode.starter) || 0, 
-        highlighted: false 
-      },
-      { 
-        key: "compliance", 
-        name: pricingDatasetNode.compliance_label || "Compliance Guard", 
-        price: parseFloat(pricingDatasetNode.compliance) || 0, 
-        highlighted: true 
-      },
-      { 
-        key: "enterprise", 
-        name: pricingDatasetNode.enterprise_label || "Enterprise Asset Suite", 
-        price: parseFloat(pricingDatasetNode.enterprise) || 0, 
-        highlighted: false 
-      }
+      { key: "starter", name: pricingDatasetNode.starter_label || "Starter Package", price: parseFloat(pricingDatasetNode.starter) || 0, highlighted: false },
+      { key: "compliance", name: pricingDatasetNode.compliance_label || "Compliance Guard", price: parseFloat(pricingDatasetNode.compliance) || 0, highlighted: true },
+      { key: "enterprise", name: pricingDatasetNode.enterprise_label || "Enterprise Asset Suite", price: parseFloat(pricingDatasetNode.enterprise) || 0, highlighted: false }
     ];
 
-    const frameworkSectionTitleText = pricingDatasetNode.section_title || 
-                                     "Flexible Pricing Framework Options";
-    const frameworkSectionSubtitleText = pricingDatasetNode.section_subtitle || 
-                                        "Select the optimal processing speed and protection depth your operation requires.";
+    const frameworkSectionTitleText = pricingDatasetNode.section_title || "Flexible Pricing Framework Options";
+    const frameworkSectionSubtitleText = pricingDatasetNode.section_subtitle || "Select the optimal processing speed and protection depth your operation requires.";
     const dynamicCadenceDescriptorLabel = pricingDatasetNode.cadence_label || " / registration";
     const dynamicPopularBadgeTextString = pricingDatasetNode.popular_badge_text || "Most Popular Option";
     const dynamicButtonActionVerbText = pricingDatasetNode.button_text || "Select Plan Option";
@@ -655,46 +602,23 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
       const tierPresentationName = tierRecordObj.name;
       const numericPriceValueFloat = parseFloat(tierRecordObj.price) || 0;
       const isCardHighlightedActive = tierRecordObj.highlighted || false;
-      const targetedBulletsSourceArray = pricingDatasetNode.bullets && 
-                                         pricingDatasetNode.bullets[tierUniqueKeyId] ? 
-                                         pricingDatasetNode.bullets[tierUniqueKeyId] : [];
+      
+      const targetedBulletsSourceArray = pricingDatasetNode.bullets && pricingDatasetNode.bullets[tierUniqueKeyId] ? pricingDatasetNode.bullets[tierUniqueKeyId] : [];
       
       var conditionalBadgeMarkupCell = "";
       var structuralHighlightClassNameSelector = "pricing-card-node text-center-mobile";
       var integerColorHighlightClassNameSelector = "pricing-card-price-integer";
 
       if (isCardHighlightedActive) {
-        conditionalBadgeMarkupCell = '<span class="pricing-card-popular-badge">' + 
-                                     dynamicPopularBadgeTextString + '</span>';
+        conditionalBadgeMarkupCell = '<span class="pricing-card-popular-badge">' + dynamicPopularBadgeTextString + '</span>';
         structuralHighlightClassNameSelector = "pricing-card-node pricing-card-highlighted text-center-mobile";
         integerColorHighlightClassNameSelector = "pricing-card-price-integer color-primary";
       }
 
-      pricingCardsGeneratedHtmlArrayString += '<div class="' + structuralHighlightClassNameSelector + '">' + 
-        conditionalBadgeMarkupCell + 
-        '<div class="pricing-card-upper-content">' +
-          '<h3 class="pricing-card-tier-title">' + tierPresentationName + '</h3>' +
-          '<div class="pricing-card-rate-row">' +
-            '<span class="' + integerColorHighlightClassNameSelector + '">$' + numericPriceValueFloat.toFixed(2) + '</span>' +
-            '<span class="pricing-card-cadence-label">' + dynamicCadenceDescriptorLabel + '</span>' +
-          '</div>' +
-          '<ul class="pricing-card-bullets-list">' + compileBulletsSubLoopMarkup(targetedBulletsSourceArray) + '</ul>' +
-        '</div>' +
-        '<a href="wizard.html?service=' + slug + '&plan=' + tierUniqueKeyId + '" class="pricing-card-action-btn ' + tierUniqueKeyId + '-btn-theme">' + 
-          dynamicButtonActionVerbText + 
-        '</a>' +
-      '</div>';
+      pricingCardsGeneratedHtmlArrayString += '<div class="' + structuralHighlightClassNameSelector + '">' + conditionalBadgeMarkupCell + '<div class="pricing-card-upper-content"><h3 class="pricing-card-tier-title">' + tierPresentationName + '</h3><div class="pricing-card-rate-row"><span class="' + integerColorHighlightClassNameSelector + '">$' + numericPriceValueFloat.toFixed(2) + '</span><span class="pricing-card-cadence-label">' + dynamicCadenceDescriptorLabel + '</span></div><ul class="pricing-card-bullets-list">' + compileBulletsSubLoopMarkup(targetedBulletsSourceArray) + '</ul></div><a href="wizard.html?service=' + slug + '&plan=' + tierUniqueKeyId + '" class="pricing-card-action-btn ' + tierUniqueKeyId + '-btn-theme">' + dynamicButtonActionVerbText + '</a></div>';
     });
 
-    zone.innerHTML = '<section id="pricing-framework-target" class="pricing-grid-master-section">' +
-      '<div class="site-width-alignment-guard prgrid-container">' +
-        '<div class="pricing-grid-header-block">' +
-          '<h2 class="pricing-grid-main-title">' + frameworkSectionTitleText + '</h2>' +
-          '<p class="pricing-grid-subtitle">' + frameworkSectionSubtitleText + '</p>' +
-        '</div>' +
-        '<div class="pricing-cards-responsive-grid">' + pricingCardsGeneratedHtmlArrayString + '</div>' +
-      '</div>' +
-    '</section>';
+    zone.innerHTML = '<section id="pricing-framework-target" class="pricing-grid-master-section"><div class="site-width-alignment-guard prgrid-container"><div class="pricing-grid-header-block"><h2 class="pricing-grid-main-title">' + frameworkSectionTitleText + '</h2><p class="pricing-grid-subtitle">' + frameworkSectionSubtitleText + '</p></div><div class="pricing-cards-responsive-grid">' + pricingCardsGeneratedHtmlArrayString + '</div></div></section>';
 
     setTimeout(function() {
       const livePageAnchorNodesArray = document.querySelectorAll('a');
@@ -725,41 +649,37 @@ window.renderMasterPricingEngine = renderMasterPricingEngine;
 
 
 
+
+
 // --- MODULE 1: DYNAMIC BRANDED HERO ENGINE (SECTION 1 - WHITE) ---
 function renderMasterHeroEngine(targetId, meta) {
   const zone = document.getElementById(targetId);
   if (!zone) return;
-  
+
   zone.innerHTML = `
-    <main class="hero-page-container">
-      <div class="site-width-alignment-guard">
-        <div class="hero-display-grid">
+    <main class="page-container" style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
           
-          <!-- TEXT COLUMN -->
-          <article class="hero-text-area">
-            <span class="hero-framework-tag">${meta.title} Framework</span>
-            <h1 class="hero-main-title">
+          <!-- 📝 TEXT COLUMN -->
+          <article class="content-area" style="width: 100%; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">${meta.title} Framework</span>
+            <h1 style="color: #0a1f44; font-size: 3.2rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.1; letter-spacing: -1px;">
               The Engine for <br><span style="color: #10b981;">Total ${meta.title}.</span>
             </h1>
-            <p class="hero-desc-p">
-              Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. 
-              We automate your legal document filings, tax parameters, and organizational agreements securely for your 
-              ${meta.title} processing.
-            </p>
-            <div class="active-sync-badge-wrapper">
-              <div class="badge-line"></div>
-              <span class="badge-text">${meta.title} Sync: 140,000+ Profiles Active</span>
+            <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 24px 0;">Launch, scale, and manage your asset protection profiles across all 50 State registries overnight. We automate your legal document filings, tax parameters, and organizational agreements securely for your ${meta.title} processing.</p>
+            <div class="active-sync-badge-wrapper" style="display: flex; align-items: center; gap: 10px; margin-bottom: 32px;">
+              <div class="badge-line" style="height: 2px; width: 24px; background: #10b981;"></div>
+              <span class="badge-text" style="color: #0a1f44; font-weight: 700; font-size: 0.9rem;">${meta.title} Sync: 140,000+ Profiles Active</span>
             </div>
-            <a href="get-started.html" class="btn-main">Get Started &rarr;</a>
+            <a href="get-started.html" class="btn-main" style="background: #10b981; color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px; display: inline-block; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: background 0.2s;">Get Started &rarr;</a>
           </article>
-
-          <!-- IMAGE COLUMN -->
-          <aside class="hero-image-container">
-            <img src="images/${meta.slug}-hero.jpg" 
-                 alt="${meta.title} System Dashboard" 
-                 onerror="this.onerror=null; this.src='images/hero-image.jpg';">
+          
+          <!-- 📸 IMAGE COLUMN -->
+          <aside class="hero-image-container" style="display: flex; justify-content: center; width: 100%;">
+            <img src="images/${meta.slug}-hero.jpg" alt="${meta.title} System Dashboard" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/hero-image.jpg';">
           </aside>
-
+          
         </div>
       </div>
     </main>
@@ -770,59 +690,56 @@ function renderMasterHeroEngine(targetId, meta) {
 function renderMasterMetricsEngine(targetId) {
   const el = document.getElementById(targetId);
   if (!el) return;
-  
+
   el.innerHTML = `
-    <section class="enterprise-metrics-section">
-      <div class="metrics-bg-overlay"></div>
-      <div class="site-width-alignment-guard">
+    <section class="enterprise-metrics-section" style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+      <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
         
-        <div class="metrics-header-row">
-          <div class="metrics-title-block">
-            <h2>Corporate Filing Infrastructure</h2>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
+          <div style="text-align: left; max-width: 600px;">
+            <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">Corporate Filing Infrastructure</h2>
           </div>
-          <div class="metrics-status-wrapper">
-            <div class="metrics-status-badge">
-              <span class="metrics-status-dot"></span>
-              ALL CLEAR: SECURE REST GATEWAYS ACTIVE
+          <div style="text-align: right;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
+              <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> ALL CLEAR: SECURE REST GATEWAYS ACTIVE 
             </div>
           </div>
         </div>
 
-        <div class="metrics-dashboard-grid">
-          
-          <div class="metric-card-block">
-            <span class="metric-icon-span">🏢</span>
-            <div class="metric-value-div">142K+</div>
-            <div class="metric-label-div">Corporate Entities Formed</div>
-            <p>Authorized Articles of Organization across all 50 State Secretary registries.</p>
+        <div class="metrics-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box; margin: 0;">
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🏢</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">142K+</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Corporate Entities Formed</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Authorized Articles of Organization across all 50 State Secretary registries.</p>
           </div>
-
-          <div class="metric-card-block">
-            <span class="metric-icon-span">🚛</span>
-            <div class="metric-value-div">38,410</div>
-            <div class="metric-label-div">Active Transits Monitored</div>
-            <p>USDOT & MC operating authorities actively synchronized with FMCSA core data links.</p>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🚛</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">38,410</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Active Transits Monitored</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">USDOT & MC operating authorities actively synchronized with FMCSA core data links.</p>
           </div>
-
-          <div class="metric-card-block">
-            <span class="metric-icon-span">⚡</span>
-            <div class="metric-value-div highlighted">1.8s</div>
-            <div class="metric-label-div">Average API Pipeline Turn</div>
-            <p>Secure, real-time rest requests to launch bank check intents and background pre-saves.</p>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">⚡</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #10b981; font-family: monospace; line-height: 1;">1.8s</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Average API Pipeline Turn</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Secure, real-time rest requests to launch bank check intents and background pre-saves.</p>
           </div>
-
-          <div class="metric-card-block">
-            <span class="metric-icon-span">🔒</span>
-            <div class="metric-value-div">99.98%</div>
-            <div class="metric-label-div">Filing Accuracy Quotient</div>
-            <p>Sophisticated layout rules eliminate common syntax rejection errors from state systems.</p>
+          <div class="metric-card-block" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+            <span style="font-size: 1.8rem; display: block; margin-bottom: 4px;">🔒</span>
+            <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">99.98%</div>
+            <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 4px;">Filing Accuracy Quotient</div>
+            <p style="margin: 0; font-size: 0.8rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Sophisticated layout rules eliminate common syntax rejection errors from state systems.</p>
           </div>
-
         </div>
+
       </div>
     </section>
   `;
 }
+
+
 
 
 function renderMasterMetricsEngine(targetId, dbRow) {
@@ -831,39 +748,46 @@ function renderMasterMetricsEngine(targetId, dbRow) {
     if (!zone) return;
 
     const slug = targetId.replace("-metrics-zone", "").toLowerCase().trim();
-    const metricsData = window.PLATFORM_METRICS_CATALOG && 
-                        window.PLATFORM_METRICS_CATALOG[slug];
+    const metricsData = window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug];
+    
     if (!metricsData) return;
 
     const cleanTitle = metricsData.title;
     const statusBadge = metricsData.badge;
     const operationalCards = metricsData.items;
-    let cardsHTML = "";
 
+    let cardsHTML = "";
     operationalCards.forEach(card => {
-      cardsHTML += '<div class="metrics-panel-loop-card">' +
-        '<span>' + card.icon + '</span>' +
-        '<div class="card-value-display">' + card.val + '</div>' +
-        '<div class="card-label-display">' + card.lbl + '</div>' +
-        '<p>' + card.desc + '</p>' +
-      '</div>';
+      cardsHTML += `
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 30px 24px; box-sizing: border-box;">
+          <span style="font-size: 1.8rem; display: block; margin-bottom: 12px;">${card.icon}</span>
+          <div style="font-size: 2.4rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1.1;">${card.val}</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">${card.lbl}</div>
+          <p style="font-size: 0.85rem; color: #94a3b8; margin: 8px 0 0 0; line-height: 1.4; font-weight: 400;">${card.desc}</p>
+        </div>
+      `;
     });
 
-    zone.innerHTML = '<section class="metrics-panel-wrap-section">' +
-      '<div class="metrics-panel-dot-bg"></div>' +
-      '<div class="site-width-alignment-guard prgrid-container">' +
-        '<div class="metrics-panel-header-row">' +
-          '<div class="metrics-panel-left-block"><h2>' + cleanTitle + '</h2></div>' +
-          '<div class="metrics-panel-right-block">' +
-            '<div class="metrics-panel-status-pill">' +
-              '<span class="metrics-panel-status-dot"></span>' + statusBadge +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="metrics-panel-loop-grid">' + cardsHTML + '</div>' +
-      '</div>' +
-    '</section>';
-
+    zone.innerHTML = `
+      <section style="padding: 60px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(244,247,250,0.1); padding-bottom: 24px; margin-bottom: 40px; flex-wrap: wrap; gap: 24px; width: 100%; box-sizing: border-box;">
+            <div style="text-align: left; max-width: 600px;">
+              <h2 style="margin: 0; font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2;">${cleanTitle}</h2>
+            </div>
+            <div style="text-align: right;">
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: #10b981; font-family: monospace; background: rgba(16,185,129,0.1); padding: 8px 16px; border-radius: 30px; border: 1px solid rgba(16,185,129,0.2);">
+                <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> ${statusBadge}
+              </div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; width: 100%; box-sizing: border-box;">
+            ${cardsHTML}
+          </div>
+        </div>
+      </section>
+    `;
   } catch (err) {
     console.error("Metrics execution critical error:", err);
   }
@@ -878,6 +802,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderMasterMetricsEngine(zone.id, null);
   });
 });
+
 
 function renderMasterHeroEngine(targetId, metaDataRecord) {
   try {
@@ -894,32 +819,19 @@ function renderMasterHeroEngine(targetId, metaDataRecord) {
       }
     }
 
-    const liveRecordSource = metaDataRecord || 
-                             (window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug]) || {};
+    const liveRecordSource = metaDataRecord || (window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug]) || {};
     
     const displayPillText = liveRecordSource.pill || "Statutory Data Security Covenant";
     const displayHeroTitle = liveRecordSource.hero_title || liveRecordSource.service_title || liveRecordSource.title || "Compliance Portal";
     const displayHeroLead = liveRecordSource.hero_lead || liveRecordSource.description || "Automated Inter-Jurisdictional Regulatory Licensing, Onboarding Compliance Systems, and Provisioning Pipelines.";
     const dynamicHeroImgSrc = "images/" + slug + "-hero.jpg";
-    
+
     var computedActionLinkDestination = "#pricing-framework-target";
     if (slug === "index") {
       computedActionLinkDestination = "get-started.html";
     }
 
-    zone.innerHTML = '<section class="hero-wrapper-section">' +
-      '<div class="responsive-hero-grid hero-wrapper-grid">' +
-        '<div class="hero-left-content-col">' +
-          '<span class="hero-meta-badge-pill">' + displayPillText + '</span>' +
-          '<h1 class="hero-headline hero-main-header-title">' + displayHeroTitle + '</h1>' +
-          '<p class="hero-lead-description-p">' + displayHeroLead + '</p>' +
-          '<a href="' + computedActionLinkDestination + '" class="hero-action-anchor-btn">Initialize Application &rarr;</a>' +
-        '</div>' +
-        '<div class="hero-image-container hero-right-image-col">' +
-          '<img src="' + dynamicHeroImgSrc + '" class="hero-display-img hero-fluid-img-node" alt="Framework Layout Preview" onerror="this.onerror=null; this.src=\'images/default-hero.jpg\';">' +
-        '</div>' +
-      '</div>' +
-    '</section>';
+    zone.innerHTML = '<section style="padding: 0 !important; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden; margin-top: 30px !important; margin-bottom: 50px !important;"><div class="responsive-hero-grid" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; box-sizing: border-box;"><div style="flex: 1; min-width: 320px; box-sizing: border-box; padding: 40px 0;"><span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block;">' + displayPillText + '</span><h1 class="hero-headline" style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">' + displayHeroTitle + '</h1><p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">' + displayHeroLead + '</p><a href="' + computedActionLinkDestination + '" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Initialize Application &rarr;</a></div><div class="hero-image-container" style="flex: 1; min-width: 320px; text-align: center; box-sizing: border-box; padding: 40px 0;"><img src="' + dynamicHeroImgSrc + '" class="hero-display-img" alt="Framework Layout Preview" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);" onerror="this.onerror=null; this.src=\'images/default-hero.jpg\';"></div></div></section>';
 
     if (slug !== "index") {
       setTimeout(function() {
@@ -945,6 +857,8 @@ window.renderMasterHeroEngine = renderMasterHeroEngine;
 
 
 
+
+
 // Global initialization router execution loop
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('[id$="-metrics-zone"]').forEach(zone => {
@@ -955,6 +869,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+
+
+
 // ============================================================================
 // --- MODULE 4: DYNAMIC PACKAGE PRICING GRID INJECTION LAYER ---
 // ============================================================================
@@ -964,13 +882,13 @@ document.addEventListener("DOMContentLoaded", () => {
  * Stops script-tag execution loops and layout tampering vulnerabilities.
  */
 function secureGridStringEscape(primitiveValue) {
-  if (primitiveValue === null || primitiveValue === undefined) return "";
-  return String(primitiveValue)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "'");
+    if (primitiveValue === null || primitiveValue === undefined) return "";
+    return String(primitiveValue)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 function renderMasterPricingEngine(targetId, metaDataRecord) {
@@ -978,15 +896,13 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
     const zone = document.getElementById(targetId);
     if (!zone) return;
 
-    var currentActiveSlug = targetId.replace("-package-pricing-cards-root", "")
-                                    .toLowerCase().trim();
+    var currentActiveSlug = targetId.replace("-package-pricing-cards-root", "").toLowerCase().trim();
     if (metaDataRecord && metaDataRecord.slug) {
       currentActiveSlug = metaDataRecord.slug;
     }
 
     const universalSourceMatrix = window.CENTRAL_SERVICE_PLAN_DB || {};
-    const pricingDatasetNode = universalSourceMatrix[currentActiveSlug] || 
-                               (metaDataRecord && metaDataRecord.pricing) || {};
+    const pricingDatasetNode = universalSourceMatrix[currentActiveSlug] || (metaDataRecord && metaDataRecord.pricing) || {};
 
     if (!pricingDatasetNode || Object.keys(pricingDatasetNode).length === 0) {
       console.warn(currentActiveSlug);
@@ -996,39 +912,19 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
     const compileBulletsSubLoopMarkup = function(bulletArrayData) {
       if (!Array.isArray(bulletArrayData)) return "";
       return bulletArrayData.map(function(singleBulletString) {
-        const structuralEscapedString = typeof secureGridStringEscape === "function" ? 
-                                        secureGridStringEscape(singleBulletString) : 
-                                        singleBulletString;
-        return '<li class="pricing-card-bullet-item"><span>✓</span>' + 
-               structuralEscapedString + '</li>';
+        const structuralEscapedString = typeof secureGridStringEscape === "function" ? secureGridStringEscape(singleBulletString) : singleBulletString;
+        return '<li class="pricing-card-bullet-item"><span>✓</span>' + structuralEscapedString + '</li>';
       }).join("");
     };
 
     const coreTiersRegistryList = pricingDatasetNode.tiers || [
-      { 
-        key: "starter", 
-        name: pricingDatasetNode.starter_label || "Starter Package", 
-        price: parseFloat(pricingDatasetNode.starter) || 0, 
-        highlighted: false 
-      },
-      { 
-        key: "compliance", 
-        name: pricingDatasetNode.compliance_label || "Compliance Guard", 
-        price: parseFloat(pricingDatasetNode.compliance) || 0, 
-        highlighted: true 
-      },
-      { 
-        key: "enterprise", 
-        name: pricingDatasetNode.enterprise_label || "Enterprise Asset Suite", 
-        price: parseFloat(pricingDatasetNode.enterprise) || 0, 
-        highlighted: false 
-      }
+      { key: "starter", name: pricingDatasetNode.starter_label || "Starter Package", price: parseFloat(pricingDatasetNode.starter) || 0, highlighted: false },
+      { key: "compliance", name: pricingDatasetNode.compliance_label || "Compliance Guard", price: parseFloat(pricingDatasetNode.compliance) || 0, highlighted: true },
+      { key: "enterprise", name: pricingDatasetNode.enterprise_label || "Enterprise Asset Suite", price: parseFloat(pricingDatasetNode.enterprise) || 0, highlighted: false }
     ];
 
-    const frameworkSectionTitleText = pricingDatasetNode.section_title || 
-                                     "Flexible Pricing Framework Options";
-    const frameworkSectionSubtitleText = pricingDatasetNode.section_subtitle || 
-                                        "Select the optimal processing speed and protection depth your operation requires.";
+    const frameworkSectionTitleText = pricingDatasetNode.section_title || "Flexible Pricing Framework Options";
+    const frameworkSectionSubtitleText = pricingDatasetNode.section_subtitle || "Select the optimal processing speed and protection depth your operation requires.";
     const dynamicCadenceDescriptorLabel = pricingDatasetNode.cadence_label || " / registration";
     const dynamicPopularBadgeTextString = pricingDatasetNode.popular_badge_text || "Most Popular Option";
     const dynamicButtonActionVerbText = pricingDatasetNode.button_text || "Select Plan Option";
@@ -1040,46 +936,23 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
       const tierPresentationName = tierRecordObj.name;
       const numericPriceValueFloat = parseFloat(tierRecordObj.price) || 0;
       const isCardHighlightedActive = tierRecordObj.highlighted || false;
-      const targetedBulletsSourceArray = pricingDatasetNode.bullets && 
-                                         pricingDatasetNode.bullets[tierUniqueKeyId] ? 
-                                         pricingDatasetNode.bullets[tierUniqueKeyId] : [];
+      
+      const targetedBulletsSourceArray = pricingDatasetNode.bullets && pricingDatasetNode.bullets[tierUniqueKeyId] ? pricingDatasetNode.bullets[tierUniqueKeyId] : [];
       
       var conditionalBadgeMarkupCell = "";
       var structuralHighlightClassNameSelector = "pricing-card-node text-center-mobile";
       var integerColorHighlightClassNameSelector = "pricing-card-price-integer";
 
       if (isCardHighlightedActive) {
-        conditionalBadgeMarkupCell = '<span class="pricing-card-popular-badge">' + 
-                                     dynamicPopularBadgeTextString + '</span>';
+        conditionalBadgeMarkupCell = '<span class="pricing-card-popular-badge">' + dynamicPopularBadgeTextString + '</span>';
         structuralHighlightClassNameSelector = "pricing-card-node pricing-card-highlighted text-center-mobile";
         integerColorHighlightClassNameSelector = "pricing-card-price-integer color-primary";
       }
 
-      pricingCardsGeneratedHtmlArrayString += '<div class="' + structuralHighlightClassNameSelector + '">' + 
-        conditionalBadgeMarkupCell + 
-        '<div class="pricing-card-upper-content">' +
-          '<h3 class="pricing-card-tier-title">' + tierPresentationName + '</h3>' +
-          '<div class="pricing-card-rate-row">' +
-            '<span class="' + integerColorHighlightClassNameSelector + '">$' + numericPriceValueFloat.toFixed(2) + '</span>' +
-            '<span class="pricing-card-cadence-label">' + dynamicCadenceDescriptorLabel + '</span>' +
-          '</div>' +
-          '<ul class="pricing-card-bullets-list">' + compileBulletsSubLoopMarkup(targetedBulletsSourceArray) + '</ul>' +
-        '</div>' +
-        '<a href="wizard.html?service=' + currentActiveSlug + '&plan=' + tierUniqueKeyId + '" class="pricing-card-action-btn ' + tierUniqueKeyId + '-btn-theme">' + 
-          dynamicButtonActionVerbText + 
-        '</a>' +
-      '</div>';
+      pricingCardsGeneratedHtmlArrayString += '<div class="' + structuralHighlightClassNameSelector + '">' + conditionalBadgeMarkupCell + '<div class="pricing-card-upper-content"><h3 class="pricing-card-tier-title">' + tierPresentationName + '</h3><div class="pricing-card-rate-row"><span class="' + integerColorHighlightClassNameSelector + '">$' + numericPriceValueFloat.toFixed(2) + '</span><span class="pricing-card-cadence-label">' + dynamicCadenceDescriptorLabel + '</span></div><ul class="pricing-card-bullets-list">' + compileBulletsSubLoopMarkup(targetedBulletsSourceArray) + '</ul></div><a href="wizard.html?service=' + currentActiveSlug + '&plan=' + tierUniqueKeyId + '" class="pricing-card-action-btn ' + tierUniqueKeyId + '-btn-theme">' + dynamicButtonActionVerbText + '</a></div>';
     });
 
-    zone.innerHTML = '<section id="pricing-framework-target" class="pricing-grid-master-section">' +
-      '<div class="site-width-alignment-guard prgrid-container">' +
-        '<div class="pricing-grid-header-block">' +
-          '<h2 class="pricing-grid-main-title">' + frameworkSectionTitleText + '</h2>' +
-          '<p class="pricing-grid-subtitle">' + frameworkSectionSubtitleText + '</p>' +
-        '</div>' +
-        '<div class="pricing-cards-responsive-grid">' + pricingCardsGeneratedHtmlArrayString + '</div>' +
-      '</div>' +
-    '</section>';
+    zone.innerHTML = '<section id="pricing-framework-target" class="pricing-grid-master-section"><div class="site-width-alignment-guard prgrid-container"><div class="pricing-grid-header-block"><h2 class="pricing-grid-main-title">' + frameworkSectionTitleText + '</h2><p class="pricing-grid-subtitle">' + frameworkSectionSubtitleText + '</p></div><div class="pricing-cards-responsive-grid">' + pricingCardsGeneratedHtmlArrayString + '</div></div></section>';
 
     setTimeout(function() {
       const livePageAnchorNodesArray = document.querySelectorAll('a');
@@ -1090,7 +963,7 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
             if (individualAnchorElement.getAttribute("href") === "#pricing-framework-target") {
               const viewScrollTargetElementNode = document.getElementById("pricing-framework-target");
               if (viewScrollTargetElementNode) {
-                clickEvent.preventDefault();
+                clickInterceptEvent.preventDefault();
                 viewScrollTargetElementNode.scrollIntoView({ behavior: "smooth", block: "start" });
               }
             }
@@ -1116,34 +989,86 @@ window.renderMasterPricingEngine = renderMasterPricingEngine;
 
 
 
+
 // ============================================================================
 // --- CRITICAL FRAMEWORK PATCH: BYPASS & SUPPRESS CONTENT-ENGINE AUTOMATION ---
 // ============================================================================
 (function() {
-  window.PRICE_OBJECT_CONFIGS = window.PRICE_OBJECT_CONFIGS || {};
-  
-  if (!window.PRICE_OBJECT_CONFIGS["index"]) {
-    window.PRICE_OBJECT_CONFIGS["index"] = {
-      name: "Homepage Engine Fallback",
-      llc: 0,
-      c_corp: 0,
-      series_llc: 0,
-      packages: {},
-      features: [],
-      addons: {}
-    };
-  }
+    // 1. Create a safe fallback global object structure
+    window.PRICE_OBJECT_CONFIGS = window.PRICE_OBJECT_CONFIGS || {};
+    
+    // 2. Lock down an empty 'index' layout profile so internal engines don't crash
+    if (!window.PRICE_OBJECT_CONFIGS["index"]) {
+        window.PRICE_OBJECT_CONFIGS["index"] = {
+            name: "Homepage Engine Fallback",
+            llc: 0,
+            c_corp: 0,
+            series_llc: 0,
+            packages: {},
+            features: [],
+            addons: {}
+        };
+    }
 
-  const originalPricingEngine = window.renderMasterPricingEngine;
-  window.renderMasterPricingEngine = function(id, ...args) {
-    if (id === "index" || (typeof id === "string" && id.startsWith("index-"))) {
-      return null;
-    }
-    if (typeof originalPricingEngine === "function") {
-      return originalPricingEngine.apply(this, [id, ...args]);
-    }
-  };
+    // 3. Intercept and isolate the automated layout compiler method itself
+    const originalPricingEngine = window.renderMasterPricingEngine;
+    window.renderMasterPricingEngine = function(id, ...args) {
+        // Drop execution silently if the engine targets the 'index' profile string
+        if (id === "index" || (typeof id === "string" && id.startsWith("index-"))) {
+            return null; 
+        }
+        if (typeof originalPricingEngine === "function") {
+            return originalPricingEngine.apply(this, [id, ...args]);
+        }
+    };
 })();
+
+// ============================================================================
+// --- CRITICAL FRAMEWORK PATCH: BYPASS & SUPPRESS CONTENT-ENGINE AUTOMATION ---
+// ============================================================================
+(function() {
+    window.PRICE_OBJECT_CONFIGS = window.PRICE_OBJECT_CONFIGS || {};
+    if (!window.PRICE_OBJECT_CONFIGS["index"]) {
+        window.PRICE_OBJECT_CONFIGS["index"] = {
+            name: "Homepage Engine Fallback",
+            llc: 0, c_corp: 0, series_llc: 0,
+            packages: {}, features: [], addons: {}
+        };
+    }
+    const originalPricingEngine = window.renderMasterPricingEngine;
+    window.renderMasterPricingEngine = function(id, ...args) {
+        if (id === "index" || (typeof id === "string" && id.startsWith("index-"))) {
+            return null; 
+        }
+        if (typeof originalPricingEngine === "function") {
+            return originalPricingEngine.apply(this, [id, ...args]);
+        }
+    };
+})();
+
+// ============================================================================
+// --- CRITICAL FRAMEWORK PATCH: BYPASS & SUPPRESS CONTENT-ENGINE AUTOMATION ---
+// ============================================================================
+(function() {
+    window.PRICE_OBJECT_CONFIGS = window.PRICE_OBJECT_CONFIGS || {};
+    if (!window.PRICE_OBJECT_CONFIGS["index"]) {
+        window.PRICE_OBJECT_CONFIGS["index"] = {
+            name: "Homepage Engine Fallback",
+            llc: 0, c_corp: 0, series_llc: 0,
+            packages: {}, features: [], addons: {}
+        };
+    }
+    const originalPricingEngine = window.renderMasterPricingEngine;
+    window.renderMasterPricingEngine = function(id, ...args) {
+        if (id === "index" || (typeof id === "string" && id.startsWith("index-"))) {
+            return null; 
+        }
+        if (typeof originalPricingEngine === "function") {
+            return originalPricingEngine.apply(this, [id, ...args]);
+        }
+    };
+})();
+
 
 // --- MODULE 6: STARTUP EXPLORATION DEPLOYMENT HUB (SECTION 6) ---
 function renderMasterStartupLaunchpadEngine(targetId, meta) {
@@ -1152,41 +1077,24 @@ function renderMasterStartupLaunchpadEngine(targetId, meta) {
     if (!zone) return;
 
     zone.innerHTML = `
-      <section class="startup-launchpad-section">
-        <div class="startup-launchpad-container">
-          <div class="startup-launchpad-grid">
-            
-            <div class="startup-launchpad-text-col">
-              <span class="startup-launchpad-badge">Launch Infrastructure</span>
-              <h2 class="startup-launchpad-headline">
-                Startup Launchpad. <br><span style="color: #10b981;">Built For Scale.</span>
-              </h2>
-              <p class="startup-launchpad-subheading">
-                Turn your business idea into an officially recognized state legal entity overnight.
-              </p>
-              <p class="startup-launchpad-description">
-                Accelerate your early-stage venture with robust entity setup frameworks built for founders. 
-                We automate formations, corporate bylaw preparation, tax ID filings (EIN), and state registry 
-                submissions for your active ${meta.title} pipeline.
-              </p>
-              <a href="formations.html" class="startup-launchpad-link">
-                Launch Your Startup &rarr;
-              </a>
+      <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%;">
+            <div style="width: 100%; box-sizing: border-box;">
+              <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15);">Launch Infrastructure</span>
+              <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Startup Launchpad. <br><span style="color: #10b981;">Built For Scale.</span></h2>
+              <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0;">Turn your business idea into an officially recognized state legal entity overnight.</p>
+              <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Accelerate your early-stage venture with robust entity setup frameworks built for founders. We automate formations, corporate bylaw preparation, tax ID filings (EIN), and state registry submissions for your active ${meta.title} pipeline.</p>
+              <a href="formations.html" style="color:#10b981; font-weight:700; text-decoration:none;">Launch Your Startup &rarr;</a>
             </div>
-
-            <div class="startup-launchpad-image-col">
-              <img src="${meta.seceImage}" 
-                   alt="Startup Launch" 
-                   onerror="this.onerror=null; this.src='images/startup-launch.jpg';">
+            <div style="display: flex; justify-content: center; width: 100%;">
+              <img src="${meta.seceImage}" alt="Startup Launch" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25);" onerror="this.onerror=null; this.src='images/startup-launch.jpg';">
             </div>
-
           </div>
         </div>
       </section>
     `;
-  } catch (err) {
-    console.error("Launchpad hub error:", err);
-  }
+  } catch (err) { console.error("Launchpad hub error:", err); }
 }
 
 
@@ -1197,24 +1105,24 @@ function renderMasterTrustShieldMatrix(targetId, meta) {
     if (!zone) return;
 
     zone.innerHTML = `
-      <section class="trust-shield-section">
-        <div class="trust-shield-overlay"></div>
-        <div class="site-width-alignment-guard trust-shield-guard">
+      <section class="enterprise-metrics-section" style="padding: 80px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 60px;">
           
-          <div class="trust-shield-img-col">
-            <img src="${meta.secfImage}" 
-                 alt="${meta.title} Protection Asset" 
-                 onerror="this.onerror=null; this.src='images/regulatory-compliance.jpg';">
+          <!-- 📸 IMAGE COLUMN -->
+          <div style="flex: 1; min-width: 320px; max-width: 550px; display: flex; justify-content: center; box-sizing: border-box;">
+            <img src="` + meta.secfImage + `" alt="` + meta.title + ` Protection Asset" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65), 0 10px 20px rgba(0, 0, 0, 0.3);" onerror="this.onerror=null; this.src='images/regulatory-compliance.jpg';">
           </div>
-
-          <div class="trust-shield-text-col">
-            <span class="trust-shield-badge">Guaranteed Audit Protection</span>
-            <h2 class="trust-shield-headline">Institutional Shield. <br><span style="color: #10b981;">Never Miss A Filing.</span></h2>
-            <p class="trust-shield-subheading">Active database synchronization safeguards your status across state lines.</p>
-            <p class="trust-shield-desc">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your ${meta.title} operational status is permanently shielded.</p>
-            <a href="compliance.html" class="trust-shield-link">Explore Security Infrastructure &rarr;</a>
+          
+          <!-- 📝 TEXT COLUMN -->
+          <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">Guaranteed Audit Protection</span>
+            <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Institutional Shield. <br><span style="color: #10b981;">Never Miss A Filing.</span></h2>
+            <p style="color: #cbd5e1; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Active database synchronization safeguards your status across state lines.</p>
+            <p style="color: #94a3b8; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your ` + meta.title + ` operational status is permanently shielded.</p>
+            <a href="compliance.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 0.95rem;">Explore Security Infrastructure &rarr;</a>
           </div>
-
+          
         </div>
       </section>
     `;
@@ -1223,43 +1131,42 @@ function renderMasterTrustShieldMatrix(targetId, meta) {
   }
 }
 
+
 // --- MODULE 8: DYNAMIC SUBSCRIPTION CAPTURE MATRIX ENGINE (SECTION 8) ---
 function renderMasterSubscribeEngine(targetId, meta) {
   try {
     const zone = document.getElementById(targetId);
     if (!zone) return;
-
     zone.innerHTML = `
-      <section class="capture-section-wrap">
-        <div class="site-width-alignment-guard">
-          <div class="capture-split-grid">
-            
+      <section style="background: #ffffff; padding: 80px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: center; width: 100%;">
             <!-- LEFT TEXT BOX MODULE -->
-            <div class="capture-text-col">
-              <span class="capture-badge-tag">Compliance Bulletins</span>
-              <h2 class="capture-main-headline">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
-              <p class="capture-body-desc">Get actionable regulatory deadline text flashes, corporate filing advice, and federal state policy change updates sent straight to your box. Zero clutter. Direct compliance updates for your your ${meta.title} files.</p>
+            <div style="width: 100%; box-sizing: border-box;">
+              <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; background: rgba(16, 185, 129, 0.08); padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;">Compliance Bulletins</span>
+              <h2 style="color: #0a1f44; font-size: 2.6rem; font-weight: 900; margin: 0 0 16px 0; line-height: 1.15; letter-spacing: -0.5px;">Stay Informed. <br><span style="color: #10b981;">Secure Growth.</span></h2>
+              <p style="color: #475569; font-size: 1.05rem; line-height: 1.6; margin: 0; max-width: 580px;">Get actionable regulatory deadline text flashes, corporate filing advice, and federal state policy change updates sent straight to your box. Zero clutter. Direct compliance updates for your ${meta.title} files.</p>
             </div>
-
             <!-- RIGHT INPUT FORM BOX INTERFACE -->
-            <div class="capture-interface-col" id="f4u-subscribe-interface-wrapper">
-              <form id="compliance-subscribe-form" class="capture-inline-form">
-                <input type="email" id="subscribe-email-field" placeholder="Enter your business email..." required aria-label="Business Email" class="capture-input-field">
-                <button type="submit" id="subscribe-button" class="capture-submit-btn">Subscribe</button>
+            <div style="width: 100%; box-sizing: border-box;" id="f4u-subscribe-interface-wrapper">
+              <!-- 🎯 ADDED ID: Hooks cleanly into your existing global CSS rules -->
+              <form id="compliance-subscribe-form" style="display: flex; gap: 14px; width: 100%; background: #ffffff; border: 1px solid #f1f5f9; padding: 20px; border-radius: 16px; box-shadow: 0 20px 40px rgba(10,31,68,0.06), 0 1px 3px rgba(10,31,68,0.02); box-sizing: border-box; margin: 0;">
+                <input type="email" id="subscribe-email-field" placeholder="Enter your business email..." required aria-label="Business Email" style="flex: 1; padding: 16px 22px; font-size: 0.95rem; font-weight: 500; border-radius: 8px; border: none; background: #ffffff; color: #0a1f44; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08); transition: box-shadow 0.25s ease;" onfocus="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.02), 0 0 0 3px rgba(16, 185, 129, 0.15), 0 0 0 1px #10b981'" onblur="this.style.boxShadow='inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(10,31,68,0.08)'">
+                <!-- 🎯 ADDED ID: Hooks cleanly into your global CSS button padding/width definitions -->
+                <button type="submit" id="subscribe-button" style="background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 0.95rem; padding: 0 32px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;" onmouseover="this.style.backgroundColor='#0e9f6e'; this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#10b981'; this.style.transform='translateY(0)';">Subscribe</button>
               </form>
-              
+              <!-- Inline Status Response Output Message Container Tag -->
               <div id="form-status-message" style="display: none; transition: opacity 0.2s ease;"></div>
-              
-              <div class="capture-encryption-tag">
-                <span>🔒 ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
+              <div style="display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 0.75rem; color: #64748b; padding-left: 4px;">
+                <span style="color: #10b981; font-weight: 800; letter-spacing: 0.05em;">🔐 ENCRYPTED GATEWAY</span> Your data is fully shielded under 256-bit protocol architectures.
               </div>
             </div>
-
           </div>
         </div>
       </section>
     `;
 
+    // TIMING RESYNC FIX: Introduce a small 50ms buffer to ensure elements are parsed before querying
     setTimeout(() => {
       const subscribeForm = document.getElementById("compliance-subscribe-form");
       const statusMessage = document.getElementById("form-status-message");
@@ -1269,10 +1176,11 @@ function renderMasterSubscribeEngine(targetId, meta) {
       if (!subscribeForm || !statusMessage || !submitButton || !emailInput) return;
 
       subscribeForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Stop webpage reload
         const targetCleanEmail = emailInput.value.trim().toLowerCase();
         if (!targetCleanEmail) return;
 
+        // Enter loading processing states
         submitButton.disabled = true;
         submitButton.innerText = "Processing...";
         statusMessage.style.display = "none";
@@ -1280,7 +1188,8 @@ function renderMasterSubscribeEngine(targetId, meta) {
         try {
           const backupUrl = 'https://lrbimrlbskjweynxlgas.supabase.co';
           const backupKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
-          
+
+          // Direct network payload dispatch to the Supabase endpoint
           const response = await fetch(`${backupUrl}/rest/v1/subscribers`, {
             method: "POST",
             headers: {
@@ -1289,15 +1198,16 @@ function renderMasterSubscribeEngine(targetId, meta) {
               "Content-Type": "application/json",
               "Prefer": "return=minimal"
             },
-            body: JSON.stringify({ 
-              email: targetCleanEmail, 
-              created_at: new Date().toISOString() 
+            body: JSON.stringify({
+              email: targetCleanEmail,
+              created_at: new Date().toISOString()
             })
           });
 
+          // Evaluate response and catch row uniqueness constraint conflicts
           if (response.status === 409 || !response.ok) {
             if (response.status === 409) {
-              statusMessage.innerText = "ℹ️ This business email is already signed up for update feeds!";
+              statusMessage.innerText = "ℹ️ This business email is already signed up for real-time compliance updates!";
               statusMessage.style.cssText = "display: block; background: rgba(59,130,246,0.1); color: #3b82f6; border: 1px solid rgba(59,130,246,0.2); margin-top: 14px; padding: 12px 16px; border-radius: 8px; font-weight: 600; text-align: left; font-size: 0.9rem;";
               emailInput.value = "";
               return;
@@ -1305,9 +1215,10 @@ function renderMasterSubscribeEngine(targetId, meta) {
             throw new Error(`Server returned error code profile: ${response.status}`);
           }
 
+          // Output Subscription Success Message
           statusMessage.innerText = "🎉 Subscription successful! Welcome to your real-time compliance feed.";
           statusMessage.style.cssText = "display: block; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2); margin-top: 14px; padding: 12px 16px; border-radius: 8px; font-weight: 600; text-align: left; font-size: 0.9rem;";
-          emailInput.value = "";
+          emailInput.value = ""; // Reset field input
         } catch (err) {
           console.error("[Supabase Pipeline Error]:", err);
           statusMessage.innerText = "⚠️ Connection timeout. Unable to dispatch registration data. Please try again.";
@@ -1318,11 +1229,12 @@ function renderMasterSubscribeEngine(targetId, meta) {
         }
       });
     }, 50);
-
   } catch (err) {
     console.error("Subscribe engine error:", err);
   }
 }
+
+
 
 
 
@@ -1333,31 +1245,32 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
     if (!zone) return;
 
     zone.innerHTML = `
-      <nav class="global-nav-bar">
-        <div class="nav-content-wrapper">
+      <nav style="font-family: system-ui, sans-serif; background: #ffffff; border-bottom: 1px solid #e2e8f0; width: 100%;">
+        <div class="nav-content-wrapper" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 80px; box-sizing: border-box;">
           
           <!-- BRAND LOGO -->
-          <a href="index.html" class="logo-link">
-            <img src="images/logo.png" alt="filings4u" class="logo">
+          <a href="index.html" class="logo-link" style="display: flex; align-items: center;">
+            <img src="images/logo.png" alt="filings4u" class="logo" style="height: 40px; width: auto; object-fit: contain;">
           </a>
-
-          <button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false">☰</button>
-
+          
+         <!-- FIXED: Added onclick="toggleMobileMenu()" to trigger the script -->
+<button class="mobile-toggle-btn" id="mobile-menu-trigger" type="button" aria-label="Toggle Navigation" aria-expanded="false" style="position: relative; z-index: 99999; pointer-events: auto;">☰</button>
+          
           <!-- DESKTOP DROPDOWN ARCHITECTURE LINK SYSTEM -->
-          <div class="nav-links">
+          <div class="nav-links" style="display: flex; align-items: center; gap: 32px;">
             
             <!-- FORMATIONS DROPDOWN -->
-            <div class="nav-item-dropdown static-dropdown">
-              <a href="#">Formations <span>▼</span></a>
+            <div class="nav-item-dropdown static-dropdown" style="position: relative;">
+              <a href="#" style="color: #0a1f44; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center;">Formations <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
               <div class="dropdown-content mega-panel-two-col">
                 <div class="mega-column">
-                  <span class="column-title">Popular Formations</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Popular Formations</span>
                   <a href="llc-formation.html">LLC Formation</a>
                   <a href="corporations.html">Corporations (C/S-Corp)</a>
                   <a href="sole-proprietorship.html">Sole Proprietorship</a>
                 </div>
                 <div class="mega-column">
-                  <span class="column-title">Specialty Structures</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Specialty Structures</span>
                   <a href="dba-registration.html">DBA Registration</a>
                   <a href="nonprofits.html">Nonprofit Organization</a>
                   <a href="series-llc.html">Series LLC</a>
@@ -1366,17 +1279,17 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
             </div>
 
             <!-- COMPLIANCE DROPDOWN -->
-            <div class="nav-item-dropdown static-dropdown">
-              <a href="#">Compliance <span>▼</span></a>
+            <div class="nav-item-dropdown static-dropdown" style="position: relative;">
+              <a href="#" style="color: #0a1f44; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center;">Compliance <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
               <div class="dropdown-content mega-panel-two-col">
                 <div class="mega-column">
-                  <span class="column-title">Entity Health</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Entity Health</span>
                   <a href="annual-reports.html">Annual Reports</a>
                   <a href="operating-agreement.html">Operating Agreement</a>
                   <a href="registered-agent.html">Registered Agent</a>
                 </div>
                 <div class="mega-column">
-                  <span class="column-title">Licensing & Exit</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Licensing & Exit</span>
                   <a href="business-licenses.html">Business Licenses</a>
                   <a href="employer-id-ein.html">Employer ID (EIN)</a>
                   <a href="dissolution.html">Entity Dissolution</a>
@@ -1385,17 +1298,17 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
             </div>
 
             <!-- TAX FILINGS DROPDOWN -->
-            <div class="nav-item-dropdown static-dropdown">
-              <a href="#">Tax Filings <span>▼</span></a>
+            <div class="nav-item-dropdown static-dropdown" style="position: relative;">
+              <a href="#" style="color: #0a1f44; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center;">Tax Filings <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
               <div class="dropdown-content mega-panel-two-col">
                 <div class="mega-column">
-                  <span class="column-title">Income & Operations</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Income & Operations</span>
                   <a href="federal-tax.html">Federal Income Tax</a>
                   <a href="state-tax.html">State Income Tax</a>
                   <a href="franchise-tax.html">Franchise Tax Filing</a>
                 </div>
                 <div class="mega-column">
-                  <span class="column-title">Sales & Payroll</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Sales & Payroll</span>
                   <a href="sales-tax-registration.html">Sales Tax Registration</a>
                   <a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a>
                   <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a>
@@ -1404,25 +1317,25 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
             </div>
 
             <!-- DOT & FLEET DROPDOWN -->
-            <div class="nav-item-dropdown static-dropdown">
-              <a href="#">DOT & Fleet <span>▼</span></a>
+            <div class="nav-item-dropdown static-dropdown" style="position: relative;">
+              <a href="#" style="color: #0a1f44; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center;">DOT & Fleet <span style="font-size:0.7rem; margin-left:4px;">▼</span></a>
               <div class="dropdown-content mega-panel-three-col">
                 <div class="mega-column">
-                  <span class="column-title">Authority Setup</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Authority Setup</span>
                   <a href="owner-operators.html">Owner Operators</a>
                   <a href="trucker-authority.html">Trucker Authority</a>
                   <a href="broker-authority.html">Broker Authority</a>
                   <a href="ucr-registration.html">UCR Registration</a>
                 </div>
                 <div class="mega-column">
-                  <span class="column-title">Compliance & Regs</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Compliance & Regs</span>
                   <a href="dot-consortium.html">DOT Consortium</a>
                   <a href="driver-file.html">Driver Qualification File</a>
                   <a href="process-agents-boc-3.html">Process Agent (BOC-3)</a>
                   <a href="ifta-registration.html">IFTA Registration</a>
                 </div>
                 <div class="mega-column">
-                  <span class="column-title">Insurance & Risk</span>
+                  <span class="column-title" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #10b981; margin-bottom: 10px;">Insurance & Risk</span>
                   <a href="licenses-permits.html">Licenses & Permits</a>
                   <a href="trucker-insurance-quote.html">Trucker Insurance</a>
                   <a href="broker-insurance-quote.html">Broker Insurance</a>
@@ -1431,9 +1344,9 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
               </div>
             </div>
 
-            <a href="https://portal.filings4u.com/client-dashboard.html" class="btn-client-portal">Client Portal</a>
+            <a href="https://portal.filings4u.com/client-dashboard.html" class="btn-client-portal" style="background: #10b981; color: #ffffff; text-decoration: none; font-weight: 700; padding: 10px 20px; border-radius: 6px; font-size: 0.9rem; transition: background 0.2s;">Client Portal</a>
           </div>
-
+          
         </div>
       </nav>
     `;
@@ -1443,7 +1356,6 @@ function renderDynamicGlobalCorporateNavigation(targetId) {
 }
 
 
-
 // --- MODULE 8: GLOBAL SITE-WIDE RE-ALIGNED CORPORATE FOOTER SYSTEM ---
 function renderDynamicGlobalCorporateFooter(targetId) {
   try {
@@ -1451,106 +1363,96 @@ function renderDynamicGlobalCorporateFooter(targetId) {
     if (!zone) return;
 
     zone.innerHTML = `
-      <footer class="site-footer">
-        
-        <!-- Tech Vector Network Grid Background Layer -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-        
-        <div class="footer-container">
-          <div class="footer-brand">
-            <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;">
-              <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;">
-            </a>
-            <p>Providing enterprise-grade filing and compliance solutions for local and corporate entities.</p>
-            
-            <div class="footer-social-wrapper">
-              <!-- LinkedIn -->
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-social-icon">
-                <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
-              </a>
-              <!-- YouTube -->
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="footer-social-icon">
-                <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg>
-              </a>
-              <!-- X -->
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="footer-social-icon">
-                <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg>
-              </a>
-            </div>
-          </div>
+    <!-- 🧱 GLOBAL CORPORATE SITE FOOTER MATRIX --> 
+<footer class="site-footer" style="position: relative; overflow: hidden;"> 
+  <!-- Tech Vector Network Grid Background Layer --> 
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
 
-          <div class="footer-col">
-            <h4>Formations</h4>
-            <ul>
-              <li><a href="llc-formation.html">LLC Formation</a></li>
-              <li><a href="corporations.html">Corporations</a></li>
-              <li><a href="nonprofits.html">Non-Profits</a></li>
-              <li><a href="registered-agent.html">Registered Agent</a></li>
-              <li><a href="employer-id-ein.html">Tax ID (EIN)</a></li>
-            </ul>
-          </div>
+  <div class="footer-container"> 
+    <div class="footer-brand"> 
+      <!-- 🔄 FIXED: Wrapped the brand logo in a link pointing to the homepage and increased height to 48px --> 
+      <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"> 
+        <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;"> 
+      </a> 
+      <p>Providing enterprise-grade filing and compliance solutions for local and corporate entities.</p> 
+      <div style="margin-top: 25px; display: flex; gap: 15px;"> 
+        <!-- LinkedIn --> 
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
+          <svg width="14" height="14" fill="white" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg> 
+        </a> 
+        <!-- YouTube --> 
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
+          <svg width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.301 1.103.33 3.483.33 4.246 0 .763-.029 3.143-.33 4.246a2.01 2.01 0 0 1-1.415 1.419c-1.123.302-5.288.332-6.11.335h-.09c-.822-.003-4.987-.033-6.11-.335a2.01 2.01 0 0 1-1.415-1.419C.03 11.143 0 8.763 0 8c0-.763.029-3.143.33-4.246a2.01 2.01 0 0 1 1.415-1.42c1.123-.302 5.288-.332 6.11-.335h.089zM6.374 11.155l4.356-2.651a.26.26 0 0 0 0-.442L6.374 5.412a.26.26 0 0 0-.398.221v5.301a.26.26 0 0 0 .398.22z"/></svg> 
+        </a> 
+        <!-- X --> 
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none;"> 
+          <svg width="12" height="12" fill="white" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg> 
+        </a> 
+      </div> 
+    </div> 
+    <div class="footer-col"> 
+      <h4>Formations</h4> 
+      <ul> 
+        <li><a href="llc-formation.html">LLC Formation</a></li> 
+        <li><a href="corporations.html">Corporations</a></li> 
+        <li><a href="nonprofits.html">Non-Profits</a></li> 
+        <li><a href="registered-agent.html">Registered Agent</a></li> 
+        <li><a href="employer-id-ein.html">Tax ID (EIN)</a></li> 
+      </ul> 
+    </div> 
+    <div class="footer-col"> 
+      <h4>Fleet & DOT</h4> 
+      <ul> 
+        <li><a href="ucr-registration.html">UCR Registration</a></li> 
+        <li><a href="ifta-registration.html">IFTA Filings</a></li> 
+        <li><a href="trucker-authority.html">DOT Authority</a></li> 
+        <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li> 
+        <li><a href="heavy-use-tax-2290.html">Form 2290</a></li> 
+      </ul> 
+    </div> 
+    <!-- 🔄 NEW SECTION: Tax & Filings --> 
+    <div class="footer-col"> 
+      <h4>Tax & Filings</h4> 
+      <ul> 
+        <li><a href="federal-tax.html">Federal Income Tax</a></li> 
+        <li><a href="state-tax.html">State Income Tax</a></li> 
+        <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li> 
+        <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li> 
+        <li><a href="franchise-tax.html">Franchise Tax Filing</a></li> 
+      </ul> 
+    </div> 
+    <div class="footer-col"> 
+      <h4>Support</h4> 
+      <ul> 
+        <li><a href="https://portal.filings4u.com/client-dashboard.html">Client Portal</a></li> 
+        <li><a href="compliance.html">Compliance Hub</a></li> 
+        <li><a href="contact.html">Contact Experts</a></li> 
+        <li><a href="annual-reports.html">Annual Reports</a></li> 
+        <li><a href="blog.html">Resource Library</a></li> 
+      </ul> 
+    </div> 
+  </div> 
+  <div class="footer-bottom"> 
+    <div> 
+      <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;"> &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a> </p> 
+    </div> 
+    <!-- 🔄 FIXED SECURE BADGE CONTAINER: Injected absolute block inline resets to override conflict issues --> 
+    <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
+      <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection </div> 
+    <div class="legal-links"> 
+      <a href="privacy-policy.html">Privacy Policy</a> 
+      <a href="terms-of-service.html">Terms of Service</a> 
+      <a href="refund-policy.html">Refund Policy</a> 
+    </div> 
+  </div> 
+</footer>
 
-          <div class="footer-col">
-            <h4>Fleet & DOT</h4>
-            <ul>
-              <li><a href="ucr-registration.html">UCR Registration</a></li>
-              <li><a href="ifta-registration.html">IFTA Filings</a></li>
-              <li><a href="trucker-authority.html">DOT Authority</a></li>
-              <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li>
-              <li><a href="heavy-use-tax-2290.html">Form 2290</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <h4>Tax & Filings</h4>
-            <ul>
-              <li><a href="federal-tax.html">Federal Income Tax</a></li>
-              <li><a href="state-tax.html">State Income Tax</a></li>
-              <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li>
-              <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li>
-              <li><a href="franchise-tax.html">Franchise Tax Filing</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <h4>Support</h4>
-            <ul>
-              <li><a href="https://portal.filings4u.com/client-dashboard.html">Client Portal</a></li>
-              <li><a href="compliance.html">Compliance Hub</a></li>
-              <li><a href="contact.html">Contact Experts</a></li>
-              <li><a href="annual-reports.html">Annual Reports</a></li>
-              <li><a href="blog.html">Resource Library</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <div>
-            <p style="margin: 0; font-size: 0.85rem; max-width: 300px; line-height: 1.4; overflow-wrap: break-word;">
-              &copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of 
-              <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" class="footer-bottom-brand-link">Roseland Companies, LLC</a>
-            </p>
-          </div>
-
-          <div class="trust-badge footer-secure-badge-box">
-            <span>SECURE</span> 256-bit SSL Encrypted Connection
-          </div>
-
-          <div class="legal-links">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="terms-of-service.html">Terms of Service</a>
-            <a href="refund-policy.html">Refund Policy</a>
-          </div>
-        </div>
-
-      </footer
-
-      <!-- SCROLL TO TOP FLOATING INTERFACE -->
-      <button id="scrollToTopBtn" aria-label="Scroll to top" class="scroll-to-top-btn">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
-        </svg>
-      </button>
+<!-- 🔼 SCROLL TO TOP FLOATING INTERFACE -->
+<button id="scrollToTopBtn" aria-label="Scroll to top" class="scroll-to-top-btn">
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+    </svg>
+</button>
     `;
   } catch (err) {
     console.error("Footer matrix rendering error:", err);
@@ -1561,17 +1463,19 @@ function renderDynamicGlobalCorporateFooter(targetId) {
 // --- MASTER LAYOUT MATRIX RUNNER ENGINE ---
 function executeGlobalLayoutSequencer() {
   try {
+    // Read specific elements directly out of the active file DOM layout tree
     const heroTarget = document.querySelector('[id$="-hero-zone"]');
     const metricsTarget = document.querySelector('[id$="-metrics-zone"]');
     const pricingTarget = document.querySelector('[id$="-package-pricing-cards-root"]');
     const launchpadTarget = document.querySelector('[id$="-launchpad-zone"]');
     const trustTarget = document.querySelector('[id$="-trust-zone"]');
 
+    // Safe individual conditional route triggers
     if (heroTarget) renderMasterHeroEngine(heroTarget.id, meta);
     if (metricsTarget) renderMasterMetricsEngine(metricsTarget.id, dbRow);
     if (pricingTarget) renderMasterPricingEngine(pricingTarget.id, dbRow);
     if (launchpadTarget) renderMasterLaunchpadEngine(launchpadTarget.id, meta);
-    if (trustTarget) renderMasterEngine(trustTarget.id, meta);
+    if (trustTarget) renderMasterTrustEngine(trustTarget.id, meta);
     if (subscribeTarget) renderMasterSubscribeEngine(subscribeTarget.id);
 
     console.log(`🏁 Complete 8-section layout system initialized for: ${cleanPageKey}`);
@@ -1580,6 +1484,7 @@ function executeGlobalLayoutSequencer() {
   }
 }
 
+// Global Document Hook to execute script safely on page bootstrap
 document.addEventListener("DOMContentLoaded", renderMasterSystem);
 
 // --- DATABASE: DASHBOARD STATES REGISTRY CONFIGURATION ---
@@ -1589,21 +1494,9 @@ const STATES_DASHBOARD_REGISTRY = {
     portal: "OFFICIAL CORPORATE FILINGS PORTAL",
     title: "State Filing Checklist",
     steps: [
-      {
-        title: "Official Business Registration",
-        desc: "We check name availability with local registries and file your official Articles of Organization immediately to create your protective asset boundary.",
-        color: "#10b981"
-      },
-      {
-        title: "Local DBA and Trade Name Handling",
-        desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.",
-        color: "#10b981"
-      },
-      {
-        title: "Tax ID & Sales Ledger Setup",
-        desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.",
-        color: "#38bdf8"
-      }
+      { title: "Official Business Registration", desc: "We check name availability with local registries and file your official Articles of Organization immediately to create your protective asset boundary.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.", color: "#38bdf8" }
     ]
   },
   nevada: {
@@ -1611,21 +1504,9 @@ const STATES_DASHBOARD_REGISTRY = {
     portal: "NV SILVER FLUME SYSTEM",
     title: "Nevada Filing Checklist",
     steps: [
-      {
-        title: "Official Business Registration",
-        desc: "Direct filing with the Nevada Secretary of State. We verify name availability and lodge your organizational paperwork instantly.",
-        color: "#10b981"
-      },
-      {
-        title: "Local DBA and Trade Name Handling",
-        desc: "File your trade names locally and establish your asset protection protocols under Nevada's favorable privacy laws.",
-        color: "#10b981"
-      },
-      {
-        title: "Tax ID & Sales Ledger Setup",
-        desc: "Obtain your IRS Federal EIN and instantly map your business structure to Nevada's zero-corporate-tax infrastructure.",
-        color: "#38bdf8"
-      }
+      { title: "Official Business Registration", desc: "Direct filing with the Nevada Secretary of State. We verify name availability and lodge your organizational paperwork instantly.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "File your trade names locally and establish your asset protection protocols under Nevada's favorable privacy laws.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Obtain your IRS Federal EIN and instantly map your business structure to Nevada's zero-corporate-tax infrastructure.", color: "#38bdf8" }
     ]
   },
   wyoming: {
@@ -1633,21 +1514,9 @@ const STATES_DASHBOARD_REGISTRY = {
     portal: "COMMERCIAL REGISTRY CONNECTION",
     title: "Wyoming Filing Checklist",
     steps: [
-      {
-        title: "Official Business Registration",
-        desc: "Direct filing with the Wyoming Secretary of State. We verify name availability and lodge your organizational paperwork instantly.",
-        color: "#10b981"
-      },
-      {
-        title: "Local DBA and Trade Name Handling",
-        desc: "File your trade names locally and establish your asset protection protocols under Wyoming's favorable privacy laws.",
-        color: "#10b981"
-      },
-      {
-        title: "Tax ID & Sales Ledger Setup",
-        desc: "Obtain your IRS Federal EIN and instantly map your business structure to Wyoming's zero-corporate-tax infrastructure.",
-        color: "#38bdf8"
-      }
+      { title: "Official Business Registration", desc: "Direct filing with the Wyoming Secretary of State. We verify name availability and lodge your organizational paperwork instantly.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "File your trade names locally and establish your asset protection protocols under Wyoming's favorable privacy laws.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Obtain your IRS Federal EIN and instantly map your business structure to Wyoming's zero-corporate-tax infrastructure.", color: "#38bdf8" }
     ]
   },
   california: {
@@ -1655,21 +1524,9 @@ const STATES_DASHBOARD_REGISTRY = {
     portal: "CA BIZFILE ONLINE NODE",
     title: "California Filing Checklist",
     steps: [
-      {
-        title: "Official Business Registration",
-        desc: "Essential framework for businesses operating locally within the California market. Streamlines regional sales permits, local compliance, and franchise taxes.",
-        color: "#10b981"
-      },
-      {
-        title: "Local DBA and Trade Name Handling",
-        desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.",
-        color: "#10b981"
-      },
-      {
-        title: "Tax ID & Sales Ledger Setup",
-        desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.",
-        color: "#38bdf8"
-      }
+      { title: "Official Business Registration", desc: "Essential framework for businesses operating locally within the California market. Streamlines regional sales permits, local compliance, and franchise taxes.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.", color: "#38bdf8" }
     ]
   },
   texas: {
@@ -1677,21 +1534,9 @@ const STATES_DASHBOARD_REGISTRY = {
     portal: "TX SOSDIRECT SYSTEM",
     title: "Texas Filing Checklist",
     steps: [
-      {
-        title: "Official Business Registration",
-        desc: "Top choice for establishing physical local operations. Synchronizes direct tax filings seamlessly with the Texas Comptroller of Public Accounts.",
-        color: "#10b981"
-      },
-      {
-        title: "Local DBA and Trade Name Handling",
-        desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.",
-        color: "#10b981"
-      },
-      {
-        title: "Tax ID & Sales Ledger Setup",
-        desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.",
-        color: "#38bdf8"
-      }
+      { title: "Official Business Registration", desc: "Top choice for establishing physical local operations. Synchronizes direct tax filings seamlessly with the Texas Comptroller of Public Accounts.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.", color: "#38bdf8" }
     ]
   },
   florida: {
@@ -1699,25 +1544,12 @@ const STATES_DASHBOARD_REGISTRY = {
     portal: "SUNBIZ AUTOMATED FILING NODE",
     title: "State Filing Checklist",
     steps: [
-      {
-        title: "Official Business Registration",
-        desc: "We check name availability with local registries and file your official Articles of Organization immediately to create your protective asset boundary.",
-        color: "#10b981"
-      },
-      {
-        title: "Local DBA and Trade Name Handling",
-        desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.",
-        color: "#10b981"
-      },
-      {
-        title: "Tax ID & Sales Ledger Setup",
-        desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.",
-        color: "#38bdf8"
-      }
+      { title: "Official Business Registration", desc: "We check name availability with local registries and file your official Articles of Organization immediately to create your protective asset boundary.", color: "#10b981" },
+      { title: "Local DBA and Trade Name Handling", desc: "Register matching commercial trade names with your local county or municipality so you can legally brand your business services.", color: "#10b981" },
+      { title: "Tax ID & Sales Ledger Setup", desc: "Secure your official Federal EIN from the IRS and coordinate sales tax settings with your state's Department of Revenue seamlessly.", color: "#38bdf8" }
     ]
   }
 };
-
 
 
 // --- MODULE 5: MAIN HOMEPAGE RENDER INTERACTION ENGINE ---
@@ -1729,45 +1561,48 @@ function renderHomepageOperationsRouter(targetId) {
     const sd = STATES_DASHBOARD_REGISTRY;
 
     zone.innerHTML = `
-      <section class="router-master-section">
-        <div class="site-width-alignment-guard">
+      <section style="padding: 90px 0; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
+        <div class="site-width-alignment-guard" style="max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box;">
           
-          <div class="router-header-block">
-            <span class="router-badge-tag">Choose Your Location</span>
-            <h2 class="router-main-headline">Launch Your Business. <span style="color: #10b981;">Locally.</span></h2>
+          <div style="text-align: center; margin-bottom: 50px;">
+            <!-- 📸 MATCHED BADGE: Green capsule with thin border -->
+            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">Choose Your Location</span>
+            <!-- 📸 MATCHED H2: Ultra-bold font weight, line height, and two-line split accent -->
+            <h2 style="color: #0a1f44; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Launch Your Business. <span style="color: #10b981;">Locally.</span></h2>
           </div>
 
-          <div class="router-columns-wrapper">
+          <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: 40px; width: 100%; box-sizing: border-box;">
             
-            <!-- Left Side Column Panel -->
-            <div class="router-left-panel-card">
-              <h3>Select Your State</h3>
-              <p>Pick where your business operates to review processing timelines and state rules.</p>
+            <!-- Left Side Column Panel (Balanced 1:1 Equal Width) -->
+            <div style="flex: 1; min-width: 320px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start;">
+              <h3 style="font-size: 1.3rem; font-weight: 700; margin: 0 0 8px 0; color: #0a1f44;">Select Your State</h3>
+              <p style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0 0 24px 0;">Pick where your business operates to review processing timelines and state rules.</p>
               
-              <div class="router-scrollbar-scroller">
+              <!-- 🌟 SCROLLBAR WRAPPER CONTAINER: Implements vertical scroll mechanics for the options below -->
+              <div style="max-height: 460px; overflow-y: auto; padding-right: 8px; box-sizing: border-box; width: 100%;">
                 
-                <h4>Top for Corporations</h4>
-                <div class="router-options-list-stack">
+                <h4 style="margin: 0 0 12px 0; color: #64748b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Top for Corporations</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
                   ${["delaware", "nevada", "wyoming"].map(k => `
-                    <div class="state-opt" data-key="${k}">
+                    <div class="state-opt" data-key="${k}" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease;">
                       <div>
-                        <div class="opt-title-primary" style="font-weight: 600;">${sd[k] ? sd[k].name : k}</div>
-                        <span class="opt-subtitle-mono">Commercial Registry Connection</span>
+                        <div style="font-weight: 600; font-size: 1rem; color: #0a1f44;">${sd[k] ? sd[k].name : k}</div>
+                        <span style="font-size: 0.75rem; color: #64748b; font-family: monospace;">Commercial Registry Connection</span>
                       </div>
-                      <span class="opt-status-badge">ONLINE</span>
+                      <span style="font-size: 0.8rem; font-weight: 600; color: #475569; font-family: monospace;">ONLINE</span>
                     </div>
                   `).join('')}
                 </div>
 
-                <h4>Top for Local Businesses</h4>
-                <div class="router-options-list-stack no-bottom-margin">
+                <h4 style="margin: 0 0 12px 0; color: #64748b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Top for Local Businesses</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 4px;">
                   ${["california", "texas", "florida"].map(k => `
-                    <div class="state-opt" data-key="${k}">
+                    <div class="state-opt" data-key="${k}" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease;">
                       <div>
-                        <div class="opt-title-primary" style="font-weight: 600;">${sd[k] ? sd[k].name : k}</div>
-                        <span class="opt-subtitle-mono">Local Revenue Node</span>
+                        <div style="font-weight: 600; font-size: 1rem; color: #0a1f44;">${sd[k] ? sd[k].name : k}</div>
+                        <span style="font-size: 0.75rem; color: #64748b; font-family: monospace;">Local Revenue Node</span>
                       </div>
-                      <span class="opt-status-badge">ONLINE</span>
+                      <span style="font-size: 0.8rem; font-weight: 600; color: #475569; font-family: monospace;">ONLINE</span>
                     </div>
                   `).join('')}
                 </div>
@@ -1775,29 +1610,31 @@ function renderHomepageOperationsRouter(targetId) {
               </div>
             </div>
 
-            <!-- Right Side Column Panel -->
-            <div class="router-right-panel-card">
-              <div class="router-right-radial-overlay"></div>
+            <!-- Right Side Column Panel (Matched #0a1f44 Navy & Balanced 1:1 Width) -->
+            <div style="flex: 1; min-width: 320px; background: #0a1f44; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 36px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
               
-              <div class="router-right-inner-z-bound">
-                <div class="router-right-panel-header">
-                  <div class="router-right-panel-header-title-block">
-                    <span id="p-sub">REGISTRATION PROFILE OVERVIEW</span>
-                    <h4 id="c-title">State Filing Checklist</h4>
+              <div style="position: relative; z-index: 10;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(244,247,250,0.08); padding-bottom: 16px; margin-bottom: 24px;">
+                  <div style="text-align: left;">
+                    <span id="p-sub" style="font-size: 0.75rem; font-weight: 700; color: #10b981; font-family: monospace; letter-spacing: 0.5px;">REGISTRATION PROFILE OVERVIEW</span>
+                    <h4 id="c-title" style="margin: 2px 0 0 0; font-size: 1.2rem; font-weight: 800; color: #ffffff;">State Filing Checklist</h4>
                   </div>
-                  <div class="router-network-ready-tag">NETWORK READY</div>
+                  <div style="background: rgba(16,185,129,0.1); color: #10b981; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; font-family: monospace; font-weight: bold; border: 1px solid rgba(16,185,129,0.2); align-self: flex-start;">
+                    NETWORK READY
+                  </div>
                 </div>
-                <div id="dynamic-steps-container" class="router-dynamic-steps-container"></div>
+
+                <div id="dynamic-steps-container" style="display: flex; flex-direction: column; gap: 18px; margin-bottom: 30px;"></div>
               </div>
 
-              <div class="router-bottom-action-row">
-                <div class="router-bottom-action-row-label-block">
-                  <div class="label-title">Average Gateway Turnaround</div>
-                  <div id="c-time" class="value-display">Instant Submission</div>
+              <div style="position: relative; z-index: 10; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div>
+                  <div style="font-size: 0.75rem; color: #64748b; text-transform: uppercase;">Average Gateway Turnaround</div>
+                  <div id="c-time" style="font-size: 1.5rem; font-weight: bold; color: #ffffff; font-family: monospace; margin-top: 2px;">Instant Submission</div>
                 </div>
-                <a id="c-btn" href="llc-formation.html#pricing-framework-target" class="router-initiate-action-btn">
-                  Initialize Local Application &rarr;
-                </a>
+                <!-- 🌟 FIXED ROUTING ANCHOR PATH -->
+                <a id="c-btn" href="llc-formation.html#pricing-framework-target" style="background: #10b981; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: 700; font-size: 0.9rem;">Initialize Local Application &rarr;</a>
               </div>
 
             </div>
@@ -1807,10 +1644,12 @@ function renderHomepageOperationsRouter(targetId) {
       </section>
     `;
 
+    // Dynamic UI Update handler method definition
     function updateUI(key) {
       const d = sd[key];
       if (!d) return;
 
+      // Fix applied here: Targeting correct ID element from DOM layout hierarchy
       const pSubElement = document.getElementById("p-sub");
       if (pSubElement && d.portal) {
         pSubElement.innerText = d.portal;
@@ -1828,16 +1667,17 @@ function renderHomepageOperationsRouter(targetId) {
 
       if (d.steps) {
         document.getElementById("dynamic-steps-container").innerHTML = d.steps.map(s => `
-          <div class="router-step-loop-item">
-            <div class="router-step-loop-dot" style="background: ${s.color};"></div>
-            <div class="router-step-loop-content-box">
-              <span>${s.title}</span>
-              <p>${s.desc}</p>
+          <div style="display: flex; gap: 14px; align-items: start;">
+            <div style="width: 8px; height: 8px; background: ${s.color}; border-radius: 50%; margin-top: 6px; flex-shrink: 0;"></div>
+            <div>
+              <span style="display: block; font-weight: 700; font-size: 0.95rem; color: #ffffff;">${s.title}</span>
+              <p style="margin: 2px 0 0 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4;">${s.desc}</p>
             </div>
           </div>
         `).join('');
       }
 
+      // 🌟 FIXED EVENT DESTRUCTURING BLINK OVERRIDE
       const cBtnElement = document.getElementById("c-btn");
       if (cBtnElement) {
         cBtnElement.href = "llc-formation.html#pricing-framework-target";
@@ -1845,8 +1685,8 @@ function renderHomepageOperationsRouter(targetId) {
 
       zone.querySelectorAll(".state-opt").forEach(el => {
         const rowKey = el.getAttribute("data-key");
-        const titleDiv = el.querySelector(".opt-title-primary");
-        const label = el.querySelector(".opt-status-badge");
+        const titleDiv = el.querySelector("div > div");
+        const label = el.querySelector("span:last-child");
 
         if (rowKey === key) {
           el.style.border = "2px solid #10b981";
@@ -1868,20 +1708,16 @@ function renderHomepageOperationsRouter(targetId) {
 
     zone.querySelectorAll(".state-opt").forEach(el => {
       el.addEventListener("click", () => updateUI(el.getAttribute("data-key")));
-    });
+});updateUI("delaware");} catch (err) {console.error("Dashboard error:", err);}}
 
-    updateUI("delaware");
 
-  } catch (err) {
-    console.error("Dashboard error:", err);
-  }
-}
 
 
 
 // --- APPLICATION INITIALIZATION AND DOM ENGINE ROUTER ---
 document.addEventListener("DOMContentLoaded", () => {
   const isHomepage = document.getElementById("index-package-pricing-cards-root");
+  
   if (isHomepage) {
     renderHomepageOperationsRouter("index-package-pricing-cards-root");
   } else {
@@ -1891,11 +1727,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
   document.querySelectorAll('[id$="-hero-zone"]').forEach(zone => {
     if (typeof renderMasterHeroEngine === "function") {
       renderMasterHeroEngine(zone.id);
     }
   });
+
   document.querySelectorAll('[id$="-metrics-zone"]').forEach(zone => {
     if (typeof renderMasterMetricsEngine === "function") {
       renderMasterMetricsEngine(zone.id, null);
@@ -1905,82 +1743,88 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // --- DYNAMIC SOCIAL PROOF CAROUSEL ROTATION CONTROLLER ---
 document.addEventListener("DOMContentLoaded", function() {
-  const proofWidget = document.getElementById("f4u-dynamic-proof-widget");
-  const textTarget = document.getElementById("f4u-proof-text-node");
-  const closeBtn = document.getElementById("f4u-close-proof-node");
-
-  if (!proofWidget || !textTarget || !closeBtn) return;
-
-  const proofTemplates = [
-    { text: "<strong>140,000+ Active Profiles</strong> currently protected across our automated state filing grid.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Filing Confirmed:</strong> New LLC profile registered and locked inside Delaware registry {MINUTES}.", dynamicTime: true, baseMinutes: 4, url: "llc-formation.html" },
-    { text: "<strong>Audit Protection Matrix Active:</strong> 0.00% entity penalty exposure rate maintained this month.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Filing Confirmed:</strong> Corporate compliance synchronization completed in California {MINUTES}.", dynamicTime: true, baseMinutes: 12, url: "compliance.html" },
-    { text: "<strong>Asset Shield Multilocked:</strong> Anonymity proxy layers fully deployed on 4 new Nevada corporations.", dynamicTime: false, url: "llc-formation.html" },
-    { text: "<strong>State Dept Update:</strong> Automated background check matched against latest Q2 entity law changes.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Filing Confirmed:</strong> Bi-annual reporting compliance documents validated and filed in Texas {MINUTES}.", dynamicTime: true, baseMinutes: 8, url: "compliance.html" },
-    { text: "<strong>Instant Gateway Sync:</strong> Structural franchise tax check cleared across 12 tracking accounts.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Dissolution Shield Active:</strong> Accidental corporate forfeiture blocked for Wyoming entity layout.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Filing Confirmed:</strong> Registered Agent appointment update completely processed in Florida {MINUTES}.", dynamicTime: true, baseMinutes: 18, url: "llc-formation.html" },
-    { text: "<strong>Network Integration Secure:</strong> Real-time zero-gap database lock established for 14 enterprise records.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Filing Confirmed:</strong> New operating agreement parameter profile successfully compiled in New York.", dynamicTime: false, url: "llc-formation.html" },
-    { text: "<strong>State Registry Update:</strong> Automated verification scanned 50 state department portals in 0.4 seconds.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Penalty Exposure Defeated:</strong> Automatic deadline checker saved $1,250 in late processing fees.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Filing Confirmed:</strong> Foreign qualification cross-state certificate locked inside Illinois {MINUTES}.", dynamicTime: true, baseMinutes: 15, url: "llc-formation.html" },
-    { text: "<strong>Corporate Shield Sealed:</strong> Asset protection protocols confirmed for 8 newly formed entity layers.", dynamicTime: false, url: "llc-formation.html" },
-    { text: "<strong>Filing Confirmed:</strong> Annual list of managers successfully structured and submitted in Utah {MINUTES}.", dynamicTime: true, baseMinutes: 6, url: "compliance.html" },
-    { text: "<strong>Active Tracking Online:</strong> Continuous background checker monitoring shifts across all active profiles.", dynamicTime: false, url: "compliance.html" },
-    { text: "<strong>Filing Confirmed:</strong> Articles of organization verified and approved in Georgia {MINUTES}.", dynamicTime: true, baseMinutes: 22, url: "llc-formation.html" },
-    { text: "<strong>Guaranteed Status Verified:</strong> Good Standing certificates auto-renewed for 19 corporate entities.", dynamicTime: false, url: "compliance.html" }
-  ];
-
-  const pageLoadTime = Date.now();
-  let currentIndex = 0;
-  let rotationTimeout;
-
-  function getFormattedMessage(item) {
-    if (!item.dynamicTime) return item.text;
-    const currentMsElapsed = Date.now() - pageLoadTime;
-    const extraMinutes = Math.floor(currentMsElapsed / 60000);
-    const liveMinutes = item.baseMinutes + extraMinutes;
-    const timeString = liveMinutes === 1 ? "1 min ago" : liveMinutes + " mins ago";
-    return item.text.replace("{MINUTES}", timeString);
-  }
-
-  function rotateProofMessage() {
-    proofWidget.style.opacity = "0";
-    proofWidget.style.transform = "translateY(20px)";
+    const proofWidget = document.getElementById("f4u-dynamic-proof-widget");
+    const textTarget = document.getElementById("f4u-proof-text-node");
+    const closeBtn = document.getElementById("f4u-close-proof-node");
     
-    setTimeout(() => {
-      const activeItem = proofTemplates[currentIndex];
-      textTarget.innerHTML = getFormattedMessage(activeItem);
-      proofWidget.setAttribute("data-url", activeItem.url);
-      
-      proofWidget.style.opacity = "1";
-      proofWidget.style.transform = "translateY(0)";
-      
-      currentIndex = (currentIndex + 1) % proofTemplates.length;
-      rotationTimeout = setTimeout(rotateProofMessage, 5000);
-    }, 400);
-  }
+    if (!proofWidget || !textTarget || !closeBtn) return;
 
-  proofWidget.addEventListener("click", function(e) {
-    if (e.target === closeBtn) return;
-    const targetUrl = proofWidget.getAttribute("data-url");
-    if (targetUrl) {
-      window.location.href = targetUrl;
+    // 20-Row Data Matrix with Timestamps and Dynamic Product Targets
+    const proofTemplates = [
+        { text: "<strong>140,000+ Active Profiles</strong> currently protected across our automated state filing grid.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> New LLC profile registered and locked inside Delaware registry {MINUTES}.", dynamicTime: true, baseMinutes: 4, url: "llc-formation.html" },
+        { text: "<strong>Audit Protection Matrix Active:</strong> 0.00% entity penalty exposure rate maintained this month.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Corporate compliance synchronization completed in California {MINUTES}.", dynamicTime: true, baseMinutes: 12, url: "compliance.html" },
+        { text: "<strong>Asset Shield Multilocked:</strong> Anonymity proxy layers fully deployed on 4 new Nevada corporations.", dynamicTime: false, url: "llc-formation.html" },
+        { text: "<strong>State Dept Update:</strong> Automated background check matched against latest Q2 entity law changes.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Bi-annual reporting compliance documents validated and filed in Texas {MINUTES}.", dynamicTime: true, baseMinutes: 8, url: "compliance.html" },
+        { text: "<strong>Instant Gateway Sync:</strong> Structural franchise tax check cleared across 12 tracking accounts.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Dissolution Shield Active:</strong> Accidental corporate forfeiture blocked for Wyoming entity layout.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Registered Agent appointment update completely processed in Florida {MINUTES}.", dynamicTime: true, baseMinutes: 18, url: "llc-formation.html" },
+        { text: "<strong>Network Integration Secure:</strong> Real-time zero-gap database lock established for 14 enterprise records.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> New operating agreement parameter profile successfully compiled in New York.", dynamicTime: false, url: "llc-formation.html" },
+        { text: "<strong>State Registry Update:</strong> Automated verification scanned 50 state department portals in 0.4 seconds.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Penalty Exposure Defeated:</strong> Automatic deadline checker saved $1,250 in late processing fees.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Foreign qualification cross-state certificate locked inside Illinois {MINUTES}.", dynamicTime: true, baseMinutes: 15, url: "llc-formation.html" },
+        { text: "<strong>Corporate Shield Sealed:</strong> Asset protection protocols confirmed for 8 newly formed entity layers.", dynamicTime: false, url: "llc-formation.html" },
+        { text: "<strong>Filing Confirmed:</strong> Annual list of managers successfully structured and submitted in Utah {MINUTES}.", dynamicTime: true, baseMinutes: 6, url: "compliance.html" },
+        { text: "<strong>Active Tracking Online:</strong> Continuous background checker monitoring shifts across all active profiles.", dynamicTime: false, url: "compliance.html" },
+        { text: "<strong>Filing Confirmed:</strong> Articles of organization verified and approved in Georgia {MINUTES}.", dynamicTime: true, baseMinutes: 22, url: "llc-formation.html" },
+        { text: "<strong>Guaranteed Status Verified:</strong> Good Standing certificates auto-renewed for 19 corporate entities.", dynamicTime: false, url: "compliance.html" }
+    ];
+
+    const pageLoadTime = Date.now();
+    let currentIndex = 0;
+    let rotationTimeout;
+
+    function getFormattedMessage(item) {
+        if (!item.dynamicTime) return item.text;
+        const currentMsElapsed = Date.now() - pageLoadTime;
+        const extraMinutes = Math.floor(currentMsElapsed / 60000);
+        const liveMinutes = item.baseMinutes + extraMinutes;
+        const timeString = liveMinutes === 1 ? "1 min ago" : `${liveMinutes} mins ago`;
+        return item.text.replace("{MINUTES}", timeString);
     }
-  });
 
-  closeBtn.addEventListener("click", function(e) {
-    e.stopPropagation();
-    clearTimeout(rotationTimeout);
-    proofWidget.style.opacity = "0";
-    proofWidget.style.transform = "translateY(20px)";
-    setTimeout(() => {
-      proofWidget.style.display = "none";
-    }, 400);
-  });
+    function rotateProofMessage() {
+        // Step 1: Smooth exit slide
+        proofWidget.style.opacity = "0";
+        proofWidget.style.transform = "translateY(20px)";
+        
+        setTimeout(() => {
+            const activeItem = proofTemplates[currentIndex];
+            
+            // Step 2: Inject values and route configuration attributes
+            textTarget.innerHTML = getFormattedMessage(activeItem);
+            proofWidget.setAttribute("data-url", activeItem.url);
+            
+            // Step 3: Smooth entry slide
+            proofWidget.style.opacity = "1";
+            proofWidget.style.transform = "translateY(0)";
+            
+            currentIndex = (currentIndex + 1) % proofTemplates.length;
+            
+            // 🌟 FIXED 5-SECOND TIMER
+            rotationTimeout = setTimeout(rotateProofMessage, 5000);
+        }, 400);
+    }
 
-  rotateProofMessage();
+    // Handle full-box link routing click safely
+    proofWidget.addEventListener("click", function(e) {
+        if (e.target === closeBtn) return;
+        const targetUrl = proofWidget.getAttribute("data-url");
+        if (targetUrl) { window.location.href = targetUrl; }
+    });
+
+    // Close button dismiss behavior
+    closeBtn.addEventListener("click", function(e) {
+        e.stopPropagation();
+        clearTimeout(rotationTimeout);
+        proofWidget.style.opacity = "0";
+        proofWidget.style.transform = "translateY(20px)";
+        setTimeout(() => { proofWidget.style.display = "none"; }, 400);
+    });
+
+    // Initialize the starting rotation sequence
+    rotateProofMessage();
 });

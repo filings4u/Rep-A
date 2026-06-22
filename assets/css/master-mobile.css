@@ -2614,3 +2614,45 @@ footer a[href*="roselandcompanies.com"] {
     padding: 0 24px; 
   }
 }
+
+ /* ========================================================================== 
+   30. RESPONSIVE MOBILE ACCORDION & CORE MEDIA OVERRIDES 
+   ========================================================================== */
+@media (max-width: 992px) {
+  /* Compress spacing boundaries safely for mobile viewports */
+  .enterprise-capabilities-section, 
+  .institutional-faq-section, 
+  .enterprise-metrics-section { 
+    padding: 60px 0; 
+  }
+  
+  /* Fall back to linear layout chains instead of multidirectional matrices */
+  .capabilities-matrix-grid, 
+  .faq-layout-split, 
+  .metrics-dashboard-grid { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 32px; 
+  }
+  
+  .section-lead-block h2, 
+  .faq-sticky-sidebar h2 { 
+    font-size: 28px; 
+  }
+  
+  .metrics-header-strip { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 16px; 
+    margin-bottom: 35px; 
+  }
+  
+  .faq-sticky-sidebar { 
+    position: static; 
+  }
+  
+  .capability-cell, 
+  .metric-card-block { 
+    min-height: auto; 
+  }
+}
