@@ -75,6 +75,7 @@
             #${targetConfig.elementId} .footer-col a:hover {
                 color: #10b981;
             }
+                
         `;
         document.head.appendChild(styleSheet);
     }

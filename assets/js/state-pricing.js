@@ -368,7 +368,7 @@ Object.assign(window.CENTRAL_SERVICE_PLAN_DB, {
         compliance: 299.00, 
         enterprise: 499.00, 
         bullets: { 
-            starter: ["Basic application preparation"], 
+            starter: ["Basic application preparation", "Application Submission"], 
             compliance: ["Everything in Starter (Plus)", "Compliance support", "Mandatory 21-Day Public Protest Period Status Monitoring Management"], 
             enterprise: ["Everything in Compliance (Plus)", "Full service with network connections", "Expedited Authority Certificate Delivery Dispatch Route"] 
         } 

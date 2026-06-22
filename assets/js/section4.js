@@ -1,6 +1,6 @@
 /**
  * filings4u Platform Architecture
- * Module: section4.js (Part 1 - Isolated Stylesheet Engine)
+ * Module: section4.js (Flawless Dynamic Launchpad Engine)
  */
 
 (function() {
@@ -49,7 +49,6 @@
     window.FILINGS4U_LAUNCHPAD_TARGET = targetConfig.elementId;
 })();
 
-
 /* Part 2: Safe Routing & Context Layer */
 function renderMasterLaunchpadEngine(overrideTargetId, metaDataRecord) {
     try {
@@ -73,17 +72,18 @@ function renderMasterLaunchpadEngine(overrideTargetId, metaDataRecord) {
         const displayTitle = contextSource.title || contextSource.hero_title || "Filing";
         const displaySlug = contextSource.slug || slug;
 
-        // Pass resolved parameters down into our template compiler
-        executeLaunchpadCompiler(zone, displayTitle, displaySlug);
+        // Pass resolved parameters down into our template compiler safely
+        executeLaunchpadCompiler(zone, displayTitle, displaySlug, contextSource);
 
     } catch (err) {
         console.error("Launchpad feature engine critical routing failure:", err);
     }
 }
-/* Part 3: Responsive Launchpad Feature HTML Compiler (Updated with Dynamic Image Object Fallbacks) */
+
+/* Part 3: Responsive Launchpad Feature HTML Compiler */
 function executeLaunchpadCompiler(zone, displayTitle, displaySlug, metaDataRecord) {
-    // Check if a direct property image string exists, otherwise use standard slug formatting
-    const resolvedImageSrc = (metaDataRecord && metaDataRecord.seceImage) ? metaDataRecord.seceImage : "images/" + displaySlug + "-sece.jpg";
+    // FIXED 404 ENGINES: Pre-calculating path variables with clean fallback guards
+    const primaryImageSrc = (metaDataRecord && metaDataRecord.seceImage) ? metaDataRecord.seceImage : "images/" + displaySlug + "-sece.jpg";
 
     zone.innerHTML = `
     <section style="background: #ffffff; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; margin: 0 !important;">
@@ -108,7 +108,8 @@ function executeLaunchpadCompiler(zone, displayTitle, displaySlug, metaDataRecor
                 
                 <!-- FLUID VISUAL IMAGE CONTAINER -->
                 <div style="display: flex; justify-content: center; width: 100%;">
-                    <img src="${resolvedImageSrc}" alt="Startup Launch" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.src='images/startup-launch.jpg';">
+                    <!-- FIXED onerror INTERCEPTOR: Wipes out the 404 loop and swaps inside a default fallback asset cleanly -->
+                    <img src="${primaryImageSrc}" alt="Startup Launch" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.removeAttribute('onerror'); this.src='images/startup-launch.jpg';">
                 </div>
                 
             </div>
@@ -117,5 +118,5 @@ function executeLaunchpadCompiler(zone, displayTitle, displaySlug, metaDataRecor
     `;
 }
 
-// Locate this near the bottom of Part 2 inside section4.js
-executeLaunchpadCompiler(zone, displayTitle, displaySlug, contextSource);
+/* Part 4: Global Module Binding */
+window.renderMasterLaunchpadEngine = renderMasterLaunchpadEngine;

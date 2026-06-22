@@ -1,6 +1,6 @@
 /**
  * filings4u Platform Architecture
- * Module: hero.js (Part 1 - Dynamic Style Injector)
+ * Module: hero.js (Part 1 - Fixed Visual Layout Injector)
  */
 
 (function() {
@@ -16,40 +16,53 @@
         styleSheet.id = targetConfig.styleId;
         styleSheet.textContent = `
             #${targetConfig.elementId} .responsive-hero-grid {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
                 align-items: stretch !important;
-                justify-content: space-between;
-                gap: 40px;
-                width: 100%;
+                justify-content: space-between !important;
+                gap: 40px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
             #${targetConfig.elementId} .hero-image-container {
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex: 1 !important;
+                min-width: 320px !important;
+                max-width: 520px !important;
+                box-sizing: border-box !important;
+            }
+            #${targetConfig.elementId} .content-area {
+                flex: 1.2 !important;
+                min-width: 320px !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
             }
 
-            /* MOBILE OPTIMIZATIONS & SPACING OVERRIDES */
-            @media (max-width: 768px) {
-                #${targetConfig.elementId} section { 
-                    margin-bottom: 20px !important; 
+            /* MOBILE SCREEN RESPONSIVE LAYOUT OVERRIDES */
+            @media (max-width: 991px) {
+                #${targetConfig.elementId} main {
+                    padding: 20px 0 10px 0 !important;
                 }
-                #${targetConfig.elementId} .responsive-hero-grid { 
-                    margin-top: 20px !important; 
+                #${targetConfig.elementId} .responsive-hero-grid {
                     flex-direction: column !important;
                     gap: 24px !important;
+                    margin-top: 10px !important;
                 }
-                #${targetConfig.elementId} .hero-image-container { 
+                #${targetConfig.elementId} .hero-image-container {
                     order: 1 !important;
                     max-width: 100% !important;
                     width: 100% !important;
-                    padding-bottom: 10px !important; 
+                    padding: 10px 0 !important;
                 }
-                #${targetConfig.elementId} .responsive-hero-grid > div:first-child { 
+                #${targetConfig.elementId} .content-area {
                     order: 2 !important;
                     width: 100% !important;
-                    padding-bottom: 10px !important; 
+                    padding: 10px 0 !important;
                 }
                 #${targetConfig.elementId} .hero-headline {
                     font-size: 2.2rem !important;
@@ -63,7 +76,7 @@
     window.FILINGS4U_HERO_TARGET = targetConfig.elementId;
 })();
 
-/* Part 2: Dynamic Core Context Architecture & Smooth Scroll Compiler */
+/* Part 2: Core Context Architecture & Smooth Scroll Compiler */
 function renderMasterHeroEngine(overrideTargetId, metaDataRecord) {
     try {
         // 1. Establish the clean isolated default target configuration
@@ -82,60 +95,42 @@ function renderMasterHeroEngine(overrideTargetId, metaDataRecord) {
             }
         }
 
-   /* Part 3: Tightened Spacing Responsive Template HTML Compiler */
-function executeHeroCompiler(zone, displayTitle, displaySlug) {
-    zone.innerHTML = `
-    <!-- MAIN HERO CANVAS CONTAINER (TIGHTENED VERTICAL MARGINS AND PADDING) -->
-    <main class="page-container" style="background: #ffffff; padding: 15px 0 10px 0 !important; margin: 0 !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; display: block;">
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
-            
-            <div class="responsive-hero-grid" style="margin-top: 10px !important;">
-                
-                <!-- TEXT COLUMN LAYER -->
-                <article class="content-area" style="flex: 1.2; min-width: 320px; box-sizing: border-box; margin: 0; padding: 20px 0; display: flex; flex-direction: column; justify-content: center;">
-                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15); width: fit-content; align-self: flex-start;">${displayPillText}</span>
-                    
-                    <h1 class="hero-headline" style="color: #0a1f44; font-size: 3rem; font-weight: 900; margin: 0 0 14px 0; line-height: 1.15; letter-spacing: -1px;">
-                        ${displayHeroTitle}
-                    </h1>
-                    
-                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${displayHeroLead}</p>
-                    
-                    <a href="${computedActionLinkDestination}" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; align-self: flex-start;">Initialize Application &rarr;</a>
-                </article>
-                
-                <!-- IMAGE LAYER FIXED CONTAINER -->
-                <aside class="hero-image-container" style="flex: 1; min-width: 320px; max-width: 520px; margin: 0; padding: 20px 0;">
-                    <img src="${dynamicHeroImgSrc}" class="hero-display-img" alt="Framework Layout Preview" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);" onerror="this.onerror=null; this.src='images/default-hero.jpg';">
-                </aside>
-                
-            </div>
-        </div>
-    </main>
-    `;
-}
+        // 3. Dynamic fallback lookup system maps context payloads
+        const liveRecordSource = metaDataRecord || (window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug]) || {};
+        
+        const displayPillText = liveRecordSource.pill || "Statutory Data Security Covenant";
+        const displayHeroTitle = liveRecordSource.hero_title || liveRecordSource.service_title || liveRecordSource.title || "Compliance Portal";
+        const displayHeroLead = liveRecordSource.hero_lead || liveRecordSource.description || "Automated Inter-Jurisdictional Regulatory Licensing, Onboarding Compliance Systems, and Provisioning Pipelines.";
+        const dynamicHeroImgSrc = "images/" + slug + "-hero.jpg";
 
+        // 4. Calculate link routes dynamically
+        var computedActionLinkDestination = "#pricing-framework-target";
+        if (slug === "index") {
+            computedActionLinkDestination = "get-started.html";
+        }
 
         // 5. Output synchronized layout markup string
         zone.innerHTML = `
-        <section style="padding: 0 !important; background: #ffffff; color: #0a1f44; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden; margin-top: 30px !important; margin-bottom: 50px !important;">
-            <div class="responsive-hero-grid" style="max-width: 1450px; margin: 40px auto 0 auto; padding: 0 40px; box-sizing: border-box;">
-                
-                <!-- CONTENT COLUMN LAYER -->
-                <div style="flex: 1; min-width: 320px; box-sizing: border-box; padding: 40px 0; display: flex; flex-direction: column; justify-content: center;">
-                    <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block; align-self: flex-start;">${displayPillText}</span>
-                    <h1 class="hero-headline" style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">${displayHeroTitle}</h1>
-                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${displayHeroLead}</p>
-                    <a href="${computedActionLinkDestination}" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; align-self: flex-start;">Initialize Application &rarr;</a>
+        <main class="page-container" style="background: #ffffff; padding: 15px 0 10px 0 !important; margin: 0 !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; display: block;">
+            <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 80px 50px 40px !important; box-sizing: border-box !important;">
+                <div class="responsive-hero-grid">
+                    
+                    <!-- TEXT COLUMN LAYER -->
+                    <article class="content-area">
+                        <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: inline-block; align-self: flex-start;">${displayPillText}</span>
+                        <h1 class="hero-headline" style="font-size: 3rem; font-weight: 800; margin: 16px 0; line-height: 1.15; color: #0a1f44;">${displayHeroTitle}</h1>
+                        <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${displayHeroLead}</p>
+                        <a href="${computedActionLinkDestination}" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; align-self: flex-start;">Initialize Application &rarr;</a>
+                    </article>
+                    
+                    <!-- FLUID VISUAL IMAGE CONTAINER -->
+                    <aside class="hero-image-container">
+                        <img src="${dynamicHeroImgSrc}" class="hero-display-img" alt="Framework Layout Preview" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); display: block;" onerror="this.onerror=null; this.src='images/default-hero.jpg';">
+                    </aside>
+                    
                 </div>
-                
-                <!-- FLUID VISUAL IMAGE CONTAINER -->
-                <div class="hero-image-container" style="flex: 1; min-width: 320px; box-sizing: border-box; padding: 40px 0;">
-                    <img src="${dynamicHeroImgSrc}" class="hero-display-img" alt="Framework Layout Preview" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); display: block;" onerror="this.onerror=null; this.src='images/default-hero.jpg';">
-                </div>
-                
             </div>
-        </section>
+        </main>
         `;
 
         // 6. Hook smooth vertical page jumps if landing point exists
@@ -161,3 +156,4 @@ function executeHeroCompiler(zone, displayTitle, displaySlug) {
 
 // 7. Global Variable Assignments Export Link
 window.renderMasterHeroEngine = renderMasterHeroEngine;
+

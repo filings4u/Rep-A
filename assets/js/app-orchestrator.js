@@ -1,9 +1,29 @@
 /**
  * filings4u Platform Architecture
- * Module: app-orchestrator.js (Fault-Tolerant Sequencer Matrix)
+ * Module: app-orchestrator.js (Performance-Optimized Synchronizer)
  */
 
+function compileDynamicLayoutProperties(targetElementId, suffixPatternString) {
+    var calculatedSlugValue = targetElementId.replace(suffixPatternString, "").trim().toLowerCase();
+    return {
+        slug: calculatedSlugValue,
+        title: calculatedSlugValue.split("-").map(function(wordItem) {
+            return wordItem.charAt(0).toUpperCase() + wordItem.slice(1);
+        }).join(" ")
+    };
+}
+
 async function renderMasterSystem() {
+    // ─── INSTANT REFRESH BOOT SEQUENCE ───
+    // We execute the top navigation menu immediately here before the async network fetch stall happens
+    try {
+        if (typeof renderDynamicGlobalCorporateNavigation === "function" && document.getElementById("filings4u-global-navigation-root")) {
+            renderDynamicGlobalCorporateNavigation();
+        }
+    } catch(e) { 
+        console.error("Critical Navigation block execution failure:", e); 
+    }
+
     try {
         const activeSlug = window.location.pathname.split("/").pop().replace(".html", "").trim().toLowerCase();
         const cleanPageKey = (!activeSlug || activeSlug === "home" || activeSlug === "index") ? "index" : activeSlug;
@@ -28,7 +48,7 @@ async function renderMasterSystem() {
             if (response.ok) {
                 const rawJsonPayloadArray = await response.json();
                 if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
-                    dbRow = rawJsonPayloadArray[0]; 
+                    dbRow = rawJsonPayloadArray; 
                 }
             }
         } catch (netErr) {
@@ -48,14 +68,7 @@ async function renderMasterSystem() {
 
         document.title = meta.title + " Registration & Filing Services | filings4u";
 
-        // ─── FAULT-TOLERANT EXECUTION BLOCK DRAWER ───
-        
-        // MODULE 1: GLOBAL SITE NAVIGATION (Always executes first)
-        try {
-            if (typeof renderDynamicGlobalCorporateNavigation === "function" && document.getElementById("filings4u-global-navigation-root")) {
-                renderDynamicGlobalCorporateNavigation();
-            }
-        } catch(e) { console.error("Navigation block execution crash:", e); }
+        // ─── SEQUENTIAL LAYOUT FLOW DRAWERS ───
 
         // MODULE 2: HERO COMPONENT
         try {
@@ -71,7 +84,7 @@ async function renderMasterSystem() {
             }
         } catch(e) { console.error("Metrics block execution crash:", e); }
 
-        // MODULE 4: HOMEPAGE SELECTION ROUTER (Fails or skips cleanly on sub-pages)
+        // MODULE 4: HOMEPAGE SELECTION ROUTER
         try {
             if (typeof renderHomepageOperationsRouter === "function" && document.getElementById("filings4u-homepage-router-root")) {
                 renderHomepageOperationsRouter();
@@ -113,7 +126,7 @@ async function renderMasterSystem() {
             }
         } catch(e) { console.error("Subscription gateway capture block execution crash:", e); }
 
-        // MODULE 10: DYNAMIC GLOBAL FOOTER LAYER (Always executes last)
+        // MODULE 10: DYNAMIC GLOBAL FOOTER LAYER
         try {
             if (typeof renderDynamicGlobalCorporateFooter === "function" && document.getElementById("filings4u-global-footer-root")) {
                 renderDynamicGlobalCorporateFooter("filings4u-global-footer-root");
