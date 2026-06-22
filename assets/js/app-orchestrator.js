@@ -91,6 +91,14 @@ async function renderMasterSystem() {
             }
         } catch(e) { console.warn("Homepage layout switcher container element skipped on this active sub-view page profile."); }
 
+                // MODULE 4-B: PRIVACY COVENANT SHEET RENDERING SYSTEM (Only runs on privacy page)
+        try {
+            if (typeof renderMasterPrivacyPolicyEngine === "function" && document.getElementById("filings4u-privacy-policy-root")) {
+                renderMasterPrivacyPolicyEngine("filings4u-privacy-policy-root");
+            }
+        } catch(e) { console.error("Privacy text layout block execution crash:", e); }
+
+
         // MODULE 5: 3-CARD PRICING LAYOUT GRID
         try {
             if (typeof renderMasterPricingEngine === "function" && document.getElementById("filings4u-pricing-board-root")) {
