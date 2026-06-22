@@ -494,12 +494,13 @@ async function renderMasterSystem() {
       if (response.ok) {
         const rawJsonPayloadArray = await response.json();
         if (rawJsonPayloadArray && rawJsonPayloadArray.length > 0) {
-          dbRow = rawJsonPayloadArray[0];
+          dbRow = rawJsonPayloadArray;
         }
       }
     } catch (netErr) {
       console.warn(netErr);
     }
+
     const heroTarget = document.querySelector('[id$="-hero-zone"]');
     if (!heroTarget) return;
     
@@ -546,6 +547,9 @@ async function renderMasterSystem() {
 document.addEventListener("DOMContentLoaded", renderMasterSystem);
 window.compileDynamicLayoutProperties = compileDynamicLayoutProperties;
 window.renderMasterSystem = renderMasterSystem;
+
+
+
 function renderMasterPricingEngine(targetId, metaDataRecord) {
   try {
     const zone = document.getElementById(targetId);
@@ -557,8 +561,6 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
     }
 
     const universalSourceMatrix = window.CENTRAL_SERVICE_PLAN_DB || {};
-    
-    /* 🌟 HARMONIZATION FIX: Checks both standard array definitions and handles key fallbacks for quote fields */
     var pricingDatasetNode = universalSourceMatrix[slug];
     if (!pricingDatasetNode && slug.endsWith("-quote")) {
       pricingDatasetNode = universalSourceMatrix[slug.replace("-quote", "")];
@@ -571,7 +573,7 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
     }
 
     if (!pricingDatasetNode || Object.keys(pricingDatasetNode).length === 0 || (!pricingDatasetNode.starter && !pricingDatasetNode.compliance && !pricingDatasetNode.enterprise && !pricingDatasetNode.tiers)) {
-      console.warn("[Pricing Error] Missing structured price dataset object configuration nodes for key: " + slug);
+      console.warn(slug);
       return;
     }
 
@@ -618,7 +620,7 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
       pricingCardsGeneratedHtmlArrayString += '<div class="' + structuralHighlightClassNameSelector + '">' + conditionalBadgeMarkupCell + '<div class="pricing-card-upper-content"><h3 class="pricing-card-tier-title">' + tierPresentationName + '</h3><div class="pricing-card-rate-row"><span class="' + integerColorHighlightClassNameSelector + '">$' + numericPriceValueFloat.toFixed(2) + '</span><span class="pricing-card-cadence-label">' + dynamicCadenceDescriptorLabel + '</span></div><ul class="pricing-card-bullets-list">' + compileBulletsSubLoopMarkup(targetedBulletsSourceArray) + '</ul></div><a href="wizard.html?service=' + slug + '&plan=' + tierUniqueKeyId + '" class="pricing-card-action-btn ' + tierUniqueKeyId + '-btn-theme">' + dynamicButtonActionVerbText + '</a></div>';
     });
 
-    zone.innerHTML = '<section id="pricing-framework-target" class="pricing-grid-master-section"><div class="site-width-alignment-guard prgrid-container"><div class="pricing-grid-header-block"><h2 class="pricing-grid-main-title">' + frameworkSectionTitleText + '</h2><p class="pricing-grid-subtitle">' + frameworkSectionSubtitleText + '</p></div><div class="pricing-cards-responsive-grid">' + pricingCardsGeneratedHtmlArrayString + '</div></div></section>';
+    zone.innerHTML = '<section id="pricing-framework-target" class="pricing-grid-master-section" style="width:100%; box-sizing:border-box; padding: clamp(20px, 5vw, 40px) 0;"><div class="site-width-alignment-guard prgrid-container" style="width:100%; max-width:1450px; margin:0 auto; padding:0 clamp(16px, 4vw, 40px); box-sizing:border-box;"><div class="pricing-grid-header-block" style="text-align:center; margin-bottom:24px;"><h2 class="pricing-grid-main-title" style="font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight:800; color:#0a1f44; margin:0 0 6px 0;">' + frameworkSectionTitleText + '</h2><p class="pricing-grid-subtitle" style="font-size: clamp(0.8rem, 2vw, 0.95rem); color:#64748b; margin:0;">' + frameworkSectionSubtitleText + '</p></div><div class="pricing-cards-responsive-grid">' + pricingCardsGeneratedHtmlArrayString + '</div></div></section>';
 
     setTimeout(function() {
       const livePageAnchorNodesArray = document.querySelectorAll('a');
@@ -644,6 +646,7 @@ function renderMasterPricingEngine(targetId, metaDataRecord) {
 }
 
 window.renderMasterPricingEngine = renderMasterPricingEngine;
+
 
 
 
@@ -1105,26 +1108,25 @@ function renderMasterTrustShieldMatrix(targetId, meta) {
     if (!zone) return;
 
     zone.innerHTML = `
-      <section class="enterprise-metrics-section" style="padding: 80px 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 60px;">
-          
-          <!-- 📸 IMAGE COLUMN -->
-          <div style="flex: 1; min-width: 320px; max-width: 550px; display: flex; justify-content: center; box-sizing: border-box;">
-            <img src="` + meta.secfImage + `" alt="` + meta.title + ` Protection Asset" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65), 0 10px 20px rgba(0, 0, 0, 0.3);" onerror="this.onerror=null; this.src='images/regulatory-compliance.jpg';">
-          </div>
-          
-          <!-- 📝 TEXT COLUMN -->
-          <div style="flex: 1; min-width: 320px; box-sizing: border-box;">
-            <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">Guaranteed Audit Protection</span>
-            <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Institutional Shield. <br><span style="color: #10b981;">Never Miss A Filing.</span></h2>
-            <p style="color: #cbd5e1; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Active database synchronization safeguards your status across state lines.</p>
-            <p style="color: #94a3b8; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your ` + meta.title + ` operational status is permanently shielded.</p>
-            <a href="compliance.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 0.95rem;">Explore Security Infrastructure &rarr;</a>
-          </div>
-          
-        </div>
-      </section>
+    <section class="enterprise-metrics-section" style="padding: clamp(35px, 6vw, 80px) 0 !important; background: #0a1f44; color: #f4f7fa; width: 100% !important; max-width: 100% !important; box-sizing: border-box; overflow: hidden; position: relative; margin: 0 !important; font-family: system-ui, sans-serif;">
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+  <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 clamp(16px, 4vw, 40px) !important; box-sizing: border-box !important; position: relative; z-index: 10; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: clamp(24px, 5vw, 60px);">
+    
+    <div style="flex: 1; min-width: min(100%, 320px); max-width: 550px; display: flex; justify-content: center; box-sizing: border-box;">
+      <img src="` + meta.secfImage + `" alt="` + meta.title + ` Protection Asset" style="width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65), 0 10px 20px rgba(0, 0, 0, 0.3);" onerror="this.onerror=null; this.src='images/regulatory-compliance.jpg';">
+    </div>
+
+    <div style="flex: 1; min-width: min(100%, 320px); box-sizing: border-box;">
+      <span style="color: #10b981; font-size: clamp(0.725rem, 2vw, 0.8rem); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.12); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.25);">Guaranteed Audit Protection</span>
+      <h2 style="color: #ffffff; font-size: clamp(1.4rem, 4vw, 2.5rem); font-weight: 900; margin: 0 0 14px 0; line-height: 1.2; letter-spacing: -0.5px;">Institutional Shield. <br><span style="color: #10b981;">Never Miss A Filing.</span></h2>
+      <p style="color: #cbd5e1; font-weight: 700; font-size: clamp(0.85rem, 2vw, 1.05rem); margin: 0 0 10px 0; line-height: 1.4;">Active database synchronization safeguards your status across state lines.</p>
+      <p style="color: #94a3b8; font-size: clamp(0.8rem, 2vw, 1rem); line-height: 1.6; margin: 0 0 24px 0;">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your ` + meta.title + ` operational status is permanently shielded.</p>
+      <a href="compliance.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: clamp(0.85rem, 2vw, 0.95rem);">Explore Security Infrastructure &rarr;</a>
+    </div>
+
+  </div>
+</section>
+
     `;
   } catch (err) {
     console.error("Trust matrix engine error:", err);

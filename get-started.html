@@ -55,37 +55,38 @@
 
 
      <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const parentTargetBox = document.getElementById("universal-matrix-cards-injection-box");
-      if (!parentTargetBox) return;
+ // Add this helper function directly to your get-started.html inline block to keep it fluid
+document.addEventListener("DOMContentLoaded", function() {
+  const parentTargetBox = document.getElementById("universal-matrix-cards-injection-box");
+  if (!parentTargetBox) return;
 
-      const dataSource = window.CENTRAL_SERVICE_PLAN_DB || {};
-      let compiledMarkup = "";
+  const dataSource = window.CENTRAL_SERVICE_PLAN_DB || {};
+  let compiledMarkup = "";
 
-      for (const serviceKey in dataSource) {
-        if (!dataSource.hasOwnProperty(serviceKey)) continue;
+  for (const serviceKey in dataSource) {
+    if (!dataSource.hasOwnProperty(serviceKey)) continue;
 
-        const dataNode = dataSource[serviceKey];
-        const baseName = dataNode.name || serviceKey.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-        const starterVal = parseFloat(dataNode.starter) || 0;
+    const dataNode = dataSource[serviceKey];
+    const baseName = dataNode.name || serviceKey.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    const starterVal = parseFloat(dataNode.starter) || 0;
 
-        compiledMarkup += `
-          <div class="pricing-card-node text-center-mobile" style="background: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #0a1f44; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(10,31,68,0.02); height: 100%; box-sizing: border-box; transition: transform 0.15s ease-in-out;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
-            <div class="pricing-card-upper-content" style="text-align: left; width: 100%;">
-              <h3 class="pricing-card-tier-title" style="color: #0a1f44; font-size: 0.875rem; font-weight: 800; margin: 0 0 10px 0; min-height: 36px; display: flex; align-items: center; line-height: 1.3;">${baseName}</h3>
-              <div class="pricing-card-rate-row" style="margin-bottom: 12px; display: flex; align-items: baseline; gap: 4px;">
-                <span class="pricing-card-price-integer" style="font-size: 1.35rem; font-weight: 800; color: #0a1f44; font-family: monospace;">$${starterVal.toFixed(2)}</span>
-                <span class="pricing-card-cadence-label" style="font-size: 0.75rem; color: #64748b; font-weight: 500;">/ base</span>
-              </div>
-            </div>
-            <a href="wizard.html?service=${serviceKey}&plan=starter" class="pricing-card-action-btn starter-btn-theme" style="background: #0a1f44; color: #ffffff; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: 700; text-align: center; display: block; font-size: 0.8rem; margin-top: auto; border: none; cursor: pointer; transition: background 0.1s;">Initialize Setup &rarr;</a>
+    compiledMarkup += `
+      <div class="pricing-card-node text-center-mobile" style="background: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #0a1f44; border-radius: 8px; padding: clamp(12px, 3vw, 18px); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(10,31,68,0.02); height: 100%; box-sizing: border-box; transition: transform 0.15s ease-in-out;">
+        <div class="pricing-card-upper-content" style="text-align: left; width: 100%;">
+          <h3 class="pricing-card-tier-title" style="color: #0a1f44; font-size: clamp(0.8rem, 2vw, 0.9rem); font-weight: 800; margin: 0 0 8px 0; min-height: 36px; display: flex; align-items: center; line-height: 1.3;">${baseName}</h3>
+          <div class="pricing-card-rate-row" style="margin-bottom: 12px; display: flex; align-items: baseline; gap: 4px;">
+            <span class="pricing-card-price-integer" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; color: #0a1f44; font-family: monospace;">$${starterVal.toFixed(2)}</span>
+            <span class="pricing-card-cadence-label" style="font-size: 0.725rem; color: #64748b; font-weight: 500;">/ base</span>
           </div>
-        `;
-      }
+        </div>
+        <a href="wizard.html?service=${serviceKey}&plan=starter" class="pricing-card-action-btn starter-btn-theme" style="background: #0a1f44; color: #ffffff; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: 700; text-align: center; display: block; font-size: 0.775rem; margin-top: auto; border: none; cursor: pointer;">Initialize Setup &rarr;</a>
+      </div>
+    `;
+  }
 
-      parentTargetBox.innerHTML = compiledMarkup;
-      console.log("[Aggregator Engine] Successfully mounted compiled services matrix cards.");
-    });
+  parentTargetBox.innerHTML = compiledMarkup;
+});
+
   </script>
 </body>
 </html>
