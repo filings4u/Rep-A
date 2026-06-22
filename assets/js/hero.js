@@ -82,19 +82,39 @@ function renderMasterHeroEngine(overrideTargetId, metaDataRecord) {
             }
         }
 
-        // 3. Dynamic fallback lookup system maps context payloads
-        const liveRecordSource = metaDataRecord || (window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug]) || {};
-        
-        const displayPillText = liveRecordSource.pill || "Statutory Data Security Covenant";
-        const displayHeroTitle = liveRecordSource.hero_title || liveRecordSource.service_title || liveRecordSource.title || "Compliance Portal";
-        const displayHeroLead = liveRecordSource.hero_lead || liveRecordSource.description || "Automated Inter-Jurisdictional Regulatory Licensing, Onboarding Compliance Systems, and Provisioning Pipelines.";
-        const dynamicHeroImgSrc = "images/" + slug + "-hero.jpg";
+   /* Part 3: Tightened Spacing Responsive Template HTML Compiler */
+function executeHeroCompiler(zone, displayTitle, displaySlug) {
+    zone.innerHTML = `
+    <!-- MAIN HERO CANVAS CONTAINER (TIGHTENED VERTICAL MARGINS AND PADDING) -->
+    <main class="page-container" style="background: #ffffff; padding: 15px 0 10px 0 !important; margin: 0 !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; display: block;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important;">
+            
+            <div class="responsive-hero-grid" style="margin-top: 10px !important;">
+                
+                <!-- TEXT COLUMN LAYER -->
+                <article class="content-area" style="flex: 1.2; min-width: 320px; box-sizing: border-box; margin: 0; padding: 20px 0; display: flex; flex-direction: column; justify-content: center;">
+                    <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15); width: fit-content; align-self: flex-start;">${displayPillText}</span>
+                    
+                    <h1 class="hero-headline" style="color: #0a1f44; font-size: 3rem; font-weight: 900; margin: 0 0 14px 0; line-height: 1.15; letter-spacing: -1px;">
+                        ${displayHeroTitle}
+                    </h1>
+                    
+                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;">${displayHeroLead}</p>
+                    
+                    <a href="${computedActionLinkDestination}" style="background: #10b981; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; align-self: flex-start;">Initialize Application &rarr;</a>
+                </article>
+                
+                <!-- IMAGE LAYER FIXED CONTAINER -->
+                <aside class="hero-image-container" style="flex: 1; min-width: 320px; max-width: 520px; margin: 0; padding: 20px 0;">
+                    <img src="${dynamicHeroImgSrc}" class="hero-display-img" alt="Framework Layout Preview" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);" onerror="this.onerror=null; this.src='images/default-hero.jpg';">
+                </aside>
+                
+            </div>
+        </div>
+    </main>
+    `;
+}
 
-        // 4. Calculate link routes dynamically
-        var computedActionLinkDestination = "#pricing-framework-target";
-        if (slug === "index") {
-            computedActionLinkDestination = "get-started.html";
-        }
 
         // 5. Output synchronized layout markup string
         zone.innerHTML = `

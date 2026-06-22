@@ -403,7 +403,7 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
         if (!zone || !linksContainer) return;
 
         // 1. Append the portal anchor button safely to the list array
-        const portalHTML = `<a href="https://filings4u.com" class="btn-client-portal" style="background: #10b981; color: #ffffff; text-decoration: none; font-weight: 700; padding: 10px 20px; border-radius: 6px; font-size: 0.9rem; transition: background 0.2s;">Client Portal</a>`;
+        const portalHTML = `<a href="https://portal.filings4u.com/client-dashboard.html" class="btn-client-portal" style="background: #10b981; color: #ffffff; text-decoration: none; font-weight: 700; padding: 10px 20px; border-radius: 6px; font-size: 0.9rem; transition: background 0.2s;">Client Portal</a>`;
         linksContainer.insertAdjacentHTML('beforeend', portalHTML);
 
         // 2. Mobile layout menu trigger logic connection

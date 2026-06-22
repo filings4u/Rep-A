@@ -19,45 +19,26 @@
   
   <!-- DATA ARCHITECTURE CATALOG DEPLOYMENTS (Must load first) -->
   <script src="assets/js/metrics-catalog.js"></script>
-  <script src="assets/js/content-engine.js"></script>
   <script src="assets/js/subscription-listener.js"></script>
 
 
-
-
-  <!-- COMPONENT LAYER LOADING SCRIPTS -->
-<script src="navigation.js"></script>
-
-<!-- ASSET DEPLOYMENT LINK PATHS -->
-<script src="hero.js"></script>
-
-<!-- ASSET DEPLOYMENT LINK PATHS -->
-<script src="section1.js"></script>
-
-<!-- ASSET DEPLOYMENT LINK PATHS -->
-<script src="section2.js"></script>
-
-<script src="index-router.js"></script>
-
-<!-- ASSET DEPLOYMENT LINK PATHS -->
-<script src="section3.js"></script>
-
-<!-- ASSET DEPLOYMENT LINK PATHS -->
-<script src="section4.js"></script>
-
-<!-- ASSET DEPLOYMENT LINK PATHS -->
-<script src="section5.js"></script>
-
-<!-- ASSET DEPLOYMENT LINK PATHS -->
-<script src="section6.js"></script>
-
-<!-- COMPONENT RESOURCE LAYER LOADER LINK PATHS -->
-<script src="footer.js"></script>
+<!-- UPDATE SCRIPT PATHS WITH THEIR DIRECTORY IF SITUATED IN A SUBFOLDER -->
+<script src="assets/js/patch.js"></script>
+<script src="assets/js/navigation.js"></script>
+<script src="assets/js/hero.js"></script>
+<script src="assets/js/section1.js"></script>
+<script src="assets/js/section2.js"></script>
+<script src="assets/js/section4.js"></script>
+<script src="assets/js/section5.js"></script>
+<script src="assets/js/section6.js"></script>
+<script src="assets/js/footer.js"></script>
+<script src="assets/js/app-orchestrator.js"></script>
 
 
 </head>
 <body>
   <script src="assets/js/toggle.js"></script>
+  <script src="assets/js/proof-widget.js"></script>
 
 
 
@@ -72,9 +53,6 @@
 
 <!-- ISOLATED NEW ENGINE TARGET POINT FOR HOMEPAGE ROUTER BOARD -->
 <div id="filings4u-homepage-router-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 2 (PRICING) -->
-<div id="filings4u-pricing-board-root"></div>
 
 <!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 3 (PROCESSING OPTIONS) -->
 <div id="filings4u-processing-packages-root"></div>
@@ -104,59 +82,7 @@
 </div>
 
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        renderDynamicGlobalCorporateNavigation();
-    });
-</script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Runs cleanly across all 44+ pages without needing hardcoded values
-        renderMasterHeroEngine();
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Runs cleanly across all 44+ pages without needing hardcoded values
-        renderMasterMetricsEngine();
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Automatically skips the index layout page and displays on the other 44+ pages
-        renderMasterPricingEngine();
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Runs cleanly across all 44+ sub-pages without data leaking
-        if (typeof renderMasterPricingEngine === "function") {
-            renderMasterPricingEngine();
-        }
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Runs cleanly across all 44+ sub-pages without data collisions
-        if (typeof renderMasterLaunchpadEngine === "function") {
-            renderMasterLaunchpadEngine();
-        }
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Runs cleanly across all 44+ pages without overlapping other elements
-        if (typeof renderMasterSubscribeEngine === "function") {
-            renderMasterSubscribeEngine();
-        }
-    });
-</script>
 
 
 </body>
