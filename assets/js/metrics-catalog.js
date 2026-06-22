@@ -10,7 +10,7 @@ const catalogServices = [
   "sales-tax-registration", "payroll-tax-940-941", "heavy-use-tax-2290", 
   "cage-code", "duns-number", "minority-certificate", "trucker-authority", 
   "broker-authority", "ucr-registration", "scac-code", "dot-consortium", 
-  "driver-qualification-file", "process-agents-boc-3", "ifta-registration", 
+  "driver-file", "process-agents-boc-3", "ifta-registration", 
   "hazmat-registration", "licenses-permits", "trucker-insurance-quote", 
   "broker-insurance-quote", "new-entrant-audit"
 ];
@@ -36,7 +36,7 @@ catalogServices.forEach(s => {
 
   if (name === "Dba Registration") name = "DBA Registration";
   if (name === "Employer ID EIN") name = "Employer ID (EIN)";
-  if (name === "Driver Qualification File") name = "Driver Qualification File (DQF)";
+  if (name === "Driver File") name = "Driver Qualification File (DQF)";
 
   const starterPrice = serviceDbRecord.starter !== undefined ? "$" + parseFloat(serviceDbRecord.starter).toFixed(2) : "Contact Us";
   let imageFilename = s;
