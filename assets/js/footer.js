@@ -140,7 +140,7 @@ function renderDynamicGlobalCorporateFooter(overrideTargetId) {
         
         <div class="footer-bottom">
           <div class="footer-bottom-copyright">
-            <p>&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #cbd5e1; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a></p>
+            <p>&copy; 2026 filings4u, LLC. All rights reserved. <br> A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a></p>
           </div>
           
           <div class="trust-badge" style="background: rgba(255, 255, 255, 0.05) !important; border-radius: 8px !important; padding: 10px 20px !important;">
