@@ -595,29 +595,3 @@
     width: 100% !important;
   }
 }
-
-
-/**
- * filings4u Platform Architecture
- * Module: master-mobile.css (Part 1 - Footer 2x2 Grid Restructuring)
- */
-
-@media (max-width: 991px) {
-    /* FORCE FOOTER TO RE-STRUCTURE INTO A BALANCED 2X2 GRID MATRIX */
-    #filings4u-global-footer-root .footer-grid-matrix {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important; /* Locks columns into a crisp 2x2 layout */
-        gap: 40px 30px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        text-align: left !important;
-    }
-
-    /* Keep internal element sizing uniform across the columns grid cells */
-    #filings4u-global-footer-root .footer-column-cell {
-        display: flex !important;
-        flex-direction: column !important;
-        box-sizing: border-box !important;
-        width: 100% !important;
-    }
-}
