@@ -1,34 +1,165 @@
-/**
- * filings4u Platform Architecture
- * Module: footer-section.css (Isolated Global Corporate Footer Layout)
- */
+/** * filings4u Platform Architecture * Module: footer-section.css (Isolated Global Corporate Footer Layout - Repaired) */ 
 
-.site-footer { background: #0a1f44; color: #ffffff; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; margin: 0 !important; }
-.footer-container { max-width: 1450px; margin: 0 auto; padding: 80px 40px 50px 40px; box-sizing: border-box; }
-.footer-brand { flex: 2; min-width: 280px; box-sizing: border-box; }
-.footer-brand p { color: #94a3b8 !important; font-size: 0.95rem !important; line-height: 1.5 !important; margin: 20px 0 0 0; max-width: 320px; font-weight: 400 !important; }
-.footer-col { flex: 1; min-width: 180px; box-sizing: border-box; }
-.footer-col h4 { color: #ffffff; font-size: 1.05rem; font-weight: 700; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-.footer-col ul { list-style: none; padding: 0; margin: 0; }
-.footer-col li { margin-bottom: 12px; }
-.footer-col a { color: #94a3b8; text-decoration: none; font-size: 0.95rem; font-weight: 400; transition: color 0.2s ease; }
-.footer-col a:hover { color: #10b981; }
+.site-footer { 
+  background: #0a1f44; 
+  color: #ffffff; 
+  font-family: system-ui, sans-serif; 
+  width: 100%; 
+  box-sizing: border-box; 
+  margin: 0 !important; 
+} 
 
-.footer-bottom { max-width: 1450px; margin: 0 auto; padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; box-sizing: border-box; }
-.footer-bottom-copyright { color: #94a3b8 !important; font-size: 0.85rem !important; font-weight: 400 !important; line-height: 1.5 !important; letter-spacing: normal !important; }
-.legal-links { display: flex; gap: 24px; flex-wrap: wrap; }
-.legal-links a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 400; transition: color 0.2s ease; }
-.legal-links a:hover { color: #10b981; }
+.footer-container { 
+  max-width: 1450px; 
+  margin: 0 auto; 
+  padding: 80px 40px 50px 40px; 
+  box-sizing: border-box; 
+} 
 
-@media (min-width: 992px) {
-    .footer-container { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 40px; }
-    .footer-brand { grid-column: auto; max-width: 300px; }
-}
+.footer-brand { 
+  flex: 2; 
+  min-width: 280px; 
+  box-sizing: border-box; 
+} 
 
-@media (max-width: 768px) {
-    .footer-container { padding: 50px 24px 30px 24px !important; flex-direction: column !important; gap: 30px !important; }
-    .footer-brand { max-width: 100% !important; }
-    .footer-bottom { padding: 30px 24px !important; flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 20px !important; }
-    .footer-bottom-copyright { text-align: center !important; width: 100% !important; display: block !important; }
-    .legal-links { gap: 16px !important; width: 100%; justify-content: center !important; }
+.footer-brand p { 
+  color: #94a3b8 !important; 
+  font-size: 0.95rem !important; 
+  line-height: 1.5 !important; 
+  margin: 20px 0 0 0; 
+  max-width: 320px; 
+  font-weight: 400 !important; 
+} 
+
+.footer-col { 
+  flex: 1; 
+  min-width: 180px; 
+  box-sizing: border-box; 
+} 
+
+.footer-col h4 { 
+  color: #ffffff; 
+  font-size: 1.05rem; 
+  font-weight: 700; 
+  margin: 0 0 20px 0; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px; 
+} 
+
+.footer-col ul { 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+} 
+
+.footer-col li { 
+  margin-bottom: 12px; 
+} 
+
+.footer-col a { 
+  color: #94a3b8; 
+  text-decoration: none; 
+  font-size: 0.95rem; 
+  font-weight: 400; 
+  transition: color 0.2s ease; 
+} 
+
+.footer-col a:hover { 
+  color: #10b981; 
+} 
+
+/* ==========================================================================
+   === REPAIRED FOOTER BOTTOM STRETCH LAYER (HARD LOCKED TO 1450PX) ===
+   ========================================================================== */
+.footer-bottom { 
+  width: 1450px !important;
+  max-width: 1450px !important; 
+  margin: 0 auto !important; 
+  padding: 30px 0px !important; /* FIXED: Zeroed left/right padding so the white bar stretches fully to 1450px */
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important; /* The 1450px wide horizontal rule */
+  display: flex !important; 
+  justify-content: space-between !important; 
+  align-items: center !important; 
+  flex-wrap: wrap !important; 
+  gap: 24px !important; 
+  box-sizing: border-box !important; 
+} 
+
+/* ==========================================================================
+   === UNIFIED TYPOGRAPHY CODES: FORCES IDENTICAL WEIGHT AND SIZE ===
+   ========================================================================== */
+.footer-bottom-copyright,
+.legal-links,
+.legal-links a { 
+  color: #94a3b8 !important; 
+  font-size: 0.85rem !important; /* Normalizes all footer bottom text rows to 0.85rem */
+  font-weight: 400 !important; /* Normalizes all text down to unweighted regular profiles */
+  line-height: 1.5 !important; 
+  letter-spacing: normal !important; 
+} 
+
+.legal-links { 
+  display: flex !important; 
+  gap: 24px !important; 
+  flex-wrap: wrap !important; 
+} 
+
+.legal-links a { 
+  text-decoration: none !important; 
+  transition: color 0.2s ease !important; 
+} 
+
+.legal-links a:hover { 
+  color: #10b981 !important; 
+} 
+
+/* ==========================================================================
+   === MEDIA VIEWPORTS ENGINE BREAKDOWNS ===
+   ========================================================================== */
+@media (min-width: 992px) { 
+  .footer-container { 
+    display: grid; 
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr; 
+    gap: 40px; 
+  } 
+  
+  .footer-brand { 
+    grid-column: auto; 
+    max-width: 300px; 
+  } 
+} 
+
+@media (max-width: 768px) { 
+  .footer-container { 
+    padding: 50px 24px 30px 24px !important; 
+    flex-direction: column !important; 
+    gap: 30px !important; 
+  } 
+  
+  .footer-brand { 
+    max-width: 100% !important; 
+  } 
+  
+  /* FIXED: Safely releases the 1450px rigid layout on small hand-held tablet/mobile viewports */
+  .footer-bottom { 
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 30px 24px !important; 
+    flex-direction: column !important; 
+    align-items: center !important; 
+    text-align: center !important; 
+    gap: 20px !important; 
+  } 
+  
+  .footer-bottom-copyright { 
+    text-align: center !important; 
+    width: 100% !important; 
+    display: block !important; 
+  } 
+  
+  .legal-links { 
+    gap: 16px !important; 
+    width: 100% !important; 
+    justify-content: center !important; 
+  } 
 }

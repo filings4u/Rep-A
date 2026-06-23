@@ -1,197 +1,206 @@
-/**
- * filings4u Platform Architecture
- * Module: footer.js (Part 1 - Isolated Stylesheet Engine)
- */
+/** * filings4u Platform Architecture * Module: footer.js (Part 1 - Isolated Stylesheet Engine) */ 
+(function() { 
+  // 1. Establish unique frontend target configurations to prevent collision 
+  const targetConfig = { 
+    elementId: "filings4u-global-footer-root", 
+    styleId: "filings4u-footer-styles" 
+  }; 
+  
+  // 2. Inject completely self-contained responsive CSS layout rules 
+  if (!document.getElementById(targetConfig.styleId)) { 
+    const styleSheet = document.createElement("style"); 
+    styleSheet.id = targetConfig.styleId; 
+    styleSheet.textContent = ` 
+      #${targetConfig.elementId} .site-footer { 
+        background: #0a1f44; 
+        color: #ffffff; 
+        font-family: system-ui, sans-serif; 
+        width: 100%; 
+        box-sizing: border-box; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+      } 
+      #${targetConfig.elementId} .footer-container { 
+        max-width: 1450px; 
+        margin: 0 auto; 
+        padding: 80px 40px 50px 40px; 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 40px; 
+        box-sizing: border-box; 
+      } 
+      #${targetConfig.elementId} .footer-brand { 
+        flex: 2; 
+        min-width: 280px; 
+        box-sizing: border-box; 
+      } 
+      #${targetConfig.elementId} .footer-brand p { 
+        color: #94a3b8; 
+        font-size: 0.95rem; 
+        line-height: 1.5; 
+        margin: 20px 0 0 0; 
+        max-width: 320px; 
+      } 
+      #${targetConfig.elementId} .footer-col { 
+        flex: 1; 
+        min-width: 180px; 
+        box-sizing: border-box; 
+      } 
+      #${targetConfig.elementId} .footer-col h4 { 
+        color: #ffffff; 
+        font-size: 1rem; 
+        font-weight: 700; 
+        margin: 0 0 20px 0; 
+        text-transform: uppercase; 
+        letter-spacing: 0.5px; 
+      } 
+      #${targetConfig.elementId} .footer-col ul { 
+        list-style: none; 
+        padding: 0; 
+        margin: 0; 
+      } 
+      #${targetConfig.elementId} .footer-col li { 
+        margin-bottom: 12px; 
+      } 
+      #${targetConfig.elementId} .footer-col a { 
+        color: #94a3b8; 
+        text-decoration: none; 
+        font-size: 0.9rem; 
+        transition: color 0.2s ease; 
+      } 
+      #${targetConfig.elementId} .footer-col a:hover { 
+        color: #10b981; 
+      } 
+    `; 
+    document.head.appendChild(styleSheet); 
+  } 
+  window.FILINGS4U_FOOTER_TARGET = targetConfig.elementId; 
+})(); 
 
-(function() {
-    // 1. Establish unique frontend target configurations to prevent collision
-    const targetConfig = {
-        elementId: "filings4u-global-footer-root",
-        styleId: "filings4u-footer-styles"
-    };
+/* Part 2: Bottom Legal Bar & Floating Button Styles */ 
+(function() { 
+  const styleSheet = document.getElementById("filings4u-footer-styles"); 
+  if (styleSheet) { 
+    styleSheet.textContent += ` 
+      /* MASTER ROOT CONTAINER CONTEXT SETUP */
+      #filings4u-global-footer-root {
+        position: relative !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
 
-    // 2. Inject completely self-contained responsive CSS layout rules
-    if (!document.getElementById(targetConfig.styleId)) {
-        const styleSheet = document.createElement("style");
-        styleSheet.id = targetConfig.styleId;
-        styleSheet.textContent = `
-            #${targetConfig.elementId} .site-footer {
-                background: #0a1f44;
-                color: #ffffff;
-                font-family: system-ui, sans-serif;
-                width: 100%;
-                box-sizing: border-box;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            #${targetConfig.elementId} .footer-container {
-                max-width: 1450px;
-                margin: 0 auto;
-                padding: 80px 40px 50px 40px;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 40px;
-                box-sizing: border-box;
-            }
-            #${targetConfig.elementId} .footer-brand {
-                flex: 2;
-                min-width: 280px;
-                box-sizing: border-box;
-            }
-            #${targetConfig.elementId} .footer-brand p {
-                color: #94a3b8;
-                font-size: 0.95rem;
-                line-height: 1.5;
-                margin: 20px 0 0 0;
-                max-width: 320px;
-            }
-            #${targetConfig.elementId} .footer-col {
-                flex: 1;
-                min-width: 180px;
-                box-sizing: border-box;
-            }
-            #${targetConfig.elementId} .footer-col h4 {
-                color: #ffffff;
-                font-size: 1rem;
-                font-weight: 700;
-                margin: 0 0 20px 0;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-            #${targetConfig.elementId} .footer-col ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            #${targetConfig.elementId} .footer-col li {
-                margin-bottom: 12px;
-            }
-            #${targetConfig.elementId} .footer-col a {
-                color: #94a3b8;
-                text-decoration: none;
-                font-size: 0.9rem;
-                transition: color 0.2s ease;
-            }
-            #${targetConfig.elementId} .footer-col a:hover {
-                color: #10b981;
-            }
-                
-        `;
-        document.head.appendChild(styleSheet);
-    }
-    
-    window.FILINGS4U_FOOTER_TARGET = targetConfig.elementId;
+      /* REPAIRED FOOTER BOTTOM BAR: MATCHES UPPER GRID EDGES EXACTLY */
+      #filings4u-global-footer-root .footer-bottom { 
+        max-width: 1450px !important; 
+        width: 100% !important;
+        min-width: 0 !important; /* Removes rigid sizing blocks that cause right-side over-stretching */
+        margin: 0 auto !important; 
+        
+        /* MATCHES THE EXACT 40PX HORIZONTAL CUSHION OF YOUR UPPER GRID CODES */
+        padding: 30px 40px !important; 
+        
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important; 
+        display: flex !important; 
+        justify-content: space-between !important; 
+        align-items: center !important; 
+        flex-wrap: wrap !important; /* Allows items to cleanly re-wrap safely if display room shrinks */
+        gap: 24px !important; 
+        box-sizing: border-box !important; 
+        color: #94a3b8 !important; 
+      } 
+
+      /* FORCES ALL LEGAL BAR TEXT ITEMS TO USE THE EXACT SAME SIZE AND WEIGHT VALUES */
+      #filings4u-global-footer-root .footer-bottom-copyright,
+      #filings4u-global-footer-root .footer-bottom span,
+      #filings4u-global-footer-root .footer-bottom div p,
+      #filings4u-global-footer-root .legal-links,
+      #filings4u-global-footer-root .legal-links a {
+        color: #94a3b8 !important;
+        font-size: 0.85rem !important;
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+        letter-spacing: normal !important;
+      }
+
+      #filings4u-global-footer-root .legal-links { 
+        display: flex !important; 
+        gap: 24px !important; 
+        flex-wrap: wrap !important; 
+      } 
+
+      #filings4u-global-footer-root .legal-links a { 
+        text-decoration: none !important; 
+        transition: color 0.2s ease !important; 
+      } 
+
+      #filings4u-global-footer-root .legal-links a:hover { 
+        color: #10b981 !important; 
+      } 
+
+      #filings4u-global-footer-root .scroll-to-top-btn { 
+        position: fixed !important; 
+        bottom: 30px !important; 
+        right: -60px !important; 
+        width: 44px !important; 
+        height: 44px !important; 
+        background: #10b981 !important; 
+        color: #ffffff !important; 
+        border: none !important; 
+        border-radius: 50% !important; 
+        cursor: pointer !important; 
+        display: flex !important; 
+        align-items: center !important; 
+        justify-content: center !important; 
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important; 
+        transition: all 0.3s ease !important; 
+        z-index: 9999 !important; 
+      } 
+
+      #filings4u-global-footer-root .scroll-to-top-btn.visible { 
+        right: 30px !important; 
+      } 
+
+      #filings4u-global-footer-root .scroll-to-top-btn:hover { 
+        background: #0e9f6e !important; 
+        transform: translateY(-2px) !important; 
+      } 
+
+      /* MOBILE ADAPTATION OVERRIDES MATCHING YOUR CONFIGURATION SCHEMAS */ 
+      @media (max-width: 768px) { 
+        #filings4u-global-footer-root .footer-container { 
+          padding: 50px 24px 30px 24px !important; 
+          flex-direction: column !important; 
+          gap: 30px !important; 
+        } 
+        #filings4u-global-footer-root .footer-brand { 
+          max-width: 100% !important; 
+        } 
+        #filings4u-global-footer-root .footer-bottom { 
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 30px 24px !important; 
+          flex-direction: column !important; 
+          align-items: center !important; 
+          text-align: center !important; 
+          gap: 20px !important; 
+        } 
+        #filings4u-global-footer-root .legal-links { 
+          gap: 16px !important; 
+          width: 100% !important; 
+          justify-content: center !important;
+        } 
+        #filings4u-global-footer-root .trust-badge { 
+          width: 100% !important; 
+          text-align: center !important; 
+          box-sizing: border-box !important; 
+        } 
+      } 
+    `; 
+  } 
 })();
 
 
-/* Part 2: Bottom Legal Bar, Copyright Normalization & Floating Button Styles */
-(function() {
-    const styleSheet = document.getElementById("filings4u-footer-styles");
-    if (styleSheet) {
-        styleSheet.textContent += `
-            #filings4u-global-footer-root .footer-bottom {
-                max-width: 1450px;
-                margin: 0 auto;
-                padding: 30px 40px;
-                border-top: 1px solid rgba(255, 255, 255, 0.08);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 24px;
-                box-sizing: border-box;
-                color: #94a3b8;
-            }
-            
-            /* TARGETS COPYRIGHT RE-ALIGNMENT TO PRECISESLY MATCH ADJACENT TEXT LINKS */
-            #filings4u-global-footer-root .footer-bottom-copyright,
-            #filings4u-global-footer-root .footer-bottom span,
-            #filings4u-global-footer-root .footer-bottom div p {
-                color: #94a3b8 !important;
-                font-size: 0.85rem !important;
-                font-weight: 400 !important;
-                line-height: 1.5 !important;
-                letter-spacing: normal !important;
-            }
 
-            #filings4u-global-footer-root .legal-links {
-                display: flex;
-                gap: 24px;
-                flex-wrap: wrap;
-            }
-            #filings4u-global-footer-root .legal-links a {
-                color: #94a3b8;
-                text-decoration: none;
-                font-size: 0.85rem;
-                font-weight: 400;
-                transition: color 0.2s ease;
-            }
-            #filings4u-global-footer-root .legal-links a:hover {
-                color: #10b981;
-            }
-            #filings4u-global-footer-root .scroll-to-top-btn {
-                position: fixed;
-                bottom: 30px;
-                right: -60px;
-                width: 44px;
-                height: 44px;
-                background: #10b981;
-                color: #ffffff;
-                border: none;
-                border-radius: 50%;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-                transition: all 0.3s ease;
-                z-index: 9999;
-            }
-            #filings4u-global-footer-root .scroll-to-top-btn.visible {
-                right: 30px;
-            }
-            #filings4u-global-footer-root .scroll-to-top-btn:hover {
-                background: #0e9f6e;
-                transform: translateY(-2px);
-            }
-            
-            /* MOBILE ADAPTATION OVERRIDES MATCHING YOUR PRODUCTION SCHEMAS */
-            @media (max-width: 768px) {
-                #filings4u-global-footer-root .footer-container {
-                    padding: 50px 24px 30px 24px !important;
-                    flex-direction: column !important;
-                    gap: 30px !important;
-                }
-                #filings4u-global-footer-root .footer-brand {
-                    max-width: 100% !important;
-                }
-                #filings4u-global-footer-root .footer-bottom {
-                    padding: 30px 24px !important;
-                    flex-direction: column !important;
-                    align-items: center !important;
-                    text-align: center !important;
-                    gap: 20px !important;
-                }
-                #filings4u-global-footer-root .footer-bottom-copyright,
-                #filings4u-global-footer-root .footer-bottom span {
-                    text-align: center !important;
-                    width: 100% !important;
-                    display: block !important;
-                }
-                #filings4u-global-footer-root .legal-links {
-                    gap: 16px !important;
-                    width: 100%;
-                    justify-content: center !important;
-                }
-                #filings4u-global-footer-root .trust-badge {
-                    width: 100%;
-                    text-align: center;
-                    box-sizing: border-box;
-                }
-            }
-        `;
-    }
-})();
 
 
 /* Part 3: Responsive Footer Structure & Social SVG Integration */

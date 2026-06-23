@@ -327,3 +327,36 @@
     color: #ffffff !important;
   }
 }
+
+
+/* === MOBILE DRAWER STATE: TIGHTEN LINK SPACING === */
+@media (max-width: 991px) {
+  /* Shrinks space on standard top-level mobile links */
+  .nav-links > a:not(.mobile-toggle-btn) { 
+    padding: 8px 10px !important; 
+  }
+
+  /* Shrinks space on top-level dropdown trigger headers */
+  .nav-item-dropdown > a { 
+    padding: 8px 10px !important; 
+  }
+
+  /* Shrinks space around sub-menu column titles */
+  .mega-column .column-title { 
+    margin-top: 8px !important; 
+    padding: 0 0 3px 0 !important; 
+  }
+
+  /* Shrinks space on individual interior submenu link items */
+  .mega-column a { 
+    padding: 6px 0 !important; 
+  }
+
+  /* Pulls the interior dropdown container tighter when expanded */
+  .nav-item-dropdown.mobile-open .dropdown-content, 
+  .nav-item-dropdown.mobile-open .mega-panel-two-col, 
+  .nav-item-dropdown.mobile-open .mega-panel-three-col { 
+    padding: 10px 12px !important; 
+    margin-top: 2px !important; 
+  }
+}
