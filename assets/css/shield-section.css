@@ -1,32 +1,123 @@
 /**
  * filings4u Platform Architecture
- * Module: shield-section.css (Isolated Section 5 Security Shield Layout)
+ * Module: shield-section.css (Part 1 - Main Structures)
  */
 
-.sec-hero-main-container { position: relative; background-color: #0a1f44 !important; padding: 80px 0 !important; overflow: hidden; font-family: system-ui, sans-serif; }
-.sec-vector-dots-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px; }
-.sec-max-width-alignment-guard { max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box; position: relative; z-index: 10; }
-.sec-hero-grid { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: space-between; }
-.sec-hero-col { flex: 1; min-width: 320px; box-sizing: border-box; }
-.sec-hero-col h2 { color: #ffffff !important; font-size: 2.3rem !important; font-weight: 800 !important; line-height: 1.2 !important; letter-spacing: -0.5px !important; }
-.sec-hero-col p { font-size: 0.95rem !important; line-height: 1.6 !important; font-weight: 400 !important; color: #94a3b8 !important; }
+.sec-hero-main-container { 
+  position: relative !important; 
+  background-color: #0a1f44 !important; 
+  padding: 60px 0 !important; /* FIXED: Padding adjusted down to 60px to perfectly match Section 4 metrics */
+  overflow: hidden !important; 
+  font-family: system-ui, sans-serif !important; 
+} 
 
-@media (max-width: 768px) {
-    .sec-max-width-alignment-guard { padding: 0 20px !important; }
-    .sec-hero-main-container { padding: 40px 0 !important; }
-    .sec-hero-grid { flex-direction: column !important; gap: 30px !important; }
-    .sec-hero-col { width: 100% !important; text-align: left !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; }
-    
-    /* Absolute Content Stacking: Graphics Box up, Copy Box down */
-    .sec-hero-grid > .sec-hero-col:first-child,
-    .sec-hero-grid > article,
-    .sec-hero-grid > div:has(h2) { order: 2 !important; } /* Text column down */
-    
-    .sec-hero-grid > .sec-hero-col:last-child,
-    .sec-hero-grid > aside,
-    .sec-hero-grid > div:has(img) { order: 1 !important; }  /* Image column up */
-    
-    .sec-hero-col h2 { font-size: 2rem !important; line-height: 1.2 !important; text-align: left !important; }
-    .sec-hero-col p { font-size: 0.95rem !important; line-height: 1.6 !important; text-align: left !important; }
-    .sec-hero-col .btn-main, .sec-hero-col a { align-self: flex-start !important; width: auto !important; }
+.sec-vector-dots-overlay { 
+  position: absolute !important; 
+  top: 0 !important; 
+  left: 0 !important; 
+  width: 100% !important; 
+  height: 100% !important; 
+  opacity: 0.03 !important; 
+  pointer-events: none !important; 
+  background-image: radial-gradient(#ffffff 1px, transparent 1px) !important; 
+  background-size: 20px 20px !important; 
+} 
+
+.sec-max-width-alignment-guard { 
+  max-width: 1450px !important; 
+  margin: 0 auto !important; 
+  padding: 0 40px !important; 
+  box-sizing: border-box !important; 
+  position: relative !important; 
+  z-index: 10 !important; 
+} 
+
+/* FIXED TYPE: Swapped flex layouts for the exact launchpad dynamic grid matrix formula */
+.sec-hero-grid { 
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 60px !important; /* FIXED: Expanded gap distance to 60px to match Section 4 gutters */
+  align-items: center !important; 
+  width: 100% !important;
+  box-sizing: border-box !important;
+} 
+
+.sec-hero-col { 
+  width: 100% !important;
+  box-sizing: border-box !important; 
+} 
+
+/**
+ * filings4u Platform Architecture
+ * Module: shield-section.css (Part 2 - Text & Responsive)
+ */
+
+.sec-hero-col h2 { 
+  color: #ffffff !important; 
+  font-size: 2.5rem !important; /* FIXED: Boosted layout typography to match launchpad titles */
+  font-weight: 900 !important; /* FIXED: Bolded up to ultra-heavy 900 weight profiles */
+  line-height: 1.15 !important; 
+  letter-spacing: -0.5px !important; 
+  margin: 0 0 18px 0 !important;
+} 
+
+.sec-hero-col p { 
+  font-size: 0.95rem !important; 
+  line-height: 1.6 !important; 
+  font-weight: 400 !important; 
+  color: #94a3b8 !important; 
+  margin: 0 0 28px 0 !important;
+} 
+
+.sec-hero-col a {
+  color: #10b981 !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  font-size: 1rem !important;
+  display: inline-block !important;
+  align-self: flex-start !important;
+}
+
+/* === MOBILE SCREEN RESPONSIVE BREAKDOWNS (max-width: 768px) === */
+@media (max-width: 768px) { 
+  .sec-max-width-alignment-guard { 
+    padding: 0 20px !important; 
+  } 
+  
+  .sec-hero-main-container { 
+    padding: 40px 0 !important; 
+  } 
+  
+  /* GRID DROPS DOWN TO A RE-ALIGNED SINGLE LAYER STREAM */
+  .sec-hero-grid { 
+    grid-template-columns: 1fr !important; 
+    gap: 30px !important; 
+  } 
+  
+  .sec-hero-col { 
+    text-align: left !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+    align-items: flex-start !important; 
+  } 
+  
+  /* FIXED ABSOLUTE CONTENT STACKING MATRICES: BRINGS GRAPHICS TO THE TOP EDGE */
+  .sec-hero-grid > div:last-child { 
+    order: 2 !important; /* Forces copy text row to order 2 (bottom) */
+  } 
+  
+  .sec-hero-grid > div:first-child { 
+    order: 1 !important; /* Forces image container box to order 1 (top) */
+  } 
+  
+  .sec-hero-col h2 { 
+    font-size: 1.8rem !important; 
+    line-height: 1.2 !important; 
+  } 
+  
+  .sec-hero-col p { 
+    font-size: 0.95rem !important; 
+    line-height: 1.6 !important; 
+    margin-bottom: 20px !important;
+  } 
 }

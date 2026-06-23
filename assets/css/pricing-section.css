@@ -120,7 +120,6 @@
 
 /* FIXED VISUAL ACCENT: High-visibility 'Most Popular' horizontal banner pill alignment rules */
 .pricing-premium-card.popular-glow::before {
-  content: "Most Popular" !important;
   position: absolute !important;
   top: -14px !important;
   left: 50% !important;

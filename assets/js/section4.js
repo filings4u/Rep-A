@@ -99,9 +99,9 @@ function executeLaunchpadCompiler(zone, displayTitle, displaySlug, metaDataRecor
                         Startup Launchpad. <br><span style="color: #10b981;">Built For Scale.</span>
                     </h2>
                     
-                    <p style="color: #0a1f44; font-weight: 700; font-size: 1.05rem; margin: 0 0 12px 0; line-height: 1.4;">Turn your business idea into an officially recognized state legal entity overnight.</p>
+                    <p style="color: #0a1f44; font-weight: 700; font-size: 1.0rem; margin: 0 0 12px 0; line-height: 1.4;">Turn your business idea into an officially recognized state legal entity overnight.</p>
                     
-                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.6; margin: 0 0 28px 0;">Accelerate your early-stage venture with robust entity setup frameworks built for founders. We automate formations, corporate bylaw preparation, tax ID filings (EIN), and state registry submissions for your active ${displayTitle} pipeline.</p>
+                    <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0 0 28px 0;">Accelerate your early-stage venture with robust entity setup frameworks built for founders. We automate formations, corporate bylaw preparation, tax ID filings (EIN), and state registry submissions for your active ${displayTitle} pipeline.</p>
                     
                     <a href="get-started.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 1rem; display: inline-block; align-self: flex-start;">Launch Your Startup &rarr;</a>
                 </div>
