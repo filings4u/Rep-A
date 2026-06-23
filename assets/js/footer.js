@@ -16,14 +16,16 @@
       #${targetConfig.elementId} .footer-container { max-width: 1450px; margin: 0 auto; padding: 80px 40px 50px 40px; display: flex; flex-wrap: wrap; gap: 40px; box-sizing: border-box; } 
       #${targetConfig.elementId} .footer-brand { flex: 2; min-width: 280px; box-sizing: border-box; } 
       #${targetConfig.elementId} .footer-brand p { color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin: 20px 0 0 0; max-width: 320px; } 
-      #${targetConfig.elementId} .footer-col { flex: 1; min-width: 180px; box-sizing: border-box; } 
+      
+      /* NEW ISOLATED DESKTOP MATRIX LINK WRAPPER */
+      #${targetConfig.elementId} .footer-links-matrix { flex: 4; display: flex; flex-wrap: wrap; gap: 40px; box-sizing: border-box; }
+      #${targetConfig.elementId} .footer-col { flex: 1; min-width: 160px; box-sizing: border-box; } 
       #${targetConfig.elementId} .footer-col h4 { color: #ffffff; font-size: 1rem; font-weight: 700; margin: 0 0 16px 0; text-transform: uppercase; letter-spacing: 0.5px; } 
       #${targetConfig.elementId} .footer-col ul { list-style: none; padding: 0; margin: 0; } 
-      #${targetConfig.elementId} .footer-col li { margin-bottom: 6px !important; } /* Tighter vertical margins between link elements */ 
+      #${targetConfig.elementId} .footer-col li { margin-bottom: 6px !important; } 
       #${targetConfig.elementId} .footer-col a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: color 0.2s ease; } 
       #${targetConfig.elementId} .footer-col a:hover { color: #10b981; } 
 
-      /* === REPAIRED FOOTER BOTTOM STRETCH BAR COMPONENT === */
       #${targetConfig.elementId} .footer-bottom { max-width: 1450px !important; width: 100% !important; min-width: 0 !important; margin: 0 auto !important; padding: 30px 40px !important; border-top: 1px solid rgba(255, 255, 255, 0.08) !important; display: flex !important; justify-content: space-between !important; align-items: center !important; flex-wrap: wrap !important; gap: 24px !important; box-sizing: border-box !important; color: #94a3b8 !important; } 
       #${targetConfig.elementId} .footer-bottom-copyright, #${targetConfig.elementId} .footer-bottom span, #${targetConfig.elementId} .footer-bottom div p, #${targetConfig.elementId} .trust-badge, #${targetConfig.elementId} .trust-badge span, #${targetConfig.elementId} .legal-links, #${targetConfig.elementId} .legal-links a { color: #94a3b8 !important; font-size: 0.85rem !important; font-weight: 400 !important; line-height: 1.5 !important; letter-spacing: normal !important; } 
       #${targetConfig.elementId} .legal-links { display: flex !important; gap: 24px !important; flex-wrap: wrap !important; } 
@@ -33,16 +35,19 @@
       #${targetConfig.elementId} .scroll-to-top-btn.visible { right: 30px !important; } 
       #${targetConfig.elementId} .scroll-to-top-btn:hover { background: #0e9f6e !important; transform: translateY(-2px) !important; } 
 
-      /* === RESPONSIVE CODES FOR MOBILE VIEWPORTS === */
+      /* === HIGH-PERFORMANCE MOBILE OPTIMIZATIONS (BELOW 768PX) === */
       @media (max-width: 768px) { 
         #${targetConfig.elementId} .footer-container { display: flex !important; flex-direction: column !important; padding: 50px 24px 30px 24px !important; gap: 35px !important; } 
         #${targetConfig.elementId} .footer-brand { max-width: 100% !important; text-align: left !important; } 
         #${targetConfig.elementId} .footer-brand p { max-width: 100% !important; margin-top: 15px !important; } 
+        
+        /* FIXED ENGINE RULE: FORCE SUB-WRAPPER INTO A 2X2 GRID MATRIX COLD */
+        #${targetConfig.elementId} .footer-links-matrix { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 30px 16px !important; width: 100% !important; }
+        #${targetConfig.elementId} .footer-col { width: 100% !important; min-width: 0 !important; }
+        
         #${targetConfig.elementId} .footer-bottom { width: 100% !important; max-width: 100% !important; padding: 30px 24px !important; flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 20px !important; } 
         #${targetConfig.elementId} .legal-links { gap: 16px !important; width: 100% !important; justify-content: center !important; } 
         #${targetConfig.elementId} .trust-badge { width: 100% !important; text-align: center !important; box-sizing: border-box !important; } 
-        /* STACKS FOUR LINK PACKS INTO A TIGHT 2X2 GRID MATRIX NATIVELY */
-        #${targetConfig.elementId} .footer-col { display: inline-block !important; width: calc(50% - 20px) !important; vertical-align: top !important; margin-bottom: 25px !important; box-sizing: border-box !important; } 
       } 
     `; 
     document.head.appendChild(styleSheet); 
@@ -50,8 +55,7 @@
   window.FILINGS4U_FOOTER_TARGET = targetConfig.elementId; 
 })();
 
-
-/* Part 3: Responsive Footer Structure & Social SVG Integration */
+/* Part 2: Responsive Footer Structure & Social SVG Integration */
 function renderDynamicGlobalCorporateFooter(overrideTargetId) {
   try {
     const targetId = overrideTargetId || window.FILINGS4U_FOOTER_TARGET || "filings4u-global-footer-root";
@@ -64,6 +68,7 @@ function renderDynamicGlobalCorporateFooter(overrideTargetId) {
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
         
         <div class="footer-container">
+          <!-- BRAND IDENTIFICATION CELL PANEL -->
           <div class="footer-brand">
             <a href="index.html" style="display: inline-block; text-decoration: none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
               <img src="images/logo-white.png" alt="filings4u" style="height: 48px !important; width: auto !important; object-fit: contain;">
@@ -85,48 +90,51 @@ function renderDynamicGlobalCorporateFooter(overrideTargetId) {
             </div>
           </div>
           
-          <div class="footer-col">
-            <h4>Formations</h4>
-            <ul>
-              <li><a href="llc-formation.html">LLC Formation</a></li>
-              <li><a href="corporations.html">Corporations</a></li>
-              <li><a href="nonprofits.html">Non-Profits</a></li>
-              <li><a href="registered-agent.html">Registered Agent</a></li>
-              <li><a href="employer-id-ein.html">Tax ID (EIN)</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-col">
-            <h4>Fleet & DOT</h4>
-            <ul>
-              <li><a href="ucr-registration.html">UCR Registration</a></li>
-              <li><a href="ifta-registration.html">IFTA Filings</a></li>
-              <li><a href="trucker-authority.html">DOT Authority</a></li>
-              <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li>
-              <li><a href="heavy-use-tax-2290.html">Form 2290</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-col">
-            <h4>Tax & Filings</h4>
-            <ul>
-              <li><a href="federal-tax.html">Federal Income Tax</a></li>
-              <li><a href="state-tax.html">State Income Tax</a></li>
-              <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li>
-              <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li>
-              <li><a href="franchise-tax.html">Franchise Tax Filing</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-col">
-            <h4>Support</h4>
-            <ul>
-              <li><a href="https://filings4u.com">Client Portal</a></li>
-              <li><a href="compliance.html">Compliance Hub</a></li>
-              <li><a href="contact.html">Contact Experts</a></li>
-              <li><a href="annual-reports.html">Annual Reports</a></li>
-              <li><a href="blog.html">Resource Library</a></li>
-            </ul>
+          <!-- FIXED COMPILER LOOP: Dynamic sub-grid matrix isolates links and unlocks 2x2 stacking on mobile -->
+          <div class="footer-links-matrix">
+            <div class="footer-col">
+              <h4>Formations</h4>
+              <ul>
+                <li><a href="llc-formation.html">LLC Formation</a></li>
+                <li><a href="corporations.html">Corporations</a></li>
+                <li><a href="nonprofits.html">Non-Profits</a></li>
+                <li><a href="registered-agent.html">Registered Agent</a></li>
+                <li><a href="employer-id-ein.html">Tax ID (EIN)</a></li>
+              </ul>
+            </div>
+            
+            <div class="footer-col">
+              <h4>Fleet & DOT</h4>
+              <ul>
+                <li><a href="ucr-registration.html">UCR Registration</a></li>
+                <li><a href="ifta-registration.html">IFTA Filings</a></li>
+                <li><a href="trucker-authority.html">DOT Authority</a></li>
+                <li><a href="process-agents-boc-3.html">BOC-3 Filing</a></li>
+                <li><a href="heavy-use-tax-2290.html">Form 2290</a></li>
+              </ul>
+            </div>
+            
+            <div class="footer-col">
+              <h4>Tax & Filings</h4>
+              <ul>
+                <li><a href="federal-tax.html">Federal Income Tax</a></li>
+                <li><a href="state-tax.html">State Income Tax</a></li>
+                <li><a href="sales-tax-registration.html">Sales Tax Registration</a></li>
+                <li><a href="payroll-tax-940-941.html">Payroll Tax (940/941)</a></li>
+                <li><a href="franchise-tax.html">Franchise Tax Filing</a></li>
+              </ul>
+            </div>
+            
+            <div class="footer-col">
+              <h4>Support</h4>
+              <ul>
+                <li><a href="https://filings4u.com">Client Portal</a></li>
+                <li><a href="compliance.html">Compliance Hub</a></li>
+                <li><a href="contact.html">Contact Experts</a></li>
+                <li><a href="annual-reports.html">Annual Reports</a></li>
+                <li><a href="blog.html">Resource Library</a></li>
+              </ul>
+            </div>
           </div>
         </div>
         
@@ -160,7 +168,6 @@ function renderDynamicGlobalCorporateFooter(overrideTargetId) {
   }
 }
 
-/* Part 4: Window Scroll Event Engine & Global Module Binding */
 function setupFooterScrollLogic(zone) {
   const scrollBtn = zone.querySelector("#scrollToTopBtn");
   if (!scrollBtn) return;
