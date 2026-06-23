@@ -93,7 +93,7 @@ function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTi
     // 1. Output the static structured layout skeleton containers cleanly
     zone.innerHTML = `
     <main class="page-container" style="background: #ffffff; padding: 15px 0 10px 0 !important; margin: 0 !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; display: block;">
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 80px 50px 40px !important; box-sizing: border-box !important;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1470px !important; margin: 0 auto !important; padding: 80px 50px 40px !important; box-sizing: border-box !important;">
             <div class="responsive-hero-grid">
                 
                 <!-- TEXT COLUMN LAYER CONTAINER CELL -->
