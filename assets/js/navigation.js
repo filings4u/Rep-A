@@ -135,7 +135,7 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
             </div>
         </div>
         
-        <a href="https://filings4u.com" class="btn-client-portal">Client Portal</a>
+        <a href="https://portal.filings4u.com/client-dashboard.html" class="btn-client-portal">Client Portal</a>
         `;
         
         linksContainer.innerHTML = fullMenuHTML;

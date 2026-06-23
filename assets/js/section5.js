@@ -12,34 +12,22 @@
     const styleSheet = document.createElement("style"); 
     styleSheet.id = targetConfig.styleId; 
     styleSheet.textContent = ` 
-      /* UNIFIED SECURITY MAIN BACKGROUND WRAPPER CONTAINER */ 
-      #${targetConfig.elementId} .sec-hero-main-container { 
-        position: relative !important; 
-        background-color: #0a1f44 !important; 
-        padding: 60px 0 !important; 
-        overflow: hidden !important; 
-      } 
-      #${targetConfig.elementId} .sec-vector-dots-overlay { 
-        position: absolute !important; 
-        top: 0 !important; 
-        left: 0 !important; 
-        width: 100% !important; 
-        height: 100% !important; 
-        opacity: 0.03 !important; 
-        pointer-events: none !important; 
-        background-image: radial-gradient(#ffffff 1px, transparent 1px) !important; 
-        background-size: 20px 20px !important; 
-      } 
+      #${targetConfig.elementId} .sec-hero-main-container { position: relative !important; background-color: #0a1f44 !important; padding: 60px 0 !important; overflow: hidden !important; } 
+      #${targetConfig.elementId} .sec-vector-dots-overlay { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; opacity: 0.03 !important; pointer-events: none !important; background-image: radial-gradient(#ffffff 1px, transparent 1px) !important; background-size: 20px 20px !important; } 
       
-      /* RIGID DYNAMIC GRID STRUCTURE COPIED FROM SECTION 4 */ 
+      /* RIGID DYNAMIC DESKTOP GRID MATRIX */ 
       #${targetConfig.elementId} .sec-hero-grid { 
         display: grid !important; 
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important; 
+        grid-template-columns: repeat(2, 1fr) !important; /* Locks down perfect 50/50 balance */
         gap: 60px !important; 
         align-items: center !important; 
         width: 100% !important; 
         box-sizing: border-box !important; 
       } 
+      
+      /* DESKTOP DESIRED POSITION: FORCE IMAGE (2ND IN DOM) LEFT, TEXT (1ST IN DOM) RIGHT */
+      #${targetConfig.elementId} .sec-hero-grid > div:first-child { order: 2 !important; } /* Text moves right */
+      #${targetConfig.elementId} .sec-hero-grid > div:last-child { order: 1 !important; }  /* Image moves left */
       
       /* RESPONSIVE MOBILE OPTIMIZATIONS ENHANCED COPIED FROM SECTION 4 */ 
       @media (max-width: 991px) { 
@@ -47,9 +35,9 @@
         #${targetConfig.elementId} h2 { font-size: 1.8rem !important; } 
         #${targetConfig.elementId} .sec-hero-grid { grid-template-columns: 1fr !important; gap: 30px !important; } 
         
-        /* STACKING ORDER LOGIC COPIED FROM SECTION 4: IMAGE ON TOP */ 
-        #${targetConfig.elementId} .sec-hero-grid > div:last-child { order: 1 !important; } 
-        #${targetConfig.elementId} .sec-hero-grid > div:first-child { order: 2 !important; } 
+        /* MOBILE STACKING ORDER: FORCE IMAGE (2ND IN DOM) ON TOP, TEXT (1ST IN DOM) ON BOTTOM */ 
+        #${targetConfig.elementId} .sec-hero-grid > div:last-child { order: 1 !important; }  /* Image to top */ 
+        #${targetConfig.elementId} .sec-hero-grid > div:first-child { order: 2 !important; } /* Text to bottom */ 
       } 
     `; 
     document.head.appendChild(styleSheet); 
@@ -81,25 +69,23 @@ function renderSecurityInfrastructurePage(overrideTargetId, metaDataRecord) {
 }
 window.renderMasterTrustShieldMatrix = renderSecurityInfrastructurePage;
 
-
 /* Part 3: Responsive Security Shield Template HTML Compiler */
 function executeSecurityCompiler(zone, displayTitle, displaySlug, metaDataRecord) {
   const resolvedImageSrc = (metaDataRecord && metaDataRecord.secfImage) ? metaDataRecord.secfImage : "images/" + displaySlug + "-secf.jpg";
   
   zone.innerHTML = `
-    <section style="background: #0a1f44; padding: 60px 0; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; margin: 0 !important; position: relative; overflow: hidden;">
+    <main class="sec-hero-main-container" style="box-sizing: border-box; margin: 0 !important; display: block;">
+      <!-- White Vector Dots Background Overlay -->
       <div class="sec-vector-dots-overlay"></div>
       
       <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 0 40px !important; box-sizing: border-box !important; position: relative; z-index: 10;">
         <div class="sec-hero-grid">
           
-          <!-- CONTENT ARTIFACT BLOCK LAYER (LEFT SIDE IN DOM FLOW - STACKS ON BOTTOM ON MOBILE) -->
+          <!-- CONTENT ARTIFACT BLOCK LAYER (DESKTOP: RIGHT SIDE / MOBILE: BOTTOM) -->
           <div style="width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center;">
             <span style="color: #10b981; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.08); padding: 6px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.15); width: fit-content; align-self: flex-start;">Guaranteed Audit Protection</span>
             
-            <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">
-              Institutional Shield. <br><span style="color: #10b981;">Never Miss A Filing.</span>
-            </h2>
+            <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 900; margin: 0 0 18px 0; line-height: 1.15; letter-spacing: -0.5px;">Institutional Shield. <br><span style="color: #10b981;">Never Miss A Filing.</span></h2>
             
             <p style="color: #cbd5e1; font-weight: 700; font-size: 1.0rem; margin: 0 0 12px 0; line-height: 1.4;">Active database synchronization safeguards your status across state lines.</p>
             
@@ -108,14 +94,14 @@ function executeSecurityCompiler(zone, displayTitle, displaySlug, metaDataRecord
             <a href="compliance.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 1rem; display: inline-block; align-self: flex-start;">Explore Security Infrastructure &rarr;</a>
           </div>
 
-          <!-- FLUID VISUAL IMAGE CONTAINER (RIGHT SIDE IN DOM FLOW - STACKS ON TOP ON MOBILE) -->
+          <!-- FLUID VISUAL IMAGE CONTAINER (DESKTOP: LEFT SIDE / MOBILE: TOP) -->
           <div style="display: flex; justify-content: center; width: 100%;">
             <img src="${resolvedImageSrc}" alt="${displayTitle} Protection Asset" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.removeAttribute('onerror'); this.src='images/regulatory-compliance.jpg';">
           </div>
 
         </div>
       </div>
-    </section>
+    </main>
   `;
 }
 
