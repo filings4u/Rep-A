@@ -2596,63 +2596,193 @@ footer a[href*="roselandcompanies.com"] {
   }
 
 
-  /* ==========================================================================
-   RESPONSIVE DESIGN BREAKENGINE OVERRIDES
-   ========================================================================== */
-@media screen and (max-width: 1200px) {
-  .faq-layout-split {
-    gap: 50px;
-  }
-  .metrics-dashboard-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+
+
+
+  /** 
+ * filings4u Platform Architecture 
+ * Module: master-mobile.css (Part 1 - Hero & Metrics Board Responsiveness) 
+ */ 
+@media (max-width: 991px) { 
+    /* 1. UNIVERSAL CANVAS ALIGNMENT BUFFERS */ 
+    .site-width-alignment-guard, .prgrid-container { padding: 0 20px !important; } 
+    
+    /* 2. TWIN-COLUMN HERO MOBILE DECONSTRUCTION */ 
+    #filings4u-global-hero-root main { padding: 40px 0 20px 0 !important; } 
+    #filings4u-global-hero-root .responsive-hero-grid { flex-direction: column !important; gap: 35px !important; margin-top: 0 !important; } 
+    #filings4u-global-hero-root .hero-image-container { order: 1 !important; max-width: 100% !important; width: 100% !important; height: 240px !important; padding: 0 !important; } 
+    #filings4u-global-hero-root .content-area { order: 2 !important; width: 100% !important; padding: 0 !important; text-align: center !important; align-items: center !important; } 
+    #filings4u-global-hero-root .hero-headline { font-size: 2.1rem !important; line-height: 1.2 !important; text-align: center !important; } 
+    #filings4u-global-hero-root .content-area p { font-size: 1rem !important; text-align: center !important; margin-bottom: 24px !important; } 
+    #filings4u-global-hero-root .f4u-hero-action-anchor { width: 100% !important; box-sizing: border-box !important; text-align: center !important; } 
+    
+    /* 3. DYNAMIC SYSTEM METRICS FOUR-CARD GRID PANEL RESET */ 
+    .system-metrics-master-section { padding: 50px 0 !important; } 
+    .metrics-grid-header-block { margin-bottom: 35px !important; } 
+    .metrics-main-title { font-size: 1.8rem !important; } 
+    .metrics-responsive-grid { grid-template-columns: 1fr !important; /* Stack cards vertically on phones */ gap: 20px !important; } 
+    .metric-dashboard-card { padding: 24px !important; } 
 }
 
-@media screen and (max-width: 767px) {
-  .site-width-alignment-guard, 
-  .page-container { 
-    padding: 0 24px; 
-  }
+/** 
+ * filings4u Platform Architecture 
+ * Module: master-mobile.css (Part 2 - Pricing Cards, Content Checklists & Footer Grid) 
+ */ 
+@media (max-width: 991px) { 
+    /* 1. PREMIUM 3-CARD PRICING LAYOUT RESPONSIVENESS */ 
+    .pricing-premium-card { padding: 35px 24px !important; /* Tighten internal cell cushions */ margin-bottom: 15px !important; } 
+    .pricing-premium-card.popular-glow { animation: none !important; /* Kill the subtle desktop pulse to keep phone scrolls smooth */ box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15) !important; } 
+    .pricing-premium-card h3 { font-size: 1.35rem !important; } 
+    .pricing-premium-card div span { font-size: 2.4rem !important; /* Scale pricing down for mobile displays */ } 
+    .f4u-pricing-action-btn { padding: 14px 20px !important; } 
+    
+    /* 2. DYNAMIC LAYOUT SUBPAGE GRID RESETS */ 
+    .metrics-responsive-grid, .features-responsive-grid, .processing-packages-grid, #website-package-pricing-cards-root > div, #pricing-framework-target > div { grid-template-columns: 1fr !important; /* Force all multi-column matrices to stack cleanly */ gap: 24px !important; } 
+    
+    /* 3. 44-SERVICE CHECKS MATRIX (Privacy, Terms, and About Sheets) */ 
+    div[style*="columns: 2"], div[style*="-webkit-columns: 2"], div[style*="-moz-columns: 2"] { columns: 1 !important; /* Undo horizontal splits on phone viewports */ -webkit-columns: 1 !important; -moz-columns: 1 !important; gap: 0 !important; padding: 16px !important; } 
+    div[style*="columns: 1"] ul li { font-size: 0.82rem !important; margin-bottom: 12px !important; } 
+    
+    /* 4. SPLIT-CONTAINER CONTACT US LAYOUT INTERFACES */ 
+    #contact-content-cards-root > div > div { grid-template-columns: 1fr !important; gap: 40px !important; } 
+    
+    /* 5. DYNAMIC GLOBAL FOOTER COLUMN ADAPTATIONS */ 
+    .footer-grid-matrix { grid-template-columns: 1fr !important; /* Collapse grid into individual vertical segments */ gap: 35px !important; text-align: center !important; } 
+    .footer-column-cell { align-items: center !important; text-align: center !important; } 
+    .footer-column-cell a { margin: 0 auto 12px auto !important; } 
+    .footer-column-cell h4 { margin-bottom: 16px !important; font-size: 0.9rem !important; } 
+    
+    /* Legal Disclosures / Metabar row transformation */ 
+    div[style*="margin-top: 60px"] { margin-top: 40px !important; flex-direction: column !important; justify-content: center !important; text-align: center !important; gap: 15px !important; } 
+    div[style*="margin-top: 60px"] div { justify-content: center !important; gap: 20px !important; } 
+} 
+/* 2. LOGO SIZING PROTECTION */ 
+.logo-link img, nav img.logo, .nav-content-wrapper .logo { height: 38px !important; max-width: 170px !important; width: auto !important; object-fit: contain !important; } 
+
+/* --- RESPONSIVE MOBILE ADAPTATIONS --- */ 
+@media (max-width: 768px) { 
+    .footer-container, .footer-bottom { padding: 0 20px; } 
+    .footer-bottom { flex-direction: column !important; align-items: flex-start !important; gap: 20px; } 
+    .legal-links { width: 100%; justify-content: flex-start; gap: 16px; } 
 }
 
- /* ========================================================================== 
-   30. RESPONSIVE MOBILE ACCORDION & CORE MEDIA OVERRIDES 
-   ========================================================================== */
-@media (max-width: 992px) {
-  /* Compress spacing boundaries safely for mobile viewports */
-  .enterprise-capabilities-section, 
-  .institutional-faq-section, 
-  .enterprise-metrics-section { 
-    padding: 60px 0; 
-  }
-  
-  /* Fall back to linear layout chains instead of multidirectional matrices */
-  .capabilities-matrix-grid, 
-  .faq-layout-split, 
-  .metrics-dashboard-grid { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 32px; 
-  }
-  
-  .section-lead-block h2, 
-  .faq-sticky-sidebar h2 { 
-    font-size: 28px; 
-  }
-  
-  .metrics-header-strip { 
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: 16px; 
-    margin-bottom: 35px; 
-  }
-  
-  .faq-sticky-sidebar { 
-    position: static; 
-  }
-  
-  .capability-cell, 
-  .metric-card-block { 
-    min-height: auto; 
-  }
+@media screen and (max-width: 980px) { 
+    /* --- 1. RESET & BODY RESPONSIVE UTILITIES --- */ 
+    html, body { width: 100%; max-width: 100%; overflow-x: hidden; padding: 0; margin: 0; } 
+    body { display: flex; flex-direction: column; } 
+    a { text-decoration: none; } 
+    
+    /* --- 2. GLOBAL COLUMN LAYOUT STACKING SUITE --- */ 
+    section, .unified-site-section, .feature-section, .pricing-section, .resource-section, .faq-section, .blog-section { width: 100%; max-width: 100%; padding: 40px 20px; box-sizing: border-box; display: block; } 
+    
+    /* Clean Section Modifier States */ 
+    .bg-ice, .resource-section, #system-stats { background-color: var(--ice); } 
+    .bg-navy, .feature-section { background-color: var(--navy); color: var(--white); } 
+    .bg-navy h2, .bg-navy h4, .feature-section h2, .feature-section h4 { color: var(--white); } 
+    .bg-white, .faq-section, .blog-section { background-color: var(--white); } 
+    .page-container, main.page-container { padding-top: 95px; padding-left: 0; padding-right: 0; width: 100%; box-sizing: border-box; } 
+} 
+/* Navigation Active Trigger State Classes */ 
+body.nav-open .nav-links, .nav-links.active { opacity: 1; visibility: visible; left: 0; } 
+/* Close Button Interactivity Element */ 
+.nav-links .mobile-close-btn { position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: var(--navy); font-size: 2rem; cursor: pointer; z-index: 10002; } 
+.nav-links a { font-size: 1.1rem; font-weight: 600; color: var(--navy); width: 100%; text-align: center; display: block; padding: 10px 0; } 
+.nav-item-dropdown { width: 100%; display: block; } 
+
+/* --- FIXED: REMOVE CONTAINER BOXES FROM MAIN MOBILE TITLES --- */ 
+@media screen and (max-width: 991px) { 
+    /* 1. STRIP CONTAINER BOX MARGINS FROM HEADERS */ 
+    .nav-item-dropdown > a, nav .nav-item-dropdown > a, .nav-links .nav-item-dropdown > a, body.nav-open .nav-item-dropdown > a { background: transparent !important; background-color: transparent !important; border: none !important; padding: 14px 10px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; box-shadow: none !important; border-radius: 0 !important; color: #0a1f44 !important; font-weight: 700 !important; text-decoration: none !important; } 
+    /* Formats the arrow indicator icon span loop inside the link text */ 
+    .nav-item-dropdown > a span { margin-left: auto !important; color: #0a1f44 !important; font-size: 0.75rem !important; display: inline-block !important; } 
+    
+    /* 2. REGULAR DYNAMIC MOBILE LIST ACCORDION DROPDOWN ENGINE */ 
+    .nav-item-dropdown .dropdown-content, .nav-item-dropdown .mega-panel-two-col, .nav-item-dropdown .mega-panel-three-col { display: none !important; position: relative !important; top: 0 !important; left: 0 !important; max-height: none !important; overflow: visible !important; background: transparent !important; width: 100% !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; } 
+    /* Active Open State Class */ 
+    .nav-item-dropdown.active-toggle .dropdown-content, .nav-item-dropdown.active-toggle .mega-panel-two-col, .nav-item-dropdown.active-toggle .mega-panel-three-col { display: flex !important; flex-direction: column !important; grid-template-columns: none !important; padding: 0 0 10px 15px !important; margin-top: -50px !important; } 
+    
+    /* 2. FORCE INDIVIDUAL DROPDOWNS TO GROW NATURAL VERTICAL HEIGHT */ .nav-item-dropdown { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; position: relative !important; } 
+    /* 3. ENSURE SUB-MENU CONTENT OPENS AND EXPANDS INTERNALLY */ .nav-item-dropdown.active-toggle .dropdown-content, .nav-item-dropdown.active-toggle .mega-panel-two-col, .nav-item-dropdown.active-toggle .mega-panel-three-col { display: flex !important; flex-direction: column !important; position: relative !important; width: 100% !important; height: auto !important; visibility: visible !important; opacity: 1 !important; } 
+    /* 4. FORCE THE INTERIOR MEGA-COLUMNS TO STACK ON NEW LINES */ .mega-column { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; } 
+    /* 5. INDIVIDUAL LINK ENFORCEMENT RULES */ .mega-column a, .mega-column .column-title { display: block !important; width: 100% !important; height: auto !important; } 
+    /* 6. SECURE PORTAL BUTTON RESPONSIVE PUSH-DOWN */ .nav-links .btn-client-portal, a.btn-client-portal { display: block !important; width: 100% !important; margin-top: auto !important; position: relative !important; }
+} 
+.mobile-toggle-btn { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; position: relative; background: transparent; border: none; font-size: 2.2rem; color: var(--navy, #0a1f44); cursor: pointer; z-index: 10001; padding: 0; margin: 0 0 0 auto; }
+
+/* --- RESPONSIVE HAMBURGER VIEWPORT DISPATCHER --- */ 
+@media (min-width: 992px) { .mobile-toggle-btn, .mobile-close-btn { display: none; visibility: hidden; opacity: 0; } } 
+@media (max-width: 991px) { .mobile-toggle-btn { display: flex; visibility: visible; opacity: 1; } } 
+
+/* --- 3. UNIFIED RIGHT-TO-LEFT DRAWER SYSTEM --- */ 
+@media (max-width: 991px) { 
+    .nav-links { display: none !important; flex-direction: column !important; position: fixed !important; top: 70px !important; right: -100% !important; left: auto !important; width: 85vw !important; max-width: 85vw !important; height: calc(100vh - 70px) !important; background: #ffffff !important; z-index: 99999 !important; overflow-y: auto !important; padding: 24px 20px !important; box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; box-sizing: border-box !important; } 
+} 
+/* ACTIVE SLIDE-IN STATE */ 
+body.nav-open .nav-links, .nav-links.active { display: flex !important; right: 0 !important; left: auto !important; visibility: visible !important; opacity: 1 !important; } 
+.nav-links a { color: #0a1f44 !important; padding: 14px 10px !important; display: block !important; font-size: 1.1rem !important; font-weight: 700 !important; border-bottom: 1px solid #f1f5f9 !important; text-align: left !important; width: 100% !important; box-sizing: border-box !important; } 
+
+/* --- 4. FIXED ACCORDION PANELS OPEN LINK REGULAR MOBILE LAYOUT --- */ 
+.nav-content-wrapper { display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; } 
+.mobile-toggle-btn { margin-left: auto !important; display: flex !important; } 
+.nav-item-dropdown { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; } 
+.nav-item-dropdown .dropdown-content, .nav-item-dropdown .mega-panel-two-col, .nav-item-dropdown .mega-panel-three-col { display: none !important; position: relative !important; top: 0 !important; left: 0 !important; max-height: none !important; overflow: visible !important; background: transparent !important; width: 100% !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; } 
+
+/* ACCORDION OPEN STATE */ 
+.nav-item-dropdown.active-toggle .dropdown-content, .nav-item-dropdown.active-toggle .mega-panel-two-col, .nav-item-dropdown.active-toggle .mega-panel-three-col { display: flex !important; flex-direction: column !important; grid-template-columns: none !important; padding: 15px !important; margin-top: 5px !important; height: auto !important; background: #f8fafc !important; border-bottom-left-radius: 24px !important; border-bottom-right-radius: 24px !important; } 
+.mega-column { display: flex !important; flex-direction: column !important; width: 100% !important; gap: 0 !important; height: auto !important; } 
+.mega-column .column-title { display: block !important; font-size: 0.75rem !important; color: #0a1f44 !important; text-align: left !important; margin-top: 15px !important; padding: 0 !important; border-bottom: none !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; } 
+.mega-column a { display: block !important; color: #0a1f44 !important; font-size: 0.95rem !important; font-weight: 600 !important; padding: 10px 0 !important; text-align: left !important; border-bottom: none !important; width: 100% !important; } 
+.nav-links .btn-client-portal, nav .btn-client-portal, a.btn-client-portal, .btn-client-portal.mobile-portal-lock { color: #ffffff !important; background-color: #0a1f44 !important; display: block !important; width: 100% !important; text-align: center !important; margin-top: 0 !important; margin-bottom: 25px !important; padding: 14px 0 !important; border-radius: 8px !important; font-weight: 700 !important; position: relative !important; order: -1 !important; } 
+
+@media screen and (max-width: 991px) { 
+    body.nav-open .nav-links, .nav-links.active { display: flex !important; flex-direction: column !important; align-items: stretch !important; } 
+} 
+@media (max-width: 991px) { 
+    .nav-links .btn-client-portal { display: block !important; width: 100% !important; text-align: center !important; margin-top: 25px !important; margin-bottom: 0 !important; padding: 14px 0 !important; border-radius: 8px !important; font-weight: 700 !important; position: relative !important; order: 9999 !important; } 
+} 
+
+/* === DESKTOP LAYOUTS (min-width: 992px) === */
+@media (min-width: 992px) { 
+    nav .btn-client-portal, a.btn-client-portal { order: initial !important; margin-top: 0 !important; margin-bottom: 0 !important; display: inline-block !important; } 
+    .nav-links .btn-client-portal, nav .btn-client-portal, a.btn-client-portal { background-color: #0a1f44 !important; color: #ffffff !important; transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important; } 
+    .nav-links .btn-client-portal:hover, nav .btn-client-portal:hover, a.btn-client-portal:hover, .nav-links .btn-client-portal.desktop-portal-hover, nav .btn-client-portal.desktop-portal-hover, a.btn-client-portal.desktop-portal-hover { background: #10b981 !important; background-color: #10b981 !important; color: #ffffff !important; } 
+    .site-footer a[href*="roselandcompanies.com"], footer a[href*="roselandcompanies.com"] { color: #c15254 !important; font-weight: 700 !important; } 
+    .nav-links .nav-item-dropdown, .nav-item-dropdown.static-dropdown { position: relative !important; height: 100% !important; } 
+    nav .dropdown-content.mega-panel-two-col, nav .dropdown-content.mega-panel-three-col, .dropdown-content.mega-panel-two-col, .dropdown-content.mega-panel-three-col { display: none !important; position: absolute !important; top: 100% !important; left: 0 !important; transform: none !important; right: auto !important; width: max-content !important; background: #ffffff !important; border-top: 3px solid #10b981 !important; box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08) !important; border-radius: 0 0 12px 12px !important; padding: 24px 28px !important; gap: 28px !important; z-index: 100000 !important; } 
+    .static-dropdown:hover .dropdown-content.mega-panel-two-col, .static-dropdown:hover .dropdown-content.mega-panel-three-col { display: grid !important; } 
+    nav .dropdown-content.mega-panel-two-col { grid-template-columns: repeat(2, minmax(160px, max-content)) !important; } 
+    nav .dropdown-content.mega-panel-three-col { grid-template-columns: repeat(3, minmax(160px, max-content)) !important; } 
+    .mega-column { flex: 0 0 auto !important; width: max-content !important; min-width: 160px !important; max-width: 200px !important; } 
+    .nav-links .nav-item-dropdown:nth-child(4) .dropdown-content.mega-panel-three-col { left: auto !important; right: 0 !important; gap: 20px !important; } 
+    .footer-container { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 40px; } 
+    .footer-brand { grid-column: auto; max-width: 300px; } 
+    .btn-client-portal { background-color: var(--navy); color: var(--white); transition: var(--transition); } 
+    .btn-client-portal:hover { background-color: var(--emerald); color: var(--white); } 
+    .site-footer a[href*="roselandcompanies.com"], footer a[href*="roselandcompanies.com"] { color: #c15254; font-weight: 700; } 
+    .hero-image-container, aside.hero-image-container, main .hero-image-container { height: 480px !important; max-height: 380px !important; width: 100% !important; overflow: hidden !important; border-radius: 20px !important; } 
+    .hero-image-container img, main .hero-image-container img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center !important; } 
+    .site-footer ul li a, .site-footer .legal-links a { transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important; } 
+    .site-footer ul li a:hover, .site-footer .legal-links a:hover, footer .footer-col ul li a:hover { color: #10b981 !important; } 
+    .page-container, main.page-container { padding-top: 30px !important; padding-bottom: 30px !important; margin-top: 70px !important; height: auto !important; min-height: 0 !important; } 
+    .service-grid { gap: 40px !important; align-items: center !important; } 
+    .content-area { padding: 0 !important; margin: 0 !important; } 
+    .content-area h1 { font-size: 3.2rem !important; line-height: 1.1 !important; margin-bottom: 12px !important; } 
+    .content-area p { font-size: 1.05rem !important; margin-bottom: 20px !important; } 
+    .active-sync-badge-wrapper { margin-bottom: 15px !important; } 
+}
+
+/* === GENERAL MOBILE LAYOUT OVERRIDES (max-width: 1024px & 768px) === */
+@media (max-width: 1024px) { 
+    .nav-content-wrapper { padding: 0 20px; } 
+    .mobile-toggle-btn { display: block; } 
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 24px; box-sizing: border-box; gap: 16px; align-items: flex-start; } 
+    .nav-links.mobile-active { display: flex; } 
+    .dropdown-content { position: static; transform: none; box-shadow: none; border: none; padding: 12px 0 0 16px; flex-direction: column !important; gap: 16px !important; width: 100% !important; } 
+} 
+.mobile-toggle-btn { display: none; background: none; border: none; font-size: 1.8rem; color: #0a1f44; cursor: pointer; padding: 4px; position: relative; z-index: 99999; pointer-events: auto; } 
+@media (max-width: 768px) { 
+    .trust-shield-guard { flex-direction: column !important; align-items: stretch !important; } 
+    .trust-shield-img-col { max-width: 100% !important; } 
+    .capture-inline-form { flex-direction: column !important; padding: 16px !important; gap: 12px !important; } 
+    .capture-submit-btn { padding: 14px 0 !important; width: 100% !important; } 
 }

@@ -90,10 +90,101 @@ window.renderMasterHeroEngine = renderMasterHeroEngine;
 /* Part 2 - Fragment 2 of 2: Preserved Layout DOM innerHTML Compiler */
 function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTitle, displayHeroLead, dynamicHeroImgSrc, computedActionLinkDestination) {
     
-    // 1. Output the static structured layout skeleton containers cleanly
+    // 1. Output the static structured layout skeleton containers with your exact design parameters
     zone.innerHTML = `
+    <style>
+        /* === DESKTOP-ONLY HERO OVERRIDES & IMAGE REPAIR (min-width: 992px) === */
+        @media (min-width: 992px) {
+            #filings4u-global-hero-root .page-container, 
+            #filings4u-global-hero-root main.page-container { 
+                padding-top: 30px !important; 
+                padding-bottom: 30px !important; 
+                margin-top: 70px !important; 
+                height: auto !important; 
+                min-height: 0 !important; 
+            }
+            #filings4u-global-hero-root .responsive-hero-grid,
+            #filings4u-global-hero-root .service-grid { 
+                gap: 40px !important; 
+                align-items: center !important; 
+            }
+            #filings4u-global-hero-root .content-area { 
+                padding: 0 !important; 
+                margin: 0 !important; 
+            }
+            #filings4u-global-hero-root .content-area h1 { 
+                font-size: 3.2rem !important; 
+                line-height: 1.1 !important; 
+                margin-bottom: 12px !important; 
+            }
+            #filings4u-global-hero-root .content-area p { 
+                font-size: 1.05rem !important; 
+                margin-bottom: 20px !important; 
+            }
+            #filings4u-global-hero-root .hero-image-container, 
+            #filings4u-global-hero-root aside.hero-image-container, 
+            #filings4u-global-hero-root main .hero-image-container { 
+                height: 480px !important; 
+                max-height: 380px !important; 
+                width: 100% !important; 
+                overflow: hidden !important; 
+                border-radius: 20px !important; 
+            }
+            #filings4u-global-hero-root .hero-image-container img, 
+            #filings4u-global-hero-root main .hero-image-container img { 
+                width: 100% !important; 
+                height: 100% !important; 
+                object-fit: cover !important; 
+                object-position: center !important; 
+            }
+        }
+
+        /* === MOBILE-ONLY HERO LAYOUT DECONSTRUCTION (max-width: 991px) === */
+        @media (max-width: 991px) {
+            #filings4u-global-hero-root .site-width-alignment-guard { 
+                padding: 0 20px !important; 
+            }
+            #filings4u-global-hero-root main { 
+                padding: 40px 0 20px 0 !important; 
+            }
+            #filings4u-global-hero-root .responsive-hero-grid { 
+                flex-direction: column !important; 
+                gap: 35px !important; 
+                margin-top: 0 !important; 
+            }
+            #filings4u-global-hero-root .hero-image-container { 
+                order: 1 !important; 
+                max-width: 100% !important; 
+                width: 100% !important; 
+                height: 240px !important; 
+                padding: 0 !important; 
+            }
+            #filings4u-global-hero-root .content-area { 
+                order: 2 !important; 
+                width: 100% !important; 
+                padding: 0 !important; 
+                text-align: center !important; 
+                align-items: center !important; 
+            }
+            #filings4u-global-hero-root .hero-headline { 
+                font-size: 2.1rem !important; 
+                line-height: 1.2 !important; 
+                text-align: center !important; 
+            }
+            #filings4u-global-hero-root .content-area p { 
+                font-size: 1rem !important; 
+                text-align: center !important; 
+                margin-bottom: 24px !important; 
+            }
+            #filings4u-global-hero-root .f4u-hero-action-anchor { 
+                width: 100% !important; 
+                box-sizing: border-box !important; 
+                text-align: center !important; 
+            }
+        }
+    </style>
     <main class="page-container" style="background: #ffffff; padding: 15px 0 10px 0 !important; margin: 0 !important; font-family: system-ui, sans-serif; width: 100% !important; max-width: 100% !important; box-sizing: border-box; display: block;">
-        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1470px !important; margin: 0 auto !important; padding: 80px 50px 40px !important; box-sizing: border-box !important;">
+        <div class="site-width-alignment-guard" style="width: 100% !important; max-width: 1450px !important; margin: 0 auto !important; padding: 80px 50px 40px !important; box-sizing: border-box !important;">
             <div class="responsive-hero-grid">
                 
                 <!-- TEXT COLUMN LAYER CONTAINER CELL -->
@@ -124,10 +215,10 @@ function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTi
         pillElement.textContent = displayPillText;
     }
     if (titleElement && displayHeroTitle) {
-        titleElement.innerHTML = displayHeroTitle; // Renders custom emerald spans perfectly
+        titleElement.innerHTML = displayHeroTitle;
     }
     if (leadElement && displayHeroLead) {
-        leadElement.innerHTML = displayHeroLead; // Processes unique text descriptions cleanly
+        leadElement.innerHTML = displayHeroLead;
     }
     if (imgElement && dynamicHeroImgSrc) {
         imgElement.src = dynamicHeroImgSrc;
