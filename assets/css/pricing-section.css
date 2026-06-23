@@ -1,27 +1,162 @@
-/**
- * filings4u Platform Architecture
- * Module: pricing-section.css (Isolated Section 2 Pricing Tiers Layout)
- */
+/** 
+ * filings4u Platform Architecture 
+ * Module: pricing-section.css (Part 1 - Main Structures) 
+ */ 
 
-.platform-pricing-master-section { background: #f8fafc; padding: 80px 0; font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; display: block; margin: 0 !important; border-top: 1px solid #e2e8f0; }
-.pricing-grid-header-block { text-align: center; max-width: 800px; margin: 0 auto 55px auto; }
-.pricing-main-title { color: #0a1f44; font-size: 2.3rem; font-weight: 800; margin: 0 0 14px 0; line-height: 1.2; letter-spacing: -0.5px; }
-.pricing-subtitle { font-size: 0.95rem; line-height: 1.6; font-weight: 400; color: #475569; margin: 0; }
-.pricing-responsive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; align-items: stretch; box-sizing: border-box; }
-.pricing-premium-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 40px 30px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-shadow: 0 4px 6px -1px rgba(10, 31, 68, 0.01); }
-.pricing-premium-card h3 { color: #0a1f44; font-size: 1.3rem; font-weight: 700; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-.pricing-premium-card ul { list-style: none; padding: 0; margin: 0 0 35px 0; display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #f1f5f9; padding-top: 20px; }
-.pricing-premium-card li { font-size: 0.95rem; line-height: 1.6; font-weight: 400; color: #475569; display: flex; align-items: flex-start; }
-.f4u-pricing-action-btn { background: #0a1f44; color: #ffffff; text-decoration: none; padding: 14px 24px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-align: center; display: block; box-shadow: 0 4px 10px rgba(10,31,68,0.15); }
+.platform-pricing-master-section { 
+  background: #f8fafc; 
+  padding: 80px 0; 
+  font-family: system-ui, sans-serif; 
+  width: 100%; 
+  box-sizing: border-box; 
+  display: block; 
+  margin: 0 !important; 
+  border-top: 1px solid #e2e8f0; 
+} 
 
-.pricing-premium-card.popular-glow { border: 2px solid #10b981; box-shadow: 0 20px 25px -5px rgba(16,185,129,0.06); position: relative; overflow: hidden; }
-.pricing-premium-card.popular-glow a { background: #10b981; box-shadow: 0 4px 14px rgba(16,185,129,0.25); }
+.pricing-grid-header-block { 
+  text-align: center; 
+  max-width: 800px; 
+  margin: 0 auto 55px auto; 
+} 
 
-@media (max-width: 991px) {
-    .pricing-premium-card { padding: 35px 24px !important; margin-bottom: 15px !important; }
-    .pricing-premium-card.popular-glow { animation: none !important; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15) !important; }
-    .pricing-premium-card h3 { font-size: 1.05rem !important; }
-    .pricing-premium-card div span { font-size: 2.1rem !important; }
-    .f4u-pricing-action-btn { padding: 14px 20px !important; }
-    .pricing-responsive-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+.pricing-main-title { 
+  color: #0a1f44; 
+  font-size: 2.3rem; 
+  font-weight: 800; 
+  margin: 0 0 14px 0; 
+  line-height: 1.2; 
+  letter-spacing: -0.5px; 
+} 
+
+.pricing-subtitle { 
+  font-size: 0.95rem; 
+  line-height: 1.6; 
+  font-weight: 400; 
+  color: #475569; 
+  margin: 0; 
+} 
+
+.pricing-responsive-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr) !important; /* FIXED: Strict 3-column split matched to your 1450px layout container grid */
+  gap: 30px; 
+  width: 100%; 
+  align-items: stretch; 
+  box-sizing: border-box; 
+} 
+
+.pricing-premium-card { 
+  background: #ffffff; 
+  border: 1px solid #e2e8f0; 
+  border-radius: 14px; 
+  padding: 40px 30px; 
+  box-sizing: border-box; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+  height: 100%; 
+  box-shadow: 0 4px 6px -1px rgba(10, 31, 68, 0.01); 
+} 
+
+.pricing-premium-card h3 { 
+  color: #0a1f44; 
+  font-size: 1.3rem; 
+  font-weight: 700; 
+  margin: 0 0 10px 0; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px; 
+} 
+
+/** 
+ * filings4u Platform Architecture 
+ * Module: pricing-section.css (Part 2 - Features, Buttons & Badge) 
+ */ 
+
+.pricing-premium-card ul { 
+  list-style: none; 
+  padding: 0; 
+  margin: 0 0 35px 0; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 14px; 
+  border-top: 1px solid #f1f5f9; 
+  padding-top: 20px; 
+} 
+
+.pricing-premium-card li { 
+  font-size: 0.95rem; 
+  line-height: 1.6; 
+  font-weight: 500 !important; /* FIXED: Bolded up to match your navy bullet text rules precisely */
+  color: #0a1f44 !important; /* FIXED: Forced premium corporate navy blue color directly on feature bullets */
+  display: flex; 
+  align-items: flex-start; 
+} 
+
+.f4u-pricing-action-btn { 
+  background: #0a1f44; 
+  color: #ffffff; 
+  text-decoration: none; 
+  padding: 14px 24px; 
+  border-radius: 8px; 
+  font-weight: 700; 
+  font-size: 0.95rem; 
+  text-align: center; 
+  display: block; 
+  box-shadow: 0 4px 10px rgba(10,31,68,0.15); 
+} 
+
+.pricing-premium-card.popular-glow { 
+  border: 2px solid #10b981; 
+  box-shadow: 0 20px 25px -5px rgba(16,185,129,0.06); 
+  position: relative; 
+  /* FIXED: Removed overflow: hidden to allow the top badge element to sit on the card frame without clipping */
+} 
+
+.pricing-premium-card.popular-glow a { 
+  background: #10b981; 
+  box-shadow: 0 4px 14px rgba(16,185,129,0.25); 
+}
+
+/* FIXED VISUAL ACCENT: High-visibility 'Most Popular' horizontal banner pill alignment rules */
+.pricing-premium-card.popular-glow::before {
+  content: "Most Popular" !important;
+  position: absolute !important;
+  top: -14px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background: #10b981 !important;
+  color: #ffffff !important;
+  padding: 4px 14px !important;
+  border-radius: 20px !important;
+  font-size: 0.75rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  z-index: 10 !important;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2) !important;
+}
+
+@media (max-width: 991px) { 
+  .pricing-premium-card { 
+    padding: 35px 24px !important; 
+    margin-bottom: 15px !important; 
+  } 
+  .pricing-premium-card.popular-glow { 
+    animation: none !important; 
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15) !important; 
+  } 
+  .pricing-premium-card h3 { 
+    font-size: 1.05rem !important; 
+  } 
+  .pricing-premium-card div span { 
+    font-size: 2.1rem !important; 
+  } 
+  .f4u-pricing-action-btn { 
+    padding: 14px 20px !important; 
+  } 
+  .pricing-responsive-grid { 
+    grid-template-columns: 1fr !important; 
+    gap: 24px !important; 
+  } 
 }
