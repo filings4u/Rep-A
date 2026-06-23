@@ -29,9 +29,11 @@ async function renderMasterSystem() {
         
         let dbRow = null;
 
-           // STATIC SHEET BYPASS FILTER: Skip Supabase if page is a legal document profile
-        const staticLegalPages = ["privacy", "privacy-policy", "terms", "terms-of-service", "refund-policy", "about", "contact"];
+        // STATIC SHEET BYPASS FILTER: Skip Supabase if page is a legal or supplemental profile
+        const staticLegalPages = ["privacy", "privacy-policy", "terms", "terms-of-service", "refund-policy", "about", "contact", "get-started", "mcs-150-update", "ifta-quarterly-returns", "boc-3-amendment"];
         const isStaticLegalSheet = staticLegalPages.includes(cleanPageKey);
+
+
 
 
 
@@ -128,6 +130,20 @@ async function renderMasterSystem() {
                 renderMasterContactEngine("filings4u-contact-root");
             }
         } catch(e) { console.error("Contact split block execution crash:", e); }
+                // MODULE 4-G: MASTER ENTERPRISE GET STARTED PLATFORM PANEL HUB (Only runs on get started page)
+        try {
+            if (typeof renderMasterGetStartedEngine === "function" && document.getElementById("filings4u-get-started-root")) {
+                renderMasterGetStartedEngine("filings4u-get-started-root");
+            }
+        } catch(e) { console.error("Get Started hub text layout execution crash:", e); }
+                // MODULE 4-H: SUPPLEMENTAL FLEET INFRASTRUCTURE DRAWERS (Only runs on your added subpages)
+        try {
+            if (typeof renderMasterLogisticsAdditionsEngine === "function" && document.getElementById("filings4u-logistics-additions-root")) {
+                renderMasterLogisticsAdditionsEngine("filings4u-logistics-additions-root");
+            }
+        } catch(e) { console.error("Logistics additions panel layout execution crash:", e); }
+
+
 
 
 
