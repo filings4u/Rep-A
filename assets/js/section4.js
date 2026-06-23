@@ -103,7 +103,7 @@ function executeLaunchpadCompiler(zone, displayTitle, displaySlug, metaDataRecor
                     
                     <p style="color: #475569; font-size: 1rem; line-height: 1.6; margin: 0 0 28px 0;">Accelerate your early-stage venture with robust entity setup frameworks built for founders. We automate formations, corporate bylaw preparation, tax ID filings (EIN), and state registry submissions for your active ${displayTitle} pipeline.</p>
                     
-                    <a href="formations.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 1rem; display: inline-block; align-self: flex-start;">Launch Your Startup &rarr;</a>
+                    <a href="get-started.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 1rem; display: inline-block; align-self: flex-start;">Launch Your Startup &rarr;</a>
                 </div>
                 
                 <!-- FLUID VISUAL IMAGE CONTAINER -->

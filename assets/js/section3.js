@@ -92,8 +92,8 @@ function executeProductionWebsitePricingCards(zone, targetServiceKey, displayTit
     
     // 1. Array blueprint aligned exactly to your production class names
     var plansConfig = [
-        { key: "starter", name: "Basic", class: "price-card" },
-        { key: "compliance", name: "Elite", class: "price-card featured" },
+        { key: "starter", name: "Starter", class: "price-card" },
+        { key: "compliance", name: "Compliance", class: "price-card featured" },
         { key: "enterprise", name: "Enterprise", class: "price-card" }
     ];
 

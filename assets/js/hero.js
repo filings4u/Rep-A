@@ -90,7 +90,7 @@ window.renderMasterHeroEngine = renderMasterHeroEngine;
 /* Part 2 - Fragment 2 of 2: Preserved Layout DOM innerHTML Compiler */
 function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTitle, displayHeroLead, dynamicHeroImgSrc, computedActionLinkDestination) {
     
-    // 1. Output the static structured layout skeleton containers with your exact design parameters
+    // 1. Output the static structured layout skeleton containers with your corrected left-aligned parameters
     zone.innerHTML = `
     <style>
         /* === DESKTOP-ONLY HERO OVERRIDES & IMAGE REPAIR (min-width: 992px) === */
@@ -103,8 +103,7 @@ function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTi
                 height: auto !important; 
                 min-height: 0 !important; 
             }
-            #filings4u-global-hero-root .responsive-hero-grid,
-            #filings4u-global-hero-root .service-grid { 
+            #filings4u-global-hero-root .responsive-hero-grid, #filings4u-global-hero-root .service-grid { 
                 gap: 40px !important; 
                 align-items: center !important; 
             }
@@ -121,17 +120,14 @@ function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTi
                 font-size: 1.05rem !important; 
                 margin-bottom: 20px !important; 
             }
-            #filings4u-global-hero-root .hero-image-container, 
-            #filings4u-global-hero-root aside.hero-image-container, 
-            #filings4u-global-hero-root main .hero-image-container { 
+            #filings4u-global-hero-root .hero-image-container, #filings4u-global-hero-root aside.hero-image-container, #filings4u-global-hero-root main .hero-image-container { 
                 height: 480px !important; 
                 max-height: 380px !important; 
                 width: 100% !important; 
                 overflow: hidden !important; 
                 border-radius: 20px !important; 
             }
-            #filings4u-global-hero-root .hero-image-container img, 
-            #filings4u-global-hero-root main .hero-image-container img { 
+            #filings4u-global-hero-root .hero-image-container img, #filings4u-global-hero-root main .hero-image-container img { 
                 width: 100% !important; 
                 height: 100% !important; 
                 object-fit: cover !important; 
@@ -163,23 +159,25 @@ function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTi
                 order: 2 !important; 
                 width: 100% !important; 
                 padding: 0 !important; 
-                text-align: center !important; 
-                align-items: center !important; 
+                text-align: left !important; /* FIXED: Force left text alignment */
+                align-items: flex-start !important; /* FIXED: Align pill and button elements to the left */
             }
             #filings4u-global-hero-root .hero-headline { 
                 font-size: 2.1rem !important; 
                 line-height: 1.2 !important; 
-                text-align: center !important; 
+                text-align: left !important; /* FIXED: Force headline left */
             }
             #filings4u-global-hero-root .content-area p { 
                 font-size: 1rem !important; 
-                text-align: center !important; 
+                text-align: left !important; /* FIXED: Force text left */
+                font-weight: 500 !important; /* FIXED: Erase heavy bold text formatting traits */
                 margin-bottom: 24px !important; 
             }
             #filings4u-global-hero-root .f4u-hero-action-anchor { 
-                width: 100% !important; 
+                width: auto !important; /* Let button fit its content instead of full screen stretching */
                 box-sizing: border-box !important; 
                 text-align: center !important; 
+                align-self: flex-start !important;
             }
         }
     </style>

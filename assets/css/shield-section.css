@@ -1,0 +1,32 @@
+/**
+ * filings4u Platform Architecture
+ * Module: shield-section.css (Isolated Section 5 Security Shield Layout)
+ */
+
+.sec-hero-main-container { position: relative; background-color: #0a1f44 !important; padding: 80px 0 !important; overflow: hidden; font-family: system-ui, sans-serif; }
+.sec-vector-dots-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px; }
+.sec-max-width-alignment-guard { max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box; position: relative; z-index: 10; }
+.sec-hero-grid { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: space-between; }
+.sec-hero-col { flex: 1; min-width: 320px; box-sizing: border-box; }
+.sec-hero-col h2 { color: #ffffff !important; font-size: 2.3rem !important; font-weight: 800 !important; line-height: 1.2 !important; letter-spacing: -0.5px !important; }
+.sec-hero-col p { font-size: 0.95rem !important; line-height: 1.6 !important; font-weight: 400 !important; color: #94a3b8 !important; }
+
+@media (max-width: 768px) {
+    .sec-max-width-alignment-guard { padding: 0 20px !important; }
+    .sec-hero-main-container { padding: 40px 0 !important; }
+    .sec-hero-grid { flex-direction: column !important; gap: 30px !important; }
+    .sec-hero-col { width: 100% !important; text-align: left !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; }
+    
+    /* Absolute Content Stacking: Graphics Box up, Copy Box down */
+    .sec-hero-grid > .sec-hero-col:first-child,
+    .sec-hero-grid > article,
+    .sec-hero-grid > div:has(h2) { order: 2 !important; } /* Text column down */
+    
+    .sec-hero-grid > .sec-hero-col:last-child,
+    .sec-hero-grid > aside,
+    .sec-hero-grid > div:has(img) { order: 1 !important; }  /* Image column up */
+    
+    .sec-hero-col h2 { font-size: 2rem !important; line-height: 1.2 !important; text-align: left !important; }
+    .sec-hero-col p { font-size: 0.95rem !important; line-height: 1.6 !important; text-align: left !important; }
+    .sec-hero-col .btn-main, .sec-hero-col a { align-self: flex-start !important; width: auto !important; }
+}

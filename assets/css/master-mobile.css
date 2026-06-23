@@ -43,15 +43,6 @@
     /* 7. SPLIT-CONTAINER CONTACT US LAYOUT INTERFACES */ 
     #contact-content-cards-root > div > div { grid-template-columns: 1fr !important; gap: 40px !important; } 
     
-    /* 8. DYNAMIC GLOBAL FOOTER COLUMN ADAPTATIONS */ 
-    .footer-grid-matrix { grid-template-columns: 1fr !important; gap: 35px !important; text-align: center !important; } 
-    .footer-column-cell { align-items: center !important; text-align: center !important; } 
-    .footer-column-cell a { margin: 0 auto 12px auto !important; } 
-    .footer-column-cell h4 { margin-bottom: 16px !important; font-size: 0.9rem !important; } 
-    
-    /* Legal Disclosures / Metabar row transformation */ 
-    div[style*="margin-top: 60px"] { margin-top: 40px !important; flex-direction: column !important; justify-content: center !important; text-align: center !important; gap: 15px !important; } 
-    div[style*="margin-top: 60px"] div { justify-content: center !important; gap: 20px !important; } 
 
     /* 9. MOBILE NAVIGATION ACCORDION & DRAWER INFRASTRUCTURE */
     body.nav-open .nav-links, .nav-links.active { display: flex !important; right: 0 !important; left: auto !important; visibility: visible !important; opacity: 1 !important; flex-direction: column !important; align-items: stretch !important; } 
@@ -142,20 +133,6 @@
     .content-area p { font-size: 1.05rem !important; margin-bottom: 20px !important; } 
     .active-sync-badge-wrapper { margin-bottom: 15px !important; } 
 }
-
-/* ==========================================================================
-   SECTION D: SITE-WIDE BRANDING ELEMENTS COVENANTS
-   ========================================================================== */
-.logo-link img, nav img.logo, .nav-content-wrapper .logo { height: 38px !important; max-width: 170px !important; width: auto !important; object-fit: contain !important; } 
-.mobile-toggle-btn { display: none; background: none; border: none; font-size: 1.8rem; color: #0a1f44; cursor: pointer; padding: 4px; position: relative; z-index: 99999; pointer-events: auto; } 
-@media (max-width: 1024px) { 
-    .nav-content-wrapper { padding: 0 20px; } 
-    .mobile-toggle-btn { display: block; } 
-    .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 24px; box-sizing: border-box; gap: 16px; align-items: flex-start; } 
-    .nav-links.mobile-active { display: flex; } 
-    .dropdown-content { position: static; transform: none; box-shadow: none; border: none; padding: 12px 0 0 16px; flex-direction: column !important; gap: 16px !important; width: 100% !important; } 
-}
-.site-footer a[href*="roselandcompanies.com"], footer a[href*="roselandcompanies.com"] { color: #c15254 !important; font-weight: 700 !important; }
 
 /**
  * filings4u Platform Architecture
@@ -290,4 +267,140 @@ p, .pricing-subtitle, .metrics-responsive-grid p, .content-area p {
         color: #ffffff !important;
         background-color: #10b981 !important; /* Transitions background cleanly to brand emerald */
     }
+}
+
+
+/**
+ * filings4u Platform Architecture
+ * Module: master.css (Footer Copyright Exact Link Normalization)
+ */
+
+/* Target the copyright string and force it to match your footer links exactly */
+#filings4u-global-footer-root footer div[style*="margin-top"],
+#filings4u-global-footer-root footer span,
+.f4u-responsive-legal-metabar span,
+.f4u-inline-bottom-bar span {
+    color: #c15254 !important; /* Matches your exact footer link color */
+    font-weight: 400 !important; /* Strips away heavy font traits to match your exact regular weight */
+    font-size: 0.85rem !important; /* Keeps the sizing perfectly uniform with adjacent layout items */
+    line-height: 1.5 !important;
+    letter-spacing: normal !important;
+}
+
+/* Ensure tablet and phone layout streams center the text cleanly without changing style tokens */
+@media (max-width: 991px) {
+    #filings4u-global-footer-root footer div[style*="margin-top"] span,
+    #filings4u-global-footer-root .f4u-responsive-legal-metabar span {
+        text-align: center !important;
+        display: block !important;
+        width: 100% !important;
+    }
+}
+
+
+/**
+ * filings4u Platform Architecture
+ * Module: master.css (Mobile Toggle Button Visibility & Alignment Lock)
+ */
+
+/* ==========================================================================
+   GLOBAL NAVIGATION RE-ALIGNMENTS & VISIBILITY SHIELDS
+   ========================================================================== */
+/* 1. DESKTOP SYSTEM BOUNDARIES (min-width: 992px): ABSOLUTELY HIDE HAMBURGER BUTTON */
+@media (max-width: 991px) {
+    .mobile-toggle-btn, 
+    nav .mobile-toggle-btn, 
+    .nav-content-wrapper .mobile-toggle-btn {
+        font-size: 2.2rem !important; /* Hard-locks the icon back to your exact native 2.2rem size */
+        color: #0a1f44 !important; /* Force-binds the color to your brand Navy */
+        min-width: 44px !important; /* Restores touch target boundary blocks */
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+
+/* 2. MOBILE SYSTEM BOUNDARIES (max-width: 991px): FORCE REVEAL ON THE FAR RIGHT EDGE */
+@media (max-width: 991px) {
+    .nav-content-wrapper {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+    
+    .mobile-toggle-btn {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        margin-left: auto !important; /* Forces toggle icon to stay at the extreme right edge */
+        margin-right: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        cursor: pointer !important;
+        z-index: 100001 !important;
+    }
+    
+    nav img.logo, .logo-link, .nav-content-wrapper .logo {
+        margin-right: auto !important; /* Force logo to lock onto the extreme left edge */
+    }
+}
+
+/* ==========================================================================
+   SECTION D: SITE-WIDE BRANDING ELEMENTS COVENANTS
+   ========================================================================== */
+.logo-link img, nav img.logo, .nav-content-wrapper .logo { height: 38px !important; max-width: 170px !important; width: auto !important; object-fit: contain !important; }
+
+@media (max-width: 991px) {
+    .mobile-toggle-btn { display: flex !important; margin-left: auto !important; font-size: 2.2rem !important; color: #0a1f44 !important; background: none; border: none; cursor: pointer; z-index: 99999; pointer-events: auto; }
+}
+@media (min-width: 992px) {
+    .mobile-toggle-btn { display: none !important; }
+}
+
+
+/**
+ * filings4u Platform Architecture
+ * Module: master.css (Site-Wide Paragraph Sizing Unified Control)
+ */
+
+/* ==========================================================================
+   SITE-WIDE UNIFORM PARAGRAPH LOCK (DESKTOP & MOBILE COVENANTS)
+   ========================================================================== */
+/* Force every body description, subpage lead, and card summary text to look identical */
+p, 
+.content-area p, 
+.f4u-hero-lead-node, 
+.sec-hero-col p, 
+.metric-dashboard-card p, 
+.f4u-gs-card p, 
+.pricing-subtitle, 
+.footer-brand p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    font-weight: 500 !important;
+    font-family: system-ui, -apple-system, sans-serif !important;
+    letter-spacing: normal !important;
+    margin-bottom: 20px !important;
+}
+
+/* Maintain crisp dark slate contrast for regular sections */
+p, 
+.content-area p, 
+.f4u-hero-lead-node, 
+.metric-dashboard-card p, 
+.f4u-gs-card p, 
+.pricing-subtitle {
+    color: #475569 !important;
+}
+
+/* Maintain light slate contrast for dark navy sections (Hero, Section 5, and Footer) */
+.bg-navy p, 
+.feature-section p, 
+.sec-hero-col p, 
+.footer-brand p {
+    color: #94a3b8 !important;
 }

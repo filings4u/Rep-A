@@ -1,8 +1,7 @@
 /**
  * filings4u Platform Architecture
- * Module: section5.js (Part 1 - Isolated Stylesheet Engine)
+ * Module: section5.js (Part 1 - Absolute Image-on-Top Mobile Stacking)
  */
-
 (function() {
     const targetConfig = {
         elementId: "filings4u-security-shield-root",
@@ -13,73 +12,48 @@
         const styleSheet = document.createElement("style");
         styleSheet.id = targetConfig.styleId;
         styleSheet.textContent = `
-            #${targetConfig.elementId} .sec-hero-main-container {
-                position: relative;
-                background-color: #0a1f44 !important;
-                padding: 80px 0 !important;
-                overflow: hidden;
-            }
-            #${targetConfig.elementId} .sec-vector-dots-overlay {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                opacity: 0.03;
-                pointer-events: none;
-                background-image: radial-gradient(#ffffff 1px, transparent 1px);
-                background-size: 20px 20px;
-            }
-            #${targetConfig.elementId} .sec-max-width-alignment-guard {
-                max-width: 1450px;
-                margin: 0 auto;
-                padding: 0 40px;
-                box-sizing: border-box;
-                position: relative;
-                z-index: 10;
-            }
-            #${targetConfig.elementId} .sec-hero-grid {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 40px;
-                align-items: center;
-                justify-content: space-between;
-            }
-            #${targetConfig.elementId} .sec-hero-col {
-                flex: 1;
-                min-width: 320px;
-                box-sizing: border-box;
-            }
+            #${targetConfig.elementId} .sec-hero-main-container { position: relative; background-color: #0a1f44 !important; padding: 80px 0 !important; overflow: hidden; }
+            #${targetConfig.elementId} .sec-vector-dots-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px; }
+            #${targetConfig.elementId} .sec-max-width-alignment-guard { max-width: 1450px; margin: 0 auto; padding: 0 40px; box-sizing: border-box; position: relative; z-index: 10; }
+            #${targetConfig.elementId} .sec-hero-grid { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: space-between; }
+            #${targetConfig.elementId} .sec-hero-col { flex: 1; min-width: 320px; box-sizing: border-box; }
 
             /* MOBILE SCREEN RESPONSIVE LAYOUT OVERRIDES */
             @media (max-width: 768px) {
-                #${targetConfig.elementId} .sec-hero-main-container {
-                    padding: 40px 0 !important;
+                #${targetConfig.elementId} .sec-max-width-alignment-guard { padding: 0 20px !important; }
+                #${targetConfig.elementId} .sec-hero-main-container { padding: 40px 0 !important; }
+                #${targetConfig.elementId} .sec-hero-grid { display: flex !important; flex-direction: column !important; gap: 30px !important; }
+                #${targetConfig.elementId} .sec-hero-col { width: 100% !important; text-align: left !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; }
+                
+                /* EXACT STRUCTURAL FLEX ORDER: TARGETS CLASSES BY CONTENT TYPE */
+                /* Forces the graphic container to the top */
+                #${targetConfig.elementId} .hero-image-container,
+                #${targetConfig.elementId} aside,
+                #${targetConfig.elementId} .sec-hero-grid > div:has(img) { 
+                    order: 1 !important; 
                 }
-                #${targetConfig.elementId} .sec-hero-grid {
-                    flex-direction: column !important;
-                    gap: 30px !important;
+                
+                /* Forces the text content container to the bottom */
+                #${targetConfig.elementId} .content-area,
+                #${targetConfig.elementId} article,
+                #${targetConfig.elementId} .sec-hero-grid > div:has(h2),
+                #${targetConfig.elementId} .sec-hero-grid > div:has(h1) { 
+                    order: 2 !important; 
                 }
-                #${targetConfig.elementId} .sec-hero-col {
-                    width: 100% !important;
-                }
-                #${targetConfig.elementId} .sec-hero-grid > .sec-hero-col:first-child {
-                    order: 2 !important;
-                }
-                #${targetConfig.elementId} .sec-hero-grid > .sec-hero-col:last-child {
-                    order: 1 !important;
-                }
-                #${targetConfig.elementId} h1 {
-                    font-size: 2rem !important;
-                    line-height: 1.2 !important;
-                }
+                
+                /* UNIFORM ACCENT TYPOGRAPHY SIZING LOCKS */
+                #${targetConfig.elementId} h1, #${targetConfig.elementId} h2 { font-size: 2rem !important; line-height: 1.2 !important; text-align: left !important; font-weight: 900 !important; }
+                #${targetConfig.elementId} h3 { font-size: 1.3rem !important; text-align: left !important; font-weight: 800 !important; }
+                #${targetConfig.elementId} p { font-size: 0.95rem !important; line-height: 1.6 !important; text-align: left !important; font-weight: 500 !important; color: #94a3b8 !important; }
+                #${targetConfig.elementId} .btn-main, #${targetConfig.elementId} a { align-self: flex-start !important; width: auto !important; }
             }
         `;
         document.head.appendChild(styleSheet);
     }
-    
     window.FILINGS4U_SECURITY_TARGET = targetConfig.elementId;
 })();
+
+
 
 
 /* Part 2 Update inside section5.js */

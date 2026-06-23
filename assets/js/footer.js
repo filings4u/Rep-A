@@ -84,7 +84,7 @@
 })();
 
 
-/* Part 2: Bottom Legal Bar & Floating Button Styles */
+/* Part 2: Bottom Legal Bar, Copyright Normalization & Floating Button Styles */
 (function() {
     const styleSheet = document.getElementById("filings4u-footer-styles");
     if (styleSheet) {
@@ -102,6 +102,18 @@
                 box-sizing: border-box;
                 color: #94a3b8;
             }
+            
+            /* TARGETS COPYRIGHT RE-ALIGNMENT TO PRECISESLY MATCH ADJACENT TEXT LINKS */
+            #filings4u-global-footer-root .footer-bottom-copyright,
+            #filings4u-global-footer-root .footer-bottom span,
+            #filings4u-global-footer-root .footer-bottom div p {
+                color: #94a3b8 !important;
+                font-size: 0.85rem !important;
+                font-weight: 400 !important;
+                line-height: 1.5 !important;
+                letter-spacing: normal !important;
+            }
+
             #filings4u-global-footer-root .legal-links {
                 display: flex;
                 gap: 24px;
@@ -111,6 +123,7 @@
                 color: #94a3b8;
                 text-decoration: none;
                 font-size: 0.85rem;
+                font-weight: 400;
                 transition: color 0.2s ease;
             }
             #filings4u-global-footer-root .legal-links a:hover {
@@ -141,8 +154,8 @@
                 background: #0e9f6e;
                 transform: translateY(-2px);
             }
-
-            /* MOBILE ADAPTATION OVERRIDES */
+            
+            /* MOBILE ADAPTATION OVERRIDES MATCHING YOUR PRODUCTION SCHEMAS */
             @media (max-width: 768px) {
                 #filings4u-global-footer-root .footer-container {
                     padding: 50px 24px 30px 24px !important;
@@ -155,12 +168,20 @@
                 #filings4u-global-footer-root .footer-bottom {
                     padding: 30px 24px !important;
                     flex-direction: column !important;
-                    align-items: flex-start !important;
+                    align-items: center !important;
+                    text-align: center !important;
                     gap: 20px !important;
+                }
+                #filings4u-global-footer-root .footer-bottom-copyright,
+                #filings4u-global-footer-root .footer-bottom span {
+                    text-align: center !important;
+                    width: 100% !important;
+                    display: block !important;
                 }
                 #filings4u-global-footer-root .legal-links {
                     gap: 16px !important;
                     width: 100%;
+                    justify-content: center !important;
                 }
                 #filings4u-global-footer-root .trust-badge {
                     width: 100%;
@@ -171,6 +192,7 @@
         `;
     }
 })();
+
 
 /* Part 3: Responsive Footer Structure & Social SVG Integration */
 function renderDynamicGlobalCorporateFooter(overrideTargetId) {
