@@ -91,12 +91,12 @@ function executeSecurityCompiler(zone, displayTitle, displaySlug, metaDataRecord
             
             <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin: 0 0 28px 0;">Avoid costly penalties, business asset exposure, or accidental corporate dissolution. Our background system cross-checks regulatory shifts, records state department alterations, and confirms structural tax obligations automatically, ensuring your ${displayTitle} operational status is permanently shielded.</p>
             
-            <a href="compliance.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 1rem; display: inline-block; align-self: flex-start;">Explore Security Infrastructure &rarr;</a>
+            <a href="get-started.html" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 1rem; display: inline-block; align-self: flex-start;">Explore Security Infrastructure &rarr;</a>
           </div>
 
           <!-- FLUID VISUAL IMAGE CONTAINER (DESKTOP: LEFT SIDE / MOBILE: TOP) -->
           <div style="display: flex; justify-content: center; width: 100%;">
-            <img src="${resolvedImageSrc}" alt="${displayTitle} Protection Asset" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.removeAttribute('onerror'); this.src='images/regulatory-compliance.jpg';">
+            <img src="${resolvedImageSrc}" alt="${displayTitle} Protection Asset" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.removeAttribute('onerror'); this.src='images/regulatory-consulting.jpg';">
           </div>
 
         </div>

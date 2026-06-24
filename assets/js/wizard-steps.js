@@ -1,17 +1,18 @@
+// ============================================================================ //
+// 🛡️ GLOBAL SAFE FALLBACK & INTERFACE INTEGRITY BINDINGS
+// ============================================================================ //
 if (typeof window.syncModalCheckboxChangeToBackgroundForm !== "function") {
   window.syncModalCheckboxChangeToBackgroundForm = function(elementRef, event) {
     console.warn("[Safe Fallback Module] syncModalCheckboxChangeToBackgroundForm missing from execution layers.");
   };
 }
-
 // ============================================================================ //
 // 🔗 URL PARAMETERS CONVERSION AND DYNAMIC RECOVERY LOGIC ENGINE (DYNAMIC)
 // ============================================================================ //
-function initializeUrlParameterParserEngineVanilla() {
+export function initializeUrlParameterParserEngineVanilla() {
   const searchUrlQueryStrings = new URLSearchParams(window.location.search);
   const queryPassedService = searchUrlQueryStrings.get('service');
   const queryPassedPlan = searchUrlQueryStrings.get('plan');
-  
   const inputServiceNode = document.getElementById("wizard-route-service-id");
   const inputPlanNode = document.getElementById("wizard-route-tier-id");
 
@@ -35,7 +36,6 @@ function initializeUrlParameterParserEngineVanilla() {
     if (inputPlanNode) {
       // Dynamic Read Pass: Attempt to locate official database naming strings from your database dictionary
       const activeServiceRecord = window.CENTRAL_SERVICE_PLAN_DB ? window.CENTRAL_SERVICE_PLAN_DB[window.routeActiveServiceKey] : null;
-      
       if (activeServiceRecord && activeServiceRecord.plans && activeServiceRecord.plans[window.routeActivePlanKey]) {
         inputPlanNode.value = activeServiceRecord.plans[window.routeActivePlanKey].name || window.routeActivePlanKey;
       } else {
@@ -47,11 +47,16 @@ function initializeUrlParameterParserEngineVanilla() {
   }
 
   // 3. EXECUTE DYNAMIC FIELD GENERATION ON BOOT
+  // This cleanly mounts your individual service form markup right onto Step 2 of the wizard layout
   if (typeof window.executeDynamicRegulatoryFieldInjection === "function") {
     window.executeDynamicRegulatoryFieldInjection(window.routeActiveServiceKey);
   }
 }
+
+// Bind directly to global window scope array records to protect existing wizard layouts
 window.initializeUrlParameterParserEngineVanilla = initializeUrlParameterParserEngineVanilla;
+
+
 
 function cacheAndRestoreWizardFormStatesVanilla(isExecutionInitialLoad) { 
     const cacheKeyNamespace = "f4u_wizard_onboarding_state"; 

@@ -124,7 +124,7 @@ function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTi
           </div>
           <!-- FLUID VISUAL IMAGE CONTAINER CELL (Banner Image) -->
           <div style="display: flex; justify-content: center; width: 100%;">
-            <img src="" class="hero-display-img" alt="Framework Layout Preview" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.removeAttribute('onerror'); this.src='images/default-hero.jpg';">
+            <img src="" class="hero-display-img" alt="Framework Layout Preview" style="width: 100%; height: 100%; max-height: 100%; object-fit: cover; display: block; border-radius: 12px; border: 1px solid rgba(10, 31, 68, 0.15); box-shadow: 0 20px 40px rgba(10, 31, 68, 0.25), 0 4px 12px rgba(10, 31, 68, 0.1);" onerror="this.onerror=null; this.removeAttribute('onerror'); this.src='images/annual-reports-hero.jpg';">
           </div>
         </div>
       </div>
