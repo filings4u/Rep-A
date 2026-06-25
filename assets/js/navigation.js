@@ -148,7 +148,7 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
         <div class="mega-column"> 
             <span class="column-title">Authority Compliance</span> 
             <a href="dot-consortium.html">DOT Consortium</a> 
-            <a href="driver-qualification.html">Driver File</a> 
+            <a href="driver-file.html">Driver Qualification File</a> 
             <a href="process-agent-boc3.html">Process Agent (BOC-3)</a> 
             <a href="boc-3-amendment.html">BOC-3 Amendment</a>
             <a href="mcs-150-update.html">MCS-150 Update</a>
@@ -167,8 +167,8 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
         <div class="mega-column"> 
             <span class="column-title">Insurance & Risk</span> 
             <a href="licenses-permits.html">Licenses & Permits</a> 
-            <a href="trucker-insurance.html">Trucker Insurance</a> 
-            <a href="broker-insurance.html">Broker Insurance</a> 
+            <a href="trucker-insurance-quote.html">Trucker Insurance</a> 
+            <a href="broker-insurance-quote.html">Broker Insurance</a> 
         </div> 
 
     </div> 

@@ -1,9 +1,4 @@
-﻿/* At the absolute top line of assets/css/master.css */
-@import url('toggle.css');
-@import url('hero-section.css');
-@import url('metrics-section.css');
-@import url('pricing-section.css');
-@import url('shield-section.css');
+﻿
 @import url('https://googleapis.com');
 
 
@@ -505,4 +500,9 @@ nav {
         box-shadow: none !important;
         padding: 15px !important;
     }
+}
+
+/* Add this single rule to the very bottom of your master.css */
+#filings4u-global-hero-root {
+    min-height: 400px; /* Reserves layout canvas context so lower page modules stay anchored */
 }
