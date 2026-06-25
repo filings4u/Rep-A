@@ -1528,102 +1528,43 @@
   object-fit: contain;
 }
 
-/* --- THE MAIN DESKTOP HEADER ACTION SYSTEM --- */
+/* --- FIXES FOR THE NEW 4-COLUMN MEGA MENU --- */
+
+/* 1. Allow the 4-column dropdown to break away from the narrow link link constraints */
+.nav-item-dropdown.static-dropdown {
+    position: static !important;
+}
+
+/* 2. Anchor the navigation container as the structural base */
 .nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
+    position: relative !important;
 }
 
-.nav-item-dropdown {
-  position: relative;
+/* 3. Re-architect the 4-column layout engine */
+.nav-item-dropdown:hover .dropdown-content.mega-panel-four-col {
+    display: grid !important; /* Overrides the flex display on hover */
+    grid-template-columns: repeat(4, 1fr) !important; /* Carves out 4 perfect columns */
+    
+    /* Center across the entire nav-links wrapper area */
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important; /* Disables the broken translateX shifting */
+    
+    /* Dimensions and spacing */
+    width: 100% !important;
+    max-width: 1200px !important; /* Keeps it aligned with standard site grid wrappers */
+    margin: 0 auto !important;
+    padding: 30px !important;
+    gap: 24px !important;
+    
+    /* Ensure colors look crisp and solid */
+    background: #ffffff !important;
+    background-color: #ffffff !important;
 }
 
-.nav-item-dropdown > a {
-  color: #0a1f44;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-}
-
-.nav-item-dropdown > a span {
-  font-size: 0.7rem;
-  margin-left: 4px;
-}
-
-/* --- MEGA DROPDOWN PANEL ARCHITECTURE --- */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(10, 31, 68, 0.08);
-  padding: 24px;
-  z-index: 1000;
-  gap: 32px;
-}
-
-.nav-item-dropdown:hover .dropdown-content {
-  display: flex;
-}
-
-.dropdown-content.mega-panel-two-col {
-  width: 420px;
-}
-
-.dropdown-content.mega-panel-three-col {
-  width: 640px;
-}
-
-.mega-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 160px;
-}
-
-.column-title {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #10b981;
-  margin-bottom: 4px;
-}
-
-.mega-column a {
-  color: #475569;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.15s ease;
-}
-
-.mega-column a:hover {
-  color: #10b981;
-}
-
-/* --- ACTION LINK BUTTON MODULE --- */
-.btn-client-portal {
-  background: #10b981;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 700;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  transition: background 0.2s;
-}
-
-.btn-client-portal:hover {
-  background: #0e9f6e;
+/* 4. Fix individual columns from squishing on slightly smaller laptop viewports */
+.mega-panel-four-col .mega-column {
+    min-width: 0 !important; /* Allows columns to shrink dynamically into the grid cells */
 }
 
 

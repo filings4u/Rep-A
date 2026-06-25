@@ -1,6 +1,4 @@
-﻿font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-
-/** 
+﻿/** 
  * ========================================================================== 
  * FILINGS4U PRODUCTION UNIFIED DESKTOP ENGINE
  * FILE LOCATION: css/master.css;
@@ -420,3 +418,43 @@ nav {
     box-sizing: border-box !important;
 }
 
+/* --- OVERRIDE SHIFT-LEFT SYSTEM --- */
+
+.nav-links {
+    position: static; 
+}
+
+.nav-item-dropdown.static-dropdown {
+    position: static !important;
+}
+
+.nav-item-dropdown:hover .dropdown-content.mega-panel-four-col {
+    position: absolute !important;
+    top: 100% !important;
+    
+    /* PULL FURTHER LEFT: Changed from 430px to 550px to shift it leftward */
+    left: calc(50% - 550px) !important; 
+    right: auto !important;
+    transform: none !important;
+    
+    /* All your other working styles stay exactly the same */
+    width: 860px !important;
+    max-width: 95vw !important;
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important;    
+    padding: 24px !important; 
+    z-index: 999999 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px rgba(10, 31, 68, 0.08) !important;
+}
+
+.dropdown-content.mega-panel-four-col .mega-column {
+    min-width: 0 !important;
+    width: auto !important;
+    white-space: nowrap !important;
+}

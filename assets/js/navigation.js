@@ -133,48 +133,42 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
 </div>
 
 <!-- DOT & FLEET DROPDOWN --> 
-<div class="nav-item-dropdown static-dropdown" style="position: relative;"> 
+<div class="nav-item-dropdown static-dropdown"> 
     <a href="#" class="dropdown-toggle">DOT & Fleet <span class="arrow-indicator">▼</span></a> 
-    
-    <!-- 🟢 FIXED: Changed parent to table layout and stripped display: flex to prevent wrapping. 
-         This keeps hover interactions working perfectly while placing all columns on a single row. -->
-    <div class="dropdown-content mega-panel-three-col" style="background: #ffffff !important; position: absolute !important; left: -680px !important; right: auto !important; width: 960px !important; box-shadow: 0px 8px 16px rgba(0,0,0,0.15); border-radius: 4px; padding: 25px !important; box-sizing: border-box !important; z-index: 9999 !important; display: table !important; table-layout: fixed !important;"> 
+    <!-- 🟢 FIXED: Swapped class to mega-panel-stretch-left to shift the menu body backward toward the left side of the screen -->
+    <div class="dropdown-content mega-panel-four-col"> 
         
-        <!-- COLUMN 1: AUTHORITY SETUP -->
-        <div class="mega-column" style="display: table-cell !important; vertical-align: top !important; width: 25% !important; padding-right: 15px !important; box-sizing: border-box !important;"> 
+        <div class="mega-column"> 
             <span class="column-title">Authority Setup</span> 
-            <a href="owner-operators.html" style="display: block !important;">Owner Operators</a> 
-            <a href="trucker-authority.html" style="display: block !important;">Trucker Authority</a> 
-            <a href="broker-authority.html" style="display: block !important;">Broker Authority</a> 
+            <a href="owner-operators.html">Owner Operators</a> 
+            <a href="trucker-authority.html">Trucker Authority</a> 
+            <a href="broker-authority.html">Broker Authority</a> 
         </div> 
 
-        <!-- COLUMN 2: AUTHORITY COMPLIANCE -->
-        <div class="mega-column" style="display: table-cell !important; vertical-align: top !important; width: 25% !important; padding-right: 15px !important; box-sizing: border-box !important;"> 
+        <div class="mega-column"> 
             <span class="column-title">Authority Compliance</span> 
-            <a href="dot-consortium.html" style="display: block !important;">DOT Consortium</a> 
-            <a href="driver-qualification.html" style="display: block !important;">Driver File</a> 
-            <a href="process-agent-boc3.html" style="display: block !important;">Process Agent (BOC-3)</a> 
-            <a href="boc-3-amendment.html" style="display: block !important;">BOC-3 Amendment</a>
-            <a href="mcs-150-update.html" style="display: block !important;">MCS-150 Update</a>
-            <a href="new-entrant-audit.html" style="display: block !important;">New Entrant Audit</a> 
+            <a href="dot-consortium.html">DOT Consortium</a> 
+            <a href="driver-qualification.html">Driver File</a> 
+            <a href="process-agent-boc3.html">Process Agent (BOC-3)</a> 
+            <a href="boc-3-amendment.html">BOC-3 Amendment</a>
+            <a href="mcs-150-update.html">MCS-150 Update</a>
+            <a href="new-entrant-audit.html">New Entrant Audit</a> 
         </div> 
 
-        <!-- COLUMN 3: ANNUAL FILINGS -->
-        <div class="mega-column" style="display: table-cell !important; vertical-align: top !important; width: 25% !important; padding-right: 15px !important; box-sizing: border-box !important;"> 
+        <div class="mega-column"> 
             <span class="column-title">Annual Filings</span> 
-            <a href="ucr-registration.html" style="display: block !important;">UCR Registration</a> 
-            <a href="scac-code.html" style="display: block !important;">SCAC Code</a> 
-            <a href="ifta-registration.html" style="display: block !important;">IFTA Registration</a> 
-            <a href="ifta-quarterly-returns.html" style="display: block !important;">IFTA Quarterly Returns</a>
-            <a href="hazmat-registration.html" style="display: block !important;">HAZMAT Registration</a> 
+            <a href="ucr-registration.html">UCR Registration</a> 
+            <a href="scac-code.html">SCAC Code</a> 
+            <a href="ifta-registration.html">IFTA Registration</a> 
+            <a href="ifta-quarterly-returns.html">IFTA Quarterly Returns</a>
+            <a href="hazmat-registration.html">HAZMAT Registration</a> 
         </div> 
 
-        <!-- COLUMN 4: INSURANCE & RISK -->
-        <div class="mega-column" style="display: table-cell !important; vertical-align: top !important; width: 25% !important; box-sizing: border-box !important;"> 
+        <div class="mega-column"> 
             <span class="column-title">Insurance & Risk</span> 
-            <a href="licenses-permits.html" style="display: block !important;">Licenses & Permits</a> 
-            <a href="trucker-insurance.html" style="display: block !important;">Trucker Insurance</a> 
-            <a href="broker-insurance.html" style="display: block !important;">Broker Insurance</a> 
+            <a href="licenses-permits.html">Licenses & Permits</a> 
+            <a href="trucker-insurance.html">Trucker Insurance</a> 
+            <a href="broker-insurance.html">Broker Insurance</a> 
         </div> 
 
     </div> 
