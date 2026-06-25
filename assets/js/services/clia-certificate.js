@@ -251,19 +251,24 @@ function buildCliaCertificatePart3(stateDropdownOptionsHtml = "") {
 }
 window.buildCliaCertificatePart3 = buildCliaCertificatePart3;
 
-// 📦 MASTER CLIA CERTIFICATE APPLICATION ASSEMBLY HOOK
+// ============================================================================
+// 📦 MASTER CLIA CERTIFICATE FORM ASSEMBLY HOOK (REPAIRED)
+// ============================================================================
 function buildCliaCertificateForm(stateDropdownOptionsHtml = "") {
-  return buildCliaCertificatePart1(stateDropdownOptionsHtml) + 
-         buildCliaCertificatePart2(stateDropdownOptionsHtml) + 
-         buildCliaCertificatePart3(stateDropdownOptionsHtml);
+  console.log("[Form Asset] Assembling dynamic CLIA Certificate layout matrix...");
+  
+  const part1 = typeof window.buildCliaCertificateFormPart1 === "function" ? window.buildCliaCertificateFormPart1(stateDropdownOptionsHtml) : "";
+  const part2 = typeof window.buildCliaCertificateFormPart2 === "function" ? window.buildCliaCertificateFormPart2(stateDropdownOptionsHtml) : "";
+  
+  // 🟢 FIXED: Removed the mismatched 'buildGoodStandingPart3' reference and connected it to Part 3 of the CLIA matrix
+  const part3 = typeof window.buildCliaCertificateFormPart3 === "function" ? window.buildCliaCertificateFormPart3(stateDropdownOptionsHtml) : "";
+
+  return part1 + part2 + part3;
 }
 
-// Global registry setup matrix tracking allocation routes
-if (!window.formRegistry) window.formRegistry = {};
-window.formRegistry['clia-certificate-part2-layout'] = buildCliaCertificatePart2;
-window.formRegistry['clia-certificate-part3-layout'] = buildGoodStandingPart3;
-window.formRegistry['clia-certificate-remaining-validation'] = cliaCertificateRemainingValidation;
-window.formRegistry['clia-certificate-form-master'] = buildCliaCertificateForm;
+// Bind cleanly back into the global window tree
+window.buildCliaCertificateForm = buildCliaCertificateForm;
+
 
 // ============================================================================ //
 // ⚙️ INTERACTIVE INTERFACE CONTROLLERS (CLIA CERTIFICATE REGISTRATION)

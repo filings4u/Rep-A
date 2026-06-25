@@ -1,5 +1,8 @@
-// Part 1: Validation Engine Rules Definition Module
-export const seriesLlcPart1Validation = {
+// ============================================================================ //
+// 🛠️ SERIES LLC PART 1 VALIDATION MATRIX ENGINE                                //
+// ============================================================================ //
+
+var seriesLlcPart1Validation = {
   requiredFields: [
     { id: 'sllc_proposed_name', msg: 'Proposed Series LLC Name is required.' },
     { id: 'sllc_formation_state', msg: 'Filing Jurisdiction selection is required.' },
@@ -9,50 +12,84 @@ export const seriesLlcPart1Validation = {
     { id: 'sllc_principal_state', msg: 'Principal Office State selection is required.' },
     { id: 'sllc_principal_zip', msg: 'Principal Office Zip Code is required.' }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if(el) el.style.borderColor = "#ef4444"; isValid = false; if(!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if(el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Process standard mandatory fields
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) { setError(el, field.msg); } else { clearError(el); }
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) {
+          setError(el, field.msg);
+        } else {
+          clearError(el);
+        }
       }
     });
 
     // 2. Specialized Check: Business Suffix Rules Compliance
     const nameEl = document.getElementById("sllc_proposed_name");
-    if (nameEl && nameEl.value.trim()) {
-      const val = nameEl.value.trim().toLowerCase();
-      const hasSuffix = val.endsWith("llc") || val.endsWith("l.l.c.") || val.includes("limited liability company");
-      if (!hasSuffix) setError(nameEl, 'Proposed Series LLC name must contain corporate designations like "LLC".');
+    if (nameEl && (nameEl.offsetWidth > 0 || nameEl.offsetHeight > 0)) {
+      const val = nameEl.value ? String(nameEl.value).trim().toLowerCase() : "";
+      if (val) {
+        const hasSuffix = val.endsWith("llc") || val.endsWith("l.l.c.") || val.includes("limited liability company");
+        if (!hasSuffix) {
+          setError(nameEl, 'Proposed Series LLC name must contain corporate designations like "LLC".');
+        }
+      }
     }
 
     // 3. Specialized Check: Zip Length Framework Matrix Matcher
     const zipEl = document.getElementById("sllc_principal_zip");
-    if (zipEl && zipEl.value.trim() && !/^\d{5}$/.test(zipEl.value.trim())) {
-      setError(zipEl, 'Principal Office Zip Code must consist of exactly 5 numbers.');
+    if (zipEl && (zipEl.offsetWidth > 0 || zipEl.offsetHeight > 0)) {
+      const zipVal = zipEl.value ? String(zipEl.value).trim() : "";
+      if (zipVal && !/^\d{5}$/.test(zipVal)) {
+        setError(zipEl, 'Principal Office Zip Code must consist of exactly 5 numbers.');
+      }
     }
 
     return { isValid, errors };
   }
 };
 
+window.seriesLlcPart1Validation = seriesLlcPart1Validation;
+
+
 // Part 2: Form layout template definition (Designs untouched)
-export function buildSeriesLlcPart1() {
+function buildSeriesLlcPart1() {
   // Programmatically fetches uniform state lists straight out of the active utility function
   const stateDropdownOptionsHtml = typeof getUsaStatesHtml === "function" ? getUsaStatesHtml(window.selectedFormationStateCode || "") : '<option value="">Select State...</option>';
-
+  
   return `
     <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: WHAT IS A SERIES LLC? -->
     <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy, #0a1f44); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate, #64748b); box-sizing: border-box; margin-bottom: 8px;">
-      <strong style="color: var(--navy, #0a1f44); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-check"></i> What is a Series LLC?</strong>
-      A Series LLC is a specialized corporate structure allowing a master entity to isolate assets across independent sub-units or cells.
+      <strong style="color: var(--navy, #0a1f44); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-check"></i> What is a Series LLC?</strong> A Series LLC is a specialized corporate structure allowing a master entity to isolate assets across independent sub-units or cells.
     </div>
 
     <!-- SECTION 1: ORGANIZATION INFORMATION -->
@@ -62,7 +99,8 @@ export function buildSeriesLlcPart1() {
 
     <div class="wizard-input-group" style="display:flex; flex-direction:column; gap:6px;">
       <label for="sllc_proposed_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Proposed Series LLC Name <span style="color: #ef4444;">*</span></label>
-      <input type="text" id="sllc_proposed_name" name="sllc_proposed_name" required placeholder="Provide corporate title name..." class="wizard-input-field validate-letters" style="width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; box-sizing:border-box;" onblur="if(typeof validateLlcNameSuffix===\'function\')validateLlcNameSuffix(this);">
+      <input type="text" id="sllc_proposed_name" name="sllc_proposed_name" required placeholder="Provide corporate title name..." class="wizard-input-field validate-letters" style="width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; box-sizing:border-box;" onblur="if(typeof validateLlcNameSuffix==='function')validateLlcNameSuffix(this);">
+      <div class="wizard-error-message" id="err_sllc_proposed_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
 
     <div class="wizard-input-group" style="display:flex; flex-direction:column; gap:6px;">
@@ -70,21 +108,25 @@ export function buildSeriesLlcPart1() {
       <select id="sllc_formation_state" name="sllc_formation_state" required class="wizard-input-field" style="font-weight: 600; width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; background:#ffffff; box-sizing:border-box;">
         ${stateDropdownOptionsHtml}
       </select>
+      <div class="wizard-error-message" id="err_sllc_formation_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
 
     <div class="wizard-input-group" style="grid-column: span 2; display:flex; flex-direction:column; gap:6px;">
       <label for="sllc_business_purpose" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Purpose of Series LLC <span style="color: #ef4444;">*</span></label>
       <input type="text" id="sllc_business_purpose" name="sllc_business_purpose" required placeholder="Brief description of primary activities..." class="wizard-input-field" style="width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; box-sizing:border-box;">
+      <div class="wizard-error-message" id="err_sllc_business_purpose" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
 
     <div class="wizard-input-group" style="grid-column: span 2; display:flex; flex-direction:column; gap:6px;">
       <label for="sllc_principal_street" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Principal Office Street Address <span style="color: #ef4444;">*</span></label>
-      <input type="text" id="sllc_principal_street" name="sllc_principal_street" required placeholder="Street address" class="wizard-input-field" style="width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; box-sizing:border-box;" onfocus="if(typeof attachGooglePlacesAutocompleteToNode===\'function\')attachGooglePlacesAutocompleteToNode(this, 'llc_principal');">
+      <input type="text" id="sllc_principal_street" name="sllc_principal_street" required placeholder="Street address" class="wizard-input-field" style="width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; box-sizing:border-box;" onfocus="if(typeof attachGooglePlacesAutocompleteToNode==='function')attachGooglePlacesAutocompleteToNode(this, 'llc_principal');">
+      <div class="wizard-error-message" id="err_sllc_principal_street" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
 
     <div class="wizard-input-group" style="display:flex; flex-direction:column; gap:6px;">
       <label for="sllc_principal_city" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">City <span style="color: #ef4444;">*</span></label>
       <input type="text" id="sllc_principal_city" name="sllc_principal_city" required placeholder="City" class="wizard-input-field validate-letters" style="width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; box-sizing:border-box;">
+      <div class="wizard-error-message" id="err_sllc_principal_city" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
 
     <div class="wizard-input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -93,35 +135,66 @@ export function buildSeriesLlcPart1() {
         <select id="sllc_principal_state" name="sllc_principal_state" required class="wizard-input-field" style="font-weight: 600; width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; background:#ffffff; box-sizing:border-box;">
           ${stateDropdownOptionsHtml}
         </select>
+        <div class="wizard-error-message" id="err_sllc_principal_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div style="display:flex; flex-direction:column; gap:6px;">
         <label for="sllc_principal_zip" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Zip Code <span style="color: #ef4444;">*</span></label>
         <input type="text" id="sllc_principal_zip" name="sllc_principal_zip" required maxlength="5" placeholder="ZIP code" class="wizard-input-field validate-numbers" style="width:100%; height:40px; padding:0 8px; border-radius:6px; border:1px solid #cbd5e1; box-sizing:border-box;">
+        <div class="wizard-error-message" id="err_sllc_principal_zip" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
     </div>
   `;
 }
+
 window.buildSeriesLlcPart1 = buildSeriesLlcPart1;
 
-// Part 1: Validation Rules Module for Series LLC Fields Layout Part 2
-export const seriesLlcPart2Validation = {
+
+// ============================================================================ //
+// 🛠️ SERIES LLC PART 2 VALIDATION MATRIX ENGINE                                //
+// ============================================================================ //
+
+var seriesLlcPart2Validation = {
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Validate Core Registered Agent Selection Dropdown
     const raChoice = document.getElementById("sllc_ra_choice");
-    if (raChoice && !raChoice.value) {
-      setError(raChoice, "Please select a registered agent provision option to continue.");
-    } else if (raChoice) {
-      clearError(raChoice);
+    if (raChoice && (raChoice.offsetWidth > 0 || raChoice.offsetHeight > 0)) {
+      const raVal = raChoice.value ? String(raChoice.value).trim() : "";
+      if (!raVal) {
+        setError(raChoice, "Please select a registered agent provision option to continue.");
+      } else {
+        clearError(raChoice);
+      }
     }
 
     // 2. Conditional Validation: Third-Party Agent Fields Matrix
-    if (raChoice && raChoice.value === "custom") {
+    if (raChoice && raChoice.value === "custom" && (raChoice.offsetWidth > 0 || raChoice.offsetHeight > 0)) {
       const customAgentFields = [
         { id: 'sllc_ra_custom_name', msg: 'Custom Registered Agent Full Legal Name is required.' },
         { id: 'sllc_ra_custom_street', msg: 'Registered Office Physical Street Address is required.' },
@@ -133,7 +206,7 @@ export const seriesLlcPart2Validation = {
       customAgentFields.forEach(field => {
         const el = document.getElementById(field.id);
         if (el) {
-          const val = el.value.trim();
+          const val = el.value ? String(el.value).trim() : "";
           let isFieldValid = !!val;
 
           // Enforce 5-digit numerical ZIP constraints if checking the ZIP input node
@@ -155,16 +228,19 @@ export const seriesLlcPart2Validation = {
   }
 };
 
+window.seriesLlcPart2Validation = seriesLlcPart2Validation;
+
+
 // Part 2: HTML Structural Layout Template Definition (Designs Untouched)
-export function buildSeriesLlcPart2(stateDropdownOptionsHtml) {
+function buildSeriesLlcPart2(stateDropdownOptionsHtml) {
   // DYNAMIC FIX: Query the registry database programmatically to find current agent pricing rather than hardcoding static "$75.00" string text.
   const centralRegistrySource = window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {};
   const agentMetaRecord = centralRegistrySource["customSelectedRegisteredAgentServiceActive"] || {};
   const liveAgentFee = parseFloat(agentMetaRecord.price || 75.00).toFixed(2);
-
+  
   // DYNAMIC FIX: Prevent empty dropdown containers by falling back to the centralized helper utility array pass
   const resolvedStateOptions = stateDropdownOptionsHtml || (typeof getUsaStatesHtml === "function" ? getUsaStatesHtml(window.selectedFormationStateCode || "") : '<option value="">Select State...</option>');
-
+  
   return `
     <!-- SECTION 2: REGISTERED AGENT INFORMATION -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
@@ -177,19 +253,24 @@ export function buildSeriesLlcPart2(stateDropdownOptionsHtml) {
         <option value="filings4u">Utilize Filings4u Protected Agent Shield Service — $${liveAgentFee} / Year</option>
         <option value="custom">Maintain External Independent Third-Party Registered Agent</option>
       </select>
+      <div class="wizard-error-message" id="err_sllc_ra_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
+
     <div id="llc_custom_ra_wrapper" style="grid-column: span 2; display: none; grid-template-columns: 1fr 1fr; gap: 24px; background: var(--light-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-sizing: border-box; width: 100%;">
       <div class="wizard-input-group" style="grid-column: span 2;">
         <label for="sllc_ra_custom_name" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">Registered Agent Full Legal Name</label>
         <input type="text" id="sllc_ra_custom_name" placeholder="Agent or company legal title" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_sllc_ra_custom_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div class="wizard-input-group" style="grid-column: span 2;">
         <label for="sllc_ra_custom_street" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">Registered Office Physical Street Address (No PO Boxes)</label>
         <input type="text" id="sllc_ra_custom_street" placeholder="Physical street address" class="wizard-input-field" onfocus="attachGooglePlacesAutocompleteToNode(this, 'llc_ra_custom')">
+        <div class="wizard-error-message" id="err_sllc_ra_custom_street" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div class="wizard-input-group">
         <label for="sllc_ra_custom_city" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">City</label>
         <input type="text" id="sllc_ra_custom_city" placeholder="City" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_sllc_ra_custom_city" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div class="wizard-input-group" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
         <div>
@@ -197,19 +278,26 @@ export function buildSeriesLlcPart2(stateDropdownOptionsHtml) {
           <select id="sllc_ra_custom_state" class="wizard-input-field" style="font-weight: 600;">
             ${resolvedStateOptions}
           </select>
+          <div class="wizard-error-message" id="err_sllc_ra_custom_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
         </div>
         <div>
           <label for="sllc_ra_custom_zip" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">Zip Code</label>
           <input type="text" id="sllc_ra_custom_zip" placeholder="ZIP code" class="wizard-input-field">
+          <div class="wizard-error-message" id="err_sllc_ra_custom_zip" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
         </div>
       </div>
     </div>
   `;
 }
+
 window.buildSeriesLlcPart2 = buildSeriesLlcPart2;
 
-// Validation Engine Rules Module for Series LLC Contact Information Section
-export const seriesLlcContactValidation = {
+
+// ============================================================================ //
+// 🛠️ SERIES LLC CONTACT VALIDATION MATRIX ENGINE                              //
+// ============================================================================ //
+
+var seriesLlcContactValidation = {
   fields: [
     { id: 'sllc_contact_name', msg: 'Primary Contact Full Name is required.' },
     { id: 'sllc_contact_phone', msg: 'Primary Contact Phone Number is required.' },
@@ -219,44 +307,83 @@ export const seriesLlcContactValidation = {
     { id: 'sllc_contact_state', msg: 'Primary Contact State selection is required.' },
     { id: 'sllc_contact_zip', msg: 'Primary Contact Zip Code is required.' }
   ],
-
   validateSection: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Check existence of required values
     this.fields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) { setError(el, field.msg); } else { clearError(el); }
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) {
+          setError(el, field.msg);
+        } else {
+          clearError(el);
+        }
       }
     });
 
     // 2. Validate Email Syntax
     const emailEl = document.getElementById("sllc_contact_email");
-    if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-      setError(emailEl, "Please enter a valid structural email address.");
+    if (emailEl && (emailEl.offsetWidth > 0 || emailEl.offsetHeight > 0)) {
+      const emailVal = emailEl.value ? String(emailEl.value).trim() : "";
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        setError(emailEl, "Please enter a valid structural email address.");
+      }
     }
 
     // 3. Validate Numeric Phone Length
     const phoneEl = document.getElementById("sllc_contact_phone");
-    if (phoneEl && phoneEl.value.trim()) {
-      const pureDigits = phoneEl.value.replace(/\D/g, "");
-      if (pureDigits.length < 10) setError(phoneEl, "Please enter a valid 10-digit phone number.");
+    if (phoneEl && (phoneEl.offsetWidth > 0 || phoneEl.offsetHeight > 0)) {
+      const phoneVal = phoneEl.value ? String(phoneEl.value).trim() : "";
+      if (phoneVal) {
+        const pureDigits = phoneVal.replace(/\D/g, "");
+        if (pureDigits.length < 10) {
+          setError(phoneEl, "Please enter a valid 10-digit phone number.");
+        }
+      }
     }
 
     // 4. Validate ZIP Length Matcher
     const zipEl = document.getElementById("sllc_contact_zip");
-    if (zipEl && zipEl.value.trim() && !/^\d{5}$/.test(zipEl.value.trim())) {
-      setError(zipEl, "Primary Contact Zip Code must be exactly 5 digits.");
+    if (zipEl && (zipEl.offsetWidth > 0 || zipEl.offsetHeight > 0)) {
+      const zipVal = zipEl.value ? String(zipEl.value).trim() : "";
+      if (zipVal && !/^\d{5}$/.test(zipVal)) {
+        setError(zipEl, "Primary Contact Zip Code must be exactly 5 digits.");
+      }
     }
 
     return { isValid, errors };
   }
 };
+
+window.seriesLlcContactValidation = seriesLlcContactValidation;
+
 
 // This string returns the full Section 3 contact module exactly as written
 var section3HtmlPayload = `
@@ -306,8 +433,11 @@ var section3HtmlPayload = `
 `;
 window.buildSeriesLlcPart2 = buildSeriesLlcPart2;
 
-// Validation Engine Configuration Module for Series LLC Part 2A Controls
-export const seriesLlcPart2AValidation = {
+// ============================================================================ //
+// 🛠️ SERIES LLC PART 2A VALIDATION MATRIX ENGINE                               //
+// ============================================================================ //
+
+var seriesLlcPart2AValidation = {
   requiredFields: [
     { id: 'sllc_ra_choice', msg: 'Please select a registered agent option.' },
     { id: 'sllc_contact_name', msg: 'Primary Contact Full Name is required.' },
@@ -318,44 +448,80 @@ export const seriesLlcPart2AValidation = {
     { id: 'sllc_contact_state', msg: 'Primary Contact State selection is required.' },
     { id: 'sllc_contact_zip', msg: 'Primary Contact Zip Code is required.' }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Validate Base Contact & Agent Selection
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) { setError(el, field.msg); } else { clearError(el); }
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) {
+          setError(el, field.msg);
+        } else {
+          clearError(el);
+        }
       }
     });
 
     // 2. Validate Contact Email String Layout Format
     const emailEl = document.getElementById("sllc_contact_email");
-    if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-      setError(emailEl, "Please enter a valid legal email address structure.");
+    if (emailEl && (emailEl.offsetWidth > 0 || emailEl.offsetHeight > 0)) {
+      const emailVal = emailEl.value ? String(emailEl.value).trim() : "";
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        setError(emailEl, "Please enter a valid legal email address structure.");
+      }
     }
 
     // 3. Validate Contact Phone Number Length
     const phoneEl = document.getElementById("sllc_contact_phone");
-    if (phoneEl && phoneEl.value.trim()) {
-      const cleanPhone = phoneEl.value.replace(/\D/g, "");
-      if (cleanPhone.length < 10) setError(phoneEl, "Primary Contact Phone Number must be a valid 10-digit number.");
+    if (phoneEl && (phoneEl.offsetWidth > 0 || phoneEl.offsetHeight > 0)) {
+      const phoneVal = phoneEl.value ? String(phoneEl.value).trim() : "";
+      if (phoneVal) {
+        const cleanPhone = phoneVal.replace(/\D/g, "");
+        if (cleanPhone.length < 10) {
+          setError(phoneEl, "Primary Contact Phone Number must be a valid 10-digit number.");
+        }
+      }
     }
 
     // 4. Validate Contact ZIP Code Format Constraint
     const zipEl = document.getElementById("sllc_contact_zip");
-    if (zipEl && zipEl.value.trim() && !/^\d{5}$/.test(zipEl.value.trim())) {
-      setError(zipEl, "Primary Contact Zip Code must consist of exactly 5 numbers.");
+    if (zipEl && (zipEl.offsetWidth > 0 || zipEl.offsetHeight > 0)) {
+      const zipVal = zipEl.value ? String(zipEl.value).trim() : "";
+      if (zipVal && !/^\d{5}$/.test(zipVal)) {
+        setError(zipEl, "Primary Contact Zip Code must consist of exactly 5 numbers.");
+      }
     }
 
     // 5. Conditional Ruleset Check: Custom Third Party Agent Fields
     const raChoice = document.getElementById("sllc_ra_choice");
-    if (raChoice && raChoice.value === "custom") {
+    if (raChoice && raChoice.value === "custom" && (raChoice.offsetWidth > 0 || raChoice.offsetHeight > 0)) {
       const customAgentFields = [
         { id: 'sllc_ra_custom_name', msg: 'Custom Registered Agent Full Legal Name is required.' },
         { id: 'sllc_ra_custom_street', msg: 'Registered Office Physical Street Address is required.' },
@@ -367,7 +533,7 @@ export const seriesLlcPart2AValidation = {
       customAgentFields.forEach(field => {
         const el = document.getElementById(field.id);
         if (el) {
-          const val = el.value.trim();
+          const val = el.value ? String(el.value).trim() : "";
           let isFieldValid = !!val;
 
           if (field.id === 'sllc_ra_custom_zip' && val && !/^\d{5}$/.test(val)) {
@@ -375,7 +541,11 @@ export const seriesLlcPart2AValidation = {
             setError(el, 'Registered Agent Zip Code must consist of exactly 5 numbers.');
           }
 
-          if (!isFieldValid) { setError(el, field.msg); } else if (field.id !== 'sllc_ra_custom_zip' || /^\d{5}$/.test(val)) { clearError(el); }
+          if (!isFieldValid) {
+            setError(el, field.msg);
+          } else if (field.id !== 'sllc_ra_custom_zip' || /^\d{5}$/.test(val)) {
+            clearError(el);
+          }
         }
       });
     }
@@ -384,8 +554,11 @@ export const seriesLlcPart2AValidation = {
   }
 };
 
+window.seriesLlcPart2AValidation = seriesLlcPart2AValidation;
+
+
 // Part 2: HTML Component Structural Output Definition (Designs Untouched)
-export function buildSeriesLlcPart2A(stateDropdownOptionsHtml) {
+function buildSeriesLlcPart2A(stateDropdownOptionsHtml) {
   const centralRegistrySource = window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {};
   const agentMetaRecord = centralRegistrySource["customSelectedRegisteredAgentServiceActive"] || {};
   const liveAgentFee = parseFloat(agentMetaRecord.price || 75.00).toFixed(2);
@@ -399,56 +572,68 @@ export function buildSeriesLlcPart2A(stateDropdownOptionsHtml) {
       <label for="sllc_ra_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Select Registered Agent Provision <span style="color: #ef4444;">*</span></label>
       <select id="sllc_ra_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleRegisteredAgentConditionalFields(this.value)">
         <option value="" disabled selected>Choose an option...</option>
-        <option value="filings4u">Utilize Filings4u Protected Agent Shield Service — $\${liveAgentFee} / Year</option>
+        <option value="filings4u">Utilize Filings4u Protected Agent Shield Service — $${liveAgentFee} / Year</option>
         <option value="custom">Maintain External Independent Third-Party Registered Agent</option>
       </select>
+      <div class="wizard-error-message" id="err_sllc_ra_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
+
     <div id="llc_custom_ra_wrapper" style="grid-column: span 2; display: none; grid-template-columns: 1fr 1fr; gap: 24px; background: var(--light-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-sizing: border-box; width: 100%;">
       <div class="wizard-input-group" style="grid-column: span 2;">
         <label for="sllc_ra_custom_name" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">Registered Agent Full Legal Name</label>
         <input type="text" id="sllc_ra_custom_name" placeholder="Agent or company legal title" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_sllc_ra_custom_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div class="wizard-input-group" style="grid-column: span 2;">
         <label for="sllc_ra_custom_street" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">Registered Office Physical Street Address (No PO Boxes)</label>
         <input type="text" id="sllc_ra_custom_street" placeholder="Physical street address" class="wizard-input-field" onfocus="attachGooglePlacesAutocompleteToNode(this, 'llc_ra_custom')">
+        <div class="wizard-error-message" id="err_sllc_ra_custom_street" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div class="wizard-input-group">
         <label for="sllc_ra_custom_city" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">City</label>
         <input type="text" id="sllc_ra_custom_city" placeholder="City" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_sllc_ra_custom_city" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div class="wizard-input-group" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
         <div>
           <label for="sllc_ra_custom_state" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">State</label>
           <select id="sllc_ra_custom_state" class="wizard-input-field" style="font-weight: 600;">
-            \${resolvedStateOptions}
+            ${resolvedStateOptions}
           </select>
+          <div class="wizard-error-message" id="err_sllc_ra_custom_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
         </div>
         <div>
           <label for="sllc_ra_custom_zip" style="font-weight:700; font-size:0.8rem; color:var(--navy); text-transform:uppercase;">Zip Code</label>
           <input type="text" id="sllc_ra_custom_zip" placeholder="ZIP code" class="wizard-input-field">
+          <div class="wizard-error-message" id="err_sllc_ra_custom_zip" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
         </div>
       </div>
     </div>
+
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
       <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Contact Information</h3>
     </div>
     <div class="wizard-input-group">
       <label for="sllc_contact_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Primary Contact Full Name <span style="color: #ef4444;">*</span></label>
-      <input type="text" id="sllc_contact_name" required placeholder="Full legal name" pattern="[A-Za-z\\\\s\\\\.\\\\-\\'\\s]+" class="wizard-input-field">
+      <input type="text" id="sllc_contact_name" required placeholder="Full legal name" pattern="[A-Za-z\\s\\.\\-\\'\\s]+" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_sllc_contact_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
     <div class="wizard-input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
       <div>
         <label for="sllc_contact_phone" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Phone Number <span style="color: #ef4444;">*</span></label>
         <input type="tel" id="sllc_contact_phone" required placeholder="Phone number" style="font-family: monospace;" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_sllc_contact_phone" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div>
         <label for="sllc_contact_email" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Email Address <span style="color: #ef4444;">*</span></label>
         <input type="email" id="sllc_contact_email" required placeholder="Email address" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_sllc_contact_email" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
     </div>
     <div class="wizard-input-group" style="grid-column: span 2;">
       <label for="sllc_contact_street" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Mailing Street Address <span style="color: #ef4444;">*</span></label>
       <input type="text" id="sllc_contact_street" required placeholder="Street address" class="wizard-input-field" onfocus="attachGooglePlacesAutocompleteToNode(this, 'sllc_contact')">
+      <div class="wizard-error-message" id="err_sllc_contact_street" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
     <div class="wizard-input-group">
       <label for="sllc_contact_unit" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Suite / Apt / Unit</label>
@@ -457,90 +642,155 @@ export function buildSeriesLlcPart2A(stateDropdownOptionsHtml) {
     <div class="wizard-input-group">
       <label for="sllc_contact_city" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">City <span style="color: #ef4444;">*</span></label>
       <input type="text" id="sllc_contact_city" required placeholder="City" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_sllc_contact_city" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
     <div class="wizard-input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; grid-column: span 2;">
       <div>
         <label for="sllc_contact_state" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">State <span style="color: #ef4444;">*</span></label>
         <select id="sllc_contact_state" required class="wizard-input-field" style="font-weight: 600;">
-          \${resolvedStateOptions}
+          ${resolvedStateOptions}
         </select>
+        <div class="wizard-error-message" id="err_sllc_contact_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div>
         <label for="sllc_contact_zip" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Zip Code <span style="color: #ef4444;">*</span></label>
         <input type="text" id="sllc_contact_zip" required placeholder="ZIP code" style="font-family: monospace;" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_sllc_contact_zip" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
     </div>
   `;
 }
+
 window.buildSeriesLlcPart2A = buildSeriesLlcPart2A;
 
-// Validation Engine Module for Series LLC Part 2B Operations
-export const seriesLlcPart2BValidation = {
+
+// ============================================================================ //
+// 🛠️ SERIES LLC PART 2B VALIDATION MATRIX ENGINE                               //
+// ============================================================================ //
+
+var seriesLlcPart2BValidation = {
   validate: function() {
     const container = document.getElementById("step-panel-2") || document.getElementById("step-2") || document.body;
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Validate Base Dropdowns
     const mgmtType = document.getElementById("sllc_management_type");
-    if (mgmtType && !mgmtType.value) setError(mgmtType, "Management Designation selection is required."); else clearError(mgmtType);
+    if (mgmtType && (mgmtType.offsetWidth > 0 || mgmtType.offsetHeight > 0)) {
+      if (!mgmtType.value) setError(mgmtType, "Management Designation selection is required.");
+      else clearError(mgmtType);
+    }
 
     const seriesChoice = document.getElementById("sllc_form_series_choice");
-    if (seriesChoice && !seriesChoice.value) setError(seriesChoice, "Please answer if you will be forming distinct series cells."); else clearError(seriesChoice);
+    if (seriesChoice && (seriesChoice.offsetWidth > 0 || seriesChoice.offsetHeight > 0)) {
+      if (!seriesChoice.value) setError(seriesChoice, "Please answer if you will be forming distinct series cells.");
+      else clearError(seriesChoice);
+    }
 
     const einChoice = document.getElementById("sllc_ein_choice");
-    if (einChoice && !einChoice.value) setError(einChoice, "Please select an option for your Employer Identification Number (EIN)."); else clearError(einChoice);
+    if (einChoice && (einChoice.offsetWidth > 0 || einChoice.offsetHeight > 0)) {
+      if (!einChoice.value) setError(einChoice, "Please select an option for your Employer Identification Number (EIN).");
+      else clearError(einChoice);
+    }
 
     // 2. Loop Check: Dynamic Member Cards
     const memberCards = container.querySelectorAll("#sllc_members_container .member-record-card");
     memberCards.forEach(card => {
-      const idx = card.id.replace("sllc_member_card_", "");
-      const nameEl = document.getElementById(`sllc_member_name_${idx}`);
-      const streetEl = document.getElementById(`sllc_member_street_${idx}`);
-      const cityEl = document.getElementById(`sllc_member_city_${idx}`);
-      const stateEl = document.getElementById(`sllc_member_state_${idx}`);
-      const zipEl = document.getElementById(`sllc_member_zip_${idx}`);
+      if (card && (card.offsetWidth > 0 || card.offsetHeight > 0)) {
+        const idx = card.id.replace("sllc_member_card_", "");
+        const nameEl = document.getElementById(`sllc_member_name_${idx}`);
+        const streetEl = document.getElementById(`sllc_member_street_${idx}`);
+        const cityEl = document.getElementById(`sllc_member_city_${idx}`);
+        const stateEl = document.getElementById(`sllc_member_state_${idx}`);
+        const zipEl = document.getElementById(`sllc_member_zip_${idx}`);
 
-      if (nameEl && !nameEl.value.trim()) setError(nameEl, `Member #${idx}: Full Legal Name is required.`); else clearError(nameEl);
-      if (streetEl && !streetEl.value.trim()) setError(streetEl, `Member #${idx}: Mailing Street Address is required.`); else clearError(streetEl);
-      if (cityEl && !cityEl.value.trim()) setError(cityEl, `Member #${idx}: City is required.`); else clearError(cityEl);
-      if (stateEl && !stateEl.value.trim()) setError(stateEl, `Member #${idx}: State is required.`); else clearError(stateEl);
-      
-      if (zipEl) {
-        const zipVal = zipEl.value.trim();
-        if (!zipVal) setError(zipEl, `Member #${idx}: Zip Code is required.`);
-        else if (!/^\d{5}$/.test(zipVal)) setError(zipEl, `Member #${idx}: Zip Code must be exactly 5 digits.`);
-        else clearError(zipEl);
+        if (nameEl && !nameEl.value.trim()) setError(nameEl, `Member #${idx}: Full Legal Name is required.`);
+        else if (nameEl) clearError(nameEl);
+
+        if (streetEl && !streetEl.value.trim()) setError(streetEl, `Member #${idx}: Mailing Street Address is required.`);
+        else if (streetEl) clearError(streetEl);
+
+        if (cityEl && !cityEl.value.trim()) setError(cityEl, `Member #${idx}: City is required.`);
+        else if (cityEl) clearError(cityEl);
+
+        if (stateEl && !stateEl.value.trim()) setError(stateEl, `Member #${idx}: State is required.`);
+        else if (stateEl) clearError(stateEl);
+
+        if (zipEl) {
+          const zipVal = zipEl.value.trim();
+          if (!zipVal) setError(zipEl, `Member #${idx}: Zip Code is required.`);
+          else if (!/^\d{5}$/.test(zipVal)) setError(zipEl, `Member #${idx}: Zip Code must be exactly 5 digits.`);
+          else clearError(zipEl);
+        }
       }
     });
 
     // 3. Conditional Loop Check: Dynamic Series Cell Subunits
-    if (seriesChoice && seriesChoice.value === "yes") {
+    if (seriesChoice && seriesChoice.value === "yes" && (seriesChoice.offsetWidth > 0 || seriesChoice.offsetHeight > 0)) {
       const cellCards = container.querySelectorAll("#sllc_cells_container .member-record-card");
       cellCards.forEach(card => {
-        const idx = card.id.replace("sllc_cell_card_", "");
-        const cellNameEl = document.getElementById(`sllc_cell_name_${idx}`);
-        const cellDescEl = document.getElementById(`sllc_cell_desc_1`); // Explicit fall-back layout reference tracker
+        if (card && (card.offsetWidth > 0 || card.offsetHeight > 0)) {
+          const idx = card.id.replace("sllc_cell_card_", "");
+          const cellNameEl = document.getElementById(`sllc_cell_name_${idx}`);
+          const cellDescEl = document.getElementById(`sllc_cell_desc_${idx}`);
 
-        if (cellNameEl && !cellNameEl.value.trim()) setError(cellNameEl, `Series Cell #${idx}: Cell Legal Name Target is required.`); else clearError(cellNameEl);
+          if (cellNameEl && !cellNameEl.value.trim()) {
+            setError(cellNameEl, `Series Cell #${idx}: Cell Legal Name Target is required.`);
+          } else if (cellNameEl) {
+            clearError(cellNameEl);
+          }
+
+          if (cellDescEl && !cellDescEl.value.trim()) {
+            setError(cellDescEl, `Series Cell #${idx}: Purpose description is required.`);
+          } else if (cellDescEl) {
+            clearError(cellDescEl);
+          }
+        }
       });
     }
 
     // 4. Conditional Check: EIN Reason Input field
-    if (einChoice && einChoice.value === "yes") {
+    if (einChoice && einChoice.value === "yes" && (einChoice.offsetWidth > 0 || einChoice.offsetHeight > 0)) {
       const einReasonEl = document.getElementById("sllc_ein_reason");
-      if (einReasonEl && !einReasonEl.value.trim()) setError(einReasonEl, "Reason for obtaining an EIN is required."); else clearError(einReasonEl);
+      if (einReasonEl) {
+        if (!einReasonEl.value.trim()) setError(einReasonEl, "Reason for obtaining an EIN is required.");
+        else clearError(einReasonEl);
+      }
     }
 
     return { isValid, errors };
   }
 };
 
+window.seriesLlcPart2BValidation = seriesLlcPart2BValidation;
+
+
 // Part 2: HTML Component Structural Output Definition (Designs Untouched)
-export function buildSeriesLlcPart2B(stateDropdownOptionsHtml) {
+function buildSeriesLlcPart2B(stateDropdownOptionsHtml) {
   const centralRegistrySource = window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {};
   const einMetaRecord = centralRegistrySource["customSelectedEinProcurementServiceActive"] || {};
   const liveEinFee = parseFloat(einMetaRecord.price || 75.00).toFixed(2);
@@ -640,44 +890,76 @@ export function buildSeriesLlcPart2B(stateDropdownOptionsHtml) {
   `;
 }
 
-export function buildSeriesLlcFieldsLayoutHtml() {
+// ============================================================================ //
+// 🏛️ SERIES LLC MASTER LAYOUT COMPILER & PART 3 VALIDATION MATRIX              //
+// ============================================================================ //
+
+function buildSeriesLlcFieldsLayoutHtml() {
   const resolvedStateOptions = typeof getUsaStatesHtml === "function" ? getUsaStatesHtml(window.selectedFormationStateCode || "") : '<option value="">Select State...</option>';
-  return buildSeriesLlcPart1() + buildSeriesLlcPart2A(resolvedStateOptions) + buildSeriesLlcPart2B(resolvedStateOptions);
+  const p1 = typeof window.buildSeriesLlcPart1 === "function" ? window.buildSeriesLlcPart1() : "";
+  const p2a = typeof window.buildSeriesLlcPart2A === "function" ? window.buildSeriesLlcPart2A(resolvedStateOptions) : "";
+  const p2b = typeof window.buildSeriesLlcPart2B === "function" ? window.buildSeriesLlcPart2B(resolvedStateOptions) : "";
+  return p1 + p2a + p2b;
 }
 
 window.buildSeriesLlcFieldsLayoutHtml = buildSeriesLlcFieldsLayoutHtml;
-window.buildSeriesLlcPart2B = buildSeriesLlcPart2B;
 
-// Validation Engine Configuration Rules Module for Series LLC Part 3 Controls
-export const seriesLlcPart3Validation = {
+var seriesLlcPart3Validation = {
   requiredFields: [
     { id: 'sllc_license_check', msg: 'Please answer if you have verified localized licenses.' },
     { id: 'sllc_duration_choice', msg: 'Filing Operational Lifespan Horizon selection is required.' }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Process mandatory selection choices
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) { setError(el, field.msg); } else { clearError(el); }
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) {
+          setError(el, field.msg);
+        } else {
+          clearError(el);
+        }
       }
     });
 
     // 2. Conditional Check: Enforce Expiration Date for Temporary Term selections
     const durationChoice = document.getElementById("sllc_duration_choice");
-    if (durationChoice && durationChoice.value === "project") {
+    if (durationChoice && durationChoice.value === "project" && (durationChoice.offsetWidth > 0 || durationChoice.offsetHeight > 0)) {
       const dateEl = document.getElementById("sllc_expiration_date");
-      if (dateEl && !dateEl.value) {
-        setError(dateEl, "Please specify an expected expiration / dissolution date for project-based lifespans.");
-      } else if (dateEl) {
-        clearError(dateEl);
+      if (dateEl) {
+        if (!dateEl.value) {
+          setError(dateEl, "Please specify an expected expiration / dissolution date for project-based lifespans.");
+        } else {
+          clearError(dateEl);
+        }
       }
     }
 
@@ -685,8 +967,11 @@ export const seriesLlcPart3Validation = {
   }
 };
 
+window.seriesLlcPart3Validation = seriesLlcPart3Validation;
+
+
 // Part 2: HTML Component Structural Output Definition (Designs Untouched)
-export function buildSeriesLlcPart3() {
+function buildSeriesLlcPart3() {
   // DYNAMIC FIX: Query the registry database programmatically to find current license audit pricing rather than hardcoding static "$125.00" string text.
   const centralRegistrySource = window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {};
   const licenseMetaRecord = centralRegistrySource["customSelectedLicenseAuditSuiteActive"] || {};
@@ -701,13 +986,15 @@ export function buildSeriesLlcPart3() {
       <label for="sllc_license_check" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Have you verified the necessary localized business licenses or permits? <span style="color: #ef4444;">*</span></label>
       <select id="sllc_license_check" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleSeriesLicenseWorkflow(this.value)">
         <option value="yes" selected>Yes, I have verified my structural compliance tracks</option>
-        <option value="no">No, I need help — Add Filings4u License &amp; Permit Audit Suite — $\${liveLicenseFee}</option>
+        <option value="no">No, I need help — Add Filings4u License &amp; Permit Audit Suite — $${liveLicenseFee}</option>
       </select>
+      <div class="wizard-error-message" id="err_sllc_license_check" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
     <div id="sllc_custom_license_wrapper" style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px;">
       <label for="sllc_intended_licenses" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">List Intended Licenses / Permits to Apply For</label>
       <textarea id="sllc_intended_licenses" placeholder="Provide general targets: e.g. State Sales Tax License, Municipal Operating Permits..." rows="2" class="wizard-input-field" style="font-family: inherit; resize: vertical; padding: 14px;"></textarea>
     </div>
+
     <!-- SECTION 7: DURATION OF OPERATION -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
       <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">7. Duration of Operation</h3>
@@ -718,11 +1005,14 @@ export function buildSeriesLlcPart3() {
         <option value="ongoing" selected>Ongoing Operations (Perpetual corporate horizon)</option>
         <option value="project">Project-Based (Defined/temporary operational threshold)</option>
       </select>
+      <div class="wizard-error-message" id="err_sllc_duration_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
     <div id="sllc_duration_term_wrapper" style="grid-column: span 2; display: none; flex-direction: column; gap: 8px;">
       <label for="sllc_expiration_date" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Specify Expected Expiration / Dissolution Date <span style="color: #ef4444;">*</span></label>
       <input type="date" id="sllc_expiration_date" class="wizard-input-field" style="font-weight: 600;">
+      <div class="wizard-error-message" id="err_sllc_expiration_date" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
+
     <!-- SECTION 8: ADDITIONAL PROVISIONS -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
       <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">8. Additional Provisions (Optional)</h3>
@@ -733,17 +1023,26 @@ export function buildSeriesLlcPart3() {
     </div>
   `;
 }
+
 window.buildSeriesLlcPart3 = buildSeriesLlcPart3;
 
 // Part 3: Master Assembly Stitch Layers (Designs Untouched)
-export function buildSeriesLlcFieldsLayoutHtml() {
+function buildSeriesLlcFieldsLayoutHtml() {
   const resolvedStateOptions = typeof getUsaStatesHtml === "function" ? getUsaStatesHtml(window.selectedFormationStateCode || "") : '<option value="">Select State...</option>';
-  return buildSeriesLlcPart1() + buildSeriesLlcPart2A(resolvedStateOptions) + buildSeriesLlcPart2B(resolvedStateOptions) + buildSeriesLlcPart3();
+  const p1 = typeof window.buildSeriesLlcPart1 === "function" ? window.buildSeriesLlcPart1() : "";
+  const p2a = typeof window.buildSeriesLlcPart2A === "function" ? window.buildSeriesLlcPart2A(resolvedStateOptions) : "";
+  const p2b = typeof window.buildSeriesLlcPart2B === "function" ? window.buildSeriesLlcPart2B(resolvedStateOptions) : "";
+  const p3 = typeof window.buildSeriesLlcPart3 === "function" ? window.buildSeriesLlcPart3() : "";
+  return p1 + p2a + p2b + p3;
 }
 
-export function buildSeriesLlcRegistrationFieldsLayoutHtml() {
+function buildSeriesLlcRegistrationFieldsLayoutHtml() {
   const stateDropdownOptionsHtml = typeof getUsaStatesHtml === "function" ? getUsaStatesHtml(window.selectedFormationStateCode || "") : '<option value="">Select State...</option>';
-  return buildSeriesLlcPart1() + buildSeriesLlcPart2A(stateDropdownOptionsHtml) + buildSeriesLlcPart2B(stateDropdownOptionsHtml) + buildSeriesLlcPart3();
+  const p1 = typeof window.buildSeriesLlcPart1 === "function" ? window.buildSeriesLlcPart1() : "";
+  const p2a = typeof window.buildSeriesLlcPart2A === "function" ? window.buildSeriesLlcPart2A(stateDropdownOptionsHtml) : "";
+  const p2b = typeof window.buildSeriesLlcPart2B === "function" ? window.buildSeriesLlcPart2B(stateDropdownOptionsHtml) : "";
+  const p3 = typeof window.buildSeriesLlcPart3 === "function" ? window.buildSeriesLlcPart3() : "";
+  return p1 + p2a + p2b + p3;
 }
 
 window.buildSeriesLlcFieldsLayoutHtml = buildSeriesLlcFieldsLayoutHtml;

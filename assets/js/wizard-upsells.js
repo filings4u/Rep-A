@@ -110,113 +110,124 @@ window.renderTargetUpsellsListPanel = renderTargetUpsellsListPanel;
 // ============================================================================ //
 // ⚡ CLICK INTERCEPT ROUTERS & BINDING HANDLERS (REPAIRED FUNNEL CORES)        //
 // ============================================================================ //
+
 /**
  * Syncs marketplace checklist boxes immediately down to global state tokens memory registers
  * and dynamically injects values into both backend and wizard-native invoice arrays.
  * @param {HTMLInputElement} checkboxNode - Active selected marketplace checkbox element.
  */
 function handleBackgroundUpsellTogglePass(checkboxNode) {
-    if (!checkboxNode || typeof checkboxNode !== 'object') return;
-    
-    const targetFlagKey = checkboxNode.id;
-    if (!targetFlagKey) {
-        console.warn("[Sync Engine] Toggle failed: Checkbox is missing a valid 'id' attribute.");
-        return;
-    }
+  if (!checkboxNode || typeof checkboxNode !== 'object') return;
 
-    const isChecked = Boolean(checkboxNode.checked);
-    
-    // 1. Immediately sync the visual state variable to the global window scope tracker
+  const targetFlagKey = checkboxNode.id;
+  if (!targetFlagKey) {
+    console.warn("[Sync Engine] Toggle failed: Checkbox is missing a valid 'id' attribute.");
+    return;
+  }
+
+  const isChecked = Boolean(checkboxNode.checked);
+  const protectedKeys = ["location", "document", "window", "history", "navigator", "init", "atob", "btoa", "open", "close", "name"];
+
+  // 1. Immediately sync the visual state variable to the global window scope tracker safely
+  if (!protectedKeys.includes(targetFlagKey) && typeof window[targetFlagKey] !== "function") {
     window[targetFlagKey] = isChecked;
+  }
 
-    const windowKeys = Object.keys(window);
-    const activeBillingNodes = [];
+  const windowKeys = Object.keys(window);
+  const activeBillingNodes = [];
 
-    // Locate standard billing payloads
-    for (let i = 0; i < windowKeys.length; i++) {
-        const key = windowKeys[i];
-        try {
-            if (window[key] && typeof window[key] === 'object' && window[key].active_addons_list !== undefined) {
-                activeBillingNodes.push(key);
-            }
-        } catch (e) {
-            // Cross-origin container safety block filter pass
-        }
+  // Locate standard billing payloads
+  for (let i = 0; i < windowKeys.length; i++) {
+    const key = windowKeys[i];
+    try {
+      if (window[key] && typeof window[key] === 'object' && window[key].active_addons_list !== undefined) {
+        activeBillingNodes.push(key);
+      }
+    } catch (e) {
+      // Cross-origin container safety block filter pass
     }
+  }
 
-    // Resolve structural naming coordinates mapping parameters
-    const inverseCoordinatesMap = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
-    const catalogSlug = Object.keys(inverseCoordinatesMap).find(key => inverseCoordinatesMap[key] === targetFlagKey) || targetFlagKey;
+  // Resolve structural naming coordinates mapping parameters
+  const inverseCoordinatesMap = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
+  const catalogSlug = Object.keys(inverseCoordinatesMap).find(function(key) {
+    return inverseCoordinatesMap[key] === targetFlagKey;
+  }) || targetFlagKey;
+
+  const addonNameAttr = checkboxNode.getAttribute("data-name") || checkboxNode.getAttribute("data-label") || catalogSlug;
+  const addonPriceAttr = parseFloat(checkboxNode.getAttribute("data-price")) || parseFloat(checkboxNode.value) || 0.00;
+  
+  const compiledAddonRecord = { 
+    id: catalogSlug, 
+    name: addonNameAttr, 
+    price: addonPriceAttr, 
+    label: addonNameAttr 
+  };
+
+  // 2. Pass Phase 1: Update explicit backend tracking payload tables
+  activeBillingNodes.forEach(function(nodeKey) {
+    const targetPayload = window[nodeKey];
+    if (!targetPayload || !Array.isArray(targetPayload.active_addons_list)) return;
     
-    const addonNameAttr = checkboxNode.getAttribute("data-name") || checkboxNode.getAttribute("data-label") || catalogSlug;
-    const addonPriceAttr = parseFloat(checkboxNode.getAttribute("data-price")) || parseFloat(checkboxNode.value) || 0.00;
-
-    const compiledAddonRecord = { 
-        id: catalogSlug, 
-        name: addonNameAttr, 
-        price: addonPriceAttr,
-        label: addonNameAttr
-    };
-
-    // 2. Pass Phase 1: Update explicit backend tracking payload tables
-    activeBillingNodes.forEach(nodeKey => {
-        const targetPayload = window[nodeKey];
-        if (!targetPayload || !Array.isArray(targetPayload.active_addons_list)) return;
-
-        if (isChecked) {
-            const isAlreadyListed = targetPayload.active_addons_list.some(addon => {
-                return ((addon && typeof addon === 'object') ? addon.id : addon) === catalogSlug;
-            });
-            if (!isAlreadyListed) {
-                targetPayload.active_addons_list.push(compiledAddonRecord);
-            }
-        } else {
-            targetPayload.active_addons_list = targetPayload.active_addons_list.filter(addon => {
-                return ((addon && typeof addon === 'object') ? addon.id : addon) !== catalogSlug;
-            });
-        }
-    });
-
-    // 3. 🟢 PASS PHASE 2: CRITICAL WIZARD SUMMARY INTEGRATION
-    // Force-syncs selections right into the cart state read by your Step 5 Overview Panel
-    if (!window.currentCartState) {
-        window.currentCartState = { addons: [] };
-    }
-    if (!Array.isArray(window.currentCartState.addons)) {
-        window.currentCartState.addons = [];
-    }
-
     if (isChecked) {
-        const isCartDuplicate = window.currentCartState.addons.some(addon => addon.name === addonNameAttr);
-        if (!isCartDuplicate) {
-            window.currentCartState.addons.push({
-                name: addonNameAttr,
-                price: addonPriceAttr
-            });
-            console.log(`[funnel Sync] Synced "${addonNameAttr}" into Step 5 cart state review array.`);
-        }
+      const isAlreadyListed = targetPayload.active_addons_list.some(function(addon) {
+        return ((addon && typeof addon === 'object') ? addon.id : addon) === catalogSlug;
+      });
+      if (!isAlreadyListed) {
+        targetPayload.active_addons_list.push(compiledAddonRecord);
+      }
     } else {
-        window.currentCartState.addons = window.currentCartState.addons.filter(addon => addon.name !== addonNameAttr);
-        console.log(`[funnel Sync] Scrubbed "${addonNameAttr}" out of Step 5 cart state review array.`);
+      targetPayload.active_addons_list = targetPayload.active_addons_list.filter(function(addon) {
+        return ((addon && typeof addon === 'object') ? addon.id : addon) !== catalogSlug;
+      });
     }
+  });
 
-    // 4. Force skin color highlight adjustments over your card wrappers
-    if (typeof window.autoSkinSelectedUpsellCards === "function") {
-        window.autoSkinSelectedUpsellCards();
-    }
+  // 3. 🟢 PASS PHASE 2: CRITICAL WIZARD SUMMARY INTEGRATION
+  // FIXED: Fallback declaration protects existing package keys from destructive overwrite wipes
+  if (!window.currentCartState) {
+    window.currentCartState = {};
+  }
+  if (!Array.isArray(window.currentCartState.addons)) {
+    window.currentCartState.addons = [];
+  }
 
-    // 5. Fire running invoice total recalculation loops live
-    if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
-        window.updateDynamicPricingMatrixVanilla();
+  if (isChecked) {
+    const isCartDuplicate = window.currentCartState.addons.some(function(addon) {
+      return addon && addon.name === addonNameAttr;
+    });
+    if (!isCartDuplicate) {
+      window.currentCartState.addons.push({ name: addonNameAttr, price: addonPriceAttr });
+      console.log(`[Funnel Sync] Synced "${addonNameAttr}" into Step 5 cart state review array.`);
     }
+  } else {
+    window.currentCartState.addons = window.currentCartState.addons.filter(function(addon) {
+      return addon && addon.name !== addonNameAttr;
+    });
+    console.log(`[Funnel Sync] Scrubbed "${addonNameAttr}" out of Step 5 cart state review array.`);
+  }
 
-    // 6. Write current state selections cleanly to localStorage caches
-    if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") {
-        window.cacheAndRestoreWizardFormStatesVanilla(false);
-    }
+  // 4. Force skin color highlight adjustments over your card wrappers
+  if (typeof window.autoSkinSelectedUpsellCards === "function") {
+    window.autoSkinSelectedUpsellCards();
+  }
+
+  // 5. Fire running invoice total recalculation loops live
+  if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+    window.updateDynamicPricingMatrixVanilla();
+  } else if (typeof window.runPricingMatrixDataCrawlPass === "function") {
+    window.runPricingMatrixDataCrawlPass();
+  }
+
+  // 6. Write current state selections cleanly to localStorage caches
+  if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") {
+    window.cacheAndRestoreWizardFormStatesVanilla(false);
+  }
 }
 
+// Bind cleanly back into universal global window scope references safely
 window.handleBackgroundUpsellTogglePass = handleBackgroundUpsellTogglePass;
+
 
 
 // ============================================================================ //
@@ -1040,106 +1051,113 @@ document.addEventListener("DOMContentLoaded", () => {
 window.handleBackgroundUpsellTogglePass = window.executeUpsellStateToggleIntercept;
 
 
-// ============================================================================ // 
-// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: UI BINDINGS INJECTIONS (PART 3 OF 3)   // 
-// ============================================================================ // 
-function finalizePricingMatrixUiRender() { 
-    const ctx = window._tempCalcContext; 
-    if (!ctx) return; 
+// ============================================================================ //
+// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: UI BINDINGS INJECTIONS (PART 3 OF 3)   //
+// ============================================================================ //
 
-    let baseGovAgencyFee = 0; 
-    let stateDropdown = document.getElementById("wizard_state_select") || document.getElementById("state_select"); 
-    let selectedStateCode = ctx.currentCartState?.selectedState || (stateDropdown ? stateDropdown.value : window.selectedJurisdiction || null); 
-    let stateFriendlyName = selectedStateCode || ""; 
+function finalizePricingMatrixUiRender() {
+  const ctx = window._tempCalcContext;
+  if (!ctx) return;
 
-    if (selectedStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[selectedStateCode]) { 
-        let stateFeeData = window.STATE_FILING_FEES[selectedStateCode]; 
-        stateFriendlyName = stateFeeData.name || selectedStateCode; 
-        
-        let mapKeyA = ctx.currentServiceKey ? ctx.currentServiceKey.replace(/-/g, "_") : ""; 
-        let mapKeyB = ctx.currentServiceKey ? ctx.currentServiceKey.replace(/_/g, "-") : ""; 
-        let discoveredFee = stateFeeData[mapKeyA] || stateFeeData[mapKeyB] || stateFeeData[ctx.currentServiceKey]; 
-        
-        if (discoveredFee !== undefined && discoveredFee !== null) { 
-            baseGovAgencyFee = parseFloat(discoveredFee) || 0; 
-        } 
-    } else { 
-        baseGovAgencyFee = parseFloat(ctx.planConfig?.gov_fee) || 0; 
-    } 
+  let baseGovAgencyFee = 0;
+  let stateDropdown = document.getElementById("wizard_state_select") || document.getElementById("state_select");
+  let selectedStateCode = ctx.currentCartState?.selectedState || (stateDropdown ? stateDropdown.value : window.selectedJurisdiction || null);
+  let stateFriendlyName = selectedStateCode || "";
 
-    let agencyTariff = 0; 
-    if (window.FILINGS4U_GOVERNMENT_PRICING && ctx.currentServiceKey && window.FILINGS4U_GOVERNMENT_PRICING[ctx.currentServiceKey]) { 
-        agencyTariff = parseFloat(window.FILINGS4U_GOVERNMENT_PRICING[ctx.currentServiceKey]) || 0; 
-    } 
+  if (selectedStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[selectedStateCode]) {
+    let stateFeeData = window.STATE_FILING_FEES[selectedStateCode];
+    stateFriendlyName = stateFeeData.name || selectedStateCode;
+    
+    let mapKeyA = ctx.currentServiceKey ? ctx.currentServiceKey.replace(/-/g, "_") : "";
+    let mapKeyB = ctx.currentServiceKey ? ctx.currentServiceKey.replace(/_/g, "-") : "";
+    let discoveredFee = stateFeeData[mapKeyA] || stateFeeData[mapKeyB] || stateFeeData[ctx.currentServiceKey];
+    
+    if (discoveredFee !== undefined && discoveredFee !== null) {
+      baseGovAgencyFee = parseFloat(discoveredFee) || 0;
+    }
+  } else {
+    baseGovAgencyFee = parseFloat(ctx.planConfig?.gov_fee) || 0;
+  }
 
-    // Calculate final absolute matrix grand totals 
-    const dynamicTotalValue = (parseFloat(ctx.baseTierPrice) || 0) + (parseFloat(ctx.incrementalAddonTotal) || 0) + baseGovAgencyFee + agencyTariff; 
+  let agencyTariff = 0;
+  if (window.FILINGS4U_GOVERNMENT_PRICING && ctx.currentServiceKey && window.FILINGS4U_GOVERNMENT_PRICING[ctx.currentServiceKey]) {
+    agencyTariff = parseFloat(window.FILINGS4U_GOVERNMENT_PRICING[ctx.currentServiceKey]) || 0;
+  }
 
-    // Synchronize final calculated numbers out to global variables for gateway processors
-    window.computedWizardGrandTotalAmount = dynamicTotalValue;
-    window.computedWizardStateGovernmentFee = baseGovAgencyFee;
+  // Calculate final absolute matrix grand totals
+  const dynamicTotalValue = (parseFloat(ctx.baseTierPrice) || 0) + (parseFloat(ctx.incrementalAddonTotal) || 0) + baseGovAgencyFee + agencyTariff;
 
-    // Render to structural nodes if elements are active on layout 
-    const dynamicInvoiceArea = document.getElementById("matrix-invoice-rows-container"); 
-    const dynamicTotalElement = document.getElementById("matrix-invoice-grand-total"); 
+  // Synchronize final calculated numbers out to global variables for gateway processors
+  window.computedWizardGrandTotalAmount = dynamicTotalValue;
+  window.computedWizardStateGovernmentFee = baseGovAgencyFee;
 
-    if (dynamicInvoiceArea) { 
-        let appendStateFeeRow = ctx.descriptiveInvoiceRowsHtml || ""; 
-        if (baseGovAgencyFee > 0) { 
-            appendStateFeeRow += ` 
-             <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #64748b; font-weight: 500; margin-bottom: 6px;"> 
-                <span>+ Mandatory ${stateFriendlyName} Filing Fee</span> 
-                <span style="font-family: monospace;">$${baseGovAgencyFee.toFixed(2)}</span> 
-             </div>`; 
-        } 
-        dynamicInvoiceArea.innerHTML = appendStateFeeRow; 
-    } 
+  // Render to structural nodes if elements are active on layout
+  const dynamicInvoiceArea = document.getElementById("matrix-invoice-rows-container");
+  const dynamicTotalElement = document.getElementById("matrix-invoice-grand-total");
 
-    if (dynamicTotalElement) { 
-        dynamicTotalElement.innerText = `$${dynamicTotalValue.toFixed(2)}`; 
-    } 
+  if (dynamicInvoiceArea) {
+    let appendStateFeeRow = ctx.descriptiveInvoiceRowsHtml || "";
+    if (baseGovAgencyFee > 0) {
+      appendStateFeeRow += `
+        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #64748b; font-weight: 500; margin-bottom: 6px;">
+          <span>+ Mandatory ${stateFriendlyName} Filing Fee</span>
+          <span style="font-family: monospace;">$${baseGovAgencyFee.toFixed(2)}</span>
+        </div>`;
+    }
+    dynamicInvoiceArea.innerHTML = appendStateFeeRow;
+  }
+
+  if (dynamicTotalElement) {
+    dynamicTotalElement.innerText = `$${dynamicTotalValue.toFixed(2)}`;
+  }
 }
 
 // 🟢 GLOBAL MEMORY CORES HOOK: Expose the method safely back to global scopes window records
 window.finalizePricingMatrixUiRender = finalizePricingMatrixUiRender;
 
 
-// ============================================================================ // 
-// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: CORES PIPELINE RUNNER (REPAIRED)      // 
-// ============================================================================ // 
-window.updateDynamicPricingMatrixVanilla = function(state) { 
+
+// ============================================================================ //
+// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: CORES PIPELINE RUNNER (DEFERRED RUNTIME REPAIR) //
+// ============================================================================ //
+window.updateDynamicPricingMatrixVanilla = function(state) {
     // 🟢 DATA SYNCHRONIZATION RUNTIME FIX:
-    // If no explicit state argument is provided by the toggle pass, automatically 
+    // If no explicit state argument is provided by the toggle pass, automatically
     // fall back to reading your active global cart tracking array context.
     const activeStatePayload = state || window.currentCartState || {};
 
-    // Directly fires straight-line procedures sequentially to completely 
-    // bypass proxy function names self-referencing loops locks in wizard-steps.js 
-    if (typeof window.executeCleanInvoiceCalculationPass === "function") { 
-        window.executeCleanInvoiceCalculationPass(activeStatePayload); 
-    } else { 
-        console.warn("[Matrix Engine Pipeline] 'executeCleanInvoiceCalculationPass' function missing from global script sequence context."); 
-    } 
+    // 🛡️ RUNTIME PIPELINE GUARD: 
+    // Check if core calculation engines are ready in the global execution context yet.
+    const isCoreEngineReady = typeof window.executeCleanInvoiceCalculationPass === "function" && 
+                              typeof window.runPricingMatrixDataCrawlPass === "function";
 
-    if (typeof window.runPricingMatrixDataCrawlPass === "function") { 
-        window.runPricingMatrixDataCrawlPass(); 
-    } else { 
-        console.warn("[Matrix Engine Pipeline] 'runPricingMatrixDataCrawlPass' core utility is temporarily missing from environment."); 
-    } 
+    if (!isCoreEngineReady) {
+        // Postpone execution silently. Avoids clogging logs during the boot engine race condition.
+        setTimeout(function() {
+            window.updateDynamicPricingMatrixVanilla(state);
+        }, 50);
+        return; 
+    }
+
+    // Directly fires straight-line procedures sequentially to completely
+    // bypass proxy function names self-referencing loops locks in wizard-steps.js
+    window.executeCleanInvoiceCalculationPass(activeStatePayload);
+    window.runPricingMatrixDataCrawlPass();
 
     // Fire the final user interface display bindings pass cleanly
     if (typeof window.finalizePricingMatrixUiRender === "function") {
-        window.finalizePricingMatrixUiRender(); 
+        window.finalizePricingMatrixUiRender();
     } else {
         console.error("[Matrix Engine Pipeline] Critical failure: 'finalizePricingMatrixUiRender' is uninitialized.");
     }
-}; 
+};
 
 /**
  * Legacy Alias Support Bridge Matrix
  */
-window.updateWizardFinalTotalAmountMatrix = function() { 
+window.updateWizardFinalTotalAmountMatrix = function() {
     if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
-        window.updateDynamicPricingMatrixVanilla(); 
+        window.updateDynamicPricingMatrixVanilla();
     }
 };
+

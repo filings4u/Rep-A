@@ -1,85 +1,77 @@
-// ============================================================================ //
-// 🛠️ CORPORATE FORM VALIDATION MATRIX ENGINE (WITH CONDITIONAL RA EXTENSION)
-// ============================================================================ //
-export const corporateFormationValidation = {
-  validateStep: function() {
-    const container = document.getElementById("step-panel-2") || document.getElementById("step-2") || document.body;
-    let isValid = true;
-    let errors = [];
+function validateCorporateFormationFieldsPart1() {
+  let isValid = true;
+  const markInvalid = (iEl, eEl, msg) => {
+    if (!iEl || !eEl) return;
+    eEl.textContent = msg;
+    eEl.style.setProperty("display", "block", "important");
+    iEl.style.setProperty("border", "1px solid #ef4444", "important");
+    isValid = false;
+  };
+  const markValid = (iEl, eEl) => {
+    if (!iEl || !eEl) return;
+    eEl.style.setProperty("display", "none", "important");
+    iEl.style.removeProperty("border");
+  };
+  const isVis = (el) => el && (el.offsetWidth > 0 || el.offsetHeight > 0);
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
-
-    // 1. Validate Base Core Framework Fields
-    const baseFields = [
-      { id: 'corp_proposed_name', msg: 'Proposed Corporation Name is required.' },
-      { id: 'corp_business_purpose', msg: 'Corporate Business Purpose is required.' },
-      { id: 'corp_ra_choice', msg: 'Please select a registered agent option.' },
-      { id: 'corp_shares_authorized', msg: 'Total Shares Authorized is required.' },
-      { id: 'corp_shares_par_value', msg: 'Par Value Per Share is required.' },
-      { id: 'corp_scorp_elect', msg: 'Please select an IRS status election answer.' }
-    ];
-
-    baseFields.forEach(field => {
-      const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
-      }
-    });
-
-    // 2. Specific Validation: Corporate Suffix Suffix Rules Lookups
-    const nameEl = document.getElementById("corp_proposed_name");
-    if (nameEl && nameEl.value.trim()) {
-      const val = nameEl.value.trim().toLowerCase();
-      const hasSuffix = val.endsWith("inc.") || val.endsWith("inc") || val.endsWith("incorporated") || val.endsWith("corporation") || val.endsWith("corp.") || val.endsWith("corp");
-      if (!hasSuffix) setError(nameEl, 'Corporation name must include "Inc.", "Incorporated", or "Corporation".');
-    }
-
-    // 3. Dynamic Loop Checks: Visible Shareholders Registry
-    const shCards = container.querySelectorAll("#corp_shareholders_container .member-record-card");
-    shCards.forEach(card => {
-      const idx = card.id.replace("shareholder_card_", "");
-      const name = document.getElementById(`shareholder_name_${idx}`);
-      const street = document.getElementById(`shareholder_street_${idx}`);
-      const city = document.getElementById(`shareholder_city_${idx}`);
-      const state = document.getElementById(`shareholder_state_${idx}`);
-      const zip = document.getElementById(`shareholder_zip_${idx}`);
-
-      if (name && !name.value.trim()) setError(name, `Shareholder #${idx}: Full Legal Name is required.`); else clearError(name);
-      if (street && !street.value.trim()) setError(street, `Shareholder #${idx}: Street Address is required.`); else clearError(street);
-      if (city && !city.value.trim()) setError(city, `Shareholder #${idx}: City is required.`); else clearError(city);
-      if (state && !state.value.trim()) setError(state, `Shareholder #${idx}: State is required.`); else clearError(state);
-      if (zip) {
-        if (!zip.value.trim()) setError(zip, `Shareholder #${idx}: Zip Code is required.`);
-        else if (!/^\d{5}$/.test(zip.value.trim())) setError(zip, `Shareholder #${idx}: Zip Code must be 5 digits.`);
-        else clearError(zip);
-      }
-    });
-
-    // 4. Added Conditional Validation: Third Party Corporate Registered Agent
-    const raChoice = document.getElementById("corp_ra_choice");
-    if (raChoice && raChoice.value === "custom") {
-      ['corp_ra_custom_name', 'corp_ra_custom_street', 'corp_ra_custom_city', 'corp_ra_custom_state', 'corp_ra_custom_zip'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          if (!el.value.trim()) setError(el, 'All custom registered agent fields are required.');
-          else if (id === 'corp_ra_custom_zip' && !/^\d{5}$/.test(el.value.trim())) setError(el, 'Custom Agent Zip must be 5 digits.');
-          else clearError(el);
-        }
-      });
-    }
-
-    return { isValid, errors };
+  // 1. Proposed Name
+  const nameField = document.getElementById('corp_proposed_name');
+  const nameErr = document.getElementById('err_corp_proposed_name');
+  if (isVis(nameField) && nameErr) {
+    (!nameField.value.trim()) ? markInvalid(nameField, nameErr, "Proposed corporation legal name is required.") : markValid(nameField, nameErr);
   }
-};
 
-// Part 2: HTML Component Structural Output Definition (Designs Untouched)
-export function buildCorporateFormationFieldsLayoutHtml() {
+  // 2. Business Purpose
+  const purpField = document.getElementById('corp_business_purpose');
+  const purpErr = document.getElementById('err_corp_business_purpose');
+  if (isVis(purpField) && purpErr) {
+    (!purpField.value.trim()) ? markInvalid(purpField, purpErr, "Corporate operational intent description is required.") : markValid(purpField, purpErr);
+  }
+
+  // 3. Registered Agent Selection
+  const raField = document.getElementById('corp_ra_choice');
+  const raErr = document.getElementById('err_corp_ra_choice');
+  if (isVis(raField) && raErr) {
+    (!raField.value) ? markInvalid(raField, raErr, "Please specify your registered agent choice selection.") : markValid(raField, raErr);
+  }
+
+  // 4. Custom Agent Fields
+  const wrapper = document.getElementById('corp_custom_ra_wrapper');
+  if (wrapper && (wrapper.style.display === "grid" || wrapper.style.display === "block" || (raField && raField.value === "custom"))) {
+    const fields = [
+      { id: 'corp_ra_custom_name', err: 'err_corp_ra_custom_name', msg: "Independent agent name is required." },
+      { id: 'corp_ra_custom_street', err: 'err_corp_ra_custom_street', msg: "Agent street physical address is required." },
+      { id: 'corp_ra_custom_city', err: 'err_corp_ra_custom_city', msg: "Agent city coordinate parameter is required." },
+      { id: 'corp_ra_custom_zip', err: 'err_corp_ra_custom_zip', msg: "Agent Zip Code is required." }
+    ];
+    fields.forEach(f => {
+      const el = document.getElementById(f.id), err = document.getElementById(f.err);
+      if (el && err) (!el.value.trim()) ? markInvalid(el, err, f.msg) : markValid(el, err);
+    });
+  }
+
+  // 5. Shareholder Cards
+  document.querySelectorAll("input[id^='shareholder_name_']").forEach(inputEl => {
+    if (isVis(inputEl)) {
+      const suffix = inputEl.id.replace("shareholder_name_", "");
+      const errNode = document.getElementById("err_shareholder_name_" + suffix) || inputEl.parentElement?.querySelector(".wizard-error-message");
+      (!inputEl.value.trim()) ? markInvalid(inputEl, errNode, `Shareholder #${suffix} legal name is required.`) : markValid(inputEl, errNode);
+    }
+  });
+
+  return isValid;
+}
+window.validateCorporateFormationFieldsPart1 = validateCorporateFormationFieldsPart1;
+
+
+
+
+function buildCorporateFormationFieldsLayoutHtml() {
+  console.log("[Form Engine] Compiling Corporate Formation view layers template...");
   const centralRegistrySource = window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {};
   const agentMetaRecord = centralRegistrySource["customSelectedRegisteredAgentServiceActive"] || {};
   const liveAgentFee = parseFloat(agentMetaRecord.price || 75.00).toFixed(2);
-  
-  var blankStatesHtml = typeof buildGlobalUsaStateDropdownOptionsHtml === "function" ? buildGlobalUsaStateDropdownOptionsHtml("") : '<option value="">Select State</option>';
+  const blankStatesHtml = typeof window.buildGlobalUsaStateDropdownOptionsHtml === "function" ? window.buildGlobalUsaStateDropdownOptionsHtml("") : '<option value="WY">Wyoming</option><option value="DE">Delaware</option><option value="NV">Nevada</option>';
 
   return `
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 12px;">
@@ -87,152 +79,292 @@ export function buildCorporateFormationFieldsLayoutHtml() {
     </div>
     <div class="wizard-input-group">
       <label for="corp_proposed_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Proposed Corporation Name <span style="color: #ef4444;">*</span></label>
-      <input type="text" id="corp_proposed_name" required placeholder="Example Enterprises Inc." class="wizard-input-field" onblur="validateCorpNameSuffix(this)">
+      <input type="text" id="corp_proposed_name" required placeholder="Example Enterprises Inc." class="wizard-input-field" style="width: 100%; box-sizing: border-box;" onblur="if(typeof window.validateCorpNameSuffix === 'function') { window.validateCorpNameSuffix(this); }">
+      <div class="wizard-error-message" id="err_corp_proposed_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       <span style="font-size: 0.7rem; color: var(--slate); font-weight: 500; padding-left: 2px;">Must include "Inc.", "Incorporated", or "Corporation".</span>
     </div>
     <div class="wizard-input-group">
       <label for="corp_business_purpose" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Corporate Business Purpose <span style="color: #ef4444;">*</span></label>
-      <input type="text" id="corp_business_purpose" required placeholder="Brief description of operations..." class="wizard-input-field">
+      <input type="text" id="corp_business_purpose" required placeholder="Brief description of operations..." class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+      <div class="wizard-error-message" id="err_corp_business_purpose" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
       <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Registered Agent Information</h3>
     </div>
     <div class="wizard-input-group" style="grid-column: span 2;">
       <label for="corp_ra_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Select Registered Agent Provision <span style="color: #ef4444;">*</span></label>
-      <select id="corp_ra_choice" required class="wizard-input-field" onchange="toggleCorporateRegisteredAgentConditionalFields(this.value)">
+      <select id="corp_ra_choice" required class="wizard-input-field" style="width: 100%; box-sizing: border-box; height: 38px; font-weight: 600;" onchange="if(typeof window.toggleCorporateRegisteredAgentConditionalFields === 'function') { window.toggleCorporateRegisteredAgentConditionalFields(this.value); }">
         <option value="" disabled selected>Choose...</option>
         <option value="filings4u">Utilize Filings4u Protected Agent Shield Service — $${liveAgentFee} / Year</option>
         <option value="custom">Maintain External Independent Third-Party Registered Agent</option>
       </select>
+      <div class="wizard-error-message" id="err_corp_ra_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    
-    <!-- INJECTED EXTERNAL AGENT WRAPPER PANELS MATRIX (MATCHES LLC BLUEPRINTS) -->
-    <div id="corp_custom_ra_wrapper" style="grid-column: span 2; display: none; grid-template-columns: 1fr 1fr; gap: 24px; background: var(--light-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-sizing: border-box; width: 100%;">
-      <div class="wizard-input-group" style="grid-column: span 2;">
-        <label style="font-weight:700; font-size:0.8rem; color:var(--navy);">Agent Name *</label>
-        <input type="text" id="corp_ra_custom_name" class="wizard-input-field">
-      </div>
-      <div class="wizard-input-group" style="grid-column: span 2;">
-        <label style="font-weight:700; font-size:0.8rem; color:var(--navy);">Street Address *</label>
-        <input type="text" id="corp_ra_custom_street" class="wizard-input-field">
-      </div>
-      <div class="wizard-input-group">
-        <label style="font-weight:700; font-size:0.8rem; color:var(--navy);">City *</label>
-        <input type="text" id="corp_ra_custom_city" class="wizard-input-field">
-      </div>
-      <div class="wizard-input-group" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-        <div>
-          <label style="font-weight:700; font-size:0.8rem; color:var(--navy);">State *</label>
-          <select id="corp_ra_custom_state" class="wizard-input-field">${blankStatesHtml}</select>
-        </div>
-        <div>
-          <label style="font-weight:700; font-size:0.8rem; color:var(--navy);">Zip *</label>
-          <input type="text" id="corp_ra_custom_zip" maxlength="5" class="wizard-input-field">
-        </div>
-      </div>
-    </div>
+  
 
-    <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-      <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Shareholder Registry</h3>
+
+  <!-- INJECTED EXTERNAL AGENT WRAPPER PANELS MATRIX -->
+<div id="corp_custom_ra_wrapper" style="grid-column: span 2; display: none; grid-template-columns: 1fr 1fr; gap: 24px; background: rgba(10, 31, 68, 0.01); padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-sizing: border-box; width: 100%;">
+  <div class="wizard-input-group" style="grid-column: span 2; margin: 0;">
+    <label for="corp_ra_custom_name" style="font-weight:700; font-size:0.8rem; color:var(--navy);">Agent Name *</label>
+    <input type="text" id="corp_ra_custom_name" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+    <div class="wizard-error-message" id="err_corp_ra_custom_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+  </div>
+  <div class="wizard-input-group" style="grid-column: span 2; margin: 0;">
+    <label for="corp_ra_custom_street" style="font-weight:700; font-size:0.8rem; color:var(--navy);">Street Address *</label>
+    <input type="text" id="corp_ra_custom_street" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+    <div class="wizard-error-message" id="err_corp_ra_custom_street" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+  </div>
+  <div class="wizard-input-group" style="margin: 0;">
+    <label for="corp_ra_custom_city" style="font-weight:700; font-size:0.8rem; color:var(--navy);">City *</label>
+    <input type="text" id="corp_ra_custom_city" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+    <div class="wizard-error-message" id="err_corp_ra_custom_city" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+  </div>
+  <div class="wizard-input-group" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin: 0;">
+    <div>
+      <label for="corp_ra_custom_state" style="font-weight:700; font-size:0.8rem; color:var(--navy);">State *</label>
+      <select id="corp_ra_custom_state" class="wizard-input-field" style="width: 100%; box-sizing: border-box; height: 38px; font-weight: 600;">${blankStatesHtml}</select>
+      <div class="wizard-error-message" id="err_corp_ra_custom_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box;">
-      <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> What is a Shareholder?</strong> A shareholder is an individual or entity that owns shares of a corporation's stock. They hold structural ownership privileges.
+    <div>
+      <label for="corp_ra_custom_zip" style="font-weight:700; font-size:0.8rem; color:var(--navy);">Zip *</label>
+      <input type="text" id="corp_ra_custom_zip" maxlength="5" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+      <div class="wizard-error-message" id="err_corp_ra_custom_zip" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group" style="grid-column: span 2;">
-      <div id="corp_shareholders_container" style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
-        <div class="member-record-card" id="shareholder_card_1" style="background: #ffffff; border: 1px solid var(--border); padding: 16px; border-radius: 8px; width: 100%; box-sizing: border-box;">
-          <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase;">Shareholder #1 Records</span>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
-            <div class="wizard-input-group" style="grid-column: span 2;">
-              <label for="shareholder_name_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">Full Legal Name</label>
-              <input type="text" id="shareholder_name_1" required class="wizard-input-field">
-            </div>
-            <div class="wizard-input-group" style="grid-column: span 2;">
-              <label for="shareholder_street_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">Street Address</label>
-              <input type="text" id="shareholder_street_1" required class="wizard-input-field">
-            </div>
-            <div class="wizard-input-group">
-              <label for="shareholder_city_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">City</label>
-              <input type="text" id="shareholder_city_1" required class="wizard-input-field">
-            </div>
-            <div class="wizard-input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <div>
-                <label for="shareholder_state_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">State</label>
-                <input type="text" id="shareholder_state_1" required maxlength="2" class="wizard-input-field">
-              </div>
-              <div>
-                <label for="shareholder_zip_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">Zip</label>
-                <input type="text" id="shareholder_zip_1" required class="wizard-input-field">
-              </div>
-            </div>
+  </div>
+</div>
+
+<!-- SECTION 3: SHAREHOLDER REGISTRY -->
+<div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
+  <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Shareholder Registry</h3>
+</div>
+<div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box;">
+  <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> What is a Shareholder?</strong> A shareholder is an individual or entity that owns shares of a corporation's stock. They hold structural ownership privileges.
+</div>
+
+<!-- DYNAMIC SHAREHOLDER DATA COLLECTION TRACK NODE -->
+<div class="wizard-input-group" style="grid-column: span 2;">
+  <div id="corp_shareholders_container" style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
+    <!-- DEFAULT CARD 1 BASE REFUGE -->
+    <div class="member-record-card" id="shareholder_card_1" style="background: #ffffff; border: 1px solid var(--border); padding: 16px; border-radius: 8px; width: 100%; box-sizing: border-box;">
+      <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase;">Shareholder #1 Records</span>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
+        <div class="wizard-input-group" style="grid-column: span 2; margin: 0;">
+          <label for="shareholder_name_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">Full Legal Name *</label>
+          <input type="text" id="shareholder_name_1" required class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+          <div class="wizard-error-message" id="err_shareholder_name_1" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+        </div>
+        <div class="wizard-input-group" style="grid-column: span 2; margin: 0;">
+          <label for="shareholder_street_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">Street Address *</label>
+          <input type="text" id="shareholder_street_1" required class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+          <div class="wizard-error-message" id="err_shareholder_street_1" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+        </div>
+        <div class="wizard-input-group" style="margin: 0;">
+          <label for="shareholder_city_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">City *</label>
+          <input type="text" id="shareholder_city_1" required class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+          <div class="wizard-error-message" id="err_shareholder_city_1" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+        </div>
+        <div class="wizard-input-group" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin: 0;">
+          <div>
+            <label for="shareholder_state_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">State *</label>
+            <select id="shareholder_state_1" required class="wizard-input-field" style="width: 100%; box-sizing: border-box; height: 38px; font-weight: 600;">${blankStatesHtml}</select>
+            <div class="wizard-error-message" id="err_shareholder_state_1" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+          </div>
+          <div>
+            <label for="shareholder_zip_1" style="font-size:0.75rem; font-weight:700; color:var(--slate);">Zip *</label>
+            <input type="text" id="shareholder_zip_1" required maxlength="5" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
+            <div class="wizard-error-message" id="err_shareholder_zip_1" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
           </div>
         </div>
       </div>
-      <button type="button" onclick="appendNewCorporateShareholderNode()" style="margin-top: 12px; background: transparent; border: 1px dashed var(--primary); color: var(--primary); font-weight: 700; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;"><i class="fa-solid fa-plus"></i> Add Additional Shareholder</button>
     </div>
-  ` + buildCorporateFormationFieldsLayoutHtmlPart2();
-}
+  </div>
+</div>
+<div style="grid-column: span 2; margin-top: 12px;">
+  <button type="button" id="btn_add_shareholder" class="wizard-button-secondary" style="font-weight:700;">+ Add Additional Shareholder</button>
+</div>
+` + (typeof window.buildCorporateFormationFieldsLayoutHtmlPart2 === "function" ? window.buildCorporateFormationFieldsLayoutHtmlPart2() : "");}
 window.buildCorporateFormationFieldsLayoutHtml = buildCorporateFormationFieldsLayoutHtml;
+window.buildLlcFormationFormPart1 = buildCorporateFormationFieldsLayoutHtml;
 
-export function buildCorporateFormationFieldsLayoutHtmlPart2() {
-  const centralRegistrySource = window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {};
-  const scorpMetaRecord = centralRegistrySource["customSelectedScorpElectionActive"] || {};
-  const liveScorpFee = parseFloat(scorpMetaRecord.price || 79.00).toFixed(2);
 
-  return `
-    <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-      <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">4. Stock &amp; Tax Status Elections</h3>
-    </div>
-    <div class="wizard-input-group">
-      <label for="corp_shares_authorized" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Total Shares Authorized</label>
-      <input type="number" id="corp_shares_authorized" required placeholder="10000" class="wizard-input-field">
-    </div>
-    <div class="wizard-input-group">
-      <label for="corp_shares_par_value" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Par Value Per Share</label>
-      <input type="text" id="corp_shares_par_value" required placeholder="0.0001" class="wizard-input-field">
-    </div>
-    <div class="wizard-input-group" style="grid-column: span 2;">
-      <label for="corp_scorp_elect" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Do you wish to elect IRS S-Corporation status?</label>
-      <select id="corp_scorp_elect" required class="wizard-input-field" onchange="toggleScorpElectionWorkflow(this.value)">
-        <option value="no" selected>No, maintain standard C-Corporation structure</option>
-        <option value="yes">Yes, elect IRS Subchapter S-Corporation tax status</option>
-      </select>
-    </div>
-    <div id="corp_scorp_service_wrapper" style="grid-column: span 2; display: none; background: var(--light-bg); padding: 20px; border-radius: 8px; border: 1px dashed #cbd5e1; flex-direction: column; gap: 14px; box-sizing: border-box;">
-      <label for="corp_scorp_procure" style="font-weight: 700; font-size: 0.82rem; color: var(--navy);">Add IRS Form 2553 Filing Preparation Service? ($${liveScorpFee})</label>
-      <select id="corp_scorp_procure" class="wizard-input-field" onchange="toggleScorpFilingPricingHook(this.value)">
-        <option value="no-decline">No, I will file Form 2553 independently</option>
-        <option value="yes-buy">Yes, add Form 2553 Preparation — $${liveScorpFee}</option>
-      </select>
-    </div>
-  `;
-}
+// ============================================================================ // 
+// 📋 FAMILY 26B: CORPORATE FORMATION FIELDS LAYOUT MATRIX (PART 2 OF 3)       // 
+// ============================================================================ // 
+
+/** 
+ * Dynamically constructs the second form section block for corporate entities. 
+ * Resolves S-Corp election pricing parameters out of global lookup catalogs. 
+ * @returns {string} Fully generated structural HTML layout string markup. 
+ */ 
+// 🟢 FIX 1: Spelled function name consistently with the window export
+function buildCorporateFormationFieldsLayoutHtmlPart2(stateOptions) { 
+    const centralRegistrySource = window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {}; 
+    const scorpMetaRecord = centralRegistrySource["customSelectedScorpElectionActive"] || {}; 
+    const liveScorpFee = parseFloat(scorpMetaRecord.price || 79.00).toFixed(2); 
+
+    return ` 
+        <!-- SECTION 4: STOCK & TAX STATUS ELECTIONS --> 
+        <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;"> 
+            <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">4. Stock &amp; Tax Status Elections</h3> 
+        </div> 
+
+        <!-- FIELD 1: TOTAL SHARES AUTHORIZED --> 
+        <div class="wizard-input-group"> 
+            <label for="corp_shares_authorized" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Total Shares Authorized <span style="color: #ef4444;">*</span></label> 
+            <input type="number" id="corp_shares_authorized" required placeholder="10000" class="wizard-input-field" style="width: 100%; box-sizing: border-box;"> 
+            <div class="wizard-error-message" id="err_corp_shares_authorized" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
+        </div> 
+
+        <!-- FIELD 2: PAR VALUE PER SHARE --> 
+        <div class="wizard-input-group"> 
+            <label for="corp_shares_par_value" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Par Value Per Share <span style="color: #ef4444;">*</span></label> 
+            <input type="text" id="corp_shares_par_value" required placeholder="0.0001" class="wizard-input-field" style="width: 100%; box-sizing: border-box;"> 
+            <div class="wizard-error-message" id="err_corp_shares_par_value" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
+        </div> 
+
+        <!-- FIELD 3: S-CORP ELECTION CHOICE --> 
+        <div class="wizard-input-group" style="grid-column: span 2;"> 
+            <label for="corp_scorp_elect" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Do you wish to elect IRS S-Corporation status? <span style="color: #ef4444;">*</span></label> 
+            <select id="corp_scorp_elect" required class="wizard-input-field" style="width: 100%; box-sizing: border-box; height: 38px; font-weight: 600;" onchange="if(typeof window.toggleScorpElectionWorkflow === 'function') { window.toggleScorpElectionWorkflow(this.value); }"> 
+                <option value="no" selected>No, maintain standard C-Corporation structure</option> 
+                <option value="yes">Yes, elect IRS Subchapter S-Corporation tax status</option> 
+            </select> 
+            <div class="wizard-error-message" id="err_corp_scorp_elect" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
+        </div> 
+
+        <!-- CONDITIONAL WRAPPER: S-CORP FILING SELECTION --> 
+        <div id="corp_scorp_service_wrapper" style="grid-column: span 2; display: none; background: rgba(10, 31, 68, 0.01); padding: 20px; border-radius: 8px; border: 1px dashed #cbd5e1; flex-direction: column; gap: 14px; box-sizing: border-box; width: 100%;"> 
+            <label for="corp_scorp_procure" style="font-weight: 700; font-size: 0.82rem; color: var(--navy);">Add IRS Form 2553 Filing Preparation Service? ($${liveScorpFee})</label> 
+            <select id="corp_scorp_procure" class="wizard-input-field" style="width: 100%; box-sizing: border-box; height: 38px; font-weight: 600;" onchange="if(typeof window.toggleScorpFilingPricingHook === 'function') { window.toggleScorpFilingPricingHook(this.value); }"> 
+                <option value="no-decline">No, I will file Form 2553 independently</option> 
+                <option value="yes-buy">Yes, add Form 2553 Preparation — $${liveScorpFee}</option> 
+            </select> 
+            <div class="wizard-error-message" id="err_corp_scorp_procure" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
+        </div> 
+    `; 
+} 
+
 window.buildCorporateFormationFieldsLayoutHtmlPart2 = buildCorporateFormationFieldsLayoutHtmlPart2;
 
-// ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (CORPORATE EXTENSIONS)
-// ============================================================================ //
-export function toggleCorporateRegisteredAgentConditionalFields(selectedValue) {
-  var wrapper = document.getElementById("corp_custom_ra_wrapper");
-  if (!wrapper) return;
-  var inputs = wrapper.querySelectorAll("input, select");
 
-  if (selectedValue === "custom") {
-    wrapper.style.display = "grid";
-    window.customSelectedRegisteredAgentServiceActive = false;
-    inputs.forEach(el => el.setAttribute("required", "required"));
-  } else {
-    wrapper.style.display = "none";
-    const coreRegistry = window.CENTRAL_SERVICE_PLAN_DB || window.GLOBAL_COMPANY_PRICING?.packages || {};
-    const chosenService = coreRegistry[window.routeActiveServiceKey] || {};
-    const activePlanKey = window.routeActivePlanKey || "";
-    const activePlanDetails = chosenService.plans?.[activePlanKey] || chosenService[activePlanKey] || {};
-    const inclusionsListText = JSON.stringify(activePlanDetails.bullets || chosenService.bullets || "").toLowerCase();
-    const isAgentAlreadyIncludedInBasePrice = inclusionsListText.includes("agent") && (inclusionsListText.includes("free") || inclusionsListText.includes("included"));
 
-    window.customSelectedRegisteredAgentServiceActive = !isAgentAlreadyIncludedInBasePrice;
-    inputs.forEach(el => { el.removeAttribute("required"); el.value = ""; });
+
+/**
+ * Validates stock metrics, par values, and conditional S-Corp parameters.
+ * @returns {boolean} Segment parameters verification status.
+ */
+function validateCorporateFormationFieldsPart2() {
+  let isValid = true;
+  const markInvalid = (inputEl, errorEl, msg) => {
+    if (!inputEl || !errorEl) return;
+    errorEl.textContent = msg;
+    errorEl.style.setProperty("display", "block", "important");
+    inputEl.style.setProperty("border", "1px solid #ef4444", "important");
+    isValid = false;
+  };
+  const markValid = (inputEl, errorEl) => {
+    if (!inputEl || !errorEl) return;
+    errorEl.style.setProperty("display", "none", "important");
+    inputEl.style.removeProperty("border");
+  };
+
+  // 1. Validate Total Shares Authorized (Must be an integer >= 1)
+  const sharesField = document.getElementById('corp_shares_authorized');
+  const sharesErr = document.getElementById('err_corp_shares_authorized');
+  if (sharesField && sharesErr) {
+    const val = parseInt(sharesField.value, 10);
+    if (isNaN(val) || val < 1) {
+      markInvalid(sharesField, sharesErr, "A corporation must authorize a minimum of 1 stock share unit.");
+    } else {
+      markValid(sharesField, sharesErr);
+    }
   }
-  if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla();
+
+  // 2. Validate Par Value Per Share (Must be a clean numeric decimal value string)
+  const parField = document.getElementById('corp_shares_par_value');
+  const parErr = document.getElementById('err_corp_shares_par_value');
+  if (parField && parErr) {
+    const rawVal = parField.value.trim();
+    if (!rawVal || isNaN(parseFloat(rawVal))) {
+      markInvalid(parField, parErr, "Please specify a valid numeric par value amount per share (e.g. 0.0001 or 0).");
+    } else {
+      markValid(parField, parErr);
+    }
+  }
+
+  // 3. Validate S-Corp Election Dropdown Target Option Selection
+  const electField = document.getElementById('corp_scorp_elect');
+  const electErr = document.getElementById('err_corp_scorp_elect');
+  if (electField && electErr) {
+    if (!electField.value) {
+      markInvalid(electField, electErr, "Please clarify your S-Corporation tax status preference.");
+    } else {
+      markValid(electField, electErr);
+    }
+  }
+
+  // 4. Conditional Validation for S-Corp Form 2553 Preparation Addon Dropdown
+  const scorpWrapper = document.getElementById('corp_scorp_service_wrapper');
+  if (scorpWrapper && (scorpWrapper.style.display === "flex" || scorpWrapper.style.display === "block" || (electField && electField.value === "yes"))) {
+    const procureField = document.getElementById('corp_scorp_procure');
+    const procureErr = document.getElementById('err_corp_scorp_procure');
+    if (procureField && procureErr && !procureField.value) {
+      markInvalid(procureField, procureErr, "Please select an option for your Form 2553 preparation service preference.");
+    } else if (procureField && procureErr) {
+      markValid(procureField, procureErr);
+    }
+  }
+
+  return isValid;
 }
-window.toggleCorporateRegisteredAgentConditionalFields = toggleCorporateRegisteredAgentConditionalFields;
+
+window.validateCorporateFormationFieldsPart2 = validateCorporateFormationFieldsPart2;
+
+
+/**
+ * Toggles visibility layout configurations for the conditional S-Corp service addon.
+ * Safely clears unselected variables to maintain validation parameter integrity.
+ * @param {string} selectedValue - Active dropdown selection option ('yes' / 'no').
+ */
+function toggleScorpElectionWorkflow(selectedValue) {
+  const serviceWrapper = document.getElementById("corp_scorp_service_wrapper");
+  if (!serviceWrapper) return;
+
+  const isScorpElected = selectedValue === "yes";
+  serviceWrapper.style.setProperty("display", isScorpElected ? "flex" : "none", "important");
+
+  if (!isScorpElected) {
+    const procureDropdown = document.getElementById("corp_scorp_procure");
+    if (procureDropdown) {
+      procureDropdown.value = "no-decline";
+    }
+    window.customSelectedScorpElectionActive = false;
+    if (window.currentCartState) window.currentCartState.customSelectedScorpElectionActive = false;
+    if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla();
+    if (typeof window.updateWizardFinalTotalAmountMatrix === "function") window.updateWizardFinalTotalAmountMatrix();
+  }
+}
+
+/**
+ * Handles checkbox variable selections for the Form 2553 prep service addon.
+ * Updates dynamic pricing engine values cleanly across cart total instances.
+ * @param {string} selectedValue - Selection string indicator token.
+ */
+function toggleScorpFilingPricingHook(selectedValue) {
+  const isAddonActivated = selectedValue === "yes-buy";
+  window.customSelectedScorpElectionActive = isAddonActivated;
+  if (window.currentCartState) window.currentCartState.customSelectedScorpElectionActive = isAddonActivated;
+  
+  console.log(`[Corporate Router] S-Corp Form 2553 purchase selection variable synchronized: ${isAddonActivated}`);
+  
+  if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+    window.updateDynamicPricingMatrixVanilla();
+  }
+  if (typeof window.updateWizardFinalTotalAmountMatrix === "function") {
+    window.updateWizardFinalTotalAmountMatrix();
+  }
+}
+
+window.toggleScorpElectionWorkflow = toggleScorpElectionWorkflow;
+window.toggleScorpFilingPricingHook = toggleScorpFilingPricingHook;

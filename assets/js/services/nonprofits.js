@@ -1,7 +1,8 @@
 // ============================================================================ //
-// 🛠️ NONPROFIT PART 1 VALIDATION MATRIX ENGINE 
+// 🛠️ NONPROFIT PART 1 VALIDATION MATRIX ENGINE                                 //
 // ============================================================================ //
-export const nonprofitPart1Validation = {
+
+var nonprofitPart1Validation = {
   requiredFields: [
     { id: 'np_proposed_name', msg: 'Proposed Nonprofit Name is required.' },
     { id: 'np_mission_statement', msg: 'Mission Statement is required.' },
@@ -17,87 +18,132 @@ export const nonprofitPart1Validation = {
     { id: 'np_contact_state', msg: 'Liaison State selection is required.' },
     { id: 'np_contact_zip', msg: 'Liaison Zip Code is required.' }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Core Fields Existence Verification Check
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) setError(el, field.msg);
+        else clearError(el);
       }
     });
 
     // 2. State Codes 2-Digit Matrix Checking Lookups
     ['np_principal_state', 'np_contact_state'].forEach(id => {
       const el = document.getElementById(id);
-      if (el && el.value.trim() && !/^[a-zA-Z]{2}$/.test(el.value.trim())) {
-        setError(el, 'State codes must be exactly 2 alphabet letters.');
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (val && !/^[a-zA-Z]{2}$/.test(val)) {
+          setError(el, 'State codes must be exactly 2 alphabet letters.');
+        }
       }
     });
 
     // 3. Postal ZIP Format Strict Checking Controls
     ['np_principal_zip', 'np_contact_zip'].forEach(id => {
       const el = document.getElementById(id);
-      if (el && el.value.trim() && !/^\d{5}$/.test(el.value.trim())) {
-        setError(el, 'Zip Codes must be exactly 5 numbers.');
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (val && !/^\d{5}$/.test(val)) {
+          setError(el, 'Zip Codes must be exactly 5 numbers.');
+        }
       }
     });
 
     // 4. Contact Email Address Format Selector Engine
     const emailEl = document.getElementById("np_contact_email");
-    if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-      setError(emailEl, "Please provide a valid structured email formatting layout.");
+    if (emailEl && (emailEl.offsetWidth > 0 || emailEl.offsetHeight > 0)) {
+      const emailVal = emailEl.value ? String(emailEl.value).trim() : "";
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        setError(emailEl, "Please provide a valid structured email formatting layout.");
+      }
     }
 
     // 5. Contact Phone Formats Number Array Filter Engine
     const phoneEl = document.getElementById("np_contact_phone");
-    if (phoneEl && phoneEl.value.trim()) {
-      const digits = phoneEl.value.replace(/\D/g, "");
-      if (digits.length < 10) setError(phoneEl, "Liaison Phone Number must contain at least 10 numbers.");
+    if (phoneEl && (phoneEl.offsetWidth > 0 || phoneEl.offsetHeight > 0)) {
+      const phoneVal = phoneEl.value ? String(phoneEl.value).trim() : "";
+      if (phoneVal) {
+        const digits = phoneVal.replace(/\D/g, "");
+        if (digits.length < 10) {
+          setError(phoneEl, "Liaison Phone Number must contain at least 10 numbers.");
+        }
+      }
     }
 
     return { isValid, errors };
   }
 };
 
+window.nonprofitPart1Validation = nonprofitPart1Validation;
+
+
 // Part 2: HTML Component Structural Output Definition (Designs Untouched)
-export function buildNonprofitOrganizationFieldsLayoutHtml() {
+function buildNonprofitOrganizationFieldsLayoutHtml() {
   return `
     <!-- SECTION 1: ORGANIZATION INFORMATION -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 12px;">
       <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Organization Information</h3>
     </div>
-    <div class="wizard-input-group">
+    <div class="wizard-input-field-wrapper">
       <label for="np_proposed_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Proposed Nonprofit Name <span style="color: #ef4444;">*</span></label>
       <input type="text" id="np_proposed_name" required placeholder="Example Foundation Inc." class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_proposed_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       <span style="font-size: 0.7rem; color: var(--slate); font-weight: 500; padding-left: 2px;">Ensure chosen name complies with state nonprofit registry standards.</span>
     </div>
-    <div class="wizard-input-group">
+    <div class="wizard-input-field-wrapper">
       <label for="np_mission_statement" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Mission Statement <span style="color: #ef4444;">*</span></label>
       <input type="text" id="np_mission_statement" required placeholder="Brief description of mission and charitable objectives..." class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_mission_statement" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group" style="grid-column: span 2;">
+    <div class="wizard-input-field-wrapper" style="grid-column: span 2;">
       <label for="np_principal_street" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Principal Location Street Address <span style="color: #ef4444;">*</span></label>
       <input type="text" id="np_principal_street" required placeholder="123 Community Way" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_principal_street" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group">
+    <div class="wizard-input-field-wrapper">
       <label for="np_principal_city" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">City <span style="color: #ef4444;">*</span></label>
       <input type="text" id="np_principal_city" required placeholder="Austin" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_principal_city" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+    <div class="wizard-input-field-wrapper" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
       <div>
         <label for="np_principal_state" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">State <span style="color: #ef4444;">*</span></label>
         <input type="text" id="np_principal_state" required placeholder="TX" maxlength="2" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_np_principal_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div>
         <label for="np_principal_zip" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Zip Code <span style="color: #ef4444;">*</span></label>
         <input type="text" id="np_principal_zip" required placeholder="78701" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_np_principal_zip" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
     </div>
 
@@ -105,51 +151,81 @@ export function buildNonprofitOrganizationFieldsLayoutHtml() {
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
       <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Primary Contact Liaison</h3>
     </div>
-    <div class="wizard-input-group">
+    <div class="wizard-input-field-wrapper">
       <label for="np_contact_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Liaison Full Name <span style="color: #ef4444;">*</span></label>
       <input type="text" id="np_contact_name" required placeholder="Jane Doe" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_contact_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group">
+    <div class="wizard-input-field-wrapper">
       <label for="np_contact_phone" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Liaison Phone Number <span style="color: #ef4444;">*</span></label>
       <input type="tel" id="np_contact_phone" required placeholder="(512) 555-0144" style="font-family: monospace;" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_contact_phone" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group" style="grid-column: span 2;">
+    <div class="wizard-input-field-wrapper" style="grid-column: span 2;">
       <label for="np_contact_email" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Liaison Email Address <span style="color: #ef4444;">*</span></label>
       <input type="email" id="np_contact_email" required placeholder="liaison@nonprofit.org" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_contact_email" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group" style="grid-column: span 2;">
-      <label for="np_contact_street" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Liaison Mailing Street Address <span style="color: #ef4444;">*</span></label>
-      <input type="text" id="np_contact_street" required placeholder="456 Officer Ave" class="wizard-input-field">
+    <div class="wizard-input-field-wrapper" style="grid-column: span 2;">
+      <label for="np_contact_street" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Liaison Mailing Street Address <span style="color: #ef4444;">*</span></label> <input type="text" id="np_contact_street" required placeholder="456 Officer Ave" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_contact_street" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group">
+    <div class="wizard-input-field-wrapper">
       <label for="np_contact_city" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">City <span style="color: #ef4444;">*</span></label>
       <input type="text" id="np_contact_city" required placeholder="Austin" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_np_contact_city" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
-    <div class="wizard-input-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+    <div class="wizard-input-field-wrapper" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
       <div>
         <label for="np_contact_state" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">State <span style="color: #ef4444;">*</span></label>
         <input type="text" id="np_contact_state" required placeholder="TX" maxlength="2" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_np_contact_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
       <div>
         <label for="np_contact_zip" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Zip Code <span style="color: #ef4444;">*</span></label>
         <input type="text" id="np_contact_zip" required placeholder="78701" class="wizard-input-field">
+        <div class="wizard-error-message" id="err_np_contact_zip" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
     </div>
   ` + (typeof window.buildNonprofitOrganizationFieldsLayoutHtmlPart2 === "function" ? window.buildNonprofitOrganizationFieldsLayoutHtmlPart2() : "");
 }
+
 window.buildNonprofitOrganizationFieldsLayoutHtml = buildNonprofitOrganizationFieldsLayoutHtml;
 
+
 // ============================================================================ //
-// 🛠️ NONPROFIT MODULE VALIDATION ENGINE (COMPREHENSIVE)
+// 🛠️ NONPROFIT MODULE VALIDATION ENGINE (COMPREHENSIVE)                       //
 // ============================================================================ //
-export const nonprofitValidation = {
+
+var nonprofitValidation = {
   validateStep: function() {
     const container = document.getElementById("step-panel-2") || document.getElementById("step-2") || document.body;
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Organization & Contact Fields Validation List
     const baseFields = [
@@ -170,29 +246,40 @@ export const nonprofitValidation = {
 
     baseFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) setError(el, field.msg);
+        else clearError(el);
       }
     });
 
     // 2. Strict Layout Checks (State length and Postal formatting filters)
     ['np_principal_state', 'np_contact_state'].forEach(id => {
       const el = document.getElementById(id);
-      if (el && el.value.trim() && !/^[a-zA-Z]{2}$/.test(el.value.trim())) {
-        setError(el, 'State codes must be a valid 2-letter uppercase token.');
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const stateVal = el.value ? String(el.value).trim() : "";
+        if (stateVal && !/^[a-zA-Z]{2}$/.test(stateVal)) {
+          setError(el, 'State codes must be a valid 2-letter uppercase token.');
+        }
       }
     });
 
     ['np_principal_zip', 'np_contact_zip'].forEach(id => {
       const el = document.getElementById(id);
-      if (el && el.value.trim() && !/^\d{5}$/.test(el.value.trim())) {
-        setError(el, 'Zip Codes must consist of exactly 5 numbers.');
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const zipVal = el.value ? String(el.value).trim() : "";
+        if (zipVal && !/^\d{5}$/.test(zipVal)) {
+          setError(el, 'Zip Codes must consist of exactly 5 numbers.');
+        }
       }
     });
 
     const emailEl = document.getElementById("np_contact_email");
-    if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-      setError(emailEl, "Please supply a valid contact email address layout.");
+    if (emailEl && (emailEl.offsetWidth > 0 || emailEl.offsetHeight > 0)) {
+      const emailVal = emailEl.value ? String(emailEl.value).trim() : "";
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        setError(emailEl, "Please supply a valid contact email address layout.");
+      }
     }
 
     // 3. Static Loop Checks: Validate Three Mandatory Board Members
@@ -201,25 +288,59 @@ export const nonprofitValidation = {
       const roleEl = document.getElementById(`np_board_role_${i}`);
       const contactEl = document.getElementById(`np_board_contact_${i}`);
 
-      if (nameEl && !nameEl.value.trim()) setError(nameEl, `Board Officer #${i}: Full Legal Name is required.`); else clearError(nameEl);
-      if (roleEl && !roleEl.value.trim()) setError(roleEl, `Board Officer #${i}: Position title is required.`); else clearError(roleEl);
-      if (contactEl && !contactEl.value.trim()) setError(contactEl, `Board Officer #${i}: Contact details are required.`); else clearError(contactEl);
+      if (nameEl && (nameEl.offsetWidth > 0 || nameEl.offsetHeight > 0)) {
+        if (!nameEl.value.trim()) setError(nameEl, `Board Officer #${i}: Full Legal Name is required.`);
+        else clearError(nameEl);
+      }
+      if (roleEl && (roleEl.offsetWidth > 0 || roleEl.offsetHeight > 0)) {
+        if (!roleEl.value.trim()) setError(roleEl, `Board Officer #${i}: Position title is required.`);
+        else clearError(roleEl);
+      }
+      if (contactEl && (contactEl.offsetWidth > 0 || contactEl.offsetHeight > 0)) {
+        if (!contactEl.value.trim()) setError(contactEl, `Board Officer #${i}: Contact details are required.`);
+        else clearError(contactEl);
+      }
     }
 
     return { isValid, errors };
   }
 };
 
+window.nonprofitValidation = nonprofitValidation;
+
+
 // ============================================================================ //
-// 🛠️ NONPROFIT PART 2 VALIDATION MATRIX ENGINE 
+// 🛠️ NONPROFIT PART 2 VALIDATION MATRIX ENGINE                                 //
 // ============================================================================ //
-export const nonprofitPart2Validation = {
+
+var nonprofitPart2Validation = {
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // Static validation scan for the three required board member blocks
     for (let i = 1; i <= 3; i++) {
@@ -227,14 +348,26 @@ export const nonprofitPart2Validation = {
       const roleEl = document.getElementById(`np_board_role_${i}`);
       const contactEl = document.getElementById(`np_board_contact_${i}`);
 
-      if (nameEl && !nameEl.value.trim()) setError(nameEl, `Board Officer #${i}: Full Legal Name is required.`); else clearError(nameEl);
-      if (roleEl && !roleEl.value.trim()) setError(roleEl, `Board Officer #${i}: Position title is required.`); else clearError(roleEl);
-      if (contactEl && !contactEl.value.trim()) setError(contactEl, `Board Officer #${i}: Contact details are required.`); else clearError(contactEl);
+      if (nameEl && (nameEl.offsetWidth > 0 || nameEl.offsetHeight > 0)) {
+        if (!nameEl.value.trim()) setError(nameEl, `Board Officer #${i}: Full Legal Name is required.`);
+        else clearError(nameEl);
+      }
+      if (roleEl && (roleEl.offsetWidth > 0 || roleEl.offsetHeight > 0)) {
+        if (!roleEl.value.trim()) setError(roleEl, `Board Officer #${i}: Position title is required.`);
+        else clearError(roleEl);
+      }
+      if (contactEl && (contactEl.offsetWidth > 0 || contactEl.offsetHeight > 0)) {
+        if (!contactEl.value.trim()) setError(contactEl, `Board Officer #${i}: Contact details are required.`);
+        else clearError(contactEl);
+      }
     }
 
     return { isValid, errors };
   }
 };
+
+window.nonprofitPart2Validation = nonprofitPart2Validation;
+
 
 // FAMILY 2B: NONPROFIT ORGANIZATION REGISTRATION LAYOUT MATRIX (PART 2 OF 2)
 function buildNonprofitOrganizationFieldsLayoutHtmlPart2() {
@@ -245,6 +378,7 @@ function buildNonprofitOrganizationFieldsLayoutHtmlPart2() {
     </div>
     <div class="wizard-input-group" style="grid-column: span 2;">
       <div id="np_board_members_container" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+        
         <!-- Core Member 1 (Static) -->
         <div class="member-record-card" style="background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
           <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase;">Board Member #1 (Required Primary Officer)</span>
@@ -252,17 +386,21 @@ function buildNonprofitOrganizationFieldsLayoutHtmlPart2() {
             <div>
               <label for="np_board_name_1" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Full Legal Name <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_name_1" required placeholder="Full Legal Name" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_name_1" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
             <div>
               <label for="np_board_role_1" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Position <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_role_1" required placeholder="Position (e.g., President / Chair)" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_role_1" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
             <div style="grid-column: span 2;">
               <label for="np_board_contact_1" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Contact Details <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_contact_1" required placeholder="Contact Details (Phone / Email)" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_contact_1" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
           </div>
         </div>
+
         <!-- Core Member 2 (Static) -->
         <div class="member-record-card" style="background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
           <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase;">Board Member #2 (Required Secretary)</span>
@@ -270,17 +408,21 @@ function buildNonprofitOrganizationFieldsLayoutHtmlPart2() {
             <div>
               <label for="np_board_name_2" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Full Legal Name <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_name_2" required placeholder="Full Legal Name" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_name_2" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
             <div>
               <label for="np_board_role_2" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Position <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_role_2" required placeholder="Position (e.g., Secretary)" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_role_2" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
             <div style="grid-column: span 2;">
               <label for="np_board_contact_2" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Contact Details <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_contact_2" required placeholder="Contact Details (Phone / Email)" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_contact_2" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
           </div>
         </div>
+
         <!-- Core Member 3 (Static) -->
         <div class="member-record-card" style="background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box;">
           <span style="font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase;">Board Member #3 (Required Treasurer)</span>
@@ -288,33 +430,61 @@ function buildNonprofitOrganizationFieldsLayoutHtmlPart2() {
             <div>
               <label for="np_board_name_3" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Full Legal Name <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_name_3" required placeholder="Full Legal Name" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_name_3" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
             <div>
               <label for="np_board_role_3" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Position <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_role_3" required placeholder="Position (e.g., Treasurer)" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_role_3" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
             <div style="grid-column: span 2;">
               <label for="np_board_contact_3" style="display: block; font-weight: 700; font-size: 0.75rem; color: var(--navy); margin-bottom: 4px;">Contact Details <span style="color: #ef4444;">*</span></label>
               <input type="text" id="np_board_contact_3" required placeholder="Contact Details (Phone / Email)" class="wizard-input-field">
+              <div class="wizard-error-message" id="err_np_board_contact_3" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   `;
 }
+
 window.buildNonprofitOrganizationFieldsLayoutHtmlPart2 = buildNonprofitOrganizationFieldsLayoutHtmlPart2;
 
+
 // ============================================================================ //
-// 🛠️ NONPROFIT PART 2 (ADDITIONS) VALIDATION MATRIX ENGINE 
+// 🛠️ NONPROFIT PART 2 (ADDITIONS) VALIDATION MATRIX ENGINE                     //
 // ============================================================================ //
-export const nonprofitPart2AdditionsValidation = {
+
+var nonprofitPart2AdditionsValidation = {
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Process base mandatory input items
     const requiredSelects = [
@@ -328,19 +498,24 @@ export const nonprofitPart2AdditionsValidation = {
 
     requiredSelects.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) setError(el, field.msg);
+        else clearError(el);
       }
     });
 
     // 2. Conditional Check: Validate EIN Reason input box if choice is YES
     const einChoice = document.getElementById("np_ein_choice");
-    if (einChoice && einChoice.value === "yes") {
+    if (einChoice && einChoice.value === "yes" && (einChoice.offsetWidth > 0 || einChoice.offsetHeight > 0)) {
       const reasonEl = document.getElementById("np_ein_reason");
-      if (reasonEl && !reasonEl.value.trim()) {
-        setError(reasonEl, "Reason for obtaining an EIN is required when procurement service is selected.");
-      } else if (reasonEl) {
-        clearError(reasonEl);
+      if (reasonEl) {
+        const reasonVal = reasonEl.value ? String(reasonEl.value).trim() : "";
+        if (!reasonVal) {
+          setError(reasonEl, "Reason for obtaining an EIN is required when procurement service is selected.");
+        } else {
+          clearError(reasonEl);
+        }
       }
     }
 
@@ -348,8 +523,11 @@ export const nonprofitPart2AdditionsValidation = {
   }
 };
 
-// FAMILY 2B: NONPROFIT ORGANIZATION REGISTRATION LAYOUT MATRIX (PART 2 OF 2)
-function buildNonprofitOrganizationFieldsLayoutHtmlPart2() {
+window.nonprofitPart2AdditionsValidation = nonprofitPart2AdditionsValidation;
+
+
+// FAMILY 2B: NONPROFIT ORGANIZATION REGISTRATION LAYOUT MATRIX (PART 3 OF 3)
+function buildNonprofitOrganizationFieldsLayoutHtmlPart3() {
   return `
     <!-- SECTION 4: ORGANIZATION STRUCTURE (IRC Section Types Selection) -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">

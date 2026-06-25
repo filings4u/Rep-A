@@ -1,7 +1,8 @@
 // ============================================================================ //
-// 🛠️ LLC REINSTATEMENT PART 1 VALIDATION MATRIX ENGINE 
+// 🛠️ LLC REINSTATEMENT PART 1 VALIDATION MATRIX ENGINE                         //
 // ============================================================================ //
-export const llcReinPart1Validation = {
+
+var llcReinPart1Validation = {
   requiredFields: [
     { id: 'rein_original_name', msg: 'Original LLC Name is required.' },
     { id: 'rein_state_of_formation', msg: 'State of Formation selection is required.' },
@@ -17,49 +18,86 @@ export const llcReinPart1Validation = {
     { id: 'rein_contact_phone', msg: "Contact Person's Phone Number is required." },
     { id: 'rein_contact_email', msg: "Contact Person's Email Address is required." }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Process basic mandatory fields presence checks
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) setError(el, field.msg);
+        else clearError(el);
       }
     });
 
     // 2. Validate ZIP Code Length Matrix Configurations
     ['rein_principal_zip', 'rein_contact_zip'].forEach(id => {
       const el = document.getElementById(id);
-      if (el && el.value.trim() && !/^\d{5}$/.test(el.value.trim())) {
-        setError(el, 'Zip Code must consist of exactly 5 numbers.');
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const zipVal = el.value ? String(el.value).trim() : "";
+        if (zipVal && !/^\d{5}$/.test(zipVal)) {
+          setError(el, 'Zip Code must consist of exactly 5 numbers.');
+        }
       }
     });
 
     // 3. Validate Contact Email Layout Formatting
     const emailEl = document.getElementById("rein_contact_email");
-    if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-      setError(emailEl, "Please provide a valid structured email address.");
+    if (emailEl && (emailEl.offsetWidth > 0 || emailEl.offsetHeight > 0)) {
+      const emailVal = emailEl.value ? String(emailEl.value).trim() : "";
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        setError(emailEl, "Please provide a valid structured email address.");
+      }
     }
 
     // 4. Validate Phone baseline length parameter counts
     const phoneEl = document.getElementById("rein_contact_phone");
-    if (phoneEl && phoneEl.value.trim()) {
-      const cleanDigits = phoneEl.value.replace(/\D/g, "");
-      if (cleanDigits.length < 10) setError(phoneEl, "Phone number must be at least 10 digits.");
+    if (phoneEl && (phoneEl.offsetWidth > 0 || phoneEl.offsetHeight > 0)) {
+      const phoneVal = phoneEl.value ? String(phoneEl.value).trim() : "";
+      if (phoneVal) {
+        const cleanDigits = phoneVal.replace(/\D/g, "");
+        if (cleanDigits.length < 10) {
+          setError(phoneEl, "Phone number must be at least 10 digits.");
+        }
+      }
     }
 
     return { isValid, errors };
   }
 };
 
+window.llcReinPart1Validation = llcReinPart1Validation;
+
+
 // FAMILY 3A: LLC REINSTATEMENT REGISTRATION LAYOUT MATRIX (PART 1 OF 3)
-function buildLlcReinstatementPart1(stateDropdownOptionsHtml = "") {
+function buildLlcReinstatementPart1(stateDropdownOptionsHtml) {
+  const optionsHtml = stateDropdownOptionsHtml || "";
   return `
     <!-- INFORMATION OVERLAY BOX -->
     <div style="grid-column: span 2; background: #f8fafc; border-left: 4px solid var(--primary); padding: 16px; border-radius: 0 8px 8px 0; margin-bottom: 16px; box-sizing: border-box;">
@@ -175,55 +213,87 @@ function buildLlcReinstatementPart1(stateDropdownOptionsHtml = "") {
 window.buildLlcReinstatementPart1 = buildLlcReinstatementPart1;
 
 // ============================================================================ //
-// 🛠️ LLC REINSTATEMENT PART 2 VALIDATION MATRIX ENGINE 
+// 🛠️ LLC REINSTATEMENT PART 2 VALIDATION MATRIX ENGINE                         //
 // ============================================================================ //
-export const llcReinPart2Validation = {
+
+var llcReinPart2Validation = {
   requiredFields: [
     { id: 'rein_deactivation_reason', msg: 'Please select a reason for deactivation.' },
     { id: 'rein_fees_paid_choice', msg: 'Please select a fees and penalties verification option.' },
     { id: 'rein_rectified_choice', msg: 'Please specify if compliance issues have been rectified.' }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Process primary required dropdown targets
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) setError(el, field.msg);
+        else clearError(el);
       }
     });
 
     // 2. Conditional Check: Validate Compliance Audit field if fees selection matches NO
     const feesPaidChoice = document.getElementById("rein_fees_paid_choice");
-    if (feesPaidChoice && feesPaidChoice.value === "no") {
+    if (feesPaidChoice && feesPaidChoice.value === "no" && (feesPaidChoice.offsetWidth > 0 || feesPaidChoice.offsetHeight > 0)) {
       const auditSelect = document.getElementById("rein_add_compliance_audit");
-      if (auditSelect && !auditSelect.value.trim()) {
-        setError(auditSelect, "Please choose a compliance audit preference option.");
-      } else if (auditSelect) {
-        clearError(auditSelect);
+      if (auditSelect) {
+        const auditVal = auditSelect.value ? String(auditSelect.value).trim() : "";
+        if (!auditVal) {
+          setError(auditSelect, "Please choose a compliance audit preference option.");
+        } else {
+          clearError(auditSelect);
+        }
       }
     }
 
     // 3. Conditional Check: Validate Pending Issues textbox if rectified selection matches NO
     const rectifiedChoice = document.getElementById("rein_rectified_choice");
-    if (rectifiedChoice && rectifiedChoice.value === "no") {
+    if (rectifiedChoice && rectifiedChoice.value === "no" && (rectifiedChoice.offsetWidth > 0 || rectifiedChoice.offsetHeight > 0)) {
       const pendingDetails = document.getElementById("rein_pending_details");
-      if (pendingDetails && !pendingDetails.value.trim()) {
-        setError(pendingDetails, "Please provide structural details on what compliance items remain to be addressed.");
-      } else if (pendingDetails) {
-        clearError(pendingDetails);
+      if (pendingDetails) {
+        const pendingVal = pendingDetails.value ? String(pendingDetails.value).trim() : "";
+        if (!pendingVal) {
+          setError(pendingDetails, "Please provide structural details on what compliance items remain to be addressed.");
+        } else {
+          clearError(pendingDetails);
+        }
       }
     }
 
     return { isValid, errors };
   }
 };
+
+window.llcReinPart2Validation = llcReinPart2Validation;
+
 
 // FAMILY 3A: LLC REINSTATEMENT REGISTRATION LAYOUT MATRIX (PART 2 OF 3)
 function buildLlcReinstatementPart2(stateDropdownOptionsHtml = "") {
@@ -295,48 +365,77 @@ function buildLlcReinstatementPart2(stateDropdownOptionsHtml = "") {
 }
 
 // ============================================================================ //
-// 🛠️ LLC REINSTATEMENT PART 3 VALIDATION MATRIX ENGINE 
+// 🛠️ LLC REINSTATEMENT PART 3 VALIDATION MATRIX ENGINE                         //
 // ============================================================================ //
-export const llcReinPart3Validation = {
+
+var llcReinPart3Validation = {
   requiredFields: [
     { id: 'rein_ein_choice', msg: 'Please select an option for your Employer Identification Number (EIN).' },
     { id: 'rein_duration_type', msg: 'Please specify if this restoration is for a specific period or ongoing.' }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Check baseline mandatory selection elements presence
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) setError(el, field.msg);
+        else clearError(el);
       }
     });
 
     // 2. Conditional Check: Validate new EIN Reason input field if selection matches YES
     const einChoice = document.getElementById("rein_ein_choice");
-    if (einChoice && einChoice.value === "yes") {
+    if (einChoice && einChoice.value === "yes" && (einChoice.offsetWidth > 0 || einChoice.offsetHeight > 0)) {
       const reasonEl = document.getElementById("rein_ein_reason");
-      if (reasonEl && !reasonEl.value.trim()) {
-        setError(reasonEl, "Reason for obtaining a new EIN is required.");
-      } else if (reasonEl) {
-        clearError(reasonEl);
+      if (reasonEl) {
+        const reasonVal = reasonEl.value ? String(reasonEl.value).trim() : "";
+        if (!reasonVal) {
+          setError(reasonEl, "Reason for obtaining a new EIN is required.");
+        } else {
+          clearError(reasonEl);
+        }
       }
     }
 
     // 3. Conditional Check: Validate Target Dissolution Date if duration matches SPECIFIC
     const durationType = document.getElementById("rein_duration_type");
-    if (durationType && durationType.value === "specific") {
+    if (durationType && durationType.value === "specific" && (durationType.offsetWidth > 0 || durationType.offsetHeight > 0)) {
       const dateEl = document.getElementById("rein_duration_date");
-      if (dateEl && !dateEl.value.trim()) {
-        setError(dateEl, "Target Dissolution / Expiration Date is required.");
-      } else if (dateEl) {
-        clearError(dateEl);
+      if (dateEl) {
+        const dateVal = dateEl.value ? String(dateEl.value).trim() : "";
+        if (!dateVal) {
+          setError(dateEl, "Target Dissolution / Expiration Date is required.");
+        } else {
+          clearError(dateEl);
+        }
       }
     }
 
@@ -344,8 +443,11 @@ export const llcReinPart3Validation = {
   }
 };
 
+window.llcReinPart3Validation = llcReinPart3Validation;
+
+
 // FAMILY 3A: LLC REINSTATEMENT REGISTRATION LAYOUT MATRIX (PART 3 OF 3)
-function buildLlcReinstatementPart3(stateDropdownOptionsHtml = "") {
+function buildLlcReinstatementPart3(stateDropdownOptionsHtml) {
   return `
     <!-- SECTION 6: TAX INFORMATION -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
@@ -357,10 +459,12 @@ function buildLlcReinstatementPart3(stateDropdownOptionsHtml = "") {
         <option value="no" selected>No, I already hold or will apply for EIN structures independently</option>
         <option value="yes">Yes, add Filings4u Master EIN Procurement Service — $75.00</option>
       </select>
+      <div class="wizard-error-message" id="err_rein_ein_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
     <div id="rein_ein_reason_wrapper" style="grid-column: span 2; display: none; flex-direction: column; gap: 8px;">
       <label for="rein_ein_reason" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Reason for obtaining a new EIN (if applicable) <span style="color: #ef4444;">*</span></label>
       <input type="text" id="rein_ein_reason" placeholder="e.g. Corporate operational baseline reconstruction request..." class="wizard-input-field">
+      <div class="wizard-error-message" id="err_rein_ein_reason" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
 
     <!-- SECTION 7: DURATION OF REINSTATEMENT -->
@@ -373,10 +477,12 @@ function buildLlcReinstatementPart3(stateDropdownOptionsHtml = "") {
         <option value="ongoing" selected>Ongoing (Indefinite corporate lifecycle post-restoration)</option>
         <option value="specific">Specific Period (Defined timeline constraint structures)</option>
       </select>
+      <div class="wizard-error-message" id="err_rein_duration_type" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
     <div id="rein_duration_date_wrapper" style="grid-column: span 2; display: none; flex-direction: column; gap: 8px;">
       <label for="rein_duration_date" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Target Dissolution / Expiration Date <span style="color: #ef4444;">*</span></label>
       <input type="date" id="rein_duration_date" class="wizard-input-field">
+      <div class="wizard-error-message" id="err_rein_duration_date" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
 
     <!-- SECTION 8: ADDITIONAL PROVISIONS -->
@@ -389,16 +495,22 @@ function buildLlcReinstatementPart3(stateDropdownOptionsHtml = "") {
     </div>
   `;
 }
+
 window.buildLlcReinstatementPart3 = buildLlcReinstatementPart3;
 
+
 // 📦 MASTER LLC REINSTATEMENT ASSEMBLY HOOK
-function buildLlcReinstatementForm(stateDropdownOptionsHtml = "") {
-  return buildLlcReinstatementPart1(stateDropdownOptionsHtml) + buildLlcReinstatementPart2(stateDropdownOptionsHtml) + buildLlcReinstatementPart3(stateDropdownOptionsHtml);
+function buildLlcReinstatementForm(stateDropdownOptionsHtml) {
+  const optionsHtml = stateDropdownOptionsHtml || "";
+  const part1 = typeof window.buildLlcReinstatementPart1 === "function" ? window.buildLlcReinstatementPart1(optionsHtml) : "";
+  const part2 = typeof window.buildLlcReinstatementPart2 === "function" ? window.buildLlcReinstatementPart2(optionsHtml) : "";
+  const part3 = typeof window.buildLlcReinstatementPart3 === "function" ? window.buildLlcReinstatementPart3(optionsHtml) : "";
+  return part1 + part2 + part3;
 }
 window.buildLlcReinstatementForm = buildLlcReinstatementForm;
 
 // ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (LLC REINSTATEMENT)
+// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (LLC REINSTATEMENT)                    //
 // ============================================================================ //
 
 window.toggleReinstatementFeesNoticeVisibility = function(value) {
@@ -411,7 +523,10 @@ window.toggleReinstatementFeesNoticeVisibility = function(value) {
     if (auditSelect) auditSelect.setAttribute("required", "required");
   } else {
     unpaidWrapper.style.setProperty("display", "none", "important");
-    if (auditSelect) { auditSelect.removeAttribute("required"); auditSelect.value = "no"; }
+    if (auditSelect) {
+      auditSelect.removeAttribute("required");
+      auditSelect.value = "no";
+    }
     window.customSelectedComplianceAuditServiceActive = false; // Turn off balance check fee
   }
   if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla();
@@ -427,7 +542,10 @@ window.toggleReinstatementIssuesVisibility = function(value) {
     if (issuesInput) issuesInput.setAttribute("required", "required");
   } else {
     issuesWrapper.style.setProperty("display", "none", "important");
-    if (issuesInput) { issuesInput.removeAttribute("required"); issuesInput.value = ""; }
+    if (issuesInput) {
+      issuesInput.removeAttribute("required");
+      issuesInput.value = "";
+    }
   }
 };
 
@@ -442,7 +560,10 @@ window.toggleReinstatementEinWorkflow = function(value) {
     window.customSelectedEinProcurementServiceActive = true; // Appends procurement add-on to checkout
   } else {
     einWrapper.style.setProperty("display", "none", "important");
-    if (einInput) { einInput.removeAttribute("required"); einInput.value = ""; }
+    if (einInput) {
+      einInput.removeAttribute("required");
+      einInput.value = "";
+    }
     window.customSelectedEinProcurementServiceActive = false;
   }
   if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla();
@@ -457,8 +578,11 @@ window.toggleReinstatementDurationFieldVisibility = function(value) {
     dateWrapper.style.setProperty("display", "flex", "important");
     if (dateInput) dateInput.setAttribute("required", "required");
   } else {
-    dateWrapper.style.setProperty("none", "important");
-    if (dateInput) { dateInput.removeAttribute("required"); dateInput.value = ""; }
+    dateWrapper.style.setProperty("display", "none", "important");
+    if (dateInput) {
+      dateInput.removeAttribute("required");
+      dateInput.value = "";
+    }
   }
 };
 
@@ -467,3 +591,4 @@ window.toggleReinstatementAuditServicePricingHook = function(value) {
   window.customSelectedComplianceAuditServiceActive = (value === "yes");
   if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla();
 };
+

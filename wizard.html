@@ -1,59 +1,81 @@
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#10b981">
-    <title>Secured Enterprise Compliance Deployment Wizard | filings4u</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#10b981">
+  <title>Secured Enterprise Compliance Deployment Wizard | filings4u</title>
 
-    <!-- 1. CORE THIRD-PARTY API DEPENDENCIES & SECURITY FILTERS -->
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script src="assets/js/wizard-anti-crash.js" defer></script>
+  <!-- 1. CORE THIRD-PARTY API DEPENDENCIES & SECURITY FILTERS -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="assets/js/wizard-anti-crash.js" defer></script>
 
-    <!-- 2. STYLESHEETS & FONTS TYPOGRAPHY ASSETS -->
-    <link rel="icon" type="image/png" href="images/fav.png">
-    <link rel="stylesheet" href="assets/css/wizard.css">
-    <link rel="stylesheet" href="assets/css/wizard-mobile.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- ✍️ EXTENSIBLE CURSIVE FONTS: Unlocks cursive typography for signature previews -->
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    
- 
+  <!-- 2. STYLESHEETS & FONTS TYPOGRAPHY ASSETS -->
+  <link rel="icon" type="image/png" href="images/fav.png">
+  <link rel="stylesheet" href="assets/css/wizard.css">
+  <link rel="stylesheet" href="assets/css/wizard-mobile.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- SYSTEM REFILED COMPLIANT APPLICATION SCRIPT TAG LOADING MATRIX -->
+  <!-- 3. SYSTEM COMPLIANT SCRIPT TAG LOADING MATRIX -->
+  <!-- Foundations Layer -->
+  <script src="assets/js/wizard-pricing-db.js" defer></script>
+  <script src="assets/js/wizard-helpers.js" defer></script>
+  
+  <!-- Standalone Module Layout Strings (Add files as needed) -->
+ <script src="assets/js/services/annual-reports.js" defer></script>
+  <script src="assets/js/services/apostille-authentication.js" defer></script>
+  <script src="assets/js/services/broker-authority.js" defer></script>
+  <script src="assets/js/services/broker-insurance.js" defer></script>
+  <script src="assets/js/services/business-license.js" defer></script>
+  <script src="assets/js/services/cage-code.js" defer></script>
+  <script src="assets/js/services/clia-certificate.js" defer></script>
+  <script src="assets/js/services/corporations.js" defer></script>
+  <script src="assets/js/services/dba-registration.js" defer></script>
 
-<!-- 1. The Core Data Foundations -->
-<script src="assets/js/wizard-pricing-db.js" defer></script>
+  <script src="assets/js/services/dba-registration.js"></script>
 
-<!-- 2. The Core Mathematical Calculations Engine -->
-<script src="assets/js/wizard-calculations.js" defer></script>
+  <script src="assets/js/services/dissolution.js" defer></script>
+  <script src="assets/js/services/driver-qualification.js" defer></script>
+  <script src="assets/js/services/duns-number.js" defer></script>
+  <script src="assets/js/services/ein.js" defer></script>
+  <script src="assets/js/services/federal-income-tax.js" defer></script>
+  <script src="assets/js/services/foreign-qualification.js" defer></script>
+  <script src="assets/js/services/franchise-tax.js" defer></script>
+  <script src="assets/js/services/good-standing.js" defer></script>
+  <script src="assets/js/services/hazmat.js" defer></script>
+  <script src="assets/js/services/heavy-use-tax-2290.js" defer></script>
+  <script src="assets/js/services/ifta.js" defer></script>
+  <script src="assets/js/services/llc-formation.js" defer></script>
+  <script src="assets/js/services/llc-reinstatement.js" defer></script>
+  <script src="assets/js/services/minority-certification.js" defer></script>
+  <script src="assets/js/services/new-entrant.js" defer></script>
+  <script src="assets/js/services/nonprofits.js" defer></script>
+  <script src="assets/js/services/operating-agreement.js" defer></script>
+  <script src="assets/js/services/payroll-tax.js" defer></script>
+  <script src="assets/js/services/process-agents-boc-3.js" defer></script>
+  <script src="assets/js/services/procurement-registration.js" defer></script>
+  <script src="assets/js/services/registered-agent.js" defer></script>
+  <script src="assets/js/services/sales-tax-registration.js" defer></script>
+  <script src="assets/js/services/scac-code.js" defer></script>
+  <script src="assets/js/services/series-llc.js" defer></script>
+  <script src="assets/js/services/servicemark-filing.js" defer></script>
+  <script src="assets/js/services/sole-proprietorship.js" defer></script>
+  <script src="assets/js/services/state-income-tax.js" defer></script>
+  <script src="assets/js/services/trademark-filing.js" defer></script>
+  <script src="assets/js/services/trucker-authority.js" defer></script>
+  <script src="assets/js/services/trucker-insurance.js" defer></script>
 
-<!-- 3. Navigation State Handlers and Step UI Routers -->
-<script src="assets/js/wizard-steps.js" defer></script>
-
-<!-- One single structural target handles all 44+ dynamic service modules -->
-<div id="wizard-dynamic-form-target" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; box-sizing: border-box;">
-  <!-- Your dynamic JavaScript templates insert their raw HTML code parameters right here -->
-</div>
-
-
-<!-- 5. Dynamic Marketplace Extensions and Checkout Itemization Summaries -->
-<script src="assets/js/wizard-upsells.js" defer></script>
-
-<!-- 6. Real-Time Customer Support Chat Interface Widget -->
-<script src="assets/js/wizard-chat-widget.js" defer></script>
-
-<script src="assets/js/stripe.js" defer></script>
-
-<script src="assets/js/step2-popup.js" defer></script>
-
-<script src="assets/js/wizard-summary.js" defer></script>
-
-
+  <!-- Core Wizard Engines & Master Layout Router -->
+  <script src="assets/js/wizard-steps.js" defer></script>
+  <script src="assets/js/wizard-upsells.js" defer></script>
+  <script src="assets/js/wizard-summary.js" defer></script>
+  <script src="assets/js/stripe.js" defer></script>
+  <script src="assets/js/step2-popup.js" defer></script>
+  <script src="assets/js/wizard-chat-widget.js" defer></script>
 </head>
 
 
@@ -143,8 +165,7 @@
         <!-- /End Left Column -->
 
         <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
-    <aside class="sticky-timeline-sidebar">
-  <div class="sidebar-header-box">
+<aside class="sticky-timeline-sidebar" style="width: 280px; min-width: 280px; max-width: 280px; margin-right: 0; margin-left: auto; box-sizing: border-box;">  <div class="sidebar-header-box">
     <h3 class="sidebar-title-label">
       <i class="fa-solid fa-list-check"></i> Application Map
     </h3>
@@ -233,118 +254,107 @@
 <!-- /End Step 1 Panel Wrapper View -->
 
 
-  
-
-
-       <!-- ============================================================================ -->
-      <!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES                  -->
-      <!-- ============================================================================ -->
-      <div class="wizard-panel master-onboarding-form" id="step-panel-2" data-step="2" style="display: none;">
-        
-        <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px;">
-          <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
-          <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p>
-        </div>
-
-        <!-- Unified Responsive Workspace Framework Layout -->
-        <div class="workspace-split-layout" style="display: flex; gap: 30px; width: 100%; box-sizing: border-box; align-items: start;">
-          
-          <!-- LEFT COLUMN CONTAINER: Holds dynamic onboarding forms based on client page source -->
-          <div id="dynamic-onboarding-fields-root" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; flex: 2; min-width: 0; width: 100%; box-sizing: border-box;">
-            
-            <!-- ⚡ DYNAMIC SLOT HOOK: Handled completely by executeStepTwoDynamicFormInjection() from Block 25 -->
-            <div style="grid-column: span 2; text-align: center; padding: 40px 0; color: var(--slate, #64748b); font-weight: 400; font-size: 0.95rem;">
-              <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary, #10b981); margin-right: 8px;"></i> 
-              <span>Assembling specialized compliance filing interfaces...</span>
-            </div>
-
-          </div> <!-- /End Left Column Container -->
-
-                 <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
-    <aside class="sticky-timeline-sidebar">
-  <div class="sidebar-header-box">
-    <h3 class="sidebar-title-label">
-      <i class="fa-solid fa-list-check"></i> Application Map
-    </h3>
-    <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
-  </div>
-  
-  <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline">
+ <!-- ============================================================================ --> 
+<!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES                  --> 
+<!-- ============================================================================ --> 
+<div class="wizard-panel master-onboarding-form" id="step-panel-2" data-step="2" style="display: none; width: 100%; box-sizing: border-box;"> 
     
-    <!-- Step 1 Layout Row Block -->
-    <div id="timeline-row-1" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">1. Selected Package</span>
-        <span class="toc-step-desc">Items and inclusions</span>
-      </div>
-    </div>
+    <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px;"> 
+        <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2> 
+        <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p> 
+    </div> 
 
-    <!-- Step 2 Layout Row Block -->
-    <div id="timeline-row-2" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">2. Service Form</span>
-        <span class="toc-step-desc">Purchase configuration profile</span>
-      </div>
-    </div>
+    <!-- 🟢 FULL-WIDTH WORKSPACE GRID: Forms claim 100% space, sidebar locks to 340px right wall --> 
+    <div class="workspace-split-layout" style="display: grid; grid-template-columns: 1fr 340px; gap: 32px; width: 100%; box-sizing: border-box; align-items: start;"> 
+        
+        <!-- LEFT COLUMN CONTAINER: Stretching fields evenly across the entire left viewport section --> 
+        <div id="dynamic-onboarding-fields-root" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; min-width: 0; box-sizing: border-box;"> 
+            
+            <!-- ⚡ DYNAMIC SLOT HOOK: Handled completely by executeStepTwoDynamicFormInjection() --> 
+            <div style="grid-column: span 2; text-align: center; padding: 40px 0; color: var(--slate, #64748b); font-weight: 400; font-size: 0.95rem;"> 
+                <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary, #10b981); margin-right: 8px;"></i> <span>Assembling specialized compliance filing interfaces...</span> 
+            </div> 
 
-    <!-- Step 3 Layout Row Block -->
-    <div id="timeline-row-3" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">3. Add-Ons</span>
-        <span class="toc-step-desc">Compliance assets & shields</span>
-      </div>
-    </div>
-    <!-- Step 4 Layout Row Block -->
-    <div id="timeline-row-4" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">4. Power of Attorney</span>
-        <span class="toc-step-desc">Digital signature execution</span>
-      </div>
-    </div>
+        </div> 
+        <!-- /End Left Column Container --> 
 
-    <!-- Step 5 Layout Row Block -->
-    <div id="timeline-row-5" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">5. Purchase Summary</span>
-        <span class="toc-step-desc">Order item breakdowns</span>
-      </div>
-    </div>
+        <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD (Pinned Flush Right) --> 
+<aside class="sticky-timeline-sidebar" style="width: 280px; min-width: 280px; max-width: 280px; margin-right: 0; margin-left: auto; box-sizing: border-box;">            <div class="sidebar-header-box"> 
+                <h3 class="sidebar-title-label"> <i class="fa-solid fa-list-check"></i> Application Map </h3> 
+                <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p> 
+            </div> 
+            <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline"> 
+                
+                <!-- Step 1 Layout Row Block --> 
+                <div id="timeline-row-1" class="toc-step-row"> 
+                    <span class="toc-dot"></span> 
+                    <div class="toc-text-group"> 
+                        <span class="toc-step-title">1. Selected Package</span> 
+                        <span class="toc-step-desc">Items and inclusions</span> </div> 
+                </div> 
+                
+                <!-- Step 2 Layout Row Block --> 
+                <div id="timeline-row-2" class="toc-step-row"> 
+                    <span class="toc-dot"></span> 
+                    <div class="toc-text-group"> 
+                        <span class="toc-step-title">2. Service Form</span> 
+                        <span class="toc-step-desc">Purchase configuration profile</span> </div> 
+                </div> 
+                
+                <!-- Step 3 Layout Row Block --> 
+                <div id="timeline-row-3" class="toc-step-row"> 
+                    <span class="toc-dot"></span> 
+                    <div class="toc-text-group"> 
+                        <span class="toc-step-title">3. Add-Ons</span> 
+                        <span class="toc-step-desc">Compliance assets & shields</span> </div> 
+                </div> 
+                
+                <!-- Step 4 Layout Row Block --> 
+                <div id="timeline-row-4" class="toc-step-row"> 
+                    <span class="toc-dot"></span> 
+                    <div class="toc-text-group"> 
+                        <span class="toc-step-title">4. Power of Attorney</span> 
+                        <span class="toc-step-desc">Digital signature execution</span> </div> 
+                </div> 
+                
+                <!-- Step 5 Layout Row Block --> 
+                <div id="timeline-row-5" class="toc-step-row"> 
+                    <span class="toc-dot"></span> 
+                    <div class="toc-text-group"> 
+                        <span class="toc-step-title">5. Purchase Summary</span> 
+                        <span class="toc-step-desc">Order item breakdowns</span> </div> 
+                </div> 
+                
+                <!-- Step 6 Layout Row Block --> 
+                <div id="timeline-row-6" class="toc-step-row"> 
+                    <span class="toc-dot"></span> 
+                    <div class="toc-text-group"> 
+                        <span class="toc-step-title">6. Secure Payment</span> 
+                        <span class="toc-step-desc">Encrypted checkout gateway</span> </div> 
+                </div> 
+                
+                <!-- Step 7 Layout Row Block --> 
+                <div id="timeline-row-7" class="toc-step-row"> 
+                    <span class="toc-dot"></span> 
+                    <div class="toc-text-group"> 
+                        <span class="toc-step-title">7. Success Portal</span> 
+                        <span class="toc-step-desc">Account creation systems</span> </div> 
+                </div> 
+            </nav> 
+        </aside> 
+    </div> 
+    <!-- /End Framework Split Layout Container --> 
 
-    <!-- Step 6 Layout Row Block -->
-    <div id="timeline-row-6" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">6. Secure Payment</span>
-        <span class="toc-step-desc">Encrypted checkout gateway</span>
-      </div>
-    </div>
+    <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR --> 
+    <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;"> 
+        <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1, event)" style="cursor: pointer;">Back</button> 
+        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button> 
+        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)" style="cursor: pointer;">Continue to Tiers</button> 
+    </div> 
 
-    <!-- Step 7 Layout Row Block -->
-    <div id="timeline-row-7" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">7. Success Portal</span>
-        <span class="toc-step-desc">Account creation systems</span>
-      </div>
-    </div>
+</div> 
+<!-- /End Step 2 Panel Wrapper View -->
 
-  </nav>
-</aside>
-        </div> <!-- /End Framework Split Layout Container -->
-
-        <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR -->
-        <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;">
-<button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1, event)" style="cursor: pointer;">Back</button>
-          <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-          <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)" style="cursor: pointer;">Continue to Tiers</button>
-        </div>
-
-      </div> <!-- /End Step 2 Panel Wrapper View -->
 
 
       <!-- ============================================================================ -->
@@ -376,8 +386,7 @@
 
           <!-- RIGHT MAIN COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
                  <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
-    <aside class="sticky-timeline-sidebar">
-  <div class="sidebar-header-box">
+<aside class="sticky-timeline-sidebar" style="width: 280px; min-width: 280px; max-width: 280px; margin-right: 0; margin-left: auto; box-sizing: border-box;">  <div class="sidebar-header-box">
     <h3 class="sidebar-title-label">
       <i class="fa-solid fa-list-check"></i> Application Map
     </h3>
@@ -556,8 +565,7 @@
 <input type="hidden" id="poa_meta_user_agent" value=""> 
 
 <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD --> 
-<aside class="sticky-timeline-sidebar"> 
-    <div class="sidebar-header-box"> 
+<aside class="sticky-timeline-sidebar" style="width: 280px; min-width: 280px; max-width: 280px; margin-right: 0; margin-left: auto; box-sizing: border-box;">    <div class="sidebar-header-box"> 
         <h3 class="sidebar-title-label"><i class="fa-solid fa-list-check"></i> Application Map</h3> 
         <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p> 
     </div> 
@@ -608,8 +616,7 @@
         </div>
       </div>
     </div>
-    <aside class="sticky-timeline-sidebar">
-      <div class="sidebar-header-box">
+<aside class="sticky-timeline-sidebar" style="width: 280px; min-width: 280px; max-width: 280px; margin-right: 0; margin-left: auto; box-sizing: border-box;">      <div class="sidebar-header-box">
         <h3 class="sidebar-title-label"><i class="fa-solid fa-list-check"></i> Application Map</h3>
         <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
       </div>
@@ -664,8 +671,7 @@
         <div style="display: flex; align-items: center; gap: 8px; font-weight: 400;"><i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i> Official Corporate Guarantee Protection Included</div>
       </div>
     </div>
-    <aside class="sticky-timeline-sidebar">
-      <div class="sidebar-header-box">
+<aside class="sticky-timeline-sidebar" style="width: 280px; min-width: 280px; max-width: 280px; margin-right: 0; margin-left: auto; box-sizing: border-box;">      <div class="sidebar-header-box">
         <h3 class="sidebar-title-label"><i class="fa-solid fa-list-check"></i> Application Map</h3>
         <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
       </div>

@@ -1,7 +1,8 @@
 // ============================================================================ //
-// 🛠️ SOLE PROPRIETORSHIP PART 1 VALIDATION MATRIX ENGINE 
+// 🛠️ SOLE PROPRIETORSHIP PART 1 VALIDATION MATRIX ENGINE                      //
 // ============================================================================ //
-export const solePropPart1Validation = {
+
+var solePropPart1Validation = {
   requiredFields: [
     { id: 'sp_proposed_name', msg: 'Proposed Business Name is required.' },
     { id: 'sp_business_purpose', msg: 'Business Purpose is required.' },
@@ -18,65 +19,107 @@ export const solePropPart1Validation = {
     { id: 'sp_owner_zip', msg: "Owner's Zip Code is required." },
     { id: 'sp_dba_choice', msg: 'Fictitious name preference selection is required.' }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Process standard mandatory fields presence
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) setError(el, field.msg);
+        else clearError(el);
       }
     });
 
     // 2. Validate Two-Letter State Abbreviations
     ['sp_bus_state', 'sp_owner_state'].forEach(id => {
       const el = document.getElementById(id);
-      if (el && el.value.trim() && !/^[a-zA-Z]{2}$/.test(el.value.trim())) {
-        setError(el, 'State code must be exactly 2 alphabet letters.');
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (val && !/^[a-zA-Z]{2}$/.test(val)) {
+          setError(el, 'State code must be exactly 2 alphabet letters.');
+        }
       }
     });
 
     // 3. Validate 5-Digit ZIP Format Constraints
     ['sp_bus_zip', 'sp_owner_zip'].forEach(id => {
       const el = document.getElementById(id);
-      if (el && el.value.trim() && !/^\d{5}$/.test(el.value.trim())) {
-        setError(el, 'Zip Code must consist of exactly 5 digits.');
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (val && !/^\d{5}$/.test(val)) {
+          setError(el, 'Zip Code must consist of exactly 5 digits.');
+        }
       }
     });
 
     // 4. Validate Email Syntax Rules
     const emailEl = document.getElementById("sp_owner_email");
-    if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-      setError(emailEl, "Please enter a valid owner email address.");
+    if (emailEl && (emailEl.offsetWidth > 0 || emailEl.offsetHeight > 0)) {
+      const emailVal = emailEl.value ? String(emailEl.value).trim() : "";
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        setError(emailEl, "Please enter a valid owner email address.");
+      }
     }
 
     // 5. Validate Phone Number baseline digits length
     const phoneEl = document.getElementById("sp_owner_phone");
-    if (phoneEl && phoneEl.value.trim()) {
-      const digits = phoneEl.value.replace(/\D/g, "");
-      if (digits.length < 10) setError(phoneEl, "Owner's Contact Number must contain at least 10 numbers.");
+    if (phoneEl && (phoneEl.offsetWidth > 0 || phoneEl.offsetHeight > 0)) {
+      const phoneVal = phoneEl.value ? String(phoneEl.value).trim() : "";
+      if (phoneVal) {
+        const digits = phoneVal.replace(/\D/g, "");
+        if (digits.length < 10) {
+          setError(phoneEl, "Owner's Contact Number must contain at least 10 numbers.");
+        }
+      }
     }
 
     // 6. Conditional Check: Validate custom DBA field if selection matches YES
     const dbaChoice = document.getElementById("sp_dba_choice");
-    if (dbaChoice && dbaChoice.value === "yes") {
+    if (dbaChoice && dbaChoice.value === "yes" && (dbaChoice.offsetWidth > 0 || dbaChoice.offsetHeight > 0)) {
       const dbaNameEl = document.getElementById("sp_dba_name");
-      if (dbaNameEl && !dbaNameEl.value.trim()) {
-        setError(dbaNameEl, "Please specify your Fictitious / DBA Name.");
-      } else if (dbaNameEl) {
-        clearError(dbaNameEl);
+      if (dbaNameEl) {
+        const dbaVal = dbaNameEl.value ? String(dbaNameEl.value).trim() : "";
+        if (!dbaVal) {
+          setError(dbaNameEl, "Please specify your Fictitious / DBA Name.");
+        } else {
+          clearError(dbaNameEl);
+        }
       }
     }
 
     return { isValid, errors };
   }
 };
+
+window.solePropPart1Validation = solePropPart1Validation;
+
 
 // FAMILY 3: INFORMAL ENTITIES (SOLE PROPRIETORSHIPS / DBAS) - PART 1
 function buildInformalEntityFieldsLayoutHtml() {
@@ -167,55 +210,87 @@ function buildInformalEntityFieldsLayoutHtml() {
 }
 
 // ============================================================================ //
-// 🛠️ SOLE PROPRIETORSHIP PART 2 VALIDATION MATRIX ENGINE 
+// 🛠️ SOLE PROPRIETORSHIP PART 2 VALIDATION MATRIX ENGINE                      //
 // ============================================================================ //
-export const solePropPart2Validation = {
+
+var solePropPart2Validation = {
   requiredFields: [
     { id: 'sp_ein_choice', msg: 'Please select an option for your Employer Identification Number (EIN).' },
     { id: 'sp_duration_choice', msg: 'Please specify if this business operational model is temporary or ongoing.' },
     { id: 'sp_license_check', msg: 'Please verify if you have checked localized business licenses.' }
   ],
-
   validate: function() {
     let isValid = true;
     let errors = [];
 
-    const setError = (el, msg) => { if (el) el.style.borderColor = "#ef4444"; isValid = false; if (!errors.includes(msg)) errors.push(msg); };
-    const clearError = (el) => { if (el) el.style.borderColor = "#cbd5e1"; };
+    const setError = (el, msg) => {
+      if (!el) return;
+      isValid = false;
+      el.style.setProperty("border", "1px solid #ef4444", "important");
+      if (!errors.includes(msg)) errors.push(msg);
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.textContent = msg;
+        errorMsgNode.style.setProperty("display", "block", "important");
+      }
+    };
+
+    const clearError = (el) => {
+      if (!el) return;
+      el.style.removeProperty("border");
+
+      const errorMsgNode = document.getElementById("err_" + el.id) || el.parentElement?.querySelector(".wizard-error-message");
+      if (errorMsgNode) {
+        errorMsgNode.style.setProperty("display", "none", "important");
+        errorMsgNode.textContent = "";
+      }
+    };
 
     // 1. Check baseline mandatory selection elements presence
     this.requiredFields.forEach(field => {
       const el = document.getElementById(field.id);
-      if (el) {
-        if (!el.value.trim()) setError(el, field.msg); else clearError(el);
+      if (el && (el.offsetWidth > 0 || el.offsetHeight > 0)) {
+        const val = el.value ? String(el.value).trim() : "";
+        if (!val) setError(el, field.msg);
+        else clearError(el);
       }
     });
 
     // 2. Conditional Check: Validate EIN Reason input field if choice matches YES
     const einChoice = document.getElementById("sp_ein_choice");
-    if (einChoice && einChoice.value === "yes") {
+    if (einChoice && einChoice.value === "yes" && (einChoice.offsetWidth > 0 || einChoice.offsetHeight > 0)) {
       const reasonEl = document.getElementById("sp_ein_reason");
-      if (reasonEl && !reasonEl.value.trim()) {
-        setError(reasonEl, "Reason for obtaining an EIN is required.");
-      } else if (reasonEl) {
-        clearError(reasonEl);
+      if (reasonEl) {
+        const reasonVal = reasonEl.value ? String(reasonEl.value).trim() : "";
+        if (!reasonVal) {
+          setError(reasonEl, "Reason for obtaining an EIN is required.");
+        } else {
+          clearError(reasonEl);
+        }
       }
     }
 
     // 3. Conditional Check: Validate Temporary Duration field if choice matches TEMPORARY
     const durationChoice = document.getElementById("sp_duration_choice");
-    if (durationChoice && durationChoice.value === "temporary") {
+    if (durationChoice && durationChoice.value === "temporary" && (durationChoice.offsetWidth > 0 || durationChoice.offsetHeight > 0)) {
       const termEl = document.getElementById("sp_duration_term");
-      if (termEl && !termEl.value.trim()) {
-        setError(termEl, "Expected project or business duration description is required.");
-      } else if (termEl) {
-        clearError(termEl);
+      if (termEl) {
+        const termVal = termEl.value ? String(termEl.value).trim() : "";
+        if (!termVal) {
+          setError(termEl, "Expected project or business duration description is required.");
+        } else {
+          clearError(termEl);
+        }
       }
     }
 
     return { isValid, errors };
   }
 };
+
+window.solePropPart2Validation = solePropPart2Validation;
+
 
 // FAMILY 3: INFORMAL ENTITIES (SOLE PROPRIETORSHIPS / DBAS) - PART 2
 function buildSolePropPart2FieldsLayoutHtml() {

@@ -65,7 +65,7 @@ function validateHeavyUseTaxFormPart1() {
 }
 
 // FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 1 OF 3)
-function buildHeavyUseTaxFormPart1(stateDropdownOptionsHtml = "") {
+function buildHeavyUseTaxForm2290Part1(stateDropdownOptionsHtml = "") {
  return `
  <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: HEAVY HIGHWAY VEHICLE USE TAX -->
  <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
@@ -134,7 +134,7 @@ function buildHeavyUseTaxFormPart1(stateDropdownOptionsHtml = "") {
  `;
 }
 
-function validateHeavyUseTaxFormParts2And3() {
+function validateHeavyUseTaxForm2290Parts2And3() {
   let isValid = true;
 
   const markInvalid = (inputEl, errorEl, msg) => {
@@ -215,7 +215,7 @@ function validateHeavyUseTaxFormParts2And3() {
 }
 
 // FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 2 OF 3)
-function buildHeavyUseTaxFormPart2(stateDropdownOptionsHtml = "") {
+function buildHeavyUseTaxForm2290Part2(stateDropdownOptionsHtml = "") {
  return `
  <!-- SECTION 3: DYNAMIC FLEET ALLOCATION LEDGER -->
  <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
@@ -291,7 +291,7 @@ function buildHeavyUseTaxFormPart2(stateDropdownOptionsHtml = "") {
 }
 
 // FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 3 OF 3)
-function buildHeavyUseTaxFormPart3(stateDropdownOptionsHtml = "") {
+function buildHeavyUseTaxForm2290Part3(stateDropdownOptionsHtml = "") {
  return `
  <!-- SECTION 5: ADDITIONAL PROVISIONS & DISCLOSURES -->
  <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
@@ -307,10 +307,10 @@ function buildHeavyUseTaxFormPart3(stateDropdownOptionsHtml = "") {
 }
 
 // 📦 MASTER HEAVY USE TAX (2290) APPLICATION ASSEMBLY HOOK
-function buildHeavyUseTaxForm(stateDropdownOptionsHtml = "") {
- return buildHeavyUseTaxFormPart1(stateDropdownOptionsHtml) + 
-        buildHeavyUseTaxFormPart2(stateDropdownOptionsHtml) + 
-        buildHeavyUseTaxFormPart3(stateDropdownOptionsHtml);
+function buildHeavyUseTaxForm2290(stateDropdownOptionsHtml = "") {
+ return buildHeavyUseTaxForm2290Part1(stateDropdownOptionsHtml) + 
+        buildHeavyUseTaxForm2290Part2(stateDropdownOptionsHtml) + 
+        buildHeavyUseTaxForm2290Part3(stateDropdownOptionsHtml);
 }
 
 /**
