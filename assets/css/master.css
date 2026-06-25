@@ -1,4 +1,14 @@
-﻿/** 
+﻿/* At the absolute top line of assets/css/master.css */
+@import url('toggle.css');
+@import url('hero-section.css');
+@import url('metrics-section.css');
+@import url('pricing-section.css');
+@import url('shield-section.css');
+
+
+
+
+/** 
  * ========================================================================== 
  * FILINGS4U PRODUCTION UNIFIED DESKTOP ENGINE
  * FILE LOCATION: css/master.css;
@@ -418,34 +428,40 @@ nav {
     box-sizing: border-box !important;
 }
 
-/* --- OVERRIDE SHIFT-LEFT SYSTEM --- */
+/* --- COMPACT DROPDOWN POSITIONAL ALIGNMENT ENGINE --- */
 
+/* 1. Make the main menu row standard relative */
 .nav-links {
-    position: static; 
+    position: relative !important; 
 }
 
+/* 2. FORCE the parent link box to act as the exact anchor grid point */
 .nav-item-dropdown.static-dropdown {
-    position: static !important;
+    position: relative !important; /* Changed from static to relative */
 }
 
+/* 3. Re-architect ONLY the 4-column dropdown container box */
 .nav-item-dropdown:hover .dropdown-content.mega-panel-four-col {
     position: absolute !important;
-    top: 100% !important;
+    top: 100% !important; /* Locks it cleanly directly below the link text */
     
-    /* PULL FURTHER LEFT: Changed from 430px to 550px to shift it leftward */
-    left: calc(50% - 550px) !important; 
-    right: auto !important;
-    transform: none !important;
+    /* LEFT BOUNDARY RE-ANCHOR: Snaps the left edge to your "DOT & Fleet" link text box */
+    left: auto !important; 
+    right: 0 !important;   /* Aligns the right edge perfectly with the link, pulling the container leftward onto the page */
+    transform: none !important; /* Disables window-shifting center rules */
     
-    /* All your other working styles stay exactly the same */
-    width: 860px !important;
-    max-width: 95vw !important;
+    /* Fixed Layout Enclosure Dimensions */
+    width: 780px !important;  /* Snug, safe width that easily fits 4 columns without clipping */
     box-sizing: border-box !important;
+    
+    /* Structural Grid System */
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
-    gap: 20px !important;    
-    padding: 24px !important; 
+    gap: 16px !important;    /* Clean, close space between internal blocks */
+    padding: 20px !important; /* Perfect inner spacing margins */
     z-index: 999999 !important;
+    
+    /* Design Visual Layer Elements */
     background: #ffffff !important;
     background-color: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
@@ -453,6 +469,7 @@ nav {
     box-shadow: 0 10px 25px rgba(10, 31, 68, 0.08) !important;
 }
 
+/* 4. Column text links structural tracking values */
 .dropdown-content.mega-panel-four-col .mega-column {
     min-width: 0 !important;
     width: auto !important;
