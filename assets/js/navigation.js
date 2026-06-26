@@ -78,7 +78,7 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
             <a href="annual-reports.html">Annual Reports</a> 
             <a href="operating-agreement.html">Operating Agreement</a> 
             <a href="registered-agent.html">Registered Agent</a> 
-            <a href="certificate-good-standing.html">Certificate of Good Standing</a>
+            <a href="certificate-of-good-standing.html">Certificate of Good Standing</a>
             <a href="llc-reinstatement.html">LLC Reinstatement</a>
         </div> 
         <div class="mega-column"> 

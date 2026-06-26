@@ -706,7 +706,7 @@ const CENTRAL_SERVICE_PLAN_DB = {
     }, 
     "mcs-150-update": { 
         name: "Biennial MCS-150 Updating", 
-        starter: 45.00, 
+        starter: 59.00, 
         compliance: 89.00, 
         enterprise: 139.00, 
         bullets: { 
