@@ -48,6 +48,13 @@ window.FILINGS4U_GETSTARTED_TARGET = "filings4u-get-started-root";
                 .f4u-gs-grid-matrix { grid-template-columns: 1fr !important; gap: 20px !important; }
                 .f4u-gs-header-title { font-size: 2rem !important; }
             }
+    
+  /* RESPONSIVE HERO AND CATEGORY TITLES BELOW 991PX */
+    @media (max-width: 991px) {
+      .f4u-gs-header-title { font-size: 1.3rem !important; }
+      .f4u-gs-category-title { font-size: 0.98rem !important; }
+      #get-started-hero-zone { padding: 40px 16px !important; margin-bottom: 30px !important; }
+    }
         `;
         document.head.appendChild(styleSheet);
     }
@@ -61,25 +68,25 @@ function renderMasterGetStartedEngine(overrideTargetId) {
 
         var gsHTML = "";
 
-        // 1. UPSCALE ENTERPRISE HERO LAYER
-        gsHTML += '<div style="padding-top: 110px; width: 100%; box-sizing: border-box; clear: both; display: block;">';
-        gsHTML += '  <div id="get-started-hero-zone" style="background: #0a1f44; color: #ffffff; padding: 60px 20px; position: relative; overflow: hidden; margin-bottom: 50px; border-bottom: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">';
-        gsHTML += '    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>';
-        gsHTML += '    <div style="max-width: 1450px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; text-align: center; width: 100%;">';
-        gsHTML += '      <span style="color: #10b981; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 10px;">Enterprise Deployment Interface</span>';
-        gsHTML += '      <h1 class="f4u-gs-header-title" style="font-size: 2.6rem; font-weight: 900; margin: 0 0 12px 0; letter-spacing: -0.5px; color: #ffffff;">Initialize Compliance Operations</h1>';
-        gsHTML += '    </div>';
-        gsHTML += '  </div>';
+// 1. UPSCALE ENTERPRISE HERO LAYER
+gsHTML += '<div style="padding-top: 110px; width: 100%; box-sizing: border-box; clear: both; display: block;">';
+gsHTML += ' <div id="get-started-hero-zone" style="background: #0a1f44; color: #ffffff; padding: 60px 20px; position: relative; overflow: hidden; margin-bottom: 50px; border-bottom: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">';
+gsHTML += ' <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>';
+gsHTML += ' <div style="max-width: 1450px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; text-align: center; width: 100%;">';
+gsHTML += ' <span style="color: #10b981; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 10px;">Enterprise Deployment Interface</span>';
+gsHTML += ' <h1 class="f4u-gs-header-title" style="font-size: 2.6rem; font-weight: 900; margin: 0 0 12px 0; letter-spacing: -0.5px; color: #ffffff; line-height: 1.2;">Initialize Compliance Operations</h1>';
+gsHTML += ' </div>';
+gsHTML += ' </div>';
 
-        // 2. CONSTRAINED CONTAINER INNER BOX LAYER
-        gsHTML += '  <div style="max-width: 1450px; margin: 0 auto 60px auto; padding: 0 40px; box-sizing: border-box; width: 100%;">';
+// 2. CONSTRAINED CONTAINER INNER BOX LAYER
+gsHTML += ' <div style="max-width: 1450px; margin: 0 auto 60px auto; padding: 0 40px; box-sizing: border-box; width: 100%;">';
 
-        // 3. VERTICAL SECTOR 1: CORPORATE FORMATION & GOVERNANCE ARCHITECTURE
-        gsHTML += '    <div style="margin-bottom: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; text-align: left;">';
-        gsHTML += '      <h2 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">1.0 Corporate Formations &amp; Registries</h2>';
-        gsHTML += '    </div>';
-        
-        gsHTML += '    <div class="f4u-gs-grid-matrix">';
+// 3. VERTICAL SECTOR 1: CORPORATE FORMATION & GOVERNANCE ARCHITECTURE
+gsHTML += ' <div style="margin-bottom: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; text-align: left;">';
+gsHTML += ' <h2 class="f4u-gs-category-title" style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; line-height: 1.3;">1.0 Corporate Formations &amp; Registries</h2>';
+gsHTML += ' </div>';
+gsHTML += ' <div class="f4u-gs-grid-matrix">';
+
         
         var formationsData = [
             { slug: "llc-formation", name: "LLC Formation", desc: "Execute state articles of organization, statutory entity structural records, and operational deeds." },
@@ -142,10 +149,11 @@ function renderMasterGetStartedEngine(overrideTargetId) {
         var gsHTML = zone.getAttribute("data-gs-cache") || "";
         const catalogSource = window.PLATFORM_METRICS_CATALOG || {};
 
+        
         // 2. VERTICAL SECTOR 2: FISCAL SYSTEMS & TAX ARCHITECTURE
-        gsHTML += '    <div style="margin-bottom: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-top: 50px; text-align: left;">';
-        gsHTML += '      <h2 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">2.0 Tax &amp; Fiscal Compliance Ledgers</h2>';
-        gsHTML += '    </div>';
+gsHTML += ' <div style="margin-bottom: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-top: 50px; text-align: left;">';
+gsHTML += ' <h2 class="f4u-gs-category-title" style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; line-height: 1.3;">2.0 Tax &amp; Fiscal Compliance Ledgers</h2>';
+gsHTML += ' </div>';
         
         gsHTML += '    <div class="f4u-gs-grid-matrix">';
 
@@ -178,10 +186,10 @@ function renderMasterGetStartedEngine(overrideTargetId) {
 
         gsHTML += '    </div>';
 
-        // 3. VERTICAL SECTOR 3: LOGISTICS INFRASTRUCTURE & FLEET MANAGEMENT
-        gsHTML += '    <div style="margin-bottom: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-top: 50px; text-align: left;">';
-        gsHTML += '      <h2 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">3.0 Logistics Infrastructure &amp; Commercial Fleets</h2>';
-        gsHTML += '    </div>';
+     // 3. VERTICAL SECTOR 3: LOGISTICS INFRASTRUCTURE & FLEET MANAGEMENT
+gsHTML += ' <div style="margin-bottom: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-top: 50px; text-align: left;">';
+gsHTML += ' <h2 class="f4u-gs-category-title" style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; line-height: 1.3;">3.0 Logistics Infrastructure &amp; Commercial Fleets</h2>';
+gsHTML += ' </div>';
         
         gsHTML += '    <div class="f4u-gs-grid-matrix">';
 
