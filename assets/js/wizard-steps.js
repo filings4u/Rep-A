@@ -2562,161 +2562,241 @@ if (document.readyState !== "loading") {
 
 
 
+const SERVICE_URL_REGISTRY = {
+  "llc-formation": "llc-formation",
+  "corporations": "corporations",
+  "sole-proprietorship": "sole-proprietorship",
+  "dba-registration": "dba-registration",
+  "nonprofits": "nonprofits",
+  "series-llc": "series-llc",
+  "foreign-qualification": "foreign-qualification",
+  "llc-reinstatement": "llc-reinstatement",
+  "servicemark-filing": "servicemark-filing",
+  "annual-reports": "annual-reports",
+  "operating-agreement": "operating-agreement",
+  "registered-agent": "registered-agent",
+  "business-licenses": "business-licenses",
+  "dissolution": "dissolution",
+  "certificate-of-good-standing": "certificate-of-good-standing",
+  "clia-certificate": "clia-certificate",
+  "regulatory-consulting": "regulatory-consulting",
+  "state-tax": "state-tax",
+  "franchise-tax": "franchise-tax",
+  "sales-tax-registration": "sales-tax-registration",
+  "payroll-tax-940-941": "payroll-tax-940-941",
+  "duns-number": "duns-number",
+  "minority-certificate": "minority-certificate",
+  "ifta-registration": "ifta-registration",
+  "licenses-permits": "licenses-permits",
+  "ifta-quarterly-returns": "ifta-quarterly-returns",
+  "federal-tax": "federal-tax",
+  "employer-id-ein": "employer-id-ein",
+  "heavy-use-tax-2290": "heavy-use-tax-2290",
+  "cage-code": "cage-code",
+  "owner-operators": "owner-operators",
+  "trucker-authority": "trucker-authority",
+  "broker-authority": "broker-authority",
+  "ucr-registration": "ucr-registration",
+  "scac-code": "scac-code",
+  "dot-consortium": "dot-consortium",
+  "driver-file": "driver-file",
+  "process-agents-boc-3": "process-agents-boc-3",
+  "hazmat-registration": "hazmat-registration",
+  "trucker-insurance-quote": "trucker-insurance-quote",
+  "broker-insurance-quote": "broker-insurance-quote",
+  "new-entrant-audit": "new-entrant-audit",
+  "mcs-150-update": "mcs-150-update",
+  "boc-3-amendment": "boc-3-amendment",
+  "apostille-services": "apostille-services"
+};
 
-
-// ============================================================================ // 
-// ⚡ 4.5 UNIFIED ASYNCHRONOUS FORM INJECTION SYSTEM (PART 1 OF 2: SNAPSHOT)    // 
-// ============================================================================ // 
-
-async function executeStepTwoDynamicFormInjection() { 
-    const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root") || 
-                       document.getElementById("wizard-dynamic-form-target") || 
-                       document.getElementById("dynamic-form-fields") || 
-                       document.querySelector(".wizard-dynamic-fields-slot"); 
-    if (!fieldsRoot) { 
-        console.error("[Form Injection Fail] Critical DOM element container placeholder missing."); 
-        return; 
+/* ============================================================================ */ 
+/* ⚡ PART 1 OF 2: NETWORK ROUTER AND CLEAN SPINNER INJECTION */ 
+/* ============================================================================ */ 
+(async () => { 
+  const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root") || document.getElementById("wizard-dynamic-form-target") || document.getElementById("dynamic-form-fields") || document.querySelector(".wizard-dynamic-fields-slot"); 
+  if (!fieldsRoot) {
+    console.error("[Asset Router Critical] Could not find any valid form fields root container element in the DOM.");
+    return; 
+  }
+  
+  let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value; 
+  if (!currentServiceKey) { 
+    const lastSeg = window.location.pathname.split("/").pop() || ""; 
+    currentServiceKey = lastSeg.includes(".html") ? lastSeg.replace(".html", "") : "index"; 
+  } 
+  
+  let rawUrlSlug = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
+  const targetScriptFileName = (typeof SERVICE_URL_REGISTRY !== "undefined" && SERVICE_URL_REGISTRY[rawUrlSlug]) || rawUrlSlug; 
+  const baselineMemoryKeys = new Set(Object.keys(window).filter(k => typeof window[k] === "function")); 
+  const expectedScriptId = `script-dependency-${targetScriptFileName}`; 
+  
+  let formInjectionWrapper = fieldsRoot.querySelector(".isolated-form-payload-container"); 
+  if (!formInjectionWrapper) { 
+    formInjectionWrapper = document.createElement("div"); 
+    formInjectionWrapper.className = "isolated-form-payload-container"; 
+    formInjectionWrapper.style.cssText = "width: 100%; display: block; clear: both;"; 
+    fieldsRoot.insertBefore(formInjectionWrapper, fieldsRoot.firstChild); 
+  } 
+  
+  // Safe Node cleanup: Clear older sibling elements without touching our parent structural elements
+  Array.from(fieldsRoot.childNodes).forEach(node => { 
+    if (node !== formInjectionWrapper) { 
+      fieldsRoot.removeChild(node); 
     } 
-
-    fieldsRoot.style.setProperty("width", "100%", "important");
-    fieldsRoot.style.setProperty("max-width", "100%", "important");
-    fieldsRoot.style.setProperty("display", "block", "important");
-
-    let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value; 
-    if (!currentServiceKey) { 
-        fieldsRoot.innerHTML = `<div style="grid-column: span 2; text-align: center; padding: 25px; color: #ef4444; font-weight: 700;">CRITICAL LIFECYCLE FAILURE: Active service tracking key is uninitialized.</div>`; 
-        return; 
-    } 
-
-    let rawUrlSlug = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
-
-    const SERVICE_URL_REGISTRY = {
-        "llc-formation": "llc-formation", "corporations": "corporations",
-        "sole-proprietorship": "sole-proprietorship", "dba-registration": "dba-registration",
-        "nonprofit-organization": "nonprofit-organization", "series-llc": "series-llc",
-        "foreign-qualification": "foreign-qualification", "llc-reinstatement-processing": "llc-reinstatement",
-        "annual-reports": "annual-reports", "operating-agreement": "operating-agreement",
-        "registered-agent": "registered-agent", "business-licenses": "business-licenses",
-        "employer-id-ein": "employer-id-ein", "entity-dissolution": "entity-dissolution",
-        "certificate-of-good-standing": "certificate-good-standing", "apostille-authentication-services": "apostille-authentication",
-        "trademark-filing": "trademark-filing", "servicemark-filing": "servicemark-filing",
-        "custom-regulatory-legal-consulting": "custom-regulatory-legal", "clia-certificate": "clia-certificate",
-        "federal-income-tax": "federal-income-tax", "state-tax": "state-tax", "state-income-tax": "state-tax",
-        "franchise-tax-filing": "franchise-tax", "sales-tax-registration": "sales-tax",
-        "payroll-tax-940-941": "payroll-tax", "heavy-use-tax-2290": "heavy-use-tax-form-2290",
-        "cage-code": "cage-code", "duns-number": "duns-number", "procurement": "procurement",
-        "procurement-registration": "procurement-registration", "minority-certificate": "minority-certificate",
-        "owner-operators": "owner-operators", "trucker-authority": "trucker-authority",
-        "broker-authority": "broker-authority", "ucr-registration": "ucr-registration",
-        "scac-code-registration": "scac-code", "dot-consortium": "dot-consortium",
-        "driver-qualification-file": "driver-qualification", "process-agent-boc-3": "process-agent-boc3",
-        "ifta-registration": "ifta-registration", "hazmat-registration": "hazmat-registration",
-        "licenses-permits": "licenses-permits", "trucker-insurance": "trucker-insurance",
-        "broker-insurance": "broker-insurance", "new-entrant-audit": "new-entrant-audit"
-    };
-
-    const targetScriptFileName = SERVICE_URL_REGISTRY[rawUrlSlug] || rawUrlSlug;
-
-    // 🟢 CAPTURE BASELINE SNAPSHOT: Take a recording of everything in memory BEFORE loading the file
-    const baselineMemoryKeys = new Set(Object.keys(window));
-
-    const expectedScriptId = `script-dependency-${targetScriptFileName}`; 
-    if (!document.getElementById(expectedScriptId)) { 
-        console.log(`[Asset Router] Injecting network script tag for: assets/js/services/${targetScriptFileName}.js`); 
+  }); 
+  
+  formInjectionWrapper.innerHTML = ` 
+    <div class="dynamic-form-loading-placeholder" style="grid-column: span 2; text-align: center; padding: 24px; color: var(--slate, #64748b); font-weight: 600; border: 1px dashed var(--border, #e2e8f0); border-radius: 8px; background: var(--light-bg, #f8fafc); width: 100%; box-sizing: border-box;"> 
+      <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: var(--primary, #10b981);"></i> Assembling specialized compliance filing interfaces... 
+    </div>`; 
+    
+  if (!document.getElementById(expectedScriptId)) { 
+    console.log(`[Asset Router] Injecting network script tag for: assets/js/services/${targetScriptFileName}.js`); 
+    try {
+      await new Promise((resolve, reject) => { 
         const dynamicScriptElement = document.createElement("script"); 
         dynamicScriptElement.id = expectedScriptId; 
         dynamicScriptElement.type = "text/javascript"; 
         dynamicScriptElement.src = `assets/js/services/${targetScriptFileName}.js`; 
-        dynamicScriptElement.defer = false; // Fast execute to track variable delta footprints accurately
+        dynamicScriptElement.onload = () => { setTimeout(resolve, 120); }; 
+        dynamicScriptElement.onerror = () => { reject(new Error(`Failed to load script pipeline: ${targetScriptFileName}.js`)); }; 
         document.head.appendChild(dynamicScriptElement); 
+      }); 
+    } catch (networkScriptError) {
+      console.error("[Asset Router Fatal Load Failure]", networkScriptError);
+      formInjectionWrapper.innerHTML = `
+        <div style="padding: 20px; color: #b91c1c; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 6px; font-family: sans-serif; box-sizing: border-box; width: 100%;">
+          <strong>Error Loading System Components:</strong> Could not load file: <code>assets/js/services/${targetScriptFileName}.js</code>. Please check your filename.
+        </div>`;
+      return;
+    }
+  } else { 
+    await new Promise((resolve) => setTimeout(resolve, 80)); 
+  } 
+  
+  await executeStepTwoDynamicFormInjection(baselineMemoryKeys, rawUrlSlug); 
+})(); 
+
+/* ============================================================================ */ 
+/* ⚡ PART 2 OF 2: UNIVERSAL SERVICE-FORM LIFECYCLE COMPILER ENGINE */ 
+/* ============================================================================ */ 
+async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlSlug) { 
+  const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root") || document.getElementById("wizard-dynamic-form-target") || document.getElementById("dynamic-form-fields") || document.querySelector(".wizard-dynamic-fields-slot"); 
+  if (!fieldsRoot) return; 
+
+  let formInjectionWrapper = fieldsRoot.querySelector(".isolated-form-payload-container");
+
+  try { 
+    if (!rawUrlSlug || typeof rawUrlSlug !== "string") { 
+      let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value; 
+      if (!currentServiceKey) { 
+        const lastSeg = window.location.pathname.split("/").pop() || ""; 
+        currentServiceKey = lastSeg.includes(".html") ? lastSeg.replace(".html", "") : "index"; 
+      } 
+      rawUrlSlug = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
     } 
-    fieldsRoot.innerHTML = ` <div style="grid-column: span 2; text-align: center; padding: 24px; color: var(--slate, #64748b); font-weight: 600; border: 1px dashed var(--border, #e2e8f0); border-radius: 8px; background: var(--light-bg, #f8fafc); width: 100%; box-sizing: border-box;"> <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: var(--primary, #10b981);"></i> Assembling specialized compliance filing interfaces... </div>`; 
-// ============================================================================ // 
-// ⚡ 4.5 UNIFIED ASYNCHRONOUS FORM INJECTION SYSTEM (PART 2 OF 2: COMPILER)    // 
-// ============================================================================ // 
 
-    // Wait a brief tick to allow the script tag to download and expand into window scope memory completely
-    await new Promise((resolve) => setTimeout(resolve, 150));
+    const stateOptions = window.globalStateDropdownOptionsHtml || (typeof window.getUsaStatesHtml === "function" ? window.getUsaStatesHtml(window.selectedFormationStateCode || "") : ""); 
+    const verifiedTemplates = []; 
 
-    try { 
-        fieldsRoot.innerHTML = ""; 
-        const stateOptions = window.globalStateDropdownOptionsHtml || (typeof window.getUsaStatesHtml === "function" ? window.getUsaStatesHtml(window.selectedFormationStateCode || "") : ""); 
-        let combinedMasterHtmlPayload = ""; 
+    window.formRegistry = window.formRegistry || {};
 
-        // 🟢 DELTA ANALYSIS PASS: Isolate functions that exist now, but did NOT exist in the Part 1 snapshot
-        const currentKeys = Object.keys(window);
-        const newlyExportedFunctions = currentKeys.filter(key => {
-            return !baselineMemoryKeys.has(key) && typeof window[key] === "function";
-        });
+    // 1. Dynamic Service File Wrapper Initialization
+    const camelCaseServiceName = rawUrlSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
+    const dynamicInitName = `init${camelCaseServiceName}Service`;
+    if (typeof window[dynamicInitName] === "function") {
+       window[dynamicInitName]();
+    }
 
-        const verifiedTemplates = []; 
+    // 2. Master Template Rule processing
+    const targetRegistryMasterKey = `${rawUrlSlug}-form-master`; 
+    if (typeof window.formRegistry[targetRegistryMasterKey] === "function") { 
+      try { 
+        const outputPayload = window.formRegistry[targetRegistryMasterKey](stateOptions); 
+        if (typeof outputPayload === "string" && outputPayload.includes("<")) {
+          verifiedTemplates.push({ html: outputPayload.trim(), step: 1 }); 
+        } 
+        else if (Array.isArray(outputPayload)) {
+          outputPayload.forEach(item => {
+            if (item && item.html) {
+              verifiedTemplates.push({ html: item.html.trim(), step: parseInt(item.step || item.stepIndex, 10) || 1 });
+            }
+          });
+        }
+      } catch (e) { console.error(e); } 
+    } 
+    
+    // 3. RegEx Scanner for Multi-Step Layout Keys (with String-Function parsing)
+    if (verifiedTemplates.length === 0) {
+      const allRegistryKeys = Object.keys(window.formRegistry);
+      const layoutRegexPattern = new RegExp(`^${rawUrlSlug}-part(\\d+)-layout$`, 'i');
 
-        for (const funcKey of newlyExportedFunctions) { 
+      allRegistryKeys.forEach(registryKey => {
+        const matchResult = registryKey.match(layoutRegexPattern);
+        if (matchResult) {
+          const stepNumber = parseInt(matchResult, 10) || 1;
+          let layoutSource = window.formRegistry[registryKey];
+          let compiledHtmlMarkup = "";
+
+          if (typeof layoutSource === "string" && layoutSource.trim().startsWith("function")) {
             try {
-                // Execute the function silently
-                const outputPayload = window[funcKey](stateOptions); 
-                
-                // If it does not output a layout string containing HTML nodes, ignore it completely (skips utility scripts)
-                if (typeof outputPayload !== "string" || !outputPayload.includes("<")) { 
-                    continue; 
-                } 
-
-                // Isolate whatever number is found inside the custom function string name (e.g. Part1, Step2, Matrix3)
-                const partMatch = funcKey.match(/\d+/);
-                const parsedStepIndex = partMatch ? parseInt(partMatch[0], 10) : 1; 
-
-                verifiedTemplates.push({ 
-                    key: funcKey, 
-                    html: outputPayload.trim(), 
-                    step: parsedStepIndex 
-                }); 
-            } catch (e) {
-                // Safely drops non-layout functions or validation rules that crash without complex params
+              const executableParsedFunction = new Function(`return (${layoutSource.trim()})`)();
+              compiledHtmlMarkup = executableParsedFunction(stateOptions);
+            } catch (evalError) {
+              compiledHtmlMarkup = layoutSource;
             }
-        } 
+          } 
+          else if (typeof layoutSource === "function") {
+            compiledHtmlMarkup = layoutSource(stateOptions);
+          } else {
+            compiledHtmlMarkup = String(layoutSource);
+          }
 
-        // Sort items strictly by their step placement order (Part 1, Part 2, Part 3)
-        verifiedTemplates.sort((a, b) => a.step - b.step); 
-
-        if (verifiedTemplates.length > 0) { 
-            verifiedTemplates.forEach((item) => { 
-                console.log(`[Delta Engine] Compiling isolated layout function: window.${item.key}()`); 
-                combinedMasterHtmlPayload += ` 
-                    <div class="service-form-part-segment" data-part-index="${item.step}" style="display: block; width: 100%; max-width: 100%; box-sizing: border-box; margin-bottom: 24px; clear: both;"> 
-                        ${item.html} 
-                    </div>`; 
-            }); 
-
-            fieldsRoot.innerHTML = combinedMasterHtmlPayload; 
-        } else { 
-            // 🟢 RELAXED FALLBACK ONLY IF MULTIPLE PARTS CAN'T BE TRACKED VIA RE-FETCH
-            // If the script was already loaded previously and delta comes back blank, 
-            // search memory adaptively using a substring chunk of the filename
-            const cleanLookupChunk = targetScriptFileName.split('-')[0].substring(0, 5);
-            const globalReScans = Object.keys(window).filter(key => {
-                return key.toLowerCase().includes(cleanLookupChunk) && typeof window[key] === "function";
+          if (compiledHtmlMarkup && compiledHtmlMarkup.includes("<")) {
+            verifiedTemplates.push({ 
+              html: compiledHtmlMarkup.trim(), 
+              step: stepNumber 
             });
-
-            for (const reKey of globalReScans) {
-                try {
-                    const out = window[reKey](stateOptions);
-                    if (typeof out === "string" && out.includes("<")) {
-                        const numMatch = reKey.match(/\d+/);
-                        const idx = numMatch ? parseInt(numMatch[0], 10) : 1;
-                        combinedMasterHtmlPayload += `<div class="service-form-part-segment" data-part-index="${idx}" style="display:block; width:100%; margin-bottom:24px; clear:both;">${out.trim()}</div>`;
-                    }
-                } catch(err) {}
-            }
-            
-            if (combinedMasterHtmlPayload.length > 0) {
-                fieldsRoot.innerHTML = combinedMasterHtmlPayload;
-            } else {
-                throw new Error(`Dynamic Delta Engine failed to track or resolve valid form layout configurations.`);
-            }
-        } 
-    } catch (error) { 
-        console.error("[CRITICAL COMPILATION EXCEPTION]", error); 
-        fieldsRoot.innerHTML = `<div style="grid-column: span 2; padding:30px; color:#b91c1c; border:2px solid #fca5a5; background:#fef2f2; border-radius: 8px; font-family:monospace;"><strong>Pipeline Error:</strong> ${error.message}</div>`; 
+          }
+        }
+      });
     } 
-}
 
+    // --- DOM RENDERING BLOCK WITH FULL EXPANSION RULES --- 
+    if (!formInjectionWrapper) { 
+      formInjectionWrapper = document.createElement("div"); 
+      formInjectionWrapper.className = "isolated-form-payload-container"; 
+      // ⚡ FORCE MASTER CONTAINER BREAKOUT
+      formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;"; 
+      fieldsRoot.insertBefore(formInjectionWrapper, fieldsRoot.firstChild); 
+    } else {
+      // ⚡ FORCE OVERRIDE IF CONTAINER ALREADY EXISTS
+      formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;";
+    }
+
+    if (verifiedTemplates.length === 0) return;
+
+    verifiedTemplates.sort((a, b) => a.step - b.step); 
+    formInjectionWrapper.innerHTML = ""; 
+
+    verifiedTemplates.forEach((item) => { 
+      const rowContainer = document.createElement("div"); 
+      rowContainer.className = "service-form-part-segment"; 
+      rowContainer.setAttribute("data-part-index", item.step); 
+      // ⚡ FORCE INDIVIDUAL SEGMENTS TO TAKE UP THE WHOLE BLOCK STAGE TOO
+      rowContainer.style.cssText = "grid-column: 1 / -1 !important; display: block !important; width: 100% !important; max-width: 100% !important; clear: both !important; margin-bottom: 24px !important; box-sizing: border-box;";
+      rowContainer.innerHTML = item.html;
+      formInjectionWrapper.appendChild(rowContainer);
+    });
+
+    // ⚡ OVERRIDE PARENT INLINE GRID TRACKS DIRECTLY IF SQUISHING PERSISTS
+    if (fieldsRoot.style.display === "grid" || window.getComputedStyle(fieldsRoot).display === "grid") {
+       fieldsRoot.style.gridTemplateColumns = "1fr";
+       fieldsRoot.style.display = "block";
+    }
+
+  } catch (globalEngineError) {
+    console.error("[Fatal Form Injection Pipeline Exception]", globalEngineError);
+  }
+}

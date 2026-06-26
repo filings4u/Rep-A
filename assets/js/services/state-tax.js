@@ -1,7 +1,7 @@
 // ============================================================================ //
 // 🛠️ STATE INCOME TAX FILING VALIDATION MATRIX ENGINE (PART 1 OF 3)
 // ============================================================================ //
-const stateIncomeTaxPart1Validation = {
+const stateTaxPart1Validation = {
   requiredFields: [
     { id: 'state_tax_target_state', msg: 'Filing Jurisdiction State selection is required.' },
     { id: 'state_tax_id_number', msg: 'State Tax ID / Employer ID Number is required.' },
@@ -28,7 +28,7 @@ const stateIncomeTaxPart1Validation = {
 };
 
 // FAMILY 16A: STATE INCOME TAX FILING LAYOUT MATRIX (PART 1 OF 3)
-function buildStateIncomeTaxFormPart1(stateDropdownOptionsHtml = "") {
+function buildStateTaxFormPart1(stateDropdownOptionsHtml = "") {
   return `
     <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: STATE INCOME TAX FILING -->
     <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
@@ -66,13 +66,13 @@ function buildStateIncomeTaxFormPart1(stateDropdownOptionsHtml = "") {
 
 // Global registry window configuration mapping
 if (!window.formRegistry) window.formRegistry = {};
-window.formRegistry['state-income-tax-part1-layout'] = buildStateIncomeTaxFormPart1;
-window.formRegistry['state-income-tax-part1-validation'] = stateIncomeTaxPart1Validation;
+window.formRegistry['state-tax-part1-layout'] = buildStateTaxFormPart1;
+window.formRegistry['state-tax-part1-validation'] = stateTaxPart1Validation;
 
 // ============================================================================ //
 // 🛠️ STATE INCOME TAX FILING REMAINING SECTIONS VALIDATION ENGINE (PARTS 2-5)
 // ============================================================================ //
-const stateIncomeTaxRemainingValidation = {
+const stateTaxRemainingValidation = {
   requiredFields: [
     { id: 'state_tax_gross_receipts', msg: 'Extracted Gross Receipts is required.' },
     { id: 'state_tax_gross_expenses', msg: 'Extracted Gross Expenses is required.' },
@@ -136,7 +136,7 @@ const stateIncomeTaxRemainingValidation = {
 };
 
 // FAMILY 16A: STATE INCOME TAX FILING LAYOUT MATRIX (PART 2 OF 5)
-function buildStateIncomeTaxFormPart2(stateDropdownOptionsHtml = "") {
+function buildStateTaxFormPart2(stateDropdownOptionsHtml = "") {
   return `
     <!-- SECTION 2: AUTOMATED LEDGER SYNC ARCHITECTURE -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
@@ -171,10 +171,10 @@ function buildStateIncomeTaxFormPart2(stateDropdownOptionsHtml = "") {
     </div>
   `;
 }
-window.buildStateIncomeTaxFormPart2 = buildStateIncomeTaxFormPart2;
+window.buildStateTaxFormPart2 = buildStateTaxFormPart2;
 
 // FAMILY 16A: STATE INCOME TAX FILING LAYOUT MATRIX (PART 3 OF 5)
-function buildStateIncomeTaxFormPart3(stateDropdownOptionsHtml = "") {
+function buildStateTaxFormPart3(stateDropdownOptionsHtml = "") {
   return `
     <!-- SECTION 4: APPORTIONMENT FACTORS & NEXUS ALLOCATIONS -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
@@ -194,10 +194,10 @@ function buildStateIncomeTaxFormPart3(stateDropdownOptionsHtml = "") {
     </div>
   `;
 }
-window.buildStateIncomeTaxFormPart3 = buildStateIncomeTaxFormPart3;
+window.buildStateTaxFormPart3 = buildStateTaxFormPart3;
 
 // FAMILY 16A: STATE INCOME TAX FILING LAYOUT MATRIX (PART 4 OF 5)
-function buildStateIncomeTaxFormPart4(stateDropdownOptionsHtml = "") {
+function buildStateTaxFormPart4(stateDropdownOptionsHtml = "") {
   return `
     <!-- SECTION 5: REQUIRED STATE-LEVEL DOCUMENTATION -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
@@ -214,10 +214,10 @@ function buildStateIncomeTaxFormPart4(stateDropdownOptionsHtml = "") {
     </div>
   `;
 }
-window.buildStateIncomeTaxFormPart4 = buildFederalIncomeTaxFormPart4;
+window.buildStateTaxFormPart4 = buildStateTaxFormPart4;
 
 // FAMILY 16A: STATE INCOME TAX FILING LAYOUT MATRIX (PART 5 OF 5)
-function buildStateIncomeTaxFormPart5(stateDropdownOptionsHtml = "") {
+function buildStateTaxFormPart5(stateDropdownOptionsHtml = "") {
   return `
     <!-- SECTION 6: ADDITIONAL PROVISIONS & DISCLOSURES -->
     <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
@@ -229,25 +229,25 @@ function buildStateIncomeTaxFormPart5(stateDropdownOptionsHtml = "") {
     </div>
   `;
 }
-window.buildStateIncomeTaxFormPart5 = buildStateIncomeTaxFormPart5;
+window.buildStateTaxFormPart5 = buildStateTaxFormPart5;
 
 // 📦 MASTER STATE INCOME TAX APPLICATION ASSEMBLY HOOK
-function buildStateIncomeTaxForm(stateDropdownOptionsHtml = "") {
-  return buildStateIncomeTaxFormPart1(stateDropdownOptionsHtml) + 
-         buildStateIncomeTaxFormPart2(stateDropdownOptionsHtml) + 
-         buildStateIncomeTaxFormPart3(stateDropdownOptionsHtml) + 
-         buildStateIncomeTaxFormPart4(stateDropdownOptionsHtml) + 
-         buildStateIncomeTaxFormPart5(stateDropdownOptionsHtml);
+function buildStateTaxForm(stateDropdownOptionsHtml = "") {
+  return buildStateTaxFormPart1(stateDropdownOptionsHtml) + 
+         buildStateTaxFormPart2(stateDropdownOptionsHtml) + 
+         buildStateTaxFormPart3(stateDropdownOptionsHtml) + 
+         buildStateTaxFormPart4(stateDropdownOptionsHtml) + 
+         buildStateTaxFormPart5(stateDropdownOptionsHtml);
 }
 
 // Global registry setup matrix tracking allocation routes
 if (!window.formRegistry) window.formRegistry = {};
-window.formRegistry['state-income-tax-part2-layout'] = buildStateIncomeTaxFormPart2;
-window.formRegistry['state-income-tax-part3-layout'] = buildStateIncomeTaxFormPart3;
-window.formRegistry['state-income-tax-part4-layout'] = buildStateIncomeTaxFormPart4;
-window.formRegistry['state-income-tax-part5-layout'] = buildStateIncomeTaxFormPart5;
-window.formRegistry['state-income-tax-remaining-validation'] = stateIncomeTaxRemainingValidation;
-window.formRegistry['state-income-tax-form-master'] = buildStateIncomeTaxForm;
+window.formRegistry['state-tax-part2-layout'] = buildStateTaxFormPart2;
+window.formRegistry['state-tax-part3-layout'] = buildStateTaxFormPart3;
+window.formRegistry['state-tax-part4-layout'] = buildStateTaxFormPart4;
+window.formRegistry['state-tax-part5-layout'] = buildStateTaxFormPart5;
+window.formRegistry['state-tax-remaining-validation'] = stateTaxRemainingValidation;
+window.formRegistry['state-tax-form-master'] = buildStateTaxForm;
 
 // ============================================================================ //
 // ⚙️ INTERACTIVE INTERFACE CONTROLLERS (STATE INCOME TAX FILINGS)
