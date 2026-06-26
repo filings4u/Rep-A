@@ -12,17 +12,27 @@
       border-radius: 14px !important; 
       padding: 35px 24px !important; 
       box-shadow: 0 10px 25px -5px rgba(10, 31, 68, 0.02) !important; 
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important; 
     }
     #${targetId} .pricing-premium-card:hover { transform: translateY(-6px) !important; }
     #${targetId} .pricing-premium-card.standard-glow:hover { border-color: #10b981 !important; }
     #${targetId} .pricing-premium-card.popular-glow { border: 2px solid #10b981 !important; }
+    
+    /* MOBILE TEXT REDUCTIONS BELOW 991PX */
     @media (max-width: 991px) {
       #filings4u-pricing-board-root div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 24px !important; }
+      #${targetId} .dynamic-section-title { font-size: 1.5rem !important; }
+      #${targetId} .dynamic-price-display { font-size: 1.6rem !important; }
+      #${targetId} .dynamic-price-cents { font-size: 0.75rem !important; }
+      #${targetId} .dynamic-price-fee { font-size: 0.98rem !important; margin-left: 2px !important; }
+      #${targetId} .emerald-check { font-size: 0.75rem !important; }
     }
   `;
   document.head.appendChild(s);
 })();
+
+
+
 
 function resolveCentralPricingObject(slug) {
   // Target the exact STATE_PRICING and GOVERNMENT_PRICING window objects
@@ -118,11 +128,13 @@ function executePremiumAnimatedPackagesGrid(zone, meta, dynamicPrices) {
 
     var bulletListHtml = "";
     activeBulletsList.forEach(function(bulletText) {
-      bulletListHtml += '<li style="margin-bottom:12px;font-size:0.85rem;color:#0a1f44;display:flex;gap:8px;line-height:1.4;font-weight:500;"><span style="color:#10b981!important;font-weight:900;">✓</span><div>' + bulletText + '</div></li>';
+      bulletListHtml += '<li style="margin-bottom:12px;font-size:0.85rem;color:#0a1f44;display:flex;gap:8px;line-height:1.4;font-weight:500;"><span class="emerald-check" style="color:#10b981!important;font-weight:900;font-size:0.95rem;">✓</span><div>' + bulletText + '</div></li>';
     });
 
-    cardsHtml += '<div class="' + plan.class + '" style="display:flex;flex-direction:column;justify-content:space-between;height:100%;position:relative;text-align:left;">' + badgeHtml + '<div style="display:flex;flex-direction:column;margin-bottom:25px;"><h3 style="color:#0a1f44;font-size:1.25rem;font-weight:800;margin:0 0 10px 0;text-align:center;">' + plan.name + '</h3><div style="color:#0a1f44;font-size:2.2rem;font-weight:900;margin:10px 0;display:flex;align-items:baseline;justify-content:center;gap:1px;line-height:1;"><span>$' + Math.floor(Number(basePrice)) + '</span><span style="font-size:0.9rem;font-weight:700;align-self:flex-start;margin-top:2px;">.00</span><span style="font-size:0.8rem;color:#94a3b8;margin-left:4px;">+ State Fee</span></div><ul style="list-style:none;padding:15px 0 0 0;margin:15px 0 0 0;border-top:1px solid #f1f5f9;">' + bulletListHtml + '</ul></div><a href="wizard.html?service=' + meta.slug + '&plan=' + plan.key + '" class="f4u-pricing-action-btn" style="width:100%;background:' + btnBg + ';color:#fff;border:none;padding:12px 20px;font-weight:700;font-size:0.9rem;border-radius:8px;cursor:pointer;text-decoration:none;text-align:center;display:block;box-sizing:border-box;margin-top:auto;">Select ' + plan.name + '</a></div>';
+    cardsHtml += '<div class="' + plan.class + '" style="display:flex;flex-direction:column;justify-content:space-between;height:100%;position:relative;text-align:left;">' + badgeHtml + '<div style="display:flex;flex-direction:column;margin-bottom:25px;"><h3 style="color:#0a1f44;font-size:1.25rem;font-weight:800;margin:0 0 10px 0;text-align:center;">' + plan.name + '</h3><div style="color:#0a1f44;margin:10px 0;display:flex;align-items:baseline;justify-content:center;gap:1px;line-height:1;"><span class="dynamic-price-display" style="font-size:2.2rem;font-weight:900;letter-spacing:-0.5px;">$' + Math.floor(Number(basePrice)) + '</span><span class="dynamic-price-cents" style="font-size:0.9rem;font-weight:700;align-self:flex-start;margin-top:2px;">.00</span><span class="dynamic-price-fee" style="font-size:0.8rem;color:#94a3b8;margin-left:4px;font-weight:600;">+ State Fee</span></div><ul style="list-style:none;padding:15px 0 0 0;margin:15px 0 0 0;border-top:1px solid #f1f5f9;">' + bulletListHtml + '</ul></div><a href="wizard.html?service=' + meta.slug + '&plan=' + plan.key + '" class="f4u-pricing-action-btn" style="width:100%;background:' + btnBg + ';color:#fff;border:none;padding:12px 20px;font-weight:700;font-size:0.9rem;border-radius:8px;cursor:pointer;text-decoration:none;text-align:center;display:block;box-sizing:border-box;margin-top:auto;">Select ' + plan.name + '</a></div>';
   });
 
-  zone.innerHTML = '<section style="background:#f8fafc;padding:60px 0;font-family:sans-serif;width:100%;box-sizing:border-box;"><div style="width:100%;max-width:1450px;margin:0 auto;padding:0 40px;box-sizing:border-box;"><div style="text-align:center;margin-bottom:45px;"><h2 style="color:#0a1f44;font-size:2.1rem;font-weight:900;margin:0;text-transform:capitalize;">' + meta.title.replace(/-/g, ' ') + ' Options</h2></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:stretch;box-sizing:border-box;">' + cardsHtml + '</div></div></section>';
+  var finalTitleText = meta.title.replace(/-/g, ' ') + ' Options';
+  zone.innerHTML = '<section style="background:#f8fafc;padding:60px 0;font-family:sans-serif;width:100%;box-sizing:border-box;"><div style="width:100%;max-width:1450px;margin:0 auto;padding:0 40px;box-sizing:border-box;"><div style="text-align:center;margin-bottom:45px;width:100%;display:block;"><h2 class="dynamic-section-title" style="color:#0a1f44;font-size:2.1rem;font-weight:900;margin:0;text-transform:capitalize;line-height:1.2;">' + finalTitleText + '</h2></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:stretch;box-sizing:border-box;">' + cardsHtml + '</div></div></section>';
 }
+
