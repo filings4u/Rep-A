@@ -19,7 +19,6 @@ function renderMasterPrivacyPolicyEngine(overrideTargetId) {
         privacyHTML += '  <div id="privacy-policy-hero-zone" style="background: #0a1f44; color: #ffffff; padding: 50px 20px; text-align: center; position: relative; overflow: hidden; margin-bottom: 40px; border-bottom: 1px solid #e2e8f0;">';
         privacyHTML += '    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>';
         privacyHTML += '    <div style="max-width: 1450px; margin: 0 auto; padding: 0 24px; box-sizing: border-box;">';
-        privacyHTML += '      <span style="color: #10b981; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;">Statutory Data Security Covenant</span>';
         privacyHTML += '      <h1 style="font-size: 2.3rem; font-weight: 900; margin: 10px 0 6px 0; letter-spacing: -0.5px;">Privacy Policy</h1>';
         privacyHTML += '    </div>';
         privacyHTML += '  </div>';
