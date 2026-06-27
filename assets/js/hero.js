@@ -58,7 +58,7 @@ function renderMasterHeroEngine(overrideTargetId, metaDataRecord) {
             const liveRecordSource = activeCatalogNode || metaDataRecord || catalogMatrix["index"] || {}; 
             var fallbackTitleName = slug.split("-").map(function(w) { 
                 return w.charAt(0).toUpperCase() + w.slice(1); 
-            }).join(" ").replace("Llc", "LLC").replace("Dba", "DBA").replace("Ein", "EIN").replace("Dot", "DOT").replace("Ucr", "UCR").replace("Clia", "CLIA"); 
+            }).join(" ").replace("Index", "Compliance").replace("LLC", "LLC").replace("Dba", "DBA").replace("Ein", "EIN").replace("Dot", "DOT").replace("Ucr", "UCR").replace("Clia", "CLIA"); 
 
             const displayPillText = liveRecordSource.pill || "Compliance Operations Framework"; 
             const displayHeroTitle = liveRecordSource.hero_title || ('Streamlined <br><span style="color:#10b981;">' + (liveRecordSource.title || fallbackTitleName) + ' Automation</span>'); 
