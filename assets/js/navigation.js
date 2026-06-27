@@ -106,7 +106,7 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
         <div class="mega-column"> 
             <span class="column-title">Sales & Specialty</span> 
             <a href="sales-tax-registration.html">Sales Tax Registration</a> 
-            <a href="heavy-use-tax-form-2290.html">Heavy Use Tax (2290)</a> 
+            <a href="heavy-use-tax-2290.html">Heavy Use Tax (2290)</a> 
             <a href="clia-certificate.html">CLIA Certificate</a>
             <a href="regulatory-consulting.html">Regulatory Consulting</a>
         </div> 
@@ -166,7 +166,7 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
 
         <div class="mega-column"> 
             <span class="column-title">Insurance & Risk</span> 
-            <a href="licenses-permits.html">Licenses & Permits</a> 
+            <a href="dot-permits.html">Licenses & Permits</a> 
             <a href="trucker-insurance-quote.html">Trucker Insurance</a> 
             <a href="broker-insurance-quote.html">Broker Insurance</a> 
         </div> 

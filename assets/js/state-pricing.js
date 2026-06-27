@@ -268,8 +268,8 @@ window.STATE_PRICING = {
     enterprise: ["Everything in Compliance (Plus)", "Full support with filing", "Quarterly Fuel Tax Mileage Record Auditing"]
   }
 },
-"licenses-permits": {
-  name: "Licenses & Permits",
+"dot-permits": {
+  name: "DOT Permits",
   starter: 79.00,
   compliance: 149.00,
   enterprise: 299.00,

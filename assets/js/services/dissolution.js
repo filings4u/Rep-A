@@ -106,34 +106,31 @@ window.formRegistry['dissolution-part1-layout'] = function(stateDropdownOptionsH
         <h3 style="color: var(--navy, #0a1f44); font-size: 1.1rem; font-weight: 800; margin: 0; font-family: sans-serif;">1. Entity Information</h3> 
       </div>
       
-      <!-- FIXED SYSTEM INPUT DATA NODE --> 
-      <div class="wizard-input-group" style="grid-column: span 1; display: flex; flex-direction: column; gap: 6px;"> 
-        Name of Entity <span style="color: #ef4444;">*</span></label> 
-        
-        </div>
-      </div> 
-      
-<!-- FIXED SYSTEM SELECT NODE CONTAINER --> 
-<div class="wizard-input-group" style="grid-column: span 1;"> 
-  <label>Entity Type <span style="color: #ef4444;">*</span></label> 
-  <select>
-    <option value="" disabled selected>Select Entity Type...</option> 
-    <option value="corporation">Corporation (Inc. / Corp.)</option> 
-    <option value="llc">Limited Liability Company (LLC)</option> 
-    <option value="partnership">Partnership (LP / LLP)</option> 
-    <option value="sole_proprietorship">Sole Proprietorship</option> 
-    <option value="other">Other Structure Suffix</option> 
-  </select> 
+<!-- FIXED SYSTEM INPUT DATA NODE -->
+<div class="wizard-input-group" style="grid-column: span 1; display: flex; flex-direction: column; gap: 6px;">
+    <label style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Name of Entity <span style="color: #ef4444;">*</span></label>
+    <input type="text" placeholder="Legal Name of Corporate Entity" class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border, #cbd5e1); border-radius: 6px; box-sizing: border-box; height: 42px;">
 </div>
 
+<!-- FIXED SYSTEM SELECT NODE CONTAINER -->
+<div class="wizard-input-group" style="grid-column: span 1; display: flex; flex-direction: column; gap: 6px;">
+    <label style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Entity Type <span style="color: #ef4444;">*</span></label>
+    <select class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border, #cbd5e1); border-radius: 6px; background-color: #ffffff; color: var(--slate, #334155); font-weight: 600; box-sizing: border-box; height: 42px;">
+        <option value="" disabled selected>Select Entity Type...</option>
+        <option value="corporation">Corporation (Inc. / Corp.)</option>
+        <option value="llc">Limited Liability Company (LLC)</option>
+        <option value="partnership">Partnership (LP / LLP)</option>
+        <option value="sole_proprietorship">Sole Proprietorship</option>
+        <option value="other">Other Structure Suffix</option>
+    </select>
+</div>
 
-      
-      <!-- Hidden Conditional Container: Other Entity Type Specification --> 
-      <div id="dis_structure_other_wrapper" class="wizard-input-group" style="grid-column: span 2; display: none; flex-direction: column; gap: 6px;"> 
-        <label for="dis_structure_other_text" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Please specify structure: <span style="color: #ef4444;">*</span></label> 
-        <input type="text" id="dis_structure_other_text" placeholder="e.g., Professional Association, Benefit Corporation, Non-Profit..." class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box;"> 
-        <div class="wizard-error-message" id="err_dis_structure_other_text" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
-      </div> 
+<!-- CONDITIONAL SPECIFICATION CONTAINER (HIDDEN BY DEFAULT) -->
+<div id="dis_structure_other_wrapper" class="wizard-input-group" style="grid-column: span 2; display: none; flex-direction: column; gap: 6px;">
+    <label for="dis_structure_other_text" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Please specify structure: <span style="color: #ef4444;">*</span></label>
+    <input type="text" id="dis_structure_other_text" placeholder="e.g., Professional Association, Benefit Corporation..." class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border, #cbd5e1); border-radius: 6px; box-sizing: border-box; height: 42px;">
+</div>
+
       
       <div class="wizard-input-group" style="grid-column: span 1; display: flex; flex-direction: column; gap: 6px;"> 
         <label for="dis_state_of_formation" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">State of Incorporation/Formation <span style="color: #ef4444;">*</span></label> 
@@ -181,10 +178,6 @@ window.formRegistry['dissolution-part1-layout'] = function(stateDropdownOptionsH
     </div>
   `; 
 };
-
-
-
-
 
    // ============================================================================ // 
 // 📋 PART 1: ENTITY DISSOLUTION APPLICATION VALIDATION MATRIX ENGINE (PART 2)   // 
@@ -283,8 +276,6 @@ window.formRegistry['dissolution-part2-validation'] = {
     return { isValid, errors };
   }
 };
-
-
 
   // ============================================================================ //
   // 📋 PART 1: ENTITY DISSOLUTION APPLICATION VALIDATION MATRIX ENGINE (PART 3)
