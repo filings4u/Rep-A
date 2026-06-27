@@ -26,58 +26,63 @@
 
 /* Part 2: Core Data Routing and Context Processing Pipeline */ 
 function renderMasterHeroEngine(overrideTargetId, metaDataRecord) { 
-    try { 
-        const targetId = overrideTargetId || window.FILINGS4U_HERO_TARGET || "filings4u-global-hero-root"; 
-        const zone = document.getElementById(targetId); 
-        if (!zone) return; 
-
-        let slug = "index"; 
-        const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim(); 
-        if (rawPathname !== "" && !rawPathname.includes("index") && !rawPathname.includes("home")) { 
-            slug = rawPathname.replace(".html", "").split("?")[0].split("#")[0]; 
-        } 
-        if (metaDataRecord && metaDataRecord.slug) { 
-            slug = metaDataRecord.slug.toLowerCase().trim(); 
-        } 
-
-        let executionAttemptsCounter = 0; 
-
-        function coordinateHeroLifecycleTrace() { 
-            const catalogMatrix = window.PLATFORM_METRICS_CATALOG || {}; 
-            const activeCatalogNode = catalogMatrix[slug]; 
-
-            // FIXED TIMEOUT LAG LOOP: If valid metaData exists locally, skip the 750ms wait time entirely!
-            const hasLocalFallbackData = metaDataRecord && (metaDataRecord.title || metaDataRecord.service_title);
-            
-            if (!activeCatalogNode && !hasLocalFallbackData && executionAttemptsCounter < 50 && slug !== "index") { 
-                executionAttemptsCounter++; 
-                setTimeout(coordinateHeroLifecycleTrace, 15); 
-                return; 
-            } 
-
-            const liveRecordSource = activeCatalogNode || metaDataRecord || catalogMatrix["index"] || {}; 
-            var fallbackTitleName = slug.split("-").map(function(w) { 
-                return w.charAt(0).toUpperCase() + w.slice(1); 
-            }).join(" ").replace("Index", "Compliance").replace("LLC", "LLC").replace("Dba", "DBA").replace("Ein", "EIN").replace("Dot", "DOT").replace("Ucr", "UCR").replace("Clia", "CLIA"); 
-
-            const displayPillText = liveRecordSource.pill || "Compliance Operations Framework"; 
-            const displayHeroTitle = liveRecordSource.hero_title || ('Streamlined <br><span style="color:#10b981;">' + (liveRecordSource.title || fallbackTitleName) + ' Automation</span>'); 
-            const displayHeroLead = liveRecordSource.hero_lead || 'Execute business formations, state tax registrations, and federal logistics applications seamlessly without manual structural processing errors.'; 
-            const dynamicHeroImgSrc = liveRecordSource.img_src || ("images/" + slug + "-hero.jpg"); 
-            
-            var computedActionLinkDestination = "#pricing-framework-target"; 
-            if (slug === "index") { 
-                computedActionLinkDestination = "get-started.html"; 
-            } 
-
-            executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTitle, displayHeroLead, dynamicHeroImgSrc, computedActionLinkDestination); 
-        } 
-        coordinateHeroLifecycleTrace(); 
-    } catch (err) { 
-        console.error("Hero context lifecycle attachment failure:", err); 
+  try { 
+    const targetId = overrideTargetId || window.FILINGS4U_HERO_TARGET || "filings4u-global-hero-root"; 
+    const zone = document.getElementById(targetId); 
+    if (!zone) return; 
+    
+    let slug = "index"; 
+    const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim(); 
+    if (rawPathname !== "" && !rawPathname.includes("index") && !rawPathname.includes("home")) { 
+      slug = rawPathname.replace(".html", "").split("?")[0].split("#")[0]; 
     } 
+    if (metaDataRecord && metaDataRecord.slug) { 
+      slug = metaDataRecord.slug.toLowerCase().trim(); 
+    } 
+    
+    let executionAttemptsCounter = 0; 
+    
+    function coordinateHeroLifecycleTrace() { 
+      const catalogMatrix = window.PLATFORM_METRICS_CATALOG || {}; 
+      const activeCatalogNode = catalogMatrix[slug]; 
+      
+      // FIXED TIMEOUT LAG LOOP: If valid metaData exists locally, skip the 750ms wait time entirely! 
+      const hasLocalFallbackData = metaDataRecord && (metaDataRecord.title || metaDataRecord.service_title); 
+      if (!activeCatalogNode && !hasLocalFallbackData && executionAttemptsCounter < 50 && slug !== "index") { 
+        executionAttemptsCounter++; 
+        setTimeout(coordinateHeroLifecycleTrace, 15); 
+        return; 
+      } 
+      
+      const liveRecordSource = activeCatalogNode || metaDataRecord || catalogMatrix["index"] || {}; 
+      var fallbackTitleName = slug.split("-").map(function(w) { 
+        return w.charAt(0).toUpperCase() + w.slice(1); 
+      }).join(" ").replace("Llc", "LLC").replace("Dba", "DBA").replace("Ein", "EIN").replace("Dot", "DOT").replace("Ucr", "UCR").replace("Clia", "CLIA"); 
+      
+      const displayPillText = liveRecordSource.pill || "Compliance Operations Framework"; 
+      
+      // FIXED OVERRIDE: Evaluates the inner page title text to "Compliance" if it's the homepage ("index")
+      const displayHeroTitle = liveRecordSource.hero_title || ('Streamlined <br><span style="color:#10b981;">' + (slug === "index" ? "Compliance" : (liveRecordSource.title || fallbackTitleName)) + ' Automation</span>'); 
+      
+      const displayHeroLead = liveRecordSource.hero_lead || 'Execute business formations, state tax registrations, and federal logistics applications seamlessly without manual structural processing errors.'; 
+      const dynamicHeroImgSrc = liveRecordSource.img_src || ("images/" + slug + "-hero.jpg"); 
+      
+      var computedActionLinkDestination = "#pricing-framework-target"; 
+      if (slug === "index") { 
+        computedActionLinkDestination = "get-started.html"; 
+      } 
+      
+      executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTitle, displayHeroLead, dynamicHeroImgSrc, computedActionLinkDestination); 
+    } 
+    
+    coordinateHeroLifecycleTrace(); 
+  } catch (err) { 
+    console.error("Hero context lifecycle attachment failure:", err); 
+  } 
 } 
-window.renderMasterHeroEngine = renderMasterHeroEngine; 
+
+window.renderMasterHeroEngine = renderMasterHeroEngine;
+
 
 /* Part 3: Layout DOM innerHTML Template Compiler */ 
 function executePreservedHeroCompiler(zone, slug, displayPillText, displayHeroTitle, displayHeroLead, dynamicHeroImgSrc, computedActionLinkDestination) { 
