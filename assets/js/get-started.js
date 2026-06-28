@@ -73,8 +73,7 @@ gsHTML += '<div style="padding-top: 110px; width: 100%; box-sizing: border-box; 
 gsHTML += ' <div id="get-started-hero-zone" style="background: #0a1f44; color: #ffffff; padding: 60px 20px; position: relative; overflow: hidden; margin-bottom: 50px; border-bottom: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">';
 gsHTML += ' <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>';
 gsHTML += ' <div style="max-width: 1450px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; text-align: center; width: 100%;">';
-gsHTML += ' <span style="color: #10b981; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 10px;">Enterprise Deployment Interface</span>';
-gsHTML += ' <h1 class="f4u-gs-header-title" style="font-size: 2.6rem; font-weight: 900; margin: 0 0 12px 0; letter-spacing: -0.5px; color: #ffffff; line-height: 1.2;">Initialize Compliance Operations</h1>';
+gsHTML += ' <h1 class="f4u-gs-header-title" style="font-size: 2.0rem; font-weight: 900; margin: 0 0 12px 0; letter-spacing: -0.5px; color: #ffffff; line-height: 1.2;">Enterprise Deployment Interface</h1>';
 gsHTML += ' </div>';
 gsHTML += ' </div>';
 
