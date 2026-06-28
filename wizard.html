@@ -15,7 +15,7 @@
   <!-- 2. STYLESHEETS & FONTS TYPOGRAPHY ASSETS -->
   <link rel="icon" type="image/png" href="images/fav.png">
   <link rel="stylesheet" href="assets/css/wizard.css">
-  <link rel="stylesheet" href="assets/css/wizard-mobile.css">
+ 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -53,7 +53,7 @@
 <script src="assets/js/services/duns-number.js" defer></script>
 <script src="assets/js/services/minority-certificate.js" defer></script>
 <script src="assets/js/services/ifta-registration.js" defer></script>
-<script src="assets/js/services/licenses-permits.js" defer></script>
+<script src="assets/js/services/dot-permits.js" defer></script>
 <script src="assets/js/services/ifta-quarterly-returns.js" defer></script>
 <script src="assets/js/services/federal-tax.js" defer></script>
 <script src="assets/js/services/employer-id-ein.js" defer></script>
@@ -88,35 +88,46 @@
 
 <body>
 
-<!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE (1450PX MARGIN FLUSH) --> 
-<div class="f4u-full-canvas-header" style="background: #ffffff; border-bottom: 1px solid #cbd5e1; padding: 12px 0; width: 100% !important; box-sizing: border-box; clear: both; display: block;"> 
-  <div class="nav-container" style="width: 100% !important; max-width: 1370px !important; margin: 0 auto !important; padding: 0 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; box-sizing: border-box;"> 
+<!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE (MOBILE MINIMALIST INLINE) --> 
+<div class="f4u-full-canvas-header" style="background: #ffffff; border-bottom: 1px solid #cbd5e1; padding: 12px 0; width: 100% !important; min-width: 100% !important; box-sizing: border-box; clear: both; display: block;">
+  
+  <div class="nav-container" style="width: 92% !important; max-width: 1370px !important; margin: 0 auto !important; padding: 0 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; box-sizing: border-box;">
     
-    <!-- Left Side: Flush Left Edge Alignment --> 
-    <a href="index.html" style="display: block; margin: 0 !important; padding: 0 !important;"> 
-      <img src="images/logo.png" alt="filings4u" style="height: 38px; width: auto; max-width: 100%; object-fit: contain; display: block;"> 
-    </a> 
+    <!-- Left Side: Brand Logo -->
+    <a href="index.html" style="display: block; margin: 0 !important; padding: 0 !important;">
+      <img src="images/logo.png" alt="filings4u" style="height: 38px; width: auto; max-width: 100%; object-fit: contain; display: block;">
+    </a>
     
-    <!-- Right Side: Flush Right Edge Alignment --> 
-    <div style="display: flex !important; align-items: center !important; box-sizing: border-box; margin: 0 !important; padding: 0 !important;"> 
-      <div class="header-meta-badge" style="font-size: 0.85rem; font-weight: 400; color: #0f172a; background: #f8fafc; padding: 8px 14px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex; align-items: center; box-sizing: border-box; margin-right: 0 !important;"> 
-        <!-- Support Phone Call Link --> 
-        <a href="tel:+17732457079" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; font-weight: 400;"> 
-          <i class="fa-solid fa-phone" style="color: #10b981; margin-right: 6px;"></i> <span>773-245-7079</span> 
-        </a> 
-        <!-- Visual Separator Splitter Line Element --> 
-        <span class="meta-divider" style="width: 1px; height: 14px; background: #cbd5e1; margin: 0 12px;"></span> 
-        <!-- Live 12-Hour Ticking Clock Container Element --> 
-        <span style="display: inline-flex; align-items: center; font-weight: 400;"> 
-          <i class="fa-regular fa-clock" style="color: #10b981; margin-right: 6px;"></i> <span id="wizard-live-clock-timestamp">Initializing clock...</span> 
-        </span> 
-      </div> 
-    </div> 
+    <!-- Right Side: Meta Badge Wrapper -->
+    <div style="display: flex !important; align-items: center !important; justify-content: flex-end !important; box-sizing: border-box; margin: 0 !important; padding: 0 !important;">
+      
+      <div class="header-meta-badge" style="font-size: 0.85rem; font-weight: 400; color: #0f172a; background: #f8fafc; padding: 8px 14px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex !important; align-items: center !important; box-sizing: border-box;">
+        
+        <!-- ALWAYS VISIBLE: Support Phone Call Link (Set to regular font weight 400) -->
+        <a href="tel:+17732457079" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; font-weight: 400 !important; white-space: nowrap;">
+          <i class="fa-solid fa-phone" style="color: #10b981; margin-right: 6px;"></i> <span>773-245-7079</span>
+        </a>
+        
+        <!-- Scoped Responsive Behavior Rules -->
+        <style>
+          @media screen and (max-width: 768px) {
+            .mobile-hide-meta-element { display: none !important; }
+          }
+        </style>
+        
+        <!-- HIDDEN ON MOBILE: Visual Separator Splitter Line -->
+        <span class="meta-divider mobile-hide-meta-element" style="width: 1px; height: 14px; background: #cbd5e1; margin: 0 12px; display: inline-block;"></span>
+        
+        <!-- HIDDEN ON MOBILE: Live 12-Hour Ticking Clock -->
+        <span class="mobile-hide-meta-element" style="display: inline-flex; align-items: center; font-weight: 400; white-space: nowrap;">
+          <i class="fa-regular fa-clock" style="color: #10b981; margin-right: 6px;"></i> <span id="wizard-live-clock-timestamp">Initializing clock...</span>
+        </span>
+        
+      </div>
+    </div>
     
-  </div> 
+  </div>
 </div>
-
-
 
 
 
