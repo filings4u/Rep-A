@@ -84,6 +84,78 @@
   <script src="assets/js/stripe.js" defer></script>
   <script src="assets/js/step2-popup.js" defer></script>
   <script src="assets/js/wizard-chat-widget.js" defer></script>
+
+  <style>
+    @media screen and (max-width: 768px) {
+        /* Forces the 3 text columns into a clean 2x2 grid */
+        .footer-links-wrapper {
+            justify-content: flex-start !important;
+            gap: 24px !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            width: 100% !important;
+        }
+        
+        /* Aligns the Corporate HQ text to the left on mobile */
+        .footer-hq-column {
+            text-align: left !important;
+            align-items: flex-start !important;
+        }
+
+        /* Stacks the copyright bar and trust badge vertically */
+        .footer-legal-row-bar {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 16px !important;
+        }
+
+        /* Makes the popup chat window fit small phone screens */
+        .support-slide-container {
+            right: 20px !important;
+            left: 20px !important;
+            width: calc(100% - 40px) !important;
+            top: 10% !important;
+        }
+    }
+
+
+    /* CSS rules applied only on tablet and mobile viewports */
+    @media screen and (max-width: 768px) {
+        /* Scales the trigger button down slightly on mobile */
+        .chat-bubble-widget {
+            bottom: 16px !important;
+            right: 16px !important;
+            padding: 12px !important;
+        }
+
+        /* Expands the modal container to fill mobile screen widths */
+        .support-slide-container {
+            right: 16px !important;
+            left: 16px !important;
+            width: calc(100% - 32px) !important;
+            top: 8% !important;
+            max-height: 84vh !important;
+            overflow-y: auto !important;
+        }
+
+        /* Provides extra internal breathing room for finger-taps */
+        #chat-preflight-input-form {
+            padding: 16px !important;
+        }
+
+        /* Standardizes mobile inputs for easier typing accessibility */
+        .wizard-input-field {
+            height: 44px !important;
+            font-size: 1rem !important;
+        }
+    }
+
+    .footer-width-limiter {
+        padding: 12px 16px !important; /* Makes vertical padding even smaller on mobile views */
+    }
+
+</style>
+
 </head>
 
 
@@ -92,34 +164,7 @@
 <!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE (MOBILE MINIMALIST INLINE) --> 
 <div class="f4u-full-canvas-header" style="background: #ffffff; border-bottom: 1px solid #cbd5e1; padding: 12px 0; width: 100% !important; min-width: 100% !important; box-sizing: border-box; clear: both; display: block;"> 
     <div class="nav-container" style="width: 92% !important; max-width: 1370px !important; margin: 0 auto !important; padding: 0 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; box-sizing: border-box;"> 
-        
-        <style>
-            /* Responsive Layer (Tablets & Phones) */
-            @media screen and (max-width: 768px) {
-                .header-meta-badge {
-                    padding: 6px 12px !important;
-                    font-size: 0.8rem !important;
-                }
-                .f4u-responsive-logo {
-                    height: 32px !important; /* Reduces logo height slightly to protect layout space */
-                }
-            }
-
-            /* Extra Small Screens Breakpoint (Fixes overflow on tiny devices under 380px) */
-            @media screen and (max-width: 380px) {
-                .header-meta-badge a span {
-                    display: none !important; /* Safely hides text digits on tiny screens */
-                }
-                .header-meta-badge i {
-                    margin-right: 0 !important;
-                    font-size: 1rem !important;
-                }
-                .header-meta-badge {
-                    padding: 8px 12px !important;
-                    border-radius: 50% !important; /* Transforms badge into a clean circular icon */
-                }
-            }
-        </style>
+   
 
         <!-- Left Side: Brand Logo --> 
         <a href="index.html" style="display: block; margin: 0 !important; padding: 0 !important;"> 
@@ -131,7 +176,7 @@
             <div class="header-meta-badge" style="font-size: 0.85rem; font-weight: 400; color: #0f172a; background: #f8fafc; padding: 8px 14px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex !important; align-items: center !important; box-sizing: border-box;"> 
                 <!-- ALWAYS VISIBLE: Support Phone Call Link (Set to regular font weight 400) --> 
                 <a href="tel:+17732457079" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; font-weight: 400 !important; white-space: nowrap;"> 
-                    <i class="fa-solid fa-phone" style="color: #10b981; margin-right: 6px;"></i> <span>773-245-7079</span> 
+                    <i class="fa-solid fa-phone" style="color: #10b981; margin-right: 6px;"></i> <span>Questions? Call Us! 773-245-7079</span> 
                 </a> 
             </div> 
         </div> 
@@ -416,83 +461,78 @@
 </div> <!-- /End .wizard-container -->
 
 
-<footer class="footer-master-container" style="position: relative; width: 100%; box-sizing: border-box; overflow: hidden; background: #0a1f44; border-top: 1px solid #cbd5e1; clear: both; display: block;">
-  
-  <!-- Tech Vector Network Grid Background Layer -->
-  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-  
-  <div class="footer-width-limiter" style="max-width: 1380px; margin: 0 auto; padding: 40px 24px; box-sizing: border-box; width: 100%;">
+<!-- MAIN FOOTER CONTAINER -->
+<footer class="footer-master-container" style="position: relative; width: 100%; box-sizing: border-box; overflow: hidden; background: #0a1f44; border-top: 1px solid #cbd5e1; clear: both; display: block;"> 
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div> 
     
-    <!-- MAIN DIRECTORY FLEX WRAPPER -->
-    <div class="footer-directory-grid" style="display: flex; justify-content: space-between; gap: 30px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap;">
-      
-      <!-- COLUMN 1: BRAND LOGO -->
-      <div style="flex: 1; min-width: 260px; box-sizing: border-box; margin-bottom: 20px;">
-        <img src="images/logo-white.png" alt="filings4u" style="height: 38px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; max-width: 100%;">
-        <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; max-width: 320px; margin: 0; font-weight: 400;">Providing enterprise-grade filing and compliance solutions for local and corporate entities.</p>
-      </div>
-      
-      <!-- RIGHT CONTAINER: Gathers all text columns together responsively -->
-      <div class="footer-links-wrapper" style="display: flex; gap: 40px; flex-wrap: wrap; flex: 2; justify-content: flex-end; box-sizing: border-box; min-width: 280px;">
+    <!-- Changed padding from 40px 24px to 20px 24px to tighten vertical gaps -->
+    <div class="footer-width-limiter" style="max-width: 1380px; margin: 0 auto; padding: 20px 24px; box-sizing: border-box; width: 100%;"> 
+        <!-- MAIN DIRECTORY FLEX WRAPPER -->
+        <div class="footer-directory-grid" style="display: flex; justify-content: space-between; gap: 30px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px; box-sizing: border-box; width: 100%; flex-wrap: wrap;"> 
+            
+            <!-- Logo Column --> 
+            <div style="flex: 1; min-width: 260px; box-sizing: border-box; margin-bottom: 20px;"> 
+                <img src="images/logo-white.png" alt="filings4u" style="height: 38px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; max-width: 100%;"> 
+                <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; max-width: 320px; margin: 0; font-weight: 400;">Providing enterprise-grade filing and compliance solutions for local and corporate entities.</p> 
+            </div> 
+            
+            <!-- Link Columns Wrapper --> 
+            <div class="footer-links-wrapper" style="display: flex; gap: 40px; flex-wrap: wrap; flex: 2; justify-content: flex-end; box-sizing: border-box; min-width: 280px;"> 
+                <!-- Infrastructure --> 
+                <div style="min-width: 160px; flex: 1; box-sizing: border-box;"> 
+                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Infrastructure</h4> 
+                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;"> 
+                        <a href="privacy-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Privacy Policy</a> 
+                        <a href="terms-of-service.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Terms of Service</a> 
+                        <a href="refund-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Refund Policy</a> 
+                    </div> 
+                </div> 
+                
+                <!-- Support --> 
+                <div style="min-width: 160px; flex: 1; box-sizing: border-box;"> 
+                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Support</h4> 
+                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;"> 
+                        <a href="contact.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Contact Specialist</a> 
+                        <a href="compliance.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Compliance Hub</a> 
+                    </div> 
+                </div> 
+                
+                <!-- Corporate HQ --> 
+                <div class="footer-hq-column" style="min-width: 220px; flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; box-sizing: border-box;"> 
+                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Corporate</h4> 
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; font-weight: 400;"> 
+                        <span>filings4u, LLC</span> 
+                        <span>8537 S. Pulaski Rd</span> 
+                        <span>Chicago, IL 60652</span> 
+                        <span style="margin-top: 8px; font-size: 0.75rem; color: #94a3b8; font-weight: 400;">System Status: <span style="color: #10b981; font-weight: 400;">● Operational</span></span> 
+                    </div> 
+                </div> 
+            </div> 
+        </div> 
         
-        <!-- COLUMN 2: INFRASTRUCTURE LINKS -->
-        <div style="min-width: 160px; flex: 1; box-sizing: border-box;">
-          <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Infrastructure</h4>
-          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
-            <a href="privacy-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Privacy Policy</a>
-            <a href="terms-of-service.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Terms of Service</a>
-            <a href="refund-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Refund Policy</a>
-          </div>
-        </div>
-        
-        <!-- COLUMN 3: SUPPORT GATEWAYS -->
-        <div style="min-width: 160px; flex: 1; box-sizing: border-box;">
-          <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Support</h4>
-          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
-            <a href="contact.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Contact Specialist</a>
-            <a href="compliance.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Compliance Hub</a>
-          </div>
-        </div>
-        
-        <!-- COLUMN 4: CORPORATE HEADQUARTERS -->
-        <div class="footer-hq-column" style="min-width: 220px; flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; box-sizing: border-box;">
-          <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Corporate</h4>
-          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; font-weight: 400;">
-            <span>filings4u, LLC</span>
-            <span>8537 S. Pulaski Rd</span>
-            <span>Chicago, IL 60652</span>
-            <span style="margin-top: 8px; font-size: 0.75rem; color: #94a3b8; font-weight: 400;">System Status: <span style="color: #10b981; font-weight: 400;">● Operational</span></span>
-          </div>
-        </div>
-        
-      </div>
-    </div>
-    
-    <!-- SUB-FOOTER LEGAL BAR -->
-    <div class="footer-legal-row-bar" style="padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.75rem; color: #94a3b8; width: 100%; box-sizing: border-box;">
-      <p style="margin: 0; line-height: 1.5; font-weight: 400;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: 400;">Roseland Companies, LLC</a></p>
-      <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important; font-weight: 400;">
-        <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span>256-bit SSL Encrypted Connection
-      </div>
-    </div>
-    
-  </div>
+        <!-- Bottom Legal Row --> 
+        <div class="footer-legal-row-bar" style="padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.75rem; color: #94a3b8; width: 100%; box-sizing: border-box;"> 
+            <p style="margin: 0; line-height: 1.5; font-weight: 400;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: 400;">Roseland Companies, LLC</a></p> 
+            <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important; font-weight: 400;"> 
+                <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span>256-bit SSL Encrypted Connection 
+            </div> 
+        </div> 
+    </div> 
 </footer>
+
 
 
 <!-- 💬 HIGH-CONTRAST INTERACTIVE SPECIALIST HELP TRIGGER BUBBLE --> 
 <div class="chat-bubble-widget" onclick="toggleSupportFlyoutContainer(true)" title="Chat with an Expert" style="cursor: pointer; box-sizing: border-box; position: fixed; bottom: 20px; right: 20px; background: #0a1f44; border-radius: 50%; padding: 16px; box-shadow: 0 4px 12px rgba(10,31,68,0.15); z-index: 999999;"> 
-    <!-- 🟢 FIXED SVG NAMESPACE: Updated to valid standard W3C namespace to clear XML validation errors --> 
     <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px; display: block; margin: 0; padding: 0;"> 
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path> 
     </svg> 
 </div> 
 
 <!-- 🪟 FLOATING DRAGGABLE SUPPORT CONTAINER MODULE --> 
-<!-- Changed styles from side slide-out to absolute centered viewport floating block layout -->
 <div class="support-slide-container" id="support-chat-flyout-panel" style="box-sizing: border-box; display: none; position: fixed; top: 15%; right: 40px; width: 360px; height: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(10,31,68,0.15), 0 10px 10px -5px rgba(10,31,68,0.04); border: 1px solid #e2e8f0; z-index: 9999999; flex-direction: column; overflow: hidden;"> 
     
-    <!-- 🟢 DRAG HANDLE: The header acts as the primary coordinate control bar anchor node -->
+    <!-- Drag Control Anchor Node Bar -->
     <header id="support-chat-drag-handle" style="background: #0a1f44; color: #ffffff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; cursor: move; user-select: none;"> 
         <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; display: flex; align-items: center; gap: 8px; pointer-events: none;"> 
             <i class="fa-solid fa-comments" style="color: #10b981;"></i> filings4u Support 
@@ -500,22 +540,24 @@
         <button type="button" onclick="toggleSupportFlyoutContainer(false)" style="background: transparent; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; font-weight: 400; line-height: 1;">&times;</button> 
     </header> 
     
+    <!-- Wizard Input Elements Block -->
     <div style="padding: 24px; display: flex; flex-direction: column; box-sizing: border-box;" id="chat-preflight-input-form"> 
         <p style="margin: 0 0 16px 0; font-size: 0.825rem; color: #64748b; line-height: 1.45; font-weight: 400; text-align: left;">Provide your verified details parameters to bypass automated queues and bridge instantly to an expert compliance broker.</p> 
+        
         <form onsubmit="if(typeof validateAndLaunchAgentChatSession==='function'){ validateAndLaunchAgentChatSession(event); } else { event.preventDefault(); }" style="display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 0;"> 
-            <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
+            <div style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
                 <label for="chat_first_name" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b;">First Name</label> 
                 <input type="text" id="chat_first_name" required class="wizard-input-field" placeholder="John" style="width: 100%; height: 40px; padding: 0 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;"> 
             </div> 
-            <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
+            <div style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
                 <label for="chat_last_name" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b;">Last Name</label> 
                 <input type="text" id="chat_last_name" required class="wizard-input-field" placeholder="Doe" style="width: 100%; height: 40px; padding: 0 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;"> 
             </div> 
-            <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
+            <div style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
                 <label for="chat_phone" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b;">Phone Number</label> 
                 <input type="tel" id="chat_phone" required class="wizard-input-field" placeholder="(555) 000-0000" style="width: 100%; height: 40px; padding: 0 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;"> 
             </div> 
-            <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
+            <div style="display: flex; flex-direction: column; gap: 4px; text-align: left;"> 
                 <label for="chat_email" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b;">Business Email</label> 
                 <input type="email" id="chat_email" required class="wizard-input-field" placeholder="john@company.com" style="width: 100%; height: 40px; padding: 0 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;"> 
             </div> 
@@ -523,6 +565,7 @@
         </form> 
     </div> 
 </div>
+
 
 
 <!-- 📦 REPAIRED EXTERNAL TRANSITION INJECTION HOOK: Formatted properly to resolve script include errors -->
