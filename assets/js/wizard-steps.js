@@ -2610,59 +2610,73 @@ const SERVICE_URL_REGISTRY = {
   "apostille-services": "apostille-services"
 };
 
-/* ============================================================================ */ 
-/* ⚡ PART 1 OF 2: NETWORK ROUTER AND CLEAN SPINNER INJECTION */ 
-/* ============================================================================ */ 
-(async () => { 
-  const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root") || document.getElementById("wizard-dynamic-form-target") || document.getElementById("dynamic-form-fields") || document.querySelector(".wizard-dynamic-fields-slot"); 
+/* ============================================================================ */
+/* ⚡ PART 1 OF 2: NETWORK ROUTER AND CLEAN SPINNER INJECTION                  */
+/* ============================================================================ */
+(async () => {
+  console.log("[Asset Router] Initiating service tracking route lookup pass...");
+
+  const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root") || 
+                     document.getElementById("wizard-dynamic-form-target") || 
+                     document.getElementById("dynamic-form-fields") || 
+                     document.querySelector(".wizard-dynamic-fields-slot");
+
   if (!fieldsRoot) {
     console.error("[Asset Router Critical] Could not find any valid form fields root container element in the DOM.");
-    return; 
+    return;
   }
-  
-  let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value; 
-  if (!currentServiceKey) { 
-    const lastSeg = window.location.pathname.split("/").pop() || ""; 
-    currentServiceKey = lastSeg.includes(".html") ? lastSeg.replace(".html", "") : "index"; 
-  } 
-  
-  let rawUrlSlug = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
-  const targetScriptFileName = (typeof SERVICE_URL_REGISTRY !== "undefined" && SERVICE_URL_REGISTRY[rawUrlSlug]) || rawUrlSlug; 
-  const baselineMemoryKeys = new Set(Object.keys(window).filter(k => typeof window[k] === "function")); 
-  const expectedScriptId = `script-dependency-${targetScriptFileName}`; 
-  
-  let formInjectionWrapper = fieldsRoot.querySelector(".isolated-form-payload-container"); 
-  if (!formInjectionWrapper) { 
-    formInjectionWrapper = document.createElement("div"); 
-    formInjectionWrapper.className = "isolated-form-payload-container"; 
-    formInjectionWrapper.style.cssText = "width: 100%; display: block; clear: both;"; 
-    fieldsRoot.insertBefore(formInjectionWrapper, fieldsRoot.firstChild); 
-  } 
-  
+
+  let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value;
+
+  if (!currentServiceKey) {
+    const lastSeg = window.location.pathname.split("/").pop() || "";
+    currentServiceKey = lastSeg.includes(".html") ? lastSeg.replace(".html", "") : "index";
+  }
+
+  let rawUrlSlug = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
+  const targetScriptFileName = (typeof SERVICE_URL_REGISTRY !== "undefined" && SERVICE_URL_REGISTRY[rawUrlSlug]) || rawUrlSlug;
+  const baselineMemoryKeys = new Set(Object.keys(window).filter(k => typeof window[k] === "function"));
+  const expectedScriptId = `script-dependency-${targetScriptFileName}`;
+
+  let formInjectionWrapper = fieldsRoot.querySelector(".isolated-form-payload-container");
+  if (!formInjectionWrapper) {
+    formInjectionWrapper = document.createElement("div");
+    formInjectionWrapper.className = "isolated-form-payload-container";
+    formInjectionWrapper.style.cssText = "width: 100%; display: block; clear: both;";
+    fieldsRoot.insertBefore(formInjectionWrapper, fieldsRoot.firstChild);
+  }
+
   // Safe Node cleanup: Clear older sibling elements without touching our parent structural elements
-  Array.from(fieldsRoot.childNodes).forEach(node => { 
-    if (node !== formInjectionWrapper) { 
-      fieldsRoot.removeChild(node); 
-    } 
-  }); 
-  
-  formInjectionWrapper.innerHTML = ` 
-    <div class="dynamic-form-loading-placeholder" style="grid-column: span 2; text-align: center; padding: 24px; color: var(--slate, #64748b); font-weight: 600; border: 1px dashed var(--border, #e2e8f0); border-radius: 8px; background: var(--light-bg, #f8fafc); width: 100%; box-sizing: border-box;"> 
-      <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: var(--primary, #10b981);"></i> Assembling specialized compliance filing interfaces... 
-    </div>`; 
-    
-  if (!document.getElementById(expectedScriptId)) { 
-    console.log(`[Asset Router] Injecting network script tag for: assets/js/services/${targetScriptFileName}.js`); 
+  Array.from(fieldsRoot.childNodes).forEach(node => {
+    if (node !== formInjectionWrapper) {
+      fieldsRoot.removeChild(node);
+    }
+  });
+
+  formInjectionWrapper.innerHTML = `
+    <div class="dynamic-form-loading-placeholder" style="grid-column: span 2; text-align: center; padding: 24px; color: var(--slate, #64748b); font-weight: 600; border: 1px dashed var(--border, #e2e8f0); border-radius: 8px; background: var(--light-bg, #f8fafc); width: 100%; box-sizing: border-box;">
+      <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px; color: var(--primary, #10b981);"></i> Assembling specialized compliance filing interfaces...
+    </div>`;
+
+  // Safely inject and trace the script element without causing script source duplication
+  if (!document.getElementById(expectedScriptId)) {
+    console.log(`[Asset Router] Injecting network script tag for: assets/js/services/${targetScriptFileName}.js`);
     try {
-      await new Promise((resolve, reject) => { 
-        const dynamicScriptElement = document.createElement("script"); 
-        dynamicScriptElement.id = expectedScriptId; 
-        dynamicScriptElement.type = "text/javascript"; 
-        dynamicScriptElement.src = `assets/js/services/${targetScriptFileName}.js`; 
-        dynamicScriptElement.onload = () => { setTimeout(resolve, 120); }; 
-        dynamicScriptElement.onerror = () => { reject(new Error(`Failed to load script pipeline: ${targetScriptFileName}.js`)); }; 
-        document.head.appendChild(dynamicScriptElement); 
-      }); 
+      await new Promise((resolve, reject) => {
+        const dynamicScriptElement = document.createElement("script");
+        dynamicScriptElement.id = expectedScriptId;
+        dynamicScriptElement.type = "text/javascript";
+        dynamicScriptElement.src = `assets/js/services/${targetScriptFileName}.js`;
+        
+        dynamicScriptElement.onload = () => {
+          setTimeout(resolve, 120);
+        };
+        dynamicScriptElement.onerror = () => {
+          reject(new Error(`Failed to load script pipeline: ${targetScriptFileName}.js`));
+        };
+        
+        document.head.appendChild(dynamicScriptElement);
+      });
     } catch (networkScriptError) {
       console.error("[Asset Router Fatal Load Failure]", networkScriptError);
       formInjectionWrapper.innerHTML = `
@@ -2671,71 +2685,90 @@ const SERVICE_URL_REGISTRY = {
         </div>`;
       return;
     }
-  } else { 
-    await new Promise((resolve) => setTimeout(resolve, 80)); 
-  } 
+  } else {
+    // A brief fallback wait loop if the component node was cached in active memory parameters
+    await new Promise((resolve) => setTimeout(resolve, 80));
+  }
+
+  // Safely hand over execution to Part 2 to run the dynamic HTML payload injection
+  if (typeof window.executeStepTwoDynamicFormInjection === "function") {
+    await window.executeStepTwoDynamicFormInjection(baselineMemoryKeys, rawUrlSlug);
+  } else if (typeof executeStepTwoDynamicFormInjection === "function") {
+    await executeStepTwoDynamicFormInjection(baselineMemoryKeys, rawUrlSlug);
+  } else {
+    console.warn("[Asset Router] executeStepTwoDynamicFormInjection is not yet attached to the global scope.");
+  }
+})();
+
+
+/* ============================================================================ */
+/* ⚡ PART 2 OF 2: UNIVERSAL SERVICE-FORM LIFECYCLE COMPILER ENGINE             */
+/* ============================================================================ */
+async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlSlug) {
+  console.log("[Lifecycle Engine] Starting universal template injection compilation pass...");
   
-  await executeStepTwoDynamicFormInjection(baselineMemoryKeys, rawUrlSlug); 
-})(); 
-
-/* ============================================================================ */ 
-/* ⚡ PART 2 OF 2: UNIVERSAL SERVICE-FORM LIFECYCLE COMPILER ENGINE */ 
-/* ============================================================================ */ 
-async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlSlug) { 
-  const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root") || document.getElementById("wizard-dynamic-form-target") || document.getElementById("dynamic-form-fields") || document.querySelector(".wizard-dynamic-fields-slot"); 
-  if (!fieldsRoot) return; 
-
+  const fieldsRoot = document.getElementById("dynamic-onboarding-fields-root") || 
+                     document.getElementById("wizard-dynamic-form-target") || 
+                     document.getElementById("dynamic-form-fields") || 
+                     document.querySelector(".wizard-dynamic-fields-slot");
+                     
+  if (!fieldsRoot) return;
   let formInjectionWrapper = fieldsRoot.querySelector(".isolated-form-payload-container");
 
-  try { 
-    if (!rawUrlSlug || typeof rawUrlSlug !== "string") { 
-      let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value; 
-      if (!currentServiceKey) { 
-        const lastSeg = window.location.pathname.split("/").pop() || ""; 
-        currentServiceKey = lastSeg.includes(".html") ? lastSeg.replace(".html", "") : "index"; 
-      } 
-      rawUrlSlug = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
-    } 
+  try {
+    if (!rawUrlSlug || typeof rawUrlSlug !== "string") {
+      let currentServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value;
+      if (!currentServiceKey) {
+        const lastSeg = window.location.pathname.split("/").pop() || "";
+        currentServiceKey = lastSeg.includes(".html") ? lastSeg.replace(".html", "") : "index";
+      }
+      rawUrlSlug = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
+    }
 
-    const stateOptions = window.globalStateDropdownOptionsHtml || (typeof window.getUsaStatesHtml === "function" ? window.getUsaStatesHtml(window.selectedFormationStateCode || "") : ""); 
-    const verifiedTemplates = []; 
-
+    // Standardize global state template lookup indicators safely
+    const stateOptions = window.globalStateDropdownOptionsHtml || 
+      (typeof window.getUsaStatesHtml === "function" ? window.getUsaStatesHtml(window.selectedFormationStateCode || "") : "") || 
+      (typeof window.buildGlobalUsaStateDropdownOptionsHtml === "function" ? window.buildGlobalUsaStateDropdownOptionsHtml("") : "");
+      
+    const verifiedTemplates = [];
     window.formRegistry = window.formRegistry || {};
 
-    // 1. Dynamic Service File Wrapper Initialization
+    // 1. Dynamic Service File Wrapper Initialization (e.g. llc-formation -> initLlcFormationService)
     const camelCaseServiceName = rawUrlSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
     const dynamicInitName = `init${camelCaseServiceName}Service`;
     if (typeof window[dynamicInitName] === "function") {
-       window[dynamicInitName]();
+      window[dynamicInitName]();
     }
 
-    // 2. Master Template Rule processing
-    const targetRegistryMasterKey = `${rawUrlSlug}-form-master`; 
-    if (typeof window.formRegistry[targetRegistryMasterKey] === "function") { 
-      try { 
-        const outputPayload = window.formRegistry[targetRegistryMasterKey](stateOptions); 
+    // 2. Master Template Rule Processing
+    const targetRegistryMasterKey = `${rawUrlSlug}-form-master`;
+    if (typeof window.formRegistry[targetRegistryMasterKey] === "function") {
+      try {
+        const outputPayload = window.formRegistry[targetRegistryMasterKey](stateOptions);
         if (typeof outputPayload === "string" && outputPayload.includes("<")) {
-          verifiedTemplates.push({ html: outputPayload.trim(), step: 1 }); 
-        } 
-        else if (Array.isArray(outputPayload)) {
+          verifiedTemplates.push({ html: outputPayload.trim(), step: 1 });
+        } else if (Array.isArray(outputPayload)) {
           outputPayload.forEach(item => {
             if (item && item.html) {
               verifiedTemplates.push({ html: item.html.trim(), step: parseInt(item.step || item.stepIndex, 10) || 1 });
             }
           });
         }
-      } catch (e) { console.error(e); } 
-    } 
-    
-    // 3. RegEx Scanner for Multi-Step Layout Keys (with String-Function parsing)
+      } catch (e) {
+        console.error("[Lifecycle Engine] Master form renderer execution error:", e);
+      }
+    }
+
+    // 3. RegEx Scanner for Multi-Step Layout Keys (with String-Function parsing fallback templates)
     if (verifiedTemplates.length === 0) {
       const allRegistryKeys = Object.keys(window.formRegistry);
       const layoutRegexPattern = new RegExp(`^${rawUrlSlug}-part(\\d+)-layout$`, 'i');
-
+      
       allRegistryKeys.forEach(registryKey => {
         const matchResult = registryKey.match(layoutRegexPattern);
         if (matchResult) {
-          const stepNumber = parseInt(matchResult, 10) || 1;
+          // FIXED: Changed matchResult reference to target index string group [1] instead of index array [0]
+          const stepNumber = parseInt(matchResult[1], 10) || 1;
           let layoutSource = window.formRegistry[registryKey];
           let compiledHtmlMarkup = "";
 
@@ -2746,57 +2779,55 @@ async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlS
             } catch (evalError) {
               compiledHtmlMarkup = layoutSource;
             }
-          } 
-          else if (typeof layoutSource === "function") {
+          } else if (typeof layoutSource === "function") {
             compiledHtmlMarkup = layoutSource(stateOptions);
           } else {
             compiledHtmlMarkup = String(layoutSource);
           }
 
           if (compiledHtmlMarkup && compiledHtmlMarkup.includes("<")) {
-            verifiedTemplates.push({ 
-              html: compiledHtmlMarkup.trim(), 
-              step: stepNumber 
-            });
+            verifiedTemplates.push({ html: compiledHtmlMarkup.trim(), step: stepNumber });
           }
         }
       });
-    } 
+    }
 
-    // --- DOM RENDERING BLOCK WITH FULL EXPANSION RULES --- 
-    if (!formInjectionWrapper) { 
-      formInjectionWrapper = document.createElement("div"); 
-      formInjectionWrapper.className = "isolated-form-payload-container"; 
+    // --- DOM RENDERING BLOCK WITH FULL EXPANSION RULES ---
+    if (!formInjectionWrapper) {
+      formInjectionWrapper = document.createElement("div");
+      formInjectionWrapper.className = "isolated-form-payload-container";
       // ⚡ FORCE MASTER CONTAINER BREAKOUT
-      formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;"; 
-      fieldsRoot.insertBefore(formInjectionWrapper, fieldsRoot.firstChild); 
+      formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;";
+      fieldsRoot.insertBefore(formInjectionWrapper, fieldsRoot.firstChild);
     } else {
       // ⚡ FORCE OVERRIDE IF CONTAINER ALREADY EXISTS
       formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;";
     }
 
-    if (verifiedTemplates.length === 0) return;
+    if (verifiedTemplates.length === 0) {
+      console.warn(`[Lifecycle Engine] Compiled 0 rendering segments. Missing registry definitions for key: "${rawUrlSlug}".`);
+      return;
+    }
 
-    verifiedTemplates.sort((a, b) => a.step - b.step); 
-    formInjectionWrapper.innerHTML = ""; 
+    // Order elements sequentially matching exact wizard step index numbers
+    verifiedTemplates.sort((a, b) => a.step - b.step);
+    formInjectionWrapper.innerHTML = "";
 
-    verifiedTemplates.forEach((item) => { 
-      const rowContainer = document.createElement("div"); 
-      rowContainer.className = "service-form-part-segment"; 
-      rowContainer.setAttribute("data-part-index", item.step); 
+    verifiedTemplates.forEach((item) => {
+      const rowContainer = document.createElement("div");
+      rowContainer.className = "service-form-part-segment";
+      rowContainer.setAttribute("data-part-index", item.step);
       // ⚡ FORCE INDIVIDUAL SEGMENTS TO TAKE UP THE WHOLE BLOCK STAGE TOO
       rowContainer.style.cssText = "grid-column: 1 / -1 !important; display: block !important; width: 100% !important; max-width: 100% !important; clear: both !important; margin-bottom: 24px !important; box-sizing: border-box;";
       rowContainer.innerHTML = item.html;
       formInjectionWrapper.appendChild(rowContainer);
     });
 
-    // ⚡ OVERRIDE PARENT INLINE GRID TRACKS DIRECTLY IF SQUISHING PERSISTS
-    if (fieldsRoot.style.display === "grid" || window.getComputedStyle(fieldsRoot).display === "grid") {
-       fieldsRoot.style.gridTemplateColumns = "1fr";
-       fieldsRoot.style.display = "block";
-    }
-
+    console.log(`[Lifecycle Engine Success] Form segments successfully injected for tracking channel: "${rawUrlSlug}".`);
   } catch (globalEngineError) {
     console.error("[Fatal Form Injection Pipeline Exception]", globalEngineError);
   }
 }
+
+// Bind cleanly back up to the primary document tree window reference context
+window.executeStepTwoDynamicFormInjection = executeStepTwoDynamicFormInjection;

@@ -32,14 +32,15 @@
                     font-size: 1.8rem !important;
                 }
                 #${targetConfig.elementId} .launchpad-grid-matrix {
-                    grid-template-columns: 1fr !important;
+                    display: flex !important; /* Switch to flex to cleanly honor the order properties */
+                    flex-direction: column !important;
                     gap: 30px !important;
                 }
                 #${targetConfig.elementId} .launchpad-grid-matrix > div:last-child {
-                    order: 1 !important;
+                    order: 1 !important; /* Image container moves to the top */
                 }
                 #${targetConfig.elementId} .launchpad-grid-matrix > div:first-child {
-                    order: 2 !important;
+                    order: 2 !important; /* Content block moves to the bottom */
                 }
             }
         `;
