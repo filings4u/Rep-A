@@ -90,30 +90,54 @@
 <body>
 
 <!-- 🌐 SITE HEADER WITH 12HR CLOCK & CONTACT PHONE (MOBILE MINIMALIST INLINE) --> 
-<div class="f4u-full-canvas-header" style="background: #ffffff; border-bottom: 1px solid #cbd5e1; padding: 12px 0; width: 100% !important; min-width: 100% !important; box-sizing: border-box; clear: both; display: block;">
-  
-  <div class="nav-container" style="width: 92% !important; max-width: 1370px !important; margin: 0 auto !important; padding: 0 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; box-sizing: border-box;">
-    
-    <!-- Left Side: Brand Logo -->
-    <a href="index.html" style="display: block; margin: 0 !important; padding: 0 !important;">
-      <img src="images/logo.png" alt="filings4u" style="height: 38px; width: auto; max-width: 100%; object-fit: contain; display: block;">
-    </a>
-    
-    <!-- Right Side: Meta Badge Wrapper -->
-    <div style="display: flex !important; align-items: center !important; justify-content: flex-end !important; box-sizing: border-box; margin: 0 !important; padding: 0 !important;">
-      
-      <div class="header-meta-badge" style="font-size: 0.85rem; font-weight: 400; color: #0f172a; background: #f8fafc; padding: 8px 14px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex !important; align-items: center !important; box-sizing: border-box;">
+<div class="f4u-full-canvas-header" style="background: #ffffff; border-bottom: 1px solid #cbd5e1; padding: 12px 0; width: 100% !important; min-width: 100% !important; box-sizing: border-box; clear: both; display: block;"> 
+    <div class="nav-container" style="width: 92% !important; max-width: 1370px !important; margin: 0 auto !important; padding: 0 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; box-sizing: border-box;"> 
         
-        <!-- ALWAYS VISIBLE: Support Phone Call Link (Set to regular font weight 400) -->
-        <a href="tel:+17732457079" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; font-weight: 400 !important; white-space: nowrap;">
-          <i class="fa-solid fa-phone" style="color: #10b981; margin-right: 6px;"></i> <span>773-245-7079</span>
-        </a>
+        <style>
+            /* Responsive Layer (Tablets & Phones) */
+            @media screen and (max-width: 768px) {
+                .header-meta-badge {
+                    padding: 6px 12px !important;
+                    font-size: 0.8rem !important;
+                }
+                .f4u-responsive-logo {
+                    height: 32px !important; /* Reduces logo height slightly to protect layout space */
+                }
+            }
+
+            /* Extra Small Screens Breakpoint (Fixes overflow on tiny devices under 380px) */
+            @media screen and (max-width: 380px) {
+                .header-meta-badge a span {
+                    display: none !important; /* Safely hides text digits on tiny screens */
+                }
+                .header-meta-badge i {
+                    margin-right: 0 !important;
+                    font-size: 1rem !important;
+                }
+                .header-meta-badge {
+                    padding: 8px 12px !important;
+                    border-radius: 50% !important; /* Transforms badge into a clean circular icon */
+                }
+            }
+        </style>
+
+        <!-- Left Side: Brand Logo --> 
+        <a href="index.html" style="display: block; margin: 0 !important; padding: 0 !important;"> 
+            <img src="images/logo.png" alt="filings4u" class="f4u-responsive-logo" style="height: 38px; width: auto; max-width: 100%; object-fit: contain; display: block;"> 
+        </a> 
         
-      </div>
-    </div>
-    
-  </div>
+        <!-- Right Side: Meta Badge Wrapper --> 
+        <div style="display: flex !important; align-items: center !important; justify-content: flex-end !important; box-sizing: border-box; margin: 0 !important; padding: 0 !important;"> 
+            <div class="header-meta-badge" style="font-size: 0.85rem; font-weight: 400; color: #0f172a; background: #f8fafc; padding: 8px 14px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex !important; align-items: center !important; box-sizing: border-box;"> 
+                <!-- ALWAYS VISIBLE: Support Phone Call Link (Set to regular font weight 400) --> 
+                <a href="tel:+17732457079" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; font-weight: 400 !important; white-space: nowrap;"> 
+                    <i class="fa-solid fa-phone" style="color: #10b981; margin-right: 6px;"></i> <span>773-245-7079</span> 
+                </a> 
+            </div> 
+        </div> 
+    </div> 
 </div>
+
 
 
 
