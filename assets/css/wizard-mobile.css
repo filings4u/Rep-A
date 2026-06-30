@@ -1,590 +1,557 @@
-/* ============================================================================ */
-/* 📱 WIZARD FLUID MOBILE RESPONSIVE ENGINE WRAPPER MATRIX                      */
-/* ============================================================================ */
+/* ============================================================================
+   📱 ISOLATED MOBILE COMPLIANCE OVERRIDES INJECTOR (Pure CSS - No JS Required)
+   ============================================================================ */
+@media (max-width: 991px) {
+  
+  /* 1. Prevent outer containment boxes from choking small screens */
+  .wizard-container, 
+  .wizard-card,
+  .wizard-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
+  }
 
-@media screen and (max-width: 991px) {
-  /* 1. Stack Workspace Split Columns and Reset Sticky Sidebar Elements */
+  /* 2. Fix the header block framing */
+  .step-header-container {
+    background: #0a1f44 !important; /* Pinned dark profile branding stripe */
+    padding: 24px 20px 16px 20px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .step-header-container .step-main-title {
+    color: #ffffff !important;
+    font-size: 1.35rem !important;
+    margin: 0 0 4px 0 !important;
+  }
+  .step-header-container .step-subtitle {
+    color: #94a3b8 !important;
+    margin: 0 !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* 3. Kill desktop columns and layouts stretching off edge bounds */
   .workspace-split-layout {
-    flex-direction: column !important;
-    gap: 25px !important;
     display: flex !important;
-  }
-
-  .form-grid-layout, 
-  .sticky-timeline-sidebar {
-    flex: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .sticky-timeline-sidebar {
-    position: static !important;
-    margin-top: 20px !important;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  /* 2. Force Inline Grids and Master Shell Layout Containers into 1 Column */
-  #master-onboarding-form, 
-  #dynamic-onboarding-fields-root, 
-  .wizard-grid-layout, 
-  .wizard-panel,
-  [style*="display: grid"], 
-  [style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
-    display: grid !important;
-    gap: 12px !important;
-    width: 100% !important;
-  }
-
-  /* 3. Strip Hardcoded Span Modifiers to Widen Elements Flush to Viewport */
-  .wizard-input-group, 
-  [style*="grid-column: span 2"], 
-  [style*="grid-column: span 1"], 
-  [style*="grid-column: span 3"] {
-    grid-column: span 1 !important;
+    flex-direction: column !important; /* Forces vertical stacking layout flow */
+    gap: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
-}
-@media screen and (max-width: 768px) {
-  /* 4. Force Complex Multi-Column Address Rows (2fr 1fr 1fr) into Clean Stacks */
-  [style*="grid-template-columns: 2fr 1fr 1fr"], 
-  [style*="grid-template-columns: 1fr 1fr"], 
-  [style*="grid-template-columns: 2fr 1fr"] {
-    grid-template-columns: 1fr !important;
-    display: grid !important;
-    gap: 12px !important;
-    width: 100% !important;
-  }
 
-  /* 5. Intercept Inline Styles and Force Horizontal Rows to Stack Vertically */
-  [style*="display: flex; justify-content: space-between"],
-  [style*="display: flex !important; justify-content: space-between"],
-  .wizard-action-footer,
-  .f4u-full-canvas-header .nav-container {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 14px !important;
-  }
-
-  /* 6. Enforce Apple & Android Thumb-Target Touch Spacing Dimensions */
-  .wizard-input-field, 
-  input[type="text"], 
-  input[type="tel"], 
-  input[type="email"], 
-  input[type="number"], 
-  input[type="date"], 
-  select, 
-  textarea {
+  /* 4. Fix input grids crushing text fields */
+  .form-grid-layout,
+  #dynamic-onboarding-fields-root {
+    display: flex !important;
+    flex-direction: column !important; /* Forces layout sections to flow vertically */
+    gap: 16px !important;              /* High-density grid data padding spacing */
     width: 100% !important;
-    min-height: 48px !important;
-    font-size: 16px !important; 
-    padding: 12px !important;
+    max-width: 100% !important;
+    padding: 24px 16px 120px 16px !important; /* Safe padding slot above sticky footer buttons */
     box-sizing: border-box !important;
   }
-}
-@media screen and (max-width: 768px) {
-  /* 7. Fluid Compression Setup for Dynamic Form Record and Upsell Blocks */
-  .member-record-card, 
-  .upsell-card-node,
-  #bl_mailing_wrapper > div, 
-  #ein_mailing_wrapper > div, 
-  #dis_asset_dist_wrapper, 
-  #dis_debts_wrapper, 
-  #cgs_shipping_address_wrapper > div, 
-  #ap_shipping_address_wrapper > div, 
-  #st_physical_nexus_wrapper, 
-  #st_economic_nexus_wrapper, 
-  #pr_existing_suta_wrapper, 
-  #hut_vehicle_card_1, 
-  #sam_uei_code_wrapper {
-    grid-template-columns: 1fr !important;
-    flex-direction: column !important;
-    padding: 14px !important;
-    gap: 12px !important;
+
+  /* Force all dynamically injected script blocks to fit layout borders */
+  #dynamic-onboarding-fields-root > div {
+    grid-column: span 2 !important;
     width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  /* 8. Fix Layout Clashes inside Dynamic Checkbox Rows */
-  .modal-checklist-row,
-  [style*="background: rgba(10, 31, 68, 0.02)"] {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 10px !important;
-  }
-
-  [style*="background: rgba(10, 31, 68, 0.02)"] span[style*="font-family: monospace"],
-  [style*="background: rgba(10, 31, 68, 0.02)"] strong {
-    align-self: flex-end !important;
-    text-align: right !important;
-  }
-
-  /* 9. Compel Mobile Layout Adaptations for Checkout Invoice Elements */
-  #summary-purchase-rows-container > div,
-  #checkout-invoice-rows-container > div {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 6px !important;
-    padding: 10px 0 !important;
+  /* 5. Force the Application Map sidebar into a clean horizontal header tracking block */
+  .sticky-timeline-sidebar {
+    order: -1 !important; /* Moves map element stack above input fields canvas */
     width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    position: static !important; /* Cancels fixed desktop layout stickiness */
+    background: #0a1f44 !important; /* Seamless match with title header strip */
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 20px 20px 20px !important;
+    box-sizing: border-box !important;
   }
 
-  #summary-purchase-rows-container > div > span:last-child,
-  #checkout-invoice-rows-container > div > span:last-child {
-    align-self: flex-end !important;
+  .sticky-timeline-sidebar .sidebar-header-box {
+    display: none !important; /* Hides verbose titles to maximize screen real estate */
+  }
+
+  /* Make map items slide smoothly sideways instead of bunching up */
+  .sidebar-nav-timeline {
+    display: flex !important;
+    flex-direction: row !important; /* Elements sit side-by-side */
+    flex-wrap: nowrap !important;   /* Protects horizontal slider scroll physics */
+    gap: 8px !important;
+    overflow-x: auto !important;     /* Smooth thumb swipe tracking */
+    overflow-y: hidden !important;
+    padding: 4px 0 8px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .sidebar-nav-timeline::-webkit-scrollbar {
+    display: none !important; /* Hides scroll tracks on chrome/safari engines */
+  }
+
+  /* Transform vertical text links into compact slider cards */
+  .toc-step-row {
+    flex-shrink: 0 !important; /* Stops items from being squeezed thin */
+    display: inline-flex !important;
+    align-items: flex-start !important; /* Aligns dots with top line of text */
+    justify-content: flex-start !important;
+    padding: 8px 12px !important;
+    background: rgba(255, 255, 255, 0.06) !important; /* High contrast tint on dark navy background */
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+    max-width: 150px !important;
+  }
+
+  .toc-step-row.active {
+    background: #ffffff !important; /* Inverts layout palette for active item visibility */
+    border-color: #10b981 !important;
+  }
+
+  .toc-dot {
+    width: 6px !important;
+    height: 6px !important;
+    background: rgba(255, 255, 255, 0.4) !important;
+    border-radius: 50% !important;
+    margin-top: 4px !important; /* Top text alignment pin */
+    margin-right: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .toc-step-row.active .toc-dot {
+    background: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
+  }
+
+  .toc-text-group {
+    display: flex !important;
+    flex-direction: column !important;
+    white-space: normal !important; /* Allows labels to break onto a new line instead of clipping */
+    line-height: 1.2 !important;
+  }
+
+  .toc-step-title {
+    font-size: 0.75rem !important;
     font-weight: 700 !important;
+    color: rgba(255, 255, 255, 0.8) !important;
   }
 
-  /* 10. Optimize Dynamic Requirements Modals and Bounding Action Buttons */
-  #f4u-price-guide-modal-root > div,
-  #nea_checklist_modal_backdrop > div {
-    width: 95% !important;
-    max-height: 92vh !important;
-    margin: 10px auto !important;
-    padding: 16px !important;
+  .toc-step-row.active .toc-step-title {
+    color: #0a1f44 !important; /* Dark contrast typography color text swap when pill becomes active */
+  }
+
+  .toc-step-desc {
+    display: none !important; /* Suppresses wordy micro-descriptions */
+  }
+
+  /* 6. Form control alignment updates */
+  .wizard-input-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .wizard-input-label {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+    color: #0a1f44 !important;
+    margin: 0 !important;
+  }
+
+  .wizard-input-field {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 46px !important; /* Tap targeting scale adjustment */
+    padding: 0 14px !important;
+    font-size: 16px !important; /* Prevents auto-zoom scaling bugs on mobile inputs */
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    background-color: #ffffff !important;
+    color: #0a1f44 !important;
+    box-sizing: border-box !important;
+  }
+
+  .readonly-lock-field {
+    background-color: #e2e8f0 !important;
+    color: #64748b !important;
+  }
+
+  /* 7. Align control bar items (Back, Save, Continue) in an equal-width single row */
+  .wizard-action-footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    border-top: 1px solid #cbd5e1 !important;
+    padding: 12px 16px !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    z-index: 9999 !important;
+    box-sizing: border-box !important;
   }
 
   .btn-wizard-main,
   .btn-wizard-alt,
   .btn-wizard-save-progress {
-    width: 100% !important;
-    text-align: center !important;
-    justify-content: center !important;
-    margin: 4px 0 !important;
-  }
-}
-@media screen and (max-width: 768px) {
-  /* 1. Decrease top and bottom padding whitespace constraints across the footer shell */
-  .footer-master-container .footer-width-limiter {
-    padding-top: 15px !important;
-    padding-bottom: 15px !important;
-  }
-
-  /* 2. Reposition the brand column to sit neatly stacked on top with tight padding */
-  .footer-directory-grid {
-    flex-direction: column !important;
-    padding-bottom: 15px !important;
-    gap: 15px !important;
-  }
-
-  /* 3. Transform the links container into a sharp 2x2 directory matrix grid */
-  .footer-directory-grid .footer-links-wrapper {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important; /* Forces the clean 2-column distribution */
-    gap: 20px 15px !important;
-    width: 100% !important;
-    justify-content: start !important;
-  }
-
-  /* 4. Shift right-aligned data text fields back to the left grid line for scannability */
-  .footer-links-wrapper .footer-hq-column {
-    text-align: left !important;
-    align-items: flex-start !important;
-  }
-
-  /* 5. Compact the lower legal sub-footer element bars */
-  .footer-legal-row-bar {
-    padding-top: 15px !important;
-    gap: 12px !important;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  /* 1. Downscale Page Headings and Title Labels */
-  h2, .wizard-panel h2 {
-    font-size: 1.25rem !important;
-    letter-spacing: -0.3px !important;
-    margin-bottom: 4px !important;
-  }
-  
-  h3, .wizard-panel h3 {
-    font-size: 1.05rem !important;
-    font-weight: 800 !important;
-  }
-
-  p, span, label, li {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
-  }
-
-  /* 2. Shrink Input Fields and Touch Targets */
-  .wizard-input-field, 
-  input[type="text"], 
-  input[type="tel"], 
-  input[type="email"], 
-  input[type="number"], 
-  input[type="date"], 
-  select, 
-  textarea {
-    font-size: 14px !important; /* Standard compact readable scale */
-    min-height: 40px !important; /* Decreased from 48px for tight packing */
-    padding: 8px 12px !important; /* Reduced dead inner spacing */
-  }
-
-  /* 3. Compact Action Progress Buttons and Footer Navigation Items */
-  .btn-wizard-main,
-  .btn-wizard-alt,
-  .btn-wizard-save-progress,
-  .wizard-action-footer button {
-    font-size: 0.85rem !important;
+    flex: 1 1 0% !important; /* Forces equal width distribution across all three button modules */
+    height: 44px !important;
+    font-size: 0.82rem !important; /* Prevents button words from breaking into two lines */
     font-weight: 700 !important;
-    min-height: 40px !important;
-    padding: 10px 16px !important;
-  }
-
-  /* 4. Downsize Pricing Numbers and Monospace Text Blocks */
-  strong, 
-  [style*="font-family: monospace"],
-  .summary-receipt-row-item span {
-    font-size: 0.85rem !important;
-  }
-
-  #summary-grand-total-display,
-  #payment-gateway-total-display {
-    font-size: 1.2rem !important;
-  }
-
-  /* 5. Compress Spacing Gaps in Pop-Up Modals */
-  #f4u-price-guide-modal-root h4 {
-    font-size: 1rem !important;
-  }
-  
-  #f4u-price-guide-modal-root p {
-    font-size: 0.8rem !important;
-    margin-bottom: 10px !important;
-  }
-
-  .modal-checklist-row label {
-    font-size: 0.85rem !important;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  /* 1. Expand the master mobile wrapper to fill 100% of the screen width bounds */
-  .wizard-container, 
-  .wizard-panel, 
-  .master-onboarding-form, 
-  .workspace-split-layout,
-  #wizard-master-shell {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 16px !important;  /* Snug fit safety margin for phone edges */
-    padding-right: 16px !important; /* Snug fit safety margin for phone edges */
-    margin: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 2. Re-align the Header Wrapper into a centralized fluid column stack */
-  .f4u-full-canvas-header {
-    padding: 16px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .f4u-full-canvas-header .nav-container {
-    flex-direction: column !important;
+    border-radius: 6px !important;
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 14px !important; /* Creates equal vertical breathing room between elements */
-    width: 100% !important;
-  }
-
-  /* 3. Center the Logo Link Anchor Frame */
-  .f4u-full-canvas-header .nav-container > a {
-    display: block !important;
-    margin: 0 auto !important;
-    text-align: center !important;
-  }
-
-  .f4u-full-canvas-header .nav-container img {
-    margin: 0 auto !important;
-    height: 34px !important; /* Scales down slightly to preserve vertical real estate */
-  }
-
-  /* 4. Stretch the Meta Badge Group Row comfortably across the screen */
-  .f4u-full-canvas-header .header-meta-badge {
-    width: 100% !important;
-    max-width: 100% !important;
-    justify-content: center !important; /* Centers the call link, separator line, and clock text */
-    padding: 10px !important;
+    white-space: nowrap !important;
+    padding: 0 4px !important;
     box-sizing: border-box !important;
-    gap: 10px !important;
+    margin: 0 !important;
+  }
+
+  .btn-wizard-alt {
+    background: transparent !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0a1f44 !important;
+    display: inline-flex !important; /* Force displays element if script class suppresses it */
+  }
+
+  .btn-wizard-save-progress {
+    background: #0a1f44 !important;
+    color: #ffffff !important;
+  }
+
+  .btn-wizard-main {
+    background: #10b981 !important;
+    color: #ffffff !important;
   }
 }
 
 
-@media screen and (max-width: 768px) {
-  /* 1. Force the master mobile layout and all wizard panels to stretch full width flush to screen edges */
-  .wizard-container, 
-  .wizard-panel, 
-  .master-onboarding-form, 
-  .workspace-split-layout,
-  #wizard-master-shell {
+/* ============================================================================
+   🏁 6. THREE-BUTTON SINGLE ROW COMPACT ACTIONS FOOTER
+   ============================================================================ */
+.is-mobile-device .wizard-action-footer {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  background: #ffffff !important;
+  border-top: 1px solid #cbd5e1 !important;
+  padding: 12px 16px !important; /* Maximizes usable context grid box bounds */
+  margin-top: 0 !important;
+  
+  /* Forces all children elements directly onto a single row line */
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  
+  /* Distributes remaining viewport space equally between elements */
+  gap: 8px !important; 
+  z-index: 9999 !important;
+  box-sizing: border-box !important;
+}
+
+/* Base button rules to override complex desktop layouts */
+.is-mobile-device .btn-wizard-main,
+.is-mobile-device .btn-wizard-alt,
+.is-mobile-device .btn-wizard-save-progress {
+  /* Forces identical width across all 3 items regardless of text string lengths */
+  flex: 1 1 0% !important; 
+  
+  height: 44px !important; /* Enterprise standard mobile touch targets scale */
+  font-size: 0.85rem !important; /* Scales typography down cleanly to fit single row lines */
+  font-weight: 700 !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important; /* Prevents button words from breaking into two lines */
+  padding: 0 4px !important;
+  box-sizing: border-box !important;
+}
+
+/* ⬅️ "Back" Button Branding Override */
+.is-mobile-device .btn-wizard-alt {
+  background: transparent !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0a1f44 !important;
+  display: inline-flex !important; /* Forces visibility even if hidden on step 1 on desktop */
+}
+
+/* 💾 "Save" Button Branding Override */
+.is-mobile-device .btn-wizard-save-progress {
+  background: #0a1f44 !important;
+  color: #ffffff !important;
+}
+
+/* ➡️ "Continue" Button Branding Override */
+.is-mobile-device .btn-wizard-main {
+  background: #10b981 !important;
+  color: #ffffff !important;
+}
+
+
+/* ============================================================================
+   🏢 STEP 2 SPECIFIC: FLAT PROFILE & DYNAMIC FIELD OVERRIDES
+   ============================================================================ */
+
+/* 1. Global Reset for Step 2 Panel Canvas */
+.is-mobile-device #step-panel-2 {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #f4f7fa !important;
+}
+
+/* 2. Strip Desktop Grid Layout Splitter Columns */
+.is-mobile-device #step-panel-2 .workspace-split-layout {
+  display: flex !important;
+  flex-direction: column !important; /* Changes grid tracking to a single vertical row */
+  gap: 0 !important;
+  width: 100% !important;
+}
+
+/* 3. Reconstruct Dynamic Fields Grid Root to Stacking Block Row Elements */
+.is-mobile-device #dynamic-onboarding-fields-root {
+  display: flex !important;
+  flex-direction: column !important; /* Breaks the 2-column rule */
+  gap: 16px !important;              /* High-density padding space between inputs */
+  width: 100% !important;
+  padding: 24px 20px 120px 20px !important; /* Safe padding slot above sticky footer buttons */
+  box-sizing: border-box !important;
+}
+
+/* 4. Ensure Dynamically Injected Inputs Map Cleanly onto the Canvas */
+.is-mobile-device #dynamic-onboarding-fields-root > div {
+  grid-column: span 2 !important; /* Force injected form chunks to stretch edge-to-edge */
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 5. Style Dynamic Injected Forms to Match Your Base Input Classes */
+.is-mobile-device #dynamic-onboarding-fields-root input,
+.is-mobile-device #dynamic-onboarding-fields-root select,
+.is-mobile-device #dynamic-onboarding-fields-root textarea {
+  width: 100% !important;
+  height: 46px !important; /* Finger tap targeting heights */
+  padding: 0 16px !important;
+  font-size: 16px !important; /* Resolves iOS focus screen jumping zoom bug */
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  color: #0a1f44 !important;
+  box-sizing: border-box !important;
+}
+
+.is-mobile-device #dynamic-onboarding-fields-root label {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  color: #0a1f44 !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+
+/* 6. Reposition Desktop Map to Top Horizontal Slider Band Inside Step 2 */
+.is-mobile-device #step-panel-2 .sticky-timeline-sidebar {
+  order: -1 !important; /* Moves map element stack above input fields canvas */
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  background: #0a1f44 !important;
+  padding: 0 20px 20px 20px !important;
+  border: none !important;
+}
+
+/* Set Active Timeline Visual Marker for Step 2 Node */
+.is-mobile-device #step-panel-2 #timeline-row-2 {
+  background: #ffffff !important;
+  border-color: #10b981 !important;
+}
+.is-mobile-device #step-panel-2 #timeline-row-2 .toc-step-title {
+  color: #0a1f44 !important;
+}
+.is-mobile-device #step-panel-2 #timeline-row-2 .toc-dot {
+  background: #10b981 !important;
+}
+
+
+/* ============================================================================
+   🗺️ FIXED SLIDER BAND TEXT CONTAINMENT OVERRIDES
+   ============================================================================ */
+
+.is-mobile-device .sticky-timeline-sidebar {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  position: static !important;
+  background: #0a1f44 !important; /* Fixed: Solid enterprise navy layout panel */
+  border: none !important;
+  padding: 12px 16px 16px 16px !important;
+  box-sizing: border-box !important;
+}
+
+/* Scroll Slider Wrapper Track */
+.is-mobile-device .sidebar-nav-timeline {
+  display: flex !important;
+  flex-direction: row !important; /* Elements sit side-by-side */
+  flex-wrap: nowrap !important;   /* Protects horizontal slider scroll physics */
+  gap: 8px !important;
+  overflow-x: auto !important;     /* Smooth thumb swipe tracking */
+  overflow-y: hidden !important;
+  padding-bottom: 8px !important;
+  width: 100% !important;
+  -webkit-overflow-scrolling: touch !important; /* Smooth inertial scrolling on mobile iOS devices */
+}
+
+/* Step Link Layout Pills */
+.is-mobile-device .toc-step-row {
+  flex-shrink: 0 !important;      /* Stops items from being squeezed thin */
+  display: inline-flex !important;
+  align-items: flex-start !important; /* Align to the top of the text */
+  justify-content: flex-start !important;
+  padding: 8px 12px !important;
+  background: rgba(255, 255, 255, 0.06) !important; /* Highly translucent tint over the solid dark navy */
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 6px !important;
+  box-sizing: border-box !important;
+  max-width: 160px !important;    /* Keeps pills compact so multiple steps peek on screen */
+}
+
+/* Text Container Stack */
+.is-mobile-device .toc-text-group {
+  display: flex !important;
+  flex-direction: column !important; /* Formats title and summary info in two stacked lines */
+  white-space: normal !important;    /* FIXED: Allows labels to break onto a new line instead of clipping */
+  word-break: break-word !important; /* Protects dense data text labels from escaping bounds */
+  line-height: 1.2 !important;
+}
+
+/* Step Label Text Rules */
+.is-mobile-device .toc-step-title {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: rgba(255, 255, 255, 0.9) !important; /* White contrast visibility against dark background */
+}
+
+/* Active Step Modification Injections */
+.is-mobile-device .toc-step-row.active {
+  background: #ffffff !important; /* Inverts layout palette for active item visibility */
+  border-color: #10b981 !important;
+}
+
+.is-mobile-device .toc-step-row.active .toc-step-title {
+  color: #0a1f44 !important; /* Dark contrast typography color text swap when pill becomes active */
+}
+
+/* Dot Alignment Updates */
+.is-mobile-device .toc-dot {
+  width: 6px !important;
+  height: 6px !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  border-radius: 50% !important;
+  margin-top: 4px !important; /* Perfectly matches top text alignment track line */
+  margin-right: 6px !important;
+  flex-shrink: 0 !important;
+}
+
+.is-mobile-device .toc-step-row.active .toc-dot {
+  background: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
+}
+
+
+/* ============================================================================
+   📱 PATCH FOR MOBILE SCREEN OVERFLOWS (Under 991px Only)
+   ============================================================================ */
+@media (max-width: 991px) {
+
+  /* 1. FIX PROGRESS BAR CUTOFF: Enable native horizontal swiping on the step track */
+  .sticky-timeline-sidebar {
     width: 100% !important;
+    min-width: 100% !important;
     max-width: 100% !important;
-    padding-left: 16px !important;  
-    padding-right: 16px !important; 
+    position: static !important;
+    padding: 0 16px !important;
     margin: 0 !important;
     box-sizing: border-box !important;
   }
-
-  /* 2. Lock Header Logo to Left Edge, Metadata Badge Block to Right Edge */
-  .f4u-full-canvas-header .nav-container {
+  .sidebar-nav-timeline {
     display: flex !important;
     flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important;
     flex-wrap: nowrap !important;
-    width: 100% !important;
-    gap: 10px !important;
-  }
-
-  .f4u-full-canvas-header .nav-container > a {
-    display: block !important;
-    margin: 0 !important;
-    text-align: left !important;
-  }
-
-  .f4u-full-canvas-header .nav-container img {
-    height: 28px !important; /* Scaled down tightly for phone viewports */
-    width: auto !important;
-  }
-
-  .f4u-full-canvas-header .header-meta-badge {
-    margin: 0 !important;
-    padding: 6px 10px !important;
     gap: 8px !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    width: auto !important;
+    overflow-x: auto !important; /* Enables smooth finger thumb swiping */
+    padding: 12px 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .toc-step-row {
+    flex-shrink: 0 !important; /* Stops tabs from compressing text strings */
+    display: inline-flex !important;
+    padding: 8px 14px !important;
+  }
+  .toc-text-group {
+    white-space: nowrap !important; /* Stops layout words from breaking apart */
   }
 
-  /* 3. Re-scale All Text & Form Labels down to Compact Mobile Dimensions */
-  h2, .wizard-panel h2 {
-    font-size: 1.25rem !important;
-    letter-spacing: -0.3px !important;
+  /* 2. FIX FORM FIELDS STRETCHING: Force horizontal layouts to collapse into rows */
+  .workspace-split-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   
-  h3, .wizard-panel h3 {
-    font-size: 1.05rem !important;
-  }
-
-  p, span, label, li, a {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
-  }
-
-  .wizard-input-field, 
-  input[type="text"], 
-  input[type="tel"], 
-  input[type="email"], 
-  input[type="number"], 
-  input[type="date"], 
-  select, 
-  textarea {
-    font-size: 14px !important;
-    min-height: 40px !important;
-    padding: 8px 12px !important;
-  }
-
-  /* 4. Decrease Master White Space Padding Constraints on Footer Container */
-  .footer-master-container .footer-width-limiter {
-    padding-top: 15px !important;
-    padding-bottom: 15px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-
-  /* 5. Keep Brand Column Stacked Tightly Over the Link Matrix */
-  .footer-directory-grid {
-    flex-direction: column !important;
-    padding-bottom: 15px !important;
-    gap: 15px !important;
-    width: 100% !important;
-  }
-
-  /* 6. Overhaul Corporate Link Blocks into a Perfect Symmetric 2x2 Layout Grid */
-  .footer-directory-grid .footer-links-wrapper {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important; /* Perfect 2-column configuration split */
-    gap: 16px 12px !important;
-    width: 100% !important;
-    justify-content: start !important;
-  }
-
-  /* 7. Pivot All Right-Aligned Text Columns Back to Left Grid Margin for Phone Scannability */
-  .footer-links-wrapper .footer-hq-column {
-    text-align: left !important;
-    align-items: flex-start !important;
-  }
-
-  /* 8. Compress Whitespace inside Sub-Footer Legal Element Bars */
-  .footer-legal-row-bar {
-    padding-top: 15px !important;
-    gap: 12px !important;
-    width: 100% !important;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  /* Hide the live clock icon, line separator, and time text strings on small screens */
-  .header-meta-badge .meta-divider,
-  .header-meta-badge .fa-clock,
-  .header-meta-badge #wizard-live-clock-timestamp,
-  .header-meta-badge span:last-child {
-    display: none !important;
-  }
-
-  /* Compact the padding of the remaining elements inside the badge cell wrapper */
-  .f4u-full-canvas-header .header-meta-badge {
-    padding: 6px 12px !important;
-    gap: 0 !important;
-    width: auto !important;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  /* 1. Force the master wizard panel and form content rows to fill 100% width edge-to-edge */
-  .wizard-panel,
-  .master-onboarding-form,
-  .wizard-grid-layout,
-  #wizard-master-shell,
+  /* Target the dynamic layout engine block container */
   #dynamic-onboarding-fields-root {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    display: block !important; /* Disables crushing layout flex rows */
-    box-sizing: border-box !important;
-  }
-
-  /* 2. Un-smash each form item row container card to stretch flush across the viewport */
-  .wizard-input-group,
-  .wizard-panel-card,
-  [style*="grid-column"],
-  [style*="span"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    float: none !important;
-    clear: both !important;
-    display: block !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 3. Strip nested inner columns and line arrays into deep fluid column blocks */
-  [style*="display: grid"],
-  [style*="display: flex"],
-  [style*="grid-template-columns"] {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 4. Deep stretch interactive form entry nodes, drop selection fields, and textareas */
-  .wizard-input-field,
-  input[type="text"],
-  input[type="tel"],
-  input[type="email"],
-  input[type="number"],
-  input[type="date"],
-  select,
-  textarea {
-    width: 100% !important;
-    max-width: 100% !important;
-    display: block !important;
-    margin: 4px 0 12px 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 5. Stretch service support select rows and multi-layered check card boxes */
-  .member-record-card,
-  .upsell-card-node,
-  .modal-checklist-row,
-  [style*="background: rgba(10, 31, 68, 0.02)"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    display: block !important;
-    padding: 16px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 6. Fix nested inner checkbox layout real estate alignments inside step blocks */
-  input[type="checkbox"] {
-    display: inline-block !important;
-    vertical-align: middle !important;
-    margin-bottom: 4px !important;
-  }
-
-  input[type="checkbox"] + label {
-    display: inline !important;
-    width: auto !important;
-    padding-left: 8px !important;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  /* 1. Force the lower sub-footer legal row container bar to stack into vertical rows */
-  .footer-legal-row-bar {
     display: flex !important;
-    flex-direction: column !important; /* Stacks text on top of the security badge */
-    align-items: center !important;    /* Centers elements horizontally on narrow viewports */
-    justify-content: center !important;
-    text-align: center !important;
+    flex-direction: column !important;
     width: 100% !important;
-    padding-top: 15px !important;
-    gap: 12px !important;
+    max-width: 100% !important;
+    grid-template-columns: 1fr !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
   }
 
-  /* 2. Format the copyright paragraph and child links to use centered mobile styling rules */
-  .footer-legal-row-bar p {
-    font-size: 0.75rem !important;
-    text-align: center !important;
-    margin: 0 !important;
+  /* 3. FIX CITY / STATE / ZIP SMASHING: Stack any elements sharing a line */
+  #dynamic-onboarding-fields-root div,
+  #dynamic-onboarding-fields-root > *,
+  .form-grid-layout div {
+    display: flex !important;
+    flex-direction: column !important; /* Breaks City, State, Zip into single lines */
     width: 100% !important;
-    line-height: 1.5 !important;
+    max-width: 100% !important;
+    grid-column: span 2 !important;
+    box-sizing: border-box !important;
   }
 
-  /* 3. Center the secure badge module block and give it comfortable layout separation */
-  .footer-legal-row-bar .trust-badge {
-    font-size: 0.75rem !important;
-    text-align: center !important;
-    display: inline-block !important;
-    margin: 0 auto !important;
-    width: fit-content !important;
-    padding: 6px 16px !important;
-  }
-
-  /* 4. Keep your directory columns locked tightly in a symmetric 2x2 grid format above */
-  .footer-directory-grid .footer-links-wrapper {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important; /* Perfect 2x2 directory configuration matrix split */
-    gap: 16px 12px !important;
+  /* Ensure inputs fill the newly created vertical row space */
+  input, select, textarea, .wizard-input-field {
     width: 100% !important;
-  }
-}
-
-
-@media screen and (max-width: 768px) {
-  /* Inject a safety cushion buffer space above the container to push it down below the navigation menu */
-  .wizard-container,
-  #wizard-master-shell,
-  .workspace-split-layout,
-  #step-panel-1, #step-panel-2, #step-panel-3, #step-panel-4, #step-panel-5 {
-    margin-top: 24px !important; /* Creates a clean, separate vertical gap from the menu line */
-    padding-top: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 }

@@ -2831,3 +2831,18 @@ async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlS
 
 // Bind cleanly back up to the primary document tree window reference context
 window.executeStepTwoDynamicFormInjection = executeStepTwoDynamicFormInjection;
+
+function evaluateSystemViewportDesign() {
+  const container = document.querySelector('.wizard-container');
+  if (!container) return;
+  
+  if (window.innerWidth <= 991) {
+    container.classList.add('is-mobile-device');
+  } else {
+    container.classList.remove('is-mobile-device');
+  }
+}
+
+// Initial evaluation and resize listener bindings
+document.addEventListener("DOMContentLoaded", evaluateSystemViewportDesign);
+window.addEventListener("resize", evaluateSystemViewportDesign);

@@ -1,0 +1,409 @@
+/* ============================================================================
+   🏢 FILINGS4U MASTER ENTERPRISE DESIGN TOKENS
+   ============================================================================ */
+:root {
+  /* System Core Colors */
+  --navy: #0a1f44;
+  --emerald: #10b981;
+  --slate-bg: #f4f7fa;
+  --border: #cbd5e1;
+  --text-primary: #0a1f44;
+  --text-muted: #64748b;
+  --white: #ffffff;
+  --error: #dc2626;
+
+  /* Global Layout Dimensions */
+  --site-max-width: 1450px;
+  
+  /* Micro Layout Token System */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ============================================================================
+   🎛️ SYSTEM BASICS & RESETS
+   ============================================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-stack);
+  background-color: var(--slate-bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================================
+   📦 FLAT WORKSPACE STRUCTURAL RECONSTRUCTION
+   ============================================================================ */
+.wizard-container {
+  width: 100%;
+  max-width: var(--site-max-width);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.wizard-card {
+  background: transparent; /* Drops legacy bounding box containers entirely */
+  border: none;
+  box-shadow: none;
+  width: 100%;
+}
+
+/* Unified Platform Form Panels Control */
+.wizard-panel {
+  display: none;
+  width: 100%;
+}
+.wizard-panel.active {
+  display: block;
+}
+
+/* Split Column Layout Architecture */
+.workspace-split-layout {
+  display: flex;
+  flex-direction: column; /* Force vertical stacking on mobile configurations */
+  gap: 24px;
+  width: 100%;
+}
+
+.form-grid-layout {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Uniform macro stack padding between row blocks */
+}
+
+/* Header Text Blocks Hierarchy */
+.step-header-container {
+  margin-bottom: 24px;
+}
+.step-main-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.step-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* ============================================================================
+   🛠️ HIGH-DENSITY ENTERPRISE FORM CONTROLS
+   ============================================================================ */
+.wizard-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.wizard-input-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--navy);
+}
+
+.wizard-input-field {
+  width: 100%;
+  height: 42px; /* Strict enterprise standard cross-device target height */
+  padding: 0 14px;
+  font-size: 15px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--white);
+  color: var(--navy);
+  transition: border-color 0.15s ease-in-out;
+}
+.wizard-input-field:focus {
+  outline: 2px solid var(--navy);
+  outline-offset: -1px;
+}
+
+/* Readonly Input Locks Structure */
+.input-lock-wrapper {
+  position: relative;
+  width: 100%;
+}
+.readonly-lock-field {
+  background-color: #e2e8f0;
+  border-color: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  padding-right: 40px;
+}
+.input-lock-icon-span {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Error Framework Modifiers */
+.wizard-input-group--error .wizard-input-field {
+  border-color: var(--error);
+}
+.wizard-error-text {
+  font-size: 0.8rem;
+  color: var(--error);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* Dynamic Live Feature List Modules */
+.features-list-data-container {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+.loading-skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* High-Density Processing Invoicing Components */
+.ent-invoice-summary-row {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ============================================================================
+   🗺️ RESPONSIVE APPLICATION MAP PROGRESS ENGINE
+   ============================================================================ */
+.sticky-timeline-sidebar {
+  width: 100%; /* Spans full utility canvas width by default on phone profiles */
+  max-width: 100%;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.sidebar-header-box {
+  margin-bottom: 16px;
+}
+.sidebar-title-label {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.sidebar-time-tracker {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.sidebar-time-tracker span {
+  font-weight: 700;
+  color: var(--emerald);
+}
+
+/* Horizontal overflow slider track rule for small layouts */
+.sidebar-nav-timeline {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.toc-step-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--slate-bg);
+  border: 1px solid var(--border);
+}
+.toc-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--border);
+  border-radius: 50%;
+}
+.toc-step-row.active {
+  border-color: var(--emerald);
+  background: var(--white);
+}
+.toc-step-row.active .toc-dot {
+  background: var(--emerald);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+}
+.toc-text-group {
+  display: flex;
+  flex-direction: column;
+}
+.toc-step-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.toc-step-desc {
+  display: none; /* Hide heavy copy strings to optimize mobile real estate */
+}
+
+/* ============================================================================
+   🏁 STEPS FOOTER CONTROL MATRIX
+   ============================================================================ */
+.wizard-action-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
+}
+
+.btn-wizard-main, .btn-wizard-alt, .btn-wizard-save-progress {
+  font-family: var(--font-stack);
+  font-size: 0.9rem;
+  font-weight: 700;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.15s ease;
+}
+.btn-wizard-main:hover, .btn-wizard-alt:hover, .btn-wizard-save-progress:hover {
+  opacity: 0.9;
+}
+
+.btn-wizard-main { background: var(--emerald); color: var(--white); }
+.btn-wizard-alt { background: transparent; border: 1px solid var(--border); color: var(--navy); }
+.btn-wizard-save-progress { background: var(--navy); color: var(--white); }
+
+.element-hidden { display: none !important; }
+
+/* ============================================================================
+   🧱 STANDALONE GLOBAL CORPORATE SITE FOOTER MATRIX
+   ============================================================================ */
+.footer-master-container {
+  background-color: var(--navy) !important;
+  padding: 60px 0 30px 0;
+  margin-top: 60px;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* High-utility white vector dot grid overlay */
+.footer-master-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.07; /* Clear visibility for high-resolution screens */
+  pointer-events: none;
+  background-image: radial-gradient(var(--white) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.footer-width-limiter {
+  max-width: var(--site-max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1; /* Elevates links above background pseudo-elements */
+}
+
+/* ============================================================================
+   🖥️ DESKTOP CONTEXT OVERRIDES (Screen widths >= 992px)
+   ============================================================================ */
+@media (min-width: 992px) {
+  .wizard-container {
+    padding: 40px;
+  }
+
+  /* Unlocks side-by-side positioning for full desktop workflows */
+  .workspace-split-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  /* Restores the map to a flat column block floating on the right side */
+  .sticky-timeline-sidebar {
+    position: sticky;
+    top: 24px;
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .sidebar-nav-timeline {
+    flex-direction: column; /* Switches from sliders to a chronological track list */
+    overflow-x: visible;
+    gap: 0;
+    padding-bottom: 0;
+  }
+
+  /* TOP-ALIGNMENT RESOLUTION ENGINE */
+  .toc-step-row {
+    background: transparent;
+    border: none;
+    border-left: 2px solid var(--border);
+    border-radius: 0;
+    padding: 6px 0 18px 18px;
+    display: flex;
+    align-items: flex-start; /* Aligns step row contents to top edge */
+    justify-content: flex-start;
+  }
+  
+  .toc-step-row.active {
+    border-left-color: var(--emerald);
+    background: transparent;
+  }
+
+  .toc-dot {
+    display: none; /* Relies directly on the cleaner vertical line track indicator */
+  }
+
+  .toc-text-group {
+    line-height: 1.1; /* Snaps text bounds directly inline with track start point */
+  }
+
+  .toc-step-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+.toc-step-desc {display: block; /* Restores step details safely on wide canvases */font-size: 0.75rem;color: var(--text-muted);margin-top: 4px;line-height: 1.4;}}
