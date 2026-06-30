@@ -461,3 +461,64 @@ body {
 .wizard-panel.active {
     display: block !important;
 }
+
+/* ============================================================================ */
+/* 📱 CRITICAL MOBILE VIEWPORT TRACK & TOUCH-SCROLL EMULATOR MATRIX             */
+/* ============================================================================ */
+
+/* 1. Reset physical body bounds to accept native smartphone scrolls */
+html, body {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important; /* Forces mobile phone scrolling track active */
+    overflow-x: hidden !important; /* Kills annoying horizontal layout shifts */
+    -webkit-overflow-scrolling: touch !important; /* Smooth elastic momentum touch on iOS devices */
+}
+
+/* 2. Free layout boxes from rigid height restrictions */
+.m-viewport-wrapper,
+.wizard-container,
+.mobile-locked-container,
+.mobile-flex-card,
+#master-onboarding-form,
+.isolated-form-payload-container,
+.service-form-part-segment {
+    height: auto !important;
+    min-height: none !important;
+    max-height: none !important;
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: visible !important; /* Allows inputs to spill down the page naturally */
+}
+
+/* 3. Convert Step Panes to fluid vertical stacking flows */
+.wizard-panel {
+    display: none;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+.wizard-panel.active {
+    display: block !important;
+}
+
+/* 4. Format input groups to expand fully without smashing elements */
+.mobile-full-stack,
+.form-grid-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 16px !important;
+    overflow: visible !important;
+}
+
+/* 5. Keep navigation bar and headers flush with smartphone views */
+.mobile-sticky-footer,
+.wizard-action-footer {
+    position: relative !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    margin-top: 24px !important;
+    box-sizing: border-box !important;
+}
