@@ -2575,3 +2575,32 @@ function evaluateSystemViewportDesignMobile() {
 
 document.addEventListener("DOMContentLoaded", evaluateSystemViewportDesignMobile); 
 window.addEventListener("resize", evaluateSystemViewportDesignMobile);
+
+
+// ============================================================================ //
+// 🚀 STANDALONE MOBILE INITIALIZATION ORCHESTRATOR
+// ============================================================================ //
+(function() {
+    function bootStandaloneMobileWizard() {
+        console.log("[Mobile Standalone Boot] Synchronizing framework lifecycles...");
+        
+        // 1. Force the mobile layout device parameters state
+        if (typeof evaluateSystemViewportDesignMobile === "function") {
+            evaluateSystemViewportDesignMobile();
+        }
+        
+        // 2. Fire your master platform orchestration sequence 
+        if (typeof window.runUnifiedPlatformLifecycleBoot === "function") {
+            window.runUnifiedPlatformLifecycleBoot();
+        } else if (typeof runCombinedMasterBootSequenceMobile === "function") {
+            runCombinedMasterBootSequenceMobile();
+        }
+    }
+
+    // Safely execute immediately or wait for the mobile DOM window to be interactive
+    if (document.readyState !== "loading") {
+        bootStandaloneMobileWizard();
+    } else {
+        document.addEventListener("DOMContentLoaded", bootStandaloneMobileWizard);
+    }
+})();
