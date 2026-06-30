@@ -1,4 +1,7 @@
-/* 1. LAYOUT & VIEWPORT RESET MATRIX */
+/* ============================================================================ */
+/* 📱 SECURED ENTERPRISE MOBILE ARCHITECTURE FRAME                              */
+/* ============================================================================ */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,250 +9,44 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f9fafb;
-    color: #1f2937;
-    height: 100dvh; /* Force window boundaries exactly to device edge */
-    overflow: hidden; /* Terminate default outer page elastic bounces */
-}
-
-/* Base Form App Box Grid wrapper */
-.m-wizard-container {
-    display: flex;
-    flex-direction: column;
+/* Force the physical hardware view to stay frozen on the phone screen */
+html, body {
     height: 100dvh;
-    width: 100%;
-    position: relative;
-}
-
-/* 2. STICKY HEADER BLOCK */
-.m-wizard-header {
-    background-color: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    padding: 12px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.m-brand {
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    text-transform: uppercase;
-    color: #10b981;
-}
-
-.m-progress-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.m-step-text {
-    font-size: 12px;
-    font-weight: 700;
-    color: #4b5563;
-    white-space: nowrap;
-}
-
-.m-progress-bar-bg {
-    width: 100%;
-    height: 6px;
-    background-color: #e5e7eb;
-    border-radius: 9999px;
+    max-height: 100dvh;
     overflow: hidden;
-}
-
-.m-progress-bar-fill {
-    height: 100%;
-    background-color: #10b981;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 3. DYNAMIC CONTENT INNER MAPPING AREA */
-.m-wizard-content {
-    flex: 1;
-    overflow-y: auto; /* Allow independent single pane scrolling if text is long */
-    -webkit-overflow-scrolling: touch;
-    padding: 20px 16px;
-}
-
-#mobileWizardForm {
-    height: 100%;
-    width: 100%;
-}
-
-/* Form pane element toggle matrix rules */
-.m-step-pane {
-    display: none;
-    flex-direction: column;
-    animation: stepFadeIn 0.25s ease-out;
-}
-
-.m-step-pane.active {
-    display: flex;
-}
-
-.m-step-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #111827;
-    margin-bottom: 6px;
-    letter-spacing: -0.02em;
-}
-
-.m-step-desc {
-    font-size: 13px;
-    color: #6b7280;
-    margin-bottom: 20px;
-    line-height: 1.4;
-}
-
-/* 4. TOUCH-OPTIMIZED INPUT AND COMPONENT MATRIX */
-.m-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 16px;
-    width: 100%;
-}
-
-.m-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #374151;
-}
-
-.m-input {
-    width: 100% !important;
-    height: 48px; /* Perfect target height for thumb touches */
-    padding: 0 14px;
-    font-size: 16px !important; /* Critical: Hard stop blocks iOS Auto-Zoom system overrides */
-    border: 1.5px solid #d1d5db;
-    border-radius: 8px;
-    background-color: #ffffff;
-    color: #111827;
-    outline: none;
-    transition: border-color 0.15s ease;
-    -webkit-appearance: none; /* Strip standard styling variables */
-}
-
-.m-input:focus {
-    border-color: #10b981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-}
-
-select.m-input {
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://w3.org' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%234b5563' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-position: right 12px center;
-    background-repeat: no-repeat;
-    background-size: 18px;
-    padding-right: 36px;
-}
-
-/* 5. FOOTER STICKY ACTION PANELS */
-.m-wizard-footer {
-    background-color: #ffffff;
-    border-top: 1px solid #e5e7eb;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.m-btn {
-    flex: 1;
-    height: 48px;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.15s ease, opacity 0.15s ease;
-}
-
-.btn-primary {
-    background-color: #10b981;
-    color: #ffffff;
-}
-
-.btn-primary:active {
-    background-color: #059669;
-}
-
-.btn-secondary {
-    background-color: #f3f4f6;
-    color: #4b5563;
-}
-
-.btn-secondary:active {
-    background-color: #e5e7eb;
-}
-
-.m-btn:disabled {
-    opacity: 0.4;
-    pointer-events: none;
-}
-
-/* 6. TRANSLATION ANIMATIONS */
-@keyframes stepFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 1. PHYSICAL BODY & TARGET VIEWPORT BOUNDS CONTROL GRID */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
     background-color: #f8fafc;
-    color: #0f172a;
-    height: 100dvh; /* Lock layout window edge to physical phone screen */
-    overflow: hidden; /* Stops whole body page bouncing on mobile drag */
+    font-family: 'Inter', sans-serif;
 }
 
-/* 2. DYNAMIC APP ELEMENT CONTAINERS */
-.mobile-locked-container {
+/* Parent Wrapper Box */
+.wizard-container {
+    width: 100%;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
-    height: calc(100dvh - 63px); /* Offsets page layout box minus header height */
-    width: 100% !important;
-    max-width: 100% !important;
 }
 
-.mobile-flex-card {
+.wizard-card {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    flex: 1;
+}
+
+/* Master Form: Top-To-Bottom Block Distribution */
+#master-onboarding-form {
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
 }
 
-/* Sticky Mobile Only Step Indicator Bar */
+/* Header Tracker Section */
 .mobile-sticky-tracker-header {
     background: #ffffff;
     border-bottom: 1px solid #cbd5e1;
-    padding: 10px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    padding: 12px 16px;
+    flex-shrink: 0;
 }
 
 .m-step-indicator-label {
@@ -258,6 +55,8 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: #475569;
+    display: block;
+    margin-bottom: 4px;
 }
 
 .m-progress-bar-bg {
@@ -273,252 +72,141 @@ body {
     background: #10b981;
 }
 
-/* 3. SCROLL AREA MATRIX FOR STEP DATA LAYOUTS */
+/* Workspace Frame View window: Holds input fields and titles */
+.m-form-scroller,
 .mobile-panel-scroll {
     flex: 1;
-    overflow-y: auto; /* Keeps scroll isolated inside step block area */
+    overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     padding: 16px;
+}
+
+/* Inactive Panel Hard Clamp Masks */
+.wizard-panel {
+    display: none;
     width: 100%;
 }
 
-/* Completely drops the workspace horizontal grids/split configurations */
-.workspace-split-layout {
-    display: block !important;
-    width: 100% !important;
+/* Only display the single actively mounted section step */
+.wizard-panel.active {
+    display: block;
 }
 
-.sticky-timeline-sidebar {
-    display: none !important; /* Forces application map to vanish on mobile layout execution */
+.step-header-container {
+    margin-bottom: 16px;
 }
 
-/* 4. TOTAL FIXES FOR FIELD OVERLAPS & BOUNDARY CUTS */
-.mobile-full-stack {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 14px !important;
+.step-main-title {
+    color: #0a1f44;
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.5px;
+}
+
+.step-subtitle {
+    color: #64748b;
+    font-size: 0.825rem;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Anti-Smash Input field formatting matrix */
+.mobile-full-stack,
+.form-grid-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
 }
 
 .wizard-input-group {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    margin: 0 0 4px 0 !important;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .wizard-input-label {
-    display: block !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    color: #334155 !important;
-    margin-bottom: 6px !important;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
 }
 
-/* Text Input Lock Wrapper adjustments for full container reach */
 .input-lock-wrapper {
-    position: relative !important;
-    display: block !important;
-    width: 100% !important;
+    position: relative;
+    width: 100%;
 }
 
 .wizard-input-field {
-    display: block !important;
-    width: 100% !important;
-    height: 48px !important; /* Ideal thumb touch layout height mapping target */
-    padding: 0 40px 0 12px !important;
-    font-size: 16px !important; /* CRITICAL: Prevents Apple device screen auto zoom layout shifts */
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 6px !important;
-    background: #ffffff !important;
-    box-sizing: border-box !important;
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 40px 0 12px;
+    font-size: 16px; /* Blocks native apple viewport scaling bug drops */
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #ffffff;
 }
 
 .input-lock-icon-span {
-    position: absolute !important;
-    right: 14px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    color: #94a3b8 !important;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
 }
 
-/* 5. THUMB REACH STICKY COMPACT ACTIONS BAR FOOTER */
+/* Sticky Action Controls Footer Section */
+.wizard-action-footer,
 .mobile-sticky-footer {
-    position: relative !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    background: #ffffff !important;
-    border-top: 1px solid #cbd5e1 !important;
-    padding: 12px 16px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    box-sizing: border-box !important;
+    background: #ffffff;
+    border-top: 1px solid #cbd5e1;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-shrink: 0; /* Keyboard opening fails to collapse bar fields flat */
+    width: 100%;
 }
 
-.mobile-sticky-footer button {
-    height: 46px !important;
-    border-radius: 6px !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    border: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+.mobile-sticky-footer button,
+.wizard-action-footer button {
+    height: 46px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-wizard-alt {
+    background: #f1f5f9;
+    color: #334155;
+    padding: 0 16px;
 }
 
 .btn-wizard-save-progress {
-    width: 90px !important; /* Compact button styling footprint for mobile saving */
-    background: #f1f5f9 !important;
-    color: #334155 !important;
-    white-space: nowrap;
+    background: #f1f5f9;
+    color: #334155;
+    padding: 0 16px;
 }
 
 .btn-wizard-main {
-    flex: 1 !important; /* Allows continue navigation execution box to span remaining view area */
-    background: #10b981 !important;
-    color: #ffffff !important;
+    flex: 1;
+    background: #10b981;
+    color: #ffffff;
 }
 
-/* FORCE ENFORCEMENT ON DYNAMICALLY INJECTED STEP 2 NODES */
-#dynamic-onboarding-fields-root {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 16px !important;
+.btn-wizard-main:active {
+    background: #059669;
 }
 
-/* Fixes any nested fields or rows generated by your scripts to match phone margins */
-#dynamic-onboarding-fields-root div,
-#dynamic-onboarding-fields-root .row,
-#dynamic-onboarding-fields-root .col-md-6 {
-    display: block !important;
-    width: 100% !important;
-    grid-column: span 2 !important; /* Forces layout fallback if dynamic engine applies inline grid classes */
-}
-
-/* FORCE ENFORCEMENT ON DYNAMICALLY INJECTED UPSELL ITEM CARDS */
-#wizard-dynamic-upsells-render-target {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important;
-    width: 100% !important;
-}
-
-/* Formats the individual asset tier blocks generated by renderTargetUpsellsListPanel */
-#wizard-dynamic-upsells-render-target > div {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    padding: 14px !important;
-}
-
-
-/* 1. Reset frame limits across parent nodes */
-.mobile-locked-container {
-    height: 100dvh !important;
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-}
-
-.mobile-flex-card {
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-    width: 100% !important;
-}
-
-/* 2. Build explicit touch scroller track context */
-.m-form-scroller,
-.mobile-panel-scroll {
-    flex: 1 !important;
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    overflow-y: scroll !important; /* Force touch engine tracks on */
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch !important; /* Smooth elastic iOS scrolling */
-    padding: 16px !important;
-}
-
-/* 3. Keep layout footer pinned cleanly at the bottom rim edge */
-.mobile-sticky-footer {
-    position: shrink !important;
-    margin-top: auto !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    z-index: 100 !important;
-}
-
-/* Ensure step containers don't hold layout-breaking high max values */
-.wizard-panel {
-    display: none;
-    width: 100% !important;
-    height: auto !important;
-}
-.wizard-panel.active {
-    display: block !important;
-}
-
-/* ============================================================================ */
-/* 📱 CRITICAL MOBILE VIEWPORT TRACK & TOUCH-SCROLL EMULATOR MATRIX             */
-/* ============================================================================ */
-
-/* 1. Reset physical body bounds to accept native smartphone scrolls */
-html, body {
-    height: 100% !important;
-    max-height: 100% !important;
-    overflow-y: auto !important; /* Forces mobile phone scrolling track active */
-    overflow-x: hidden !important; /* Kills annoying horizontal layout shifts */
-    -webkit-overflow-scrolling: touch !important; /* Smooth elastic momentum touch on iOS devices */
-}
-
-/* 2. Free layout boxes from rigid height restrictions */
-.m-viewport-wrapper,
-.wizard-container,
-.mobile-locked-container,
-.mobile-flex-card,
-#master-onboarding-form,
-.isolated-form-payload-container,
-.service-form-part-segment {
-    height: auto !important;
-    min-height: none !important;
-    max-height: none !important;
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    overflow: visible !important; /* Allows inputs to spill down the page naturally */
-}
-
-/* 3. Convert Step Panes to fluid vertical stacking flows */
-.wizard-panel {
-    display: none;
-    width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
-}
-.wizard-panel.active {
-    display: block !important;
-}
-
-/* 4. Format input groups to expand fully without smashing elements */
-.mobile-full-stack,
-.form-grid-layout {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 16px !important;
-    overflow: visible !important;
-}
-
-/* 5. Keep navigation bar and headers flush with smartphone views */
-.mobile-sticky-footer,
-.wizard-action-footer {
-    position: relative !important;
-    bottom: 0 !important;
-    width: 100% !important;
-    margin-top: 24px !important;
-    box-sizing: border-box !important;
+.element-hidden {
+    display: none !important;
 }

@@ -173,8 +173,7 @@
 <!-- ============================================================================ --> 
 <!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES --> 
 <!-- ============================================================================ --> 
-<!-- 🟢 FIX: Removed mobile-panel-scroll from container to stop scroll trapping loops -->
-<div class="wizard-panel mobile-step-pane" id="step-panel-2" style="display: none;">
+<div class="wizard-panel" id="step-panel-2" data-step="2" style="display: none; width: 100%; box-sizing: border-box;"> 
     
     <!-- Sticky Tracker Update for Step 2 --> 
     <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;"> 
@@ -184,16 +183,14 @@
         </div> 
     </div> 
 
-    <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px;"> 
+    <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px; margin-top: 16px;"> 
         <h2 style="color: var(--navy, #0a1f44); font-size: 1.4rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2> 
         <p style="color: var(--slate, #64748b); font-size: 0.85rem; margin: 0; line-height: 1.4;">Provide company identifier records, operational parameters, and target communications parameters.</p> 
     </div> 
 
-    <!-- Unified Mobile Layout: Dropping Grid System & Sidebar --> 
     <div class="workspace-split-layout" style="display: block !important; width: 100%; box-sizing: border-box;"> 
         <!-- FORCE INJECTED ROOT FIELDS INTO SINGLE COLUMN STACK --> 
         <div id="dynamic-onboarding-fields-root" class="mobile-full-stack" style="width: 100%; min-width: 0; box-sizing: border-box;"> 
-            <!-- ⚡ DYNAMIC SLOT HOOK: Handled completely by executeStepTwoDynamicFormInjection() --> 
             <div style="text-align: center; padding: 40px 0; color: var(--slate, #64748b); font-weight: 400; font-size: 0.95rem;"> 
                 <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary, #10b981); margin-right: 8px;"></i> 
                 <span>Assembling specialized compliance filing interfaces...</span> 
@@ -201,12 +198,7 @@
         </div> 
     </div> 
 
-    <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR --> 
-    <div class="wizard-action-footer mobile-sticky-footer"> 
-        <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1, event)" style="cursor: pointer;">Back</button> 
-        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save</button> 
-        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)" style="cursor: pointer;">Continue</button> 
-    </div> 
+    <!-- 🟢 THE DUPLICATE ACTIONS DIV WAS REMOVED FROM HERE TO PREVENT BUTTON DUPLICATION AND SCREEN FREEZES -->
 </div> 
 <!-- /End Step 2 Panel Wrapper View -->
 
