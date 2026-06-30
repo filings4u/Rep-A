@@ -1,210 +1,188 @@
 /* ============================================================================ */
-/* 📱 SECURED ENTERPRISE MOBILE ARCHITECTURE FRAME                              */
+/* 📱 PRODUCTION MOTOR STANDALONE MOBILE DESIGN SHEET V4                        */
 /* ============================================================================ */
 
 * {
-    box-sizing: border-box;
+    box-sizing: border-box !important;
     margin: 0;
     padding: 0;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Force the physical hardware view to stay frozen on the phone screen */
 html, body {
-    height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
-    background-color: #f8fafc;
-    font-family: 'Inter', sans-serif;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important; /* Freezes outer browser glass window frame from bouncing */
+    background-color: #f8fafc !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
-/* Parent Wrapper Box */
-.wizard-container {
-    width: 100%;
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-}
-
-.wizard-card {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Master Form: Top-To-Bottom Block Distribution */
+/* Master Framework Containers System Configuration */
+.wizard-container, 
+.wizard-card, 
 #master-onboarding-form {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
+    display: flex !important;
+    flex-direction: column !important; /* Force top-to-bottom layout tree line blocks */
+    height: 100dvh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    position: relative !important;
 }
 
-/* Header Tracker Section */
+/* Header Tracker Design Spec Bars */
 .mobile-sticky-tracker-header {
-    background: #ffffff;
-    border-bottom: 1px solid #cbd5e1;
-    padding: 12px 16px;
-    flex-shrink: 0;
+    background: #ffffff !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+    padding: 12px 16px !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .m-step-indicator-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #475569;
-    display: block;
-    margin-bottom: 4px;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #475569 !important;
+    display: block !important;
+    margin-bottom: 4px !important;
 }
 
 .m-progress-bar-bg {
-    width: 100%;
-    height: 5px;
-    background: #e2e8f0;
-    border-radius: 99px;
-    overflow: hidden;
+    width: 100% !important;
+    height: 5px !important;
+    background: #e2e8f0 !important;
+    border-radius: 99px !important;
+    overflow: hidden !important;
 }
 
 .m-progress-bar-fill {
-    height: 100%;
-    background: #10b981;
+    height: 100% !important;
+    background: #10b981 !important;
 }
 
-/* Workspace Frame View window: Holds input fields and titles */
-.m-form-scroller,
-.mobile-panel-scroll {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    padding: 16px;
+/* 🟢 THE SCROLLER MECHANISM: Fields scroll cleanly above the buttons padding track */
+.m-form-scroller {
+    flex: 1 !important;                 /* Automatically stretches to occupy upper space box */
+    overflow-y: auto !important;          /* Activates fluid native finger touch scrolling tracks */
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important; 
+    padding: 16px 16px 88px 16px !important; /* Bottom 88px padding guarantees fields clear the bottom bar buttons */
+    box-sizing: border-box !important;
+    width: 100% !important;
 }
 
-/* Inactive Panel Hard Clamp Masks */
+/* Step Views Panel Configuration */
 .wizard-panel {
-    display: none;
-    width: 100%;
+    display: none !important; 
+    width: 100% !important;
+    height: auto !important;
 }
 
-/* Only display the single actively mounted section step */
 .wizard-panel.active {
-    display: block;
+    display: block !important; 
 }
 
-.step-header-container {
-    margin-bottom: 16px;
-}
-
-.step-main-title {
-    color: #0a1f44;
-    font-size: 1.35rem;
-    font-weight: 900;
-    margin: 0 0 4px 0;
-    letter-spacing: -0.5px;
-}
-
-.step-subtitle {
-    color: #64748b;
-    font-size: 0.825rem;
-    margin: 0;
-    line-height: 1.3;
-}
-
-/* Anti-Smash Input field formatting matrix */
+/* Structural Grids Override: Collapses side-by-side desktop blocks to clean lists */
+.workspace-split-layout, 
+.form-grid-layout, 
 .mobile-full-stack,
-.form-grid-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    width: 100%;
+#dynamic-onboarding-fields-root,
+#wizard-dynamic-upsells-render-target,
+.profile-responsive-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 14px !important;
+    grid-template-columns: none !important;
+    box-sizing: border-box !important;
 }
 
+.sticky-timeline-sidebar, .meta-divider, .mobile-hide-meta-element {
+    display: none !important; /* Drop desktop application maps timeline sidebars */
+}
+
+/* Sizing and Spacing Clean Target Frames */
 .wizard-input-group {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
 }
 
-.wizard-input-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #334155;
-    margin-bottom: 6px;
+.wizard-input-label, .m-form-scroller label {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+    margin-bottom: 6px !important;
+    text-align: left !important;
+    display: block !important;
 }
 
-.input-lock-wrapper {
-    position: relative;
-    width: 100%;
+.wizard-input-field, .m-form-scroller input[type="text"], .m-form-scroller select {
+    display: block !important;
+    width: 100% !important;
+    height: 48px !important; 
+    padding: 0 12px !important;
+    font-size: 16px !important; 
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    background-color: #ffffff !important;
 }
 
-.wizard-input-field {
-    display: block;
-    width: 100%;
-    height: 48px;
-    padding: 0 40px 0 12px;
-    font-size: 16px; /* Blocks native apple viewport scaling bug drops */
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    background: #ffffff;
-}
-
-.input-lock-icon-span {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-}
-
-/* Sticky Action Controls Footer Section */
-.wizard-action-footer,
+/* 🟢 SOLID BASE NAVIGATION FOOTER BAR CONTROL */
+.wizard-action-footer, 
 .mobile-sticky-footer {
-    background: #ffffff;
-    border-top: 1px solid #cbd5e1;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    flex-shrink: 0; /* Keyboard opening fails to collapse bar fields flat */
-    width: 100%;
+    position: fixed !important;          /* Anchors row track flush directly onto screen bottom line */
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 72px !important;             
+    background: #ffffff !important;
+    border-top: 1px solid #cbd5e1 !important;
+    padding: 12px 16px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;           
+    display: flex !important;
+    flex-direction: row !important;      /* Forces buttons onto a clean side-by-side single line row */
+    flex-wrap: nowrap !important;        /* ABSOLUTELY TERMINATES LAYOUT LINE WRAPPING EXECUTIONS */
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 99999 !important;           
 }
 
-.mobile-sticky-footer button,
-.wizard-action-footer button {
-    height: 46px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 700;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+/* Stretch separate buttons cleanly so they split the row space symmetrically */
+.wizard-action-footer button, 
+.mobile-sticky-footer button {
+    flex: 1 !important;                  
+    width: 100% !important;
+    height: 46px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    border: none !important;
+    white-space: nowrap !important;       /* Blocks text internal breaking layouts loops */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
-.btn-wizard-alt {
-    background: #f1f5f9;
-    color: #334155;
-    padding: 0 16px;
-}
-
+.btn-wizard-alt, 
 .btn-wizard-save-progress {
-    background: #f1f5f9;
-    color: #334155;
-    padding: 0 16px;
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+    margin-right: 8px !important;
 }
 
 .btn-wizard-main {
-    flex: 1;
-    background: #10b981;
-    color: #ffffff;
-}
-
-.btn-wizard-main:active {
-    background: #059669;
+    background: #10b981 !important;
+    color: #ffffff !important;
 }
 
 .element-hidden {

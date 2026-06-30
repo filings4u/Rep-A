@@ -41,307 +41,70 @@
     </nav>
 
  
-<!-- MAIN WORKSPACE CONTAINER UNIT -->
-<div class="wizard-container">
-  <div class="wizard-card">
-
-    <!-- Header Block: Updated text description copy per your instruction -->
-    <div class="step-header-container">
-        <h2 class="step-main-title">Your Selection Overview</h2>
-        <p class="step-subtitle">Review your selected package and features below.</p>
-    </div>
-
-    <!-- Unified Responsive Workspace Grid Framework Layout -->
-    <div class="workspace-split-layout">
-        <!-- LEFT COLUMN: PACKAGE DATA INPUT VECTOR FIELDS -->
-        <div class="form-grid-layout">
-            <div class="wizard-input-group">
-                <label for="wizard-route-service-id" class="wizard-input-label">Selected Compliance Offering</label>
-                <div class="input-lock-wrapper">
-                    <input type="text" id="wizard-route-service-id" readonly required class="wizard-input-field readonly-lock-field" value="">
-                    <span class="input-lock-icon-span"><i class="fa-solid fa-lock"></i></span>
-                </div>
-            </div>
-
-            <!-- Tier Plan Display Node: Used by URL parameters engine parsing hooks -->
-            <input type="hidden" id="wizard-route-tier-id" value="">
-
-            <div class="wizard-input-group">
-                <label class="wizard-input-label">What Comes with the Package</label>
-                <!-- Target container strictly reserved for state-pricing.js inclusions array injection -->
-                <div id="step-1-package-features-list" class="features-list-data-container">
-                    <div class="loading-skeleton-row">
-                        <i class="fa-solid fa-spinner fa-spin"></i>
-                        <span>Assembling your customized layout configuration parameters...</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Base Fee Container: Replaces the duplicate block with a clean invoice row -->
-            <div id="step-1-base-fee-row" style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-weight: 800; color: var(--navy, #0a1f44); font-size: 0.95rem;">Base Fee:</span>
-                <strong id="step-1-base-fee-value" style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$0.00</strong>
-            </div>
-        </div> 
-        <!-- /End Left Column -->
-
-        <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD -->
-<aside class="sticky-timeline-sidebar" style="width: 280px; min-width: 280px; max-width: 280px; margin-right: 0; margin-left: auto; box-sizing: border-box;">  <div class="sidebar-header-box">
-    <h3 class="sidebar-title-label">
-      <i class="fa-solid fa-list-check"></i> Application Map
-    </h3>
-    <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
-  </div>
+<footer class="footer-master-container" style="position: relative; width: 100%; box-sizing: border-box; overflow: hidden; background: #0a1f44; border-top: 1px solid #cbd5e1; clear: both; display: block;">
   
-  <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline">
+  <!-- Tech Vector Network Grid Background Layer -->
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.04; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+  
+  <div class="footer-width-limiter" style="max-width: 1380px; margin: 0 auto; padding: 40px 24px; box-sizing: border-box; width: 100%;">
     
-    <!-- Step 1 Layout Row Block -->
-    <div id="timeline-row-1" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">1. Selected Package</span>
-        <span class="toc-step-desc">Items and inclusions</span>
+    <!-- MAIN DIRECTORY FLEX WRAPPER -->
+    <div class="footer-directory-grid" style="display: flex; justify-content: space-between; gap: 30px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap;">
+      
+      <!-- COLUMN 1: BRAND LOGO -->
+      <div style="flex: 1; min-width: 260px; box-sizing: border-box; margin-bottom: 20px;">
+        <img src="images/logo-white.png" alt="filings4u" style="height: 38px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; max-width: 100%;">
+        <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; max-width: 320px; margin: 0; font-weight: 400;">Providing enterprise-grade filing and compliance solutions for local and corporate entities.</p>
+      </div>
+      
+      <!-- RIGHT CONTAINER: Gathers all text columns together responsively -->
+      <div class="footer-links-wrapper" style="display: flex; gap: 40px; flex-wrap: wrap; flex: 2; justify-content: flex-end; box-sizing: border-box; min-width: 280px;">
+        
+        <!-- COLUMN 2: INFRASTRUCTURE LINKS -->
+        <div style="min-width: 160px; flex: 1; box-sizing: border-box;">
+          <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Infrastructure</h4>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
+            <a href="privacy-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Privacy Policy</a>
+            <a href="terms-of-service.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Terms of Service</a>
+            <a href="refund-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Refund Policy</a>
+          </div>
+        </div>
+        
+        <!-- COLUMN 3: SUPPORT GATEWAYS -->
+        <div style="min-width: 160px; flex: 1; box-sizing: border-box;">
+          <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Support</h4>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
+            <a href="contact.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Contact Specialist</a>
+            <a href="compliance.html" style="color: #cbd5e1; text-decoration: none; width: fit-content; font-weight: 400;">Compliance Hub</a>
+          </div>
+        </div>
+        
+        <!-- COLUMN 4: CORPORATE HEADQUARTERS -->
+        <div class="footer-hq-column" style="min-width: 220px; flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; box-sizing: border-box;">
+          <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Corporate</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; font-weight: 400;">
+            <span>filings4u, LLC</span>
+            <span>8537 S. Pulaski Rd</span>
+            <span>Chicago, IL 60652</span>
+            <span style="margin-top: 8px; font-size: 0.75rem; color: #94a3b8; font-weight: 400;">System Status: <span style="color: #10b981; font-weight: 400;">● Operational</span></span>
+          </div>
+        </div>
+        
       </div>
     </div>
-
-    <!-- Step 2 Layout Row Block -->
-    <div id="timeline-row-2" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">2. Service Form</span>
-        <span class="toc-step-desc">Purchase configuration profile</span>
+    
+    <!-- SUB-FOOTER LEGAL BAR -->
+    <div class="footer-legal-row-bar" style="padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.75rem; color: #94a3b8; width: 100%; box-sizing: border-box;">
+      <p style="margin: 0; line-height: 1.5; font-weight: 400;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: 400;">Roseland Companies, LLC</a></p>
+      <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important; font-weight: 400;">
+        <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span>256-bit SSL Encrypted Connection
       </div>
     </div>
-
-    <!-- Step 3 Layout Row Block -->
-    <div id="timeline-row-3" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">3. Add-Ons</span>
-        <span class="toc-step-desc">Compliance assets & shields</span>
-      </div>
-    </div>
-    <!-- Step 4 Layout Row Block -->
-    <div id="timeline-row-4" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">4. Power of Attorney</span>
-        <span class="toc-step-desc">Digital signature execution</span>
-      </div>
-    </div>
-
-    <!-- Step 5 Layout Row Block -->
-    <div id="timeline-row-5" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">5. Purchase Summary</span>
-        <span class="toc-step-desc">Order item breakdowns</span>
-      </div>
-    </div>
-
-    <!-- Step 6 Layout Row Block -->
-    <div id="timeline-row-6" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">6. Secure Payment</span>
-        <span class="toc-step-desc">Encrypted checkout gateway</span>
-      </div>
-    </div>
-
-    <!-- Step 7 Layout Row Block -->
-    <div id="timeline-row-7" class="toc-step-row">
-      <span class="toc-dot"></span>
-      <div class="toc-text-group">
-        <span class="toc-step-title">7. Success Portal</span>
-        <span class="toc-step-desc">Account creation systems</span>
-      </div>
-    </div>
-
-  </nav>
-</aside>
-
-        <!-- /End Right Column -->
-    </div> 
-    <!-- /End Framework Split Layout Container -->
-
-    <!-- 🔘 STEP 1 NAVIGATION CONTROL BAR -->
-<div class="wizard-action-footer">
-    <button type="button" class="btn-wizard-alt element-hidden">Back</button>
-    <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-    <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(2, event)">Continue to Form</button>
-</div>
+    
   </div>
-</div>
-
- <!-- ============================================================================ --> 
-<!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES                  --> 
-<!-- ============================================================================ --> 
-<div class="wizard-panel master-onboarding-form" id="step-panel-2" data-step="2" style="display: none; width: 100%; box-sizing: border-box;"> 
-    
-    <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px;"> 
-        <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2> 
-        <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p> 
-    </div> 
-
-    <!-- 🟢 FULL-WIDTH WORKSPACE GRID: Forms claim 100% space, sidebar locks to 340px right wall --> 
-    <div class="workspace-split-layout" style="display: grid; grid-template-columns: 1fr 340px; gap: 32px; width: 100%; box-sizing: border-box; align-items: start;"> 
-        
-        <!-- LEFT COLUMN CONTAINER: Stretching fields evenly across the entire left viewport section --> 
-        <div id="dynamic-onboarding-fields-root" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; min-width: 0; box-sizing: border-box;"> 
-            
-            <!-- ⚡ DYNAMIC SLOT HOOK: Handled completely by executeStepTwoDynamicFormInjection() --> 
-            <div style="grid-column: span 2; text-align: center; padding: 40px 0; color: var(--slate, #64748b); font-weight: 400; font-size: 0.95rem;"> 
-                <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary, #10b981); margin-right: 8px;"></i> <span>Assembling specialized compliance filing interfaces...</span> 
-            </div> 
-
-        </div> 
-        <!-- /End Left Column Container --> 
-
-        <!-- RIGHT COLUMN: MASTER APPLICATION MAP TIMELINE ASIDE CARD (Pinned Flush Right) --> 
-<aside class="sticky-timeline-sidebar" style="width: 280px; min-width: 280px; max-width: 280px; margin-right: 0; margin-left: auto; box-sizing: border-box;">            <div class="sidebar-header-box"> 
-                <h3 class="sidebar-title-label"> <i class="fa-solid fa-list-check"></i> Application Map </h3> 
-                <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p> 
-            </div> 
-            <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline"> 
-                
-                <!-- Step 1 Layout Row Block --> 
-                <div id="timeline-row-1" class="toc-step-row"> 
-                    <span class="toc-dot"></span> 
-                    <div class="toc-text-group"> 
-                        <span class="toc-step-title">1. Selected Package</span> 
-                        <span class="toc-step-desc">Items and inclusions</span> </div> 
-                </div> 
-                
-                <!-- Step 2 Layout Row Block --> 
-                <div id="timeline-row-2" class="toc-step-row"> 
-                    <span class="toc-dot"></span> 
-                    <div class="toc-text-group"> 
-                        <span class="toc-step-title">2. Service Form</span> 
-                        <span class="toc-step-desc">Purchase configuration profile</span> </div> 
-                </div> 
-                
-                <!-- Step 3 Layout Row Block --> 
-                <div id="timeline-row-3" class="toc-step-row"> 
-                    <span class="toc-dot"></span> 
-                    <div class="toc-text-group"> 
-                        <span class="toc-step-title">3. Add-Ons</span> 
-                        <span class="toc-step-desc">Compliance assets & shields</span> </div> 
-                </div> 
-                
-                <!-- Step 4 Layout Row Block --> 
-                <div id="timeline-row-4" class="toc-step-row"> 
-                    <span class="toc-dot"></span> 
-                    <div class="toc-text-group"> 
-                        <span class="toc-step-title">4. Power of Attorney</span> 
-                        <span class="toc-step-desc">Digital signature execution</span> </div> 
-                </div> 
-                
-                <!-- Step 5 Layout Row Block --> 
-                <div id="timeline-row-5" class="toc-step-row"> 
-                    <span class="toc-dot"></span> 
-                    <div class="toc-text-group"> 
-                        <span class="toc-step-title">5. Purchase Summary</span> 
-                        <span class="toc-step-desc">Order item breakdowns</span> </div> 
-                </div> 
-                
-                <!-- Step 6 Layout Row Block --> 
-                <div id="timeline-row-6" class="toc-step-row"> 
-                    <span class="toc-dot"></span> 
-                    <div class="toc-text-group"> 
-                        <span class="toc-step-title">6. Secure Payment</span> 
-                        <span class="toc-step-desc">Encrypted checkout gateway</span> </div> 
-                </div> 
-                
-                <!-- Step 7 Layout Row Block --> 
-                <div id="timeline-row-7" class="toc-step-row"> 
-                    <span class="toc-dot"></span> 
-                    <div class="toc-text-group"> 
-                        <span class="toc-step-title">7. Success Portal</span> 
-                        <span class="toc-step-desc">Account creation systems</span> </div> 
-                </div> 
-            </nav> 
-        </aside> 
-    </div> 
-    <!-- /End Framework Split Layout Container --> 
-
-    <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR --> 
-    <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;"> 
-        <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1, event)" style="cursor: pointer;">Back</button> 
-        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button> 
-        <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)" style="cursor: pointer;">Continue to Tiers</button> 
-    </div> 
-
-</div> 
-<!-- /End Step 2 Panel Wrapper View -->
-
-
-<!-- 🧱 STANDALONE GLOBAL CORPORATE SITE FOOTER MATRIX --> 
-<footer class="footer-master-container"> 
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.02; pointer-events: none; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div> 
-    
-    <div class="footer-width-limiter"> 
-        
-        <!-- MAIN DIRECTORY FLEX WRAPPER --> 
-        <div class="footer-directory-grid" style="display: flex; justify-content: space-between; gap: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap;"> 
-            
-            <!-- COLUMN 1: BRAND LOGO (Anchored to the Left Edge) -->
-            <div style="flex: 1; min-width: 240px;"> 
-                <img src="images/logo-white.png" alt="filings4u" style="height: 44px; width: auto; object-fit: contain; margin-bottom: 16px; display: block;"> 
-                <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; max-width: 320px; margin: 0;">Enterprise compliance onboarding channels and multi-jurisdictional automated file orchestration deployment networks.</p> 
-            </div> 
-            
-            <!-- RIGHT CONTAINER: Gathers all text columns together on the right side -->
-            <div style="display: flex; gap: 60px; flex-wrap: wrap; justify-content: flex-end;">
-                
-                <!-- COLUMN 2: INFRASTRUCTURE LINKS (Left-Aligned Text) -->
-                <div style="min-width: 180px;"> 
-                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Infrastructure Links</h4> 
-                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;"> 
-                        <a href="privacy-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Privacy Policy Matrix</a> 
-                        <a href="terms-of-service.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Terms of Service Agreement</a> 
-                        <a href="refund-policy.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Refund Cancellation Criteria</a> 
-                    </div> 
-                </div> 
-                
-                <!-- COLUMN 3: SUPPORT GATEWAYS (Left-Aligned Text) -->
-                <div style="min-width: 180px;"> 
-                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Support Gateways</h4> 
-                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;"> 
-                        <a href="contact.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Contact Specialist Liaisons</a> 
-                        <a href="compliance.html" style="color: #cbd5e1; text-decoration: none; width: fit-content;">Central Compliance Hub</a> 
-                    </div> 
-                </div> 
-                
-                <!-- COLUMN 4: CORPORATE HEADQUARTERS (FIXED: Flipped text alignment to the right edge) -->
-                <div style="min-width: 200px; text-align: right; display: flex; flex-direction: column; align-items: flex-end;"> 
-                    <h4 style="color: #ffffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px 0;">Corporate Headquarters</h4> 
-                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;"> 
-                        <span>filings4u, LLC</span> 
-                        <span>123 Enterprise Way, Suite 100</span> 
-                        <span>Austin, Texas 78701</span> 
-                        <span style="margin-top: 8px; font-size: 0.75rem; color: #94a3b8;">System Status: <strong style="color: #10b981;">● Operational</strong></span> 
-                    </div> 
-                </div> 
-
-            </div>
-            
-        </div> 
-        
-        <!-- SUB-FOOTER LEGAL BAR (UNMODIFIED) --> 
-        <div class="footer-legal-row-bar" style="padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.75rem; color: #94a3b8; width: 100%; box-sizing: border-box;"> 
-            <p style="margin: 0; line-height: 1.5;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a></p> 
-            
-            <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important;"> 
-                <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span> 256-bit SSL Encrypted Connection 
-            </div> 
-        </div> 
-        
-    </div> 
 </footer>
 
-
 </script src="assets/js/toggle.js"></script>
-
 
 </body> 
 </html>

@@ -1,5 +1,5 @@
 // ============================================================================ //
-// 🛡️ MOBILE VIRTUAL DOM PROTECTION AND AGNOSTIC HOOK BRIDGE
+// 🛡️ MOBILE VIRTUAL DOM PROTECTION AND AGNOSTIC HOOK BRIDGE (EXTENDED)
 // ============================================================================ //
 (function() {
     console.log("[Mobile Guard] Dynamic layout fallbacks initializing...");
@@ -10,7 +10,6 @@
         fakeSidebar.className = "sticky-timeline-sidebar";
         fakeSidebar.style.display = "none";
         
-        // Mock the required internal timeline row anchors so node.querySelector arrays don't crash
         for (let i = 1; i <= 7; i++) {
             const fakeRow = document.createElement("div");
             fakeRow.id = `timeline-row-${i}`;
@@ -35,7 +34,37 @@
         dummyNode.style.display = "none";
         document.body.appendChild(dummyNode);
     }
+
+    // 4. NEW: Mock common structural required root IDs for your 100+ templates
+    const missingTargetIds = [
+        "wizard-route-service-id",
+        "wizard-dynamic-form-target",
+        "dynamic-form-fields",
+        "step-2-right-rail-meta",
+        "service-sidebar-help-target"
+    ];
+
+    missingTargetIds.forEach(id => {
+        if (!document.getElementById(id)) {
+            const mockContainer = document.createElement("div");
+            mockContainer.id = id;
+            mockContainer.style.cssText = "display: none !important; width: 0px; height: 0px; visibility: hidden;";
+            document.body.appendChild(mockContainer);
+            console.log(`[Mobile Guard] Safely polyfilled missing container ID: #${id}`);
+        }
+    });
+
+    // 5. NEW: Catch-all patch to disable HTML5 validation overlays on hidden elements
+    // This stops browser tooltips from firing on 0x0 collapsed desktop legacy elements
+    document.addEventListener("DOMContentLoaded", () => {
+        const structuralForms = document.querySelectorAll("form");
+        structuralForms.forEach(form => {
+            form.setAttribute("novalidate", "true");
+        });
+        console.log("[Mobile Guard] Form validation overrides armed.");
+    });
 })();
+
 
 
 // ============================================================================ //
@@ -85,17 +114,31 @@ function initializeUrlParameterParserEngineVanillaMobile() {
         } 
     } 
 
-    // 3. 🟢 FIXED MOBILE FIELD GENERATION ON BOOT:
-    // Triggers your dynamic form engine safely inside mobile container wrappers
-    if (typeof window.executeStepTwoDynamicFormInjection === "function") { 
-        window.executeStepTwoDynamicFormInjection(true); 
-    } else if (typeof window.executeDynamicRegulatoryFieldInjection === "function") { 
-        window.executeDynamicRegulatoryFieldInjection(window.routeActiveServiceKey); 
-    } 
-} 
+  // 3. 🟢 FIXED MOBILE FIELD GENERATION ON BOOT:
+  // Triggers your dynamic form engine safely inside mobile container wrappers
+  if (typeof window.executeStepTwoDynamicFormInjection === "function") {
+    // FIX: Pass the active service key explicitly as the second argument so the engine doesn't break on local addresses
+    const resolvedSlug = window.routeActiveServiceKey || searchUrlQueryStrings.get('service') || "";
+    window.executeStepTwoDynamicFormInjection(true, resolvedSlug);
+  } else if (typeof window.executeDynamicRegulatoryFieldInjection === "function") {
+    window.executeDynamicRegulatoryFieldInjection(window.routeActiveServiceKey);
+  }
+}
 
 // Mount to the global window context for easy access
 window.initializeUrlParameterParserEngineVanilla = initializeUrlParameterParserEngineVanillaMobile;
+
+// ============================================================================ //
+// 🚀 MANDATORY AUTO-RUN TRIGGER FOR 100+ SERVICES LAYER
+// ============================================================================ //
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", window.initializeUrlParameterParserEngineVanillaMobile);
+} else {
+    // Run immediately if the DOM layout is already compiled and ready
+    window.initializeUrlParameterParserEngineVanillaMobile();
+}
+
+
 
 // ============================================================================ //
 // 💾 MOBILE CACHE AND RESTORE WIZARD FORM STATES LOGIC
@@ -1019,7 +1062,7 @@ document.addEventListener("DOMContentLoaded", () => {
 }); 
 
 // ============================================================================ //
-// 🧭 MOBILE NAVIGATION & APPLICATION SLIDER PANELS
+// 🧭 MOBILE NAVIGATION & APPLICATION SLIDER PANELS (STEP 2 COMPLIANT)          //
 // ============================================================================ //
 function goToNextWizardStepMobile(targetStep, eventClickRef) { 
     window.currentWizardActiveStep = parseInt(window.currentWizardActiveStep, 10) || 1; 
@@ -1029,10 +1072,7 @@ function goToNextWizardStepMobile(targetStep, eventClickRef) {
     } 
     if (typeof window.validateStepInputParametersVanilla === "function") { 
         const isCurrentViewValid = window.validateStepInputParametersVanilla(window.currentWizardActiveStep); 
-        if (!isCurrentViewValid) { 
-            console.warn(`[Mobile Gate] Validation failed for Step ${window.currentWizardActiveStep}.`); 
-            return false; 
-        } 
+        if (!isCurrentViewValid) return false; 
     } 
     if (typeof window.saveWizardFormStatesVanilla === "function") { 
         window.saveWizardFormStatesVanilla(); 
@@ -1041,10 +1081,7 @@ function goToNextWizardStepMobile(targetStep, eventClickRef) {
     if (normalizedTargetStep && !isNaN(normalizedTargetStep)) { 
         nextStepIndex = parseInt(normalizedTargetStep, 10); 
     } 
-    if (nextStepIndex > 7) { 
-        console.log("[Mobile Navigation] Funnel reached target submission payload."); 
-        return true; 
-    } 
+    if (nextStepIndex > 7) return true; 
     switchWizardActiveViewLayoutMobile(nextStepIndex); 
 } 
 
@@ -1057,23 +1094,19 @@ function goToPreviousWizardStepMobile() {
 
 function switchWizardActiveViewLayoutMobile(activeStepTarget) { 
     window.currentWizardActiveStep = activeStepTarget; 
-    const storedStateString = localStorage.getItem("f4u_wizard_onboarding_state") || "{}"; 
-    try { 
-        const parsedState = JSON.parse(storedStateString); 
-        parsedState.currentWizardActiveStep = activeStepTarget; 
-        localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(parsedState)); 
-    } catch (e) {} 
     
+    // Hide all validation tooltips from previous step to unlock screen height
+    const activePanel = document.getElementById("step-panel-" + window.currentWizardActiveStep);
+    if (activePanel) {
+        activePanel.querySelectorAll("input, select, textarea").forEach(el => el.setCustomValidity(""));
+    }
+
     for (let i = 1; i <= 7; i++) { 
         const panelNode = document.getElementById(`step-panel-${i}`); 
         if (panelNode) { 
             if (i === activeStepTarget) { 
                 panelNode.classList.add("active"); 
                 panelNode.style.setProperty("display", "block", "important"); 
-                panelNode.setAttribute("tabindex", "-1"); 
-                panelNode.focus(); 
-                const paneScroller = panelNode.closest(".m-form-scroller") || panelNode.parentElement; 
-                if (paneScroller) paneScroller.scrollTop = 0; 
             } else { 
                 panelNode.classList.remove("active"); 
                 panelNode.style.setProperty("display", "none", "important"); 
@@ -1081,52 +1114,41 @@ function switchWizardActiveViewLayoutMobile(activeStepTarget) {
         } 
     } 
 
-    // Synchronize tracker elements inside mobile wrapper 
     const indicatorText = document.getElementById("wizardStepText"); 
     const indicatorBar = document.getElementById("wizardProgressBar"); 
     if (indicatorText) indicatorText.innerText = `Step ${activeStepTarget} of 7`; 
     if (indicatorBar) indicatorBar.style.width = `${(activeStepTarget / 7) * 100}%`; 
 
-    // 🏢 EXECUTE INJECTIONS IMMEDIATELY UPON DISPLAYING STEP 2
     if (activeStepTarget === 2) { 
-        console.log("[Mobile Router] Step 2 active mount detected. Forcing dynamic script compilation sweep..."); 
         if (typeof window.executeStepTwoDynamicFormInjection === "function") { 
             window.executeStepTwoDynamicFormInjection(null, window.routeActiveServiceKey); 
-        } else if (typeof window.executeDynamicRegulatoryFieldInjection === "function") { 
-            window.executeDynamicRegulatoryFieldInjection(window.routeActiveServiceKey); 
         } 
     } 
 
-    // Execute standard platform pricing and matrix layout sweeps
     if (typeof window.runUnifiedWizardBootEngine === "function") { 
         window.runUnifiedWizardBootEngine(); 
-    } else { 
-        if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
-            window.updateDynamicPricingMatrixVanilla(); 
-        } 
-        if (typeof window.autoSkinSelectedUpsellCards === "function") { 
-            window.autoSkinSelectedUpsellCards(); 
-        } 
-    } 
+    }
 
-    // 🟢 POST-BOOT EXECUTION TIMING REPAIR MATRIX FOR STEP 2 BUTTON PLACEMENT
-    // Shifting this logic inside a brief delay block ensures it executes AFTER all background 
-    // loops, layout un-squashers, and dynamic pricing managers finish editing the DOM layout context.
+    // 🟢 DEFERRED REPOSITION FIX FOR STEP 2:
+    // Pushes the footer row down AFTER dynamic script inputs are mounted into the DOM layout sheets
     if (activeStepTarget === 2) {
         setTimeout(function() {
-            console.log("[Mobile Router] Enforcing post-boot layout stabilization. Pinning actions bar to base edge...");
             const masterForm = document.getElementById("master-onboarding-form"); 
             const actionFooter = document.querySelector(".wizard-action-footer") || document.querySelector(".mobile-sticky-footer"); 
             if (masterForm && actionFooter) { 
-                masterForm.appendChild(actionFooter); // Appending guarantees it sits beneath the injected content
+                masterForm.appendChild(actionFooter); 
             }
-        }, 150); // Exact delay timing bypasses desktop rendering pipeline conflicts perfectly
+            // Force scroll target calculation reset to zero parameters
+            const scroller = document.querySelector(".m-form-scroller");
+            if (scroller) scroller.scrollTop = 0;
+        }, 50);
     }
 } 
 
 window.goToNextWizardStep = goToNextWizardStepMobile; 
 window.goToPreviousWizardStep = goToPreviousWizardStepMobile; 
 window.switchWizardActiveViewLayout = switchWizardActiveViewLayoutMobile;
+
 
 
 
