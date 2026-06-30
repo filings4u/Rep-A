@@ -1,4 +1,44 @@
 // ============================================================================ //
+// 🛡️ MOBILE VIRTUAL DOM PROTECTION AND AGNOSTIC HOOK BRIDGE
+// ============================================================================ //
+(function() {
+    console.log("[Mobile Guard] Dynamic layout fallbacks initializing...");
+
+    // 1. Mock the missing desktop sidebar elements to protect legacy script iterations
+    if (!document.querySelector(".sticky-timeline-sidebar")) {
+        const fakeSidebar = document.createElement("div");
+        fakeSidebar.className = "sticky-timeline-sidebar";
+        fakeSidebar.style.display = "none";
+        
+        // Mock the required internal timeline row anchors so node.querySelector arrays don't crash
+        for (let i = 1; i <= 7; i++) {
+            const fakeRow = document.createElement("div");
+            fakeRow.id = `timeline-row-${i}`;
+            fakeRow.innerHTML = '<span class="toc-dot"></span><span class="toc-step-title"></span>';
+            fakeSidebar.appendChild(fakeRow);
+        }
+        document.body.appendChild(fakeSidebar);
+    }
+
+    // 2. Prevent desktop timeline updates from triggering runtime null property failures
+    if (typeof window.updateApplicationMapTimelineBubbles !== "function") {
+        window.updateApplicationMapTimelineBubbles = function(currentStepIndex) {
+            console.log(`[Mobile Path Override] Muted timeline bubbles refresh for step ${currentStepIndex}`);
+            return true;
+        };
+    }
+
+    // 3. Fallback tracking indicators to intercept loose desktop styling loops
+    if (!document.getElementById("step-1-package-features-list")) {
+        const dummyNode = document.createElement("div");
+        dummyNode.id = "step-1-package-features-list";
+        dummyNode.style.display = "none";
+        document.body.appendChild(dummyNode);
+    }
+})();
+
+
+// ============================================================================ //
 // 🔗 MOBILE PARAMETERS CONVERSION AND DYNAMIC RECOVERY LOGIC ENGINE
 // ============================================================================ //
 

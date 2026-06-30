@@ -412,3 +412,52 @@ body {
     box-sizing: border-box !important;
     padding: 14px !important;
 }
+
+
+/* 1. Reset frame limits across parent nodes */
+.mobile-locked-container {
+    height: 100dvh !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+.mobile-flex-card {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* 2. Build explicit touch scroller track context */
+.m-form-scroller,
+.mobile-panel-scroll {
+    flex: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-y: scroll !important; /* Force touch engine tracks on */
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important; /* Smooth elastic iOS scrolling */
+    padding: 16px !important;
+}
+
+/* 3. Keep layout footer pinned cleanly at the bottom rim edge */
+.mobile-sticky-footer {
+    position: shrink !important;
+    margin-top: auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    z-index: 100 !important;
+}
+
+/* Ensure step containers don't hold layout-breaking high max values */
+.wizard-panel {
+    display: none;
+    width: 100% !important;
+    height: auto !important;
+}
+.wizard-panel.active {
+    display: block !important;
+}

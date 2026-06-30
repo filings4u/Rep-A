@@ -100,85 +100,89 @@
         </div>
     </div>
 
-    <!-- MAIN WORKSPACE CONTAINER UNIT (App-Style Height Control Lock) -->
-    <div class="wizard-container mobile-locked-container">
-        <div class="wizard-card mobile-flex-card">
+    <!-- MAIN WORKSPACE CONTAINER UNIT (App-Style Height Control Lock) --> 
+<div class="wizard-container mobile-locked-container"> 
+    <div class="wizard-card mobile-flex-card"> 
+        
+        <!-- Sticky Dynamic Step Tracker Header --> 
+        <div class="mobile-sticky-tracker-header"> 
+            <span class="m-step-indicator-label">Step 1 of 7: Selected Package</span> 
+            <div class="m-progress-bar-bg"> 
+                <div class="m-progress-bar-fill" style="width: 14.28%;"></div> 
+            </div> 
+        </div> 
+
+        <!-- 🟢 FIX 1: Swapped to display block, removed overflow hidden freeze -->
+        <form id="master-onboarding-form" onsubmit="return false;" novalidate style="margin: 0; padding: 0; width: 100%; display: block; height: auto;"> 
             
-            <!-- Sticky Dynamic Step Tracker Header -->
-            <div class="mobile-sticky-tracker-header">
-                <span class="m-step-indicator-label">Step 1 of 7: Selected Package</span>
-                <div class="m-progress-bar-bg">
-                    <div class="m-progress-bar-fill" style="width: 14.28%;"></div>
-                </div>
-            </div>
+            <!-- 🟢 FIX 2: Added the dedicated m-form-scroller container directly here -->
+            <div class="m-form-scroller mobile-panel-scroll">
 
-            <form id="master-onboarding-form" onsubmit="return false;" novalidate style="margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; flex: 1; overflow: hidden;">
-                
-                <!-- 🎯 STEP 1 PANEL: PACKAGE LISTING & SYSTEM INCLUSIONS -->
-                <div class="wizard-panel active mobile-panel-scroll" id="step-panel-1">
-                    
-                    <!-- Header Block -->
-                    <div class="step-header-container">
-                        <h2 class="step-main-title">Your Selection Overview</h2>
-                        <p class="step-subtitle">Review your selected package and features below.</p>
-                    </div>
+                <!-- 🎯 STEP 1 PANEL: PACKAGE LISTING & SYSTEM INCLUSIONS --> 
+                <div class="wizard-panel active" id="step-panel-1"> 
+                    <!-- Header Block --> 
+                    <div class="step-header-container"> 
+                        <h2 class="step-main-title">Your Selection Overview</h2> 
+                        <p class="step-subtitle">Review your selected package and features below.</p> 
+                    </div> 
 
-                    <!-- Left Column Fields Stacking Area (Sidebar map layout container is ignored entirely here) -->
-                    <div class="form-grid-layout mobile-full-stack">
-                        
-                        <div class="wizard-input-group">
-                            <label for="wizard-route-service-id" class="wizard-input-label">Selected Compliance Offering</label>
-                            <div class="input-lock-wrapper">
-                                <input type="text" id="wizard-route-service-id" readonly required class="wizard-input-field readonly-lock-field" value="">
-                                <span class="input-lock-icon-span"><i class="fa-solid fa-lock"></i></span>
-                            </div>
-                        </div>
+                    <!-- Left Column Fields Stacking Area --> 
+                    <div class="form-grid-layout mobile-full-stack"> 
+                        <div class="wizard-input-group"> 
+                            <label for="wizard-route-service-id" class="wizard-input-label">Selected Compliance Offering</label> 
+                            <div class="input-lock-wrapper"> 
+                                <input type="text" id="wizard-route-service-id" readonly required class="wizard-input-field readonly-lock-field" value=""> 
+                                <span class="input-lock-icon-span"><i class="fa-solid fa-lock"></i></span> 
+                            </div> 
+                        </div> 
 
-                        <!-- Tier Plan Display Node -->
-                        <input type="hidden" id="wizard-route-tier-id" value="">
+                        <input type="hidden" id="wizard-route-tier-id" value=""> 
 
-                        <div class="wizard-input-group">
-                            <label class="wizard-input-label">What Comes with the Package</label>
-                            <!-- Targets exact JS inclusions array injection anchor -->
-                            <div id="step-1-package-features-list" class="features-list-data-container">
-                                <div class="loading-skeleton-row">
-                                    <i class="fa-solid fa-spinner fa-spin"></i>
-                                    <span>Assembling your customized layout configuration parameters...</span>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="wizard-input-group"> 
+                            <label class="wizard-input-label">What Comes with the Package</label> 
+                            <div id="step-1-package-features-list" class="features-list-data-container"> 
+                                <div class="loading-skeleton-row"> 
+                                    <i class="fa-solid fa-spinner fa-spin"></i> 
+                                    <span>Assembling your customized layout configuration parameters...</span> 
+                                </div> 
+                            </div> 
+                        </div> 
 
-                        <!-- Base Fee Container Invoice Row -->
-                        <div id="step-1-base-fee-row" style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; width: 100%;">
-                            <span style="font-weight: 800; color: var(--navy, #0a1f44); font-size: 0.95rem;">Base Fee:</span>
-                            <strong id="step-1-base-fee-value" style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$0.00</strong>
-                        </div>
-
-                    </div>
+                        <div id="step-1-base-fee-row" style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; width: 100%;"> 
+                            <span style="font-weight: 800; color: var(--navy, #0a1f44); font-size: 0.95rem;">Base Fee:</span> 
+                            <strong id="step-1-base-fee-value" style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$0.00</strong> 
+                        </div> 
+                    </div> 
                 </div>
 
-                <!-- 🔘 STEP 1 NAVIGATION CONTROL BAR (Sticky Viewport Bottom Footer Container) -->
-                <div class="wizard-action-footer mobile-sticky-footer">
-                    <button type="button" class="btn-wizard-alt element-hidden" style="display: none !important;">Back</button>
-                    <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
-                    <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(2, event)">Continue</button>
-                </div>
+                <!-- (Your other step panels 2 through 7 map cleanly right inside this wrapper) -->
 
-            </form>
-        </div>
-    </div>
+            </div> <!-- /End Scroller Container Box -->
+
+            <!-- 🔘 STEP 1 NAVIGATION CONTROL BAR (Sticky Viewport Bottom Footer Container) --> 
+            <div class="wizard-action-footer mobile-sticky-footer"> 
+                <button type="button" class="btn-wizard-alt element-hidden" style="display: none !important;">Back</button> 
+                <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save</button> 
+                <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(2, event)">Continue</button> 
+            </div> 
+        </form> 
+    </div> 
+</div>
+
+
 <!-- ============================================================================ --> 
 <!-- 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & TAXONOMY MATRICES --> 
 <!-- ============================================================================ --> 
-<div class="wizard-panel mobile-panel-scroll" id="step-panel-2" data-step="2" style="display: none; width: 100%; box-sizing: border-box;"> 
+<!-- 🟢 FIX: Removed mobile-panel-scroll from container to stop scroll trapping loops -->
+<div class="wizard-panel" id="step-panel-2" data-step="2" style="display: none; width: 100%; box-sizing: border-box;"> 
     
-    <!-- Sticky Tracker Update for Step 2 (Swapped dynamically or matches layout state) -->
-    <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;">
-        <span class="m-step-indicator-label">Step 2 of 7: Service Form</span>
-        <div class="m-progress-bar-bg">
-            <div class="m-progress-bar-fill" style="width: 28.56%;"></div>
-        </div>
-    </div>
+    <!-- Sticky Tracker Update for Step 2 --> 
+    <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;"> 
+        <span class="m-step-indicator-label">Step 2 of 7: Service Form</span> 
+        <div class="m-progress-bar-bg"> 
+            <div class="m-progress-bar-fill" style="width: 28.56%;"></div> 
+        </div> 
+    </div> 
 
     <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px;"> 
         <h2 style="color: var(--navy, #0a1f44); font-size: 1.4rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2> 
@@ -187,7 +191,6 @@
 
     <!-- Unified Mobile Layout: Dropping Grid System & Sidebar --> 
     <div class="workspace-split-layout" style="display: block !important; width: 100%; box-sizing: border-box;"> 
-        
         <!-- FORCE INJECTED ROOT FIELDS INTO SINGLE COLUMN STACK --> 
         <div id="dynamic-onboarding-fields-root" class="mobile-full-stack" style="width: 100%; min-width: 0; box-sizing: border-box;"> 
             <!-- ⚡ DYNAMIC SLOT HOOK: Handled completely by executeStepTwoDynamicFormInjection() --> 
@@ -196,10 +199,9 @@
                 <span>Assembling specialized compliance filing interfaces...</span> 
             </div> 
         </div> 
-
     </div> 
 
-    <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR (Sticky Viewport Bottom Footer) --> 
+    <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR --> 
     <div class="wizard-action-footer mobile-sticky-footer"> 
         <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1, event)" style="cursor: pointer;">Back</button> 
         <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save</button> 
@@ -207,22 +209,24 @@
     </div> 
 </div> 
 <!-- /End Step 2 Panel Wrapper View -->
+
+
 <!-- ============================================================================ --> 
 <!-- 🚀 STEP 3 PANEL: SPLIT DESIGN COMPLIANCE ADD-ONS MARKET --> 
 <!-- ============================================================================ --> 
-<div class="wizard-panel mobile-panel-scroll" id="step-panel-3" data-step="3" style="display: none;"> 
+<!-- 🟢 FIX: Removed mobile-panel-scroll from container to allow parent wrapper scrolling -->
+<div class="wizard-panel" id="step-panel-3" data-step="3" style="display: none;"> 
     
-    <!-- Sticky Tracker Update for Step 3 -->
-    <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;">
-        <span class="m-step-indicator-label">Step 3 of 7: Add-Ons</span>
-        <div class="m-progress-bar-bg">
-            <div class="m-progress-bar-fill" style="width: 42.84%;"></div>
-        </div>
-    </div>
+    <!-- Sticky Tracker Update for Step 3 --> 
+    <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;"> 
+        <span class="m-step-indicator-label">Step 3 of 7: Add-Ons</span> 
+        <div class="m-progress-bar-bg"> 
+            <div class="m-progress-bar-fill" style="width: 42.84%;"></div> 
+        </div> 
+    </div> 
 
     <!-- Unified Responsive Workspace Grid Framework Layout --> 
     <div class="workspace-split-layout" style="display: block !important; width: 100%; box-sizing: border-box;"> 
-        
         <!-- THE ADD-ONS MARKETPLACE FULL-WIDTH CONTAINER --> 
         <div style="display: flex; flex-direction: column; width: 100%; box-sizing: border-box;"> 
             <div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px; margin-bottom: 14px;"> 
@@ -239,7 +243,6 @@
                 </div> 
             </div> 
         </div> 
-
     </div> 
 
     <!-- 🔘 STEP 3 NAVIGATION CONTROL BAR (Sticky Viewport Bottom Footer) --> 
@@ -250,115 +253,138 @@
     </div> 
 </div> 
 <!-- /End Step 3 Panel Wrapper View -->
-<!-- START OF STEP 4 -->
+
+
+<!-- START OF STEP 4 --> 
 <div class="wizard-panel" id="step-panel-4" data-step="4" style="display: none; width: 100%; box-sizing: border-box;"> 
     
-    <!-- Title Section -->
-    <div style="margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;"> 
+    <!-- 🟢 ADDED: Sticky Tracker Update block for Step 4 matching steps 1-3 -->
+    <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;"> 
+        <span class="m-step-indicator-label">Step 4 of 7: Power of Attorney</span> 
+        <div class="m-progress-bar-bg"> 
+            <div class="m-progress-bar-fill" style="width: 57.12%;"></div> 
+        </div> 
+    </div> 
+
+    <!-- Title Section --> 
+    <div style="margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-top: 16px;"> 
         <h2 style="color: #0a1f44; font-size: 1.35rem; font-weight: 900; margin: 0 0 4px 0;">Digital Power of Attorney Execution</h2> 
         <p style="color: #64748b; font-size: 0.825rem; margin: 0; line-height: 1.3;">Please scroll to the bottom of the legal mandate to review and unlock the signature input panel.</p> 
-    </div>
-    <!-- Legal Terms Container Box -->
+    </div> 
+
+    <!-- Legal Terms Container Box --> 
     <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-sizing: border-box; width: 100%;"> 
-        
-        <!-- Scroll Frame -->
-        <div id="poa-scroll-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; font-size: 0.825rem; color: #334155; line-height: 1.5; max-height: 160px; overflow-y: scroll; text-align: justify; margin-bottom: 16px;"> 
+        <!-- Scroll Frame --> 
+        <div id="poa-scroll-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; font-size: 0.825rem; color: #334155; line-height: 1.5; max-height: 160px; overflow-y: scroll; text-align: justify; margin-bottom: 16px; -webkit-overflow-scrolling: touch;"> 
             LIMITED POWER OF ATTORNEY & CORPORATE AGENCY AGREEMENTWHEREAS, the undersigned Principal... [Your unedited full legal agreement text remains here seamlessly via the live code engine structure] ...Contact Support: support@filings4u.com 
-        </div>
+        </div> 
+
         <!-- Vertical Input Stack --> 
         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;"> 
-            
             <label for="poa_typed_signature" style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: #0a1f44;">Full Legal Name</label> 
-            
-            <!-- Type Box -->
+            <!-- Type Box --> 
             <input type="text" id="poa_typed_signature" name="poa_typed_signature" required placeholder="e.g., Johnathan R. Doe" style="width: 100%; height: 44px; padding: 0 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 16px; box-sizing: border-box;"> 
             
-            <!-- Cursive Preview Box -->
+            <!-- Cursive Preview Box --> 
             <div id="cursive-signature-preview" style="width: 100%; height: 44px; padding: 0 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; align-items: center; font-family: 'Dancing Script', cursive; font-size: 1.5rem; color: #0066cc; overflow: hidden;">Your Signature</div> 
-
-            <!-- Checkbox Option -->
+            
+            <!-- Checkbox Option --> 
             <div style="display: flex; align-items: flex-start; gap: 10px; margin-top: 4px;"> 
                 <input type="checkbox" id="poa_consent_checkbox" name="poa_consent_checkbox" style="width: 18px; height: 18px; min-width: 18px; margin-top: 2px;"> 
-                <label for="poa_consent_checkbox" style="font-size: 0.75rem; font-weight: 600; color: #0a1f44; line-height: 1.4;">I agree to the Limited Power of Attorney and authorize filings4u, LLC to sign and file these documents.</label> 
+                <label for="poa_consent_checkbox" style="font-size: 0.75rem; font-weight: 600; color: #0a1f44; line-height: 1.4; user-select: none;">I agree to the Limited Power of Attorney and authorize filings4u, LLC to sign and file these documents.</label> 
             </div> 
         </div> 
     </div> 
 
-    <!-- Hidden Scripts Tracking Metadata Hooks -->
+    <!-- Hidden Scripts Tracking Metadata Hooks --> 
     <input type="hidden" id="poa_meta_version" value="v2026.1"> 
     <input type="hidden" id="poa_meta_intent_string" value=""> 
     <input type="hidden" id="poa_meta_font_style" value="Dancing Script, Caveat, cursive"> 
     <input type="hidden" id="poa_meta_timestamp_utc" value=""> 
     <input type="hidden" id="poa_meta_user_agent" value=""> 
 
-    <!-- Action Buttons Panel Footer -->
+    <!-- Action Buttons Panel Footer --> 
     <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;"> 
-        <button type="button" onclick="goToNextWizardStep(3, event)" style="height: 44px; padding: 0 16px; background: #f1f5f9; border-radius: 6px; border: none; font-weight: 700;">Back</button> 
-        <button type="button" id="poa-next-btn" style="flex: 1; height: 44px; background: #10b981; color: white; border-radius: 6px; border: none; font-weight: 700;" onclick="if(typeof window.runActivePoaClickValidationGate === 'function') { window.runActivePoaClickValidationGate(event); } else { goToNextWizardStep(5, event); }">Continue</button> 
+        <button type="button" onclick="goToNextWizardStep(3, event)" style="height: 44px; padding: 0 16px; background: #f1f5f9; border-radius: 6px; border: none; font-weight: 700; cursor: pointer;">Back</button> 
+        <button type="button" id="poa-next-btn" style="flex: 1; height: 44px; background: #10b981; color: white; border-radius: 6px; border: none; font-weight: 700; cursor: pointer;" onclick="if(typeof window.runActivePoaClickValidationGate === 'function') { window.runActivePoaClickValidationGate(event); } else { goToNextWizardStep(5, event); }">Continue</button> 
     </div> 
-</div>
+</div> 
 <!-- END OF STEP 4 -->
-<!-- START OF STEP 5 -->
+
+
+<!-- START OF STEP 5 --> 
 <div class="wizard-panel" id="step-panel-5" style="display: none; width: 100%; box-sizing: border-box;"> 
     
-    <!-- Title Headers Area -->
-    <div style="margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;"> 
+    <!-- 🟢 ADDED: Sticky Tracker Update block for Step 5 matching preceding steps -->
+    <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;"> 
+        <span class="m-step-indicator-label">Step 5 of 7: Purchase Summary</span> 
+        <div class="m-progress-bar-bg"> 
+            <div class="m-progress-bar-fill" style="width: 71.4%;"></div> 
+        </div> 
+    </div> 
+
+    <!-- Title Headers Area --> 
+    <div style="margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-top: 16px;"> 
         <h2 style="color: #0a1f44; font-size: 1.35rem; font-weight: 900; margin: 0 0 4px 0; letter-spacing: -0.5px;">Review Your Purchase Summary</h2> 
         <p style="color: #64748b; font-size: 0.825rem; margin: 0; line-height: 1.3;">Verify your baseline item allocations and dynamic package selections before continuing to payment.</p> 
     </div> 
 
     <!-- Mobile Vertical Frame Wrapper (Removes split columns and sidebar completely) --> 
     <div style="display: block; width: 100%; box-sizing: border-box;"> 
-        
-        <!-- Main Card Wrapper -->
+        <!-- Main Card Wrapper --> 
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-sizing: border-box; width: 100%;"> 
-            
-            <!-- Injection row block target for your javascript summaries loop -->
+            <!-- Injection row block target for your javascript summaries loop --> 
             <div id="summary-purchase-rows-container" style="display: flex; flex-direction: column; gap: 12px;"></div> 
             
-            <!-- Totals Invoice List Stack -->
+            <!-- Totals Invoice List Stack --> 
             <div style="margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 16px; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;"> 
-                
                 <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #64748b; font-weight: 500;"> 
                     <span>Filing &amp; Add-on Subtotal</span> 
                     <strong id="summary-subtotal-display" style="font-family: monospace; color: #0a1f44;">$0.00</strong> 
                 </div> 
-                
                 <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #64748b; font-weight: 500;"> 
                     <span>Government &amp; Agency Fees</span> 
                     <strong id="summary-gov-fees-display" style="font-family: monospace; color: #0a1f44;">$0.00</strong> 
                 </div> 
-                
                 <div style="display: flex; justify-content: space-between; margin-top: 6px; border-top: 1px dashed #e2e8f0; padding-top: 12px; font-size: 1.15rem; align-items: center;"> 
                     <span style="color: #0a1f44; font-weight: 800;">Total Summary Amount</span> 
                     <strong id="summary-grand-total-display" style="font-family: monospace; color: #10b981; font-size: 1.3rem;">$0.00</strong> 
                 </div> 
             </div> 
         </div> 
-    </div>
-    <!-- Action Controls Bottom Bar -->
+    </div> 
+
+    <!-- Action Controls Bottom Bar --> 
     <div style="display: flex; justify-content: space-between; gap: 8px; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px; box-sizing: border-box;"> 
         <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(4)" style="height: 44px; padding: 0 14px; background: #f1f5f9; border-radius: 6px; border: none; font-weight: 700; cursor: pointer;">Back</button> 
         <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="height: 44px; padding: 0 12px; background: #f1f5f9; border-radius: 6px; border: none; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save</button> 
         <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(6)" style="flex: 1; height: 44px; background: #10b981; color: white; border-radius: 6px; border: none; font-weight: 700; cursor: pointer;">Continue to Payment</button> 
     </div> 
-</div>
+</div> 
 <!-- END OF STEP 5 -->
-<!-- START OF STEP 6 -->
+
+
+<!-- START OF STEP 6 --> 
 <div class="wizard-panel" id="step-panel-6" data-step="6" style="display: none;" onstylechange="if(this.style.display !== 'none') { window.syncTotalToPaymentDisplay(); window.initializeFlatStripeCheckoutElement(); }"> 
     
-    <!-- Title Headers Area -->
-    <div style="margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;"> 
+    <!-- 🟢 ADDED: Sticky Tracker Update block for Step 6 matching preceding steps -->
+    <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;"> 
+        <span class="m-step-indicator-label">Step 6 of 7: Secure Payment</span> 
+        <div class="m-progress-bar-bg"> 
+            <div class="m-progress-bar-fill" style="width: 85.68%;"></div> 
+        </div> 
+    </div> 
+
+    <!-- Title Headers Area --> 
+    <div style="margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-top: 16px;"> 
         <h2 style="color: #0a1f44; font-size: 1.35rem; font-weight: 900; margin: 0 0 4px 0; letter-spacing: -0.5px;">Encrypted Payment Entry</h2> 
         <p style="color: #64748b; font-size: 0.825rem; margin: 0; line-height: 1.3;">Provide tokenized card verification parameters to authorize and execute your secure checkout connection.</p> 
     </div> 
 
     <!-- Mobile Vertical Card (Strips the split column architecture layout) --> 
     <div style="display: block; width: 100%; box-sizing: border-box;"> 
-        
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; width: 100%;"> 
-            
-            <!-- Mobile Optimized Head Totals Frame (Changes alignment to vertical column layouts) -->
+            <!-- Mobile Optimized Head Totals Frame (Changes alignment to vertical column layouts) --> 
             <div style="display: flex; flex-direction: column; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; gap: 10px; width: 100%;"> 
                 <div> 
                     <h3 style="margin: 0 0 2px 0; font-size: 1.05rem; font-weight: 800; color: #0a1f44;">Secure Credit Card Details</h3> 
@@ -370,7 +396,7 @@
                 </div> 
             </div> 
 
-            <!-- Token Box Mount wrapper -->
+            <!-- Token Box Mount wrapper --> 
             <div class="wizard-input-group" style="margin-bottom: 0; display: flex; flex-direction: column; gap: 6px; width: 100%;"> 
                 <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; display: block;">Secure Credit or Debit Card Payment</label> 
                 <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); width: 100%; box-sizing: border-box;"> 
@@ -378,22 +404,133 @@
                 </div> 
             </div> 
 
-            <!-- Badges Compliance Elements Matrix -->
+            <!-- Badges Compliance Elements Matrix --> 
             <div style="border-top: 1px solid #e2e8f0; padding-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 0.75rem; color: #64748b; font-weight: 600;"> 
                 <div style="display: flex; align-items: center; gap: 6px; font-weight: 400;"><i class="fa-solid fa-shield-halved" style="color: #10b981;"></i> PCI-DSS Level 1 Compliant Architecture Seam</div> 
                 <div style="display: flex; align-items: center; gap: 6px; font-weight: 400;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Official Corporate Guarantee Protection Included</div> 
             </div> 
         </div> 
-    </div>
-    <!-- Action Controls Bottom Navigation Bar -->
+    </div> 
+
+    <!-- Action Controls Bottom Navigation Bar --> 
     <div style="display: flex; justify-content: space-between; gap: 8px; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px; box-sizing: border-box; width: 100%;"> 
         <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(5, event)" style="height: 44px; padding: 0 14px; background: #f1f5f9; border-radius: 6px; border: none; font-weight: 700; cursor: pointer;">Back</button> 
         <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="height: 44px; padding: 0 12px; background: #f1f5f9; border-radius: 6px; border: none; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save</button> 
         <button type="button" id="wizard-next-trigger-btn" class="btn-wizard-main" onclick="window.executeOnboardingTransactionPayloadSubmitVanilla()" style="flex: 1; height: 44px; background: #10b981; color: #ffffff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(16,185,129,0.25);">Submit Order</button> 
     </div> 
-</div>
+</div> 
 <!-- END OF STEP 6 -->
-                <!-- Confirm Password Field Box -->
+
+<!-- ============================================================================ --> 
+<!-- 🎉 STEP 7 PANEL: SUCCESS PORTAL & ACCOUNT CREATION --> 
+<!-- ============================================================================ --> 
+<div class="wizard-panel" id="step-panel-7" style="display: none; width: 100%; box-sizing: border-box;"> 
+    
+    <!-- 🟢 ADDED: Sticky Tracker Update block for Step 7 matching preceding steps -->
+    <div class="mobile-sticky-tracker-header" style="margin: -16px -16px 16px -16px;"> 
+        <span class="m-step-indicator-label">Step 7 of 7: Success Portal</span> 
+        <div class="m-progress-bar-bg"> 
+            <div class="m-progress-bar-fill" style="width: 100%;"></div> 
+        </div> 
+    </div> 
+
+    <!-- Mobile Vertical Container Frame (Strips desktop split column layouts) -->
+    <main style="display: flex; flex-direction: column; gap: 20px; width: 100%; box-sizing: border-box; margin-top: 16px;"> 
+        
+        <!-- MODULE 1: ORDER CONFIRMATION AND TRANSACTION RECEIPT -->
+        <section style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; box-sizing: border-box; width: 100%;"> 
+            
+            <!-- Success Badge Icon -->
+            <div style="width: 56px; height: 56px; background: rgba(16, 185, 129, 0.1); color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;"> 
+                <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px; display: block;"> 
+                    <polyline points="20 6 9 17 4 12"></polyline> 
+                </svg> 
+            </div> 
+
+            <!-- Title Matrix Headers Area -->
+            <div style="margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; width: 100%; box-sizing: border-box;"> 
+                <h1 style="color: #0a1f44; font-size: 1.45rem; font-weight: 900; margin: 0 0 4px 0; letter-spacing: -0.5px;">Order Successfully Deployed</h1> 
+                <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.4;">Your compliance metadata package has been parsed, encrypted, and transmitted directly to target authority filing networks.</p> 
+            </div> 
+
+            <!-- Reference Tracking Token Box Stack -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; box-sizing: border-box; width: 100%;"> 
+                <div> 
+                    <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.05em; display: block; margin-bottom: 2px;">Secure Tracking Token</span> 
+                    <strong id="receipt-session-hash-display" style="font-family: monospace; font-size: 0.9rem; color: #0a1f44; word-break: break-all; display: block;">RETRIEVING...</strong> 
+                </div> 
+                <div> 
+                    <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.05em; display: block; margin-bottom: 2px;">Filing Status</span> 
+                    <strong style="color: #10b981; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; font-weight: 700;"> 
+                        <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span> VALIDATED &amp; QUEUED 
+                    </strong> 
+                </div> 
+            </div>
+
+            <!-- Itemized Receipt Section -->
+            <div style="margin-bottom: 20px;"> 
+                <h3 style="margin: 0 0 10px 0; font-size: 0.85rem; font-weight: 800; color: #0a1f44; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #f8fafc; padding-bottom: 4px;">Itemized Billing Statement</h3> 
+                <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column; gap: 8px;"></div> 
+                
+                <div style="background: #f8fafc; border-radius: 8px; padding: 14px; margin-top: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; box-sizing: border-box; width: 100%;"> 
+                    <div style="display: flex; justify-content: space-between; font-size: 0.825rem; color: #64748b; font-weight: 500;"> 
+                        <span>Filing Processing Subtotal</span> 
+                        <span id="receipt-subtotal-display" style="font-family: monospace; color: #0a1f44; font-weight: 600;">$0.00</span> 
+                    </div> 
+                    <div style="display: flex; justify-content: space-between; font-size: 0.825rem; color: #64748b; font-weight: 500;"> 
+                        <span>Government Statutory Registry Fees</span> 
+                        <span id="receipt-gov-fee-display" style="font-family: monospace; color: #0a1f44; font-weight: 600;">$0.00</span> 
+                    </div> 
+                    <div style="display: flex; justify-content: space-between; font-size: 1.1rem; color: #0a1f44; font-weight: 900; border-top: 1px dashed #e2e8f0; padding-top: 10px; margin-top: 2px; align-items: center;"> 
+                        <span>Total Paid Amount</span> 
+                        <span id="receipt-grand-total-display" style="font-family: monospace; color: #10b981;">$0.00</span> 
+                    </div> 
+                </div> 
+            </div> 
+
+            <!-- Profile Parameters Matrix --> 
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; box-sizing: border-box; width: 100%;"> 
+                <h3 style="margin: 0 0 12px 0; font-size: 0.85rem; font-weight: 800; color: #0a1f44; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;"> 
+                    <i class="fa-solid fa-building" style="color: #64748b;"></i> Registered Entity Profile Target 
+                </h3> 
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem; width: 100%; box-sizing: border-box;"> 
+                    <div> 
+                        <span style="color: #64748b; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Legal Corporate Name</span> 
+                        <strong id="receipt-profile-name" style="color: #0a1f44; font-weight: 600;">---</strong> 
+                    </div> 
+                    <div> 
+                        <span style="color: #64748b; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Taxpayer ID / EIN</span> 
+                        <strong id="receipt-profile-ein" style="color: #0a1f44; font-family: monospace; font-weight: 600;">---</strong> 
+                    </div> 
+                    <div> 
+                        <span style="color: #64748b; display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Principal Office Address</span> 
+                        <strong id="receipt-profile-address" style="color: #0a1f44; font-weight: 600;">---</strong> 
+                    </div> 
+                </div> 
+            </div> 
+        </section>
+
+        <!-- MODULE 2: CLIENT SECURED GATEWAY ACCOUNT CREATION CARD --> 
+        <aside style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; box-sizing: border-box; width: 100%;"> 
+            <div style="margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; width: 100%; box-sizing: border-box;"> 
+                <h2 style="color: #0a1f44; font-size: 1.25rem; font-weight: 800; margin: 0 0 4px 0; display: flex; align-items: center; gap: 6px;"> 
+                    <i class="fa-solid fa-user-plus" style="color: #10b981; font-size: 1.1rem;"></i> Activate Client Portal 
+                </h2> 
+                <p style="color: #64748b; font-size: 0.825rem; margin: 0; line-height: 1.4; font-weight: 400;">Claim ownership of your compliance dossier. Establish your security access parameters to monitor state approvals, fetch corporate documents, and track status matrices in real time.</p> 
+            </div> 
+
+            <!-- SECURE PORTAL USER REGISTRATION MATRIX FORM --> 
+            <div id="wizard-account-generation-subform" style="width: 100%; box-sizing: border-box;"> 
+                <div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; width: 100%;"> 
+                    <label for="portal_user_email" style="font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Registered Account Username / Email</label> 
+                    <div style="position: relative; display: flex; align-items: center; width: 100%;"> 
+                        <span style="position: absolute; left: 14px; color: #64748b; font-size: 0.85rem;"><i class="fa-solid fa-envelope"></i></span> 
+                        <input type="email" id="portal_user_email" required readonly style="width: 100%; padding: 12px 14px 12px 38px; font-size: 16px; font-weight: 600; border-radius: 6px; border: 1px solid #e2e8f0; background: #f1f5f9; color: #64748b; cursor: not-allowed; outline: none; box-sizing: border-box; height: 46px;"> 
+                    </div> 
+                    <span style="font-size: 0.675rem; color: #64748b; font-weight: 400; padding-left: 2px;">Auto-locked to your corporate registry filing email.</span> 
+                </div> 
+                
+                              <!-- Confirm Password Field Box -->
                 <div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 20px; width: 100%;"> 
                     <label for="portal_user_password_confirm" style="font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Confirm Security Password</label> 
                     <div style="position: relative; display: flex; align-items: center; width: 100%;"> 
@@ -407,6 +544,7 @@
                     <i class="fa-solid fa-unlock-keyhole" style="margin-right: 4px;"></i> Initialize Secured Dashboard 
                 </button> 
             </div>
+
             <!-- Secure Vault Notice Footer Layout -->
             <div style="margin-top: 16px; border-top: 1px dashed #e2e8f0; padding-top: 12px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.725rem; color: #64748b; line-height: 1.4;"> 
                 <span style="color: #10b981; font-size: 0.9rem; margin-top: 1px;"><i class="fa-solid fa-shield-halved"></i></span> 
@@ -421,8 +559,5 @@
        </form> 
     </div> 
 </div>
-
-
-
 </body>
 </html>
