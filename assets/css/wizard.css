@@ -1357,3 +1357,32 @@
 }
 
 
+/* Media query breakpoint for tablets and mobiles */
+@media (max-width: 990px) { 
+  .workspace-split-layout { 
+    flex-direction: column !important; 
+    gap: 24px !important; 
+  } 
+  
+  .sticky-timeline-sidebar { 
+    position: static !important; 
+    order: 2 !important; 
+    margin-top: 10px !important; 
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+  } 
+  
+  .form-grid-layout { 
+    order: 1 !important; 
+    width: 100% !important;
+    max-width: 100% !important;
+  } 
+}
+
+/* Fixes alignment inside white choice cards */ 
+.form-grid-layout div[style*="display: flex; align-items: flex-start;"] { 
+  display: inline-flex !important; 
+  align-items: center !important; /* Vertically centers the checkbox with the label */ 
+  gap: 12px !important; 
+}
