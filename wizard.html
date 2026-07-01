@@ -6,22 +6,6 @@
   <meta name="theme-color" content="#10b981"> 
   <title>Secured Enterprise Compliance Deployment Wizard | filings4u</title> 
 
-  <script>
-    (function() {
-        // 1. Detect if the user agent matches common mobile devices
-        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        // 2. Check if the screen width matches a mobile breakpoint
-        var isSmallScreen = window.innerWidth <= 768;
-
-        // 3. Redirect instantly if both match, unless an override cookie exists
-        if ((isMobile || isSmallScreen) && !document.cookie.includes("force_desktop=true")) {
-            // Adjust 'mobile-wizard.html' to match your actual mobile file path
-            window.location.replace("mobile.filings4u.com" + window.location.search);
-        }
-    })();
-</script>
-
   
   <!-- 1. CORE THIRD-PARTY API DEPENDENCIES & SECURITY FILTERS --> 
   <script src="https://js.stripe.com/v3/"></script> 
@@ -32,7 +16,7 @@
   <!-- 2. STYLESHEETS & FONTS TYPOGRAPHY ASSETS --> 
   <link rel="icon" type="image/png" href="images/fav.png"> 
   <link rel="stylesheet" href="assets/css/wizard.css"> 
-  <link rel="stylesheet" href="assets/css/wizard-mobile.css"> 
+  
   <link rel="preconnect" href="https://fonts.googleapis.com"> 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"> 
@@ -975,6 +959,46 @@
 <!-- 📦 REPAIRED EXTERNAL TRANSITION INJECTION HOOK: Formatted properly to resolve script include errors -->
 <script src="assets/js/toggle.js" defer></script>
   <script src="assets/js/services/form-injection.js" defer></script>
+
+
+ <!-- ============================================================================ --> 
+<!-- 📱 MOBILE WIZARD SMART CLICK INTERCEPTOR ROUTER (PART 1) --> 
+<!-- ============================================================================ --> 
+<script> 
+(function() { 
+    document.addEventListener("click", function(event) { 
+        const targetBtn = event.target.closest("a[href*='wizard'], button[onclick*='wizard'], .btn-pricing, .btn-checkout"); 
+        if (!targetBtn) return; 
+
+        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768; 
+        if (!isMobileDevice) return; 
+
+        event.preventDefault(); 
+        event.stopPropagation(); 
+        console.log("[Mobile Router] Pricing interaction detected on smartphone. Rerouting intent...");
+        let targetQueries = ""; 
+        if (targetBtn.tagName.toLowerCase() === "a" && targetBtn.getAttribute("href")) { 
+            try {
+                const btnUrl = new URL(targetBtn.getAttribute("href"), window.location.origin); 
+                targetQueries = btnUrl.search; 
+            } catch (e) {
+                // Fail-safe manual search query string slice if URL construction encounters an unescaped path string
+                const queryIndex = targetBtn.getAttribute("href").indexOf('?');
+                if (queryIndex !== -1) targetQueries = targetBtn.getAttribute("href").substring(queryIndex);
+            }
+        } 
+        if (!targetQueries) { 
+            targetQueries = window.location.search; 
+        } 
+
+        // Enforce the inclusion of index.html to ensure clean resolution across strict mobile subdomains
+        const mobileWizardBaseUrl = "https://filings4u.com"; 
+        
+        console.log(`[Mobile Router Success] Forwarding payload string: ${mobileWizardBaseUrl}${targetQueries}`);
+        window.location.href = mobileWizardBaseUrl + targetQueries; 
+    }, true); 
+})(); 
+</script>
 
 
 </body>
