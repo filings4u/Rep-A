@@ -7,11 +7,12 @@
   <title>Secured Enterprise Compliance Deployment Wizard | filings4u</title> 
 
   
-  <!-- 1. CORE THIRD-PARTY API DEPENDENCIES & SECURITY FILTERS --> 
-  <script src="https://js.stripe.com/v3/"></script> 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> 
-  <script src="assets/js/wizard-anti-crash.js" defer></script> 
+  <!-- 1. CORE THIRD-PARTY API DEPENDENCIES & SECURITY FILTERS (LOAD SYNCHRONOUSLY) -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="assets/js/wizard-anti-crash.js" defer></script>
+
   
   <!-- 2. STYLESHEETS & FONTS TYPOGRAPHY ASSETS --> 
   <link rel="icon" type="image/png" href="images/fav.png"> 
@@ -80,7 +81,8 @@
   <script src="assets/js/wizard-summary.js" defer></script> 
   <script src="assets/js/stripe.js" defer></script> 
   <script src="assets/js/step2-popup.js" defer></script> 
-  <script src="assets/js/wizard-chat-widget.js" defer></script> 
+  <script src="assets/js/wizard-chat-widget.js" defer></script>
+  <script src="assets/js/save-progress.js" defer></script>
 </head>
 
 
@@ -363,7 +365,7 @@
     <!-- 🔘 STEP 2 NAVIGATION CONTROL BAR --> 
     <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box;"> 
         <button type="button" class="btn-wizard-alt" onclick="goToNextWizardStep(1, event)" style="cursor: pointer;">Back</button> 
-        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button> 
+        <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()" style="cursor: pointer;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>        
         <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(3)" style="cursor: pointer;">Continue to Tiers</button> 
     </div> 
 
@@ -901,7 +903,7 @@
     
     <!-- SUB-FOOTER LEGAL BAR -->
     <div class="footer-legal-row-bar" style="padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.75rem; color: #94a3b8; width: 100%; box-sizing: border-box;">
-      <p style="margin: 0; line-height: 1.5; font-weight: 400;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: 400;">Roseland Companies, LLC</a></p>
+      <p style="margin: 0; line-height: 1.5; font-weight: 400;">&copy; 2026 filings4u, LLC. All rights reserved. A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #c15254; text-decoration: none; font-weight: 400;">Roseland Companies, LLC</a></p>
       <div class="trust-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; position: relative !important; background: rgba(255, 255, 255, 0.05) !important; padding: 10px 20px !important; border-radius: 8px !important; font-size: 0.75rem !important; color: #ffffff !important; font-weight: 400;">
         <span style="color: #10b981 !important; font-weight: 800 !important; margin-right: 8px !important; display: inline !important;">SECURE</span>256-bit SSL Encrypted Connection
       </div>

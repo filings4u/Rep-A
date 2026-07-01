@@ -2792,7 +2792,7 @@ async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlS
       });
     }
 
-    // --- DOM RENDERING BLOCK WITH FULL EXPANSION RULES ---
+        // --- DOM RENDERING BLOCK WITH FULL EXPANSION RULES ---
     if (!formInjectionWrapper) {
       formInjectionWrapper = document.createElement("div");
       formInjectionWrapper.className = "isolated-form-payload-container";
@@ -2804,7 +2804,16 @@ async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlS
       formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;";
     }
 
+    // 🟢 FALLBACK PROTECTION FILTER: If it is our dynamic service, run it instead of crashing out
     if (verifiedTemplates.length === 0) {
+      if (rawUrlSlug === "mcs-150-update" && typeof window.initMcs150UpdateService === "function") {
+        console.log('[Lifecycle Engine] Routing to dynamic service execution channel for "mcs-150-update"');
+        formInjectionWrapper.innerHTML = ""; // Clear existing blocks
+        window.initMcs150UpdateService(); // Render fields dynamically inside the DOM container
+        console.log(`[Lifecycle Engine Success] Form segments successfully injected for tracking channel: "${rawUrlSlug}".`);
+        return;
+      }
+      
       console.warn(`[Lifecycle Engine] Compiled 0 rendering segments. Missing registry definitions for key: "${rawUrlSlug}".`);
       return;
     }
@@ -2824,6 +2833,7 @@ async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlS
     });
 
     console.log(`[Lifecycle Engine Success] Form segments successfully injected for tracking channel: "${rawUrlSlug}".`);
+
   } catch (globalEngineError) {
     console.error("[Fatal Form Injection Pipeline Exception]", globalEngineError);
   }
@@ -2831,6 +2841,7 @@ async function executeStepTwoDynamicFormInjection(keysBeforeScriptLoads, rawUrlS
 
 // Bind cleanly back up to the primary document tree window reference context
 window.executeStepTwoDynamicFormInjection = executeStepTwoDynamicFormInjection;
+
 
 function evaluateSystemViewportDesign() {
   const container = document.querySelector('.wizard-container');

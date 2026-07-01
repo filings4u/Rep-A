@@ -1386,3 +1386,33 @@
   align-items: center !important; /* Vertically centers the checkbox with the label */ 
   gap: 12px !important; 
 }
+
+/* Inject high-contrast emerald borders onto your chat bubble element */
+.chat-bubble-widget {
+  border: 2px solid #10b981 !important; /* Locks a clean, high-contrast Emerald green border */
+  padding: 14px !important; /* Shaves padding down by 2px to perfectly balance the 2px border width */
+  transition: transform 0.2s ease-in-out, border-color 0.2s !important; /* Adds smooth touch feedback */
+}
+
+/* Optional: Slight micro-interaction glow effect when tapped or hovered */
+.chat-bubble-widget:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3) !important;
+}
+
+
+/* 1. Shrink the main top/bottom outer footer box padding bounds */
+.footer-master-container .footer-width-limiter {
+  padding-top: 0px !important;    /* Forces the top gap down from 40px to 16px */
+  padding-bottom: 0px !important; /* Shaves the absolute bottom layout gap down */
+}
+
+/* 2. Tighten the space between the main link directories and the legal bar split line */
+.footer-master-container .footer-directory-grid {
+  padding-bottom: 10px !important; /* Reduces the bottom inner gap from 40px to 16px */
+}
+
+/* 3. Pull the copyright sentence and SSL badge closer to the split line separator */
+.footer-master-container .footer-legal-row-bar {
+  padding-top: 14px !important;    /* Tucks the legal section up from 24px to 14px */
+}
