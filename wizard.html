@@ -961,8 +961,8 @@
   <script src="assets/js/services/form-injection.js" defer></script>
 
 
- <!-- ============================================================================ --> 
-<!-- 📱 MOBILE WIZARD SMART CLICK INTERCEPTOR ROUTER (PART 1) --> 
+<!-- ============================================================================ --> 
+<!-- 📱 MOBILE WIZARD SMART CLICK INTERCEPTOR ROUTER (PART 1 OF 2) --> 
 <!-- ============================================================================ --> 
 <script> 
 (function() { 
@@ -975,14 +975,13 @@
 
         event.preventDefault(); 
         event.stopPropagation(); 
-        console.log("[Mobile Router] Pricing interaction detected on smartphone. Rerouting intent...");
+        console.log("[Mobile Router] Intercepting interaction. Formatting uniform wizard route...");
         let targetQueries = ""; 
         if (targetBtn.tagName.toLowerCase() === "a" && targetBtn.getAttribute("href")) { 
             try {
                 const btnUrl = new URL(targetBtn.getAttribute("href"), window.location.origin); 
                 targetQueries = btnUrl.search; 
             } catch (e) {
-                // Fail-safe manual search query string slice if URL construction encounters an unescaped path string
                 const queryIndex = targetBtn.getAttribute("href").indexOf('?');
                 if (queryIndex !== -1) targetQueries = targetBtn.getAttribute("href").substring(queryIndex);
             }
@@ -991,14 +990,15 @@
             targetQueries = window.location.search; 
         } 
 
-        // Enforce the inclusion of index.html to ensure clean resolution across strict mobile subdomains
-        const mobileWizardBaseUrl = "https://mobile.filings4u.com"; 
+        // FIXED PATH LAYER: Enforces uniform mobile routing to mobile-wizard.html
+        const mobileWizardBaseUrl = "https://mobile.filings4u.com/mobile-wizard.html?service=annual-reports&plan=starter"; 
         
-        console.log(`[Mobile Router Success] Forwarding payload string: ${mobileWizardBaseUrl}${targetQueries}`);
+        console.log(`[Mobile Router] Redirecting path to: ${mobileWizardBaseUrl}${targetQueries}`);
         window.location.href = mobileWizardBaseUrl + targetQueries; 
     }, true); 
 })(); 
 </script>
+
 
 
 </body>
