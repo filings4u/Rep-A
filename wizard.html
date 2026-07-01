@@ -16,6 +16,7 @@
   <!-- 2. STYLESHEETS & FONTS TYPOGRAPHY ASSETS --> 
   <link rel="icon" type="image/png" href="images/fav.png"> 
   <link rel="stylesheet" href="assets/css/wizard.css"> 
+  <link rel="stylesheet" href="assets/css/mobile-wizard.css"> 
   
   <link rel="preconnect" href="https://fonts.googleapis.com"> 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
@@ -261,7 +262,6 @@
     <!-- 🔘 STEP 1 NAVIGATION CONTROL BAR -->
 <div class="wizard-action-footer">
     <button type="button" class="btn-wizard-alt element-hidden">Back</button>
-    <button type="button" class="btn-wizard-save-progress" onclick="executeSaveAndExitWorkflow()"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
     <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(2, event)">Continue to Form</button>
 </div>
 
@@ -961,43 +961,6 @@
   <script src="assets/js/services/form-injection.js" defer></script>
 
 
-<!-- ============================================================================ --> 
-<!-- 📱 MOBILE WIZARD SMART CLICK INTERCEPTOR ROUTER (PART 1 OF 2) --> 
-<!-- ============================================================================ --> 
-<script> 
-(function() { 
-    document.addEventListener("click", function(event) { 
-        const targetBtn = event.target.closest("a[href*='wizard'], button[onclick*='wizard'], .btn-pricing, .btn-checkout"); 
-        if (!targetBtn) return; 
-
-        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768; 
-        if (!isMobileDevice) return; 
-
-        event.preventDefault(); 
-        event.stopPropagation(); 
-        console.log("[Mobile Router] Intercepting interaction. Formatting uniform wizard route...");
-        let targetQueries = ""; 
-        if (targetBtn.tagName.toLowerCase() === "a" && targetBtn.getAttribute("href")) { 
-            try {
-                const btnUrl = new URL(targetBtn.getAttribute("href"), window.location.origin); 
-                targetQueries = btnUrl.search; 
-            } catch (e) {
-                const queryIndex = targetBtn.getAttribute("href").indexOf('?');
-                if (queryIndex !== -1) targetQueries = targetBtn.getAttribute("href").substring(queryIndex);
-            }
-        } 
-        if (!targetQueries) { 
-            targetQueries = window.location.search; 
-        } 
-
-        // FIXED PATH LAYER: Enforces uniform mobile routing to mobile-wizard.html
-        const mobileWizardBaseUrl = "https://mobile.filings4u.com"; 
-        
-        console.log(`[Mobile Router] Redirecting path to: ${mobileWizardBaseUrl}${targetQueries}`);
-        window.location.href = mobileWizardBaseUrl + targetQueries; 
-    }, true); 
-})(); 
-</script>
 
 
 
