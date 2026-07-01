@@ -671,3 +671,171 @@
     width: fit-content !important;
   }
 }
+
+
+@media screen and (max-width: 990px) {
+  /* 1. Collapse the desktop 3fr 2fr grid structure into a fluid vertical stack */
+  .success-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+    margin-top: 80px !important; /* Pulls the view closer to the mobile site header */
+    padding: 0 16px !important; /* Matches standard edge padding constraints */
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+
+  /* 2. Flatten interior white card containers out edge-to-edge */
+  .success-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 24px 16px !important; /* Trims desktop white padding margins down */
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 3. Scale confirmation elements and badge icons */
+  .success-badge-icon {
+    width: 60px !important;
+    height: 60px !important;
+    margin-bottom: 16px !important;
+  }
+  
+  .success-badge-icon svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  /* Adjust typography headers to fit mobile canvas sizes smoothly */
+  .success-card h1 {
+    font-size: 1.5rem !important;
+    letter-spacing: -0.5px !important;
+    line-height: 1.3 !important;
+  }
+
+  .success-card h2 {
+    font-size: 1.25rem !important;
+    line-height: 1.3 !important;
+  }
+
+  /* 4. Format receipt line items to prevent row overflow issues */
+  .receipt-line-item {
+    font-size: 0.88rem !important;
+    padding: 10px 0 !important;
+    gap: 12px !important;
+  }
+
+  .receipt-line-item span:first-child {
+    word-break: break-word !important; /* Allows long item names to wrap safely */
+    max-width: 70% !important;
+  }
+  
+  /* Optimize subtotal formatting structures */
+  div[style*="font-size: 1.2rem"] {
+    font-size: 1.05rem !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+}
+
+
+@media screen and (max-width: 990px) {
+  /* 1. Force the layout navigation header to align cleanly on a single row */
+  nav div[style*="max-width: 1450px"] {
+    padding: 0 16px !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  /* Compact the brand logo vector image to preserve screen canvas */
+  nav img[src="images/logo.png"] {
+    height: 28px !important;
+    width: auto !important;
+  }
+
+  /* Balance the processing milestone pill graphic */
+  nav span[style*="font-size: 0.85rem"] {
+    font-size: 0.72rem !important;
+    padding: 4px 10px !important;
+    white-space: nowrap !important;
+  }
+
+  /* 2. Flatten administrative secure tracking row grids vertically */
+  div[style*="background: #f8fafc"] {
+    flex-direction: column !important;
+    gap: 16px !important;
+    padding: 16px !important;
+    width: 100% !important;
+  }
+
+  div[style*="background: #f8fafc"] > div {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  /* 3. Handle itemized statements and financial calculation matrices */
+  #receipt-items-injector-frame {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent numbers from overlapping descriptions */
+  .receipt-line-item {
+    font-size: 0.85rem !important;
+    padding: 10px 0 !important;
+  }
+
+  /* Compress heavy total sum columns safely */
+  div[style*="font-size: 1.3rem"] {
+    font-size: 1.1rem !important;
+    padding-top: 10px !important;
+    margin-top: 2px !important;
+  }
+}
+
+
+@media screen and (max-width: 990px) {
+  /* 1. Neutralize sticky positioning properties on the Right Column Panel */
+  aside.success-card {
+    position: static !important; /* Unpins the sidebar from tracking the screen center */
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 12px !important;
+  }
+
+  /* 2. Flatten the Registered Entity profile grid into a strict vertical layout stack */
+  aside.success-card + div,
+  .success-card div[style*="display: grid"] {
+    grid-template-columns: 1fr !important; /* Drops 200px minmax rules down to 1 box column */
+    gap: 16px !important;
+  }
+
+  /* Force the principal office address box to collapse gracefully from multi-column span */
+  .success-card div[style*="display: grid"] > div[style*="grid-column: span 2"] {
+    grid-column: span 1 !important;
+    width: 100% !important;
+  }
+
+  /* 3. Handle registration form inputs and touch boundaries */
+  #wizard-account-generation-form {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #wizard-account-generation-form input {
+    font-size: 16px !important; /* Prevents auto-zoom scaling artifacts on iOS Safari viewports */
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  /* Expand the form button into an effortless full-width thumb execution target */
+  #portal-activation-submit-btn {
+    padding: 14px 0 !important;
+    font-size: 0.95rem !important;
+    width: 100% !important;
+  }
+}

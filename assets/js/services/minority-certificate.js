@@ -1,74 +1,89 @@
-function validateMinorityCertificateFormPart1() {
-  let isValid = true;
+function initMinorityCertificateService() {
+  // Secure global namespaces references cleanly
+  window.formRegistry = window.formRegistry || {};
 
-  const markInvalid = (inputEl, errorEl, msg) => {
-    errorEl.textContent = msg;
-    errorEl.style.display = "block";
-    inputEl.style.border = "1px solid #ef4444";
-    isValid = false;
-  };
+  window.formRegistry["minority-certificate"] = {
+    isValid: function() {
+      let isValid = true;
+      const markInvalid = (inputEl, errorEl, msg) => {
+        errorEl.textContent = msg;
+        errorEl.style.display = "block";
+        inputEl.style.border = "1px solid #ef4444";
+        isValid = false;
+      };
+      const markValid = (inputEl, errorEl) => {
+        errorEl.style.display = "none";
+        inputEl.style.border = "";
+      };
 
-  const markValid = (inputEl, errorEl) => {
-    errorEl.style.display = "none";
-    inputEl.style.border = "";
-  };
+      // 1. Validate Legal Name
+      const nameField = document.getElementById('mbe_legal_name');
+      const nameErr = document.getElementById('err_mbe_legal_name');
+      if (!nameField || !nameField.value.trim()) {
+        markInvalid(nameField, nameErr, "Official business entity name is required.");
+      } else {
+        markValid(nameField, nameErr);
+      }
 
-  // 1. Validate Legal Name
-  const nameField = document.getElementById('mbe_legal_name');
-  const nameErr = document.getElementById('err_mbe_legal_name');
-  if (!nameField || !nameField.value.trim()) {
-    markInvalid(nameField, nameErr, "Official business entity name is required.");
-  } else {
-    markValid(nameField, nameErr);
-  }
+      // 2. Validate Federal EIN (Enforce standard 9 numeric digits)
+      const einField = document.getElementById('mbe_federal_ein');
+      const einErr = document.getElementById('err_mbe_federal_ein');
+      if (einField && einErr) {
+        const rawEin = einField.value.replace(/\D/g, "");
+        if (rawEin.length !== 9) {
+          markInvalid(einField, einErr, "A standard 9-digit EIN is required (e.g., 12-3456789).");
+        } else {
+          markValid(einField, einErr);
+        }
+      }
 
-  // 2. Validate Federal EIN (Enforce standard 9 numeric digits)
-  const einField = document.getElementById('mbe_federal_ein');
-  const einErr = document.getElementById('err_mbe_federal_ein');
-  if (einField && einErr) {
-    const rawEin = einField.value.replace(/\D/g, "");
-    if (rawEin.length !== 9) {
-      markInvalid(einField, einErr, "A standard 9-digit EIN is required (e.g., 12-3456789).");
-    } else {
-      markValid(einField, einErr);
+      // 3. Validate State of Formation Dropdown
+      const stateField = document.getElementById('mbe_state_of_formation');
+      const stateErr = document.getElementById('err_mbe_state_of_formation');
+      if (!stateField || !stateField.value) {
+        markInvalid(stateField, stateErr, "Please pick your entity state of formation.");
+      } else {
+        markValid(stateField, stateErr);
+      }
+
+      // 4. Validate Target Framework Track Dropdown
+      const trackField = document.getElementById('mbe_certification_track');
+      const trackErr = document.getElementById('err_mbe_certification_track');
+      if (!trackField || !trackField.value) {
+        markInvalid(trackField, trackErr, "Please choose a targeted certification framework track.");
+      } else {
+        markValid(trackField, trackErr);
+      }
+
+      // 5. Conditional Agency Validation (Mandatory only when 'state-local' track is selected)
+      const agencyWrapper = document.getElementById('mbe_state_agency_wrapper');
+      const agencyField = document.getElementById('mbe_target_agency_name');
+      const agencyErr = document.getElementById('err_mbe_target_agency_name');
+      if (agencyWrapper && (agencyWrapper.style.display === "block" || agencyWrapper.style.display === "grid" || (trackField && trackField.value === "state-local"))) {
+        if (!agencyField || !agencyField.value.trim()) {
+          markInvalid(agencyField, agencyErr, "Target state agency or municipality name is required for localized tracks.");
+        } else {
+          markValid(agencyField, agencyErr);
+        }
+      } else {
+        if (agencyField && agencyErr) markValid(agencyField, agencyErr);
+      }
+
+      return isValid;
+    },
+    serialize: function() {
+      const formData = {};
+      const container = document.getElementById('dynamic-onboarding-fields-root');
+      if (!container) return formData;
+      const fields = container.querySelectorAll('input, select');
+      fields.forEach(field => {
+        if (field.id) formData[field.id] = field.value;
+      });
+      return formData;
     }
-  }
-
-  // 3. Validate State of Formation Dropdown
-  const stateField = document.getElementById('mbe_state_of_formation');
-  const stateErr = document.getElementById('err_mbe_state_of_formation');
-  if (!stateField || !stateField.value) {
-    markInvalid(stateField, stateErr, "Please pick your entity state of formation.");
-  } else {
-    markValid(stateField, stateErr);
-  }
-
-  // 4. Validate Target Framework Track Dropdown
-  const trackField = document.getElementById('mbe_certification_track');
-  const trackErr = document.getElementById('err_mbe_certification_track');
-  if (!trackField || !trackField.value) {
-    markInvalid(trackField, trackErr, "Please choose a targeted certification framework track.");
-  } else {
-    markValid(trackField, trackErr);
-  }
-
-  // 5. Conditional Agency Validation (Mandatory only when 'state-local' track is selected)
-  const agencyWrapper = document.getElementById('mbe_state_agency_wrapper');
-  const agencyField = document.getElementById('mbe_target_agency_name');
-  const agencyErr = document.getElementById('err_mbe_target_agency_name');
-
-  if (agencyWrapper && (agencyWrapper.style.display === "block" || agencyWrapper.style.display === "grid" || (trackField && trackField.value === "state-local"))) {
-    if (!agencyField || !agencyField.value.trim()) {
-      markInvalid(agencyField, agencyErr, "Target state agency or municipality name is required for localized tracks.");
-    } else {
-      markValid(agencyField, agencyErr);
-    }
-  } else {
-    if (agencyField && agencyErr) markValid(agencyField, agencyErr);
-  }
-
-  return isValid;
+  };
 }
+
 
 // FAMILY 24A: MINORITY BUSINESS ENTERPRISE (MBE) CERTIFICATION LAYOUT MATRIX (PART 1 OF 3)
 function buildMinorityCertificateFormPart1(stateDropdownOptionsHtml = "") {

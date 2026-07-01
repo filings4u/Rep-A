@@ -1416,3 +1416,90 @@
 .footer-master-container .footer-legal-row-bar {
   padding-top: 14px !important;    /* Tucks the legal section up from 24px to 14px */
 }
+
+/* ========================================================
+   🖨️ PRODUCTION INVOICE PRINT SPECIFICATIONS MATRIX
+   ======================================================== */
+@media print {
+  /* Hide interactive portal components, headers, buttons, and backdrops completely */
+  nav, 
+  aside.success-card, 
+  button, 
+  .chat-bubble-widget,
+  .poa-tooltip-anchor {
+    display: none !important;
+  }
+
+  /* Force the layout containers to occupy full tracking margins on paper */
+  html, body {
+    background: #ffffff !important;
+    font-size: 12pt !important;
+  }
+
+  .success-container {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .success-card {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Keep table dash dividers dark and readable */
+  .receipt-line-item {
+    border-bottom: 1px dashed #94a3b8 !important;
+    page-break-inside: avoid;
+  }
+}
+
+/* 1. Shrink space between header navbar and the main receipt layout grid box */
+.success-container {
+  margin-top: 30px !important; /* Drops desktop top gap down significantly */
+  padding-top: 0 !important;
+}
+
+@media screen and (max-width: 990px) {
+  .success-container {
+    margin-top: 16px !important; /* Lowers mobile tracking whitespace */
+  }
+}
+
+/* 2. Style rule to handle the status badge illumination */
+.badge-processing-complete {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff !important; /* High contrast text color string overlay */
+  background: #10b981 !important; /* Symmetrical Emerald baseline foundation fill */
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #0e9f6e !important;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+@media screen and (max-width: 990px) {
+  .badge-processing-complete {
+    font-size: 0.72rem !important;
+    padding: 4px 10px !important;
+  }
+}
+
+/* 3. Global style override patch to completely drop the footer across all viewports */
+footer, 
+.footer-master-container, 
+.footer-legal-row-bar {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+}
