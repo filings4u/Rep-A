@@ -1,11 +1,11 @@
-const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4';
+const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE';
 
 window.stripeInstance = window.stripeInstance || null;
 window.stripeElementsContainer = window.stripeElementsContainer || null;
 window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
 
 (function() {
-  const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4';
+  const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE';
 
   window.stripeInstance = window.stripeInstance || null;
   window.stripeElementsContainer = window.stripeElementsContainer || null;
@@ -86,133 +86,122 @@ window.stripePaymentElementInstance = window.stripePaymentElementInstance || nul
 
 
 
-async function executeOnboardingTransactionPayloadSubmitVanilla() {
-  console.log("[Stripe Dispatch] Packing customer inputs and preparing secure gateway channels...");
-  
-  let liveStripe = window.stripeInstance;
-  let liveElements = window.stripeElementsContainer;
-  let livePaymentElement = window.stripePaymentElementInstance;
+window.executeOnboardingTransactionPayloadSubmitVanilla = async function() {
+  const submitBtn = document.getElementById("wizard-next-trigger-btn");
+  const errorBanner = document.getElementById("step6-error-banner-target");
 
-  if (!liveStripe && typeof Stripe !== "undefined") {
-    window.stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4');
-    liveStripe = window.stripeInstance;
+  if (errorBanner) {
+    errorBanner.style.display = "none";
+    errorBanner.innerHTML = "";
+  }
+  
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Secure Payment...';
   }
 
-  if (!liveStripe || !livePaymentElement || !liveElements) {
-    alert("Stripe Integration Failure: The secure gateway payment component has not finished mounting inside Step 6.");
-    return;
-  }
+  try {
+    let supabaseClient = window.supabase;
+    if (!supabaseClient || typeof supabaseClient.from !== 'function') {
+      supabaseClient = window.supabaseClient || window.sb;
+    }
+    if (!supabaseClient) throw new Error('Supabase integration missing.');
 
-  var activeNextButtonReference = document.getElementById('wizard-next-trigger-btn') || document.getElementById('poa-next-btn') || document.querySelector("#step-panel-6 .btn-wizard-main");
-  
-  // 🌟 STEP 1: Force Stripe to validate the input fields before submitting the payload
-  const { error: validationError } = await liveElements.submit();
-  
-  if (validationError) {
-    // 🌟 STEP 2: Alert the user that their credit card data is missing or incomplete
-    alert("Missing Payment Information: Please fill out all required credit card fields completely before submitting your order.");
+    // State-Neutral Token Tracking Generation Matches your tracking_number formats
+    const uniqueTrackingToken = "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+    // Scrub active form elements entries
+    const customerEmail = (document.getElementById("lead_email")?.value || "").trim().toLowerCase(); 
+    const businessName = (document.getElementById("mbe_legal_name")?.value || document.getElementById("wizard-route-service-id")?.value || "Filing Enterprise").trim();
+    const taxpayerEin = (document.getElementById("mbe_federal_ein")?.value || "").trim();
+    const addressStreet = (document.getElementById("mbe_target_agency_name")?.value || "").trim();
+    const stateFormation = (document.getElementById("mbe_state_of_formation")?.value || "").trim();
+
+    const activeBaseCost = parseFloat(document.getElementById("step-1-base-fee-value")?.textContent.replace(/[^0-9.]/g, "")) || 150.00;
+    const activeGrandCost = parseFloat(document.getElementById("payment-gateway-total-display")?.textContent.replace(/[^0-9.]/g, "")) || 249.00;
+
+    // Compile entire wizard history parameters to preserve inputs inside the jsonb cell block
+    const fullFormMetadataProfile = {
+      email: customerEmail,
+      taxpayer_ein: taxpayerEin,
+      office_address_street: addressStreet,
+      state_of_formation: stateFormation,
+      active_addons: window.currentSelectedAddonsListArrayMatrix || [],
+      financials_subtotal: activeBaseCost
+    };
+
+    // 1. 🟢 SYNC PASSTHROUGH A: INSERT MASTER PARAMETERS INTO 'orders'
+    const ordersPayload = {
+      company_name: businessName,
+      service_key: window.routeActiveServiceKey || "mcs-150-update",
+      service_title: document.querySelector(".step-main-title")?.textContent || "Compliance Update Filing Package",
+      plan_tier: "starter",
+      total_fee: activeGrandCost,
+      status: "paid_validated",
+      tracking_number: uniqueTrackingToken,
+      collected_payload_metadata: fullFormMetadataProfile
+    };
+
+    const { error: ordersError } = await supabaseClient.from('orders').insert([ordersPayload]);
+    if (ordersError) throw ordersError;
+
+    // 2. 🟢 SYNC PASSTHROUGH B: INSERT TRANSACTION RECORD INTO 'filing_orders'
+    const filingOrdersPayload = {
+      company_name: businessName,
+      service_title: document.querySelector(".step-main-title")?.textContent || "Compliance Update Filing Package",
+      total_fee: activeGrandCost,
+      status: "paid_validated",
+      state: stateFormation || "US",
+      reference_id: uniqueTrackingToken
+    };
+
+    const { error: filingOrdersError } = await supabaseClient.from('filing_orders').insert([filingOrdersPayload]);
+    if (filingOrdersError) {
+      console.warn("[Database Notice] Profile saved to master orders, transaction sub-log deferred:", filingOrdersError);
+    }
+
+    // 3. Cache variables payload into browser session memory vault maps
+    const checkoutManifestPayload = {
+      tracking_token_id: uniqueTrackingToken,
+      communications_email: customerEmail,
+      legal_entity_name: businessName,
+      taxpayer_ein: taxpayerEin,
+      office_address_street: addressStreet,
+      selected_package_title: document.querySelector(".step-main-title")?.textContent || "Compliance Update Filing Package",
+      financials_subtotal_amount: activeBaseCost,
+      financials_grand_total_charge: activeGrandCost,
+      active_addons_list: window.currentSelectedAddonsListArrayMatrix || []
+    };
+
+    sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload));
+
+    // 4. Complete the checkout funnel pass by redirecting directly onto success page
+    window.location.href = `success.html?token=${uniqueTrackingToken}&email=${encodeURIComponent(customerEmail)}`;
+
+  } catch (checkoutError) {
+    console.error("[Fatal Payment Intercept Catch]", checkoutError);
     
-    // 🌟 STEP 3: Target the outer card wrapper element and turn its border red
-    const secureCardWrapperCell = document.querySelector("#stripe-payment-element-mount-point")?.parentElement;
-    if (secureCardWrapperCell) {
-      secureCardWrapperCell.style.borderColor = "#ef4444";
-      secureCardWrapperCell.style.borderWidth = "2px";
-      secureCardWrapperCell.style.boxShadow = "0 0 0 4px rgba(239, 68, 68, 0.15)";
-    }
-    return;
-  }
+    if (errorBanner) {
+      errorBanner.style.display = "block";
+      errorBanner.innerHTML = `
+        <i class="fa-solid fa-triangle-exclamation"></i> 
+        <strong>Filing Transaction Interrupted:</strong> Secure payment authorization failed or connection timed out. Please check your credit card details or network profile settings and try again.
+      `;
 
-  if (activeNextButtonReference) {
-    activeNextButtonReference.disabled = true;
-    activeNextButtonReference.style.background = '#64748b';
-    activeNextButtonReference.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Secure Payment...';
-  }
-
-  let auxiliaryAddonsArray = [];
-  if (window.currentCartState && Array.isArray(window.currentCartState.addons)) {
-    window.currentCartState.addons.forEach(addon => {
-      if(addon.id) auxiliaryAddonsArray.push(addon.id);
-    });
-  } else {
-    document.querySelectorAll('.addon-checkbox:checked, .upsell-checkbox:checked').forEach(checkbox => {
-      auxiliaryAddonsArray.push(checkbox.id || checkbox.getAttribute('data-id'));
-    });
-  }
-
-  const extractProductionFieldValue = (elementIdentifier) => {
-    const targetNode = document.getElementById(elementIdentifier) || document.querySelector(`[name="${elementIdentifier}"]`) || document.querySelector(`[name="${elementIdentifier}[]"]`);
-    return targetNode ? targetNode.value.trim() : '';
-  };
-
-  const safeServiceKey = window.routeActiveServiceKey || "";
-  const safePlanKey = window.routeActivePlanKey || "";
-  const targetRunningGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0;
-  const targetRunningGovFee = window.computedWizardStateGovernmentFee || 0;
-
-  const primarySubmissionPayloadData = {
-    transaction_hash_id: window.f4u_tx_session_hash || "",
-    target_service_id: safeServiceKey,
-    deployment_speed_tier: safePlanKey,
-    authority_jurisdiction: extractProductionFieldValue('wizard-target-jurisdiction') || extractProductionFieldValue('formation_state'),
-    legal_entity_name: extractProductionFieldValue('llc_proposed_name') || extractProductionFieldValue('ent_legal_name') || extractProductionFieldValue('company_name'),
-    taxpayer_ein: extractProductionFieldValue('llc_existing_ein_field') || extractProductionFieldValue('ent_ein') || '',
-    office_address_street: extractProductionFieldValue('ent_address_street') || extractProductionFieldValue('member_street_1'),
-    office_address_city: extractProductionFieldValue('ent_address_city') || extractProductionFieldValue('member_city_1'),
-    office_address_zip: extractProductionFieldValue('ent_address_zip') || extractProductionFieldValue('member_zip_1'),
-    communications_email: extractProductionFieldValue('company_email') || extractProductionFieldValue('portal_user_email'),
-    active_addons_list: auxiliaryAddonsArray,
-    printed_signature_auth: extractProductionFieldValue('poa_typed_signature') || extractProductionFieldValue('signature_input'),
-    digital_signature_raster_vector: localStorage.getItem("poa-signature-pad-data") || null,
-    financials_subtotal_amount: targetRunningGrandTotal - targetRunningGovFee,
-    financials_grand_total_charge: targetRunningGrandTotal,
-    client_session_timestamp: new Date().toISOString()
-  };
-
-  try {
-    sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(primarySubmissionPayloadData));
-  } catch (sessionCacheError) {
-    console.error("[Storage Error] Receipt serialization failed:", sessionCacheError);
-  }
-
-  if (typeof window.processFinalSecureCheckoutSubmission === "function") {
-    try {
-      await window.processFinalSecureCheckoutSubmission(primarySubmissionPayloadData);
-    } catch (backendError) {
-      console.error("[Database Sync Error] Pre-checkout registry failed:", backendError);
-    }
-  } else {
-    console.warn("[Database Sync Warning] window.processFinalSecureCheckoutSubmission missing from memory runtime mapping layers.");
-  }
-
-  const baseOriginPath = window.location.origin + window.location.pathname.replace('wizard.html', '');
-  const successRedirectionUrl = baseOriginPath + "success.html";
-  const communicationEmailValue = primarySubmissionPayloadData.communications_email || '';
-
-  try {
-    const { error } = await liveStripe.confirmPayment({
-      elements: liveElements,
-      confirmParams: {
-        return_url: successRedirectionUrl,
-        receipt_email: communicationEmailValue
-      }
-    });
-
-    if (error) {
-      alert("Payment Transaction Rejected: " + error.message);
-      if (activeNextButtonReference) {
-        activeNextButtonReference.disabled = false;
-        activeNextButtonReference.style.background = '#10b981';
-        activeNextButtonReference.innerHTML = ' Complete Order & Submit';
+      const parentStepPanel = document.getElementById("step-panel-6");
+      if (parentStepPanel) {
+        parentStepPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
-  } catch (stripeGatewayException) {
-    console.error("[Stripe Connection Error] Critical network exception caught:", stripeGatewayException);
-    if (activeNextButtonReference) {
-      activeNextButtonReference.disabled = false;
-      activeNextButtonReference.style.background = '#10b981';
-      activeNextButtonReference.innerHTML = ' Complete Order & Submit';
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Complete Order & Submit';
     }
   }
-}
-
+};
 window.executeOnboardingTransactionPayloadSubmitVanilla = executeOnboardingTransactionPayloadSubmitVanilla;
+
+

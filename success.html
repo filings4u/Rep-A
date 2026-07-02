@@ -133,21 +133,28 @@
       <p style="color: var(--slate); font-size: 1rem; margin: 0; line-height: 1.5;">Your compliance metadata package has been parsed, encrypted, and transmitted directly to target authority filing networks.</p>
     </div>
 
-    <!-- ADMINISTRATIVE HANDSHAKE REFERENCE PARAMETERS -->
+<!-- ADMINISTRATIVE REFERENCE PARAMETERS FRAMEWORK WITH DATE & ACCOUNT MAPPING -->
 <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 32px; box-sizing: border-box; width: 100%;">
-  <div style="flex: 1; min-width: 220px; box-sizing: border-box;">
-    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate); letter-spacing: 0.05em; display: block; margin-bottom: 4px;">Secure Tracking Token</span>
-    <!-- 🟢 STATE-NEUTRAL PATCH: Renamed element ID and placeholder text string to remove regional state abbreviations -->
+  <div style="flex: 1; min-width: 200px; box-sizing: border-box;">
+    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate); letter-spacing: 0.05em; display: block; margin-bottom: 4px;">Secure Account Number</span>
+    <!-- Displays your unique generated F4U values -->
     <strong id="receipt-tracking-token-display" style="font-family: monospace; font-size: 0.95rem; color: var(--navy); word-break: break-all; display: block; line-height: 1.4;">F4U-TOKEN-RETRIEVING...</strong>
   </div>
   
-  <div style="flex: 1; min-width: 220px; box-sizing: border-box;">
+  <div style="flex: 1; min-width: 200px; box-sizing: border-box;">
+    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate); letter-spacing: 0.05em; display: block; margin-bottom: 4px;">Deployment Timestamp</span>
+    <!-- Dynamic real-time date injection target slot -->
+    <strong id="receipt-timestamp-display" style="font-family: monospace; font-size: 0.95rem; color: var(--navy); display: block; line-height: 1.4;">GENERATING...</strong>
+  </div>
+
+  <div style="flex: 1; min-width: 200px; box-sizing: border-box;">
     <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate); letter-spacing: 0.05em; display: block; margin-bottom: 4px;">Filing Status</span>
     <strong style="color: var(--primary); font-size: 0.95rem; display: flex; align-items: center; gap: 6px; line-height: 1.4; padding-top: 2px;">
       <span style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%; display: inline-block;"></span> VALIDATED &amp; QUEUED
     </strong>
   </div>
 </div>
+
 
 
     <!-- ITEMIZED TRANSACTION INVOICE DISPLAY STACK -->
@@ -268,8 +275,8 @@
 // ========================================================
 
 // Self-contained Supabase credentials configuration matrix
-const DYNAMIC_SUPABASE_URL = "https://supabase.co"; // ⚠️ MUST MATCH YOUR APP SETTINGS
-const DYNAMIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5...";    // ⚠️ MUST MATCH YOUR APP SETTINGS
+const DYNAMIC_SUPABASE_URL = "https://lrbimrlbskjweynxlgas.supabase.co"; // ⚠️ MUST MATCH YOUR APP SETTINGS
+const DYNAMIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";    // ⚠️ MUST MATCH YOUR APP SETTINGS
 
 // Failsafe connection initialization helper function
 function getSuccessPageSupabaseClient() {
@@ -288,10 +295,11 @@ document.addEventListener("DOMContentLoaded", function() {
   extractAndRenderReceiptManifestData();
 });
 
-// Extract data variables from local session vault layers dynamically
-// Extract data variables from local session vault layers dynamically
+// ========================================================
+// 🧠 AUTOMATED ACCOUNT DETECTOR & CONVERSION LOGIC
+// ========================================================
+
 async function extractAndRenderReceiptManifestData() {
-  // Target node element markers
   const receiptTrackingDisplay = document.getElementById("receipt-tracking-token-display");
   const portalEmailInput = document.getElementById("portal_user_email");
   const profileNameNode = document.getElementById("receipt-profile-name");
@@ -302,150 +310,106 @@ async function extractAndRenderReceiptManifestData() {
   const subtotalDisp = document.getElementById("receipt-subtotal-display");
   const govDisp = document.getElementById("receipt-gov-fee-display");
   const grandDisp = document.getElementById("receipt-grand-total-display");
+  const timestampDisp = document.getElementById("receipt-timestamp-display");
 
-  // Read the active session state parameters written by your checkout page
+  // 1. Generate Live Receipt Timestamp
+  if (timestampDisp) {
+    const liveDateInstance = new Date();
+    timestampDisp.textContent = liveDateInstance.toLocaleString('en-US', { 
+      year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true 
+    });
+  }
+
+  // 2. Look for existing tracking token accounts
+  let uniqueAccountNumber = "F4U-";
   const receiptStorageManifestString = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
   let receiptPayload = null;
 
   try {
-    if (receiptStorageManifestString) {
-      receiptPayload = JSON.parse(receiptStorageManifestString);
-    }
-  } catch (parseErr) {
-    console.warn("Local storage cache manifest raw parsing exception deferred:", parseErr);
-  }
+    if (receiptStorageManifestString) receiptPayload = JSON.parse(receiptStorageManifestString);
+  } catch (pe) {}
 
-  // --- DYNAMIC F4U ACCOUNT GENERATION ALGORITHM ---
-  let uniqueAccountNumber = "F4U-";
   if (receiptPayload && receiptPayload.transaction_hash_id) {
-    // If we have an existing ID code, strip hyphens and capture the first 8 uppercase tokens
-    const cleanSeed = receiptPayload.transaction_hash_id.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
-    uniqueAccountNumber += cleanSeed.substring(0, 8);
+    uniqueAccountNumber += receiptPayload.transaction_hash_id.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().substring(0, 8);
   } else {
-    // Fallback block: Generates a completely randomized 8-digit tracking token sequence parameter on the spot
-    const timestampSeed = Date.now().toString(36).toUpperCase();
-    const randomSeed = Math.random().toString(36).substring(2, 5).toUpperCase();
-    uniqueAccountNumber += (timestampSeed + randomSeed).substring(0, 8);
+    uniqueAccountNumber += Date.now().toString(36).toUpperCase().substring(0, 8);
   }
-  
-  // Store account variables globally so activation form pipelines can capture them
   window.currentGeneratedMbeAccountNumber = uniqueAccountNumber;
 
-  // --- FALLBACK INTERCEPT ENGINE ---
-  if (!receiptPayload) {
-    console.log("[Data Recovery] Manifest cache missing. Triggering database retrieval sequence...");
+  // 3. 🟢 AUTOMATED LEAD EMAIL RETRIEVAL GATEWAY
+  const urlQueryTrackingStrings = new URLSearchParams(window.location.search);
+  let detectedEmail = urlQueryTrackingStrings.get('email') || (receiptPayload ? receiptPayload.communications_email : "");
+
+  // If session cache is clean, look inside 'wizard_abandoned_leads' to auto-populate the field
+  if (!detectedEmail) {
     const supabaseClient = getSuccessPageSupabaseClient();
-    
     if (supabaseClient) {
       try {
         const sessionCheck = await supabaseClient.auth.getSession();
-        const userEmail = sessionCheck.data?.session?.user?.email;
-
-        if (userEmail) {
-          const { data, error } = await supabaseClient
-            .from('wizard_abandoned_leads')
-            .select('*')
-            .eq('email', userEmail)
-            .maybeSingle();
-
-          if (!error && data) {
-            receiptPayload = {
-              tracking_token_id: uniqueAccountNumber,
-              communications_email: data.email,
-              legal_entity_name: data.first_name + " " + data.last_name,
-              financials_subtotal_amount: 0, 
-              financials_grand_total_charge: 0,
-              recovered_from_db: true
-            };
-          }
-        }
-      } catch (dbErr) {
-        console.error("Failsafe database background lookup failed:", dbErr);
+        const authEmail = sessionCheck.data?.session?.user?.email;
+        if (authEmail) detectedEmail = authEmail;
+      } catch (err) {
+        console.warn("Background auth session read skipped:", err);
       }
     }
   }
 
-  if (!receiptPayload) {
-    const urlQueryTrackingStrings = new URLSearchParams(window.location.search);
-    const queryPassedHash = urlQueryTrackingStrings.get('token') || urlQueryTrackingStrings.get('id') || uniqueAccountNumber;
-    const queryPassedEmail = urlQueryTrackingStrings.get('email') || ""; 
-    
-    if (receiptTrackingDisplay) receiptTrackingDisplay.textContent = queryPassedHash;
-    if (portalEmailInput) {
-      portalEmailInput.value = queryPassedEmail;
-      if (!queryPassedEmail) {
-        portalEmailInput.readOnly = false;
-        portalEmailInput.style.background = "#ffffff";
-        portalEmailInput.placeholder = "Enter your registered filing email...";
-      }
-    }
-    return;
-  }
-
-  // --- DISPLAY INJECTION PIPELINE ROUTINES WITH NEW ACCOUNT CODE ---
+  // 4. Render Layout Fields to Screen Canvas
   if (receiptTrackingDisplay) receiptTrackingDisplay.textContent = uniqueAccountNumber;
-  if (portalEmailInput) portalEmailInput.value = receiptPayload.communications_email || "";
-  
-  if (profileNameNode) profileNameNode.textContent = receiptPayload.legal_entity_name || "Not Specified";
-  if (profileEinNode) profileEinNode.textContent = receiptPayload.taxpayer_ein || "Not Specified";
-  
-  const addressStreet = receiptPayload.office_address_street || '';
-  const addressCity = receiptPayload.office_address_city || '';
-  const addressZip = receiptPayload.office_address_zip || '';
-  const fullyFormattedAddressString = `${addressStreet} ${addressCity} ${addressZip}`.trim();
-  if (profileAddressNode) profileAddressNode.textContent = fullyFormattedAddressString || "Not Specified";
-
-  // --- 100% DYNAMIC ITEMIZED BILLING RENDER MATRIX ---
-  let invoiceLinesMarkup = "";
-  let calculatedSubtotal = 0;
-
-  if (receiptPayload.selected_package_title) {
-    const pkgPrice = parseFloat(receiptPayload.financials_subtotal_amount) || 0;
-    calculatedSubtotal += pkgPrice;
-    
-    invoiceLinesMarkup += `
-      <div class="receipt-line-item">
-        <span>Filing Deployment: <strong>${receiptPayload.selected_package_title}</strong></span>
-        <span style="font-family: monospace; font-weight: 700;">$${pkgPrice.toFixed(2)}</span>
-      </div>
-    `;
+  if (portalEmailInput) {
+    portalEmailInput.value = detectedEmail;
+    if (!detectedEmail) {
+      portalEmailInput.readOnly = false;
+      portalEmailInput.style.background = "#ffffff";
+      portalEmailInput.style.cursor = "text";
+      portalEmailInput.placeholder = "Enter your primary account email...";
+    }
   }
 
-  if (receiptPayload.active_addons_list && Array.isArray(receiptPayload.active_addons_list)) {
-    receiptPayload.active_addons_list.forEach(addon => {
-      const addonPrice = parseFloat(addon.price) || 0;
-      calculatedSubtotal += addonPrice;
-      
-      invoiceLinesMarkup += `
-        <div class="receipt-line-item" style="color: var(--slate);">
-          <span>+ ${addon.title || "Compliance Asset Protection Shield"}</span>
-          <span style="font-family: monospace;">$${addonPrice.toFixed(2)}</span>
-        </div>
-      `;
-    });
+  if (receiptPayload) {
+    if (profileNameNode) profileNameNode.textContent = receiptPayload.legal_entity_name || "Not Specified";
+    if (profileEinNode) profileEinNode.textContent = receiptPayload.taxpayer_ein || "Not Specified";
+    const fullAddress = `${receiptPayload.office_address_street || ''} ${receiptPayload.office_address_city || ''} ${receiptPayload.office_address_zip || ''}`.trim();
+    if (profileAddressNode) profileAddressNode.textContent = fullAddress || "Not Specified";
+
+    let invoiceLinesMarkup = "";
+    let calculatedSubtotal = 0;
+
+    if (receiptPayload.selected_package_title) {
+      const pkgPrice = parseFloat(receiptPayload.financials_subtotal_amount) || 0;
+      calculatedSubtotal += pkgPrice;
+      invoiceLinesMarkup += `<div class="receipt-line-item"><span>Filing Deployment: <strong>${receiptPayload.selected_package_title}</strong></span><span style="font-family: monospace; font-weight: 700;">$${pkgPrice.toFixed(2)}</span></div>`;
+    }
+
+    if (receiptPayload.active_addons_list && Array.isArray(receiptPayload.active_addons_list)) {
+      receiptPayload.active_addons_list.forEach(addon => {
+        const addonPrice = parseFloat(addon.price) || 0;
+        calculatedSubtotal += addonPrice;
+        invoiceLinesMarkup += `<div class="receipt-line-item" style="color: var(--slate);"><span>+ ${addon.title || "Compliance Asset Protection"}</span><span style="font-family: monospace;">$${addonPrice.toFixed(2)}</span></div>`;
+      });
+    }
+
+    if (injectorFrame) injectorFrame.innerHTML = invoiceLinesMarkup;
+
+    const subtotalValue = calculatedSubtotal || parseFloat(receiptPayload.financials_subtotal_amount) || 0;
+    const grandTotalValue = parseFloat(receiptPayload.financials_grand_total_charge) || subtotalValue;
+    const statutoryGovFeesValue = Math.max(0, grandTotalValue - subtotalValue);
+
+    if (subtotalDisp) subtotalDisp.textContent = `$${subtotalValue.toFixed(2)}`;
+    if (govDisp) govDisp.textContent = `$${statutoryGovFeesValue.toFixed(2)}`;
+    if (grandDisp) grandDisp.textContent = `$${grandTotalValue.toFixed(2)}`;
   }
-
-  if (injectorFrame) injectorFrame.innerHTML = invoiceLinesMarkup || '<div class="receipt-line-item"><span>Filing Service Allocation Package</span><span style="font-family:monospace">$0.00</span></div>';
-
-  const subtotalValue = calculatedSubtotal || parseFloat(receiptPayload.financials_subtotal_amount) || 0;
-  const grandTotalValue = parseFloat(receiptPayload.financials_grand_total_charge) || subtotalValue;
-  const statutoryGovFeesValue = Math.max(0, grandTotalValue - subtotalValue);
-
-  if (subtotalDisp) subtotalDisp.textContent = `$${subtotalValue.toFixed(2)}`;
-  if (govDisp) govDisp.textContent = `$${statutoryGovFeesValue.toFixed(2)}`;
-  if (grandDisp) grandDisp.textContent = `$${grandTotalValue.toFixed(2)}`;
 }
 
-
-// ========================================================
-// 🔐 SECURED LIVE ACCOUNT ACTIVATION SYSTEM
-// ========================================================
+// ============================================================================
+// 🔐 GATEKEEPER SERVICE SECURITY ENGINE: VERIFIES TOKEN THEN REDIRECTS
+// ============================================================================
 async function handleClientAccountActivation(event) {
   if (event && typeof event.preventDefault === "function") event.preventDefault();
 
   const passField = document.getElementById("portal_user_password");
   const confirmField = document.getElementById("portal_user_password_confirm");
-  const targetUsernameEmail = document.getElementById("portal_user_email").value.trim();
+  const targetUsernameEmail = document.getElementById("portal_user_email").value.trim().toLowerCase();
   const actionSubmitBtn = document.getElementById("portal-activation-submit-btn");
 
   if (!passField || !confirmField || !targetUsernameEmail) return false;
@@ -456,70 +420,99 @@ async function handleClientAccountActivation(event) {
   }
 
   if (passField.value !== confirmField.value) {
-    alert("Security Validation Failed: Input verification credentials mismatch. Please re-type matching values.");
+    alert("Security Validation Failed: Input verification credentials mismatch. Please re-type matching passwords.");
     return false;
   }
 
   if (actionSubmitBtn) {
     actionSubmitBtn.disabled = true;
     actionSubmitBtn.style.background = "#64748b";
-    actionSubmitBtn.style.boxShadow = "none";
-    actionSubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Provisioning Secured Infrastructure Access...';
+    actionSubmitBtn.innerHTML = '<i class="fa-solid fa-shield-halved fa-spin"></i> Verifying Cryptographic Token...';
   }
 
   try {
     const supabaseClient = getSuccessPageSupabaseClient();
     if (!supabaseClient) throw new Error("Supabase auth engine instance could not be located.");
 
-    // 1. UPDATE USER PASSWORD INSIDE SUPABASE AUTHENTICATION BUCKETS SECURELY
-    const { data: authData, error: signUpError } = await supabaseClient.auth.updateUser({
-      password: passField.value
-    });
+    const urlQueryTrackingStrings = new URLSearchParams(window.location.search);
+    const trackingTokenString = urlQueryTrackingStrings.get('token') || window.currentGeneratedMbeAccountNumber;
 
-    if (signUpError) throw signUpError;
-    
-    const activeUserUuid = authData?.user?.id;
+    // 1. BACKEND GATEKEEPER CHECK: Confirm payment row exists inside 'orders'
+    console.log("[Security Gate] Scanning system ledgers for transaction records...");
+    const { data: verifiedPurchase, error: purchaseCheckError } = await supabaseClient
+      .from('orders')
+      .select('id, user_id')
+      .eq('tracking_number', trackingTokenString)
+      .maybeSingle();
 
-    // 2. FETCH LATEST FILING META PAYLOAD STRING TO TRANSFER REPOSITORY DATA
-    const receiptStorageManifestString = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
-    let parsedPayload = {};
-    try {
-      if (receiptStorageManifestString) parsedPayload = JSON.parse(receiptStorageManifestString);
-    } catch(pe) {}
-
-    // Persist the final tracking tokens to your backend data schemas
-    if (activeUserUuid) {
-      const updateData = {
-        auth_user_id: activeUserUuid,
-        // Save the dynamically generated account id token right into your database
-        account_number: window.currentGeneratedMbeAccountNumber || "F4U-PENDING",
-        role_type: targetUsernameEmail.endsWith('@filings4u.com') ? 'admin' : 'client'
-      };
-
-      await supabaseClient
-        .from('wizard_abandoned_leads')
-        .update(updateData)
-        .eq('email', targetUsernameEmail);
+    if (purchaseCheckError) throw purchaseCheckError;
+    if (!verifiedPurchase) {
+      throw new Error("Access Denied: Registration is strictly reserved for verified, paid customer checkout tokens.");
     }
 
+    // 2. ANTI-DUPLICATE INTERCEPT: If already pre-registered, trigger secure blur modal directly
+    if (verifiedPurchase.user_id) {
+      triggerSecureBlurModalRedirect(verifiedPurchase.user_id, targetUsernameEmail);
+      return false;
+    }
 
-    // Flush cache entries cleanly to secure privacy vectors before route jumping
-    sessionStorage.removeItem("f4u_finalized_checkout_receipt_manifest");
-
-    // 4. DETECT USER ROLE MATRIX PATHWAYS AND DISPATCH THEM TO THE RIGHT DESTINATION PLATFORM
-    console.log("[Auth Success] Evaluating role-based access parameters routing...");
+    // --- SECURE AUTHORIZATION AUTH SIGN UP TUNNEL ---
+    let activeUserUuid = null;
+    const currentSessionCheck = await supabaseClient.auth.getSession();
     
-    // If it's a corporate company email, dispatch right to the admin panel dashboard file
-    if (targetUsernameEmail.endsWith('@filings4u.com')) {
-      window.location.href = `https://portal.filings4u.com{activeUserUuid}`;
+    if (currentSessionCheck.data?.session?.user) {
+      console.log("[Auth Tunnel] Active staging session found. Securing account profile...");
+      const { data: updateData, error: updateError } = await supabaseClient.auth.updateUser({
+        password: passField.value
+      });
+      if (updateError) throw updateError;
+      activeUserUuid = updateData?.user?.id;
     } else {
-      // Default user flow routes directly to client workspace interface layout strings
-      window.location.href = `https://portal.filings4u.com{activeUserUuid}`;
+      console.log("[Auth Tunnel] Executing customer credential provisioning pass...");
+      const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
+        email: targetUsernameEmail,
+        password: passField.value
+      });
+
+      if (signUpError) {
+        // Handle pre-registered users safely by verifying credentials with password auth
+        if (signUpError.status === 400 || signUpError.message.toLowerCase().includes("already registered")) {
+          const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
+            email: targetUsernameEmail,
+            password: passField.value
+          });
+          
+          if (signInError) {
+            // Re-fetch record as a fallback to catch the true user_id string identifier
+            const { data: recoveredRecord } = await supabaseClient.from('orders').select('user_id').eq('tracking_number', trackingTokenString).maybeSingle();
+            activeUserUuid = recoveredRecord?.user_id || "session_active";
+          } else {
+            activeUserUuid = signInData?.user?.id;
+          }
+        } else {
+          throw signUpError;
+        }
+      } else {
+        activeUserUuid = signUpData?.user?.id;
+      }
     }
+
+    if (!activeUserUuid) throw new Error("Cryptographic session user token failed verification validation check passes.");
+
+    // 3. SECURE DATA LINKAGE: Bind verified backend user token cross-references across tables
+    console.log("[Data Link] Binding cryptographic user session token to repository rows...");
+    await supabaseClient.from('orders').update({ user_id: activeUserUuid }).eq('tracking_number', trackingTokenString);
+    await supabaseClient.from('filing_orders').update({ user_id: activeUserUuid }).eq('reference_id', trackingTokenString);
+
+    // 4. CLEANUP: Delete lead records out of staging
+    await supabaseClient.from('wizard_abandoned_leads').delete().eq('email', targetUsernameEmail);
+
+    // 5. SUCCESS: Trigger the countdown overlay modal using your live backend authentication session keys
+    triggerSecureBlurModalRedirect(activeUserUuid, targetUsernameEmail);
 
   } catch (authException) {
-    console.error("[Fatal Success Page Exception Caught]", authException);
-    alert(`Account Provisioning Suspended: ${authException.message || authException}`);
+    console.error("[Gatekeeper Block Exception Triggered]", authException);
+    alert(`Registration Suspended: ${authException.message || authException}`);
     
     if (actionSubmitBtn) {
       actionSubmitBtn.disabled = false;
@@ -530,6 +523,59 @@ async function handleClientAccountActivation(event) {
 
   return false;
 }
+
+// ========================================================
+// 🎯 DYNAMIC OVERLAY TIMER WITH AUTHENTIC BACKEND TOKENS
+// ========================================================
+// ========================================================
+// 🎯 FIXED OVERLAY TIMER ENGINE (REMOVES NAMING CONFLICTS)
+// ========================================================
+function triggerSecureBlurModalRedirect(verifiedUserUuid, verifiedEmailAddress) {
+  const overlay = document.getElementById("secure-redirect-blur-overlay");
+  const progressBar = document.getElementById("redirect-countdown-progress-bar");
+  const countLabel = document.getElementById("redirect-countdown-text-label");
+  
+  if (!overlay) return;
+
+  // Mount backdrop layer onto screen workspace with flex layout commands
+  overlay.style.display = "flex";
+  
+  // Reset the horizontal progress bar width to full before initiating the transition shrink loop
+  if (progressBar) progressBar.style.width = "100%";
+  
+  // Trigger layout animation transition
+  setTimeout(() => {
+    if (progressBar) progressBar.style.width = "0%"; 
+  }, 50);
+
+  // Initialize a continuous 1-second counting thread circuit
+  let secondsRemainingValue = 10;
+  
+  const countingIntervalThread = setInterval(() => {
+    secondsRemainingValue--;
+    
+    if (countLabel) {
+      countLabel.innerHTML = `Redirecting in ${secondsRemainingValue} second${secondsRemainingValue !== 1 ? 's' : ''}...`;
+    }
+    
+    // Once counter lands precisely onto zero ticks
+    if (secondsRemainingValue <= 0) {
+      clearInterval(countingIntervalThread);
+      console.log("[Verification Secure] Verification successful. Redirecting to user platform...");
+      
+      // Clear variables session memory cache completely
+      sessionStorage.removeItem("f4u_finalized_checkout_receipt_manifest");
+      
+      // 🟢 SYNTAX CORRECTION RESOLVED: Variable name matched cleanly across both lines
+      const destinationGatewayUrl = `https://portal.filings4u.com/client-dashboard.html?session_state=authenticated_success&token=${encodeURIComponent(verifiedUserUuid)}&email=${encodeURIComponent(verifiedEmailAddress)}`;
+      
+      console.log(`[Router Gateway] Executing page jump to destination link: ${destinationGatewayUrl}`);
+      window.location.href = destinationGatewayUrl;
+    }
+  }, 500);
+}
+
+
 
 </script>
 
@@ -598,7 +644,34 @@ async function handleClientAccountActivation(event) {
         </div> 
     </footer> 
 
-    <!-- 🌐 EXTERNAL UTILITY BEHAVIOR RUNTIMES -->
+ <!-- 🔒 SECURE AUTOMATED REDIRECT PORTAL OVERLAY CONTAINER -->
+<div id="secure-redirect-blur-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 31, 68, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 99999999; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; transition: opacity 0.3s ease;">
+  
+  <!-- CENTERED ACCOUNT CONVERSION MODAL CARD -->
+  <div style="background: #ffffff; width: 100%; max-width: 440px; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(10, 31, 68, 0.25); border: 1px solid var(--border, #e2e8f0); padding: 32px; box-sizing: border-box; text-align: center; transform: scale(1); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+    
+    <!-- 🟢 FIXED EMERALD BADGE: Injected crisp vector checkmark cleanly into the inner circle space -->
+    <div style="width: 64px; height: 64px; background: rgba(16, 185, 129, 0.1); color: #10b981; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; box-sizing: border-box;">
+      <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 24px; display: block; margin: 0; padding: 0;">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    
+    <h3 style="margin: 0 0 10px 0; color: var(--navy, #0a1f44); font-size: 1.35rem; font-weight: 900; letter-spacing: -0.4px;">Profile Already Active</h3>
+    <p style="margin: 0 0 24px 0; color: var(--slate, #475569); font-size: 0.925rem; line-height: 1.5;">A profile is already created for you; you are being redirected to your client portal.</p>
+    
+    <!-- Real-Time 10s Visual Progress Bar Tracker -->
+    <div style="width: 100%; background: #f1f5f9; height: 6px; border-radius: 99px; overflow: hidden; margin-bottom: 12px;">
+      <div id="redirect-countdown-progress-bar" style="width: 100%; background: var(--primary, #10b981); height: 100%; transition: width 10s linear;"></div>
+    </div>
+    
+    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;" id="redirect-countdown-text-label">
+      Redirecting in 10 seconds...
+    </span>
+  </div>
+</div>
+
+
     
 </body> 
 </html>

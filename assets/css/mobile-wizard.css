@@ -839,3 +839,9 @@
     width: 100% !important;
   }
 }
+
+@media screen and (max-width: 990px) {
+  .success-container {
+    margin-top: 16px !important; /* Lowers mobile tracking whitespace */
+  }
+}

@@ -656,6 +656,8 @@
 </div>
 
 
+<!-- 🛑 DYNAMIC SECURE ERROR ALERT TARGET ROW (Place at top of Step 6 card) -->
+<div id="step6-error-banner-target" style="display: none; width: 100%; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; color: #ef4444; font-size: 0.875rem; font-weight: 600; line-height: 1.4; text-align: left; box-sizing: border-box;"></div>
 
       <!-- ============================================================================ -->
       <!-- 💳 STEP 6 PANEL: EMBEDDED FLAT CHECKOUT INTERFACE                           -->
@@ -711,142 +713,6 @@
 </div>
 
 
-      <!-- ============================================================================ -->
-      <!-- 🎉 STEP 7 PANEL: SUCCESS PORTAL & ACCOUNT CREATION                          -->
-      <!-- ============================================================================ -->
-      <div class="wizard-panel" id="step-panel-7" style="display: none;">
-        
-        <!-- Unified Responsive Workspace Grid Flex Framework Layout -->
-        <main class="success-container" style="margin: 0; padding: 0; width: 100%; display: flex; gap: 30px; align-items: start; box-sizing: border-box;">
-          
-          <!-- LEFT COLUMN: ORDER CONFIRMATION AND TRANSACTION RECEIPT -->
-          <section class="success-card" style="background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 16px; box-shadow: 0 10px 25px rgba(10,31,68,0.02); padding: 30px; box-sizing: border-box; flex: 3; min-width: 0; width: 100%;">
-            
-            <!-- FIXED SVG NAMESPACE: Repaired namespace to standard URI to ensure checkmark icon renders -->
-            <div class="success-badge-icon" style="width: 64px; height: 64px; background: rgba(16, 185, 129, 0.1); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-              <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width: 26px; height: 26px; display: block;">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            </div>
-
-            <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px; width: 100%; box-sizing: border-box;">
-              <h1 style="color: var(--navy); font-size: 1.8rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Order Successfully Deployed</h1>
-              <p style="color: var(--slate); font-size: 0.95rem; margin: 0; line-height: 1.5;">Your compliance metadata package has been parsed, encrypted, and transmitted directly to target authority filing networks.</p>
-            </div>
-
-           <!-- ADMINISTRATIVE HANDSHAKE REFERENCE PARAMETERS -->
-<div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 25px; box-sizing: border-box; width: 100%;">
-  <div style="flex: 1; min-width: 200px; box-sizing: border-box;">
-    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate); letter-spacing: 0.05em; display: block; margin-bottom: 4px;">Secure Tracking Token</span>
-    <!-- FIXED: Changed element ID to "receipt-session-hash-display" and placeholder prefix text string to pull dynamically without state assumptions -->
-    <strong id="receipt-session-hash-display" style="font-family: monospace; font-size: 0.95rem; color: var(--navy); word-break: break-all; display: block; line-height: 1.4;">RETRIEVING...</strong>
-  </div>
-  <div style="flex: 1; min-width: 200px; box-sizing: border-box;">
-    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--slate); letter-spacing: 0.05em; display: block; margin-bottom: 4px;">Filing Status</span>
-    <strong style="color: var(--primary); font-size: 0.95rem; display: flex; align-items: center; gap: 6px; line-height: 1.4; padding-top: 2px; font-weight: 700;">
-      <span style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%; display: inline-block;"></span> VALIDATED &amp; QUEUED
-    </strong>
-  </div>
-</div>
-
-
-            <!-- ITEMIZED TRANSACTION INVOICE DISPLAY STACK -->
-            <div style="margin-bottom: 25px;">
-              <h3 style="margin: 0 0 12px 0; font-size: 1rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--light-bg); padding-bottom: 6px;">
-                Itemized Billing Statement
-              </h3>
-              <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column; gap: 8px;"></div>
-              
-              <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-top: 14px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; box-sizing: border-box; width: 100%;">
-                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-                  <span>Filing Processing Subtotal</span>
-                  <span id="receipt-subtotal-display" style="font-family: monospace; color: var(--navy); font-weight: 600;">$0.00</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--slate); font-weight: 500;">
-                  <span>Government Statutory Registry Fees</span>
-                  <span id="receipt-gov-fee-display" style="font-family: monospace; color: var(--navy); font-weight: 600;">$0.00</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 1.2rem; color: var(--navy); font-weight: 900; border-top: 1px dashed var(--border); padding-top: 12px; margin-top: 4px; align-items: center;">
-                  <span>Total Paid Amount</span>
-                  <span id="receipt-grand-total-display" style="font-family: monospace; color: var(--primary);">$0.00</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- DYNAMIC LEGAL ENTITY AUDIT PROFILE RECORD VIEW -->
-            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-sizing: border-box; width: 100%;">
-              <h3 style="margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-building" style="color: var(--slate);"></i> Registered Entity Profile Target
-              </h3>
-              <div class="profile-responsive-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; font-size: 0.9rem; width: 100%; box-sizing: border-box;">
-                <div>
-                  <span style="color: var(--slate); display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Legal Corporate Name</span>
-                  <strong id="receipt-profile-name" style="color: var(--navy); font-weight: 600;">---</strong>
-                </div>
-                <div>
-                  <span style="color: var(--slate); display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Taxpayer ID / EIN</span>
-                  <strong id="receipt-profile-ein" style="color: var(--navy); font-family: monospace; font-weight: 600;">---</strong>
-                </div>
-                <div class="address-grid-span" style="grid-column: span 2;">
-                  <span style="color: var(--slate); display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2px;">Principal Office Address</span>
-                  <strong id="receipt-profile-address" style="color: var(--navy); font-weight: 600;">---</strong>
-                </div>
-              </div>
-            </div>
-          </section>
-          <!-- RIGHT COLUMN: CLIENT SECURED GATEWAY ACCOUNT CREATION CARD -->
-          <aside class="success-card" style="background: #ffffff; border: 1px solid var(--border); border-radius: 16px; padding: 30px; box-sizing: border-box; flex: 2; width: 100%;">
-            <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; width: 100%; box-sizing: border-box;">
-              <h2 style="color: var(--navy); font-size: 1.3rem; font-weight: 800; margin: 0 0 4px 0; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-user-plus" style="color: var(--primary); font-size: 1.15rem;"></i> Activate Client Portal
-              </h2>
-              <p style="color: var(--slate); font-size: 0.85rem; margin: 0; line-height: 1.45; font-weight: 400;">Claim ownership of your compliance dossier. Establish your security access parameters to monitor state approvals, fetch corporate documents, and track status matrices in real time.</p>
-            </div>
-
-            <!-- SECURE PORTAL USER REGISTRATION MATRIX FORM -->
-            <div id="wizard-account-generation-subform" style="width: 100%; box-sizing: border-box;">
-              <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
-                <label for="portal_user_email" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Registered Account Username / Email</label>
-                <div style="position: relative; display: flex; align-items: center; width: 100%;">
-                  <span style="position: absolute; left: 16px; color: var(--slate); font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span>
-                  <input type="email" id="portal_user_email" required readonly style="width: 100%; padding: 12px 16px 12px 44px; font-size: 0.95rem; font-weight: 600; border-radius: 6px; border: 1px solid var(--border); background: #f1f5f9; color: var(--slate); cursor: not-allowed; outline: none; box-sizing: border-box;">
-                </div>
-                <span style="font-size: 0.7rem; color: var(--slate); font-weight: 400; padding-left: 2px;">Auto-locked to your corporate registry filing email.</span>
-              </div>
-              
-              <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
-                <label for="portal_user_password" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Create Security Password</label>
-                <div style="position: relative; display: flex; align-items: center; width: 100%;">
-                  <span style="position: absolute; left: 16px; color: var(--slate); font-size: 0.9rem;"><i class="fa-solid fa-key"></i></span>
-                  <input type="password" id="portal_user_password" required minlength="8" placeholder="Minimum 8 characters..." style="width: 100%; padding: 12px 16px 12px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid var(--border); background: #ffffff; color: var(--navy); outline: none; box-sizing: border-box;">
-                </div>
-              </div>
-              
-              <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;">
-                <label for="portal_user_password_confirm" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate);">Confirm Security Password</label>
-                <div style="position: relative; display: flex; align-items: center; width: 100%;">
-                  <span style="position: absolute; left: 16px; color: var(--slate); font-size: 0.9rem;"><i class="fa-solid fa-circle-check"></i></span>
-                  <input type="password" id="portal_user_password_confirm" required minlength="8" placeholder="Re-type password..." style="width: 100%; padding: 12px 16px 12px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid var(--border); background: #ffffff; color: var(--navy); outline: none; box-sizing: border-box;">
-                </div>
-              </div>
-              
-              <button type="button" id="portal-activation-submit-btn" onclick="handleClientAccountActivation(event);" style="width: 100%; text-align: center; background: var(--primary); color: #ffffff; border: none; font-weight: 700; font-size: 1rem; padding: 14px 0; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); box-sizing: border-box;">
-                <i class="fa-solid fa-unlock-keyhole" style="margin-right: 6px;"></i> Initialize Secured Dashboard
-              </button>
-            </div>
-            
-            <div style="margin-top: 20px; border-top: 1px dashed var(--border); padding-top: 16px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.75rem; color: var(--slate); line-height: 1.45;">
-              <span style="color: var(--primary); font-size: 1rem; margin-top: 2px;"><i class="fa-solid fa-shield-halved"></i></span>
-              <span><strong>Encrypted Vault Lock:</strong> Portal passwords undergo one-way cryptographic SHA-256 hashing prior to serialization inside database clusters. filings4u staff cannot view or access your security password.</span>
-            </div>
-          </aside> <!-- /End Right Column Account Portal -->
-
-        </main>
-      </div> <!-- /End Step 7 Panel Wrapper View -->
-
-    </form> <!-- /End Master Form Core Bracket Layout -->
-  </div> <!-- /End .wizard-card -->
-</div> <!-- /End .wizard-container -->
 
 
 <footer class="footer-master-container" style="position: relative; width: 100%; box-sizing: border-box; overflow: hidden; background: #0a1f44; border-top: 1px solid #cbd5e1; clear: both; display: block;">

@@ -1421,19 +1421,34 @@
    🖨️ PRODUCTION INVOICE PRINT SPECIFICATIONS MATRIX
    ======================================================== */
 @media print {
-  /* Hide interactive portal components, headers, buttons, and backdrops completely */
-  nav, 
+  /* 1. Hide interactive portal components, account creation forms, sidebars, and chat indicators completely */
   aside.success-card, 
   button, 
+  form,
   .chat-bubble-widget,
-  .poa-tooltip-anchor {
+  .poa-tooltip-anchor,
+  footer, 
+  .footer-master-container, 
+  .footer-legal-row-bar {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* Force the layout containers to occupy full tracking margins on paper */
+  /* 2. Retain only your brand logo header and the main clean receipt card details */
+  nav {
+    display: block !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    padding-bottom: 12px !important;
+  }
+
   html, body {
     background: #ffffff !important;
-    font-size: 12pt !important;
+    font-size: 11pt !important;
+    color: #000000 !important;
   }
 
   .success-container {
@@ -1447,28 +1462,23 @@
   .success-card {
     border: none !important;
     box-shadow: none !important;
-    padding: 0 !important;
+    padding: 20px 0 !important;
     margin: 0 !important;
     width: 100% !important;
   }
 
-  /* Keep table dash dividers dark and readable */
+  /* Keep dash dividers visible and sharp on black-and-white printouts */
   .receipt-line-item {
-    border-bottom: 1px dashed #94a3b8 !important;
+    border-bottom: 1px dashed #64748b !important;
     page-break-inside: avoid;
   }
 }
+
 
 /* 1. Shrink space between header navbar and the main receipt layout grid box */
 .success-container {
   margin-top: 30px !important; /* Drops desktop top gap down significantly */
   padding-top: 0 !important;
-}
-
-@media screen and (max-width: 990px) {
-  .success-container {
-    margin-top: 16px !important; /* Lowers mobile tracking whitespace */
-  }
 }
 
 /* 2. Style rule to handle the status badge illumination */
