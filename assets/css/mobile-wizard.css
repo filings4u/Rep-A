@@ -845,3 +845,10 @@
     margin-top: 16px !important; /* Lowers mobile tracking whitespace */
   }
 }
+
+@media screen and (max-width: 990px) {
+  .badge-processing-complete {
+    font-size: 0.72rem !important;
+    padding: 4px 10px !important;
+  }
+}

@@ -1,116 +1,120 @@
 // ============================================================================ //
-// 📊 MODULE 2: UNIFIED DYNAMIC MARKETPLACE SCHEMA & INJECTION INTEGRATION ENGINE
+// 📊 MODULE 3: UNIFIED DYNAMIC MARKETPLACE SCHEMA & INJECTION INTEGRATION ENGINE //
 // ============================================================================ //
-function renderTargetUpsellsListPanel() {
-    const renderTarget = document.getElementById("wizard-dynamic-upsells-render-target");
-    if (!renderTarget) {
-        console.warn("[Marketplace] Render target element '#wizard-dynamic-upsells-render-target' not found in DOM.");
-        return null;
-    }
+function renderTargetUpsellsListPanel(explicitCatalog = null, explicitTargetNode = null) {
+  // 🟢 FLEXIBLE BINDING LAYER: Prioritize passed nodes, fall back to global document IDs
+  const renderTarget = explicitTargetNode || document.getElementById("wizard-dynamic-upsells-render-target");
+  
+  if (!renderTarget) {
+    console.warn("[Marketplace] Render target element not found in current DOM state.");
+    return null;
+  }
 
-    const baseSource = window.CENTRAL_ADDON_DB || window.UPSELLS_ROUTER_DATABASE || window.UPSELL_ADDON_REGISTRY;
-    if (!baseSource || typeof baseSource !== 'object') {
-        console.warn("[Marketplace] Pricing addon database source is uninitialized or missing from global scope.");
-        return null;
-    }
+  // Prioritize explicitly passed catalogs from the timing synchronization bridge
+  const baseSource = explicitCatalog || window.CENTRAL_ADDON_DB || window.UPSELLS_ROUTER_DATABASE || window.UPSELL_ADDON_REGISTRY;
+  
+  if (!baseSource || typeof baseSource !== 'object') {
+    console.warn("[Marketplace] Pricing addon database source is uninitialized or missing from global scope.");
+    return null;
+  }
 
-    const unifiedCatalogItems = {};
-    const visitedNodes = new Set();
+  const unifiedCatalogItems = {};
+  const visitedNodes = new Set();
 
-    // 1. RECURSIVE SCHEMA TREE DISCOVERY PASS
-    function scanTreeForValidAddons(currentNode) {
-        if (!currentNode || typeof currentNode !== 'object') return;
-        if (visitedNodes.has(currentNode)) return;
-        visitedNodes.add(currentNode);
+  // 1. RECURSIVE SCHEMA TREE DISCOVERY PASS
+  function scanTreeForValidAddons(currentNode) {
+    if (!currentNode || typeof currentNode !== 'object') return;
+    if (visitedNodes.has(currentNode)) return;
+    visitedNodes.add(currentNode);
 
-        if (Array.isArray(currentNode)) {
-            currentNode.forEach(item => {
-                if (item && typeof item === 'object') {
-                    const productKey = item.id || item.slug || item.name;
-                    if (productKey && (item.label || item.name)) {
-                        // 🟢 FILTER INCLUSION GATE: Skip Step 2 compliance items
-                        if (!String(productKey).startsWith("nea_") && !String(productKey).startsWith("nea-")) {
-                            unifiedCatalogItems[productKey] = item;
-                        }
-                    }
-                    scanTreeForValidAddons(item);
-                }
-            });
-            return;
+    if (Array.isArray(currentNode)) {
+      currentNode.forEach(item => {
+        if (item && typeof item === 'object') {
+          const productKey = item.id || item.slug || item.name;
+          if (productKey && (item.label || item.name)) {
+            if (!String(productKey).startsWith("nea_") && !String(productKey).startsWith("nea-")) {
+              unifiedCatalogItems[productKey] = item;
+            }
+          }
+          scanTreeForValidAddons(item);
         }
-
-        Object.keys(currentNode).forEach(key => {
-            const targetNode = currentNode[key];
-            if (!targetNode || typeof targetNode !== 'object') return;
-            if (targetNode.price !== undefined && (targetNode.label || targetNode.name)) {
-                const productKey = targetNode.id || targetNode.slug || key;
-                // 🟢 FILTER INCLUSION GATE: Skip Step 2 compliance items
-                if (!String(productKey).startsWith("nea_") && !String(productKey).startsWith("nea-")) {
-                    unifiedCatalogItems[productKey] = targetNode;
-                }
-                scanTreeForValidAddons(targetNode);
-            } else if (key !== 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP') {
-                scanTreeForValidAddons(targetNode);
-            }
-        });
+      });
+      return;
     }
 
-    scanTreeForValidAddons(baseSource);
-    visitedNodes.clear();
+    Object.keys(currentNode).forEach(key => {
+      const targetNode = currentNode[key];
+      if (!targetNode || typeof targetNode !== 'object') return;
+      
+      if (targetNode.price !== undefined && (targetNode.label || targetNode.name)) {
+        const productKey = targetNode.id || targetNode.slug || key;
+        if (!String(productKey).startsWith("nea_") && !String(productKey).startsWith("nea-")) {
+          unifiedCatalogItems[productKey] = targetNode;
+        }
+        scanTreeForValidAddons(targetNode);
+      } else if (key !== 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP') {
+        scanTreeForValidAddons(targetNode);
+      }
+    });
+  }
 
-    // 🛑 REMOVED THE STEP 2 DOM SCRAPER INJECTION PASS:
-    // This removes the code that was forcing Step 2 elements to copy into Step 3.
-    // 2. DRAW DYNAMIC WORKSPACE CARDS INSIDE ACCESSIBLE SCOPE
-    if (Object.keys(unifiedCatalogItems).length > 0) {
-        let marketplaceCardsHtml = "";
-        const mappingCoordinates = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
+  scanTreeForValidAddons(baseSource);
+  visitedNodes.clear();
 
-        Object.keys(unifiedCatalogItems).forEach(catalogSlug => {
-            const item = unifiedCatalogItems[catalogSlug];
-            if (!item) return;
+  // 2. DRAW DYNAMIC WORKSPACE CARDS INSIDE ACCESSIBLE SCOPE
+  if (Object.keys(unifiedCatalogItems).length > 0) {
+    let marketplaceCardsHtml = "";
+    const mappingCoordinates = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
 
-            // 🟢 CRITICAL EXTRACTION PASS: Double check description densities
-            const itemDesc = item.description || item.desc || "";
-            if (!itemDesc || itemDesc.trim() === "") {
-                return; // Skip and block any empty text blocks from rendering on Step 3
-            }
+    Object.keys(unifiedCatalogItems).forEach(catalogSlug => {
+      const item = unifiedCatalogItems[catalogSlug];
+      if (!item) return;
 
-            const stateTrackingKey = mappingCoordinates[catalogSlug] || catalogSlug;
-            const isFlagTrue = window[stateTrackingKey] === true || window[stateTrackingKey] === "yes" || String(window[stateTrackingKey]) === "true";
-            const itemName = item.label || item.name;
-            const itemPrice = parseFloat(item.price) || 0;
+      const itemDesc = item.description || item.desc || "";
+      if (!itemDesc || itemDesc.trim() === "") {
+        return; // Skip and block empty text blocks from rendering on Step 3
+      }
 
-            marketplaceCardsHtml += `
-             <div class="upsell-market-card" style="background:#ffffff; border:1px solid var(--border, #e2e8f0); padding:16px; border-radius:8px; display:flex; gap:16px; align-items:center; justify-content:space-between; box-sizing:border-box; width:100%; transition:all 0.2s ease; margin-bottom: 12px;">
-                <div style="display:flex; flex-direction:column; gap:4px; min-width:0; flex:1;">
-                    <span style="font-weight:800; font-size:1rem; color:var(--navy, #0a1f44);">${itemName}</span>
-                    <p style="margin:0; font-size:0.85rem; color:var(--slate, #64748b); line-height:1.4;">${itemDesc}</p>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0;">
-                    <span style="font-family:monospace; font-weight:700; color:var(--primary, #10b981); font-size:1.1rem;">$${itemPrice.toFixed(2)}</span>
-                    <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:700; color:var(--navy, #0a1f44); cursor:pointer; margin:0;">
-                        <input type="checkbox" class="upsell-checkbox" id="${stateTrackingKey}" data-price="${itemPrice}" data-name="${itemName}" style="width:18px; height:18px; cursor:pointer;" ${isFlagTrue ? 'checked' : ''} onchange="handleBackgroundUpsellTogglePass(this)"> Activate
-                    </label>
-                </div>
-             </div>`;
-        });
+      const stateTrackingKey = mappingCoordinates[catalogSlug] || catalogSlug;
+      const isFlagTrue = window[stateTrackingKey] === true || window[stateTrackingKey] === "yes" || String(window[stateTrackingKey]) === "true";
+      const itemName = item.label || item.name;
+      const itemPrice = parseFloat(item.price) || 0;
 
-        renderTarget.innerHTML = marketplaceCardsHtml;
-    }
+      marketplaceCardsHtml += `
+        <div class="upsell-market-card" style="background:#ffffff; border:1px solid var(--border, #e2e8f0); padding:16px; border-radius:8px; display:flex; gap:16px; align-items:center; justify-content:space-between; box-sizing:border-box; width:100%; transition:all 0.2s ease; margin-bottom: 12px;">
+          <div style="display:flex; flex-direction:column; gap:4px; min-width:0; flex:1;">
+            <span style="font-weight:800; font-size:1rem; color:var(--navy, #0a1f44);">${itemName}</span>
+            <p style="margin:0; font-size:0.85rem; color:var(--slate, #64748b); line-height:1.4;">${itemDesc}</p>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0;">
+            <span style="font-family:monospace; font-weight:700; color:var(--primary, #10b981); font-size:1.1rem;">$${itemPrice.toFixed(2)}</span>
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:700; color:var(--navy, #0a1f44); cursor:pointer; margin:0;">
+              <input type="checkbox" class="upsell-checkbox" id="${stateTrackingKey}" data-price="${itemPrice}" data-name="${itemName}" style="width:18px; height:18px; cursor:pointer;" ${isFlagTrue ? 'checked' : ''} onchange="handleBackgroundUpsellTogglePass(this)">
+              Activate
+            </label>
+          </div>
+        </div>`;
+    });
+    
+    renderTarget.innerHTML = marketplaceCardsHtml;
+  } else {
+    // Gracefully clear out the "Loading eligible asset protection tiers..." layout spinner if empty
+    renderTarget.innerHTML = `<div style="text-align:center; padding:30px 0; color:var(--slate, #64748b); font-size:0.9rem;">No secondary protection tiers require activation.</div>`;
+  }
 
-    window.unifiedCatalogItems = unifiedCatalogItems;
-    console.log(`[Marketplace Compiler] Cleaned view context. Active Tiers compiled: ${Object.keys(unifiedCatalogItems).length}`);
-    return unifiedCatalogItems;
+  window.unifiedCatalogItems = unifiedCatalogItems;
+  console.log(`[Marketplace Compiler] Cleaned view context. Active Tiers compiled: ${Object.keys(unifiedCatalogItems).length}`);
+  
+  return unifiedCatalogItems;
 }
 
-// Map the method safely to global scopes window records
 window.renderTargetUpsellsListPanel = renderTargetUpsellsListPanel;
+
 
 
 // ============================================================================ //
 // ⚡ CLICK INTERCEPT ROUTERS & BINDING HANDLERS (REPAIRED FUNNEL CORES)        //
 // ============================================================================ //
-
 /**
  * Syncs marketplace checklist boxes immediately down to global state tokens memory registers
  * and dynamically injects values into both backend and wizard-native invoice arrays.
@@ -150,31 +154,36 @@ function handleBackgroundUpsellTogglePass(checkboxNode) {
 
   // Resolve structural naming coordinates mapping parameters
   const inverseCoordinatesMap = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
-  const catalogSlug = Object.keys(inverseCoordinatesMap).find(function(key) {
-    return inverseCoordinatesMap[key] === targetFlagKey;
+  const catalogSlug = Object.keys(inverseCoordinatesMap).find(function(key) { 
+    return inverseCoordinatesMap[key] === targetFlagKey; 
   }) || targetFlagKey;
 
   const addonNameAttr = checkboxNode.getAttribute("data-name") || checkboxNode.getAttribute("data-label") || catalogSlug;
   const addonPriceAttr = parseFloat(checkboxNode.getAttribute("data-price")) || parseFloat(checkboxNode.value) || 0.00;
   
-  const compiledAddonRecord = { 
-    id: catalogSlug, 
-    name: addonNameAttr, 
-    price: addonPriceAttr, 
-    label: addonNameAttr 
-  };
+  const compiledAddonRecord = { id: catalogSlug, name: addonNameAttr, price: addonPriceAttr, label: addonNameAttr };
 
-  // 2. Pass Phase 1: Update explicit backend tracking payload tables
+  // 2. Pass Phase 1: Update explicit backend tracking payload tables safely
   activeBillingNodes.forEach(function(nodeKey) {
     const targetPayload = window[nodeKey];
     if (!targetPayload || !Array.isArray(targetPayload.active_addons_list)) return;
-    
+
+    // Determine target payload schema format by looking at existing entries
+    const sampleEntry = targetPayload.active_addons_list[0];
+    const expectsObjectSchema = (sampleEntry && typeof sampleEntry === 'object');
+
     if (isChecked) {
       const isAlreadyListed = targetPayload.active_addons_list.some(function(addon) {
         return ((addon && typeof addon === 'object') ? addon.id : addon) === catalogSlug;
       });
+
       if (!isAlreadyListed) {
-        targetPayload.active_addons_list.push(compiledAddonRecord);
+        // 🟢 POLYMORPHIC INJECTION FIXED: Match the exact expected target data format type
+        if (expectsObjectSchema) {
+          targetPayload.active_addons_list.push(compiledAddonRecord);
+        } else {
+          targetPayload.active_addons_list.push(catalogSlug); // Push raw string slug token
+        }
       }
     } else {
       targetPayload.active_addons_list = targetPayload.active_addons_list.filter(function(addon) {
@@ -184,7 +193,6 @@ function handleBackgroundUpsellTogglePass(checkboxNode) {
   });
 
   // 3. 🟢 PASS PHASE 2: CRITICAL WIZARD SUMMARY INTEGRATION
-  // FIXED: Fallback declaration protects existing package keys from destructive overwrite wipes
   if (!window.currentCartState) {
     window.currentCartState = {};
   }
@@ -193,16 +201,16 @@ function handleBackgroundUpsellTogglePass(checkboxNode) {
   }
 
   if (isChecked) {
-    const isCartDuplicate = window.currentCartState.addons.some(function(addon) {
-      return addon && addon.name === addonNameAttr;
+    const isCartDuplicate = window.currentCartState.addons.some(function(addon) { 
+      return addon && addon.name === addonNameAttr; 
     });
     if (!isCartDuplicate) {
       window.currentCartState.addons.push({ name: addonNameAttr, price: addonPriceAttr });
       console.log(`[Funnel Sync] Synced "${addonNameAttr}" into Step 5 cart state review array.`);
     }
   } else {
-    window.currentCartState.addons = window.currentCartState.addons.filter(function(addon) {
-      return addon && addon.name !== addonNameAttr;
+    window.currentCartState.addons = window.currentCartState.addons.filter(function(addon) { 
+      return addon && addon.name !== addonNameAttr; 
     });
     console.log(`[Funnel Sync] Scrubbed "${addonNameAttr}" out of Step 5 cart state review array.`);
   }
@@ -229,61 +237,69 @@ function handleBackgroundUpsellTogglePass(checkboxNode) {
 window.handleBackgroundUpsellTogglePass = handleBackgroundUpsellTogglePass;
 
 
-
 // ============================================================================ //
 // 📊 MEMORY ENGINE STABILIZER (REPAIRED ASYNCHRONOUS TARGET VERIFICATION)     //
 // ============================================================================ //
 (function stabilizeRuntimeSync() {
-    /**
-     * Safety Guard: Verifies that the HTML layout is ready before triggering a render
-     */
-    function safeInitialMarketplaceRender() {
-        const hasContainer = document.getElementById("wizard-dynamic-upsells-render-target");
-        if (hasContainer) {
-            if (typeof window.renderTargetUpsellsListPanel === "function") {
-                window.renderTargetUpsellsListPanel();
-            }
-        } else {
-            // If the template is still painting, queue a microsecond delay pass to catch it
-            console.log("[Marketplace Guard] HTML render container pending. Scheduling micro-burst synchronization pass...");
-            setTimeout(safeInitialMarketplaceRender, 50);
-        }
-    }
+  let isInitialRenderCompleted = false;
 
-    if (window.CENTRAL_ADDON_DB && Object.keys(window.CENTRAL_ADDON_DB).length > 0) {
-        safeInitialMarketplaceRender();
-        return;
-    }
+  /**
+   * Safety Guard: Verifies that the HTML layout is ready before triggering a render
+   */
+  function safeInitialMarketplaceRender() {
+    // Prevent multiple parallel execution channels from double-painting elements
+    if (isInitialRenderCompleted) return;
 
-    let currentDbVal = window.CENTRAL_ADDON_DB;
-
-    Object.defineProperty(window, 'CENTRAL_ADDON_DB', {
-        get() {
-            return currentDbVal;
-        },
-        set(newVal) {
-            currentDbVal = newVal;
-            
-            if (newVal && typeof newVal === 'object') {
-                window.auxiliaryAddonsArray = Object.keys(newVal);
-            }
-            
-            // Trigger target layout rendering verification loops
-            safeInitialMarketplaceRender();
-        },
-        configurable: true,
-        enumerable: true
-    });
-})();
-
-// Hook into your primary DOM ready event queue pass securely
-document.addEventListener("DOMContentLoaded", () => {
-    const renderTarget = document.getElementById("wizard-dynamic-upsells-render-target");
+    const hasContainer = document.getElementById("wizard-dynamic-upsells-render-target");
+    const baseSource = window.CENTRAL_ADDON_DB || window.UPSELLS_ROUTER_DATABASE || window.UPSELL_ADDON_REGISTRY;
     
-    if (renderTarget && typeof window.renderTargetUpsellsListPanel === "function") {
-        window.renderTargetUpsellsListPanel();
+    // Core structural validation pass
+    if (hasContainer && baseSource && typeof window.renderTargetUpsellsListPanel === "function") {
+      isInitialRenderCompleted = true;
+      console.log("[Marketplace Guard] Target layout aligned. Launching isolated workspace render...");
+      
+      try {
+        window.renderTargetUpsellsListPanel(baseSource, hasContainer);
+      } catch (renderError) {
+        isInitialRenderCompleted = false; // Release lock if it crashes so it can try to auto-recover
+        console.error("[Marketplace Guard] Internal compilation pipeline exception:", renderError);
+      }
+    } else {
+      // Defer gracefully using a macro-task timer ring until items are fully loaded
+      console.log("[Marketplace Guard] HTML render container or database records pending. Scheduling synchronization pass...");
+      setTimeout(safeInitialMarketplaceRender, 100);
     }
-});
+  }
+
+  // Handle immediate initialization if database arrays are already cached in browser memory
+  const baseSource = window.CENTRAL_ADDON_DB || window.UPSELLS_ROUTER_DATABASE || window.UPSELL_ADDON_REGISTRY;
+  if (baseSource && Object.keys(baseSource).length > 0) {
+    if (document.readyState !== "loading") {
+      safeInitialMarketplaceRender();
+    } else {
+      document.addEventListener("DOMContentLoaded", safeInitialMarketplaceRender);
+    }
+    return;
+  }
+
+  // SAFE COMPONENT POLLING ENGINE: Avoids stack overflows by avoiding dangerous Object.defineProperty intercept traps
+  const hydrationIntervalTracker = setInterval(() => {
+    const reactiveSource = window.CENTRAL_ADDON_DB || window.UPSELLS_ROUTER_DATABASE || window.UPSELL_ADDON_REGISTRY;
+    
+    if (reactiveSource && Object.keys(reactiveSource).length > 0) {
+      // Sync auxiliary tracking keys cleanly without interrupting property operations
+      window.auxiliaryAddonsArray = Object.keys(reactiveSource);
+      
+      safeInitialMarketplaceRender();
+      clearInterval(hydrationIntervalTracker); // Instantly tear down the polling engine to free system memory
+    }
+  }, 100);
+
+  // Fallback protection ring to accommodate massive layout pipeline lags
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(safeInitialMarketplaceRender, 200);
+  });
+})();
 
 
 // ============================================================================ // 

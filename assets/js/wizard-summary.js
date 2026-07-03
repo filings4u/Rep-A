@@ -1,113 +1,242 @@
-(function() {
-  function directInjectCartAddonsToSummaryStep5() {
-    console.log("[Summary Engine] Recalculating itemized matrix rows pass...");
-    const rowsTargetNode = document.getElementById("summary-purchase-rows-container");
-    if (!rowsTargetNode) return;
+// ============================================================================ // 
+// 📊 MODULE CARD: 100% PERSISTENT DATA STEP 5 SUMMARY COMPILATION ENGINE // 
+// ============================================================================ // 
+(function() { 
+    "use strict"; 
+    window.recalculateSummaryItemizedMatrixRows = function() { 
+        console.log("[Summary Engine] Running strict prefix-matched persistent recalculation matrix..."); 
+        
+        // 1. DISCOVER LOCAL STEP 5 DOM CHANNELS SAFELY 
+        const rowsContainer = document.getElementById("summary-purchase-rows-container"); 
+        const subtotalNode = document.getElementById("summary-subtotal-display"); 
+        const govFeesNode = document.getElementById("summary-gov-fees-display"); 
+        const grandTotalNode = document.getElementById("summary-grand-total-display"); 
+        
+        // Defensive check: Exit if the wizard summary DOM nodes aren't loaded yet 
+        if (!rowsContainer || !govFeesNode || !grandTotalNode) { 
+            return; 
+        } 
 
-    let calculatedAddonsTotal = 0;
-    let itemsMarkupString = "";
-    
-    const ctx = window._tempCalcContext || {};
-    const basePackagePriceValue = parseFloat(ctx.baseTierPrice) || window.computedWizardBasePackageFee || 299.00;
-    const safePlanName = ctx.planConfig?.name || 'New Entrant Audit';
-    const safePlanTier = ctx.currentPlanKey ? String(ctx.currentPlanKey).toUpperCase() : 'COMPLIANCE';
-    
-    const activeCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    const processedNamesRegistry = [];
+        // 2. READ PATH STRINGS PERSISTENTLY FROM STORAGE LABELS FIRST 
+        const urlParams = new URLSearchParams(window.location.search); 
+        const serviceKey = urlParams.get('service') || localStorage.getItem('wizard_service_key'); 
+        const planTierKey = urlParams.get('plan') || localStorage.getItem('wizard_plan_tier_key'); 
+        
+        // PRIORITIZE LOCALSTORAGE TO PREVENT LATE DOM RE-WRITES OVERWRITING CACHED STATES
+        const rawStateValue = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || document.querySelector('select[id*="state"], select[id*="formation"]')?.value || ""; 
+        const selectedStateCode = String(rawStateValue).trim().toUpperCase(); 
+        if (!serviceKey) { 
+            console.warn("[Summary Engine Warning] No active 'service' selection found in URL parameters or LocalStorage pools."); 
+            return; 
+        } 
 
-    activeCheckboxes.forEach(checkbox => {
-      if (!checkbox || !checkbox.id) return;
-      if (checkbox.id.startsWith("modal_input_box_")) return;
+        // Backup current valid properties back to LocalStorage to protect data against page reloads 
+        localStorage.setItem('wizard_service_key', serviceKey); 
+        if (planTierKey) localStorage.setItem('wizard_plan_tier_key', planTierKey); 
+        if (selectedStateCode) localStorage.setItem('wizard_selected_state', selectedStateCode); 
+        
+        // Synchronize current keys back to global memory blocks for Step 6 dependencies 
+        window.routeActiveServiceKey = serviceKey; 
+        if (planTierKey) { 
+            window.routeActivePlanTierName = planTierKey.toUpperCase(); 
+        } 
 
-      let labelString = checkbox.getAttribute("data-name") || checkbox.getAttribute("data-label");
-      
-      if (!labelString) {
-        const labelElement = document.querySelector('label[for="' + checkbox.id + '"]');
-        if (labelElement) {
-          labelString = labelElement.innerText.replace(/[\*\+\-]/g, '').trim();
+        // 3. LOOK UP BASE PRICING DIRECTLY FROM CONFIGURATION DICTIONARIES 
+        let basePackageCostValue = 0; 
+        if (window.governmentPricing && window.governmentPricing[serviceKey]) { 
+            basePackageCostValue = parseFloat(window.governmentPricing[serviceKey].base_fee) || 0; 
+        } 
+        
+        // Look up state fees dynamically using our recovered state code 
+        let dynamicStateRegistryFee = 0; 
+        if (selectedStateCode && window.statePricing && window.statePricing[selectedStateCode] && window.statePricing[selectedStateCode][serviceKey]) { 
+            dynamicStateRegistryFee = parseFloat(window.statePricing[selectedStateCode][serviceKey]) || 0; 
         }
-      }
-      
-      if (!labelString) {
-        if (checkbox.id === "nea_service_dqf") labelString = "Assemble Driver Qualification Files (DQF)";
-        else if (checkbox.id === "nea_service_consortium") labelString = "DOT Drug & Alcohol Consortium Enrollment";
-        else if (checkbox.id === "nea_service_hos") labelString = "Extended Hours of Service (HOS) Log Audit";
-        else if (checkbox.id === "nea_service_maintenance") labelString = "Vehicle Maintenance & Periodic Inspection Files";
-        else if (checkbox.id === "nea_service_consultation") labelString = "Independent Pre-Audit Consultation Package";
-        else labelString = checkbox.id;
-      }
-      
-      if (!labelString || processedNamesRegistry.includes(labelString)) return;
+         // 4. PROCESS SELECTED MARKETPLACE UPSELLS FROM PERSISTENT STORAGE ARRAY 
+        let dynamicAddonsList = window.currentSelectedAddonsListArrayMatrix || []; 
+        
+        // Recover the saved array string from LocalStorage safely if window context drops 
+        if (dynamicAddonsList.length === 0) { 
+            try { 
+                const savedAddons = localStorage.getItem('wizard_selected_addons_matrix'); 
+                if (savedAddons) { 
+                    dynamicAddonsList = JSON.parse(savedAddons); 
+                } 
+            } catch (e) { 
+                console.error("[Summary Engine] Error parsing selected addons array matrix from LocalStorage:", e); 
+            } 
+        } 
+        
+        let cumulativeAddonsPriceTotal = 0; 
+        rowsContainer.innerHTML = ""; // Reset layout row inner contents cleanly 
+        
+        // FIX: Swapped out old dynamic title variable for standard string
+        const preparationLabel = "filings4u Preparation Fee"; 
+        
+        // Generate core base package row item dynamically using URL data maps 
+        let itemizedLedgerMarkup = ` 
+            <div class="receipt-line-item" style="font-weight: 700; color: var(--navy); display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px dashed var(--border); font-size: 1rem;"> 
+                <span>${preparationLabel}</span> 
+                <span style="font-family: monospace;">$${basePackageCostValue.toFixed(2)}</span> 
+            </div> 
+        `; 
 
-      const priceValue = parseFloat(checkbox.getAttribute("data-price")) || parseFloat(checkbox.value) || 0;
-      if (priceValue <= 0) return;
+        // Loop over chosen add-on items organically 
+        dynamicAddonsList.forEach(addonItem => { 
+            let addonPrice = parseFloat(addonItem.price) || 0; 
+            if (window.wizardUpsells && window.wizardUpsells[addonItem.id]) { 
+                addonPrice = parseFloat(window.wizardUpsells[addonItem.id].price) || addonPrice; 
+            } 
+            cumulativeAddonsPriceTotal += addonPrice; 
+            itemizedLedgerMarkup += ` 
+                <div class="receipt-line-item" style="color: var(--slate); display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem;"> 
+                    <span>+ ${addonItem.title || addonItem.name}</span> 
+                    <span style="font-family: monospace;">$${addonPrice.toFixed(2)}</span> 
+                </div> 
+            `; 
+        }); 
 
-      calculatedAddonsTotal += priceValue;
-      processedNamesRegistry.push(labelString);
+        // Dynamic State/Government Row 
+        if (dynamicStateRegistryFee > 0) { 
+            const dynamicFeeLabel = (serviceKey.includes("annual") || serviceKey.includes("report")) ? "Government Filing Fee" : "State Filing Fee"; 
+            itemizedLedgerMarkup += ` 
+                <div class="receipt-line-item" style="font-weight: 500; color: var(--navy); display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem;"> 
+                    <span>+ ${dynamicFeeLabel} (${selectedStateCode})</span> 
+                    <span style="font-family: monospace;">$${dynamicStateRegistryFee.toFixed(2)}</span> 
+                </div> 
+            `; 
+        } 
 
-      itemsMarkupString += '<div class="summary-receipt-row-item" data-source-checkbox-id="' + checkbox.id + '" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #475569; padding: 10px 0; border-bottom: 1px dashed #e2e8f0; width: 100%; box-sizing: border-box;"><div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-weight: 600; color: #0a1f44;">+ ' + labelString + '</span><button type="button" onclick="window.removeSelectedAddonItemStraightFromSummaryCard(\'' + checkbox.id + '\')" style="background: transparent; border: none; color: #ef4444; font-size: 0.725rem; font-weight: 700; cursor: pointer; padding: 0; text-align: left; width: fit-content; display: flex; align-items: center; gap: 4px; margin-top: 2px; transition: opacity 0.1s;"><i class="fa-solid fa-trash-can"></i> Remove from Invoice</button></div><span style="font-family: monospace; font-weight: 700; color: #0a1f44; font-size: 0.95rem;">$' + priceValue.toFixed(2) + '</span></div>';
-    });
+        // Mount rows markup directly into your Step 5 template card 
+        rowsContainer.innerHTML = itemizedLedgerMarkup; 
 
-    const tierDisplayString = safePlanTier ? ' (' + safePlanTier + ')' : '';
-    const baselineHeaderRow = '<div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; color: #0a1f44; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 4px;"><span>' + safePlanName + tierDisplayString + '</span><span style="font-family: monospace;">$' + basePackagePriceValue.toFixed(2) + '</span></div>';
-    
-    rowsTargetNode.innerHTML = baselineHeaderRow + itemsMarkupString;
+        // 5. UNIFIED FINANCIAL CALCULATIONS MATRIX HYDRATION 
+        // FIX: Removed intermediate subtotal blocks to solve structural pricing discrepancy.
+        const trueCalculatedGrandTotalSummaryCost = basePackageCostValue + dynamicStateRegistryFee + cumulativeAddonsPriceTotal; 
 
-    const finalSubtotalValue = basePackagePriceValue + calculatedAddonsTotal;
-    const finalGovernmentFeeValue = parseFloat(window.computedWizardStateGovernmentFee) || 0;
-    const finalGrandTotalValue = finalSubtotalValue + finalGovernmentFeeValue;
+        // FIX: Target and hide the "Filing & Add-on Subtotal" row completely from view
+        if (subtotalNode) { 
+            const subtotalRowWrapper = subtotalNode.closest('div[style*="justify-content: space-between"]');
+            if (subtotalRowWrapper) {
+                subtotalRowWrapper.style.setProperty('display', 'none', 'important');
+            }
+        } 
+        
+        if (govFeesNode) { 
+            govFeesNode.textContent = `$${dynamicStateRegistryFee.toFixed(2)}`; 
+        } 
+        
+        grandTotalNode.textContent = `$${trueCalculatedGrandTotalSummaryCost.toFixed(2)}`; 
 
-    window.computedWizardGrandTotalAmount = finalGrandTotalValue;
-    window.wizardCalculatedFinalTotalAmount = finalGrandTotalValue;
+        // Update global state tracking context for Step 6 (Stripe payment screen) 
+        window.summaryCalculatedGrandTotal = trueCalculatedGrandTotalSummaryCost; 
+        
+        // Sync price text dynamically with Step 6 gateway total display if rendered on page 
+        const step6TotalDisplay = document.getElementById("payment-gateway-total-display"); 
+        if (step6TotalDisplay) { 
+            step6TotalDisplay.textContent = `$${trueCalculatedGrandTotalSummaryCost.toFixed(2)}`; 
+        }
+        // 🧠 44+ SERVICES AUTOMATED DATA BRIDGING ENGINE (NO HARDCODED KEYS) 
+        try { 
+            console.log("[Summary Engine] Running fuzzy keyword-fragment parsing pass across 44+ potential form styles..."); 
+            const targetSummaryFields = document.querySelectorAll("[data-summary-field]"); 
+            
+            // Pull a clean array snapshot of every single key currently living inside the browser's storage pool 
+            const currentStorageKeys = Object.keys(localStorage); 
+            
+            targetSummaryFields.forEach(displayNode => { 
+                const structuralTargetId = displayNode.getAttribute("data-summary-field"); 
+                if (!structuralTargetId) return; 
+                
+                let resolvedStoredValue = null; 
+                const normalizedSummaryLabel = structuralTargetId.toLowerCase(); 
 
-    const subtotalTextNode = document.getElementById("summary-subtotal-display");
-    if (subtotalTextNode) {
-      const parentRow = subtotalTextNode.parentElement;
-      if (parentRow) parentRow.style.display = "none";
-    }
+                // 🟢 TIMING WIRE LOGIC: Deep crawl storage keys to isolate matching text fragments 
+                for (let k = 0; k < currentStorageKeys.length; k++) { 
+                    const rawCacheKeyName = currentStorageKeys[k]; 
+                    const cleanCacheKeyName = rawCacheKeyName.toLowerCase(); 
+                    
+                    // Get the raw string safely to inspect its contents 
+                    const rawStoredTextValue = localStorage.getItem(rawCacheKeyName) || ""; 
+                    const cleanValueCheck = rawStoredTextValue.trim(); 
 
-    const govFeeTextNode = document.getElementById("summary-gov-fees-display");
-    if (govFeeTextNode) govFeeTextNode.innerText = "$" + finalGovernmentFeeValue.toFixed(2);
+                    // 1. Match Company/Legal Names (Targets data-summary-field="company_name") 
+                    if ((normalizedSummaryLabel.includes("name") || normalizedSummaryLabel.includes("company")) && !normalizedSummaryLabel.includes("owner") && !normalizedSummaryLabel.includes("member") && !normalizedSummaryLabel.includes("email")) { 
+                        if (/^\d+$/.test(cleanValueCheck) || cleanValueCheck.includes("{") || cleanValueCheck.includes("}")) { 
+                            continue; 
+                        } 
+                        if (cleanCacheKeyName.includes("name") || cleanCacheKeyName.includes("legal") || cleanCacheKeyName.includes("company") || cleanCacheKeyName.includes("corp")) { 
+                            if (!cleanCacheKeyName.includes("owner") && !cleanCacheKeyName.includes("member") && !cleanCacheKeyName.includes("email")) { 
+                                resolvedStoredValue = localStorage.getItem(rawCacheKeyName); 
+                                if (resolvedStoredValue && resolvedStoredValue.trim() !== "") break; 
+                            } 
+                        } 
+                    } 
 
-    const grandTotalTextNode = document.getElementById("summary-grand-total-display") || document.getElementById("payment-gateway-total-display");
-    if (grandTotalTextNode) grandTotalTextNode.innerText = "$" + finalGrandTotalValue.toFixed(2);
-  }
+                    // 2. Match Filing States (Targets data-summary-field="selected_state") 
+                    if (normalizedSummaryLabel.includes("state") || normalizedSummaryLabel.includes("territory")) { 
+                        if (cleanValueCheck.includes("{") || cleanValueCheck.includes("}")) { 
+                            continue; 
+                        } 
+                        if (cleanCacheKeyName.includes("state") || cleanCacheKeyName.includes("formation") || cleanCacheKeyName.includes("region") || cleanCacheKeyName.includes("code")) { 
+                            resolvedStoredValue = localStorage.getItem(rawCacheKeyName); 
+                            if (resolvedStoredValue && resolvedStoredValue.trim() !== "") break; 
+                        } 
+                    } 
 
-  window.removeSelectedAddonItemStraightFromSummaryCard = function(sourceCheckboxId) {
-    if (!sourceCheckboxId) return;
-    const targetCheckbox = document.getElementById(sourceCheckboxId);
-    if (targetCheckbox) {
-      targetCheckbox.checked = false;
-      targetCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-    directInjectCartAddonsToSummaryStep5();
-  };
+                    // 3. Match Contact Emails (Targets data-summary-field="email") 
+                    if (normalizedSummaryLabel.includes("email") || normalizedSummaryLabel.includes("address")) { 
+                        if (cleanCacheKeyName.includes("email") || cleanCacheKeyName.includes("mail")) { 
+                            resolvedStoredValue = localStorage.getItem(rawCacheKeyName); 
+                            if (resolvedStoredValue && resolvedStoredValue.trim() !== "") break; 
+                        } 
+                    } 
 
-  window.globalOrchestratedCartRefreshSync = function() {
-    directInjectCartAddonsToSummaryStep5();
-  };
+                    // 4. Match Contact Phone Lines (Targets data-summary-field="phone") 
+                    if (normalizedSummaryLabel.includes("phone") || normalizedSummaryLabel.includes("contact")) { 
+                        if (cleanCacheKeyName.includes("phone") || cleanCacheKeyName.includes("tel") || cleanCacheKeyName.includes("mobile") || cleanCacheKeyName.includes("number")) { 
+                            if (!cleanCacheKeyName.includes("state")) { 
+                                resolvedStoredValue = localStorage.getItem(rawCacheKeyName); 
+                                if (resolvedStoredValue && resolvedStoredValue.trim() !== "") break; 
+                            } 
+                        } 
+                    } 
 
-  window.directInjectCartAddonsToSummaryStep5 = directInjectCartAddonsToSummaryStep5;
+                    // 5. Match Company Owners (Targets data-summary-field="sole_member_choice") 
+                    if (normalizedSummaryLabel.includes("owner") || normalizedSummaryLabel.includes("member")) { 
+                        if (cleanCacheKeyName.includes("owner") || cleanCacheKeyName.includes("member") || cleanCacheKeyName.includes("proprietor") || cleanCacheKeyName.includes("shareholder")) { 
+                            resolvedStoredValue = localStorage.getItem(rawCacheKeyName); 
+                            if (resolvedStoredValue && resolvedStoredValue.trim() !== "") break; 
+                        } 
+                    } 
+                } 
 
-  document.addEventListener("DOMContentLoaded", function() {
-    directInjectCartAddonsToSummaryStep5();
-    
-    document.body.addEventListener("change", function(event) {
-      if (event.target && event.target.matches('input[type="checkbox"]')) {
-        directInjectCartAddonsToSummaryStep5();
-      }
-    });
-    
-    const panelFiveElement = document.getElementById("step-panel-5");
-    if (panelFiveElement) {
-      const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.attributeName === "style" && panelFiveElement.style.display !== "none") {
-            directInjectCartAddonsToSummaryStep5();
-          }
-        });
-      });
-      observer.observe(panelFiveElement, { attributes: true });
-    }
-  });
+                // Exact programmatic fallback if the crawl scanner comes up completely empty 
+                if (!resolvedStoredValue) { 
+                    const sanitizedKey = structuralTargetId.toLowerCase().replace(/[^a-z0-9]/g, '_'); 
+                    resolvedStoredValue = localStorage.getItem(`wizard_field_${structuralTargetId}`) || localStorage.getItem(`wizard_field_${structuralTargetId.toLowerCase()}`) || localStorage.getItem(`wizard_field_${sanitizedKey}`) || localStorage.getItem(structuralTargetId) || localStorage.getItem(sanitizedKey); 
+                } 
+
+                // Update the layout display with matching formatting states 
+                if (resolvedStoredValue !== null && resolvedStoredValue !== undefined && resolvedStoredValue.trim() !== "") { 
+                    if (resolvedStoredValue === "true") { 
+                        displayNode.textContent = "Verified / Accepted ✓"; 
+                        displayNode.style.color = "#10b981"; 
+                    } else if (resolvedStoredValue === "false") { 
+                        displayNode.textContent = "Not Agreed / Declined"; 
+                        displayNode.style.color = "#b91c1c"; 
+                    } else { 
+                        displayNode.textContent = resolvedStoredValue.trim(); 
+                        displayNode.style.color = ""; 
+                    } 
+                } else { 
+                    displayNode.textContent = "—"; 
+                    displayNode.style.color = ""; 
+                } 
+            }); 
+            console.log("[Summary Engine Success] Step 5 review screen layout hydration complete via flexible fragments."); 
+        } catch (hydrationError) { 
+            console.warn("[Summary Engine Hydration Failure]", hydrationError); 
+        } 
+    }; 
 })();
