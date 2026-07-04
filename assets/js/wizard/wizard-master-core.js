@@ -544,60 +544,109 @@ function goToPreviousWizardStep() {
   switchWizardActiveViewLayout(previousStepIndex); 
 } 
 
-function switchWizardActiveViewLayout(activeStepTarget) { 
-  // FIX: Set the state indicator synchronously first to prevent step parameter race conditions during callbacks
-  window.currentWizardActiveStep = activeStepTarget; 
-  
-  const storedStateString = localStorage.getItem("f4u_wizard_onboarding_state") || "{}"; 
-  try { 
-    const parsedState = JSON.parse(storedStateString); 
-    parsedState.currentWizardActiveStep = activeStepTarget; 
-    localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(parsedState)); 
-  } catch (e) {} 
+function switchWizardActiveViewLayout(activeStepTarget) {
+    // Synchronously update step tracker to prevent race conditions
+    window.currentWizardActiveStep = activeStepTarget;
+    const storedStateString = localStorage.getItem("f4u_wizard_onboarding_state") || "{}";
+    try {
+        const parsedState = JSON.parse(storedStateString);
+        parsedState.currentWizardActiveStep = activeStepTarget;
+        localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(parsedState));
+    } catch (e) {}
 
-  // FIX: Check if workspace spinner function exists; if missing, execute immediately without hanging the UI
-  const transitionRunner = typeof window.triggerWorkspaceTransitionSpinner === "function" ? 
-                           window.triggerWorkspaceTransitionSpinner : 
-                           function(callback) { callback(); };
+    // Fallback if transition spinner doesn't exist
+    const transitionRunner = typeof window.triggerWorkspaceTransitionSpinner === "function" 
+        ? window.triggerWorkspaceTransitionSpinner 
+        : function(callback) { callback(); };
 
-  transitionRunner(() => { 
-    for (let i = 1; i <= 7; i++) { 
-      const panelNode = document.getElementById(`step-panel-${i}`); 
-      if (panelNode) { 
-        if (i === activeStepTarget) { 
-          panelNode.classList.add("active"); 
-          panelNode.style.setProperty("display", "block", "important"); 
-          panelNode.setAttribute("tabindex", "-1"); 
-          try { panelNode.focus(); } catch(e) {}
-        } else { 
-          panelNode.classList.remove("active"); 
-          panelNode.style.setProperty("display", "none", "important"); 
-        } 
-      } 
-    } 
+    transitionRunner(() => {
+        // Toggle Step Panel Displays
+        for (let i = 1; i <= 7; i++) {
+            const panelNode = document.getElementById(`step-panel-${i}`);
+            if (panelNode) {
+                if (i === activeStepTarget) {
+                    panelNode.classList.add("active");
+                    panelNode.style.setProperty("display", "block", "important");
+                    panelNode.setAttribute("tabindex", "-1");
+                    try { panelNode.focus(); } catch(e) {}
+                } else {
+                    panelNode.classList.remove("active");
+                    panelNode.style.setProperty("display", "none", "important");
+                }
+            }
+        }
 
-    // FIX: Force target Step 2 Compilation engine when moving onto Step 2 layout blocks
-    if (parseInt(activeStepTarget, 10) === 2 && typeof window.executeStepTwoDynamicFormInjection === "function") {
-      window.executeStepTwoDynamicFormInjection(null, window.routeActiveServiceKey || "");
+// =====================================================================
+// STEP 2 DYNAMIC INJECTION CORRECTION (CRASH-PROOF WRAPPER)
+// =====================================================================
+if (parseInt(activeStepTarget, 10) === 2) {
+    const targetUrlParams = new URLSearchParams(window.location.search);
+    const activeServiceKey = window.routeActiveServiceKey || String(targetUrlParams.get('service') || "").toLowerCase().trim();
+    
+    console.log(`[View Switcher Engine] Locating structural target canvas: "#step-2-injection-placeholder"`);
+    
+    // 1. Force the placeholder container to be visible immediately
+    const innerPlaceholderCanvas = document.getElementById("step-2-injection-placeholder");
+    if (innerPlaceholderCanvas) {
+        innerPlaceholderCanvas.style.removeProperty("display");
+        innerPlaceholderCanvas.style.setProperty("display", "block", "important");
+        innerPlaceholderCanvas.style.setProperty("opacity", "1", "important");
+        innerPlaceholderCanvas.style.setProperty("visibility", "visible", "important");
+        console.log("[View Switcher Engine] Target placeholder un-collapsed successfully.");
+    } else {
+        console.warn("[View Switcher Engine] Warning: #step-2-injection-placeholder was not found in the DOM.");
     }
 
-    if (parseInt(activeStepTarget, 10) === 5 && typeof window.recalculateSummaryItemizedMatrixRows === "function") { 
-      window.recalculateSummaryItemizedMatrixRows(); 
-    } 
+    // 2. Safely execute Step 2 without letting its bugs crash the entire screen transition
+    if (typeof window.executeStepTwoDynamicFormInjection === "function") {
+        // Create a fake event object to prevent 'Cannot read properties of null' errors
+        const safeMockEvent = {
+            preventDefault: function() { return true; },
+            stopPropagation: function() { return true; },
+            target: innerPlaceholderCanvas || document.body
+        };
 
-    if (typeof window.runUnifiedWizardBootEngine === "function") { 
-      window.runUnifiedWizardBootEngine(); 
-    } else { 
-      if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla(); 
-      if (typeof window.updateApplicationMapTimelineBubbles === "function") window.updateApplicationMapTimelineBubbles(activeStepTarget); 
-      if (typeof window.autoSkinSelectedUpsellCards === "function") window.autoSkinSelectedUpsellCards(); 
-    } 
-  }); 
-} 
+        try {
+            window.executeStepTwoDynamicFormInjection(safeMockEvent, activeServiceKey);
+            console.log("[View Switcher Engine] Step 2 injection executed.");
+        } catch (stepTwoError) {
+            console.error("[CRITICAL FAILURE INSIDE STEP 2 SCRIPT]:", stepTwoError);
+            
+            // Fallback UI so the user doesn't see a completely blank screen if it crashes hard
+            if (innerPlaceholderCanvas && innerPlaceholderCanvas.innerHTML === "") {
+                innerPlaceholderCanvas.innerHTML = `
+                    <div style="padding: 20px; border: 2px dashed #ef4444; background: #fef2f2; color: #b91c1c; border-radius: 8px;">
+                        <strong>Step 2 Failed to Load fully.</strong><br>
+                        <small>${stepTwoError.message}</small>
+                    </div>`;
+            }
+        }
+    } else {
+        console.error("[View Switcher Engine] Fatal: window.executeStepTwoDynamicFormInjection is not a function.");
+    }
+}
 
-// Map variables cleanly back into global scope contexts 
-window.goToNextWizardStep = goToNextWizardStep; 
-window.goToPreviousWizardStep = goToPreviousWizardStep; 
+
+        // =====================================================================
+        // FIX: PREVENT BOOT ENGINE RESET COOLDOWN
+        // =====================================================================
+        // Only run the master boot engine if we are entering or resetting back to Step 1.
+        // Running it on Step 2+ causes state loss and visual layout reversion loops.
+        if (parseInt(activeStepTarget, 10) === 1 && typeof window.runUnifiedWizardBootEngine === "function") {
+            window.runUnifiedWizardBootEngine();
+        } else {
+            // Safe, non-destructive UI updates for mid-wizard steps
+            if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla();
+            if (typeof window.updateApplicationMapTimelineBubbles === "function") window.updateApplicationMapTimelineBubbles(activeStepTarget);
+            if (typeof window.autoSkinSelectedUpsellCards === "function") window.autoSkinSelectedUpsellCards();
+        }
+    });
+}
+
+
+// Map variables cleanly back into global scope contexts
+window.goToNextWizardStep = goToNextWizardStep;
+window.goToPreviousWizardStep = goToPreviousWizardStep;
 window.switchWizardActiveViewLayout = switchWizardActiveViewLayout;
 
 
@@ -797,30 +846,48 @@ window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles
   }); 
 })(); 
 
-/** 
- * Monitors active layout dimensions to handle responsive stylesheet skinning 
- * and prevent styling collisions on narrow smartphone viewports. 
- */ 
-function evaluateSystemViewportDesign() { 
-  const container = document.querySelector('.wizard-container') || document.querySelector('.wizard-container-wrapper'); 
-  if (!container) return; 
-  
-  if (window.innerWidth <= 991) { 
-    container.classList.add('is-mobile-device'); 
-    console.log("[Viewport Engine] Mobile layout skinning parameters applied."); 
-  } else { 
-    container.classList.remove('is-mobile-device'); 
-  } 
-} 
+/**
+ * Monitors active layout dimensions to handle responsive stylesheet skinning
+ * and prevent styling collisions on narrow smartphone viewports.
+ */
+function evaluateSystemViewportDesign() {
+    const container = document.querySelector('.wizard-container') || 
+                      document.querySelector('.wizard-container-wrapper') ||
+                      document.getElementById('step-panel-2')?.parentElement; // Dynamic structural fallback
 
-// Initial evaluation and resize listener bindings 
+    // FIX: If the main wizard wrapper container hasn't been appended by your async script layers yet, 
+    // do not terminate execution. Instead, wait for the next frame render pass.
+    if (!container) {
+        console.log("[Viewport Engine Guard] Layout container not detected in DOM tree yet. Re-scheduling check...");
+        setTimeout(evaluateSystemViewportDesign, 30);
+        return;
+    }
+
+    if (window.innerWidth <= 991) {
+        container.classList.add('is-mobile-device');
+        console.log("[Viewport Engine] Mobile layout skinning parameters applied.");
+    } else {
+        container.classList.remove('is-mobile-device');
+    }
+
+    // FIX: Ensure that if Step 2 is active, its display sizing metrics are normalized 
+    // to prevent flex-box containers from collapsing down to 0px height.
+    const activePanel2 = document.getElementById("step-panel-2");
+    if (activePanel2 && activePanel2.classList.contains("active")) {
+        activePanel2.style.setProperty("min-height", "400px", "important");
+        activePanel2.style.setProperty("width", "100%", "important");
+    }
+}
+
+// Initial evaluation and resize listener bindings
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", evaluateSystemViewportDesign);
+    document.addEventListener("DOMContentLoaded", evaluateSystemViewportDesign);
 } else {
-  evaluateSystemViewportDesign();
+    evaluateSystemViewportDesign();
 }
 
 window.addEventListener("resize", evaluateSystemViewportDesign);
+
 
 
 // ============================================================================ // 
@@ -1162,106 +1229,106 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ============================================================================ // 
-// 🔌 CENTRAL EVENT LISTENER INTERCEPT APP LIFE-CYCLE (STATE-AWARE BOOTSTRAPPER) // 
+// 🔌 CENTRAL EVENT LISTENER INTERCEPT APP LIFE-CYCLE (DEEP-LINK SANITIZED) 
 // ============================================================================ // 
-/** 
- * Master platform lifecycle execution bootstrapper. 
- * Connects parameters parsers and schedules interface injections sequentially. 
- */ 
 function runUnifiedPlatformLifecycleBoot() { 
-  console.log("[Lifecycle Engine] Triggering application operational boot sequence..."); 
-  
-  // 🛡️ RUNTIME PIPELINE GUARD: Verify configuration rules before parsing 
-  const isCoreDatabaseReady = typeof window.getPricingConfiguration === "function" || window.CENTRAL_SERVICE_PLAN_DB; 
-  if (!isCoreDatabaseReady) { 
-    console.warn("[Lifecycle Engine Guard] Core data configuration or pricing methods are not yet ready. Retrying boot sequence in 50ms..."); 
-    setTimeout(function() { 
-      window.runUnifiedPlatformLifecycleBoot(); 
-    }, 50); 
-    return; 
-  } 
+    console.log("[Lifecycle Engine] Triggering application operational boot sequence..."); 
 
-  // Appends outer margins safely without forcing flex definitions that collapse step visibility tracks! 
-  const wizardContainerElement = document.querySelector(".wizard-container"); 
-  if (wizardContainerElement) { 
-    wizardContainerElement.style.setProperty('margin', '50px auto 0 auto', 'important'); 
-    wizardContainerElement.style.setProperty('max-width', '1450px', 'important'); 
-    wizardContainerElement.style.setProperty('width', '100%', 'important'); 
-  } 
-
-  // Clear out any previous inline overrides on form elements to restore original visibility context instantly 
-  const masterFormElement = document.getElementById("master-onboarding-form") || document.querySelector(".master-onboarding-form"); 
-  if (masterFormElement) { 
-    masterFormElement.style.removeAttribute ? masterFormElement.style.removeAttribute('display') : masterFormElement.style.removeProperty('display'); 
-    masterFormElement.style.removeProperty('width'); 
-    masterFormElement.style.removeProperty('max-width'); 
-  } 
-
-  if (typeof window.initializeDynamicChronometerWidget12Hr === "function") { 
-    window.initializeDynamicChronometerWidget12Hr(); 
-  } 
-  
-  if (typeof window.generateSecureRuntimeSessionTokenVanilla === "function") { 
-    window.generateSecureRuntimeSessionTokenVanilla(); 
-  } 
-
-  // Initialize tracking layouts database safely 
-  if (typeof window.autoInjectMainWebsitePricingPlan === "function") { 
-    window.autoInjectMainWebsitePricingPlan(); 
-  } else if (typeof window.initializeUrlParameterParserEngineVanilla === "function") { 
-    window.initializeUrlParameterParserEngineVanilla(); 
-  } 
-
-  if (typeof window.initializeDigitalSignatureMirrorSync === "function") { 
-    window.initializeDigitalSignatureMirrorSync(); 
-  } 
-
-  const currentActiveStepIndex = parseInt(window.currentWizardActiveStep, 10) || 1; 
-  if (currentActiveStepIndex !== 2) { 
-    if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") { 
-      window.cacheAndRestoreWizardFormStatesVanilla(true); 
+    // 🛡️ RUNTIME PIPELINE GUARD: Verify configuration rules before parsing 
+    const isCoreDatabaseReady = typeof window.getPricingConfiguration === "function" || window.CENTRAL_SERVICE_PLAN_DB; 
+    if (!isCoreDatabaseReady) { 
+        console.warn("[Lifecycle Engine Guard] Core data configuration or pricing methods are not yet ready. Retrying boot sequence in 50ms..."); 
+        setTimeout(function() { window.runUnifiedPlatformLifecycleBoot(); }, 50); 
+        return; 
     } 
-  } 
 
-  if (typeof window.initializeFormDisplayLayoutSync === "function") { 
-    window.initializeFormDisplayLayoutSync(); 
-  } 
-
-  if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
-    window.updateDynamicPricingMatrixVanilla(); 
-  } 
-
-  // 🟢 FIX: CRITICAL LOOP INTERCEPT GATING
-  // If the platform layout initialization pass has already successfully booted,
-  // do NOT force-trigger window.switchWizardActiveViewLayout again. This completely
-  // breaks the recursion loop that causes your step fields to collapse or crash.
-  if (window.isPlatformLifecycleBooted) {
-    console.log("[Lifecycle Engine] Core setup already active. Bypassing redundant layout swapper dispatch loop.");
-    return;
-  }
-
-  // Set the flag to true to lock the gate for future recursive calls
-  window.isPlatformLifecycleBooted = true;
-
-  // Ensures that when the step swapper triggers, it sets the correct separated panel 
-  // container block to active display mode cleanly
-  if (typeof window.switchWizardActiveViewLayout === "function") { 
-    window.switchWizardActiveViewLayout(currentActiveStepIndex); 
-  } else if (typeof window.renderActiveWizardStepUiLayout === "function") { 
-    window.renderActiveWizardStepUiLayout(); 
-  } else { 
-    const fallbackTargetPanel = document.getElementById(`step-panel-${currentActiveStepIndex}`); 
-    if (fallbackTargetPanel) { 
-      fallbackTargetPanel.style.setProperty("display", "block", "important"); 
-      fallbackTargetPanel.classList.add("active"); 
+    // Appends outer margins safely without forcing flex definitions that collapse step visibility tracks! 
+    const wizardContainerElement = document.querySelector(".wizard-container"); 
+    if (wizardContainerElement) { 
+        wizardContainerElement.style.setProperty('margin', '50px auto 0 auto', 'important'); 
+        wizardContainerElement.style.setProperty('max-width', '1450px', 'important'); 
+        wizardContainerElement.style.setProperty('width', '100%', 'important'); 
     } 
-  } 
 
-  console.log("[Lifecycle Engine Success] All operational layers initialized safely."); 
+    // Clear out any previous inline overrides on form elements to restore original visibility context instantly 
+    const masterFormElement = document.getElementById("master-onboarding-form") || document.querySelector(".master-onboarding-form"); 
+    if (masterFormElement) { 
+        masterFormElement.style.removeAttribute ? masterFormElement.style.removeAttribute('display') : masterFormElement.style.removeProperty('display'); 
+        masterFormElement.style.removeProperty('width'); 
+        masterFormElement.style.removeProperty('max-width'); 
+    } 
+
+    if (typeof window.initializeDynamicChronometerWidget12Hr === "function") { 
+        window.initializeDynamicChronometerWidget12Hr(); 
+    } 
+
+    if (typeof window.generateSecureRuntimeSessionTokenVanilla === "function") { 
+        window.generateSecureRuntimeSessionTokenVanilla(); 
+    } 
+
+    // Initialize tracking layouts database safely 
+    if (typeof window.autoInjectMainWebsitePricingPlan === "function") { 
+        window.autoInjectMainWebsitePricingPlan(); 
+    } else if (typeof window.initializeUrlParameterParserEngineVanilla === "function") { 
+        window.initializeUrlParameterParserEngineVanilla(); 
+    } 
+
+    if (typeof window.initializeDigitalSignatureMirrorSync === "function") { 
+        window.initializeDigitalSignatureMirrorSync(); 
+    } 
+
+    // =========================================================================
+    // FIX: DEEP-LINK TIMELINE RESOLUTION GATEWAY
+    // =========================================================================
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasService = urlParams.get('service');
+    const hasPlan = urlParams.get('plan');
+    const hasState = urlParams.get('state') || urlParams.get('stateCode');
+
+    let currentActiveStepIndex = parseInt(window.currentWizardActiveStep, 10);
+
+    // If deep-link params match but active tracking states are unset or stuck on Step 1, hard enforce Step 2
+    if (hasService && hasPlan && hasState) {
+        if (!currentActiveStepIndex || currentActiveStepIndex === 1) {
+            console.log("[Lifecycle Engine Override] Deep link active. Syncing internal states cleanly to Step 2.");
+            currentActiveStepIndex = 2;
+            window.currentWizardActiveStep = 2;
+        }
+    } else if (!currentActiveStepIndex) {
+        currentActiveStepIndex = 1;
+    }
+
+    // Only restore cached form inputs directly here if the current active target view is NOT Step 2. 
+    // Step 2 elements are loaded asynchronously and are handled inside runUnifiedWizardBootEngine(). 
+    if (currentActiveStepIndex !== 2) { 
+        if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") { 
+            window.cacheAndRestoreWizardFormStatesVanilla(true); 
+        } 
+    } 
+
+    if (typeof window.initializeFormDisplayLayoutSync === "function") { 
+        window.initializeFormDisplayLayoutSync(); 
+    } 
+
+    if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
+        window.updateDynamicPricingMatrixVanilla(); 
+    } 
+
+    // 🟢 FIXED VIEW PORT ROUTER HOOK: 
+    // Uses our validated, single-flight step calculation to block ping-pong rendering conflicts
+    if (typeof window.switchWizardActiveViewLayout === "function") { 
+        window.switchWizardActiveViewLayout(currentActiveStepIndex); 
+    } else if (typeof window.renderActiveWizardStepUiLayout === "function") { 
+        window.renderActiveWizardStepUiLayout(); 
+    } else { 
+        const fallbackTargetPanel = document.getElementById(`step-panel-${currentActiveStepIndex}`); 
+        if (fallbackTargetPanel) { 
+            fallbackTargetPanel.style.setProperty("display", "block", "important"); 
+            fallbackTargetPanel.classList.add("active"); 
+        } 
+    } 
+
+    console.log("[Lifecycle Engine Success] All operational layers initialized safely."); 
 } 
 
-// Initialize the global control variable in window scope securely on module load
-window.isPlatformLifecycleBooted = false;
-
-// Map safely back to global scope records instantly 
 window.runUnifiedPlatformLifecycleBoot = runUnifiedPlatformLifecycleBoot;

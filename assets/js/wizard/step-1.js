@@ -191,13 +191,26 @@ function autoInjectMainWebsitePricingPlan() {
     if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
         window.updateDynamicPricingMatrixVanilla();
     }
-}
-window.autoInjectMainWebsitePricingPlan = autoInjectMainWebsitePricingPlan;
 
-// Event loop wireframe triggers initialization sequence safely on context ready states
-document.addEventListener("DOMContentLoaded", () => {
+     // ========================================================================= 
+    // FINAL ARCHITECTURE CLEANUP: DEFER TO NATIVE CORE ROUTING PIPELINE
+    // ========================================================================= 
+    console.log("[Router UI Engine] Parameter ingestion successful. Handing over control to wizard-master-core.");
+
+    // Strip out all manual CSS injectors, class modifications, and DOM selector overrides.
+    // Let your updated switchWizardActiveViewLayout handle the visual layout transition naturally.
+    
+} // This safely closes your autoInjectMainWebsitePricingPlan function wrapper cleanly.
+
+window.autoInjectMainWebsitePricingPlan = autoInjectMainWebsitePricingPlan; 
+
+// Keep your DOM listener intact to parse URL variables immediately on initialization
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", autoInjectMainWebsitePricingPlan);
+} else {
     autoInjectMainWebsitePricingPlan();
-});
+}
+
 
 // ============================================================================ //
 // 📡 PART 1 OF 2: DYNAMIC FILE TARGET CONSTRUCTOR                             //
@@ -397,64 +410,85 @@ function synchronizeActiveWizardStepTracker() {
     inputPlanNode.value = rawTier.charAt(0).toUpperCase() + rawTier.slice(1);
   }
 }
-// ============================================================================ //
-// 🚀 PART 3 OF 3: ISOLATED DOWNSTREAM LIFE-CYCLE ROUTING ENGINE                 //
-// ============================================================================ //
-window.wizardBootRetryAttempts = window.wizardBootRetryAttempts || 0;
+// ============================================================================ // 
+// 🚀 PART 3 OF 3: ISOLATED DOWNSTREAM LIFE-CYCLE ROUTING ENGINE // 
+// ============================================================================ // 
+window.wizardBootRetryAttempts = window.wizardBootRetryAttempts || 0; 
 
-async function runUnifiedWizardBootEngine() {
-  console.log("[Boot Engine] Initializing sequence-independent parameter scanning...");
+async function runUnifiedWizardBootEngine() { 
+    console.log("[Boot Engine] Initializing sequence-independent parameter scanning..."); 
 
-  // 1. Core Data Validation & Hydration Checks
-  if (typeof window.CENTRAL_SERVICE_PLAN_DB === "undefined") {
-    if (window.wizardBootRetryAttempts < 50) {
-      window.wizardBootRetryAttempts++;
-      setTimeout(runUnifiedWizardBootEngine, 100);
-    } else {
-      console.error("[Boot Terminal Failure] Database connection timed out.");
+    // 1. Core Data Validation & Hydration Checks 
+    if (typeof window.CENTRAL_SERVICE_PLAN_DB === "undefined") { 
+        if (window.wizardBootRetryAttempts < 50) { 
+            window.wizardBootRetryAttempts++; 
+            setTimeout(runUnifiedWizardBootEngine, 100); 
+        } else { 
+            console.error("[Boot Terminal Failure] Database connection timed out."); 
+        } 
+        return; 
+    } 
+    window.wizardBootRetryAttempts = 0; 
+
+    // 2. Extract Data Context and Synchronize State Steps 
+    const activeContext = extractActiveBootContext(); 
+    if (!activeContext) return; // Exit gracefully; let fallback hydration parameters catch up 
+    
+    synchronizeActiveWizardStepTracker(); 
+
+    // 3. Conditional Downstream Execution Matrix (Strict Step Routing) 
+    if (typeof autoInjectMainWebsitePricingPlan === "function") {
+        autoInjectMainWebsitePricingPlan(); 
     }
-    return;
-  }
-  window.wizardBootRetryAttempts = 0;
 
-  // 2. Extract Data Context and Synchronize State Steps
-  const activeContext = extractActiveBootContext();
-  if (!activeContext) return; // Exit gracefully; let fallback hydration parameters catch up
-  
-  synchronizeActiveWizardStepTracker();
+    if (window.currentWizardActiveStep === 1 && typeof renderStep1CustomFeatureBullets === "function") { 
+        renderStep1CustomFeatureBullets(window.routeActiveServiceKey); 
+    } 
 
-  // 3. Conditional Downstream Execution Matrix (Strict Step Routing)
-  if (typeof autoInjectMainWebsitePricingPlan === "function") autoInjectMainWebsitePricingPlan();
+    if (window.currentWizardActiveStep === 2 && typeof window.executeStepTwoDynamicFormInjection === "function") { 
+        // =====================================================================
+        // FIX: FORCE FALLBACK VALUE FROM SEARCH PARAMS TO PREVENT BLANK INJECTION
+        // =====================================================================
+        const urlParamsFallback = new URLSearchParams(window.location.search);
+        const resolvedServiceToken = window.routeActiveServiceKey || 
+                                     String(urlParamsFallback.get('service') || "").toLowerCase().trim();
 
-  if (window.currentWizardActiveStep === 1 && typeof renderStep1CustomFeatureBullets === "function") {
-    renderStep1CustomFeatureBullets(window.routeActiveServiceKey);
-  }
+        console.log(`[Boot Engine] Compiling Step 2 content using key: "${resolvedServiceToken}"`);
+        
+        try {
+            await window.executeStepTwoDynamicFormInjection(true, resolvedServiceToken); 
+        } catch (err) {
+            console.error("[Boot Engine Failure] Error rendering dynamic Step 2 inputs:", err);
+        }
+    } 
 
-  if (window.currentWizardActiveStep === 2 && typeof window.executeStepTwoDynamicFormInjection === "function") {
-    await window.executeStepTwoDynamicFormInjection(true, window.routeActiveServiceKey);
-  }
+    if (window.currentWizardActiveStep === 4 && typeof window.initCursiveSignatureCaptureLivePreview === "function") { 
+        window.initCursiveSignatureCaptureLivePreview(); 
+    } 
 
-  if (window.currentWizardActiveStep === 4 && typeof window.initCursiveSignatureCaptureLivePreview === "function") {
-    window.initCursiveSignatureCaptureLivePreview();
-  }
+    if (window.currentWizardActiveStep === 5 && typeof window.recalculateSummaryItemizedMatrixRows === "function") { 
+        window.recalculateSummaryItemizedMatrixRows(); 
+    } 
 
-  if (window.currentWizardActiveStep === 5 && typeof window.recalculateSummaryItemizedMatrixRows === "function") {
-    window.recalculateSummaryItemizedMatrixRows();
-  }
+    // 4. Run Fallback Hydrators and Timeline Updates 
+    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") cacheAndRestoreWizardFormStatesVanilla(true); 
+    if (typeof autoDiscoverAndHookAddressNodes === "function") autoDiscoverAndHookAddressNodes(); 
+    if (typeof updateApplicationMapTimelineBubbles === "function") updateApplicationMapTimelineBubbles(window.currentWizardActiveStep); 
+    
+    if (typeof updateDynamicPricingMatrixVanilla === "function") { 
+        updateDynamicPricingMatrixVanilla(); 
+        console.log("[Boot Engine Success] Onboarding pipeline active. Step views isolated safely."); 
+    } 
+} 
 
-  // 4. Run Fallback Hydrators and Timeline Updates
-  if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") cacheAndRestoreWizardFormStatesVanilla(true);
-  if (typeof autoDiscoverAndHookAddressNodes === "function") autoDiscoverAndHookAddressNodes();
-  if (typeof updateApplicationMapTimelineBubbles === "function") updateApplicationMapTimelineBubbles(window.currentWizardActiveStep);
+window.runUnifiedWizardBootEngine = runUnifiedWizardBootEngine; 
 
-  if (typeof updateDynamicPricingMatrixVanilla === "function") {
-    updateDynamicPricingMatrixVanilla();
-    console.log("[Boot Engine Success] Onboarding pipeline active. Step views isolated safely.");
-  }
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", runUnifiedWizardBootEngine);
+} else {
+    runUnifiedWizardBootEngine();
 }
 
-window.runUnifiedWizardBootEngine = runUnifiedWizardBootEngine;
-document.addEventListener("DOMContentLoaded", runUnifiedWizardBootEngine);
 
 
 // ============================================================================ //
