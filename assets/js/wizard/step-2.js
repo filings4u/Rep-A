@@ -1,77 +1,114 @@
-// ============================================================================
-// 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & FORM STATE GENERATOR INFRASTRUCTURE
-// ============================================================================
-
+// ============================================================================ //
+// 🏢 STEP 2 PANEL: LEGAL ENTITY PROFILE & FORM STATE GENERATOR INFRASTRUCTURE //
+// ============================================================================ //
 /**
  * HTML Layout Injection Module
  * Programmatically assembles Step 2 card panels into the placeholder.
  */
 function renderStepTwoLayoutMarkup() {
-    // 🔍 ADAPTIVE MOUNTING: Find the core wrapper first, fallback to the hardcoded ID
-    let placeholder = document.querySelector(".isolated-form-payload-container") || 
-                      document.getElementById("step-2-injection-placeholder");
-                      
-    if (!placeholder) {
-        console.warn("[Step 2 Script] Crucial structural target container missing from DOM. Attempting recovery...");
-        // Auto-recovery backup: look for any active fields root element
-        const fallbackRoot = document.getElementById("dynamic-onboarding-fields-root") || 
-                             document.querySelector("[data-step-container]");
-        if (fallbackRoot) {
-            placeholder = fallbackRoot;
-        } else {
-            console.error("[Step 2 Script Fatal] No valid mounting engine target found in layout workspace.");
-            return;
-        }
+  
+  // 🔍 ADAPTIVE MOUNTING: Find your explicit step 2 injection placeholder exclusively
+  let placeholder = document.getElementById("step-2-injection-placeholder") || 
+                    document.querySelector(".isolated-form-payload-container");
+                    
+  if (!placeholder) {
+    console.warn("[Step 2 Script] Crucial structural target container missing from DOM. Attempting recovery...");
+    
+    /**
+     * TARGET CONTAINER FIX: Avoid looking up generic roots that duplicate across steps.
+     * We map strictly to a dedicated panel container so Step 3 scripts cannot 
+     * cross-hijack this initialization phase.
+     */
+    const fallbackRoot = document.getElementById("step-panel-2");
+    if (fallbackRoot) {
+      placeholder = fallbackRoot;
+    } else {
+      console.error("[Step 2 Script Fatal] No valid mounting engine target found in layout workspace.");
+      return;
     }
+  }
 
-    // Unhide the primary placeholder canvas row explicitly
-    placeholder.style.setProperty("display", "block", "important");
-    placeholder.style.setProperty("visibility", "visible", "important");
-    placeholder.style.setProperty("opacity", "1", "important");
+  // Unhide the primary placeholder canvas row explicitly
+  placeholder.style.setProperty("display", "block", "important");
+  placeholder.style.setProperty("visibility", "visible", "important");
+  placeholder.style.setProperty("opacity", "1", "important");
 
+  // Inject the inner markup content layout
+  placeholder.innerHTML = `
+    <!-- ============================================================================ -->
+    <!-- 🏢 STEP 2 CONTAINER CARD FRAMEWORK                                           -->
+    <!-- ============================================================================ -->
+    <div class="step-panel-form-card" data-step="2" style="width: 100%; box-sizing: border-box; clear: both;">
+      
+      <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px; text-align: left;">
+        <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
+        <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p>
+      </div>
 
-    // Inject the inner markup content layout (Removed duplicate ID conflict)
-    placeholder.innerHTML = `
-        <!-- ============================================================================ -->
-        <!-- 🏢 STEP 2 CONTAINER CARD FRAMEWORK -->
-        <!-- ============================================================================ -->
-        <div class="step-panel-form-card" data-step="2" style="width: 100%; box-sizing: border-box; clear: both;">
-            
-            <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px; text-align: left;">
-                <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
-                <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p>
-            </div>
-
-            <div class="workspace-split-layout" style="display: grid; grid-template-columns: 1fr; gap: 32px; width: 100%; box-sizing: border-box; align-items: start;">
-                <!-- Dynamic Field Form Container Target -->
-                <div id="dynamic-onboarding-fields-root" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; min-width: 0; box-sizing: border-box;">
-                    <div style="grid-column: span 2; text-align: center; padding: 40px 0; color: var(--slate, #64748b); font-weight: 600; font-size: 0.95rem;">
-                        <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary, #10b981); margin-right: 8px;"></i>
-                        <span>Assembling specialized compliance filing interfaces...</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box; clear: both;">
-                <button type="button" class="btn-wizard-alt" onclick="if(typeof window.switchWizardActiveViewLayout === 'function') window.switchWizardActiveViewLayout('1');" style="cursor: pointer; background: #cbd5e1; color: #0a1f44; padding: 10px 20px; border: none; border-radius: 6px; font-weight: 600;">Back</button>
-                <button type="button" class="btn-wizard-save-progress" id="sidebarFallbackLogoutBtn" style="cursor: pointer; background: #0a1f44; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: 600; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
-                <button type="button" class="btn-wizard-main" onclick="if(typeof window.processStepTwoFunnelAdvancementGate === 'function') { window.processStepTwoFunnelAdvancementGate(event); } else { if(typeof window.switchWizardActiveViewLayout === 'function') window.switchWizardActiveViewLayout('3'); }" style="cursor: pointer; background: #10b981; color: white; padding: 10px 24px; border: none; border-radius: 6px; font-weight: 700;">Continue to Tiers</button>
-            </div>
-
+      <div class="workspace-split-layout" style="display: grid; grid-template-columns: 1fr; gap: 32px; width: 100%; box-sizing: border-box; align-items: start;">
+        
+        <!-- UNIQUE FIELD TARGET FIX: Changed ID to prevent Step 3 upsells from overwriting this container -->
+        <div id="step-2-onboarding-fields-canvas" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; min-width: 0; box-sizing: border-box;">
+          <div style="grid-column: span 2; text-align: center; padding: 40px 0; color: var(--slate, #64748b); font-weight: 600; font-size: 0.95rem;">
+            <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary, #10b981); margin-right: 8px;"></i>
+            <span>Assembling specialized compliance filing interfaces...</span>
+          </div>
         </div>
-    `;
 
-    console.log("[Step 2 Script] Master layout template cleanly compiled without ID duplications.");
+      </div>
 
-    // Hand over control safely to your dynamic field compiler block
-    const hydratorFunction = window.executeStep2ComplianceAssetStreaming || window.executeStepTwoDynamicFormInjection;
-    if (typeof hydratorFunction === "function") {
-        hydratorFunction(null, window.routeActiveServiceKey || "corporations");
+      <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box; clear: both;">
+        <button type="button" class="btn-wizard-alt" onclick="if(typeof window.switchWizardActiveViewLayout === 'function') window.switchWizardActiveViewLayout(1);" style="cursor: pointer; background: #cbd5e1; color: #0a1f44; padding: 10px 20px; border: none; border-radius: 6px; font-weight: 600;">Back</button>
+        <button type="button" class="btn-wizard-save-progress" id="sidebarFallbackLogoutBtn" style="cursor: pointer; background: #0a1f44; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: 600; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-floppy-disk"></i> Save Progress</button>
+        <button type="button" class="btn-wizard-main" onclick="if(typeof window.processStepTwoFunnelAdvancementGate === 'function') { window.processStepTwoFunnelAdvancementGate(event); } else { if(typeof window.switchWizardActiveViewLayout === 'function') window.switchWizardActiveViewLayout(3); }" style="cursor: pointer; background: #10b981; color: white; padding: 10px 24px; border: none; border-radius: 6px; font-weight: 700;">Continue to Tiers</button>
+      </div>
+
+    </div>
+  `;
+
+  console.log("[Step 2 Script] Master layout template cleanly compiled without ID duplications.");
+
+  // Hand over control safely to your dynamic field compiler block
+  const hydratorFunction = window.executeStep2ComplianceAssetStreaming || window.executeStepTwoDynamicFormInjection;
+  
+  if (typeof hydratorFunction === "function") {
+    /**
+     * CONTEXT TRANSLATION FIX: Build a safe mock layout target redirection.
+     * If your hydrator engine explicitly seeks out the old 'dynamic-onboarding-fields-root' ID token,
+     * we temporarily mount an interceptor object so it appends fields directly inside our clean Step 2 canvas.
+     */
+    const originalGetIdElement = document.getElementById;
+    
+    document.getElementById = function(idParam) {
+      if (idParam === "dynamic-onboarding-fields-root") {
+        return document.getElementById("step-2-onboarding-fields-canvas");
+      }
+      return originalGetIdElement.call(document, idParam);
+    };
+    try {
+      /**
+       * PURE DYNAMIC SERVICE FIX: Stripped out the hardcoded "corporations" string.
+       * We parse the live URL query string directly so the hydrator function compiles 
+       * the exact specialized compliance fields matching your active service parameter.
+       */
+      const liveUrlParams = new URLSearchParams(window.location.search);
+      const activeDynamicServiceSlug = window.currentServiceKey || 
+                                       window.routeActiveServiceKey || 
+                                       String(liveUrlParams.get('service') || "").toLowerCase().trim();
+
+      hydratorFunction(null, activeDynamicServiceSlug);
+    } catch(err) {
+      console.error("[Step 2 Stream Error] Failed to populate form fields:", err);
+    } finally {
+      // Instantly restore native browser element selection models once execution finishes
+      document.getElementById = originalGetIdElement;
     }
+  }
 }
 
 // Bind method cleanly back to global window boundaries
 window.renderStepTwoLayoutMarkup = renderStepTwoLayoutMarkup;
+
 
 
 /**
@@ -1624,63 +1661,114 @@ if (typeof window.attachStepTwoNavigationTriggers === "function") {
 
 
 // --- DOM RENDERING BLOCK WITH MIXED STEP HANDLING ---
-let formInjectionWrapper = document.getElementById("step-2-injection-placeholder");
-const fieldsRoot = document.getElementById("step-panel-2") || document.body;
+(function() {
+  "use strict";
 
-if (formInjectionWrapper) {
-  formInjectionWrapper.className = "isolated-form-payload-container";
-  formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;";
-} else {
-  formInjectionWrapper = document.createElement("div");
-  formInjectionWrapper.id = "step-2-injection-placeholder";
-  formInjectionWrapper.className = "isolated-form-payload-container";
-  formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;";
-  fieldsRoot.insertBefore(formInjectionWrapper, fieldsRoot.firstChild);
-}
+  let formInjectionWrapper = document.getElementById("step-2-injection-placeholder");
+  let fieldsRoot = document.getElementById("step-panel-2") || document.body;
 
-// FIXED: Stripped duplicate variable declaration type keyword to resolve the fatal syntax block crash
-activeTemplatesArray = (typeof verifiedTemplates !== 'undefined') ? verifiedTemplates : 
-                       (typeof formRegistry !== 'undefined' ? formRegistry : []);
-
-if (activeTemplatesArray.length === 0) {
-  console.warn(`[Lifecycle Engine] No HTML templates found in formRegistry`);
-}
-
-
-// Inject segments iteratively matching precise step values
-activeTemplatesArray.forEach((item) => {
-  if (!item || !item.html) return;
-  let runtimeTargetStepIndex = parseInt(item.step || item.stepIndex, 10) || 2;
-  if (runtimeTargetStepIndex === 1) {
-    runtimeTargetStepIndex = 2;
+  if (formInjectionWrapper) {
+    formInjectionWrapper.className = "isolated-form-payload-container";
+    formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;";
+  } else {
+    formInjectionWrapper = document.createElement("div");
+    formInjectionWrapper.id = "step-2-injection-placeholder";
+    formInjectionWrapper.className = "isolated-form-payload-container";
+    formInjectionWrapper.style.cssText = "grid-column: 1 / -1 !important; width: 100% !important; max-width: 100% !important; display: block !important; clear: both !important;";
+    fieldsRoot.insertBefore(formInjectionWrapper, fieldsRoot.firstChild);
   }
-  let existingRow = formInjectionWrapper.querySelector(`[data-part-index="${runtimeTargetStepIndex}"]`);
-  if (!existingRow) {
-    existingRow = document.createElement("div");
-    existingRow.className = "service-form-part-segment";
-    existingRow.setAttribute("data-part-index", runtimeTargetStepIndex);
-    existingRow.style.cssText = "grid-column: 1 / -1 !important; display: block !important; width: 100% !important; max-width: 100% !important; clear: both !important; margin-bottom: 24px !important; box-sizing: border-box;";
-    formInjectionWrapper.appendChild(existingRow);
+
+  /**
+   * DATA PROTECTION INTERLOCK FIX: Isolated memory snapshots.
+   * Instead of letting step-3.js overwrite our template stack on load, we extract a slice 
+   * of the array instantly. We filter it to match the precise key structure of the active service
+   * so that Step 2 elements are preserved.
+   */
+  let step2IsolatedTemplates = [];
+  const urlParams = new URLSearchParams(window.location.search);
+  const targetServiceSlug = window.currentServiceKey || window.routeActiveServiceKey || String(urlParams.get('service') || "").toLowerCase().trim();
+
+  if (typeof verifiedTemplates !== 'undefined' && Array.isArray(verifiedTemplates)) {
+    step2IsolatedTemplates = [...verifiedTemplates];
+  } else if (typeof formRegistry !== 'undefined') {
+    if (Array.isArray(formRegistry)) {
+      step2IsolatedTemplates = [...formRegistry];
+    } else if (typeof formRegistry === 'object' && formRegistry !== null) {
+      // If your registry maps keys directly to slugs (e.g. formRegistry["scac-code"])
+      if (targetServiceSlug && formRegistry[targetServiceSlug]) {
+        const itemRecord = formRegistry[targetServiceSlug];
+        step2IsolatedTemplates = Array.isArray(itemRecord) ? [...itemRecord] : [itemRecord];
+      } else {
+        step2IsolatedTemplates = Object.values(formRegistry);
+      }
+    }
   }
-  existingRow.innerHTML = item.html;
-});
 
-const rows = Array.from(formInjectionWrapper.children);
-rows.sort((a, b) => {
-  return (parseInt(a.getAttribute("data-part-index"), 10) || 0) - (parseInt(b.getAttribute("data-part-index"), 10) || 0);
-});
-rows.forEach(row => formInjectionWrapper.appendChild(row));
-console.log("[Lifecycle Engine Success] Form segments successfully updated.");
+  if (step2IsolatedTemplates.length === 0) {
+    console.warn(`[Step 2 Engine] No structural HTML templates available in active registry arrays.`);
+  }
 
-if (typeof window.hydrateInjectedFormFields === "function") {
-  window.hydrateInjectedFormFields(formInjectionWrapper);
-}
-if (typeof window.bindDbaEngineConditionListeners === "function") {
-  window.bindDbaEngineConditionListeners();
-}
-if (typeof window.attachStepTwoNavigationTriggers === "function") {
-  window.attachStepTwoNavigationTriggers();
-}
+  // Clear out the injection wrapper baseline before mounting fields to wipe duplicate elements
+  formInjectionWrapper.innerHTML = "";
+
+  // Inject segments iteratively from our safe, isolated data snapshot
+  step2IsolatedTemplates.forEach((item) => {
+    if (!item || !item.html) return;
+
+    // Strict type check handles step index 0 and 2 without dropping parameters
+    let rawStepValue = (item.step !== undefined) ? item.step : ((item.stepIndex !== undefined) ? item.stepIndex : null);
+    let runtimeTargetStepIndex = (rawStepValue !== null) ? parseInt(rawStepValue, 10) : 2;
+
+    if (runtimeTargetStepIndex === 1) {
+      runtimeTargetStepIndex = 2;
+    }
+
+    /**
+     * STRICT CONTEXT STEP FILTER: Clear out upsell contamination.
+     * If an external script accidentally pushes step 3 upsells into this array, 
+     * this guard rejects it, keeping Step 2 dedicated to company profiles exclusively.
+     */
+    if (runtimeTargetStepIndex !== 2) {
+      return;
+    }
+
+    let existingRow = formInjectionWrapper.querySelector(`[data-part-index="${runtimeTargetStepIndex}"]`);
+    
+    if (!existingRow) {
+      existingRow = document.createElement("div");
+      existingRow.className = "service-form-part-segment";
+      existingRow.setAttribute("data-part-index", runtimeTargetStepIndex);
+      existingRow.style.cssText = "grid-column: 1 / -1 !important; display: block !important; width: 100% !important; max-width: 100% !important; clear: both !important; margin-bottom: 24px !important; box-sizing: border-box;";
+      formInjectionWrapper.appendChild(existingRow);
+    }
+
+    // Paint the forms securely into Step 2 space
+    existingRow.innerHTML = item.html;
+  });
+
+  // Sort and re-append segments into clean visual flow rows
+  const rows = Array.from(formInjectionWrapper.children);
+  rows.sort((a, b) => {
+    return (parseInt(a.getAttribute("data-part-index"), 10) || 0) - (parseInt(b.getAttribute("data-part-index"), 10) || 0);
+  });
+  rows.forEach(row => formInjectionWrapper.appendChild(row));
+
+  console.log("[Step 2 Engine Success] Isolated form segments built cleanly onto canvas.");
+
+  // Execute system listeners safely on the fresh Step 2 layout nodes
+  if (typeof window.hydrateInjectedFormFields === "function") {
+    window.hydrateInjectedFormFields(formInjectionWrapper);
+  }
+
+  if (typeof window.bindDbaEngineConditionListeners === "function") {
+    window.bindDbaEngineConditionListeners();
+  }
+
+  if (typeof window.attachStepTwoNavigationTriggers === "function") {
+    window.attachStepTwoNavigationTriggers();
+  }
+})();
+
 
 
 
@@ -2190,3 +2278,83 @@ async function runStepTwoLayoutInitialization() {
 
 window.runStepTwoLayoutInitialization = runStepTwoLayoutInitialization;
 window.initializeDynamicServiceFormLayout = runStepTwoLayoutInitialization;
+
+// ============================================================================ //
+// 🔌 ENTERPRISE LIFECYCLE INITIALIZATION INTERLOCK TRACER                     //
+// ============================================================================ //
+function bootstrapStepTwoLifecycleEngine() {
+  "use strict";
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const activeServiceSlug = window.currentServiceKey || window.routeActiveServiceKey || String(urlParams.get('service') || "").toLowerCase().trim();
+
+  /**
+   * LAZY-LOADING EVENT INTERCEPTOR: Intercept late-binding plugin assets.
+   * If your external service script (e.g. scac-code.js) has not finished downloading yet,
+   * we attach a dynamic observer loop to capture its arrival instead of failing silently.
+   */
+  let isPluginDataReady = false;
+
+  if (typeof formRegistry !== 'undefined') {
+    if (Array.isArray(formRegistry) && formRegistry.length > 0) {
+      isPluginDataReady = true;
+    } else if (typeof formRegistry === 'object' && formRegistry !== null && activeServiceSlug && formRegistry[activeServiceSlug]) {
+      isPluginDataReady = true;
+    }
+  }
+  
+  if (typeof verifiedTemplates !== 'undefined' && Array.isArray(verifiedTemplates) && verifiedTemplates.length > 0) {
+    isPluginDataReady = true;
+  }
+
+  if (isPluginDataReady) {
+    // If the plugin data managed to finish loading first, render the step immediately
+    console.log(`[Step 2 Lifecycle] Service data ready for "${activeServiceSlug}". Executing template layout compile...`);
+    if (typeof window.renderStepTwoLayoutMarkup === "function") {
+      window.renderStepTwoLayoutMarkup();
+    }
+  } else {
+    // Data is not here yet: mount a reactive interceptor hook onto the window registry context
+    console.log(`[Step 2 Lifecycle Waiting] Lazy-loaded file for "${activeServiceSlug}" is still in transit. Initializing intercept trap...`);
+    
+    let internalRegistryRef = window.formRegistry || [];
+
+    Object.defineProperty(window, 'formRegistry', {
+      get() {
+        return internalRegistryRef;
+      },
+      set(newPluginPayload) {
+        internalRegistryRef = newPluginPayload;
+        console.log(`[Step 2 Lifecycle Release] Lazy-loaded asset arrived. Re-triggering Step 2 assembly pass for: "${activeServiceSlug}"`);
+        
+        // The millisecond your scac-code.js file populates the array, execute the form drawing passes
+        requestAnimationFrame(() => {
+          if (typeof window.renderStepTwoLayoutMarkup === "function") {
+            window.renderStepTwoLayoutMarkup();
+          }
+        });
+      },
+      configurable: true,
+      enumerable: true
+    });
+    
+    // Backup DOM observer: if your schema writes straight into the panel instead of global arrays
+    const masterPanelTwoNode = document.getElementById("step-panel-2");
+    if (masterPanelTwoNode) {
+      const backupDataObserver = new MutationObserver(() => {
+        backupDataObserver.disconnect();
+        if (typeof window.renderStepTwoLayoutMarkup === "function") {
+          window.renderStepTwoLayoutMarkup();
+        }
+      });
+      backupDataObserver.observe(masterPanelTwoNode, { childList: true });
+    }
+  }
+}
+
+// Coordinate framework startup execution paths cleanly
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootstrapStepTwoLifecycleEngine);
+} else {
+  bootstrapStepTwoLifecycleEngine();
+}

@@ -1,112 +1,121 @@
 // ============================================================================ //
 // 🧱 STEP 1 PACKAGE REVIEWS AND PLAN MARKUP CARD BUILDER (EXACT ALIGNMENT)     //
 // ============================================================================ //
-function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, activeBullets = [], finalBaseFee = 0.00) { 
-    if (window.isPlanCardRenderingLockActive) return; 
-    window.isPlanCardRenderingLockActive = true; 
-    
-    try { 
-        const serviceName = serviceDataNode?.name || "Service Allocation"; 
-        const tierName = tierTitleDisplay || "Selected Package"; 
-        const finalizedPlanTitleContainerHeaderText = serviceName + " (" + tierName.toUpperCase() + ")"; 
-        const featuresListContainer = document.getElementById("step-1-package-features-list"); 
-        
-        // 1. EXTRACT REGIONAL STATE FEE DETAILS DYNAMICALLY FROM THE URL 
-        const urlParams = new URLSearchParams(window.location.search); 
-        const urlStateCode = String(urlParams.get('state') || "").toUpperCase().trim(); 
-        const urlServiceSlug = String(urlParams.get('service') || "").toLowerCase().trim(); 
-        
-        let stateGovFee = 0; 
-        let stateFilingFeeRowHtml = ""; 
-        
-        if (urlStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[urlStateCode]) { 
-            const stateRecord = window.STATE_FILING_FEES[urlStateCode]; 
-            let mappingKey = urlServiceSlug.replace("-formation", ""); 
-            if (mappingKey === "corporations") mappingKey = "c_corp"; 
-            if (mappingKey === "series-llc") mappingKey = "series_llc";
-            if (mappingKey === "nonprofits") mappingKey = "non_profit";
-            
-            const discoveredFee = stateRecord[mappingKey] || stateRecord["llc"] || 0; 
-            stateGovFee = parseFloat(discoveredFee) || 0; 
-            
-            if (stateGovFee > 0) { 
-                stateFilingFeeRowHtml = ` 
-                    <div class="runtime-state-fee-notice-card" style="background: #fff7ed; border: 1px solid #ffedd5; border-left: 4px solid #f97316; border-radius: 8px; padding: 12px 16px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; text-align: left; box-sizing: border-box; width: 100%;"> 
-                        <div style="display: flex; flex-direction: column;"> 
-                            <span style="font-weight: 700; color: #c2410c; font-size: 0.85rem;">Mandatory ${stateRecord.name} Fee:</span> 
-                            <small style="color: #ea580c; font-weight: 500; font-size: 0.725rem;"><i class="fa-solid fa-clock"></i> Est. Processing: ${stateRecord.time}</small> 
-                        </div> 
-                        <strong style="font-family: monospace; color: #c2410c; font-size: 1.1rem;">+$${stateGovFee.toFixed(2)}</strong> 
-                    </div> `; 
-            } 
-        } 
+function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, activeBullets = [], finalBaseFee = 0.00) {
+  if (window.isPlanCardRenderingLockActive) return;
+  window.isPlanCardRenderingLockActive = true;
 
-        // 2. SAFE STRING ESCAPE: Replaced the uninitialized reference check with a stable ternary fallback
-        if (featuresListContainer) { 
-            let sidebarMarkup = ""; 
-            activeBullets.forEach(function(bulletText) { 
-                const safeText = (typeof window.secureWizardStringEscape === "function") ? window.secureWizardStringEscape(bulletText) : bulletText; 
-                sidebarMarkup += '<div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600; margin-bottom: 8px;"><i class="fa-solid fa-circle-check" style="color: var(--primary, #10b981);"></i><span>' + safeText + '</span></div>'; 
-            }); 
-            featuresListContainer.innerHTML = sidebarMarkup; 
-        } 
-        
-        // 3. TARGETED INJECTION: Paint the package box card cleanly inside your dedicated placeholder
-        const injectionTarget = document.getElementById("step-1-injection-placeholder"); 
-        if (injectionTarget) { 
-            let mainBoxListMarkup = ""; 
-            activeBullets.forEach(function(bulletItem) { 
-                const safeText = (typeof window.secureWizardStringEscape === "function") ? window.secureWizardStringEscape(bulletItem) : bulletItem; 
-                mainBoxListMarkup += `<li style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span class="f4u-pristine-bullet-text">${safeText}</span></li>`; 
-            }); 
-            
-            injectionTarget.innerHTML = ` 
-                <div id="step-1-selected-plan-overview" style="padding: 24px; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; text-align: left; margin-bottom: 24px; clear: both;"> 
-                    <div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 14px;"> 
-                        <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Selected Package</span> 
-                        <h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.15rem; font-weight: 800;">${finalizedPlanTitleContainerHeaderText}</h3> 
-                    </div> 
-                    <div style="margin-top: 6px; margin-bottom: 6px;"> 
-                        <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy, #0a1f44); display: block; margin-bottom: 12px; letter-spacing: 0.5px;">What Comes with the Package</label> 
-                        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600;">${mainBoxListMarkup}</ul> 
-                    </div> 
-                    <div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 16px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center;"> 
-                        <span style="font-weight: 800; color: var(--navy, #0a1f44); font-size: 0.95rem;">Base Fee:</span> 
-                        <strong style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$${finalBaseFee.toFixed(2)}</strong> 
-                    </div> 
-                    ${stateFilingFeeRowHtml} 
-                </div> 
-                
-                <!-- Persistent Action Navigation Footer Row Container -->
-                <div class="wizard-action-footer" style="display: flex; justify-content: flex-end; align-items: center; width: 100%; margin-top: 24px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 20px; box-sizing: border-box; clear: both;">
-                    <button type="button" class="btn-wizard-main" onclick="window.switchWizardActiveViewLayout(2)" style="background: #0a1f44; color: #ffffff; padding: 12px 32px; border: none; border-radius: 6px; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s;">
-                        Continue to Form <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>`; 
-        } 
-        
-        const numericalBaseInput = document.getElementById("wizard-base-package-fee-input"); 
-        if (numericalBaseInput) { 
-            numericalBaseInput.value = finalBaseFee.toFixed(2); 
-            numericalBaseInput.dispatchEvent(new Event('change', { bubbles: true })); 
-        } 
-        
-        window.computedWizardStateGovernmentFee = stateGovFee; 
-        
-        if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
-            window.updateDynamicPricingMatrixVanilla(); 
-        } 
-        if (typeof window.populatePurchaseSummaryReviewMatrix === "function") { 
-            window.populatePurchaseSummaryReviewMatrix(); 
-        } 
-    } catch (err) { 
-        console.error("[Overview Renderer Failure]", err); 
-    } finally { 
-        window.isPlanCardRenderingLockActive = false; 
-    } 
-} 
+  try {
+    const serviceName = serviceDataNode?.name || "Service Allocation";
+    const tierName = tierTitleDisplay || "Selected Package";
+    const finalizedPlanTitleContainerHeaderText = serviceName + " (" + tierName.toUpperCase() + ")";
+
+    // 1. EXTRACT REGIONAL STATE FEE DETAILS DYNAMICALLY FROM THE URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlStateCode = String(urlParams.get('state') || "").toUpperCase().trim();
+    const urlServiceSlug = String(urlParams.get('service') || "").toLowerCase().trim();
+
+    let stateGovFee = 0;
+    let stateFilingFeeRowHtml = "";
+
+    if (urlStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[urlStateCode]) {
+      const stateRecord = window.STATE_FILING_FEES[urlStateCode];
+      let mappingKey = urlServiceSlug.replace("-formation", "");
+      if (mappingKey === "corporations") mappingKey = "c_corp";
+      if (mappingKey === "series-llc") mappingKey = "series_llc";
+      if (mappingKey === "nonprofits") mappingKey = "non_profit";
+
+      const discoveredFee = stateRecord[mappingKey] || stateRecord["llc"] || 0;
+      stateGovFee = parseFloat(discoveredFee) || 0;
+
+      if (stateGovFee > 0) {
+        stateFilingFeeRowHtml = `
+          <div class="runtime-state-fee-notice-card" style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; text-align: left; box-sizing: border-box; width: 100%;">
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-weight: 700; color: #0a1f44; font-size: 0.85rem;">Mandatory ${stateRecord.name} Fee:</span>
+              <small style="color: #0a1f44; font-weight: 500; font-size: 0.725rem;"><i class="fa-solid fa-clock"></i> Est. Processing: ${stateRecord.time}</small>
+            </div>
+            <strong style="font-family: monospace; color: #10b981; font-size: 1.1rem;">+$${stateGovFee.toFixed(2)}</strong>
+          </div>
+        `;
+      }
+    }
+
+    // 2. SAFE STRING ESCAPE PROCESSING
+    let mainBoxListMarkup = "";
+    activeBullets.forEach(function(bulletItem) {
+      const safeText = (typeof window.secureWizardStringEscape === "function") ? window.secureWizardStringEscape(bulletItem) : bulletItem;
+      mainBoxListMarkup += `<li style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span class="f4u-pristine-bullet-text" style="font-size: 0.9rem; color: #0a1f44; font-weight: 600;">${safeText}</span></li>`;
+    });
+
+    /**
+     * ONE CONTAINER FIX: Stripped out the inner wrapper container card.
+     * Elements flow directly inside the outer placeholder box context, 
+     * making the card footprint identical to Step 0's layout container.
+     */
+    const masterPanelTarget = document.getElementById("step-1-injection-placeholder");
+
+    if (masterPanelTarget) {
+      masterPanelTarget.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; text-align: left; clear: both;">
+          
+          <div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px;">
+            <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Selected Package</span>
+            <h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.15rem; font-weight: 800;">${finalizedPlanTitleContainerHeaderText}</h3>
+          </div>
+
+          <div style="margin-top: 4px; margin-bottom: 4px;">
+            <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; color: var(--navy, #0a1f44); display: block; margin-bottom: 10px; letter-spacing: 0.5px;">What Comes with the Package</label>
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px;">
+              ${mainBoxListMarkup}
+            </ul>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; padding: 14px 16px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; width: 100%;">
+            <span style="font-weight: 800; color: var(--navy, #0a1f44); font-size: 0.95rem;">Base Fee:</span>
+            <strong style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$${finalBaseFee.toFixed(2)}</strong>
+          </div>
+
+          ${stateFilingFeeRowHtml}
+
+          <!-- Integrated Action Footer Navigation Bar -->
+          <div class="wizard-action-footer" style="display: flex; justify-content: flex-end; align-items: center; width: 100%; margin-top: 16px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 16px; box-sizing: border-box; clear: both;">
+            <button type="button" class="btn-wizard-main" onclick="window.switchWizardActiveViewLayout(2)" style="background: #0a1f44; color: #ffffff; padding: 12px 32px; border: none; border-radius: 6px; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s;">
+              Continue to Form <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // 4. SYNC FORM METRICS ACROSS PARSING LOGIC
+    const numericalBaseInput = document.getElementById("wizard-base-package-fee-input");
+    if (numericalBaseInput) {
+      numericalBaseInput.value = finalBaseFee.toFixed(2);
+      numericalBaseInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    window.computedWizardStateGovernmentFee = stateGovFee;
+
+    if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+      window.updateDynamicPricingMatrixVanilla();
+    }
+    
+    if (typeof window.populatePurchaseSummaryReviewMatrix === "function") {
+      window.populatePurchaseSummaryReviewMatrix();
+    }
+
+  } catch (err) {
+    console.error("[Overview Renderer Failure]", err);
+  } finally {
+    window.isPlanCardRenderingLockActive = false;
+  }
+}
 
 window.renderOnboardingPlanOverviewCard = renderOnboardingPlanOverviewCard;
+
+
 
 
 

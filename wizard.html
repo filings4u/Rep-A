@@ -25,119 +25,91 @@
 
 <div class="dashboard-wrapper">
     
-    <!-- LEFT SIDEBAR MAP CONTAINER -->
-    <aside class="portal-sidebar">
-        <div class="sidebar-brand-block">
-            <img src="images/logo.png" alt="filings4u" style="height: 35px; width: auto; object-fit: contain; display: block; margin: 0 auto;">
-        </div>
+<!-- LEFT SIDEBAR MAP CONTAINER --> 
+<aside class="portal-sidebar" style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; box-sizing: border-box; width: 280px; background: #ffffff; border-right: 1px solid var(--border); position: sticky; top: 0; overflow: hidden !important;"> 
+  
+  <!-- Content Top Box: Stripped out the wrapper container to give the target element 100% native layout room -->
+  <div class="sidebar-brand-block" style="padding: 24px; border-bottom: 1px solid var(--border); box-sizing: border-box; width: 100%;"> 
+    <img src="images/logo.png" alt="filings4u" style="height: 35px; width: auto; object-fit: contain; display: block; margin: 0 auto;"> 
+  </div> 
+  
+  <!-- Isolated Map Section Target: Sits independently in the sidebar tree to maximize width -->
+  <div id="wizard-sidebar-application-map-target" style="width: 100%; flex: 1; box-sizing: border-box;"></div> 
 
-        <div class="sidebar-content-area">
-            <div class="sidebar-header-box">
-                <h3 class="sidebar-title-label">Application Map</h3>
-                <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
-            </div>
-            
-            <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline">
-                <div id="timeline-row-1" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div>
-                <div id="timeline-row-2" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div>
-                <div id="timeline-row-3" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div>
-                <div id="timeline-row-4" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div>
-                <div id="timeline-row-5" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div>
-                <div id="timeline-row-6" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div>
-                <div id="timeline-row-7" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div>
-            </nav>
-        </div>
+  <!-- FIXED: Bottom actions sit tightly at the base with all tags closed cleanly --> 
+  <div class="sidebar-footer-lock" style="width: 100%; margin-top: auto; padding: 20px; box-sizing: border-box; border-top: 1px solid var(--border); background: #ffffff; flex-shrink: 0;"> 
+    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; box-sizing: border-box;"> 
+      <button id="sidebarFallbackLogoutBtn" class="logout-btn" style="width: 100%; cursor: pointer; box-sizing: border-box; padding: 12px; background: #0a1f44; color: white; border: none; border-radius: 6px; font-weight: 700; transition: background 0.2s;">Save Progress</button> 
+    </div> 
+  </div> 
 
-        <div class="sidebar-footer-lock">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; width: 100%;">
-        
-            <button id="sidebarFallbackLogoutBtn" class="logout-btn" style="width: 100%; cursor: pointer; box-sizing: border-box; padding: 10px; background: #0a1f44; color: white; border: none; border-radius: 6px; font-weight: 600;">Save Progress</button>
-        </div>
-    </aside>
+</aside> <!-- Clean closure of the master sidebar panel container -->
+
     
-<!-- RIGHT MAIN SCREEN CONTENT AREA -->
-<main class="portal-main">
-    <div class="wizard-container-wrapper">
+    <!-- ... Rest of your top layout panels and sidebar elements above ... -->
+
+    <!-- RIGHT MAIN SCREEN CONTENT AREA --> 
+    <main class="portal-main"> 
+      <div class="wizard-container-wrapper"> 
         
-        <!-- STEP 1 INNER WIZARD PANEL CARD -->
-        <div class="wizard-panel active" id="step-panel-1">
-            <!-- ⏱️ LIVE PINNED CLOCK COMPONENT -->
-            <div class="form-clock-pill-anchor">
-                <span>⏱️</span>
-                <span id="portal-clock" style="font-family: monospace; font-weight: 100; color: #0a1f44; font-size: 0.85rem;">00/00/0000 | 00:00:00</span>
-            </div>
-            
-    
-            
-         <!-- Header Block (Globally Available or Move Inside Step Cards as Needed) --> 
-    <div class="step-header-container" style="margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; max-width: calc(100% - 220px);"> 
-      <h2 class="step-main-title">Your Selection Overview</h2> 
-      <p class="step-subtitle" style="color: var(--slate); font-size: 0.95rem; margin: 0;">Review your selected package and features below.</p> 
-    </div> 
+        <!-- STEP 1 INNER WIZARD PANEL CARD (1 Clean Layer Only) --> 
+        <div class="wizard-panel active" id="step-panel-1"> 
+          
+          <!-- ⏱️ LIVE PINNED CLOCK COMPONENT --> 
+          <div class="form-clock-pill-anchor"> 
+            <span>⏱️</span> 
+            <span id="portal-clock" style="font-family: monospace; font-weight: 100; color: #0a1f44; font-size: 0.85rem;">00/00/0000 | 00:00:00</span> 
+          </div> 
 
-    <!-- STEP 1 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel active" id="step-panel-1"> 
-      <div id="step-0-injection-placeholder"></div> 
-      <div id="step-1-injection-placeholder"></div> 
-    </div> 
+          <!-- Header Block --> 
+          <div class="step-header-container" style="margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; max-width: calc(100% - 220px);"> 
+            <h2 class="step-main-title">Your Selection Overview</h2> 
+            <p class="step-subtitle" style="color: var(--slate); font-size: 0.95rem; margin: 0;">Review your selected package and features below.</p> 
+          </div> 
 
-    <!-- STEP 2 INNER WIZARD PANEL CARD (FIX: Separated cleanly out of Step 1) --> 
-    <div class="wizard-panel" id="step-panel-2" style="display: none;"> 
-      <div id="step-2-injection-placeholder"></div> 
-    </div> 
+          <!-- Target Injection Slots -->
+          <div id="step-0-injection-placeholder"></div> 
+          <div id="step-1-injection-placeholder"></div> 
 
-    <!-- STEP 3 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-3" style="display: none;"> 
-      <div id="step-3-injection-placeholder"></div> 
-    </div>
+        </div> 
 
-    <!-- STEP 4 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-4" style="display: none;"> 
-      <div id="step-4-injection-placeholder"></div> 
-    </div>
+        <!-- STEP 2 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-2" style="display: none;"> 
+          <div id="step-2-injection-placeholder"></div> 
+        </div> 
 
-    <!-- STEP 5 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-5" style="display: none;"> 
-      <div id="step-5-injection-placeholder"></div> 
-    </div>
+        <!-- STEP 3 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-3" style="display: none;"> 
+          <div id="step-3-injection-placeholder"></div> 
+        </div> 
 
-    <!-- STEP 6 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-6" style="display: none;"> 
-      <div id="step-6-injection-placeholder"></div> 
-    </div>
+        <!-- STEP 4 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-4" style="display: none;"> 
+          <div id="step-4-injection-placeholder"></div> 
+        </div> 
 
-    <!-- STEP 7 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-7" style="display: none;"> 
-      <div id="step-7-injection-placeholder"></div> 
-    </div>
-            
-        </div> <!-- 🟢 FIXED: The step-panel-1 card container closes cleanly right HERE, above the footer! -->
+        <!-- STEP 5 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-5" style="display: none;"> 
+          <div id="step-5-injection-placeholder"></div> 
+        </div> 
 
-        <!-- ============================================================================ -->
-        <!-- 📦 ISOLATED AUTO-FLOW FOOTER LAYER CONTAINER BASE                           -->
-        <!-- ============================================================================ -->
-        <div id="f4u-standalone-footer-wrapper">
-            <footer class="portal-legal-footer">
-                <!-- LEFT COMPONENT: COPYRIGHT TEXT BLOCK -->
-                <p class="copyright-text-block">
-                    &copy; 2026 filings4u, LLC. All rights reserved.<br>
-                    A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a>
-                </p>
-                <!-- CENTER COMPONENT: MIDDLE LEGAL LINKS -->
-                <div class="footer-links-centered-row">
-                    <a href="privacy-policy.html">Privacy Policy</a>
-                    <a href="terms-of-service.html">Terms of Service</a>
-                    <a href="refund-policy.html">Refund Policy</a>
-                </div>
-                <!-- RIGHT COMPONENT: SECURE TRUST BADGE KEY -->
-                <div class="trust-badge" style="background: rgba(255, 255, 255, 0.05); padding: 10px 20px; border-radius: 8px; font-size: 0.75rem; color: #ffffff; display: flex; align-items: center; white-space: nowrap;">
-                    <span style="color: #10b981; font-weight: 800; margin-right: 8px;">SECURE</span> 256-bit SSL Encrypted Connection
-                </div>
-            </footer>
-        </div>
+        <!-- STEP 6 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-6" style="display: none;"> 
+          <div id="step-6-injection-placeholder"></div> 
+        </div> 
 
-    </div>
-</main>
+      <!-- STEP 7 INNER WIZARD PANEL CARD --> 
+<div class="wizard-panel" id="step-panel-7" style="display: none;"> 
+  <div id="step-7-injection-placeholder"></div> 
+</div> 
+
+<!-- FIXED FULL WIDTH FOOTER TARGET: Moved completely out of the white box wrapper -->
+  <div id="wizard-footer-injection-target" style="width: 100%; max-width: 1450px; margin: 40px auto 0 auto; box-sizing: border-box; padding: 0 32px;"></div>
+
+      </div> 
+    </main> <!-- FIXED: Main content area closes completely before the footer is defined -->
+
+
 
 <!-- Load reference registries first -->
 <script src="assets/js/wizard/government-pricing.js"></script>
@@ -146,6 +118,7 @@
 
 <!-- Load wizard core engine next -->
 <script src="assets/js/wizard/wizard-master-core.js"></script>
+<script src="assets/js/wizard/application-map.js"></script>
 
   <!-- Core Wizard Engines & Master Layout Router Pipeline -->
     <script src="assets/js/wizard/step-0.js"></script>
@@ -156,6 +129,7 @@
     <script src="assets/js/wizard/step-5.js"></script>
     <script src="assets/js/wizard/step-6.js"></script>
     <script src="assets/js/wizard/step-7.js"></script>
+   <script src="assets/js/wizard/footer.js"></script>
 
     <script src="assets/js/wizard/stripe.js"></script>
     <script src="assets/js/wizard/step2-popup.js"></script>

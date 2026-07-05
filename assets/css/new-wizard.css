@@ -1847,42 +1847,60 @@ body {
     margin: 0;
 }
 
-/* MAP ROUTE ITEMS */
+/* ============================================================================ */
+/* 🗺️ MAP ROUTE ITEMS (FIXED: Expanded to fill out the full horizontal space)   */
+/* ============================================================================ */
 .sidebar-nav-timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%; /* Guarantees the list container takes full width */
+  box-sizing: border-box;
 }
 
 .toc-step-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%; /* Lets each row expand completely across the container */
+  box-sizing: border-box;
 }
 
 .toc-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border);
-    margin-top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  margin-top: 6px;
+  flex-shrink: 0; /* Prevents the indicator dot from shrinking when text expands */
 }
 
+/* FIX: This forces the text container to stretch out and fill the empty space */
 .toc-text-group {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Instructs the browser to fill all remaining horizontal room */
+  width: 100%;
+  min-width: 0; /* Prevents text overflow bugs from locking the box size */
+  box-sizing: border-box;
 }
 
 .toc-step-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--navy);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--navy);
+  display: block;
+  width: 100%; /* Stretches the heading text full width */
 }
 
 .toc-step-desc {
-    font-size: 0.75rem;
-    color: var(--slate);
+  font-size: 0.75rem;
+  color: var(--slate);
+  display: block;
+  width: 100%; /* Stretches the description text full width */
+  line-height: 1.3;
 }
+
 
 .sidebar-footer-lock {
     border-top: 1px solid var(--border);
