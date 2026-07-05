@@ -112,27 +112,31 @@
     } 
 })();
 
+// ============================================================================ //
+// ⚙️ SYSTEM STATE FLOW & NAVIGATION TRACKING REGISTRY                         //
+// ============================================================================ //
+window.currentWizardActiveStep = parseInt(window.currentWizardActiveStep, 10) || 0;
+window.totalWizardExpectedSteps = 7;
+window.totalWizardSteps = 7;
 
-// ============================================================================ // 
-// ⚙️ SYSTEM STATE FLOW & NAVIGATION TRACKING REGISTRY                         // 
-// ============================================================================ // 
-window.currentWizardActiveStep = parseInt(window.currentWizardActiveStep, 10) || 1; 
-window.totalWizardExpectedSteps = 7; 
-window.totalWizardSteps = 7; 
+// ============================================================================ //
+// 🔌 ACTIVE ADD-ON SERVICE STATE FLAGS (ZERO-HARDCODE AUTOMATED ITERATOR)    //
+// ============================================================================ //
+(function initializeDynamicStateFlags() {
+  "use strict";
 
-// ============================================================================ // 
-// 🔌 ACTIVE ADD-ON SERVICE STATE FLAGS (ZERO-HARDCODE AUTOMATED ITERATOR)    // 
-// ============================================================================ // 
-(function initializeDynamicStateFlags() { 
-  "use strict"; 
+  // Safeguard flag to prevent infinite loops inside your pricing compilation matrix
+  let isProcessingCompilationLoop = false;
 
   // Helper to bind reactive property tracks to window keys dynamically
   function createReactiveFlag(flagKey) {
+    // Prevent attempting to redefine existing properties on the window scope
+    if (Object.getOwnPropertyDescriptor(window, flagKey)) return;
+
     let internalStateValue = false;
-    
+
     Object.defineProperty(window, flagKey, {
       get() {
-        // Read directly from cached field inputs or localized storage matrices
         const storageVal = localStorage.getItem(`wizard_field_${flagKey}`);
         if (storageVal !== null) {
           return storageVal === "true" || storageVal === "yes";
@@ -143,10 +147,17 @@ window.totalWizardSteps = 7;
         const normalizedState = newBooleanState === true || newBooleanState === "yes" || String(newBooleanState) === "true";
         internalStateValue = normalizedState;
         localStorage.setItem(`wizard_field_${flagKey}`, normalizedState ? "true" : "false");
-        
-        // Auto-trigger your calculator loop safely if it's currently loaded in the execution scope
-        if (typeof window.executeDynamicAddonCompilation === "function") {
-          window.executeDynamicAddonCompilation();
+
+        // Auto-trigger your calculator loop safely while blocking recursion loops
+        if (typeof window.executeDynamicAddonCompilation === "function" && !isProcessingCompilationLoop) {
+          try {
+            isProcessingCompilationLoop = true;
+            window.executeDynamicAddonCompilation();
+          } catch (err) {
+            console.error("[Compilation Lock Failure] Failed to compile totals safely:", err);
+          } finally {
+            isProcessingCompilationLoop = false;
+          }
         }
       },
       configurable: true,
@@ -154,35 +165,62 @@ window.totalWizardSteps = 7;
     });
   }
 
-  // Automatically loop over your global tracking property map keys securely
-  if (window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP) { 
-    Object.values(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP).forEach(stateFlagKey => { 
+  /**
+   * ENTERPRISE INTERCEPT FIX: Define the map property with an active setter descriptor.
+   * Instead of checking a static variable that returns undefined on parse, this sets up an active
+   * interceptor. The exact millisecond your downstream script files assign your 100+ services dictionary,
+   * it hooks and executes the flag generation loop cleanly, preventing baseline data mismatches.
+   */
+  let internalPropertyMapPayload = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
+
+  Object.defineProperty(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP', {
+    get() {
+      return internalPropertyMapPayload;
+    },
+    set(newMapData) {
+      if (newMapData && typeof newMapData === 'object') {
+        // Merge the configurations safely into our active instance tracker
+        Object.assign(internalPropertyMapPayload, newMapData);
+        
+        // Loop and register all unique keys instantly upon asset file arrival
+        Object.values(newMapData).forEach(stateFlagKey => {
+          createReactiveFlag(stateFlagKey);
+        });
+        console.log("[State Registry Success] Late-binding enterprise tracking tokens initialized successfully.");
+      }
+    },
+    configurable: true,
+    enumerable: true
+  });
+
+  // Automatically process baseline values in case object data mounted prematurely
+  if (window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP) {
+    Object.values(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP).forEach(stateFlagKey => {
       createReactiveFlag(stateFlagKey);
-    }); 
-  } 
+    });
+  }
 
-  // Secondary specialized fallbacks 
-  const additionalCoreFlags = [ 
-    "customSelectedRegisteredAgentServiceActive", 
-    "customSelectedEinProcurementServiceActive", 
-    "customSelectedScorpElectionServiceActive", 
-    "customSelectedSolePropLicenseAuditServiceActive", 
-    "customSelectedDbaLicenseAuditServiceActive", 
-    "customSelectedNonprofitLicenseCheckActive", 
-    "customSelectedDbaSearchServiceActive", 
-    "customSelectedForeignQualLicenseSuiteActive", 
-    "customSelectedExpeditedFilingServiceActive", 
-    "customSelectedApostilleAuthenticationServiceActive", 
-    "customSelectedGoodStandingCertificateServiceActive" 
-  ]; 
+  // Secondary specialized fallbacks
+  const additionalCoreFlags = [
+    "customSelectedRegisteredAgentServiceActive",
+    "customSelectedEinProcurementServiceActive",
+    "customSelectedScorpElectionServiceActive",
+    "customSelectedSolePropLicenseAuditServiceActive",
+    "customSelectedDbaLicenseAuditServiceActive",
+    "customSelectedNonprofitLicenseCheckActive",
+    "customSelectedDbaSearchServiceActive",
+    "customSelectedForeignQualLicenseSuiteActive",
+    "customSelectedExpeditedFilingServiceActive",
+    "customSelectedApostilleAuthenticationServiceActive",
+    "customSelectedGoodStandingCertificateServiceActive"
+  ];
 
-  additionalCoreFlags.forEach(fallbackFlagKey => { 
+  additionalCoreFlags.forEach(fallbackFlagKey => {
     createReactiveFlag(fallbackFlagKey);
-  }); 
+  });
 
-  console.log("[State Registry] Global compliance tracking tokens dynamically initialized successfully via loop iteration."); 
+  console.log("[State Registry] Global compliance tracking tokens dynamically initialized successfully via loop iteration.");
 })();
-
 
 
 
@@ -260,126 +298,141 @@ window.USA_STATES_DICTIONARY = [
     { code: "WI", name: "Wisconsin" }, { code: "WY", name: "Wyoming" }
 ];
 
-// ============================================================================ // 
-// 📊 PART 1 OF 2: UNIVERSAL STEP VALIDATION MATRIX ENGINE                      // 
-// ============================================================================ // 
-/** 
- * Universal dynamic validation engine. 
- * Validates formatting parameters per step and manages browser native validation messages. 
- */ 
-function validateStepInputParametersVanilla(activeStep) { 
-  console.log(`[Validator Engine] Scanning inputs inside step panel ${activeStep}...`); 
-  
-  // Hard bypass: Let the dedicated POA matrix handle Step 4 evaluation completely 
-  if (parseInt(activeStep, 10) === 4) { 
-    if (typeof window.evaluatePoaInputStateMatrix === "function") { 
-      return window.evaluatePoaInputStateMatrix(); 
-    } 
-    return true; 
-  } 
+// ============================================================================ //
+// 📊 PART 1 OF 2: UNIVERSAL STEP VALIDATION MATRIX ENGINE                    //
+// ============================================================================ //
+/**
+ * Universal dynamic validation engine.
+ * Validates formatting parameters per step and manages browser native validation messages.
+ */
+function validateStepInputParametersVanilla(activeStep) {
+  console.log(`[Validator Engine] Scanning inputs inside step panel ${activeStep}...`);
 
-  var activePanel = document.getElementById("step-panel-" + activeStep); 
-  if (!activePanel) return true; 
+  // Hard bypass: Let the dedicated POA matrix handle Step 4 evaluation completely
+  if (parseInt(activeStep, 10) === 4) {
+    if (typeof window.evaluatePoaInputStateMatrix === "function") {
+      return window.evaluatePoaInputStateMatrix();
+    }
+    return true;
+  }
 
-  var inputs = activePanel.querySelectorAll("input, select, textarea"); 
-  var stepIsValid = true; 
-  var firstInvalidElement = null; 
+  /**
+   * DOM SELECTOR FIX: Check for standard panels as well as injection placeholders.
+   * This guarantees that Step 0 dropdown forms are successfully scanned by the engine 
+   * instead of returning null and bypassing the input checks entirely.
+   */
+  var activePanel = document.getElementById("step-panel-" + activeStep) || 
+                    document.getElementById(`step-${activeStep}-injection-placeholder`) ||
+                    (parseInt(activeStep, 10) === 0 ? document.getElementById("step-0-injection-placeholder") : null);
+                    
+  if (!activePanel) {
+    console.log(`[Validator Engine Warning] View container for step ${activeStep} not mounted. Bypassing check.`);
+    return true;
+  }
 
-  // Upgraded: Supports global characters, accents, spaces, periods, and hyphens universally 
-  var regexLetters = /^[\p{L}\s.'\-]+$/u; 
-  var regexNumbers = /^\d+$/; 
-  var regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 
+  var inputs = activePanel.querySelectorAll("input, select, textarea");
+  var stepIsValid = true;
+  var firstInvalidElement = null;
 
-  inputs.forEach(function(el) { 
-    if (el.type === "hidden" || el.disabled) return; 
+  // Upgraded: Supports global characters, accents, spaces, periods, and hyphens universally
+  var regexLetters = /^[\p{L}\s.'\-]+$/u;
+  var regexNumbers = /^\d+$/;
+  var regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    // FIX: Skip element if it is nested inside a hidden step placeholder 
+  inputs.forEach(function(el) {
+    if (el.type === "hidden" || el.disabled) return;
+
+    // Skip element if it is nested inside a hidden step placeholder
     // or if its display properties/dimensions are currently collapsed/invisible.
     const isHiddenContainer = el.closest('[style*="display: none"]') || el.closest('.wizard-panel:not(.active)');
-    const bounds = el.getBoundingClientRect();
+    var bounds = el.getBoundingClientRect();
     if (isHiddenContainer || (bounds.width === 0 && bounds.height === 0)) {
       return;
     }
 
-    // FIX: If we are validating Step 1, ignore inputs sitting inside future step placeholders
+    // If we are validating Step 1, ignore inputs sitting inside future step placeholders
     if (parseInt(activeStep, 10) === 1) {
       if (el.closest('#step-2-injection-placeholder') || el.closest('#step-3-injection-placeholder')) {
         return;
       }
     }
 
-    var val = el.value.trim(); 
+    var val = el.value.trim();
     
-    // Clear native error flags immediately on each pass to prevent permanent locks 
-    el.setCustomValidity(""); 
+    // Clear native error flags immediately on each pass to prevent permanent locks
+    el.setCustomValidity("");
 
-    // 1. CHECK REQUIRED INPUT STATES 
-    if (el.hasAttribute("required") && val === "") { 
-      el.setCustomValidity("This field is required."); 
-      stepIsValid = false; 
-      if (!firstInvalidElement) firstInvalidElement = el; 
+    // 1. CHECK REQUIRED INPUT STATES
+    if (el.hasAttribute("required") && val === "") {
+      el.setCustomValidity("This field is required.");
+      stepIsValid = false;
+      if (!firstInvalidElement) firstInvalidElement = el;
     } 
-    // 2. CHECK FORMAT STRINGS IF FIELD IS POPULATED 
-    else if (val !== "") { 
-      // Email Input Patterns 
-      if (el.type === "email" || el.classList.contains("validate-email") || (el.name && el.name.toLowerCase().indexOf("email") !== -1)) { 
-        if (!regexEmail.test(val)) { 
-          el.setCustomValidity("Please enter a valid email address."); 
-          stepIsValid = false; 
-          if (!firstInvalidElement) firstInvalidElement = el; 
-        } 
+    // 2. CHECK FORMAT STRINGS IF FIELD IS POPULATED
+    else if (val !== "") {
+      // Email Input Patterns
+      if (el.type === "email" || el.classList.contains("validate-email") || (el.name && el.name.toLowerCase().indexOf("email") !== -1)) {
+        if (!regexEmail.test(val)) {
+          el.setCustomValidity("Please enter a valid email address.");
+          stepIsValid = false;
+          if (!firstInvalidElement) firstInvalidElement = el;
+        }
       } 
-      // Person/City Name Patterns (Excludes general entity name attributes to allow digits) 
-      else if (el.classList.contains("validate-letters") || (el.name && el.name.toLowerCase().indexOf("first_name") !== -1) || (el.name && el.name.toLowerCase().indexOf("last_name") !== -1) || (el.name && el.name.toLowerCase().indexOf("city") !== -1)) { 
-        if (!regexLetters.test(val)) { 
-          el.setCustomValidity("This field can only contain letters, spaces, hyphens, or periods."); 
-          stepIsValid = false; 
-          if (!firstInvalidElement) firstInvalidElement = el; 
-        } 
+      // Person/City Name Patterns (Excludes general entity name attributes to allow digits)
+      else if (el.classList.contains("validate-letters") || (el.name && el.name.toLowerCase().indexOf("first_name") !== -1) || (el.name && el.name.toLowerCase().indexOf("last_name") !== -1) || (el.name && el.name.toLowerCase().indexOf("city") !== -1)) {
+        if (!regexLetters.test(val)) {
+          el.setCustomValidity("This field can only contain letters, spaces, hyphens, or periods.");
+          stepIsValid = false;
+          if (!firstInvalidElement) firstInvalidElement = el;
+        }
       } 
-      // Numeric Input Patterns 
-      else if (el.type === "number" || el.classList.contains("validate-numbers") || (el.name && el.name.toLowerCase().indexOf("zip") !== -1) || (el.name && el.name.toLowerCase().indexOf("ein") !== -1)) { 
-        if (!regexNumbers.test(val)) { 
-          el.setCustomValidity("This field can only contain numbers."); 
-          stepIsValid = false; 
-          if (!firstInvalidElement) firstInvalidElement = el; 
-        } 
-      } 
-    } 
-  }); 
+      // Numeric Input Patterns
+      else if (el.type === "number" || el.classList.contains("validate-numbers") || (el.name && el.name.toLowerCase().indexOf("zip") !== -1) || (el.name && el.name.toLowerCase().indexOf("ein") !== -1)) {
+        if (!regexNumbers.test(val)) {
+          el.setCustomValidity("This field can only contain numbers.");
+          stepIsValid = false;
+          if (!firstInvalidElement) firstInvalidElement = el;
+        }
+      }
+    }
+  });
 
-  // SINGLE REPORT PASS: Focus the cursor on the first error found and report it 
-  if (!stepIsValid && firstInvalidElement) { 
+  // SINGLE REPORT PASS: Focus the cursor on the first error found and report it
+  if (!stepIsValid && firstInvalidElement) {
     try {
-      firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
-      firstInvalidElement.reportValidity(); 
+      firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstInvalidElement.reportValidity();
     } catch (err) {
       console.warn("[Validator Engine] Prevented crash during validation feedback tracking:", err);
     }
-  } 
+  }
 
-  return stepIsValid; 
-} 
+  return stepIsValid;
+}
 
-// Expose verification layers back to global tracking objects securely 
+// Expose verification layers back to global tracking objects securely
 window.validateStepInputParametersVanilla = validateStepInputParametersVanilla;
 
-
-// ============================================================================ // 
-// 🛠️ UNIVERSAL STEP VALIDATION DISPATCHER (100% PURE DYNAMIC ENGINE)         // 
-// ============================================================================ // 
-/** 
- * Global dynamic form dispatcher checking tool. 
- * Identifies the on-screen active step framework form state and triggers its matching validation sequence. 
- * Pure Dynamic Architecture: Supports 44+ services automatically with zero hardcoding. 
- * @returns {boolean} Validation status report. 
- */ 
-function runMasterActiveStepFormValidation() { 
-  // FIX: Identify what step the wizard is currently evaluating
-  const currentStep = window.currentWizardActiveStep || 1;
+// ============================================================================ //
+// 🛠️ UNIVERSAL STEP VALIDATION DISPATCHER (100% PURE DYNAMIC ENGINE)         //
+// ============================================================================ //
+/**
+ * Global dynamic form dispatcher checking tool.
+ * Identifies the on-screen active step framework form state and triggers its matching validation sequence.
+ * Pure Dynamic Architecture: Supports 44+ services automatically with zero hardcoding.
+ * @returns {boolean} Validation status report.
+ */
+function runMasterActiveStepFormValidation() {
+  
+  /**
+   * REFACTORED CONTEXT CHECK FIX: Enforce a strict type evaluation check.
+   * This guarantees that a step index of 0 is recognized explicitly as a valid number 
+   * instead of falling back to 1 and skipping Step 0 input validation parameters.
+   */
+  const currentStep = (typeof window.currentWizardActiveStep === "number") ? window.currentWizardActiveStep : 0;
   console.log(`[Validation Dispatch] Intercepting form status check for step: ${currentStep}`);
 
-  // FIX: Force evaluate basic required markup fields on the current step container FIRST
+  // Force evaluate basic required markup fields on the current step container FIRST
   if (typeof window.validateStepInputParametersVanilla === "function") {
     const isBaseStepValid = window.validateStepInputParametersVanilla(currentStep);
     if (!isBaseStepValid) {
@@ -388,265 +441,306 @@ function runMasterActiveStepFormValidation() {
     }
   }
 
-  const currentServiceKey = window.routeActiveServiceKey || ""; 
-  const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
+  const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || "";
+  const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
   
-  if (!cleanKey) return true; 
+  if (!cleanKey || cleanKey === "") {
+    console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status.");
+    return true;
+  }
 
-  // 1. CONVERT SYSTEM SERVICE KEY TO DYNAMIC LOOKUP WORDS 
-  const primaryKeyWords = cleanKey.split('-'); 
+  // 1. CONVERT SYSTEM SERVICE KEY TO DYNAMIC LOOKUP WORDS
+  const primaryKeyWords = cleanKey.split('-');
 
-  // 2. REFLEXIVE WINDOW SCOPE MEMORY SCAN 
-  const globalContextKeys = Object.keys(window); 
-  const targetValidationMethodKey = globalContextKeys.find(key => { 
-    const kLower = key.toLowerCase(); 
-    // Ensure it is a function, starts with "validate", and contains at least one 
-    // distinctive token of the active service name (e.g. "sales", "payroll", "hazmat") 
-    const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate"); 
+  // 2. REFLEXIVE WINDOW SCOPE MEMORY SCAN
+  const globalContextKeys = Object.keys(window);
+  const targetValidationMethodKey = globalContextKeys.find(key => {
+    const kLower = key.toLowerCase();
     
-    // Fuzzy Matching Condition: Check if the function name includes any of our core path words
+    // Ensure it is a function, starts with "validate", and contains at least one
+    // distinctive token of the active service name (e.g. "sales", "payroll", "hazmat")
+    const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate");
+    
     // Exclude the vanilla step validator from matching itself here
     const isNotVanillaEngine = key !== "validateStepInputParametersVanilla";
-    const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word)); 
     
-    return isValidationFunction && matchesServiceKeyword && isNotVanillaEngine; 
-  }); 
+    // Fuzzy Matching Condition: Check if the function name includes any of our core path words
+    const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word));
+    
+    return isValidationFunction && matchesServiceKeyword && isNotVanillaEngine;
+  });
 
   // 3. DYNAMIC AUTOMATED DISPATCH EXECUTION FOR ADVANCED SERVICE LOGIC
-  if (targetValidationMethodKey) { 
-    console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`); 
-    return window[targetValidationMethodKey](currentStep); 
-  } 
+  if (targetValidationMethodKey) {
+    console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`);
+    try {
+      const advancedValidationResult = window[targetValidationMethodKey](currentStep);
+      // Normalized boolean fallback conversion protects against undefined return values
+      return advancedValidationResult !== false;
+    } catch (err) {
+      console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err);
+      return false; // Lock step progression defensively if an advanced script encounters an unhandled runtime error
+    }
+  }
 
-  // ============================================================================ // 
-  // 4. ZERO-HARDCODE STANDALONE FALLBACK SEGMENTATION INTERFACES 
-  // ============================================================================ // 
-  if (typeof window.validateAlgorithmicFallbackFields === "function") { 
-    console.log("[Validation Dispatch] Custom function file validator missing, defaulting to automated fallback loop."); 
-    return window.validateAlgorithmicFallbackFields(currentStep); 
-  } 
+  // ============================================================================ //
+  // 4. ZERO-HARDCODE STANDALONE FALLBACK SEGMENTATION INTERFACES                 //
+  // ============================================================================ //
+  if (typeof window.validateAlgorithmicFallbackFields === "function") {
+    console.log("[Validation Dispatch] Custom function file validator missing, defaulting to automated fallback loop.");
+    return !!window.validateAlgorithmicFallbackFields(currentStep);
+  }
 
-  return true; 
-} 
+  return true;
+}
 
-// Bind cleanly back into universal global window scope references safely 
+// Bind cleanly back into universal global window scope references safely
 window.runMasterActiveStepFormValidation = runMasterActiveStepFormValidation;
 
 
-// ============================================================================ // 
-// 🧠 MODULAR ATTACHMENT: VANILLA STATE SCRAPER FOR STEP HYDRATION              // 
-// ============================================================================ // 
-window.saveWizardFormStatesVanilla = function() { 
-  console.log("[State Engine] Triggering global form parameter data collection pass..."); 
-  try { 
-    // FIX: Look up the panel matching the exact numerical step before relying on class strings
-    const currentStepNum = window.currentWizardActiveStep || 1;
+// ============================================================================ //
+// 🧠 MODULAR ATTACHMENT: VANILLA STATE SCRAPER FOR STEP HYDRATION              //
+// ============================================================================ //
+window.saveWizardFormStatesVanilla = function() {
+  console.log("[State Engine] Triggering global form parameter data collection pass...");
+  
+  try {
+    /**
+     * INDEPENDENT STATE EVALUATION FIX: Enforce strict type evaluation.
+     * This ensures that Step 0 is caught as zero cleanly instead of defaulting to 1
+     * and reading empty variables from hidden panels.
+     */
+    const currentStepNum = (typeof window.currentWizardActiveStep === "number") ? window.currentWizardActiveStep : 0;
     
     const currentActivePanel = document.getElementById(`step-panel-${currentStepNum}`) || 
+                               document.getElementById(`step-${currentStepNum}-injection-placeholder`) ||
+                               (currentStepNum === 0 ? document.getElementById("step-0-injection-placeholder") : null) ||
                                document.querySelector(".wizard-panel.active") || 
-                               document.querySelector(".wizard-panel:not([style*='display: none'])"); 
+                               document.querySelector(".wizard-panel:not([style*='display: none'])");
                                
-    // CRITICAL FIX: If no valid view card is active, abort immediately instead of scanning document.body 
     if (!currentActivePanel) {
       console.warn("[State Engine Abort] Canceled scraping pass: Active step panel context could not be determined safely.");
       return;
     }
-
+    
     console.log(`[State Engine] Actively serializing elements for Step Panel ID: "${currentActivePanel.id || 'Dynamic Slot'}"`);
-
-    // 1. Collect all standard alphanumeric fields, textareas, hidden items, and selectors 
-    const formFields = currentActivePanel.querySelectorAll("input:not([type='checkbox']):not([type='radio']), select, textarea"); 
-    formFields.forEach(fieldItem => { 
-      const fieldIdentifier = fieldItem.id || fieldItem.name; 
-      if (fieldIdentifier) { 
-        localStorage.setItem(`wizard_field_${fieldIdentifier}`, fieldItem.value); 
+    
+    // 1. Collect all standard alphanumeric fields, textareas, hidden items, and selectors
+    const formFields = currentActivePanel.querySelectorAll("input:not([type='checkbox']):not([type='radio']), select, textarea");
+    
+    formFields.forEach(fieldItem => {
+      const fieldIdentifier = fieldItem.id || fieldItem.name;
+      if (fieldIdentifier) {
+        const structuralValue = fieldItem.value ? fieldItem.value.trim() : "";
+        localStorage.setItem(`wizard_field_${fieldIdentifier}`, fieldItem.value);
         
-        // Explicit backup rules for state definitions 
-        if (fieldIdentifier.includes("state") || fieldIdentifier.includes("formation")) { 
-          localStorage.setItem('wizard_selected_state', fieldItem.value); 
-        } 
-      } 
-    }); 
+        /**
+         * STATE RETENTION GUARD: Only backup codes if the value is explicitly populated.
+         * This completely stops unselected fallback elements from erasing your primary
+         * 'wizard_selected_state' data cache entries.
+         */
+        if ((fieldIdentifier.includes("state") || fieldIdentifier.includes("formation")) && structuralValue !== "") {
+          localStorage.setItem('wizard_selected_state', structuralValue.toUpperCase());
+          window.selectedJurisdiction = structuralValue.toUpperCase();
+        }
+      }
+    });
+    
+    /**
+     * ARRAY LOOP SYNTAX FIX: Appended the missing .forEach tracking method hook.
+     * This resolves the fatal syntax thread crash and successfully preserves data logs 
+     * for your Step 5 template loop checking matrices.
+     */
+    const checkboxes = currentActivePanel.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach(function(boxItem) {
+      const boxIdentifier = boxItem.id || boxItem.name;
+      if (boxIdentifier) {
+        localStorage.setItem(`wizard_field_${boxIdentifier}`, boxItem.checked ? "true" : "false");
+      }
+    });
 
-    // 2. Collect all active checkmarks and verification agreement selections 
-    const checkboxes = currentActivePanel.querySelectorAll("input[type='checkbox']"); 
-    checkboxItem => { 
-      const boxIdentifier = boxItem.id || boxItem.name; 
-      if (boxIdentifier) { 
-        // 🟢 UNIFIED STORAGE RESOLUTION: 
-        // Save exactly as wizard_field_ to stay perfectly aligned with your Step 5 template loop! 
-        localStorage.setItem(`wizard_field_${boxIdentifier}`, boxItem.checked ? "true" : "false"); 
-      } 
-    }; 
-
-    console.log("[State Engine Success] Active layout fields successfully serialized."); 
-  } catch (scrapingException) { 
-    console.warn("[State Engine Error] Failed to safely cache form elements:", scrapingException); 
-  } 
+    // 3. Process any radio inputs cleanly (such as package tiers or feature triggers)
+    const radioButtons = currentActivePanel.querySelectorAll("input[type='radio']");
+    radioButtons.forEach(function(radioItem) {
+      const radioIdentifier = radioItem.name || radioItem.id;
+      if (radioIdentifier && radioItem.checked) {
+        localStorage.setItem(`wizard_field_${radioIdentifier}`, radioItem.value);
+        
+        // Parallel sync active plan keys across global routing boundaries
+        if (radioIdentifier.toLowerCase().includes("plan") || radioIdentifier.toLowerCase().includes("tier")) {
+          window.currentPlanKey = radioItem.value;
+          window.currentServiceTier = radioItem.value;
+        }
+      }
+    });
+    
+    console.log("[State Engine Success] Active layout fields successfully serialized.");
+  } catch (scrapingException) {
+    console.warn("[State Engine Error] Failed to safely cache form elements:", scrapingException);
+  }
 };
+
 
 
 // ============================================================================ // 
 // 🧭 WIZARD NAVIGATION & APPLICATION TIMELINE PROGRESS LIGHTS (DYNAMIC)       // 
 // ============================================================================ // 
-function goToNextWizardStep(targetStep, eventClickRef) { 
-  window.currentWizardActiveStep = parseInt(window.currentWizardActiveStep, 10) || 1; 
-  
-  // Handle variation where mouse click event payloads are passed as the first parameter 
-  let normalizedTargetStep = targetStep; 
-  if (targetStep && typeof targetStep === 'object') { 
-    normalizedTargetStep = undefined; 
-  } 
+function goToNextWizardStep(targetStep, eventClickRef) {
+    // Treat step 0 as the absolute baseline entry step
+    window.currentWizardActiveStep = (typeof window.currentWizardActiveStep !== 'undefined') ? parseInt(window.currentWizardActiveStep, 10) : 0;
+    if (isNaN(window.currentWizardActiveStep)) window.currentWizardActiveStep = 0;
 
-  // FIX: Route validation directly through your master dispatcher instead of splitting the validation layers
-  if (typeof window.runMasterActiveStepFormValidation === "function") { 
-    const isCurrentViewValid = window.runMasterActiveStepFormValidation(); 
-    if (!isCurrentViewValid) { 
-      console.warn(`[Navigation Gate] Validation failed for Step ${window.currentWizardActiveStep} via Master Dispatcher. Halt pipeline.`); 
-      return false; 
+    // Handle variation where mouse click event payloads are passed as the first parameter 
+    let normalizedTargetStep = targetStep; 
+    if (targetStep && typeof targetStep === 'object') { 
+        normalizedTargetStep = undefined; 
     } 
-  } else if (typeof window.validateStepInputParametersVanilla === "function") { 
-    // Secure basic input fallback verification if master routing framework script is uninstantiated
-    const isCurrentViewValid = window.validateStepInputParametersVanilla(window.currentWizardActiveStep); 
-    if (!isCurrentViewValid) { 
-      console.warn(`[Navigation Gate] Validation failed for Step ${window.currentWizardActiveStep}. Halt pipeline.`); 
-      return false; 
+
+    // ROUTE VALIDATION DIRECTLY THROUGH MASTER DISPATCHER
+    if (typeof window.runMasterActiveStepFormValidation === "function") { 
+        const isCurrentViewValid = window.runMasterActiveStepFormValidation(); 
+        if (!isCurrentViewValid) { 
+            console.warn(`[Navigation Gate] Validation failed for Step ${window.currentWizardActiveStep} via Master Dispatcher. Halt pipeline.`); 
+            return false; 
+        } 
+    } else if (typeof window.validateStepInputParametersVanilla === "function") { 
+        // Secure basic input fallback verification if master routing framework script is uninstantiated 
+        const isCurrentViewValid = window.validateStepInputParametersVanilla(window.currentWizardActiveStep); 
+        if (!isCurrentViewValid) { 
+            console.warn(`[Navigation Gate] Validation failed for Step ${window.currentWizardActiveStep}. Halt pipeline.`); 
+            return false; 
+        } 
     } 
-  } 
 
-  // CALLS THE ATTACHED DATA SCRAPER BEFORE PANEL ROTATION 
-  if (typeof window.saveWizardFormStatesVanilla === "function") { 
-    window.saveWizardFormStatesVanilla(); 
-  } 
+    // CALLS THE ATTACHED DATA SCRAPER BEFORE PANEL ROTATION 
+    if (typeof window.saveWizardFormStatesVanilla === "function") { 
+        window.saveWizardFormStatesVanilla(); 
+    } 
 
-  let nextStepIndex = window.currentWizardActiveStep + 1; 
-  if (normalizedTargetStep && !isNaN(normalizedTargetStep)) { 
-    nextStepIndex = parseInt(normalizedTargetStep, 10); 
-  } 
+    let nextStepIndex = window.currentWizardActiveStep + 1; 
+    if (typeof normalizedTargetStep !== 'undefined' && !isNaN(normalizedTargetStep)) { 
+        nextStepIndex = parseInt(normalizedTargetStep, 10); 
+    } 
 
-  if (nextStepIndex > 7) { 
-    console.log("[Navigation] End of onboarding funnel reached. Submitting master form payload..."); 
-    return true; 
-  } 
+    // Target step ceiling guard (0 to 7 means 7 is the final view, step 8 triggers submission)
+    if (nextStepIndex > 7) { 
+        console.log("[Navigation] End of onboarding funnel reached. Submitting master form payload..."); 
+        return true; 
+    } 
 
-  switchWizardActiveViewLayout(nextStepIndex); 
+    switchWizardActiveViewLayout(nextStepIndex); 
 } 
 
 function goToPreviousWizardStep() { 
-  window.currentWizardActiveStep = parseInt(window.currentWizardActiveStep, 10) || 1; 
-  let previousStepIndex = window.currentWizardActiveStep - 1; 
-  
-  if (previousStepIndex < 1) { 
-    console.log("[Navigation] Already at Step 1 entry frame."); 
-    return false; 
-  } 
-  
-  switchWizardActiveViewLayout(previousStepIndex); 
+    window.currentWizardActiveStep = (typeof window.currentWizardActiveStep !== 'undefined') ? parseInt(window.currentWizardActiveStep, 10) : 0;
+    if (isNaN(window.currentWizardActiveStep)) window.currentWizardActiveStep = 0;
+
+    let previousStepIndex = window.currentWizardActiveStep - 1; 
+    if (previousStepIndex < 0) { 
+        console.log("[Navigation] Already at Step 0 entry frame."); 
+        return false; 
+    } 
+
+    switchWizardActiveViewLayout(previousStepIndex); 
 } 
 
-function switchWizardActiveViewLayout(activeStepTarget) {
-    // Synchronously update step tracker to prevent race conditions
-    window.currentWizardActiveStep = activeStepTarget;
-    const storedStateString = localStorage.getItem("f4u_wizard_onboarding_state") || "{}";
-    try {
-        const parsedState = JSON.parse(storedStateString);
-        parsedState.currentWizardActiveStep = activeStepTarget;
-        localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(parsedState));
-    } catch (e) {}
+function switchWizardActiveViewLayout(activeStepTarget) { 
+    // Enforce uniform integer treatment
+    const targetStepInt = parseInt(activeStepTarget, 10) || 0;
 
-    // Fallback if transition spinner doesn't exist
-    const transitionRunner = typeof window.triggerWorkspaceTransitionSpinner === "function" 
-        ? window.triggerWorkspaceTransitionSpinner 
-        : function(callback) { callback(); };
+    // Synchronously update step tracker to prevent race conditions 
+    window.currentWizardActiveStep = targetStepInt; 
+    const storedStateString = localStorage.getItem("f4u_wizard_onboarding_state") || "{}"; 
+    try { 
+        const parsedState = JSON.parse(storedStateString); 
+        parsedState.currentWizardActiveStep = targetStepInt; 
+        localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(parsedState)); 
+    } catch (e) {
+        console.warn("[Navigation Engine] State sync to localStorage restricted:", e);
+    } 
 
-    transitionRunner(() => {
-        // Toggle Step Panel Displays
-        for (let i = 1; i <= 7; i++) {
-            const panelNode = document.getElementById(`step-panel-${i}`);
-            if (panelNode) {
-                if (i === activeStepTarget) {
-                    panelNode.classList.add("active");
-                    panelNode.style.setProperty("display", "block", "important");
-                    panelNode.setAttribute("tabindex", "-1");
-                    try { panelNode.focus(); } catch(e) {}
-                } else {
-                    panelNode.classList.remove("active");
-                    panelNode.style.setProperty("display", "none", "important");
-                }
-            }
-        }
-
-// =====================================================================
-// STEP 2 DYNAMIC INJECTION CORRECTION (CRASH-PROOF WRAPPER)
-// =====================================================================
-if (parseInt(activeStepTarget, 10) === 2) {
-    const targetUrlParams = new URLSearchParams(window.location.search);
-    const activeServiceKey = window.routeActiveServiceKey || String(targetUrlParams.get('service') || "").toLowerCase().trim();
+    // Fallback if transition spinner doesn't exist 
+    const transitionRunner = typeof window.triggerWorkspaceTransitionSpinner === "function" ? window.triggerWorkspaceTransitionSpinner : function(callback) { callback(); }; 
     
-    console.log(`[View Switcher Engine] Locating structural target canvas: "#step-2-injection-placeholder"`);
-    
-    // 1. Force the placeholder container to be visible immediately
-    const innerPlaceholderCanvas = document.getElementById("step-2-injection-placeholder");
-    if (innerPlaceholderCanvas) {
-        innerPlaceholderCanvas.style.removeProperty("display");
-        innerPlaceholderCanvas.style.setProperty("display", "block", "important");
-        innerPlaceholderCanvas.style.setProperty("opacity", "1", "important");
-        innerPlaceholderCanvas.style.setProperty("visibility", "visible", "important");
-        console.log("[View Switcher Engine] Target placeholder un-collapsed successfully.");
-    } else {
-        console.warn("[View Switcher Engine] Warning: #step-2-injection-placeholder was not found in the DOM.");
-    }
+    transitionRunner(() => { 
+        // FIX: Adjusted loop scope to strictly evaluate elements from 0 up to and including 7
+        for (let i = 0; i <= 7; i++) { 
+            const panelNode = document.getElementById(`step-panel-${i}`); 
+            if (panelNode) { 
+                if (i === targetStepInt) { 
+                    panelNode.classList.add("active"); 
+                    panelNode.style.setProperty("display", "block", "important"); 
+                    panelNode.setAttribute("tabindex", "-1"); 
+                    try { panelNode.focus(); } catch(e) {} 
+                } else { 
+                    panelNode.classList.remove("active"); 
+                    panelNode.style.setProperty("display", "none", "important"); 
+                } 
+            } 
+        } 
 
-    // 2. Safely execute Step 2 without letting its bugs crash the entire screen transition
-    if (typeof window.executeStepTwoDynamicFormInjection === "function") {
-        // Create a fake event object to prevent 'Cannot read properties of null' errors
-        const safeMockEvent = {
-            preventDefault: function() { return true; },
-            stopPropagation: function() { return true; },
-            target: innerPlaceholderCanvas || document.body
-        };
+        // ===================================================================== // 
+        // STEP 2 DYNAMIC INJECTION CORRECTION                                   // 
+        // ===================================================================== // 
+        if (targetStepInt === 2) { 
+            const targetUrlParams = new URLSearchParams(window.location.search); 
+            const activeServiceKey = window.routeActiveServiceKey || String(targetUrlParams.get('service') || "").toLowerCase().trim(); 
+            console.log(`[View Switcher Engine] Locating structural target canvas: "#step-2-injection-placeholder"`); 
 
-        try {
-            window.executeStepTwoDynamicFormInjection(safeMockEvent, activeServiceKey);
-            console.log("[View Switcher Engine] Step 2 injection executed.");
-        } catch (stepTwoError) {
-            console.error("[CRITICAL FAILURE INSIDE STEP 2 SCRIPT]:", stepTwoError);
-            
-            // Fallback UI so the user doesn't see a completely blank screen if it crashes hard
-            if (innerPlaceholderCanvas && innerPlaceholderCanvas.innerHTML === "") {
-                innerPlaceholderCanvas.innerHTML = `
-                    <div style="padding: 20px; border: 2px dashed #ef4444; background: #fef2f2; color: #b91c1c; border-radius: 8px;">
-                        <strong>Step 2 Failed to Load fully.</strong><br>
-                        <small>${stepTwoError.message}</small>
-                    </div>`;
-            }
-        }
-    } else {
-        console.error("[View Switcher Engine] Fatal: window.executeStepTwoDynamicFormInjection is not a function.");
-    }
-}
+            // 1. Force the placeholder container to be visible immediately 
+            const innerPlaceholderCanvas = document.getElementById("step-2-injection-placeholder"); 
+            if (innerPlaceholderCanvas) { 
+                innerPlaceholderCanvas.style.removeProperty("display"); 
+                innerPlaceholderCanvas.style.setProperty("display", "block", "important"); 
+                innerPlaceholderCanvas.style.setProperty("opacity", "1", "important"); 
+                innerPlaceholderCanvas.style.setProperty("visibility", "visible", "important"); 
+                console.log("[View Switcher Engine] Target placeholder un-collapsed successfully."); 
+            } else { 
+                console.warn("[View Switcher Engine] Warning: #step-2-injection-placeholder was not found in the DOM."); 
+            } 
 
+            // 2. Safely execute Step 2 with circuit breaker isolation
+            if (typeof window.executeStepTwoDynamicFormInjection === "function") { 
+                const safeMockEvent = { 
+                    preventDefault: function() { return true; }, 
+                    stopPropagation: function() { return true; }, 
+                    target: innerPlaceholderCanvas || document.body 
+                }; 
+                try { 
+                    window.executeStepTwoDynamicFormInjection(safeMockEvent, activeServiceKey); 
+                    console.log("[View Switcher Engine] Step 2 injection executed."); 
+                } catch (stepTwoError) { 
+                    console.error("[CRITICAL FAILURE INSIDE STEP 2 SCRIPT]:", stepTwoError); 
+                    if (innerPlaceholderCanvas && innerPlaceholderCanvas.innerHTML === "") { 
+                        innerPlaceholderCanvas.innerHTML = ` 
+                            <div style="padding: 20px; border: 2px dashed #ef4444; background: #fef2f2; color: #b91c1c; border-radius: 8px;"> 
+                                <strong>Step 2 Failed to Load fully.</strong><br> 
+                                <small>${stepTwoError.message}</small> 
+                            </div>`; 
+                    } 
+                } 
+            } else { 
+                console.error("[View Switcher Engine] Fatal: window.executeStepTwoDynamicFormInjection is not a function."); 
+            } 
+        } 
 
-        // =====================================================================
-        // FIX: PREVENT BOOT ENGINE RESET COOLDOWN
-        // =====================================================================
-        // Only run the master boot engine if we are entering or resetting back to Step 1.
-        // Running it on Step 2+ causes state loss and visual layout reversion loops.
-        if (parseInt(activeStepTarget, 10) === 1 && typeof window.runUnifiedWizardBootEngine === "function") {
-            window.runUnifiedWizardBootEngine();
-        } else {
-            // Safe, non-destructive UI updates for mid-wizard steps
-            if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla();
-            if (typeof window.updateApplicationMapTimelineBubbles === "function") window.updateApplicationMapTimelineBubbles(activeStepTarget);
-            if (typeof window.autoSkinSelectedUpsellCards === "function") window.autoSkinSelectedUpsellCards();
-        }
-    });
-}
+        // ===================================================================== // 
+        // FIX: PREVENT BOOT ENGINE RESET COOLDOWN PRESERVING STEP 0             // 
+        // ===================================================================== // 
+        // Only trigger boot adjustments when reverting completely to Step 0 or Step 1.
+        if ((targetStepInt === 0 || targetStepInt === 1) && typeof window.runUnifiedWizardBootEngine === "function") { 
+            window.runUnifiedWizardBootEngine(); 
+        } else { 
+            if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla(); 
+            if (typeof window.updateApplicationMapTimelineBubbles === "function") window.updateApplicationMapTimelineBubbles(targetStepInt); 
+            if (typeof window.autoSkinSelectedUpsellCards === "function") window.autoSkinSelectedUpsellCards(); 
+        } 
+    }); 
+} 
 
-
-// Map variables cleanly back into global scope contexts
-window.goToNextWizardStep = goToNextWizardStep;
-window.goToPreviousWizardStep = goToPreviousWizardStep;
+// Map variables cleanly back into global scope contexts 
+window.goToNextWizardStep = goToNextWizardStep; 
+window.goToPreviousWizardStep = goToPreviousWizardStep; 
 window.switchWizardActiveViewLayout = switchWizardActiveViewLayout;
 
 
