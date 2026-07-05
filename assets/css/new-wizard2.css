@@ -1,0 +1,389 @@
+/* ==========================================================================
+🎯 NEW CSS
+========================================================================== */
+
+:root {
+    --navy: #0a1f44;
+    --slate: #64748b;
+    --border: #e2e8f0;
+    --primary: #10b981;
+    --bg-light: #f8fafc;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+}
+
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* 💡 FIX: Completely locks down the sidebar container from any type of internal scrolling */
+.portal-sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: #ffffff;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow: hidden !important; /* Force disables scroll tracks */
+}
+
+.sidebar-brand-block {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* 💡 FIX: Enforces a rigid non-scroll policy on the inner step list view layout wrapper */
+.sidebar-content-area {
+    flex: 1;
+    padding: 24px;
+    box-sizing: border-box;
+    overflow: hidden !important; /* Disables all hidden track scroll movements */
+}
+.sidebar-header-box {
+    margin-bottom: 24px;
+}
+
+.sidebar-title-label {
+    color: var(--navy);
+    margin: 0 0 4px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.sidebar-time-tracker {
+    color: var(--slate);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* MAP ROUTE ITEMS */
+.sidebar-nav-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.toc-step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.toc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    margin-top: 6px;
+}
+
+.toc-text-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.toc-step-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.toc-step-desc {
+    font-size: 0.75rem;
+    color: var(--slate);
+}
+
+.sidebar-footer-lock {
+    border-top: 1px solid var(--border);
+    padding: 20px;
+    background: #ffffff;
+}
+
+/* 💡 FIX: Caps the main viewport height to exactly match the screen size to stop bottom leaks */
+.portal-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Locks viewport strictly to browser screen height boundary */
+    min-width: 0;
+    background: #f8fafc;
+    overflow: hidden !important; /* Prevents the main screen framework layer from scrolling */
+    box-sizing: border-box;
+}
+
+.portal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+}
+
+.welcome-text h1 {
+    font-size: 1.4rem;
+    color: var(--navy);
+    margin: 0 0 4px 0;
+}
+
+.welcome-text p {
+    font-size: 0.85rem;
+    color: var(--slate);
+    margin: 0;
+}
+
+/* ============================================================================ */
+/* 🎨 REPAIRED RESPONSIVE LAYOUT HEIGHT COMPRESSION STYLE SHEETS               */
+/* ============================================================================ */
+
+/* 💡 FIX: Uses natural column padding vectors instead of center anchors to pull elements upward */
+.wizard-container-wrapper {
+    flex: 1 1 auto; /* Compresses or expands naturally without locking element scaling layers */
+    width: 100%;
+    max-width: 100%;
+    padding: 15px 40px 10px 40px; /* Stripped heavy padding to slide layout rows up into view */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Switched from center to start to block bottom page spillage */
+    align-items: center;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto; /* Allows smooth, scrollable frames if the browser viewport is narrow */
+}
+
+/* 💡 FIX: Removed 'display: block !important' to prevent all 7 steps from overlapping at once */
+.wizard-panel {
+    display: none; /* Hide panels by default, let JavaScript show them via the .active class */
+    background: #ffffff;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    padding: 35px 40px;
+    width: 100%;
+    max-width: 1200px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    position: relative;
+    height: auto !important;
+    overflow: hidden;
+}
+
+/* 💡 FIX: Explicitly unhide a step panel ONLY if it possesses the active class framework hook */
+.wizard-panel.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* 💡 FIX: Absolute positioning to force the clock block into the upper right corner */
+.form-clock-pill-anchor {
+    position: absolute;
+    top: 40px; /* Aligns vertically with the top padding of your form wrapper */
+    right: 40px; /* Aligns horizontally with the right padding of your form wrapper */
+    background: #f1f5f9;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #0a1f44; /* Force hex color assignment */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 💡 FIX: Explicitly forcing the custom navy color onto step titles */
+.step-main-title {
+    color: #0a1f44 !important; 
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+}
+
+/* 💡 FIX: Hides the sidebar scrollbar completely across all browsers */
+.sidebar-content-area {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.sidebar-content-area::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+/* 💡 FIX: Standardizes main layout as a full-height column layout so the footer stays down */
+.portal-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 0;
+    background: #f8fafc;
+}
+
+/* 💡 FIX: Tightened padding parameters to shift all inner children upward */
+.wizard-container-wrapper {
+    flex: 1;
+    width: 100%;
+    padding: 15px 40px 15px 40px; /* Reduced top padding from 30px to 15px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+
+/* 💡 FIX: Single-row legal block pulled directly beneath the form with optimized margin spacing */
+.portal-legal-footer {
+    background: #0a1f44;
+    padding: 20px 40px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 20px auto; /* Tighter margins to pull the entire structure up above the screen floor */
+    border-radius: 12px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-link-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+}
+
+.footer-link-grid a {
+    color: #cbd5e1;
+    text-decoration: none;
+    width: fit-content;
+    transition: color 0.2s ease;
+}
+
+.footer-link-grid a:hover {
+    color: #10b981;
+}
+
+
+/* 💡 FIX: Keeps the three middle links inline on the exact same row */
+.footer-links-centered-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    font-size: 0.85rem;
+    box-sizing: border-box;
+}
+
+.footer-links-centered-row a {
+    color: #cbd5e1;
+    text-decoration: none;
+    white-space: nowrap; /* Prevents individual link text from breaking into two lines */
+    transition: color 0.2s ease;
+}
+
+.footer-links-centered-row a:hover {
+    color: #10b981;
+}
+
+/* 💡 FIX: Restricts the copyright block width so it wraps neatly without pushing other items out of place */
+.copyright-text-block {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    max-width: 30%; /* Balanced desktop constraint for a clean single-row layout */
+}
+
+/* ============================================================================ */
+/* 🎨 REPAIRED AUTO-FLOW FOOTER ELEMENT RE-ALIGNMENT CONFIGURATION              */
+/* ============================================================================ */
+
+/* 💡 FIX: Wipes out absolute viewport tracking to let the footer flow dynamically under your panels */
+footer, .wizard-footer, #wizard-footer-container {
+    position: relative !important; /* 🟢 FIXED: Switched from absolute/fixed to relative layout auto-flow */
+    bottom: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    margin-top: 0px !important; /* Generates a clean margin break between the card base and your dark footer */
+    clear: both !important;
+    flex-shrink: 0 !important;
+}
+
+/* 💡 FIX: Ensures your structural wrapper stretches natively to support longer step forms */
+.wizard-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Demands full viewport coverage without clipping content heights */
+    height: auto !important; /* 🟢 FIXED: Allows natural expansion loops when dynamic service sub-forms populate */
+    justify-content: space-between; /* Securely pushes the auto-footer cleanly to the bottom grid edge */
+    overflow-y: auto !important;
+}
+
+/* ============================================================================ */
+/* 🎨 UNIFIED DATA-DRIVEN AUTO-FLOW CONTAINER SPACING RESETS                    */
+/* ============================================================================ */
+
+/* 💡 FIX: Breaks the new parent wrapper div completely outside the panel background bounds */
+#f4u-standalone-footer-wrapper {
+    display: block !important;
+    position: relative !important; /* 🟢 FIXED: Switched to relative layout auto-flow */
+    width: 100% !important;
+    max-width: 1200px !important; /* Matches your white container box width dimensions exactly */
+    margin: 30px auto 20px auto !important; /* Generates a clean 40px gap break BELOW your white panel card base */
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+/* 💡 FIX: Formats your internal footer columns inside the new wrapper shell */
+#f4u-standalone-footer-wrapper .portal-legal-footer {
+    display: flex !important;
+    width: 100% !important;
+    background: #0a1f44 !important; /* Restores the dark theme corporate background coloring */
+    padding: 20px 40px !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+/* 💡 FIX: Cleaned up the trailing target declaration block to honor .active status states */
+#step-panel-1.wizard-panel, 
+#step-panel-2.wizard-panel, 
+.wizard-panel {
+    height: auto !important; /* Allows natural box closing right below your active form fields */
+    margin-bottom: 0px !important;
+    position: relative !important;
+    overflow: visible !important; /* Prevents nested blocks from forcing background leakage traps */
+}
+
+/* 💡 FIX: Tells the main page wrapper to grow naturally as your dynamic forms lengthen */
+.wizard-container-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    min-height: 100vh !important;
+    height: auto !important; /* Moves up or down dynamically as the active form text expands or contracts */
+    padding: 15px 40px 40px 40px !important; 
+    box-sizing: border-box !important;
+}
+
