@@ -419,79 +419,107 @@ function synchronizeActiveWizardStepTracker() {
     inputPlanNode.value = rawTier.charAt(0).toUpperCase() + rawTier.slice(1);
   }
 }
-// ============================================================================ // 
-// 🚀 PART 3 OF 3: ISOLATED DOWNSTREAM LIFE-CYCLE ROUTING ENGINE // 
-// ============================================================================ // 
-window.wizardBootRetryAttempts = window.wizardBootRetryAttempts || 0; 
+// ============================================================================ //
+// 🚀 PART 3 OF 3: ISOLATED DOWNSTREAM LIFE-CYCLE ROUTING ENGINE                //
+// ============================================================================ //
+window.wizardBootRetryAttempts = window.wizardBootRetryAttempts || 0;
 
-async function runUnifiedWizardBootEngine() { 
-    console.log("[Boot Engine] Initializing sequence-independent parameter scanning..."); 
+async function runUnifiedWizardBootEngine() {
+    console.log("[Boot Engine] Initializing sequence-independent parameter scanning...");
 
-    // 1. Core Data Validation & Hydration Checks 
-    if (typeof window.CENTRAL_SERVICE_PLAN_DB === "undefined") { 
-        if (window.wizardBootRetryAttempts < 50) { 
-            window.wizardBootRetryAttempts++; 
-            setTimeout(runUnifiedWizardBootEngine, 100); 
-        } else { 
-            console.error("[Boot Terminal Failure] Database connection timed out."); 
-        } 
-        return; 
-    } 
-    window.wizardBootRetryAttempts = 0; 
+    // 1. Core Data Validation & Hydration Checks
+    if (typeof window.CENTRAL_SERVICE_PLAN_DB === "undefined") {
+        if (window.wizardBootRetryAttempts < 50) {
+            window.wizardBootRetryAttempts++;
+            setTimeout(runUnifiedWizardBootEngine, 100);
+        } else {
+            console.error("[Boot Terminal Failure] Database connection timed out.");
+        }
+        return;
+    }
+    window.wizardBootRetryAttempts = 0;
 
-    // 2. Extract Data Context and Synchronize State Steps 
-    const activeContext = extractActiveBootContext(); 
-    if (!activeContext) return; // Exit gracefully; let fallback hydration parameters catch up 
-    
-    synchronizeActiveWizardStepTracker(); 
-
-    // 3. Conditional Downstream Execution Matrix (Strict Step Routing) 
-    if (typeof autoInjectMainWebsitePricingPlan === "function") {
-        autoInjectMainWebsitePricingPlan(); 
+    // 2. Extract Data Context and Synchronize State Steps
+    if (typeof extractActiveBootContext === "function") {
+        const activeContext = extractActiveBootContext();
+        if (!activeContext) return; // Exit gracefully; let fallback parameters catch up
     }
 
-    if (window.currentWizardActiveStep === 1 && typeof renderStep1CustomFeatureBullets === "function") { 
-        renderStep1CustomFeatureBullets(window.routeActiveServiceKey); 
-    } 
+    if (typeof synchronizeActiveWizardStepTracker === "function") {
+        synchronizeActiveWizardStepTracker();
+    }
 
-    if (window.currentWizardActiveStep === 2 && typeof window.executeStepTwoDynamicFormInjection === "function") { 
-        // =====================================================================
-        // FIX: FORCE FALLBACK VALUE FROM SEARCH PARAMS TO PREVENT BLANK INJECTION
-        // =====================================================================
-        const urlParamsFallback = new URLSearchParams(window.location.search);
-        const resolvedServiceToken = window.routeActiveServiceKey || 
-                                     String(urlParamsFallback.get('service') || "").toLowerCase().trim();
-
-        console.log(`[Boot Engine] Compiling Step 2 content using key: "${resolvedServiceToken}"`);
-        
+    // FIX 1: Enforce zero-index fallback if step tracker parsing returns unassigned or falsy
+    if (window.currentWizardActiveStep === undefined || window.currentWizardActiveStep === null || isNaN(window.currentWizardActiveStep)) {
+        const stateCache = localStorage.getItem("f4u_wizard_onboarding_state");
         try {
-            await window.executeStepTwoDynamicFormInjection(true, resolvedServiceToken); 
+            const parsed = stateCache ? JSON.parse(stateCache) : {};
+            window.currentWizardActiveStep = parsed.currentWizardActiveStep !== undefined ? parseInt(parsed.currentWizardActiveStep, 10) : 0;
+        } catch (e) {
+            window.currentWizardActiveStep = 0;
+        }
+    }
+
+    console.log(`[Boot Engine] Pipeline executing for Active Step Index: ${window.currentWizardActiveStep}`);
+
+    // 3. Conditional Downstream Execution Matrix (Strict Step Routing)
+    if (typeof autoInjectMainWebsitePricingPlan === "function") {
+        autoInjectMainWebsitePricingPlan();
+    }
+
+    // FIX 2: Added explicit execution block handle for Step 0 initialization passes
+    if (window.currentWizardActiveStep === 0) {
+        console.log("[Boot Engine] Step 0 active. Building introductory view models...");
+        if (typeof window.renderOnboardingPlanOverviewCard === "function") {
+            window.renderOnboardingPlanOverviewCard(null, null, null, 0);
+        }
+    }
+
+    if (window.currentWizardActiveStep === 1 && typeof renderStep1CustomFeatureBullets === "function") {
+        renderStep1CustomFeatureBullets(window.routeActiveServiceKey);
+    }
+
+    if (window.currentWizardActiveStep === 2 && typeof window.executeStepTwoDynamicFormInjection === "function") {
+        const urlParamsFallback = new URLSearchParams(window.location.search);
+        const resolvedServiceToken = window.routeActiveServiceKey || String(urlParamsFallback.get('service') || "").toLowerCase().trim();
+        console.log(`[Boot Engine] Compiling Step 2 content using key: "${resolvedServiceToken}"`);
+        try {
+            await window.executeStepTwoDynamicFormInjection(true, resolvedServiceToken);
         } catch (err) {
             console.error("[Boot Engine Failure] Error rendering dynamic Step 2 inputs:", err);
         }
-    } 
+    }
 
-    if (window.currentWizardActiveStep === 4 && typeof window.initCursiveSignatureCaptureLivePreview === "function") { 
-        window.initCursiveSignatureCaptureLivePreview(); 
-    } 
+    if (window.currentWizardActiveStep === 4 && typeof window.initCursiveSignatureCaptureLivePreview === "function") {
+        window.initCursiveSignatureCaptureLivePreview();
+    }
 
-    if (window.currentWizardActiveStep === 5 && typeof window.recalculateSummaryItemizedMatrixRows === "function") { 
-        window.recalculateSummaryItemizedMatrixRows(); 
-    } 
+    if (window.currentWizardActiveStep === 5 && typeof window.recalculateSummaryItemizedMatrixRows === "function") {
+        window.recalculateSummaryItemizedMatrixRows();
+    }
 
-    // 4. Run Fallback Hydrators and Timeline Updates 
-    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") cacheAndRestoreWizardFormStatesVanilla(true); 
-    if (typeof autoDiscoverAndHookAddressNodes === "function") autoDiscoverAndHookAddressNodes(); 
-    if (typeof updateApplicationMapTimelineBubbles === "function") updateApplicationMapTimelineBubbles(window.currentWizardActiveStep); 
+    // 4. Run Fallback Hydrators and Timeline Updates
+    if (typeof cacheAndRestoreWizardFormStatesVanilla === "function") {
+        cacheAndRestoreWizardFormStatesVanilla(true);
+    }
+    if (typeof autoDiscoverAndHookAddressNodes === "function") {
+        autoDiscoverAndHookAddressNodes();
+    }
     
-    if (typeof updateDynamicPricingMatrixVanilla === "function") { 
-        updateDynamicPricingMatrixVanilla(); 
-        console.log("[Boot Engine Success] Onboarding pipeline active. Step views isolated safely."); 
-    } 
-} 
+    // Force sidebar indicators to paint elements matching your verified active step index parameter
+    if (typeof updateApplicationMapTimelineBubbles === "function") {
+        window.updateApplicationMapTimelineBubbles(window.currentWizardActiveStep);
+    }
 
-window.runUnifiedWizardBootEngine = runUnifiedWizardBootEngine; 
+    if (typeof updateDynamicPricingMatrixVanilla === "function") {
+        updateDynamicPricingMatrixVanilla();
+        console.log("[Boot Engine Success] Onboarding pipeline active. Step views isolated safely.");
+    }
+}
 
+window.runUnifiedWizardBootEngine = runUnifiedWizardBootEngine;
+
+// Coordinate initialization startup execution paths cleanly
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", runUnifiedWizardBootEngine);
 } else {
@@ -499,37 +527,60 @@ if (document.readyState === "loading") {
 }
 
 
-
 // ============================================================================ //
 // 🚀 PART 1 OF 2: MASTER ORCHESTRATION PIPELINE GATING CHASSIS                 //
 // ============================================================================ //
 async function executeSynchronizedPlatformBoot() {
-  console.log("[Master Orchestrator] Step A: Executing sequence-independent parameter scanning...");
-  
-  // 1. Core Parameter Initialization Pass
-  if (typeof window.runUnifiedWizardBootEngine === "function") {
-    // Wait completely for database setups, core state checks, and step routing to complete
-    await window.runUnifiedWizardBootEngine();
-  }
+    console.log("[Master Orchestrator] Step A: Executing sequence-independent parameter scanning...");
 
-  console.log("[Master Orchestrator] Step B: Parameter tracking established. Launching downstream widgets...");
+    // 1. Core Parameter Initialization Pass
+    if (typeof window.runUnifiedWizardBootEngine === "function") {
+        // Wait completely for database setups, core state checks, and step routing to complete
+        await window.runUnifiedWizardBootEngine();
+    }
 
-  // 2. Secondary Interface Hydration Pass
-  if (typeof window.runUnifiedPlatformLifecycleBoot === "function") {
-    // Fire platform lifecycle decorators safely now that step view targets are stable
-    window.runUnifiedPlatformLifecycleBoot();
-  }
+    // FIX 1: SECURE STEP ZERO TRACKING PROTECTION GATEWAY
+    const baselineStepVerification = parseInt(window.currentWizardActiveStep, 10);
+    if (baselineStepVerification === 0 || isNaN(baselineStepVerification)) {
+        console.log("[Master Orchestrator Interlock] Enforcing strict 0-index lifecycle lock for introductory view.");
+        window.currentWizardActiveStep = 0;
+        
+        // Match the structural local storage payload configurations precisely
+        const coreStateString = localStorage.getItem("f4u_wizard_onboarding_state") || "{}";
+        try {
+            const parsedObj = JSON.parse(coreStateString);
+            parsedObj.currentWizardActiveStep = 0;
+            localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(parsedObj));
+        } catch (e) {
+            console.warn("[Master Orchestrator] Caching boundary write bypass:", e);
+        }
+    }
+
+    console.log("[Master Orchestrator] Step B: Parameter tracking established. Launching downstream widgets...");
+
+    // 2. Secondary Interface Hydration Pass
+    if (typeof window.runUnifiedPlatformLifecycleBoot === "function") {
+        // Fire platform lifecycle decorators safely now that step view targets are stable
+        window.runUnifiedPlatformLifecycleBoot();
+    }
+
+    // FIX 2: RE-ARM INTERACTION BUBBLES
+    if (typeof window.updateApplicationMapTimelineBubbles === "function") {
+        window.updateApplicationMapTimelineBubbles(window.currentWizardActiveStep);
+    }
 }
+
 // ============================================================================ //
-// 🚀 PART 2 OF 2: SECURE FRAMEWORK INITIALIZATION ATTACHMENT                  //
+// 🚀 PART 2 OF 2: SECURE FRAMEWORK INITIALIZATION ATTACHMENT                 //
 // ============================================================================ //
+// FIX 3: Re-declared as a standard hoisted named function signature block.
+// This allows compilation engines to map the entry token safely prior to scope execution.
 function runCombinedMasterBootSequence() {
-  console.log("[Master Orchestrator] Triggering single synchronized boot frame...");
-  
-  // Prevent system-wide crashes by executing through the gated lifecycle engine in Part 1
-  executeSynchronizedPlatformBoot().catch(err => {
-    console.error("[Master Orchestrator Fatal] Synchronization pass crashed:", err);
-  });
+    console.log("[Master Orchestrator] Triggering single synchronized boot frame...");
+    // Prevent system-wide crashes by executing through the gated lifecycle engine in Part 1
+    executeSynchronizedPlatformBoot().catch(err => {
+        console.error("[Master Orchestrator Fatal] Synchronization pass crashed:", err);
+    });
 }
 
 // Bind cleanly back into universal global window scope references safely
@@ -537,11 +588,12 @@ window.runCombinedMasterBootSequence = runCombinedMasterBootSequence;
 
 // Structural self-trigger execution matching actual DOM ready timelines
 if (document.readyState !== "loading") {
-  window.runCombinedMasterBootSequence();
+    window.runCombinedMasterBootSequence();
 } else {
-  document.addEventListener("DOMContentLoaded", window.runCombinedMasterBootSequence);
+    document.addEventListener("DOMContentLoaded", function() {
+        window.runCombinedMasterBootSequence();
+    });
 }
-
 
 
 // ============================================================================ //

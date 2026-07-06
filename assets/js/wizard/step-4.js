@@ -1,50 +1,212 @@
-/** 
- * filings4u, LLC - Power of Attorney Execution Matrix Engine 
- * Evaluates the real-time input status of the electronic signature fields 
- * on Step 4 to ensure legal compliance before enabling step advancement. 
- */ 
-function evaluatePoaInputStateMatrix() { 
-    console.log("[POA Matrix] Evaluating Step 4 digital signature states..."); 
-    
-    // 1. TARGET ELEMENTS AGNOSTICALLY 
-    const signatureInput = document.getElementById("poa_typed_signature") || document.getElementById("signature_input"); 
-    const consentCheckbox = document.getElementById("poa_consent_checkbox"); 
-    const nextStepButton = document.getElementById("poa-next-btn") || document.querySelector("#step-panel-4 .btn-wizard-main") || document.querySelector("button[onclick*='goToNextWizardStep(5)']"); 
-    
-    let isSignatureValid = false; 
-    let isConsentChecked = false; 
+// ============================================================================ //
+// 🖋️ PART 1 OF 3: STEP 4 VALIDATION MATRIX CORE                               //
+// ============================================================================ //
 
-    // 2. EVALUATE ENTRY CONSTRAINTS 
-    if (signatureInput) { 
-        const signatureText = signatureInput.value.trim(); 
-        // Validation Criteria: Must contain at least a first and last name (separated by space) 
-        if (signatureText.length >= 2 && signatureText.includes(" ")) { 
-            isSignatureValid = true; 
-        } 
-    } else { 
-        isSignatureValid = true; 
-    } 
+/**
+ * filings4u, LLC - Power of Attorney Execution Matrix Engine
+ * Validates signature input parameters and manages button states.
+ */
+function evaluatePoaInputStateMatrix() {
+    console.log("[POA Matrix] Evaluating Step 4 digital signature states...");
 
-    // 3. EVALUATE LEGAL CONSENT CHECKBOX (FIXED TRAP LOOP)
-    if (consentCheckbox) { 
-        isConsentChecked = consentCheckbox.checked; 
-    } 
+    const signatureInput = document.getElementById("poa_typed_signature") || document.getElementById("signature_input");
+    const consentCheckbox = document.getElementById("poa_consent_checkbox");
+    const nextStepButton = document.getElementById("poa-next-btn") || 
+                           document.querySelector("#step-panel-4 .btn-wizard-main") || 
+                           document.querySelector("button[onclick*='goToNextWizardStep(5)']");
 
-    // 4. MATRIX ENFORCEMENT: TOGGLE BUTTON STATE 
-    if (nextStepButton) { 
-        if (isSignatureValid && isConsentChecked) { 
-            nextStepButton.disabled = false; 
-            nextStepButton.style.opacity = "1"; 
-            nextStepButton.style.cursor = "pointer"; 
-        } else { 
-            nextStepButton.disabled = true; 
-            nextStepButton.style.opacity = "0.5"; 
-            nextStepButton.style.cursor = "not-allowed"; 
-        } 
-    } 
-    
-    return (isSignatureValid && isConsentChecked); 
+    // Protection Gate: If Step 4 is hidden or unmounted, clear the check right away
+    if (!signatureInput && !consentCheckbox) {
+        console.log("[POA Matrix Bypass] Step 4 fields not detected yet. Clearing validation gate.");
+        return true;
+    }
+
+    let isSignatureValid = false;
+    let isConsentChecked = false;
+
+    // Validation Criteria: Must contain at least a first and last name (separated by space)
+    if (signatureInput) {
+        const signatureText = signatureInput.value.trim();
+        if (signatureText.length >= 2 && signatureText.includes(" ")) {
+            isSignatureValid = true;
+        }
+    } else {
+        isSignatureValid = true;
+    }
+
+    if (consentCheckbox) {
+        isConsentChecked = consentCheckbox.checked;
+    }
+
+    // Matrix Enforcement Gate Check
+    if (nextStepButton) {
+        if (isSignatureValid && isConsentChecked && window.hasUserScrolledToBottomPoa) {
+            nextStepButton.disabled = false;
+            nextStepButton.style.opacity = "1";
+            nextStepButton.style.cursor = "pointer";
+        } else {
+            nextStepButton.disabled = true;
+            nextStepButton.style.opacity = "0.5";
+            nextStepButton.style.cursor = "not-allowed";
+        }
+    }
+
+    return (isSignatureValid && isConsentChecked && window.hasUserScrolledToBottomPoa);
 }
+
+window.evaluatePoaInputStateMatrix = evaluatePoaInputStateMatrix;
+
+// ============================================================================ //
+// 🖋️ PART 2 OF 3: THE CANVAS TEMPLATE GENERATOR                               //
+// ============================================================================ //
+
+/**
+ * Programmatically builds the digital signature Power of Attorney layout framework.
+ */
+window.initCursiveSignatureCaptureLivePreview = function() {
+    console.log("[POA Engine] Initializing digital signature preview canvas...");
+
+    const step4PanelContainer = document.getElementById("step-panel-4") || document.getElementById("step-4");
+    if (!step4PanelContainer) {
+        console.warn("[POA Engine Warning] Step 4 container wrapper missing from DOM.");
+        return;
+    }
+
+    if (document.getElementById("poa_typed_signature")) {
+        evaluatePoaInputStateMatrix();
+        return;
+    }
+
+    window.hasUserScrolledToBottomPoa = false;
+
+    // Compile layout structures onto screen canvas matrix natively
+    step4PanelContainer.innerHTML = `
+    <div class="step-panel-form-card" style="width: 100%; display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; text-align: left;">
+        
+        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 4px;">
+            <h3 style="color: #0a1f44; font-size: 1.25rem; font-weight: 800; margin: 0 0 6px 0;">4. Power of Attorney & Digital Execution</h3>
+            <p style="color: #64748b; font-size: 0.88rem; margin: 0; line-height: 1.4;">Authorize legal filing dispatch actions to complete your regulatory setup registration profile parameters securely.</p>
+        </div>
+
+        <!-- INFORMATIONAL TOOLTIP GUIDE BANNER -->
+        <div id="poa-scroll-tooltip-banner" style="background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 16px; border-radius: 6px; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; clear: both; width: 100%; box-sizing: border-box;">
+            <i class="fa-solid fa-circle-info" style="color: #3b82f6; font-size: 1rem;"></i>
+            <span id="poa-tooltip-text-label">Action Required: Please scroll down to the bottom of the legal mandate document below to unlock consent fields.</span>
+        </div>
+
+        <!-- SCROLL-BOX INNER TEXT CONTENT HOLDER -->
+        <div id="poa-scroll-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; font-size: 0.85rem; color: #334155; line-height: 1.6; max-height: 220px; overflow-y: scroll; font-family: system-ui, sans-serif; text-align: justify; margin-bottom: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; width: 100%;">
+            LIMITED POWER OF ATTORNEY &amp; CORPORATE AGENCY AGREEMENT<br><br>
+            WHEREAS, the undersigned Principal does hereby nominatively appoint, designate, and empower filings4u, LLC, an Illinois limited liability company, along with its authorized operational agents, officers, employees, and designees, as its true and lawful Attorney-in-Fact and Corporate Agent in accordance with the strict terms and limitations set forth herein.<br><br>
+            <strong>1. EXPRESS LIMITED SCOPE OF APPOINTMENT</strong><br>
+            The scope of this appointment is strictly restricted and expressly limited to administrative, regulatory, and compliance-related document processing. The Attorney-in-Fact is granted the authority to execute, sign, modify, amend, submit, and process applications, registrations, forms, and renewals across Corporate Management, Tax Registration, and Government Procurement on behalf of the Principal.<br><br>
+            <strong>2. GRANT OF OPERATIONAL POWERS</strong><br>
+            The Principal hereby grants, conveys, and delivers unto the said Attorney-in-Fact full operational power, authority, and jurisdiction to undertake, execute, and perform any and all acts deemed necessary to fulfill the service requests initiated by the Principal within the filings4u, LLC digital wizard interface.<br><br>
+            <strong>3. ELECTRONIC SIGNATURES &amp; INTENT</strong><br>
+            This Agreement is executed electronically in strict conformity with the federal Electronic Signatures in Global and National Commerce Act (ESIGN) and the Uniform Electronic Transactions Act (UETA). The Principal expressly understands, agrees, and consents that typing their name into the designated input field—resulting in a script-generated cursive font rendering of their name on the screen—constitutes their valid, legally binding electronic signature carrying identical weight to a handwritten wet ink signature.<br><br>
+            <strong>4. RATIFICATION, REVOCATION, AND DURATION</strong><br>
+            This agreement shall remain in full force and effect from the date of electronic execution until explicitly revoked. Revocation may occur via written physical notification delivered to filings4u, LLC corporate networks or electronic cancellation processed through verified client portal pathways.<br><br>
+            Corporate Entity Information:<br>
+            filings4u, LLC | A Subsidiary of Roseland Companies, LLC<br>
+            filings4u Compliance Hub | Roseland Companies Management<br>
+            Contact Support: support@filings4u.com
+        </div>
+`;
+
+// ============================================================================ //
+// 🖋️ PART 3 OF 3: THE INTERACTION LISTENERS HOOK                             //
+// ============================================================================ //
+        // Continued template inner content matrix layout append passes
+        step4PanelContainer.innerHTML += `
+        <div class="form-group-wrapper" style="display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box;">
+            <label style="font-weight: 700; font-size: 0.88rem; color: #0a1f44;">Type Full Legal Name (First and Last) <span style="color: #b91c1c;">*</span></label>
+            <input type="text" id="poa_typed_signature" autocomplete="off" placeholder="John Doe" class="wizard-input-field" style="font-size: 0.95rem !important; height: 44px !important; padding: 10px 14px !important; width: 100% !important; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box !important; font-family: monospace;">
+        </div>
+
+        <!-- LIVE CURSIVE PREVIEW CANVAS CARD -->
+        <div style="display: flex; flex-direction: column; gap: 6px; background: #fafafa; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 8px; text-align: center; justify-content: center; min-height: 80px; box-sizing: border-box;">
+            <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 2px;">Legal Electronic Signature Preview</span>
+            <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 2.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;"></div>
+        </div>
+
+        <div id="poa_consent_wrapper" style="opacity: 0.5; pointer-events: none; transition: opacity 0.25s ease;" title="Read agreement text to unlock field channel options.">
+            <div class="form-group-wrapper" style="display: flex; align-items: flex-start; gap: 10px; width: 100%; box-sizing: border-box; margin-top: 4px;">
+                <input type="checkbox" id="poa_consent_checkbox" disabled style="width: 18px; height: 18px; margin-top: 2px; cursor: not-allowed; flex-shrink: 0;">
+                <label for="poa_consent_checkbox" style="font-size: 0.85rem; font-weight: 600; color: #334155; cursor: not-allowed; line-height: 1.4; user-select: none;">
+                    I explicitly consent to the terms of the digital Power of Attorney authorization and certify that all corporate entity registration details provided are legally accurate. <span style="color: #b91c1c;">*</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- NAVIGATION ACTION BUTTONS ROW -->
+        <div class="wizard-footer-action-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; clear: both; box-sizing: border-box;">
+            <button type="button" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+                <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Previous Step
+            </button>
+            <button type="button" id="poa-next-btn" disabled onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(5, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; opacity: 0.5; cursor: not-allowed; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);">
+                Continue to Summary <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+            </button>
+        </div>
+    </div>`;
+
+    const signatureInputNode = document.getElementById("poa_typed_signature");
+    const consentCheckboxNode = document.getElementById("poa_consent_checkbox");
+    const cursivePreviewNode = document.getElementById("poa_cursive_preview");
+    const scrollerNode = document.getElementById("poa-scroll-box");
+    const wrapperOverlay = document.getElementById("poa_consent_wrapper");
+    const tooltipBanner = document.getElementById("poa-scroll-tooltip-banner");
+    const tooltipText = document.getElementById("poa-tooltip-text-label");
+
+    // SCROLL LISTENER TRACKING GATEWAY
+    if (scrollerNode) {
+        scrollerNode.addEventListener("scroll", function() {
+            if (window.hasUserScrolledToBottomPoa) return;
+
+            const offsetBufferRange = 8; 
+            const totalScrollableHeight = scrollerNode.scrollHeight - scrollerNode.clientHeight;
+            const currentPosition = scrollerNode.scrollTop;
+
+            if (Math.abs(totalScrollableHeight - currentPosition) <= offsetBufferRange || currentPosition >= totalScrollableHeight - offsetBufferRange) {
+                console.log("[POA Scroller] Legal read limit verified. Unlocking checkboxes.");
+                window.hasUserScrolledToBottomPoa = true;
+
+                if (wrapperOverlay) {
+                    wrapperOverlay.style.opacity = "1";
+                    wrapperOverlay.style.pointerEvents = "auto";
+                }
+                if (consentCheckboxNode) {
+                    consentCheckboxNode.disabled = false;
+                    consentCheckboxNode.style.cursor = "pointer";
+                    document.querySelector("label[for='poa_consent_checkbox']").style.cursor = "pointer";
+                }
+                if (tooltipBanner) {
+                    tooltipBanner.style.background = "#d1fae5"; 
+                    tooltipBanner.style.borderColor = "#6ee7b7";
+                    tooltipBanner.style.color = "#065f46";
+                    if (tooltipText) tooltipText.textContent = "Thank you! Legal text verified. You may now complete your signature confirmation fields.";
+                }
+                
+                evaluatePoaInputStateMatrix();
+            }
+        });
+    }
+
+    if (signatureInputNode) {
+        signatureInputNode.addEventListener("input", (e) => {
+            if (cursivePreviewNode) cursivePreviewNode.textContent = e.target.value;
+            evaluatePoaInputStateMatrix();
+        });
+    }
+
+    if (consentCheckboxNode) {
+        consentCheckboxNode.addEventListener("change", () => {
+            evaluatePoaInputStateMatrix();
+        });
+    }
+
+    evaluatePoaInputStateMatrix();
+};
+
 
 
 

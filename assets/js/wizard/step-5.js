@@ -1,159 +1,327 @@
 // ============================================================================ //
-// 📊 MODULE 2D: ACCREDITED STEP 5 ITEMIZATION & PRICING ENGINE (WITH STATE FEE) //
+// 📊 PART 1 OF 3: STEP 5 MATRIX INITIALIZATION & CANVAS CONTROLLER            //
 // ============================================================================ //
-function executeMarketplaceSummaryRenderLoop() { 
-    const rowsContainer = document.getElementById("summary-purchase-rows-container"); 
-    const subtotalDisplay = document.getElementById("summary-subtotal-display"); 
-    const grandTotalDisplay = document.getElementById("summary-grand-total-display"); 
-    const govFeesDisplay = document.getElementById("summary-gov-fees-display"); 
-    
-    if (!rowsContainer) return; 
-    
-    // 1. Clear out active dynamic lines to prevent duplicating items on step re-entries
-    const structuralUpsellRows = rowsContainer.querySelectorAll('.runtime-upsell-summary-row, .runtime-state-fee-row'); 
-    structuralUpsellRows.forEach(row => row.remove()); 
-    
-    let catalog = window.unifiedCatalogItems || {}; 
-    const identityStateMap = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}; 
-    let addedUpsellHTML = ""; 
-    let aggregateUpsellCost = 0; 
 
-    // 2. Parse selected marketplace addons
-    Object.keys(catalog).forEach(itemKey => {
-        const item = catalog[itemKey];
-        const checkboxId = identityStateMap[itemKey] || itemKey;
-        const checkedInputNode = document.getElementById(checkboxId);
-        const isCurrentlySelected = checkedInputNode ? checkedInputNode.checked : !!window[checkboxId];
+/**
+ * filings4u, LLC - Step 5 Summary Itemization Engine
+ * Safely assembles your purchase breakdown rows dynamically without hardcoding.
+ */
+function executeMarketplaceSummaryRenderLoop() {
+    console.log("[Summary Engine] Compiling Step 5 order itemization matrix...");
+
+    const step5PanelContainer = document.getElementById("step-panel-5") || document.getElementById("step-5");
+    if (!step5PanelContainer) {
+        console.warn("[Summary Engine Guard] Target step 5 master panel container not found in DOM tree.");
+        return;
+    }
+
+    let rowsContainer = document.getElementById("summary-purchase-rows-container");
+    if (!rowsContainer) {
+        console.log("[Summary Engine] Creating fresh itemization housing board on canvas programmatically...");
         
+        const internalSummaryCard = document.createElement("div");
+        internalSummaryCard.className = "step-panel-form-card summary-invoice-board";
+        internalSummaryCard.style.cssText = "width: 100%; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; text-align: left;";
+        
+        // Gray totals box is completely removed here, leaving only a clean item rows list and the grand total display.
+        internalSummaryCard.innerHTML = `
+            <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 4px;">
+                <h3 style="color: #0a1f44; font-size: 1.25rem; font-weight: 800; margin: 0 0 6px 0;">5. Review & Confirm Final Purchase Summary</h3>
+                <p style="color: #64748b; font-size: 0.88rem; margin: 0; line-height: 1.4;">Verify your selected organizational packages, compliance add-ons, and filing fees prior to secure checkout.</p>
+            </div>
+            <div id="summary-purchase-rows-container" style="display: flex; flex-direction: column; width: 100%; box-sizing: border-box; clear: both; gap: 8px;"></div>
+            
+            <!-- STABILIZED GRAND TOTAL DUE ROW SEPARATED OUTSIDE THE PURGED BOX FRAME -->
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 1.2rem; color: #0a1f44; font-weight: 800; border-top: 2px dashed #cbd5e1; padding-top: 16px; margin-top: 12px; width: 100%; box-sizing: border-box; clear: both;">
+                <span>Grand Total Due:</span>
+                <span id="summary-grand-total-display" style="font-family: monospace; color: #10b981; font-weight: 800; font-size: 1.35rem;">$0.00</span>
+            </div>`;
+            
+        step5PanelContainer.appendChild(internalSummaryCard);
+        rowsContainer = document.getElementById("summary-purchase-rows-container");
+    }
+
+    const grandTotalDisplay = document.getElementById("summary-grand-total-display");
+
+    if (rowsContainer) {
+        rowsContainer.innerHTML = ""; 
+    }
+
+    // Call downstream algorithmic loop compilers
+    window.processSummaryItemizedProductLoops(rowsContainer, null, null, grandTotalDisplay);
+}
+
+window.executeMarketplaceSummaryRenderLoop = executeMarketplaceSummaryRenderLoop;
+window.recalculateSummaryItemizedMatrixRows = executeMarketplaceSummaryRenderLoop;
+
+// ============================================================================ //
+// 📊 PART 2 OF 3: THE ITEMIZED PRODUCT LOOP COMPILER & TARGET PRICE RESOLVER   //
+// ============================================================================ //
+window.processSummaryItemizedProductLoops = function(rowsContainer, subtotalDisplay, govFeesDisplay, grandTotalDisplay) {
+    let catalog = window.MASTER_UPSELLS_CATALOG || window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {};
+    const identityStateMap = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
+    
+    let compiledRowsHtml = "";
+    let aggregateUpsellCost = 0;
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "llc-formation").toLowerCase().trim();
+    const activePlanKeyString = String(urlParams.get('plan') || window.routeActivePlanKey || window.currentPlanKey || "enterprise").toLowerCase().trim();
+
+    // 1. EXTRACT PACKAGES PRICING FROM REAL-TIME CONTEXT REGISTRIES
+    let foundationFilingCost = 0;
+    if (window._tempCalcContext && window._tempCalcContext.baseTierPrice !== undefined) {
+        foundationFilingCost = parseFloat(window._tempCalcContext.baseTierPrice) || 0;
+    } else if (window._tempAddonContext && window._tempAddonContext.baseTierPrice !== undefined) {
+        foundationFilingCost = parseFloat(window._tempAddonContext.baseTierPrice) || 0;
+    }
+
+    // Fallback: Programmatically read from database schemas if un-hydrated on early initialization
+    if (foundationFilingCost === 0 && window.CENTRAL_SERVICE_PLAN_DB && window.CENTRAL_SERVICE_PLAN_DB[serviceSlug]) {
+        const serviceNode = window.CENTRAL_SERVICE_PLAN_DB[serviceSlug];
+        if (activePlanKeyString.includes("enterprise") || activePlanKeyString.includes("premium")) {
+            foundationFilingCost = parseFloat(serviceNode.enterprise || serviceNode.premium) || 0;
+        } else if (activePlanKeyString.includes("standard") || activePlanKeyString.includes("compliance") || activePlanKeyString.includes("pro")) {
+            foundationFilingCost = parseFloat(serviceNode.compliance || serviceNode.standard || serviceNode.pro) || 0;
+        } else {
+            foundationFilingCost = parseFloat(serviceNode.starter || serviceNode.economy) || 0;
+        }
+    }
+
+    // Secondary fallback guard block ensures a hard number is always ready
+    if (foundationFilingCost === 0) {
+        if (activePlanKeyString.includes("enterprise") || activePlanKeyString.includes("premium")) foundationFilingCost = 399.00;
+        else if (activePlanKeyString.includes("standard") || activePlanKeyString.includes("pro")) foundationFilingCost = 149.00;
+        else foundationFilingCost = 49.00;
+    }
+
+    // Format text label parameters exactly as requested: "filings4u Processing Fee (TIER-NAME)"
+    let extractedTierTokenName = activePlanKeyString.toUpperCase();
+    const dynamicLabelTextString = `filings4u Processing Fee (${extractedTierTokenName})`;
+
+    compiledRowsHtml += `
+    <div class="runtime-package-base-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; box-sizing: border-box; width: 100%; clear: both; margin-bottom: 4px;">
+        <div style="display: flex; flex-direction: column; text-align: left;">
+            <span style="font-weight: 800; font-size: 0.95rem; color: #0a1f44;">${dynamicLabelTextString}</span>
+            <small style="color: #64748b; font-weight: 500; margin-top: 2px;"><i class="fa-solid fa-layer-group"></i> Core Organization Setup Shell Inclusions</small>
+        </div>
+        <div style="font-weight: 800; font-size: 1.05rem; color: #0a1f44; font-family: monospace;">$${foundationFilingCost.toFixed(2)}</div>
+    </div>`;
+
+    // 2. Loop over and parse selected marketplace addon item matrices
+    let targetDataset = catalog[serviceSlug] || catalog["corp-formation"] || {};
+    const itemKeys = Array.isArray(targetDataset) ? targetDataset : Object.keys(targetDataset);
+    
+    itemKeys.forEach(keyOrObj => {
+        const item = (typeof keyOrObj === 'object' && keyOrObj !== null) ? keyOrObj : targetDataset[keyOrObj];
+        if (!item || !item.id) return;
+
+        const catalogSlug = item.id;
+        const checkboxId = identityStateMap[catalogSlug] || catalogSlug;
+        
+        const storedFieldState = localStorage.getItem(`wizard_field_${checkboxId}`) || localStorage.getItem(`wizard_field_${catalogSlug}`);
+        const isCurrentlySelected = (storedFieldState === "true" || storedFieldState === "yes" || storedFieldState === true || !!window[checkboxId]);
+
         if (isCurrentlySelected) {
             const parsedItemPrice = parseFloat(item.price) || 0;
             aggregateUpsellCost += parsedItemPrice;
             
-            addedUpsellHTML += `
-                <div class="runtime-upsell-summary-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; box-sizing: border-box; width: 100%; margin-bottom: 8px;">
-                    <div style="display: flex; flex-direction: column; min-width: 0; flex: 1;">
-                        <span style="font-weight: 700; font-size: 0.95rem; color: #0a1f44;">${item.name || itemKey}</span>
-                    </div>
-                    <div style="font-weight: 800; font-size: 1.05rem; color: #10b981; font-family: monospace;">+$${parsedItemPrice.toFixed(2)}</div>
-                </div>`;
+            compiledRowsHtml += `
+            <div class="runtime-upsell-summary-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; box-sizing: border-box; width: 100%; clear: both; margin-bottom: 4px;">
+                <div style="display: flex; flex-direction: column; min-width: 0; flex: 1; text-align: left;">
+                    <span style="font-weight: 700; font-size: 0.95rem; color: #0a1f44;">+ ${item.name || item.label || catalogSlug}</span>
+                </div>
+                <div style="font-weight: 800; font-size: 1.05rem; color: #10b981; font-family: monospace;">+$${parsedItemPrice.toFixed(2)}</div>
+            </div>`;
         }
     });
 
-    // 3. EXTRACT AND RENDER REGIONAL GOVERNMENT FILING FEE ROW DYNAMICALLY
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetStateCode = String(urlParams.get('state') || window.selectedJurisdiction || "").toUpperCase().trim();
-    const targetServiceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "").toLowerCase().trim();
-    
+    // ========================================================================= //
+    // 🏛️ FIX: UNIFIED ADAPTIVE PRICING CONTROLLER (STATE VS FEDERAL FEES)       //
+    // ============================================================================ //
     let baseGovAgencyFee = 0;
-    let stateFriendlyName = targetStateCode;
+    let feeLabelTextString = "Mandatory State Filing Fee";
+    let feeDescriptionTextString = "Local Jurisdiction Filing Assessment";
 
-    if (targetStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[targetStateCode]) {
-        const stateRecord = window.STATE_FILING_FEES[targetStateCode];
-        stateFriendlyName = stateRecord.name;
+    // check window registries or keyword maps to detect if a Federal Service is currently running
+    const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {};
+    const isFederalService = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceSlug) && serviceSlug !== "llc-formation" && serviceSlug !== "corporations";
+    const isFederalKeyword = serviceSlug.includes("cage") || serviceSlug.includes("sam") || serviceSlug.includes("tax") || serviceSlug.includes("ein") || serviceSlug.includes("authority");
+
+    if (isFederalService || isFederalKeyword) {
+        // Dynamic Federal Ingestion Pass: read pricing from FILINGS4U_GOVERNMENT_PRICING object directly
+        baseGovAgencyFee = parseFloat(federalPricingDb[serviceSlug] || 0);
+        feeLabelTextString = "Mandatory Government Filing Fee";
+        feeDescriptionTextString = "Federal Agency Administrative Processing Assessment";
         
-        let mappingKey = targetServiceSlug.replace("-formation", "");
-        if (mappingKey === "corporations") mappingKey = "c_corp";
-        if (mappingKey === "series-llc") mappingKey = "series_llc";
-        if (mappingKey === "nonprofits") mappingKey = "non_profit";
+        // Cache to global scopes instantly to maintain data flow parity
+        window.computedWizardFederalGovernmentFee = baseGovAgencyFee;
+        window.computedWizardStateGovernmentFee = 0; 
+    } else {
+        // Standard Regional State track lookup pass parameters
+        window.computedWizardFederalGovernmentFee = 0;
+        const targetStateCode = String(window.selectedJurisdiction || urlParams.get('state') || "").toUpperCase().trim();
         
-        baseGovAgencyFee = parseFloat(stateRecord[mappingKey] || stateRecord["llc"] || 0);
-        
-        if (baseGovAgencyFee > 0) {
-            addedUpsellHTML += `
-                <div class="runtime-state-fee-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid #ffedd5; border-left: 4px solid #f97316; border-radius: 8px; background: #fff7ed; box-sizing: border-box; width: 100%; margin-bottom: 8px;">
-                    <div style="display: flex; flex-direction: column;">
-                        <span style="font-weight: 700; font-size: 0.95rem; color: #c2410c;">Mandatory ${stateFriendlyName} Filing Fee</span>
-                        <small style="color: #ea580c; font-weight: 500;"><i class="fa-solid fa-clock"></i> Timeline: ${stateRecord.time}</small>
-                    </div>
-                    <div style="font-weight: 800; font-size: 1.05rem; color: #c2410c; font-family: monospace;">+$${baseGovAgencyFee.toFixed(2)}</div>
-                </div>`;
+        if (targetStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[targetStateCode]) {
+            const stateRecord = window.STATE_FILING_FEES[targetStateCode];
+            feeLabelTextString = `Mandatory ${stateRecord.name || targetStateCode} State Fee`;
+            
+            let mappingKey = serviceSlug.replace("-formation", "");
+            if (mappingKey === "corporations") mappingKey = "c_corp";
+            baseGovAgencyFee = parseFloat(stateRecord[mappingKey] || stateRecord["llc"] || 0);
         }
     }
 
-    if (addedUpsellHTML !== "") { 
-        rowsContainer.insertAdjacentHTML('beforeend', addedUpsellHTML); 
-    } 
-
-    // 4. COMPUTE INVOICE CALCULATIONS WITH TYPE-CAST SHIELDS
-    let foundationFilingCost = 0;
-    if (window._tempCalcContext && window._tempCalcContext.baseTierPrice !== undefined) {
-        foundationFilingCost = parseFloat(window._tempCalcContext.baseTierPrice) || 0;
-    } else if (subtotalDisplay) {
-        foundationFilingCost = parseFloat(subtotalDisplay.textContent.replace(/[^0-9.]/g, '')) || 0;
+    // Preserve values if already calculated early by master wizard files
+    if (baseGovAgencyFee === 0) {
+        baseGovAgencyFee = parseFloat(window.computedWizardFederalGovernmentFee || window.computedWizardStateGovernmentFee || window.baseGovAgencyFee || 0);
     }
 
-    const comprehensiveSubtotal = foundationFilingCost + aggregateUpsellCost;
-    const comprehensiveGrandTotal = comprehensiveSubtotal + baseGovAgencyFee;
+    if (baseGovAgencyFee > 0) {
+        compiledRowsHtml += `
+        <div class="runtime-state-fee-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; box-sizing: border-box; width: 100%; clear: both;">
+            <div style="display: flex; flex-direction: column; text-align: left;">
+                <span style="font-weight: 700; font-size: 0.95rem; color: #0a1f44;">${feeLabelTextString}:</span>
+                <small style="color: #64748b; font-weight: 500; margin-top: 2px;"><i class="fa-solid fa-building-shield"></i> ${feeDescriptionTextString}</small>
+            </div>
+            <div style="font-weight: 800; font-size: 1.05rem; color: #475569; font-family: monospace;">+$${baseGovAgencyFee.toFixed(2)}</div>
+        </div>`;
+    }
 
-    // 5. UPDATE INVOICE LABELS
-    if (subtotalDisplay) subtotalDisplay.textContent = `$${comprehensiveSubtotal.toFixed(2)}`;
-    if (govFeesDisplay) govFeesDisplay.textContent = `$${baseGovAgencyFee.toFixed(2)}`;
-    if (grandTotalDisplay) grandTotalDisplay.textContent = `$${comprehensiveGrandTotal.toFixed(2)}`;
+    if (rowsContainer) {
+        rowsContainer.innerHTML = compiledRowsHtml;
+    }
+
+    window.finalizePricingMatrixUiRender(foundationFilingCost, aggregateUpsellCost, baseGovAgencyFee, grandTotalDisplay);
+};
+
+// ============================================================================ //
+// 📊 PART 3 OF 3: THE ARITHMETIC MATRIX ACCUMULATOR & BINDINGS INJECTION       //
+// ============================================================================ //
+window.finalizePricingMatrixUiRender = function(foundationFilingCost, aggregateUpsellCost, baseGovAgencyFee, grandTotalDisplay) {
     
-    // Globally register final balances for Step 6 Stripe Gateway charge operations
+    // Strict arithmetic formulation calculates totals cleanly without any multiplication creep
+    const comprehensiveGrandTotal = foundationFilingCost + aggregateUpsellCost + baseGovAgencyFee;
+
+    const grandNode = grandTotalDisplay || document.getElementById("summary-grand-total-display");
+    if (grandNode) {
+        grandNode.textContent = `$${comprehensiveGrandTotal.toFixed(2)}`;
+    }
+
+    // Sync adjacent global elements if active on sidebar blocks
+    const sidebarTotalDisplay = document.getElementById("matrix-invoice-grand-total") || document.getElementById("grand-total-display");
+    if (sidebarTotalDisplay) sidebarTotalDisplay.innerText = `$${comprehensiveGrandTotal.toFixed(2)}`;
+
+    // Globally register final balances for Step 6 Stripe Gateway charge operations safely
     window.summaryCalculatedGrandTotal = comprehensiveGrandTotal;
     window.computedWizardGrandTotalAmount = comprehensiveGrandTotal;
-    window.computedWizardStateGovernmentFee = baseGovAgencyFee;
-} 
+    window.wizardCalculatedFinalTotalAmount = comprehensiveGrandTotal;
 
-window.executeMarketplaceSummaryRenderLoop = executeMarketplaceSummaryRenderLoop;
+    // SELF-HEALING NAVIGATION ACTIONS FOOTER ROW
+    const parentCardShell = document.querySelector(".summary-invoice-board");
+    if (parentCardShell && !document.getElementById("summary-footer-action-panel-row")) {
+        const actionRowFooter = document.createElement("div");
+        actionRowFooter.id = "summary-footer-action-panel-row";
+        actionRowFooter.className = "wizard-footer-action-row";
+        actionRowFooter.style.cssText = "display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 24px; padding-top: 20px; border-top: 1px solid #e2e8f0; clear: both; box-sizing: border-box;";
+        
+        actionRowFooter.innerHTML = `
+        <button type="button" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+            <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Signatures
+        </button>
+        <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(6, event); }" style="background: #10b981; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); ">
+            Submit Order & Proceed <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>
+        </button>`;
+        
+        parentCardShell.appendChild(actionRowFooter);
+    }
+};
+
 
 
 // ============================================================================ //
 // 📊 STEP 5 INTERACTIVE VISIBILITY REAL-TIME INVOICE REFRESHER                 //
 // ============================================================================ //
+
+// Global tracking parameter handles block recursive call stack crashes instantly
+window.isStep5RefreshPassCurrentlyActive = false;
+
 /**
  * Programmatic recalculation gate. Forces your data loops to scan and group
  * checked items without creating duplicate execution loops.
  */
-function forceStep5SummaryInvoiceRefresh() { 
-    console.log("[Summary Hub] Step 5 panel active. Forcing real-time invoice calculations update..."); 
-    
-    // 1. Force the dynamic state discovery crawl to scan and merge all selections if available 
-    if (typeof window.runPricingMatrixDataCrawlPass === "function") { 
-        window.runPricingMatrixDataCrawlPass(); 
-    } 
-    
-    // 2. Force the itemized marketplace rows to reconstruct 
-    if (typeof window.directInjectCartAddonsToSummaryStep5 === "function") { 
-        window.directInjectCartAddonsToSummaryStep5(); 
-    } 
-    
-    // 🧠 🟢 CRITICAL CORE MATRIX ALIGNMENT RESOLUTION: 
-    // Execute your master Step 5 compilation engine from wizard-summary.js. 
-    if (typeof window.recalculateSummaryItemizedMatrixRows === "function") { 
-        console.log("[Summary Hub] Routing view layout channels directly to your central compilation engine..."); 
-        window.recalculateSummaryItemizedMatrixRows(); 
-    } else { 
-        console.warn("[Summary Hub Warning] recalculateSummaryItemizedMatrixRows is not yet bound to the global scope window context."); 
-    } 
-    
-    // 3. Force the master UI binding manager to redraw elements and display math 
-    if (typeof window.finalizePricingMatrixUiRender === "function") { 
-        window.finalizePricingMatrixUiRender(); 
-    } else if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
-        window.updateDynamicPricingMatrixVanilla(); 
-    } 
-} 
+function forceStep5SummaryInvoiceRefresh() {
+    // FIX 1: Strict Concurrency Lock Gate breaks recursive call loop cascades instantly
+    if (window.isStep5RefreshPassCurrentlyActive) return;
+    window.isStep5RefreshPassCurrentlyActive = true;
 
-// 🟢 SAFE INTERCEPT ROUTER: Prevents Call Stack Exceeded recursive locks 
-if (typeof window.switchWizardActiveViewLayout === "function" && !window.switchWizardActiveViewLayout.isWrappedBySummaryEngine) { 
-    const originalActiveLayoutSwapper = window.switchWizardActiveViewLayout; 
+    console.log("[Summary Hub] Step 5 panel active. Forcing real-time invoice calculations update...");
+
+    // 1. Force the dynamic state discovery crawl to scan and merge all selections if available
+    if (typeof window.runPricingMatrixDataCrawlPass === "function") {
+        window.runPricingMatrixDataCrawlPass();
+    }
+
+    // 2. Force the itemized marketplace rows to reconstruct
+    if (typeof window.directInjectCartAddonsToSummaryStep5 === "function") {
+        window.directInjectCartAddonsToSummaryStep5();
+    }
+
+    // ===================================================================== //
+    // 🎯 FIX: EXPLICT CALCULATIONS RENDERING FLOW MATRIX                    //
+    // ===================================================================== //
+    // Instead of launching duplicate method calls that overwrite each other, we pass 
+    // execution straight to your primary unified itemization matrix generator loop.
+    if (typeof window.executeMarketplaceSummaryRenderLoop === "function") {
+        console.log("[Summary Hub] Routing execution directly to your central unified layout compiler...");
+        try {
+            window.executeMarketplaceSummaryRenderLoop();
+        } catch (err) {
+            console.error("[Summary Hub Error] Error running central invoice loops:", err);
+        }
+    } else {
+        console.warn("[Summary Hub Warning] executeMarketplaceSummaryRenderLoop is unassigned.");
+    }
+
+    // 3. Fallback support matrix preserves legacy alias routing hooks if active on sidebars
+    if (typeof window.finalizePricingMatrixUiRender !== "function" && typeof window.updateDynamicPricingMatrixVanilla === "function") {
+        requestAnimationFrame(() => {
+            if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+                window.updateDynamicPricingMatrixVanilla();
+            }
+            window.isStep5RefreshPassCurrentlyActive = false;
+        });
+        return;
+    }
+
+    // Safe microtask delay release allows ongoing canvas mutations to settle cleanly
+    setTimeout(() => {
+        window.isStep5RefreshPassCurrentlyActive = false;
+    }, 100);
+}
+
+// Global window exposure pass mapping
+window.forceStep5SummaryInvoiceRefresh = forceStep5SummaryInvoiceRefresh;
+
+// 🟢 SAFE INTERCEPT ROUTER: Prevents Call Stack Exceeded recursive locks
+if (typeof window.switchWizardActiveViewLayout === "function" && !window.switchWizardActiveViewLayout.isWrappedBySummaryEngine) {
+    const originalActiveLayoutSwapper = window.switchWizardActiveViewLayout;
     
-    window.switchWizardActiveViewLayout = function(activeStepTarget) { 
-        // Execute the baseline visibility panel swapping routine first 
-        originalActiveLayoutSwapper(activeStepTarget); 
+    window.switchWizardActiveViewLayout = function(activeStepTarget) {
+        // Execute the baseline visibility panel swapping routine first
+        originalActiveLayoutSwapper(activeStepTarget);
         
-        // Force evaluation sweeps if target matches summary indices 
-        if (parseInt(activeStepTarget, 10) === 5) { 
-            forceStep5SummaryInvoiceRefresh(); 
-        } 
-    }; 
-    window.switchWizardActiveViewLayout.isWrappedBySummaryEngine = true; // Sets identification flag to block re-wrapping bugs 
-    console.log("[Summary Hub] Intercept router securely wrapped around active layout swapper engine."); 
-} 
+        // Force evaluation sweeps if target matches summary indices
+        if (parseInt(activeStepTarget, 10) === 5) {
+            forceStep5SummaryInvoiceRefresh();
+        }
+    };
+    
+    window.switchWizardActiveViewLayout.isWrappedBySummaryEngine = true; // Sets identification flag to block re-wrapping bugs
+    console.log("[Summary Hub] Intercept router securely wrapped around active layout swapper engine.");
+}
 
-// Global window exposure pass mapping 
+// Global window exposure pass mapping
 window.forceStep5SummaryInvoiceRefresh = forceStep5SummaryInvoiceRefresh;
 
 
@@ -163,36 +331,53 @@ window.forceStep5SummaryInvoiceRefresh = forceStep5SummaryInvoiceRefresh;
 /**
  * Replaces both duplicate observers with one clean, unified layout tracking pass.
  */
-function initStep5PurchaseSummaryVisibilityTracker() { 
-    const summaryPanelNodeElement = document.getElementById("step-panel-5") || document.getElementById("step-5"); 
-    if (!summaryPanelNodeElement) return; 
-    
-    // Disconnect any existing observer instance to clear out background memory leaks 
-    if (window.summaryPanelViewObserverInstance) { 
-        window.summaryPanelViewObserverInstance.disconnect(); 
-    } 
-    
-    const summaryPanelViewObserver = new MutationObserver(() => { 
-        // Runs immediately when display changes from display: none to block 
-        if (summaryPanelNodeElement.style.display !== "none") { 
-            if (typeof forceStep5SummaryInvoiceRefresh === "function") { 
-                forceStep5SummaryInvoiceRefresh(); 
-            } 
-            setTimeout(() => { 
-                if (typeof forceStep5SummaryInvoiceRefresh === "function") forceStep5SummaryInvoiceRefresh(); 
-            }, 80); // Secondary safety macro pass for late-binding rendering layout speeds 
-        } 
-    }); 
-    
-    summaryPanelViewObserver.observe(summaryPanelNodeElement, { attributes: true, attributeFilter: ["style"] }); 
-    window.summaryPanelViewObserverInstance = summaryPanelViewObserver; 
-} 
+function initStep5PurchaseSummaryVisibilityTracker() {
+    const summaryPanelNodeElement = document.getElementById("step-panel-5") || document.getElementById("step-5");
+    if (!summaryPanelNodeElement) return;
 
-// Register initialization execution safely on app startup paths 
-if (document.readyState !== "loading") { 
-    initStep5PurchaseSummaryVisibilityTracker(); 
-} else { 
-    document.addEventListener("DOMContentLoaded", initStep5PurchaseSummaryVisibilityTracker); 
+    // Disconnect any existing observer instance to clear out background memory leaks
+    if (window.summaryPanelViewObserverInstance) {
+        window.summaryPanelViewObserverInstance.disconnect();
+    }
+
+    // FIX 1: Introduce a localized tracking timestamp to block rapid consecutive re-firing triggers
+    let lastRefreshedTimestamp = 0;
+
+    const summaryPanelViewObserver = new MutationObserver(() => {
+        // Runs immediately when display changes from display: none to block
+        if (summaryPanelNodeElement.style.display !== "none" && summaryPanelNodeElement.classList.contains("active")) {
+            const currentSystemTimeMs = Date.now();
+            
+            // FIX 2: Throttle threshold lock. If the refresh engine was already invoked 
+            // within the last 300ms, completely short-circuit to kill the flickering loop storm.
+            if (currentSystemTimeMs - lastRefreshedTimestamp < 300) {
+                return;
+            }
+            lastRefreshedTimestamp = currentSystemTimeMs;
+
+            console.log("[Visibility Observer] Step 5 panel active state detected. Invoking calculation pipeline...");
+            
+            // Execute the master calculation and row assembly pass exactly ONCE
+            if (typeof window.forceStep5SummaryInvoiceRefresh === "function") {
+                window.forceStep5SummaryInvoiceRefresh();
+            }
+            
+            // FIX 3: Re-arm your custom real-time chronometer widget to ensure time stays ticking on step 5
+            if (typeof window.initializeDynamicChronometerWidget12Hr === "function") {
+                window.initializeDynamicChronometerWidget12Hr();
+            }
+        }
+    });
+
+    summaryPanelViewObserver.observe(summaryPanelNodeElement, { attributes: true, attributeFilter: ["style", "class"] });
+    window.summaryPanelViewObserverInstance = summaryPanelViewObserver;
+}
+
+// Register initialization execution safely on app startup paths
+if (document.readyState !== "loading") {
+    initStep5PurchaseSummaryVisibilityTracker();
+} else {
+    document.addEventListener("DOMContentLoaded", initStep5PurchaseSummaryVisibilityTracker);
 }
 
 

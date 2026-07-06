@@ -55,12 +55,7 @@
         <!-- STEP 1 INNER WIZARD PANEL CARD (1 Clean Layer Only) --> 
         <div class="wizard-panel active" id="step-panel-1"> 
           
-          <!-- ⏱️ LIVE PINNED CLOCK COMPONENT --> 
-          <div class="form-clock-pill-anchor"> 
-            <span>⏱️</span> 
-            <span id="portal-clock" style="font-family: monospace; font-weight: 100; color: #0a1f44; font-size: 0.85rem;">00/00/0000 | 00:00:00</span> 
-          </div> 
-
+      
           <!-- Header Block --> 
           <div class="step-header-container" style="margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; max-width: calc(100% - 220px);"> 
             <h2 class="step-main-title">Your Selection Overview</h2> 
@@ -117,10 +112,12 @@
 
 
 <!-- Load wizard core engine next -->
-<script src="assets/js/wizard/wizard-master-core.js"></script>
+ <script src="assets/js/wizard/clock.js"></script>
 <script src="assets/js/wizard/application-map.js"></script>
+<script src="assets/js/wizard/wizard-master-core.js"></script>
 
   <!-- Core Wizard Engines & Master Layout Router Pipeline -->
+   
     <script src="assets/js/wizard/step-0.js"></script>
     <script src="assets/js/wizard/step-1.js"></script>
     <script src="assets/js/wizard/step-2.js"></script>
