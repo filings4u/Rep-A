@@ -2358,88 +2358,140 @@ window.hydrateInjectedFormFields = function(wrapper) {
 
 
 
-// ============================================================================ //
-// 🔌 ENTERPRISE LIFECYCLE INITIALIZATION INTERLOCK TRACER                      //
-// ============================================================================ //
-function bootstrapStepTwoLifecycleEngine() {
-    "use strict";
+// ============================================================================ // 
+// 🔌 ENTERPRISE LIFECYCLE INITIALIZATION INTERLOCK TRACER // 
+// ============================================================================ // 
+function bootstrapStepTwoLifecycleEngine() { 
+  "use strict"; 
+  const urlParams = new URLSearchParams(window.location.search); 
+  const activeServiceSlug = window.currentServiceKey || window.routeActiveServiceKey || String(urlParams.get('service') || "").toLowerCase().trim(); 
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const activeServiceSlug = window.currentServiceKey || window.routeActiveServiceKey || String(urlParams.get('service') || "").toLowerCase().trim();
+  // Define or capture the global execution lock 
+  if (typeof window.isStepTwoCompiling === "undefined") {
+    window.isStepTwoCompiling = false;
+  }
 
-    /**
-     * LAZY-LOADING EVENT INTERCEPTOR: Intercept late-binding plugin assets.
-     * If your external service script has not finished downloading yet,
-     * we attach a dynamic Proxy layer to capture item modifications instantly.
-     */
-    let isPluginDataReady = false;
+  // Intercept and wrap the global markup method to manage the loop firewall automatically
+  if (typeof window.renderStepTwoLayoutMarkup === "function" && !window.renderStepTwoLayoutMarkup.isWrapped) {
+    const originalRenderMethod = window.renderStepTwoLayoutMarkup;
+    
+    window.renderStepTwoLayoutMarkup = function(...args) {
+      if (window.isStepTwoCompiling) {
+        return;
+      }
+      
+      // CRITICAL TEMPLATE TIMELINE VALIDATION CHECK:
+      // Verify that structural arrays are populated. If templates are missing, 
+      // do not attempt to compile and strip blocks; postpone layout initialization.
+      const lookupRegistry = window.formRegistry || {};
+      const hasValidTemplates = lookupRegistry[activeServiceSlug] || 
+                                (typeof formRegistry !== 'undefined' && formRegistry[activeServiceSlug]) ||
+                                (typeof verifiedTemplates !== 'undefined' && verifiedTemplates.length > 0);
 
-    if (typeof formRegistry !== 'undefined') {
-        if (Array.isArray(formRegistry) && formRegistry.length > 0) {
-            isPluginDataReady = true;
-        } else if (typeof formRegistry === 'object' && formRegistry !== null && activeServiceSlug && formRegistry[activeServiceSlug]) {
-            isPluginDataReady = true;
-        }
-    }
+      if (!hasValidTemplates) {
+        console.warn(`[Step 2 Lifecycle Guard] Postponing renderStepTwoLayoutMarkup execution. Template schemas for "${activeServiceSlug}" have not arrived yet.`);
+        return false; // Safely bounce execution out of early sync boot sweeps
+      }
 
-    if (typeof verifiedTemplates !== 'undefined' && Array.isArray(verifiedTemplates) && verifiedTemplates.length > 0) {
-        isPluginDataReady = true;
-    }
-
-    if (isPluginDataReady) {
-        // If the plugin data managed to finish loading first, render the step immediately
-        console.log(`[Step 2 Lifecycle] Service data ready for "${activeServiceSlug}". Executing template layout compile...`);
-        if (typeof window.renderStepTwoLayoutMarkup === "function") {
-            window.renderStepTwoLayoutMarkup();
-        }
-    } else {
-        // Data is not here yet: mount a reactive proxy hook onto the window registry context
-        console.log(`[Step 2 Lifecycle Waiting] Lazy-loaded file for "${activeServiceSlug}" is still in transit. Initializing proxy intercept trap...`);
-
-        // Ensure a valid base target object exists before wrapping it
-        const baseTargetRegistry = window.formRegistry || {};
-        
-        // FIX: Introduce a debouncer gate handle variable to isolate multi-property batch updates
-        window.proxyRenderDebounceTimeout = null;
-
-        window.formRegistry = new Proxy(baseTargetRegistry, {
-            set(target, propertyKey, incomingValue) {
-                target[propertyKey] = incomingValue;
-                console.log(`[Step 2 Lifecycle Release] Lazy-loaded property "${propertyKey}" arrived.`);
-
-                // FIX: Debounce compilation passes to allow consecutive script adjustments to finish mapping
-                clearTimeout(window.proxyRenderDebounceTimeout);
-                window.proxyRenderDebounceTimeout = setTimeout(() => {
-                    requestAnimationFrame(() => {
-                        if (typeof window.renderStepTwoLayoutMarkup === "function") {
-                            console.log("[Step 2 Lifecycle] Batch update sequence completed cleanly. Drawing layout modules...");
-                            window.renderStepTwoLayoutMarkup();
-                        }
-                    });
-                }, 40); // 40ms buffer safely swallows multiple rapid property modifications
-
-                return true; // Enforce strict Proxy compliance
-            }
+      window.isStepTwoCompiling = true;
+      try {
+        return originalRenderMethod.apply(this, args);
+      } catch (err) {
+        console.error("[Step 2 Intercept Error] Internal template compilation failed:", err);
+      } finally {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            window.isStepTwoCompiling = false;
+          }, 10);
         });
+      }
+    };
+    window.renderStepTwoLayoutMarkup.isWrapped = true;
+  }
 
-        // Backup DOM observer: if your schema writes straight into the panel instead of global arrays
-        const masterPanelTwoNode = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder") || document.getElementById("step-panel-2");
-        if (masterPanelTwoNode) {
-            const backupDataObserver = new MutationObserver(() => {
-                backupDataObserver.disconnect();
-                console.log("[Step 2 Lifecycle Observer] Direct DOM mutation captured. Executing markup assembly...");
-                if (typeof window.renderStepTwoLayoutMarkup === "function") {
-                    window.renderStepTwoLayoutMarkup();
-                }
-            });
-            backupDataObserver.observe(masterPanelTwoNode, { childList: true, subtree: true });
+  /** * LAZY-LOADING EVENT INTERCEPTOR: Intercept late-binding plugin assets. */ 
+  let isPluginDataReady = false; 
+  if (typeof formRegistry !== 'undefined') { 
+    if (Array.isArray(formRegistry) && formRegistry.length > 0) { 
+      isPluginDataReady = true; 
+    } else if (typeof formRegistry === 'object' && formRegistry !== null && activeServiceSlug && formRegistry[activeServiceSlug]) { 
+      isPluginDataReady = true; 
+    } 
+  } 
+  if (typeof verifiedTemplates !== 'undefined' && Array.isArray(verifiedTemplates) && verifiedTemplates.length > 0) { 
+    isPluginDataReady = true; 
+  } 
+
+  const accurateActiveStep = parseInt(window.currentWizardActiveStep, 10); 
+
+  if (isPluginDataReady) { 
+    if (accurateActiveStep === 2) { 
+      console.log(`[Step 2 Lifecycle] Service data ready for "${activeServiceSlug}". Executing template layout compile...`); 
+      if (typeof window.renderStepTwoLayoutMarkup === "function") { 
+        window.renderStepTwoLayoutMarkup(); 
+      } 
+    } else { 
+      console.log(`[Step 2 Lifecycle Guard] Data ready early for "${activeServiceSlug}". Postponing render until Step 2 is active.`); 
+    } 
+  } { 
+    // Data is not here yet: mount a reactive proxy hook onto the window registry context 
+    console.log(`[Step 2 Lifecycle Waiting] Lazy-loaded file for "${activeServiceSlug}" is still in transit. Initializing proxy intercept trap...`); 
+    
+    const baseTargetRegistry = window.formRegistry || {}; 
+    
+    window.proxyRenderDebounceTimeout = null; 
+    window.formRegistry = new Proxy(baseTargetRegistry, { 
+      set(target, propertyKey, incomingValue) { 
+        target[propertyKey] = incomingValue; 
+        console.log(`[Step 2 Lifecycle Release] Lazy-loaded property "${propertyKey}" arrived.`); 
+        
+        clearTimeout(window.proxyRenderDebounceTimeout); 
+        window.proxyRenderDebounceTimeout = setTimeout(() => { 
+          requestAnimationFrame(() => { 
+            const currentStepCheck = parseInt(window.currentWizardActiveStep, 10); 
+            
+            // Allow background file compilation mapping targets to settle safely
+            if (currentStepCheck !== 2 || window.isStepTwoCompiling) { 
+              console.warn(`[Step 2 Proxy Guard] Postponing layout compilation. Current active viewport is Step ${currentStepCheck}.`); 
+              return; 
+            } 
+
+            if (typeof window.renderStepTwoLayoutMarkup === "function") { 
+              console.log("[Step 2 Lifecycle] Batch update sequence completed cleanly. Drawing layout modules..."); 
+              window.renderStepTwoLayoutMarkup(); 
+            } 
+          }); 
+        }, 40); 
+        return true; 
+      } 
+    }); 
+
+    const masterPanelTwoNode = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder") || document.getElementById("step-panel-2"); 
+    if (masterPanelTwoNode) { 
+      const backupDataObserver = new MutationObserver(() => { 
+        if (window.isStepTwoCompiling) {
+          return; 
         }
-    }
-}
+        
+        backupDataObserver.disconnect(); 
+        const currentStepCheck = parseInt(window.currentWizardActiveStep, 10); 
+        if (currentStepCheck !== 2) { 
+          console.warn(`[Step 2 Observer Guard] Suppressed DOM layout mutation pass. User is currently on Step ${currentStepCheck}.`); 
+          return; 
+        } 
 
-// Coordinate framework startup execution paths cleanly
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bootstrapStepTwoLifecycleEngine);
-} else {
-    bootstrapStepTwoLifecycleEngine();
+        console.log("[Step 2 Lifecycle Observer] Direct DOM mutation captured. Executing markup assembly..."); 
+        if (typeof window.renderStepTwoLayoutMarkup === "function") { 
+          window.renderStepTwoLayoutMarkup(); 
+        } 
+      }); 
+      backupDataObserver.observe(masterPanelTwoNode, { childList: true, subtree: true }); 
+    } 
+  } 
+} 
+
+if (document.readyState === "loading") { 
+  document.addEventListener("DOMContentLoaded", bootstrapStepTwoLifecycleEngine); 
+} else { 
+  bootstrapStepTwoLifecycleEngine(); 
 }
