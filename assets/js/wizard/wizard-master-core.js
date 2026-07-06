@@ -12,11 +12,31 @@
     window.currentPlanKey = urlParamsMatrix.get('plan') || null;
     window.currentServiceTier = window.currentPlanKey;
 
-    // FIX: Added your gate engine select ID to the lookup cascade
-    let stateDropdown = document.getElementById("wizard_gate_state_select") || document.getElementById("wizard_state_select") || document.getElementById("state_select");
-    
-    // Fallback cleanly to url search params if element is missing from frame zero DOM
-    window.selectedJurisdiction = stateDropdown ? stateDropdown.value : (urlParamsMatrix.get('state') || null);
+    // FIX 1: JURISDICTION INTERLOCK REGISTRATION FOR FEDERAL BYPASS SERVICES
+    // If the client is entering for a federal government compliance track, the state dropdown 
+    // is intentionally absent. We assign a uniform structural token ("FED") to window.selectedJurisdiction 
+    // to instantly unblock your step-2.js script templates, restoring your missing Continue button.
+    const serviceKeyCheck = String(window.currentServiceKey || "").toLowerCase().trim();
+    const federalPricingMatrixRegistry = window.FILINGS4U_GOVERNMENT_PRICING || {};
+    const isFederalServicePath = Object.prototype.hasOwnProperty.call(federalPricingMatrixRegistry, serviceKeyCheck) && serviceKeyCheck !== "llc-formation" && serviceKeyCheck !== "corporations";
+    const isFederalKeywordMatch = serviceKeyCheck.includes("cage") || serviceKeyCheck.includes("sam") || serviceKeyCheck.includes("tax") || serviceKeyCheck.includes("ein") || serviceKeyCheck.includes("authority");
+
+    let resolvedJurisdictionValue = urlParamsMatrix.get('state') || null;
+
+    if (!resolvedJurisdictionValue) {
+        let stateDropdown = document.getElementById("wizard_gate_state_select") || document.getElementById("wizard_state_select") || document.getElementById("state_select");
+        if (stateDropdown && stateDropdown.value && stateDropdown.value !== "") {
+            resolvedJurisdictionValue = stateDropdown.value;
+        }
+    }
+
+    // Apply the structural token if it is explicitly confirmed as a federal service track
+    if (!resolvedJurisdictionValue && (isFederalServicePath || isFederalKeywordMatch)) {
+        console.log("[Master Core Initialization] Federal tracking path detected. Auto-assigning jurisdiction lock parameters to protect step-2.js buttons.");
+        resolvedJurisdictionValue = "FED";
+    }
+
+    window.selectedJurisdiction = resolvedJurisdictionValue;
     window.dynamicAssetUrlPath = "";
     window.collectedFormMetadata = {};
 
@@ -30,7 +50,7 @@
         set(newDatabasePayload) {
             // Guard loop check to prevent deep recursive execution freezes
             if (internalCatalogReference === newDatabasePayload) return;
-            
+
             internalCatalogReference = newDatabasePayload;
 
             // The millisecond the database is set, dynamically regenerate your array keys
@@ -41,7 +61,6 @@
             }
 
             // FIX: Hand over valid context data references down your pipeline instead of calling a blank function.
-            // We include your updated Step 3 selector tags to accurately map late-binding network data packs.
             if (typeof window.executeStepThreeUpsellStreaming === "function") {
                 console.log("[Master Core] Asynchronous addon database arrived. Executing targeted marketplace stream pass...");
                 window.executeStepThreeUpsellStreaming();
@@ -69,12 +88,12 @@
 // ============================================================================ //
 // 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (ZERO HARDCODING)     //
 // ============================================================================ //
-(async function handleStrictSessionLifecycle() { 
+(async function handleStrictSessionLifecycle() {
     "use strict";
 
     const cacheKeyNamespace = "f4u_wizard_onboarding_state";
     const urlParams = new URLSearchParams(window.location.search);
-    
+
     // Check if a database connection is ready in memory yet
     const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null);
     let isAuthenticatedUserSession = false;
@@ -88,34 +107,45 @@
         }
     }
 
-    // 🟢 THE FIX: If they are NOT logged in, aggressively flush all parameters on refresh!
-    if (!isAuthenticatedUserSession) { 
-        console.log("[Session Engine] Public Guest Session: Purging all residual caching allocations.");
-        
-        localStorage.clear(); 
-        sessionStorage.clear(); 
-        
-        if (window.collectedFormMetadata) { 
-            window.collectedFormMetadata = {}; 
-        } 
-        
-        // Strip out hardcoded fallbacks to let step 0 load cleanly
-        window.selectedJurisdiction = null;
-        localStorage.removeItem('wizard_selected_state');
+    // FIX 1: PROTECT GUEST ACTIVE PROGRESS LIFECYCLES
+    // Instead of aggressively wiping out local tracking fields on every panel switch or refresh ticker,
+    // we verify if a valid session state token or form input already exists in the memory array.
+    const isWizardFunnelSessionActive = !!localStorage.getItem(cacheKeyNamespace) || 
+                                        !!localStorage.getItem("wizard_selected_state") ||
+                                        (window.selectedJurisdiction && window.selectedJurisdiction !== null);
 
-        // 🟢 THE FIX: Wipe out state parameter markers completely from the address bar on reload
-        if (urlParams.has('state')) {
-            urlParams.delete('state');
-            const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`;
-            window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath);
+    if (!isAuthenticatedUserSession) {
+        if (!isWizardFunnelSessionActive) {
+            console.log("[Session Engine] Public Guest Session: Purging historical residual caching allocations on fresh entry.");
+            
+            // Targeted cleanup ensures we don't accidentally wipe out external framework trackers
+            localStorage.removeItem(cacheKeyNamespace);
+            localStorage.removeItem('wizard_selected_state');
+            
+            if (window.collectedFormMetadata) {
+                window.collectedFormMetadata = {};
+            }
+
+            window.selectedJurisdiction = null;
+
+            // Wipe out state parameter markers completely from the address bar on initial reload
+            if (urlParams.has('state')) {
+                urlParams.delete('state');
+                const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`;
+                window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath);
+            }
+        } else {
+            console.log("[Session Engine] Public Guest Wizard Funnel Active: Retaining computed state tokens.");
+            // FIX 2: Safeguard your dynamic "FED" token! Preserve the value if already assigned by block 1.
+            window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || null;
         }
-    } else { 
-        console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active."); 
-        
+    } else {
+        console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active.");
         // Hydrate variables back into memory tracking states from local rows
         window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
-    } 
+    }
 })();
+
 
 // ============================================================================ //
 // ⚙️ SYSTEM STATE FLOW & NAVIGATION TRACKING REGISTRY                         //
