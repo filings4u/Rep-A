@@ -5,7 +5,7 @@ window.CENTRAL_SERVICE_PLAN_DB = window.CENTRAL_SERVICE_PLAN_DB || {};
 window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING || {
     "trucker-authority": 300.00,       /* Standard FMCSA regulatory application tariff */
     "broker-authority": 300.00,        /* Standard FMCSA broker processing tariff */
-    "heavy-use-tax": 0.00,             /* Form 2290 baseline processing tariff code */
+    "heavy-use-tax-2290": 0.00,             /* Form 2290 baseline processing tariff code */
     "hazmat-registration": 0.00,       /* Baseline hazardous materials data allocation */
     "llc-formation": 0.00,             /* Overridden contextually by state-pricing.js matrices */
     "corporations": 0.00
@@ -252,7 +252,7 @@ window.GOVERNMENT_PRICING = { packages: window.CENTRAL_SERVICE_PLAN_DB };
 window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING || { 
     "trucker-authority": 300.00, /* Standard FMCSA regulatory application tariff */ 
     "broker-authority": 300.00,  /* Standard FMCSA broker processing tariff */ 
-    "heavy-use-tax": 0.00,       /* Form 2290 baseline processing tariff code */ 
+    "heavy-use-tax-2290": 0.00,       /* Form 2290 baseline processing tariff code */ 
     "hazmat-registration": 0.00, /* Baseline hazardous materials data allocation */ 
     "llc-formation": 0.00,       /* Overridden contextually by state-pricing.js matrices */ 
     "corporations": 0.00 
@@ -266,7 +266,7 @@ window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING;
 // ============================================================================ // 
 window.CENTRAL_SERVICE_PLAN_DB = window.CENTRAL_SERVICE_PLAN_DB || {}; 
 
-window.CENTRAL_SERVICE_PLAN_DB["heavy-use-tax"] = { 
+window.CENTRAL_SERVICE_PLAN_DB["heavy-use-tax-2290"] = { 
     name: "IRS Form 2290 Filing", 
     starter: 39.00, 
     compliance: 59.00, 
@@ -278,3 +278,5 @@ window.CENTRAL_SERVICE_PLAN_DB["heavy-use-tax"] = {
         "Automated IRS Revision Protection" 
     ] 
 };
+
+

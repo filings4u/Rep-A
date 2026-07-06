@@ -1,31 +1,35 @@
-// ============================================================================ //
-// 💳 STEP 6 SECURE GATEWAY REAL-TIME INVOICE REFRESHER & STRIPE BRIDGE         //
-// ============================================================================ //
-/**
- * Synchronizes the live checkout total straight onto the Step 6 indicator node
- * and automatically kicks off the Stripe inputs initialization routine.
- */
+// ============================================================================ // 
+// 💳 STEP 6 SECURE GATEWAY REAL-TIME INVOICE REFRESHER & STRIPE BRIDGE         // 
+// ============================================================================ // 
+/** 
+ * Synchronizes the live checkout total straight onto the Step 6 indicator node 
+ * and automatically kicks off the Stripe inputs initialization routine. 
+ */ 
 function forceStep6StripePaymentGatewayRefreshPass() { 
     console.log("[Payment Gate] Step 6 active view detected. Synchronizing invoicing values..."); 
     const paymentTotalTextNode = document.getElementById("payment-gateway-total-display"); 
     
-    // 🧠 🟢 CRITICAL PRICING MATRIX REALIGNMENT: 
-    // Extract the live grand total variable explicitly computed by your central calculations engine 
-    const activeRunningTotalAmount = window.summaryCalculatedGrandTotal || window.finalComputedOnboardingInvoiceTotalAmount || window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || parseFloat(localStorage.getItem('wizard_calculated_grand_total')) || 0; 
-    
+    // 🧠 🟢 FIXED PRICING MATRIX REALIGNMENT: 
+    // Secure mapping pointing cleanly to your data layers, preventing NaN dropouts
+    const activeRunningTotalAmount = window.summaryCalculatedGrandTotal || 
+                                     window.finalComputedOnboardingInvoiceTotalAmount || 
+                                     window.computedWizardGrandTotalAmount || 
+                                     window.wizardCalculatedFinalTotalAmount || 
+                                     parseFloat(localStorage.getItem('wizard_selected_state_total')) ||
+                                     parseFloat(localStorage.getItem('wizard_calculated_grand_total')) || 
+                                     0; 
+                                     
     if (paymentTotalTextNode) { 
         paymentTotalTextNode.textContent = `$${parseFloat(activeRunningTotalAmount).toFixed(2)}`; 
         console.log(`[Payment Gate] Step 6 balance display successfully hydrated: $${parseFloat(activeRunningTotalAmount).toFixed(2)}`); 
     } 
     
     // 💳 AUTOMATED STRIPE INTERFACE INITIALIZER WITH SINGLE-MOUNT SAFETY GATE: 
-    // Prevents double initialization loops from spawning duplicate credit card iframe inputs. 
     const stripeInputContainer = document.getElementById("stripe-card-element") || document.getElementById("card-element"); 
     if (stripeInputContainer && stripeInputContainer.children.length > 0) { 
         console.log("[Payment Gate] Stripe element context already pre-rendered safely inside container."); 
         return; 
     } 
-    
     if (typeof window.initializeFlatStripeCheckoutElement === "function") { 
         window.initializeFlatStripeCheckoutElement(); 
     } else { 
@@ -33,23 +37,33 @@ function forceStep6StripePaymentGatewayRefreshPass() {
     } 
 } 
 
-// Export the method safely to global scope window records 
 window.forceStep6StripePaymentGatewayRefreshPass = forceStep6StripePaymentGatewayRefreshPass; 
 
-// 🟢 MOUNT LAYER PROTECTION: Setup the Step 6 visibility observer inside DOMContentLoaded to ensure elements are active 
+// 🟢 MOUNT LAYER PROTECTION: Fixes the visibility observer to watch both inline styles and layout utility classes
 document.addEventListener("DOMContentLoaded", () => { 
     const step6PanelContainerNode = document.getElementById("step-panel-6") || document.getElementById("step-6"); 
-    
     if (step6PanelContainerNode) { 
-        const paymentPanelViewObserver = new MutationObserver(() => { 
-            if (step6PanelContainerNode.style.display !== "none") { 
+        const paymentPanelViewObserver = new MutationObserver((mutations) => { 
+            // FIXED EVALUATION DISCOVERY:
+            // Checks both style visibilities AND custom active framework class states
+            const isVisibleByStyle = step6PanelContainerNode.style.display !== "none" && step6PanelContainerNode.style.display !== "";
+            const isVisibleByClass = step6PanelContainerNode.classList.contains("active") || step6PanelContainerNode.classList.contains("show");
+
+            if (isVisibleByStyle || isVisibleByClass) { 
                 forceStep6StripePaymentGatewayRefreshPass(); 
                 setTimeout(forceStep6StripePaymentGatewayRefreshPass, 60); 
             } 
         }); 
-        paymentPanelViewObserver.observe(step6PanelContainerNode, { attributes: true, attributeFilter: ["style"] }); 
+        
+        // REPAIRED ATTRIBUTE FILTER MATRIX: 
+        // Added "class" checking to guarantee routing activations register inside the pipeline loop
+        paymentPanelViewObserver.observe(step6PanelContainerNode, { 
+            attributes: true, 
+            attributeFilter: ["style", "class"] 
+        }); 
+        
         window.paymentPanelViewObserverInstance = paymentPanelViewObserver; 
-        console.log("[Payment Gate] Step 6 structural MutationObserver attached cleanly."); 
+        console.log("[Payment Gate] Step 6 structural MutationObserver attached cleanly with Class & Style interlocks."); 
     } else { 
         console.warn("[Payment Gate Warning] step-panel-6 container element was missing during observer allocation."); 
     } 
