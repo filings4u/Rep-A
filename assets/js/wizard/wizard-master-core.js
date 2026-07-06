@@ -85,67 +85,65 @@
 })();
 
 
-// ============================================================================ //
-// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (ZERO HARDCODING)     //
-// ============================================================================ //
-(async function handleStrictSessionLifecycle() {
-    "use strict";
-
-    const cacheKeyNamespace = "f4u_wizard_onboarding_state";
-    const urlParams = new URLSearchParams(window.location.search);
-
-    // Check if a database connection is ready in memory yet
-    const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null);
-    let isAuthenticatedUserSession = false;
-
-    if (supabase && typeof supabase.auth === "object") {
-        try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) isAuthenticatedUserSession = true;
-        } catch(e) {
-            isAuthenticatedUserSession = false;
-        }
-    }
-
-    // FIX 1: PROTECT GUEST ACTIVE PROGRESS LIFECYCLES
-    // Instead of aggressively wiping out local tracking fields on every panel switch or refresh ticker,
-    // we verify if a valid session state token or form input already exists in the memory array.
-    const isWizardFunnelSessionActive = !!localStorage.getItem(cacheKeyNamespace) || 
-                                        !!localStorage.getItem("wizard_selected_state") ||
-                                        (window.selectedJurisdiction && window.selectedJurisdiction !== null);
-
-    if (!isAuthenticatedUserSession) {
-        if (!isWizardFunnelSessionActive) {
-            console.log("[Session Engine] Public Guest Session: Purging historical residual caching allocations on fresh entry.");
-            
-            // Targeted cleanup ensures we don't accidentally wipe out external framework trackers
-            localStorage.removeItem(cacheKeyNamespace);
-            localStorage.removeItem('wizard_selected_state');
-            
-            if (window.collectedFormMetadata) {
-                window.collectedFormMetadata = {};
-            }
-
-            window.selectedJurisdiction = null;
-
-            // Wipe out state parameter markers completely from the address bar on initial reload
-            if (urlParams.has('state')) {
-                urlParams.delete('state');
-                const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`;
-                window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath);
-            }
-        } else {
-            console.log("[Session Engine] Public Guest Wizard Funnel Active: Retaining computed state tokens.");
-            // FIX 2: Safeguard your dynamic "FED" token! Preserve the value if already assigned by block 1.
-            window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || null;
-        }
+// ============================================================================ // 
+// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (ZERO HARDCODING) // 
+// ============================================================================ // 
+(async function handleStrictSessionLifecycle() { 
+  "use strict"; 
+  const cacheKeyNamespace = "f4u_wizard_onboarding_state"; 
+  const urlParams = new URLSearchParams(window.location.search); 
+  
+  // Check if a database connection is ready in memory yet 
+  const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null); 
+  let isAuthenticatedUserSession = false; 
+  
+  if (supabase && typeof supabase.auth === "object") { 
+    try { 
+      const { data: { user } } = await supabase.auth.getUser(); 
+      if (user) isAuthenticatedUserSession = true; 
+    } catch(e) { 
+      isAuthenticatedUserSession = false; 
+    } 
+  } 
+  
+  // CRITICAL FIX: Evaluate the user's current step position in the registration workflow.
+  // We extract the step index from memory or look for active container elements.
+  const activeStepTracker = parseInt(window.currentWizardActiveStep, 10);
+  const isActivelyProgressingInWizard = !isNaN(activeStepTracker) && activeStepTracker > 0;
+  
+  // 🟢 THE FIX: If they are NOT logged in, ONLY flush parameters if they are on Step 0.
+  // If they are actively filling out steps 1, 2, or 3, preserve their data safely!
+  if (!isAuthenticatedUserSession) { 
+    if (!isActivelyProgressingInWizard) {
+      console.log("[Session Engine] Public Guest Session Landing: Purging residual caching allocations."); 
+      localStorage.clear(); 
+      sessionStorage.clear(); 
+      
+      if (window.collectedFormMetadata) { 
+        window.collectedFormMetadata = {}; 
+      } 
+      
+      // Strip out hardcoded fallbacks to let step 0 load cleanly 
+      window.selectedJurisdiction = null; 
+      localStorage.removeItem('wizard_selected_state'); 
+      
+      // Wipe out state parameter markers completely from the address bar on cold reload
+      if (urlParams.has('state')) { 
+        urlParams.delete('state'); 
+        const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`; 
+        window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath); 
+      } 
     } else {
-        console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active.");
-        // Hydrate variables back into memory tracking states from local rows
-        window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
+      console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStepTracker}). Retaining data keys.`);
+      // Safely preserve memory layers so step calculations can read them intact
+      window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
     }
+  } else { 
+    console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active."); 
+    // Hydrate variables back into memory tracking states from local rows 
+    window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null; 
+  } 
 })();
-
 
 // ============================================================================ //
 // ⚙️ SYSTEM STATE FLOW & NAVIGATION TRACKING REGISTRY                         //
@@ -1335,18 +1333,20 @@ function processJurisdictionGateAdvancement() {
     window.selectedJurisdiction = chosenStateCode;
     localStorage.setItem('wizard_selected_state', chosenStateCode);
 
-    // Sync selection back to the alternate IDs your other scripts look for
+    // FIX 1: SILENT MARKUP VALUE SYNCHRONIZATION
+    // We update target element configurations without dispatching heavy change events 
+    // that trip your background MutationObservers and lock your button execution pipelines.
     const alternateSelectors = ["wizard_state_select", "state_select"];
     alternateSelectors.forEach(id => {
         localStorage.setItem(`wizard_field_${id}`, chosenStateCode);
         const alternateNode = document.getElementById(id);
+        
         if (alternateNode) {
             alternateNode.value = chosenStateCode;
-            // Suppress heavy looping cascades by updating window values directly inside restoration locks
+            
+            // Execute safe, localized function state toggles if active on your templates
             if (typeof window.toggleFederalTaxInventoryCostVisibility === "function") {
                 window.toggleFederalTaxInventoryCostVisibility(alternateNode, null, true);
-            } else {
-                alternateNode.dispatchEvent(new Event('change', { bubbles: true }));
             }
         }
     });
@@ -1355,9 +1355,16 @@ function processJurisdictionGateAdvancement() {
     if (typeof window.processDynamicMarketingLayoutDecorations === "function") {
         window.processDynamicMarketingLayoutDecorations();
     }
+    
     if (typeof window.renderStep1CustomFeatureBullets === "function") {
         const cleanServiceKey = String(urlParams.get('service') || "").toLowerCase().trim();
         window.renderStep1CustomFeatureBullets(cleanServiceKey);
+    }
+
+    // Force an immediate calculation pass down your central tracking matrix lines 
+    // to map the new state fee before shifting layout focus views
+    if (typeof window.runPricingMatrixDataCrawlPass === "function") {
+        window.runPricingMatrixDataCrawlPass();
     }
 
     // Hide Step 0 overlay and route cleanly to Step 1 workspace canvas panels natively
@@ -1366,13 +1373,19 @@ function processJurisdictionGateAdvancement() {
         gatePanel.classList.remove("active");
         gatePanel.style.setProperty("display", "none", "important");
     }
-    if (typeof window.switchWizardActiveViewLayout === "function") {
-        window.switchWizardActiveViewLayout(1);
-    }
+
+    // FIX 2: WRAP THE VIEW SWITCH ROUTINE INSIDE A MICRO-TASK LAYOUT REPAINT FRAME
+    // This shields your panel transitions, letting element changes settle completely 
+    // before swapping active wizard pages.
+    requestAnimationFrame(() => {
+        if (typeof window.switchWizardActiveViewLayout === "function") {
+            console.log("[Gate Engine] Requirements cleared. Routing layout to Step 1 Overview.");
+            window.switchWizardActiveViewLayout(1);
+        }
+    });
 }
 
-// FIX: Clean namespace global registration map blocks. 
-// We completely remove variable re-assignments that cause definition corruption.
+// Clean namespace global registration map blocks safely
 if (typeof window.enforceJurisdictionGateEvaluation !== "function") {
     window.enforceJurisdictionGateEvaluation = enforceJurisdictionGateEvaluation;
 }
@@ -1387,6 +1400,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, 60);
 });
+
 
 // ============================================================================ //
 // 🔌 CENTRAL EVENT LISTENER INTERCEPT APP LIFE-CYCLE (DEEP-LINK SANITIZED)     //
@@ -1415,14 +1429,12 @@ function runUnifiedPlatformLifecycleBoot() {
     // Clear out any previous inline overrides on form elements to restore original visibility context instantly
     const masterFormElement = document.getElementById("master-onboarding-form") || document.querySelector(".master-onboarding-form");
     if (masterFormElement && masterFormElement.style) {
-        // FIX 1: Enforce pure cross-browser standard CSS property removal. 
-        // This removes the unhandled method checks that cause fatal script execution crashes.
         if (typeof masterFormElement.style.removeProperty === "function") {
             masterFormElement.style.removeProperty('display');
             masterFormElement.style.removeProperty('width');
             masterFormElement.style.removeProperty('max-width');
         } else {
-            masterFormElement.style.cssText = ""; // Full native clean backup fallback
+            masterFormElement.style.cssText = ""; 
         }
     }
 
@@ -1445,7 +1457,7 @@ function runUnifiedPlatformLifecycleBoot() {
     }
 
     // =========================================================================
-    // DEEP-LINK TIMELINE RESOLUTION GATEWAY
+    // DEEP-LINK TIMELINE RESOLUTION GATEWAY (ZERO-HARDCODE REBOOT)
     // =========================================================================
     const urlParams = new URLSearchParams(window.location.search);
     const hasService = urlParams.get('service');
@@ -1454,21 +1466,29 @@ function runUnifiedPlatformLifecycleBoot() {
     
     let currentActiveStepIndex = parseInt(window.currentWizardActiveStep, 10);
 
-    // If deep-link params match but active tracking states are unset or stuck on Step 1, hard enforce Step 2
-    if (hasService && hasPlan && hasState) {
+    // FIX 1: PROGRAMMATIC FEDERAL ROUTING VERIFICATION
+    // Check your master government databases. If the service slug is a known federal option, 
+    // it skips requiring a state parameter to be verified as a valid deep link.
+    const serviceKeyCheck = String(hasService || window.routeActiveServiceKey || "").toLowerCase().trim();
+    const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {};
+    const isFederalServicePath = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceKeyCheck) && serviceKeyCheck !== "llc-formation" && serviceKeyCheck !== "corporations";
+    
+    // Determine deep-link eligibility dynamically without hardcoded text blocks
+    const isDeepLinkValid = hasService && hasPlan && (hasState || isFederalServicePath);
+
+    if (isDeepLinkValid) {
         if (isNaN(currentActiveStepIndex) || currentActiveStepIndex <= 1) {
             console.log("[Lifecycle Engine Override] Deep link active. Syncing internal states cleanly to Step 2.");
             currentActiveStepIndex = 2;
             window.currentWizardActiveStep = 2;
         }
     } else if (isNaN(currentActiveStepIndex)) {
-        // FIX 2: Default strictly to Step 0 introductory card layouts if local storage configurations are unassigned
+        // FIX 2: If this is a completely brand new session layout with no parameters, default to 0
         currentActiveStepIndex = 0;
         window.currentWizardActiveStep = 0;
     }
 
     // Only restore cached form inputs directly here if the current active target view is NOT Step 2.
-    // Step 2 elements are loaded asynchronously and are handled inside runUnifiedWizardBootEngine().
     if (currentActiveStepIndex !== 2) {
         if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") {
             window.cacheAndRestoreWizardFormStatesVanilla(true);
@@ -1485,7 +1505,6 @@ function runUnifiedPlatformLifecycleBoot() {
     // =========================================================================
     // 🟢 FIXED VIEW PORT ROUTER HOOK
     // =========================================================================
-    // Uses our validated, single-flight step calculation to block ping-pong rendering conflicts
     if (typeof window.switchWizardActiveViewLayout === "function") {
         console.log(`[Lifecycle Engine] Transferring runtime thread task to view layout switcher: Step ${currentActiveStepIndex}`);
         window.switchWizardActiveViewLayout(currentActiveStepIndex);
