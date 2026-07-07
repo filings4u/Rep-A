@@ -239,6 +239,7 @@ function resolveDynamicScriptAssetPath() {
   // Generates a path based on your real-time address bar query parameter
   return `assets/js/wizard/${sanitizedSlug}.js`;
 }
+
 // ============================================================================ //
 // 📡 PART 2 OF 2: NON-BLOCKING ASYNC MOUNTING CONTROLLER                      //
 // ============================================================================ //
@@ -652,94 +653,87 @@ window.SERVICE_URL_REGISTRY = SERVICE_URL_REGISTRY;
 
 
 // ============================================================================ //
-// 📋 FEATURE BULLET LIST CONTENT RESOLVER & CONFIGURATION BRIDGE               //
+// 📋 FEATURE BULLET LIST CONTENT RESOLVER & CONFIGURATION BRIDGE
 // ============================================================================ //
 /**
  * Public structural bridge to resolve feature bullet list content parameters dynamically.
  * Zero Hardcoding: Eliminates automatic default assignments to block visual seeping bugs.
  * @param {string} activeSlug - The raw matching service handle code from the portal.
  */
-function renderStep1CustomFeatureBullets(activeSlug) { 
-    // 🛡️ RUNTIME LIFECYCLE GUARD: 
-    // Protect execution against variable loading delays safely by rescheduling instead of breaking. 
-    if (typeof window.getPricingConfiguration !== "function") { 
-        setTimeout(function() { 
-            renderStep1CustomFeatureBullets(activeSlug); 
-        }, 50); 
-        return; 
-    } 
-    
-    // Pure dynamic variable resolution — No default parameter strings assumed 
-    const activePlanKey = window.routeActivePlanKey; 
-    if (!activePlanKey) { 
-        // If the router hasn't set the plan key yet, wait and try again. 
-        setTimeout(function() { 
-            renderStep1CustomFeatureBullets(activeSlug); 
-        }, 50); 
-        return; 
-    } 
-    
-    const activeTierKey = String(activePlanKey).toLowerCase().trim(); 
-    
-    // 1. Fetch the data configuration object directly 
-    const resolvedConfig = window.getPricingConfiguration(activeSlug); 
-    if (!resolvedConfig || !resolvedConfig.serviceKey) { 
-        console.error(`[Lifecycle Sync Failure] Timing engine could not resolve configurations for: "${activeSlug}"`); 
-        return; 
-    } 
-    console.log(`[Lifecycle Sync Success] Extracted properties for service path: "${resolvedConfig.serviceKey}"`); 
-    
-    // 2. Clear property tracking mapping arrays 
-    const activeBulletsArray = resolvedConfig.bullets || []; 
-    const resolvedPackageFeeAmount = resolvedConfig.basePrice || 0; 
-    const tierTitleDisplay = activeTierKey.charAt(0).toUpperCase() + activeTierKey.slice(1); 
-    
-    // 3. Extract the root database record 
-    const rawDatabaseSource = window.CENTRAL_SERVICE_PLAN_DB || (window.GLOBAL_COMPANY_PRICING ? window.GLOBAL_COMPANY_PRICING.packages : null); 
-    const actualServiceDataNode = rawDatabaseSource?.[resolvedConfig.serviceKey]; 
-    if (!actualServiceDataNode) { 
-        console.error(`[Lifecycle Sync Failure] Database entry missing for key lookup index: "${resolvedConfig.serviceKey}"`); 
-        return; 
-    } 
-    
-    // 🟢 OPTIMIZATION FIX: Run the downstream calculations bridge first, 
-    // ensuring the checkout invoice numbers NEVER lock up on Steps 2, 3, or 5. 
-    if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
-        window.updateDynamicPricingMatrixVanilla(); 
-    } 
-    
-    // 4. CRITICAL STEP CONTAINMENT CHECK: 
-    // Verify visibility boundaries to prevent heavy layout adjustments during step transitions. 
-    const activeStepBlock = document.querySelector(".wizard-panel.active") || document.querySelector(".wizard-step-container-block.active") || document.body; 
-    if (activeStepBlock && activeStepBlock.id) { 
-        const activePanelId = String(activeStepBlock.id).trim().toLowerCase(); 
-        if (activePanelId !== "step-panel-1" && activePanelId !== "step-1") { 
-            // 🟢 INTEGRITY ATTACHMENT GATE: 
-            // Check if the Step 1 card block container has already been compiled and printed. 
-            const preExistingPlanCard = document.getElementById("step-1-selected-plan-overview"); 
-            if (preExistingPlanCard && preExistingPlanCard.children.length > 0) { 
-                console.log(`[Lifecycle Sync Pass] Pricing values updated background-side. Visual redraw suppressed for active view: #${activePanelId}`); 
-                return; // Safe exit: Card is already built, suppress layout shift 
-            } 
-        } 
-    } 
-    
-    if (typeof window.renderOnboardingPlanOverviewCard === "function") { 
-        console.log(`[Lifecycle Sync Dispatch] Pushing verified records down to UI card builder.`); 
-        window.renderOnboardingPlanOverviewCard( 
-            actualServiceDataNode, 
-            tierTitleDisplay, 
-            activeBulletsArray, 
-            resolvedPackageFeeAmount 
-        ); 
-    } else { 
-        console.error("[Lifecycle Sync Failure] Render card builder method is missing from global scope memory."); 
-    } 
-} 
+function renderStep1CustomFeatureBullets(activeSlug) {
+  // 🛡️ RUNTIME LIFECYCLE GUARD:
+  if (typeof window.getPricingConfiguration !== "function") {
+    setTimeout(function() { renderStep1CustomFeatureBullets(activeSlug); }, 50);
+    return;
+  }
 
-// Map safely back to global layers so your initial page boots can invoke it 
+  // Pure dynamic variable resolution — No default parameter strings assumed
+  const activePlanKey = window.routeActivePlanKey;
+  if (!activePlanKey) {
+    setTimeout(function() { renderStep1CustomFeatureBullets(activeSlug); }, 50);
+    return;
+  }
+
+  const activeTierKey = String(activePlanKey).toLowerCase().trim();
+
+  // 1. Fetch the data configuration object directly
+  const resolvedConfig = window.getPricingConfiguration(activeSlug);
+  if (!resolvedConfig || !resolvedConfig.serviceKey) {
+    console.error(`[Lifecycle Sync Failure] Timing engine could not resolve configurations for: "${activeSlug}"`);
+    return;
+  }
+  console.log(`[Lifecycle Sync Success] Extracted properties for service path: "${resolvedConfig.serviceKey}"`);
+
+  // 2. Clear property tracking mapping arrays
+  const activeBulletsArray = resolvedConfig.bullets || [];
+  const resolvedPackageFeeAmount = resolvedConfig.basePrice || 0;
+  const tierTitleDisplay = activeTierKey.charAt(0).toUpperCase() + activeTierKey.slice(1);
+
+  // 3. Extract the root database record
+  const rawDatabaseSource = window.CENTRAL_SERVICE_PLAN_DB || (window.GLOBAL_COMPANY_PRICING ? window.GLOBAL_COMPANY_PRICING.packages : null);
+  const actualServiceDataNode = rawDatabaseSource?.[resolvedConfig.serviceKey];
+  if (!actualServiceDataNode) {
+    console.error(`[Lifecycle Sync Failure] Database entry missing for key lookup index: "${resolvedConfig.serviceKey}"`);
+    return;
+  }
+
+  // 4. CRITICAL STEP CONTAINMENT CHECK:
+  // Verify visibility boundaries to prevent heavy layout adjustments during step transitions.
+  const activeStepBlock = document.querySelector(".wizard-panel.active") || document.querySelector(".wizard-step-container-block.active") || document.body;
+  if (activeStepBlock && activeStepBlock.id) {
+    const activePanelId = String(activeStepBlock.id).trim().toLowerCase();
+    
+    if (activePanelId !== "step-panel-1" && activePanelId !== "step-1") {
+      // 🟢 INTEGRITY ATTACHMENT GATE:
+      const preExistingPlanCard = document.getElementById("step-1-selected-plan-overview");
+      if (preExistingPlanCard && preExistingPlanCard.children.length > 0) {
+        console.log(`[Lifecycle Sync Pass] Pricing values protected. Visual redraw suppressed for active view: #${activePanelId}`);
+        return; // Safe exit: Instantly returns without letting the data loop blank out subsequent screen nodes
+      }
+    }
+  }
+
+  // 🟢 OPTIMIZATION FIX RELOCATED: 
+  // Moved beneath step validation gates so it only applies math parameters when safe to execute!
+  if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+    window.updateDynamicPricingMatrixVanilla();
+  }
+
+  if (typeof window.renderOnboardingPlanOverviewCard === "function") {
+    console.log(`[Lifecycle Sync Dispatch] Pushing verified records down to UI card builder.`);
+    window.renderOnboardingPlanOverviewCard(
+      actualServiceDataNode,
+      tierTitleDisplay,
+      activeBulletsArray,
+      resolvedPackageFeeAmount
+    );
+  } else {
+    console.error("[Lifecycle Sync Failure] Render card builder method is missing from global scope memory.");
+  }
+}
+
+// Map safely back to global layers so your initial page boots can invoke it
 window.renderStep1CustomFeatureBullets = renderStep1CustomFeatureBullets;
-
 
 // ============================================================================ //
 // 🎯 DATA LIFESTYLE VALIDATOR: TIMING-INDEPENDENT LIFECYCLE ENFORCER           //

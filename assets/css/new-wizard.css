@@ -2178,3 +2178,10 @@ footer, .wizard-footer, #wizard-footer-container {
     padding: 15px 40px 40px 40px !important; 
     box-sizing: border-box !important;
 }
+
+
+/* Native browser engine layout control — zero mutation events triggered */
+.upsell-market-card p:empty,
+.upsell-market-card p[data-blank="true"] {
+  display: none !important;
+}
