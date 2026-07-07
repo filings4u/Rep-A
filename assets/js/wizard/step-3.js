@@ -576,7 +576,7 @@ function buildMarketplaceCardsHtml(catalogItems) {
   accumulatorHtml += ` 
    <div class="wizard-footer-action-row" style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; width: 100% !important; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border, #e2e8f0); clear: both; box-sizing: border-box;"> 
      <button type="button" class="btn-wizard-nav-back" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;"> 
-       <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Previous Step 
+       <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Service Form
      </button> 
      <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(4, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);"> 
        Continue to PoA <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i> 

@@ -141,7 +141,7 @@ window.initCursiveSignatureCaptureLivePreview = function() {
         <!-- NAVIGATION ACTION BUTTONS ROW -->
         <div class="wizard-footer-action-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; clear: both; box-sizing: border-box;">
             <button type="button" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
-                <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Previous Step
+                <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Add Ons
             </button>
             <button type="button" id="poa-next-btn" disabled onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(5, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; opacity: 0.5; cursor: not-allowed; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);">
                 Continue to Summary <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>

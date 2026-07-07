@@ -81,7 +81,7 @@ function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, act
           <!-- Integrated Action Footer Navigation Bar -->
           <div class="wizard-action-footer" style="display: flex; justify-content: flex-end; align-items: center; width: 100%; margin-top: 16px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 16px; box-sizing: border-box; clear: both;">
             <button type="button" class="btn-wizard-main" onclick="window.switchWizardActiveViewLayout(2)" style="background: #0a1f44; color: #ffffff; padding: 12px 32px; border: none; border-radius: 6px; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s;">
-              Continue to Form <i class="fa-solid fa-arrow-right"></i>
+              Continue to Service Form <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
 

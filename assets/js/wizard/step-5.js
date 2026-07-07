@@ -284,10 +284,10 @@ window.finalizePricingMatrixUiRender = function(foundationFilingCost, aggregateU
     
     actionRowFooter.innerHTML = `
       <button type="button" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
-        <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Signatures
+        <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to PoA
       </button>
-      <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(6, event); }" style="background: #10b981; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);">
-        Submit Order & Proceed <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>
+      <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(6, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.2);">
+        Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>
       </button>`;
       
     parentCardShell.appendChild(actionRowFooter);

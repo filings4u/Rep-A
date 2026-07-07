@@ -1,187 +1,162 @@
 // ============================================================================ // 
-// 💳 STEP 6 SECURE GATEWAY REAL-TIME INVOICE REFRESHER & STRIPE BRIDGE         // 
+// 💳 SECURE STRIPE GATEWAY COMPONENT WITH LOOP BLOCK PROTECTION 
 // ============================================================================ // 
-/** 
- * Synchronizes the live checkout total straight onto the Step 6 indicator node 
- * and automatically kicks off the Stripe inputs initialization routine. 
- */ 
-function forceStep6StripePaymentGatewayRefreshPass() { 
-    console.log("[Payment Gate] Step 6 active view detected. Synchronizing invoicing values..."); 
-    const paymentTotalTextNode = document.getElementById("payment-gateway-total-display"); 
-    
-    // 🧠 🟢 FIXED PRICING MATRIX REALIGNMENT: 
-    // Secure mapping pointing cleanly to your data layers, preventing NaN dropouts
-    const activeRunningTotalAmount = window.summaryCalculatedGrandTotal || 
-                                     window.finalComputedOnboardingInvoiceTotalAmount || 
-                                     window.computedWizardGrandTotalAmount || 
-                                     window.wizardCalculatedFinalTotalAmount || 
-                                     parseFloat(localStorage.getItem('wizard_selected_state_total')) ||
-                                     parseFloat(localStorage.getItem('wizard_calculated_grand_total')) || 
-                                     0; 
-                                     
-    if (paymentTotalTextNode) { 
-        paymentTotalTextNode.textContent = `$${parseFloat(activeRunningTotalAmount).toFixed(2)}`; 
-        console.log(`[Payment Gate] Step 6 balance display successfully hydrated: $${parseFloat(activeRunningTotalAmount).toFixed(2)}`); 
-    } 
-    
-    // 💳 AUTOMATED STRIPE INTERFACE INITIALIZER WITH SINGLE-MOUNT SAFETY GATE: 
-    const stripeInputContainer = document.getElementById("stripe-card-element") || document.getElementById("card-element"); 
-    if (stripeInputContainer && stripeInputContainer.children.length > 0) { 
-        console.log("[Payment Gate] Stripe element context already pre-rendered safely inside container."); 
-        return; 
-    } 
-    if (typeof window.initializeFlatStripeCheckoutElement === "function") { 
-        window.initializeFlatStripeCheckoutElement(); 
-    } else { 
-        console.warn("[Payment Gate] 'initializeFlatStripeCheckoutElement' engine initialization is missing from global context."); 
-    } 
-} 
+(function() { 
+ "use strict"; 
+ const STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE'; 
+ 
+ window.stripeInstance = window.stripeInstance || null; 
+ window.stripeElementsContainer = window.stripeElementsContainer || null; 
+ window.stripePaymentElementInstance = window.stripePaymentElementInstance || null; 
+ 
+ // 🟢 ANTI-RECURSION LOCK LAYER: Stops layout cascades from triggering re-mount loops 
+ let isCurrentlyMountingStripeGateway = false; 
 
-window.forceStep6StripePaymentGatewayRefreshPass = forceStep6StripePaymentGatewayRefreshPass; 
+ async function initializeFlatStripeCheckoutElement() { 
+   // Abort instantly if another routing thread is actively running this block 
+   if (isCurrentlyMountingStripeGateway) return; 
 
-// 🟢 MOUNT LAYER PROTECTION: Fixes the visibility observer to watch both inline styles and layout utility classes
-document.addEventListener("DOMContentLoaded", () => { 
-    const step6PanelContainerNode = document.getElementById("step-panel-6") || document.getElementById("step-6"); 
-    if (step6PanelContainerNode) { 
-        const paymentPanelViewObserver = new MutationObserver((mutations) => { 
-            // FIXED EVALUATION DISCOVERY:
-            // Checks both style visibilities AND custom active framework class states
-            const isVisibleByStyle = step6PanelContainerNode.style.display !== "none" && step6PanelContainerNode.style.display !== "";
-            const isVisibleByClass = step6PanelContainerNode.classList.contains("active") || step6PanelContainerNode.classList.contains("show");
+   // 🟢 FIX 1: RUN THE CALCULATIONS MATRIX FIRST TO SYNC SELECTED ADDONS
+   if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+     window.updateDynamicPricingMatrixVanilla();
+   }
 
-            if (isVisibleByStyle || isVisibleByClass) { 
-                forceStep6StripePaymentGatewayRefreshPass(); 
-                setTimeout(forceStep6StripePaymentGatewayRefreshPass, 60); 
-            } 
-        }); 
-        
-        // REPAIRED ATTRIBUTE FILTER MATRIX: 
-        // Added "class" checking to guarantee routing activations register inside the pipeline loop
-        paymentPanelViewObserver.observe(step6PanelContainerNode, { 
-            attributes: true, 
-            attributeFilter: ["style", "class"] 
-        }); 
-        
-        window.paymentPanelViewObserverInstance = paymentPanelViewObserver; 
-        console.log("[Payment Gate] Step 6 structural MutationObserver attached cleanly with Class & Style interlocks."); 
-    } else { 
-        console.warn("[Payment Gate Warning] step-panel-6 container element was missing during observer allocation."); 
-    } 
-});
+   // Verify if the pricing parameters exist in window memory yet. If not, wait 50ms.
+   if (window.computedWizardGrandTotalAmount === undefined && window.wizardCalculatedFinalTotalAmount === undefined) {
+     setTimeout(initializeFlatStripeCheckoutElement, 50);
+     return;
+   }
 
+   const currentGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0; 
+   const totalAmountCents = Math.round(currentGrandTotal * 100); 
 
-// ============================================================================ //
-// 💳 MASTER TRANSACTION SUBMISSION ROUTER (COMBINED & WRAPPED)                  //
-// ============================================================================ //
-async function executeOnboardingTransactionPayloadSubmitVanilla() { 
-    console.log("[Stripe Dispatch] Packing customer inputs and preparing secure gateway channels..."); 
-    
-    let liveStripe = window.stripeInstance; 
-    let liveElements = window.stripeElementsContainer; 
-    let livePaymentElement = window.stripePaymentElementInstance; 
+   // DESTRUCTIVE LOOP BLOCK: If an element instance already exists for this exact amount, do not run a tear-down pass.
+   if (window.stripePaymentElementInstance && window.lastProcessedStripeAmountCents === totalAmountCents) { 
+     console.log("[Stripe Loader Guard] Identical checkout invoicing totals matched. Skipping duplicate mounting loop."); 
+     return; 
+   } 
 
-    if (!liveStripe && typeof Stripe !== "undefined") { 
-        window.stripeInstance = Stripe('pk_live_51TTy4i0dNjSlvyScbq19wWCQjOhDKdFMUzkV4Et4ok1NAWFFab4qV2KyZB5CwAp6dAvpLSuMZq2xKAR3BZ1gfuTM00KtmvEgc4'); 
-        liveStripe = window.stripeInstance; 
-    } 
+   console.log("[Stripe Loader] Initiating payment element mount sequence..."); 
+   const parentPanel = document.getElementById("step-panel-6") || document.getElementById("step-6"); 
+   if (!parentPanel) return; 
 
-    if (!liveStripe || !livePaymentElement || !liveElements) { 
-        alert("Stripe Integration Failure: The secure gateway payment component has not finished mounting inside Step 6."); 
-        return; 
-    } 
+   let mountPoint = document.getElementById("stripe-payment-element-mount-point"); 
+   if (!mountPoint) { 
+     console.warn("[Stripe Loader Intercept] '#stripe-payment-element-mount-point' was missing. Repairing DOM state programmatically..."); 
+     mountPoint = document.createElement("div"); 
+     mountPoint.id = "stripe-payment-element-mount-point"; 
+     mountPoint.style.cssText = "min-height: 150px; margin: 20px 0; width: 100%; box-sizing: border-box;"; 
+     const checkoutFormContainer = parentPanel.querySelector("form") || parentPanel; 
+     checkoutFormContainer.appendChild(mountPoint); 
+   } 
 
-    var activeNextButtonReference = document.getElementById('wizard-next-trigger-btn') || document.getElementById('poa-next-btn') || document.querySelector("#step-panel-6 .btn-wizard-main"); 
-    if (activeNextButtonReference) { 
-        activeNextButtonReference.disabled = true; 
-        activeNextButtonReference.style.background = '#64748b'; 
-        activeNextButtonReference.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Secure Payment...'; 
-    } 
+   // 🟢 FIX 2: ALIGN BUTTONS AND ONCLICK ACTIONS WITH THE SUBMISSION PIPELINE
+   let step6FooterButtons = parentPanel.querySelector(".wizard-footer-action-row"); 
+   if (!step6FooterButtons) { 
+     const footerContainer = document.createElement("div"); 
+     footerContainer.className = "wizard-footer-action-row"; 
+     footerContainer.style.cssText = "display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border, #e2e8f0); clear: both; box-sizing: border-box;"; 
+     footerContainer.innerHTML = ` 
+       <button type="button" class="btn-wizard-nav-back" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;"> 
+         <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Summary 
+       </button> 
+       <button type="button" class="btn-wizard-main btn-wizard-nav-next" id="wizard-next-trigger-btn" onclick="if(typeof window.executeOnboardingTransactionPayloadSubmitVanilla === 'function') { window.executeOnboardingTransactionPayloadSubmitVanilla(); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.2);"> 
+         Authorize & Create Account <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i> 
+       </button> `; 
+     const targetLocation = parentPanel.querySelector("form") || parentPanel; 
+     targetLocation.appendChild(footerContainer); 
+   } else {
+     // Re-route the button ID and click handlers if the footer elements already exist on screen
+     const nextActionBtn = step6FooterButtons.querySelector(".btn-wizard-main");
+     if (nextActionBtn) {
+       nextActionBtn.id = "wizard-next-trigger-btn";
+       nextActionBtn.onclick = function() {
+         if (typeof window.executeOnboardingTransactionPayloadSubmitVanilla === 'function') {
+           window.executeOnboardingTransactionPayloadSubmitVanilla();
+         }
+       };
+     }
+   }
 
-    let auxiliaryAddonsArray = []; 
-    if (window.currentCartState && Array.isArray(window.currentCartState.addons)) { 
-        window.currentCartState.addons.forEach(addon => { 
-            if(addon.id) auxiliaryAddonsArray.push(addon.id); 
-        }); 
-    } else { 
-        document.querySelectorAll('.addon-checkbox:checked, .upsell-checkbox:checked').forEach(checkbox => { 
-            auxiliaryAddonsArray.push(checkbox.id || checkbox.getAttribute('data-id')); 
-        }); 
-    } 
+   if (typeof Stripe === "undefined") { 
+     mountPoint.innerHTML = "<p style='color: red; font-size: 0.85rem; font-weight: 600;'>Payment system offline. Please refresh.</p>"; 
+     return; 
+   } 
 
-    const extractProductionFieldValue = (elementIdentifier) => { 
-        const targetNode = document.getElementById(elementIdentifier) || document.querySelector(`[name="${elementIdentifier}"]`) || document.querySelector(`[name="${elementIdentifier}[]"]`); 
-        return targetNode ? targetNode.value.trim() : ''; 
-    }; 
+   try { 
+     isCurrentlyMountingStripeGateway = true; 
+     
+     if (!window.stripeInstance) { 
+       window.stripeInstance = Stripe(STRIPE_PUBLISHABLE_KEY); 
+     } 
 
-    const safeServiceKey = window.routeActiveServiceKey || ""; 
-    const safePlanKey = window.routeActivePlanKey || ""; 
-    const targetRunningGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0; 
-    const targetRunningGovFee = window.computedWizardStateGovernmentFee || 0; 
+     // Handle zero dollar check safely inside instantiation parameters 
+     if (totalAmountCents <= 0) { 
+       if (window.stripePaymentElementInstance) { 
+         window.stripePaymentElementInstance.destroy(); 
+         window.stripePaymentElementInstance = null; 
+       } 
+       window.stripeElementsContainer = null; 
+       mountPoint.innerHTML = "<p style='color: #64748b; font-size: 0.85rem; font-family: sans-serif; text-align: center; padding: 20px;'>Your selected items total $0.00. No payment details are required to finalize this order.</p>"; 
+       return; 
+     } 
 
-    const primarySubmissionPayloadData = { 
-        transaction_hash_id: window.f4u_tx_session_hash || "", 
-        target_service_id: safeServiceKey, 
-        deployment_speed_tier: safePlanKey, 
-        authority_jurisdiction: extractProductionFieldValue('wizard-target-jurisdiction') || extractProductionFieldValue('formation_state'), 
-        legal_entity_name: extractProductionFieldValue('llc_proposed_name') || extractProductionFieldValue('ent_legal_name') || extractProductionFieldValue('company_name'), 
-        taxpayer_ein: extractProductionFieldValue('llc_existing_ein_field') || extractProductionFieldValue('ent_ein') || '', 
-        office_address_street: extractProductionFieldValue('ent_address_street') || extractProductionFieldValue('member_street_1'), 
-        office_address_city: extractProductionFieldValue('ent_address_city') || extractProductionFieldValue('member_city_1'), 
-        office_address_zip: extractProductionFieldValue('ent_address_zip') || extractProductionFieldValue('member_zip_1'), 
-        communications_email: extractProductionFieldValue('company_email') || extractProductionFieldValue('portal_user_email'), 
-        active_addons_list: auxiliaryAddonsArray, 
-        printed_signature_auth: extractProductionFieldValue('poa_typed_signature') || extractProductionFieldValue('signature_input'), 
-        digital_signature_raster_vector: localStorage.getItem("poa-signature-pad-data") || null, 
-        financials_subtotal_amount: targetRunningGrandTotal - targetRunningGovFee, 
-        financials_grand_total_charge: targetRunningGrandTotal, 
-        client_session_timestamp: new Date().toISOString() 
-    }; 
+     if (window.stripePaymentElementInstance) { 
+       window.stripePaymentElementInstance.destroy(); 
+       window.stripePaymentElementInstance = null; 
+     } 
 
-    try { 
-        sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(primarySubmissionPayloadData)); 
-    } catch (sessionCacheError) { 
-        console.error("[Storage Error] Receipt serialization failed:", sessionCacheError); 
-    } 
+     // 🟢 FIX 3: ADD AN HTML PRICING BANNER SUMMARY RIGHT ABOVE THE STRIPE IFRAME FRAME
+     mountPoint.innerHTML = `
+       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 14px 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; width: 100%;">
+         <span style="font-weight: 800; color: #0a1f44; font-size: 0.95rem;">Total Payment Authorization:</span>
+         <strong style="font-family: monospace; color: #10b981; font-size: 1.3rem;">$${currentGrandTotal.toFixed(2)}</strong>
+       </div>
+       <div id="stripe-iframe-nested-injection-anchor"></div>
+     `;
 
-    if (typeof window.processFinalSecureCheckoutSubmission === "function") { 
-        try { 
-            await window.processFinalSecureCheckoutSubmission(primarySubmissionPayloadData); 
-        } catch (backendError) { 
-            console.error("[Database Sync Error] Pre-checkout registry failed:", backendError); 
-        } 
-    } else { 
-        console.warn("[Database Sync Warning] window.processFinalSecureCheckoutSubmission missing from memory runtime mapping layers."); 
-    } 
+     const checkoutOptions = { 
+       mode: 'payment', 
+       amount: totalAmountCents, 
+       currency: 'usd', 
+       appearance: { 
+         theme: 'stripe', 
+         variables: { 
+           colorPrimary: '#10b981', 
+           colorBackground: '#ffffff', 
+           colorText: '#0a1f44', 
+           colorDanger: '#ef4444', 
+           fontFamily: 'system-ui, sans-serif', 
+           borderRadius: '8px' 
+         } 
+       } 
+     }; 
 
-    const baseOriginPath = window.location.origin + window.location.pathname.replace('wizard.html', ''); 
-    const successRedirectionUrl = baseOriginPath + "success.html"; 
-    const communicationEmailValue = primarySubmissionPayloadData.communications_email || ''; 
+     window.stripeElementsContainer = window.stripeInstance.elements(checkoutOptions); 
+     window.stripePaymentElementInstance = window.stripeElementsContainer.create("payment", { 
+       layout: { type: 'accordion', defaultCollapsed: false, radios: false, spacedAccordionItems: false } 
+     }); 
 
-    try { 
-        const { error } = await liveStripe.confirmPayment({ 
-            elements: liveElements, 
-            confirmParams: { 
-                return_url: successRedirectionUrl, 
-                receipt_email: communicationEmailValue 
-            } 
-        }); 
-        
-        if (error) { 
-            alert("Payment Transaction Rejected: " + error.message); 
-            if (activeNextButtonReference) { 
-                activeNextButtonReference.disabled = false; 
-                activeNextButtonReference.style.background = '#10b981'; 
-                activeNextButtonReference.innerHTML = ' Complete Order & Submit'; 
-            } 
-        } 
-    } catch (stripeGatewayException) { 
-        console.error("[Stripe Connection Error] Critical network exception caught:", stripeGatewayException); 
-        if (activeNextButtonReference) { 
-            activeNextButtonReference.disabled = false; 
-            activeNextButtonReference.style.background = '#10b981'; 
-            activeNextButtonReference.innerHTML = ' Complete Order & Submit'; 
-        } 
-    } 
-} 
+     window.lastProcessedStripeAmountCents = totalAmountCents; 
 
-window.executeOnboardingTransactionPayloadSubmitVanilla = executeOnboardingTransactionPayloadSubmitVanilla;
+     requestAnimationFrame(() => { 
+       setTimeout(() => { 
+         if (window.stripePaymentElementInstance) { 
+           // Mount directly inside the nested frame node to preserve the layout wrapper banner
+           window.stripePaymentElementInstance.mount("#stripe-iframe-nested-injection-anchor"); 
+           console.log("[Stripe Loader Success] Secure Payment Gateway securely isolated and mounted."); 
+         } 
+       }, 30); 
+     }); 
+
+   } catch (mountError) { 
+     console.error("[Stripe Loader Core Exception]:", mountError); 
+     mountPoint.innerHTML = "<p style='color: #ef4444; font-size: 0.85rem;'>Secure gateway loading failed. Please refresh.</p>"; 
+   } finally { 
+     isCurrentlyMountingStripeGateway = false; 
+   } 
+ } 
+ 
+ window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement; 
+ window.forceStep6StripePaymentGatewayRefreshPass = initializeFlatStripeCheckoutElement; 
+})();

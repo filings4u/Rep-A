@@ -55,7 +55,7 @@ function renderStepTwoLayoutMarkup() {
     style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center;"
   >
     <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> 
-    <span>Previous Step</span>
+    <span>Back to Selected Package</span>
   </button>
 
   <!-- Next Button (Advances directly to Step 3) -->

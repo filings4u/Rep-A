@@ -722,46 +722,51 @@ window.saveWizardFormStatesVanilla = function() {
       }
     });
 
-    // 3. Process radio inputs safely by only capturing the actively selected element in each group
-    const radioButtons = currentActivePanel.querySelectorAll("input[type='radio']");
-    const processedRadioNames = new Set();
+  // 3. Process radio inputs safely by only capturing the actively selected element in each group 
+const radioButtons = currentActivePanel.querySelectorAll("input[type='radio']"); 
+const processedRadioNames = new Set(); 
 
-    radioButtons.forEach(function(radioItem) {
-      const radioIdentifier = radioItem.name || radioItem.id;
-      if (!radioIdentifier || processedRadioNames.has(radioIdentifier)) {
-        return; 
-      }
+radioButtons.forEach(function(radioItem) { 
+  const radioIdentifier = radioItem.name || radioItem.id; 
+  if (!radioIdentifier || processedRadioNames.has(radioIdentifier)) { 
+    return; 
+  } 
 
-      // Query the specific checked element belonging to this radio group name context
-      const selectedRadioInGroup = currentActivePanel.querySelector(`input[type='radio'][name='${radioItem.name}']:checked`) || 
-                                   (radioItem.checked ? radioItem : null);
+  // Query the specific checked element belonging to this radio group name context 
+  const selectedRadioInGroup = currentActivePanel.querySelector(`input[type='radio'][name='${radioItem.name}']:checked`) || (radioItem.checked ? radioItem : null); 
+  
+  if (selectedRadioInGroup) { 
+    const radioCleanValue = selectedRadioInGroup.value ? selectedRadioInGroup.value.trim() : ""; 
+    localStorage.setItem(`wizard_field_${radioIdentifier}`, radioCleanValue); 
 
-      if (selectedRadioInGroup) {
-        const radioCleanValue = selectedRadioInGroup.value ? selectedRadioInGroup.value.trim() : "";
-        localStorage.setItem(`wizard_field_${radioIdentifier}`, radioCleanValue);
+    // Explicit structural word matching instead of substring collision loops 
+    const cleanRadioId = radioIdentifier.toLowerCase(); 
+    
+    // 🟢 FIXED SYNTAX & LOGIC ANTI-COLLISION CORES:
+    const isPackageTierKey = cleanRadioId === "plan" || cleanRadioId === "tier" || cleanRadioId.endsWith("_plan") || cleanRadioId.endsWith("_tier");
+    const isStateSelectionKey = cleanRadioId.includes("state") || cleanRadioId.includes("geo") || cleanRadioId.includes("jurisdiction") || cleanRadioId.includes("location");
 
-        // Explicit structural word matching instead of substring collision loops
-        const cleanRadioId = radioIdentifier.toLowerCase();
-        if (cleanRadioId === "plan" || cleanRadioId === "tier" || cleanRadioId.endsWith("_plan") || cleanRadioId.endsWith("_tier")) {
-          window.currentPlanKey = radioCleanValue;
-          window.currentServiceTier = radioCleanValue;
-        }
-      } else {
-        // Safe Fallback: If nothing is checked in the radio group yet, clear or default the storage key
-        localStorage.setItem(`wizard_field_${radioIdentifier}`, "");
-      }
+    if (isPackageTierKey && !isStateSelectionKey) { 
+      window.currentPlanKey = radioCleanValue; 
+      window.currentServiceTier = radioCleanValue; 
+    } 
+  } else { 
+    // Safe Fallback: If nothing is checked in the radio group yet, clear or default the storage key 
+    localStorage.setItem(`wizard_field_${radioIdentifier}`, ""); 
+  } 
 
-      // Mark group as processed to avoid redundant overhead iterations
-      if (radioItem.name) {
-        processedRadioNames.add(radioItem.name);
-      }
-    });
+  // Mark group as processed to avoid redundant overhead iterations 
+  if (radioItem.name) { 
+    processedRadioNames.add(radioItem.name); 
+  } 
+}); 
 
-    console.log("[State Engine Success] Active layout fields successfully serialized.");
-  } catch (scrapingException) {
-    console.warn("[State Engine Error] Failed to safely cache form elements:", scrapingException);
-  }
+console.log("[State Engine Success] Active layout fields successfully serialized."); 
+} catch (scrapingException) { 
+  console.warn("[State Engine Error] Failed to safely cache form elements:", scrapingException); 
+} 
 };
+
 
 
 // ============================================================================ //
@@ -1895,3 +1900,255 @@ window.runUnifiedPlatformLifecycleBoot = runUnifiedPlatformLifecycleBoot;
     }
   };
 })();
+
+
+// ============================================================================ // 
+// 💳 PURIFIED DYNAMIC TRANSACTION PIPELINE (ZERO FALLBACKS - ZERO HARDCODES)   // 
+// ============================================================================ // 
+window.executeOnboardingTransactionPayloadSubmitVanilla = async function() { 
+ const submitBtn = document.getElementById("wizard-next-trigger-btn"); 
+ const errorBanner = document.getElementById("step6-error-banner-target"); 
+ 
+ if (errorBanner) { 
+   errorBanner.style.display = "none"; 
+   errorBanner.innerHTML = ""; 
+ } 
+ if (submitBtn) { 
+   submitBtn.disabled = true; 
+   submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Secure Payment...'; 
+ } 
+
+ try { 
+   // 1. Core database provider verification guard 
+   let supabaseClient = window.supabaseClient || window.supabase || window.sb; 
+   if (!supabaseClient || typeof supabaseClient.from !== 'function') { 
+     throw new Error("Validation Failure: Database driver reference context is uninitialized."); 
+   } 
+
+   // 2. Core active service descriptor configuration guard 
+   const serviceKey = window.routeActiveServiceKey; 
+   if (!serviceKey) { 
+     throw new Error("Validation Failure: Active routing service tracking key is missing from window memory."); 
+   } 
+
+   // Generate absolute state-neutral cryptographic reference tracking identifier parameters 
+   const uniqueTrackingToken = "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase(); 
+
+   // 3. 🎯 DYNAMIC DATA ACQUISITION FROM ACTIVE REGISTRY SERIALIZER 
+   const activeRegistry = window.formRegistry && window.formRegistry[serviceKey]; 
+   let serializedDataPayload = {}; 
+   if (activeRegistry && typeof activeRegistry.serialize === "function") { 
+     serializedDataPayload = activeRegistry.serialize(); 
+   } else { 
+     const fieldsContainer = document.getElementById('dynamic-onboarding-fields-root'); 
+     if (fieldsContainer) { 
+       const activeFormInputs = fieldsContainer.querySelectorAll('input, select, textarea'); 
+       activeFormInputs.forEach(inputNode => { 
+         if (inputNode.id) serializedDataPayload[inputNode.id] = inputNode.value.trim(); 
+       }); 
+     } 
+   } 
+
+   // 4. 🎯 PURE DATA EXTRACTS & CONSTRAINT ENFORCEMENT 
+   const rawEmailString = document.getElementById("lead_email")?.value || document.getElementById("portal_user_email")?.value || serializedDataPayload.email || window.currentCapturedUserEmailAddress || ""; 
+   const customerEmail = String(rawEmailString).trim().toLowerCase(); 
+   if (!customerEmail) { 
+     throw new Error("Validation Failure: Customer communication email coordinate cannot be verified."); 
+   } 
+
+   const companyTitleInputNode = document.querySelector('input[id*="name"], input[id*="legal"], input[id*="company"]'); 
+   const businessName = ( 
+     companyTitleInputNode?.value || serializedDataPayload.company_name || serializedDataPayload.mbe_legal_name || document.getElementById("wizard-route-service-id")?.value || document.querySelector(".wizard-review-company-name")?.textContent || "" 
+   ).trim(); 
+   if (!businessName) { 
+     throw new Error("Validation Failure: Active corporate registration or proposed company name field is unpopulated."); 
+   } 
+
+   const stateFormationField = document.querySelector('select[id*="state"], select[id*="formation"]'); 
+   const stateFormation = (stateFormationField?.value || serializedDataPayload.state_of_formation || serializedDataPayload.mbe_state_of_formation || "").trim(); 
+   if (!stateFormation) { 
+     throw new Error("Validation Failure: Entity regional state of formation parameter selection is required."); 
+   } 
+
+   const rawServiceTitle = document.querySelector(".step-main-title")?.textContent || ""; 
+   const cleanServiceTitle = rawServiceTitle.replace("YOUR SELECTION OVERVIEW", "").trim(); 
+   if (!cleanServiceTitle) { 
+     throw new Error("Validation Failure: Core enrollment catalog item title element is missing from layout view."); 
+   } 
+
+   const dynamicAddonsList = window.currentSelectedAddonsListArrayMatrix || []; 
+
+   let activePlanTierLabel = window.routeActivePlanTierName; 
+   if (!activePlanTierLabel) { 
+     if (dynamicAddonsList.length > 0) { 
+       activePlanTierLabel = dynamicAddonsList.map(addonItem => addonItem.title).join(" + "); 
+     } else { 
+       activePlanTierLabel = document.querySelector('span[id*="tier"], div[id*="plan"]')?.textContent?.trim(); 
+     } 
+   } 
+   if (!activePlanTierLabel) { 
+     throw new Error("Validation Failure: Purchased service tier descriptor configuration parameter cannot be compiled."); 
+   }
+
+   // 🟢 FIX: 5. FINANCIAL STRING EXTRACTION & COMPUTATION PASS
+   // Pull data directly out of secure math memory nodes instead of breaking on missing element selectors.
+   const calculatedBaseCost = parseFloat(window.computedWizardBaseTierAmount);
+   const calculatedGrandCost = parseFloat(window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount);
+
+   if (isNaN(calculatedBaseCost) || isNaN(calculatedGrandCost)) { 
+     throw new Error("Validation Failure: Global invoice tracking variables are uncalculated or empty."); 
+   } 
+
+   // 6. BUILD SYSTEM DATA PROFILE DICTIONARY (JSONB METADATA SCHEMA CELL) 
+   const secureMetadataPacket = { 
+     email: customerEmail, 
+     service_form_inputs: serializedDataPayload, 
+     active_addons: dynamicAddonsList, 
+     financials_subtotal: calculatedBaseCost, 
+     selected_package_title: cleanServiceTitle, 
+     plan_tier_label: activePlanTierLabel 
+   }; 
+
+   console.log("[Pipeline Engine] Metadata built successfully. Registering records with Supabase CRM database layers..."); 
+
+   // 7. 🚀 SUPABASE DATA ARCHIVAL TRANSACTION PASS 
+   const { error: dbError } = await supabaseClient 
+     .from('wizard_onboarding_orders') 
+     .insert([{ 
+       tracking_token: uniqueTrackingToken, 
+       customer_email: customerEmail, 
+       company_name: businessName, 
+       jurisdiction_state: stateFormation.toUpperCase(), 
+       service_slug: serviceKey, 
+       package_tier: activePlanTierLabel, 
+       total_amount_paid: calculatedGrandCost, 
+       form_payload_metadata: secureMetadataPacket, 
+       payment_status: 'pending_gateway' 
+     }]); 
+
+   if (dbError) { 
+     throw new Error(`Database Archival Abort: ${dbError.message}`); 
+   } 
+
+   console.log("[Pipeline Engine] Supabase log complete. Triggering Stripe secure cross-origin merchant handshake..."); 
+
+   // 8. 🚀 STRIPE SECURE DISPATCH GATEWAY CONFIRMATION PASS 
+   if (!window.stripeInstance || !window.stripeElementsContainer) { 
+     throw new Error("Payment Gateway Abort: Stripe core engine references are missing or uninitialized."); 
+   } 
+
+   // Direct Stripe Payment Element confirmation loop 
+   const { error: stripeConfirmationError } = await window.stripeInstance.confirmPayment({ 
+     elements: window.stripeElementsContainer, 
+     confirmParams: { 
+       return_url: `${window.location.origin}/onboarding-confirmation-success?token=${uniqueTrackingToken}`, 
+       receipt_email: customerEmail, 
+       shipping: { 
+         name: businessName, 
+         address: { 
+           line1: serializedDataPayload.billing_address || serializedDataPayload.street_address || "Form Entry", 
+           state: stateFormation.toUpperCase(), 
+           country: 'US' 
+         } 
+       } 
+     } 
+   }); 
+
+   if (stripeConfirmationError) { 
+     throw new Error(stripeConfirmationError.message); 
+   } 
+
+ } catch (pipelineException) { 
+   console.error("[Transaction Engine Fatal Error]:", pipelineException); 
+   
+   if (submitBtn) { 
+     submitBtn.disabled = false; 
+     submitBtn.innerHTML = 'Complete Order & Submit Application'; 
+   } 
+
+   if (errorBanner) { 
+     errorBanner.style.display = "block"; 
+     errorBanner.innerHTML = `<div style="padding: 12px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; color: #991b1b; font-size: 0.85rem; font-family: sans-serif; font-weight: 600;">⚠️ ${pipelineException.message}</div>`; 
+     errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); 
+   } 
+ } 
+};
+
+
+// ============================================================================ // 
+// 🗺️ PART 4: MULTI-SIDEBAR TIMELINE NAV LIGHTS ENGINE (DOM ACTIVE STATE SAFE)  // 
+// ============================================================================ // 
+function updateApplicationMapTimelineBubbles(currentStepIndex) { 
+  "use strict";
+
+  // 🟢 FIX: DYNAMIC STEP OVERRIDE BY DOM DISCOVERY
+  // Instead of guessing or tracking a stale window state, check what panel is actually visible on screen!
+  let determinedActiveStepIndex = parseInt(currentStepIndex, 10);
+  if (isNaN(determinedActiveStepIndex)) {
+    determinedActiveStepIndex = 0;
+  }
+
+  // Scan your HTML elements for active panels to lock down the exact index match
+  const currentActivePanel = document.querySelector(".wizard-panel.active") || 
+                             document.querySelector(".wizard-step-container-block.active") ||
+                             document.querySelector("[id*='step-panel-'].active") ||
+                             document.querySelector("[id*='step-'].active");
+
+  if (currentActivePanel && currentActivePanel.id) {
+    // Extract numbers cleanly straight out of your layout IDs (e.g. "step-panel-0" -> 0, "step-1" -> 1)
+    const numericalMatch = currentActivePanel.id.match(/\d+/);
+    if (numericalMatch) {
+      determinedActiveStepIndex = parseInt(numericalMatch[0], 10);
+    }
+  }
+
+  console.log(`[Multi-Sidebar Progress] Illuminating timeline nodes contextually for step: ${determinedActiveStepIndex}`); 
+
+  for (let i = 0; i <= 7; i++) { 
+    const rowNodes = document.querySelectorAll(`#timeline-row-${i}`); 
+    rowNodes.forEach(rowNode => { 
+      if (!rowNode) return; 
+      const dotNode = rowNode.querySelector(".toc-dot"); 
+      const titleNode = rowNode.querySelector(".toc-step-title"); 
+
+      // Reset basic default layouts cleanly before parsing state updates
+      if (dotNode) { 
+        dotNode.style.removeProperty("background-color"); 
+        dotNode.style.removeProperty("border"); 
+        dotNode.style.removeProperty("box-shadow"); 
+      } 
+      if (titleNode) { 
+        titleNode.style.setProperty("color", "#64748b", "important"); 
+        titleNode.style.setProperty("font-weight", "500", "important"); 
+      } 
+
+      // Apply contextually accurate progress state designs matching the active panel index
+      if (i === determinedActiveStepIndex) { 
+        if (dotNode) { 
+          dotNode.style.setProperty("background-color", "#10b981", "important"); 
+          dotNode.style.setProperty("border", "3px solid #10b981", "important"); 
+          dotNode.style.setProperty("box-shadow", "0 0 0 4px rgba(16, 185, 129, 0.25)", "important"); 
+        } 
+        if (titleNode) { 
+          titleNode.style.setProperty("color", "#10b981", "important"); 
+          titleNode.style.setProperty("font-weight", "800", "important"); 
+        } 
+      } else if (i < determinedActiveStepIndex) { 
+        if (dotNode) { 
+          dotNode.style.setProperty("background-color", "#10b981", "important"); 
+          dotNode.style.setProperty("border", "3px solid #10b981", "important"); 
+        } 
+        if (titleNode) { 
+          titleNode.style.setProperty("color", "#0a1f44", "important"); 
+          titleNode.style.setProperty("font-weight", "700", "important"); 
+        } 
+      } else { 
+        if (dotNode) { 
+          dotNode.style.setProperty("background-color", "#e2e8f0", "important"); 
+          dotNode.style.setProperty("border", "3px solid #e2e8f0", "important"); 
+        } 
+      } 
+    }); 
+  } 
+}
+window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles;

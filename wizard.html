@@ -54,11 +54,13 @@
         <div class="wizard-panel active" id="step-panel-1"> 
           
       
-          <!-- Header Block --> 
-          <div class="step-header-container" style="margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; max-width: calc(100% - 220px);"> 
-            <h2 class="step-main-title">Your Selection Overview</h2> 
-            <p class="step-subtitle" style="color: var(--slate); font-size: 0.95rem; margin: 0;">Review your selected package and features below.</p> 
-          </div> 
+     <!-- Header Block -->
+<!-- 🟢 FIXED: Removed max-width constraint to let the bottom border stretch 100% full width naturally -->
+<div class="step-header-container" style="margin-bottom: 30px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 20px; width: 100%; box-sizing: border-box; clear: both;">
+  <h2 class="step-main-title" style="margin: 0 0 6px 0; color: var(--navy, #0a1f44); font-weight: 800; font-size: 1.5rem; text-align: left;">Your Selection Overview</h2>
+  <p class="step-subtitle" style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0; text-align: left;">Review your selected package and features below.</p>
+</div>
+
 
           <!-- Target Injection Slots -->
           <div id="step-0-injection-placeholder"></div> 
@@ -126,7 +128,7 @@
     <script src="assets/js/wizard/step-7.js"></script>
    <script src="assets/js/wizard/footer.js"></script>
 
-    <script src="assets/js/wizard/stripe.js"></script>
+   
     <script src="assets/js/wizard/step2-popup.js"></script>
     <script src="assets/js/wizard/wizard-chat-widget.js"></script>
     <script src="assets/js/wizard/save-progress.js"></script>
