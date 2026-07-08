@@ -1214,55 +1214,50 @@ window.executeStepLifecyclePipeline = executeStepLifecyclePipeline;
 })();
 
 // ============================================================================ //
-// 🔗 MODULAR HOOK: URL PARAMETER EXTRACTOR & DEFENSIVE BOOTSTRAPPER            //
+// 🔗 MODULAR HOOK: URL PARAMETER EXTRACTOR & DEFENSIVE BOOTSTRAPPER 
 // ============================================================================ //
+/**
+ * URL Parameter Extractor Hook
+ * Automatically populates routing states from URL tracking if left unassigned
+ */
+function syncUrlStateToWizardEngine() {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (urlParams.has('service')) {
+    const val = urlParams.get('service');
+    if (val && window.routeActiveServiceKey !== val) {
+      window.routeActiveServiceKey = val;
+    }
+  }
+  
+  if (urlParams.has('plan')) {
+    const pVal = urlParams.get('plan');
+    if (pVal && window.routeActivePlanKey !== pVal) {
+      window.routeActivePlanKey = pVal;
+    }
+  }
 
-/** 
- * URL Parameter Extractor Hook 
- * Automatically populates routing states from URL tracking if left unassigned 
- */ 
-function syncUrlStateToWizardEngine() { 
-    const urlParams = new URLSearchParams(window.location.search); 
+  // 🟢 FIXED: Detect Stripe landing redirection parameters 
+  if (urlParams.get('step') === '7') {
+    console.log("[State Registry] Stripe payment return detected. Enforcing manual view override to Step 7.");
     
-    if (urlParams.has('service')) { 
-        const val = urlParams.get('service'); 
-        if (val && window.routeActiveServiceKey !== val) { 
-            window.routeActiveServiceKey = val; 
-        } 
-    } 
+    // Explicitly update your active tracking variable
+    window.currentWizardActiveStep = 7;
     
-    if (urlParams.has('plan')) { 
-        const pVal = urlParams.get('plan'); 
-        if (pVal && window.routeActivePlanKey !== pVal) { 
-            window.routeActivePlanKey = pVal; 
-        } 
-    } 
-} 
-
-// 🔥 FIX: Safety check sequence parameters to guarantee reactive setters are alive before execution pass
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", syncUrlStateToWizardEngine);
-} else {
-    // Wrap inside a microtask queue execution slice to let window descriptors finalize mounting paths
-    setTimeout(syncUrlStateToWizardEngine, 1);
+    // Switch the visual layout panel immediately 
+    if (typeof window.switchWizardActiveViewLayout === "function") {
+      window.switchWizardActiveViewLayout(7);
+    } else {
+      // If layout router isn't parsed yet, wait a tiny bit for wizard-core.js to bind
+      setTimeout(() => {
+        if (typeof window.switchWizardActiveViewLayout === "function") {
+          window.switchWizardActiveViewLayout(7);
+        }
+      }, 50);
+    }
+  }
 }
 
-/** 
- * Defensive Bootstrapper Guard 
- * Stubs missing initialization frames dynamically to protect the pipeline from throwing fatal errors 
- */ 
-if (typeof window.initSevenStepWizardSystem !== "function") { 
-    window.initSevenStepWizardSystem = function() { 
-        console.log("[Pricing Boot] Safety interceptor triggered: System initializing downstream templates..."); 
-        
-        // Automatically kick off Step 1 overview processing if parameters exist 
-        if (window.routeActiveServiceKey && typeof window.renderOnboardingPlanOverviewCard === "function") { 
-            window.renderOnboardingPlanOverviewCard(null, null, null, 0); 
-        } 
-    }; 
-}
-
-console.log("[State Registry] URL Extractor Hook and Bootstrapper synchronized safely.");
 
 
 // ============================================================================ // 

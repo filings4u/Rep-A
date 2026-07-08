@@ -146,37 +146,37 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         
         let isReturningUser = localStorage.getItem("f4u_is_returning_customer") === "true"; 
         
-        // 3. EXECUTE STRIPE PAYMENT GATEWAY SUBMISSION TO CLEAR LIABILITIES 
-        if (window.stripeElementsContainer) { 
-            // First run baseline element form verification hooks
-            const { error: stripeSubmitError } = await window.stripeElementsContainer.submit(); 
-            if (stripeSubmitError) throw stripeSubmitError; 
-            
-            // 🔥 FIX: Check if we are running in a mock environment vs a live Stripe.js integration instance
-            const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
-            
-            if (window.stripe && !isMockSecret) {
-                console.log("[Stripe Submission Engine] Directing active payment authorization intent via secure Stripe API...");
-                
-                // Invoke full 3D Secure / Card verification handlers safely
-                const { error: confirmError } = await window.stripe.confirmPayment({
-                    elements: window.stripeElementsContainer,
-                    clientSecret: window.stripeClientSecret,
-                    confirmParams: {
-                        return_url: `${window.location.origin}/wizard.html?step=7&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`,
-                        receipt_email: finalEmail
-                    },
-                    // Prevent page redirects if payment method doesn't strictly enforce it (e.g. standard cards)
-                    redirect: "if_required"
-                });
-                
-                if (confirmError) throw confirmError;
-            } else {
-                console.warn("[Stripe Submission Engine] Sandbox runtime pattern recognized. Bypassing Stripe confirmation infrastructure safely.");
-            }
-        } else {
-            throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
-        }
+// 3. EXECUTE STRIPE PAYMENT GATEWAY SUBMISSION TO CLEAR LIABILITIES
+if (window.stripeElementsContainer) {
+  // First run baseline element form verification hooks
+  const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
+  if (stripeSubmitError) throw stripeSubmitError;
+
+  const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
+  
+  // 🟢 FIXED: Changed window.stripe to window.stripeInstance
+  if (window.stripeInstance && !isMockSecret) { 
+    console.log("[Stripe Submission Engine] Directing active payment authorization intent via secure Stripe API...");
+    
+    // Invoke full 3D Secure / Card verification handlers safely
+    const { error: confirmError } = await window.stripeInstance.confirmPayment({ // 🟢 FIXED HERE TOO
+      elements: window.stripeElementsContainer,
+      clientSecret: window.stripeClientSecret,
+      confirmParams: { 
+        return_url: `${window.location.origin}/wizard.html?step=7&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`, 
+        receipt_email: finalEmail 
+      },
+      redirect: "if_required"
+    });
+
+    if (confirmError) throw confirmError;
+  } else {
+    console.warn("[Stripe Submission Engine] Sandbox runtime pattern recognized. Bypassing Stripe confirmation infrastructure safely.");
+  }
+} else {
+  throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
+}
+
         
         // 4. PACK UNIFIED ACCOUNT MANIFEST CONTEXT PASSTHROUGH 
         const checkoutManifestPayload = { 
