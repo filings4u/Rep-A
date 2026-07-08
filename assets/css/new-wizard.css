@@ -2185,3 +2185,84 @@ footer, .wizard-footer, #wizard-footer-container {
 .upsell-market-card p[data-blank="true"] {
   display: none !important;
 }
+
+
+       :root {
+            --primary: #10b981;
+            --primary-dark: #0e9f6e;
+            --navy: #0a1f44;
+            --slate: #475569;
+            --light-bg: #f8fafc;
+            --border: #e2e8f0;
+        }
+        
+        html, body {
+            background-color: var(--light-bg);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .success-container {
+    width: 100%;
+    max-width: 1450px;
+    margin: 100px auto 40px auto; /* FIXED: Increased top margin to push content safely away from the navbar */
+    padding: 0 40px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 40px;
+    align-items: start;
+    flex: 1; 
+}
+
+        .success-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(10, 31, 68, 0.03), 0 1px 3px rgba(10, 31, 68, 0.02);
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        
+     .success-badge-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    box-sizing: border-box;
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.success-badge-icon svg {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .receipt-line-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+            font-size: 0.95rem;
+        }
+        
+        .receipt-line-item:last-child {
+            border-bottom: none;
+        }

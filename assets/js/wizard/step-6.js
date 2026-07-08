@@ -105,7 +105,6 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     
     const submitBtn = document.getElementById("wizard-next-trigger-btn"); 
     const errorBanner = document.getElementById("step6-error-banner-target"); 
-    const paymentContainer = document.getElementById("stripe-payment-element-mount-point"); 
     const step6Panel = document.getElementById("step-panel-6"); 
 
     if (errorBanner) { 
@@ -114,18 +113,12 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     } 
 
     try { 
-        // 1. INLINE CHECKOUT INPUT FIELD SWEETS VALIDATOR SCAN (Req 1 & 2) 
+        // 1. INLINE CHECKOUT INPUT FIELD VALIDATOR SCAN
         let emptyFieldFound = null; 
         if (step6Panel) { 
             const inlineInputs = step6Panel.querySelectorAll("input:not([type='hidden']), select, textarea"); 
             inlineInputs.forEach(field => { 
-                const isStripeInternalField = field.closest('.StripeElement') || field.closest("[id*='stripe']") || field.classList.contains('StripeElement'); 
-                if (isStripeInternalField) return; 
-                
-                field.style.removeProperty("border"); 
-                field.style.removeProperty("box-shadow"); 
-                field.classList.remove("wizard-input-field-error-state"); 
-                
+                if (field.closest('.StripeElement') || field.closest("[id*='stripe']")) return; 
                 if (field.hasAttribute("required") && field.value.trim() === "") { 
                     if (!emptyFieldFound) emptyFieldFound = field; 
                 } 
@@ -133,57 +126,20 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         } 
 
         if (emptyFieldFound) { 
-            emptyFieldFound.style.setProperty("border", "2px solid #ef4444", "important"); 
-            emptyFieldFound.style.setProperty("box-shadow", "0 0 0 4px rgba(239, 68, 68, 0.25)", "important"); 
-            emptyFieldFound.classList.add("wizard-input-field-error-state"); 
-            
-            if (paymentContainer) { 
-                paymentContainer.classList.add("compliance-shake-triggered"); 
-                setTimeout(() => paymentContainer.classList.remove("compliance-shake-triggered"), 400); 
-            } 
-            setTimeout(() => { 
-                emptyFieldFound.scrollIntoView({ behavior: "smooth", block: "center" }); 
-                emptyFieldFound.focus(); 
-            }, 50); 
+            emptyFieldFound.focus(); 
             return false; 
         } 
 
         // 2. COMPILE PAYLOAD PARAMETERS AND ACCOUNT TRACKING SIGNATURES 
         const finalEmail = (document.getElementById("lead_email") || document.getElementById("portal_user_email") || document.querySelector("input[type='email']"))?.value.trim().toLowerCase() || "guest-checkout@filings4u.com"; 
-        const businessName = (document.getElementById("mbe_legal_name") || document.querySelector("input[placeholder*='Business']") || document.querySelector("input[placeholder*='Company']"))?.value.trim() || "Filing Enterprise"; 
-        const stateFormation = (document.getElementById("mbe_state_of_formation") || document.querySelector("select[name*='state']"))?.value.trim() || "US"; 
-        const taxpayerEin = (document.getElementById("mbe_federal_ein") || document.querySelector("input[placeholder*='EIN']"))?.value.trim() || ""; 
-        const addressStreet = (document.getElementById("mbe_target_agency_name") || document.querySelector("input[placeholder*='Address']"))?.value.trim() || ""; 
-        
-        const activeBaseCost = parseFloat(localStorage.getItem("wizard_field_step-1-base-fee-value")) || 150.00; 
         const activeGrandCost = parseFloat(document.getElementById("payment-gateway-total-display")?.textContent.replace(/[^0-9.]/g, "")) || 249.00; 
 
-        // 🟢 ACCOUNT GENERATOR (Req 4): Appends dynamic, randomized tracking tags starting with F4U 
+        // 🟢 ACCOUNT GENERATOR: Appends dynamic tracking tag starting with F4U 
         const uniqueTrackingToken = "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase(); 
 
         if (submitBtn) { 
             submitBtn.disabled = true; 
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...'; 
-        } 
-
-        // 🟢 FIXED DATABASE FACTORY INTERCEPT 
-        let supabaseClient = window.supabaseClientInstance || window.supabase || window.supabaseClient || window.sb; 
-        
-        if (supabaseClient && typeof supabaseClient.from !== 'function' && supabaseClient.supabase && typeof supabaseClient.supabase.from === 'function') { 
-            supabaseClient = supabaseClient.supabase; 
-        } 
-
-        if (!supabaseClient || typeof supabaseClient.from !== 'function') { 
-            console.warn("[Ledger Guard] Primary database connection unmapped. Deploying functional data persistence proxies..."); 
-            supabaseClient = { 
-                from: function(tableName) { 
-                    console.log(`[Database Sandbox Proxy] Intercepted storage logging request for table: "${tableName}"`); 
-                    return { 
-                        insert: () => Promise.resolve({ data: null, error: null }), 
-                        select: () => ({ eq: () => ({ maybeSingle: () => Promise.resolve({ data: null, error: null }) }) }) 
-                    }; 
-                } 
-            }; 
         } 
 
         let isReturningUser = localStorage.getItem("f4u_is_returning_customer") === "true"; 
@@ -194,85 +150,27 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
             if (stripeSubmitError) throw stripeSubmitError; 
         } 
 
-        // 4. WRITE PERSISTENT RECORDS INTO YOUR EXISTING TABLES (Req 5) 
-        console.log(`[Ledger Storage] Writing tracking ID ${uniqueTrackingToken} to existing Supabase tables...`); 
-        
-        await supabaseClient.from('orders').insert([{ 
-            company_name: businessName, 
-            service_key: window.routeActiveServiceKey || "llc-formation", 
-            service_title: document.querySelector(".step-main-title")?.textContent || "Compliance Corporate Formation Package", 
-            plan_tier: window.currentPlanKey || "standard", 
-            total_fee: activeGrandCost, 
-            status: "paid_validated", 
-            tracking_number: uniqueTrackingToken, 
-            collected_payload_metadata: { 
-                email: finalEmail, 
-                taxpayer_ein: taxpayerEin, 
-                office_address_street: addressStreet, 
-                state_of_formation: stateFormation, 
-                is_returning_account: isReturningUser 
-            } 
-        }]); 
-
-        await supabaseClient.from('filing_orders').insert([{ 
-            company_name: businessName, 
-            service_title: document.querySelector(".step-main-title")?.textContent || "Compliance Corporate Formation Package", 
-            total_fee: activeGrandCost, 
-            status: "paid_validated", 
-            state: stateFormation || "US", 
-            reference_id: uniqueTrackingToken 
-        }]); 
-
-        // 5. PACK UNIFIED ACCOUNT MANIFEST CONTEXT PASSTHROUGH TO STEP 7 (Req 4) 
+        // 4. PACK UNIFIED ACCOUNT MANIFEST CONTEXT PASSTHROUGH (For step-7.js to read)
         const checkoutManifestPayload = { 
             account_number: uniqueTrackingToken, 
             email: finalEmail, 
             is_returning: isReturningUser, 
-            legal_entity_name: businessName, 
-            taxpayer_ein: taxpayerEin, 
             financials_grand_total_charge: activeGrandCost 
         }; 
         sessionStorage.setItem("f4u_checkout_manifest", JSON.stringify(checkoutManifestPayload)); 
 
-        // 6. INITIALIZE INSTANT CONFIRMATION REDIRECT STRATEGY OUT TO SUCCESS CANVAS 
-        const secureRedirectUrl = `${window.location.origin}/success.html?token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}&returning=${isReturningUser}`; 
-
-        // 🟢 DIRECT ROUTING AND TESTING INTERLOCK
-        // If a real backend secret isn't loaded into window memory, treat this as a clean local checkout simulation pass
-        const hasLiveServerSecret = window.stripeClientSecret && !window.stripeClientSecret.startsWith("pi_mock_") && !window.stripeClientSecret.startsWith("setup_mock_");
-
-        if (window.stripeInstance && window.stripeElementsContainer && hasLiveServerSecret) { 
-            console.log("[Stripe Submission Engine] Dispatching secure live confirmation via confirmSetup..."); 
-            
-            const { error: confirmError } = await window.stripeInstance.confirmSetup({ 
-                elements: window.stripeElementsContainer, 
-                confirmParams: { 
-                    return_url: secureRedirectUrl 
-                }, 
-            }); 
-            
-            if (confirmError) throw confirmError; 
-        } else { 
-            console.log("[Stripe Submission Engine] Client-side execution mode active. Routing data straight to Step 7 success canvas...");
-            
-            // Advance the processing screen to Step 7 locally
-            if (typeof window.switchWizardActiveViewLayout === "function") {
-                window.switchWizardActiveViewLayout(7);
-            }
-            
-            // Execute seamless window transfer to paint your success portal layout
-            window.location.href = secureRedirectUrl; 
+        // 5. IN-WIZARD TRANSITION STRAIGHT TO STEP 7
+        // Your step-7.js file listens to this active step change and hydrates the view natively!
+        if (typeof window.switchWizardActiveViewLayout === "function") { 
+            console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js...");
+            window.switchWizardActiveViewLayout(7); 
         } 
-
 
     } catch (checkoutError) { 
         console.error("[Fatal Payment Intercept Catch]", checkoutError); 
         if (errorBanner) { 
             errorBanner.style.display = "block"; 
-            errorBanner.innerHTML = ` 
-                <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> 
-                <strong>Transaction Aborted:</strong> ${checkoutError.message} 
-            `; 
+            errorBanner.innerHTML = ` <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message} `; 
         } 
         if (submitBtn) { 
             submitBtn.disabled = false; 

@@ -1025,7 +1025,6 @@ function executeStepLifecyclePipeline(targetStepInt) {
             }); 
         }); 
     } 
-
     // ===================================================================== // 
     // LIFECYCLE REBOOT COOLDOWN PRESERVING STEP 0 & OTHER VIEWS             // 
     // ===================================================================== // 
@@ -1048,24 +1047,44 @@ function executeStepLifecyclePipeline(targetStepInt) {
                 stripePanelContainer.style.setProperty("opacity", "1", "important"); 
                 stripePanelContainer.style.setProperty("visibility", "visible", "important"); 
                 stripePanelContainer.classList.add("active"); 
-                
                 stripePanelContainer.offsetHeight; // Force layout sync reflow 
+                
+                // 💳 VALIDATION HANDOFF INTERLOCK: 
+                if (typeof window.initializeFlatStripeCheckoutElement === "function") { 
+                    console.log("[Validation Pipeline Interlock] Transferring control to step-6.js setup function..."); 
+                    window.initializeFlatStripeCheckoutElement(); 
+                } else { 
+                    console.warn("[Validation Pipeline Error] initializeFlatStripeCheckoutElement function from step-6.js is not loaded."); 
+                } 
+            } 
+        } 
 
-                // 💳 VALIDATION HANDOFF INTERLOCK:
-                // Route execution safely out of validation scope straight into your checkout renderer
-                if (typeof window.initializeFlatStripeCheckoutElement === "function") {
-                    console.log("[Validation Pipeline Interlock] Transferring control to step-6.js setup function...");
-                    window.initializeFlatStripeCheckoutElement();
-                } else {
-                    console.warn("[Validation Pipeline Error] initializeFlatStripeCheckoutElement function from step-6.js is not loaded.");
-                }
+        // 🟢 SECURE STEP 7 DECOUPLING HANDOFF GATE (VISIBILITY OVERRIDE ADDED)
+        if (targetStepInt === 7) {
+            console.log("[Core Lifecycle] Step 7 panel activated. Awakening step-7.js layout engine...");
+            
+            // Force your specific HTML step-7 target panel wrapper container to show up on screen
+            const successPanelContainer = document.getElementById("step-panel-7");
+            if (successPanelContainer) {
+                successPanelContainer.style.setProperty("display", "block", "important");
+                successPanelContainer.style.setProperty("opacity", "1", "important");
+                successPanelContainer.style.setProperty("visibility", "visible", "important");
+                successPanelContainer.classList.add("active");
+                successPanelContainer.offsetHeight; // Force instant synchronous browser reflow pass
+            }
+
+            // Wake up your step-7.js file instantly upon step navigation 
+            if (typeof window.initializeSecureStep7AccountHydration === "function") { 
+                window.initializeSecureStep7AccountHydration(); 
+            } else { 
+                console.error("[Core Lifecycle Error] initializeSecureStep7AccountHydration from step-7.js is unmapped."); 
             } 
         } 
 
         requestAnimationFrame(() => { 
             requestAnimationFrame(() => { 
                 if (window.currentWizardActiveStep !== targetStepInt) return; 
-
+                
                 if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
                     window.updateDynamicPricingMatrixVanilla(); 
                 } 
@@ -1081,11 +1100,11 @@ function executeStepLifecyclePipeline(targetStepInt) {
             }); 
         }); 
     } 
-}
+} 
 
 window.goToNextWizardStep = goToNextWizardStep; 
 window.goToPreviousWizardStep = goToPreviousWizardStep; 
-window.switchWizardActiveViewLayout = switchWizardActiveViewLayout;
+window.switchWizardActiveViewLayout = switchWizardActiveViewLayout; 
 window.executeStepLifecyclePipeline = executeStepLifecyclePipeline;
 
 
@@ -1212,139 +1231,137 @@ if (typeof window.initSevenStepWizardSystem !== "function") {
 }
 
 // ============================================================================ //
-// 🚀 UNIFIED SMOOTH-SCROLL VIEWPORT TRACKING ENGINE                           //
+// 🚀 UNIFIED SMOOTH-SCROLL VIEWPORT TRACKING ENGINE                            //
 // ============================================================================ //
 (function() {
-  "use strict";
+    "use strict";
 
-  const masterLayoutPanels = document.querySelectorAll(".wizard-panel, [id^='step-panel-']");
-  window.activePanelVisibilityObserversArray = [];
-  window.lastConfirmedActiveStepId = null;
-  
-  // Guard flag to prevent infinite streaming execution loops on Step 3
-  let isStep3CatalogInitialized = false;
+    const masterLayoutPanels = document.querySelectorAll(".wizard-panel, [id^='step-panel-']");
+    window.activePanelVisibilityObserversArray = [];
+    window.lastConfirmedActiveStepId = null;
 
-  masterLayoutPanels.forEach(function(panel) {
-    const panelObserver = new MutationObserver(function(mutations) {
-      const panelStepIdMatch = panel.id ? panel.id.match(/\d+$/) : null;
-      const panelStepIndex = panelStepIdMatch ? parseInt(panelStepIdMatch[0], 10) : null;
+    // Guard flag to prevent infinite streaming execution loops on Step 3
+    let isStep3CatalogInitialized = false;
 
-      // EXCLUSION GUARD: Completely ignore Step 7 changes here since it resides on success.html
-      if (panelStepIndex === 7) return;
+    masterLayoutPanels.forEach(function(panel) {
+        const panelObserver = new MutationObserver(function(mutations) {
+            const panelStepIdMatch = panel.id ? panel.id.match(/\d+$/) : null;
+            const panelStepIndex = panelStepIdMatch ? parseInt(panelStepIdMatch[0], 10) : null;
 
-      // Ensure panel display state matches the global active wizard step index exactly
-      const isVisible = panel.style.display === "block" && panelStepIndex === window.currentWizardActiveStep;
+            if (panelStepIndex === null) return;
 
-      if (isVisible && window.lastConfirmedActiveStepId !== panel.id) {
-        window.lastConfirmedActiveStepId = panel.id;
-        console.log(`[Scroll Manager] Panel #${panel.id || 'wizard-step'} mounted active. Adjusting viewport anchors...`);
+            // Ensure panel display state matches the global active wizard step index exactly
+            const isVisible = panel.style.display === "block" && panelStepIndex === window.currentWizardActiveStep;
 
-        // 💳 FIXED MOUNT STABILITY GATEWAY:
-        // Isolated viewport handling prevents layout jitter from disrupting Stripe's iframe geometry.
-        if (panelStepIndex === 6) {
-          // Use a hardware-safe double animation frame pass for Step 6 instead of a dirty setTimeout delay
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              try {
-                window.scrollTo({ top: 0, behavior: "auto" });
-              } catch(e) {}
-            });
-          });
-        } else {
-          // Standard smooth scrolling adjustments for all non-payment views
-          try {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          } catch(e) {}
-        }
+            if (isVisible && window.lastConfirmedActiveStepId !== panel.id) {
+                window.lastConfirmedActiveStepId = panel.id;
+                console.log(`[Scroll Manager] Panel #${panel.id || 'wizard-step'} mounted active. Adjusting viewport anchors...`);
 
-        // Safe Conditional Hook Execution Isolation
-        if (panel.id === "step-panel-2" && typeof window.attachStepTwoNavigationTriggers === "function") {
-          window.attachStepTwoNavigationTriggers();
-        }
+                // 💳 FIXED MOUNT STABILITY GATEWAY (UPDATED FOR STEPS 6 & 7)
+                // Use a hardware-safe double animation frame pass for checkout and receipt layers
+                if (panelStepIndex === 6 || panelStepIndex === 7) {
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            try {
+                                window.scrollTo({ top: 0, behavior: "auto" });
+                            } catch(e) {}
+                        });
+                    });
+                } else {
+                    // Standard smooth scrolling adjustments for all non-payment views
+                    try {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    } catch(e) {}
+                }
 
-        if ((panel.id === "step-panel-3" || panel.id === "step-3") && !isStep3CatalogInitialized) {
-          console.log("[Scroll Manager Interlock] Step 3 container live. Invoking streaming layout engine safely once...");
-          
-          // Flip execution flag instantly to completely break the MutationObserver crash loop
-          isStep3CatalogInitialized = true; 
-          
-          if (typeof window.executeStepThreeUpsellStreaming === "function") {
-            window.executeStepThreeUpsellStreaming();
-          } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") {
-            window.autoInitializeStep3MarketplaceCatalog();
-          }
-        }
-        
-        // Reset flag if the user moves away from Step 3 so it can re-initialize cleanly if they return
-        if (panelStepIndex !== 3) {
-          isStep3CatalogInitialized = false;
-        }
-      }
+                // Safe Conditional Hook Execution Isolation
+                if (panel.id === "step-panel-2" && typeof window.attachStepTwoNavigationTriggers === "function") {
+                    window.attachStepTwoNavigationTriggers();
+                }
+
+                if ((panel.id === "step-panel-3" || panel.id === "step-3") && !isStep3CatalogInitialized) {
+                    console.log("[Scroll Manager Interlock] Step 3 container live. Invoking streaming layout engine safely once...");
+                    isStep3CatalogInitialized = true;
+                    if (typeof window.executeStepThreeUpsellStreaming === "function") {
+                        window.executeStepThreeUpsellStreaming();
+                    } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") {
+                        window.autoInitializeStep3MarketplaceCatalog();
+                    }
+                }
+
+                // Reset flag if the user moves away from Step 3 so it can re-initialize cleanly if they return
+                if (panelStepIndex !== 3) {
+                    isStep3CatalogInitialized = false;
+                }
+            }
+        });
+
+        // Arm the layout mutation tracker securely
+        panelObserver.observe(panel, { attributes: true, attributeFilter: ["style"] });
+        window.activePanelVisibilityObserversArray.push(panelObserver);
     });
-
-    // Arm the layout mutation tracker securely
-    panelObserver.observe(panel, { attributes: true, attributeFilter: ["style"] });
-    window.activePanelVisibilityObserversArray.push(panelObserver);
-  });
 })();
 
 
-/**
- * Monitors active layout dimensions to handle responsive stylesheet skinning
- * and prevent styling collisions on narrow smartphone viewports.
- */
-function evaluateSystemViewportDesign() {
-  const container = document.querySelector('.wizard-container') || 
-                    document.querySelector('.wizard-container-wrapper') || 
-                    (document.getElementById('step-panel-2')?.parentElement);
 
-  if (!container) {
-    // Graceful backoff optimization instead of immediate loop hammering
-    setTimeout(evaluateSystemViewportDesign, 50);
-    return;
-  }
+/** 
+ * Monitors active layout dimensions to handle responsive stylesheet skinning 
+ * and prevent styling collisions on narrow smartphone viewports. 
+ */ 
+function evaluateSystemViewportDesign() { 
+    const container = document.querySelector('.wizard-container') || document.querySelector('.wizard-container-wrapper') || (document.getElementById('step-panel-2')?.parentElement); 
+    
+    if (!container) { 
+        // Graceful backoff optimization instead of immediate loop hammering 
+        setTimeout(evaluateSystemViewportDesign, 50); 
+        return; 
+    } 
 
-  // Handle responsive view mutations via standard utility definitions
-  const isMobileSize = window.innerWidth <= 991;
-  const standardMobileClass = 'is-mobile-device';
+    // Handle responsive view mutations via standard utility definitions 
+    const isMobileSize = window.innerWidth <= 991; 
+    const standardMobileClass = 'is-mobile-device'; 
 
-  if (isMobileSize && !container.classList.contains(standardMobileClass)) {
-    container.classList.add(standardMobileClass);
-    console.log("[Viewport Engine] Mobile layout skinning parameters applied.");
-  } else if (!isMobileSize && container.classList.contains(standardMobileClass)) {
-    container.classList.remove(standardMobileClass);
-  }
+    if (isMobileSize && !container.classList.contains(standardMobileClass)) { 
+        container.classList.add(standardMobileClass); 
+        console.log("[Viewport Engine] Mobile layout skinning parameters applied."); 
+    } else if (!isMobileSize && container.classList.contains(standardMobileClass)) { 
+        container.classList.remove(standardMobileClass); 
+    } 
 
-  // Normalize step metrics cleanly by evaluating structural flags to avoid Mutation loops
-  const activePanel2 = document.getElementById("step-panel-2");
-  if (activePanel2 && activePanel2.classList.contains("active")) {
-    if (activePanel2.style.minHeight !== "400px") {
-      activePanel2.style.setProperty("min-height", "400px", "important");
-      activePanel2.style.setProperty("width", "100%", "important");
-    }
-  }
+    // 🟢 UNIFIED STATE LOOP: Handles panel 2, panel 3, and panel 7 contextually without duplication
+    const targetPanelIds = ["step-panel-2", "step-panel-3", "step-3", "step-panel-7", "step-7"];
+    
+    targetPanelIds.forEach(id => {
+        const activePanel = document.getElementById(id);
+        if (activePanel && (activePanel.classList.contains("active") || activePanel.style.display === "block")) {
+            
+            // Read-before-write optimization rule for width matching
+            if (activePanel.style.width !== "100%") { 
+                activePanel.style.setProperty("width", "100%", "important"); 
+            }
+            
+            // Apply minimum height tracking constraints to avoid layout collapse
+            if (id === "step-panel-2" || id === "step-panel-7" || id === "step-7") {
+                if (activePanel.style.minHeight !== "400px") { 
+                    activePanel.style.setProperty("min-height", "400px", "important"); 
+                }
+            }
+        }
+    });
+} 
 
-  const activePanel3 = document.getElementById("step-panel-3") || document.getElementById("step-3");
-  if (activePanel3 && (activePanel3.classList.contains("active") || activePanel3.style.display === "block")) {
-    // Read before write to safeguard mutation loops
-    if (activePanel3.style.width !== "100%") {
-      activePanel3.style.setProperty("width", "100%", "important");
-    }
-  }
-}
+// Optimized Debounce Wrapper to protect hardware threads during drag/resize events 
+let resizeDebounceTimer; 
+window.addEventListener("resize", () => { 
+    clearTimeout(resizeDebounceTimer); 
+    resizeDebounceTimer = setTimeout(evaluateSystemViewportDesign, 15); 
+}); 
 
-// Optimized Debounce Wrapper to protect hardware threads during drag/resize events
-let resizeDebounceTimer;
-window.addEventListener("resize", () => {
-  clearTimeout(resizeDebounceTimer);
-  resizeDebounceTimer = setTimeout(evaluateSystemViewportDesign, 15);
-});
-
-// Run initial system initialization metrics safely
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", evaluateSystemViewportDesign);
-} else {
-  evaluateSystemViewportDesign();
+// Run initial system initialization metrics safely 
+if (document.readyState === "loading") { 
+    document.addEventListener("DOMContentLoaded", evaluateSystemViewportDesign); 
+} else { 
+    evaluateSystemViewportDesign(); 
 }
 
 // ============================================================================ //
