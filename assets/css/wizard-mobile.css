@@ -1,557 +1,196 @@
-/* ============================================================================
-   📱 ISOLATED MOBILE COMPLIANCE OVERRIDES INJECTOR (Pure CSS - No JS Required)
-   ============================================================================ */
-@media (max-width: 991px) {
-  
-  /* 1. Prevent outer containment boxes from choking small screens */
-  .wizard-container, 
-  .wizard-card,
-  .wizard-panel {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    border: none !important;
-    background: transparent !important;
-    box-sizing: border-box !important;
-  }
+/* ============================================================================ */
+/* 📱 UNIFIED WIZARD RESPONSIVE SYSTEM STYLESHEET                               */
+/* ============================================================================ */
 
-  /* 2. Fix the header block framing */
-  .step-header-container {
-    background: #0a1f44 !important; /* Pinned dark profile branding stripe */
-    padding: 24px 20px 16px 20px !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-  }
-  .step-header-container .step-main-title {
-    color: #ffffff !important;
-    font-size: 1.35rem !important;
-    margin: 0 0 4px 0 !important;
-  }
-  .step-header-container .step-subtitle {
-    color: #94a3b8 !important;
-    margin: 0 !important;
-    font-size: 0.85rem !important;
-  }
+/* Target viewports below desktop breakout exclusively via media query bounds */
+@media screen and (max-width: 991px) {
 
-  /* 3. Kill desktop columns and layouts stretching off edge bounds */
-  .workspace-split-layout {
-    display: flex !important;
-    flex-direction: column !important; /* Forces vertical stacking layout flow */
-    gap: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
+    /* --- 1. GLOBAL ROOT CONTAINER FLUIDITY --- */
+    body {
+        overflow-x: hidden;
+    }
 
-  /* 4. Fix input grids crushing text fields */
-  .form-grid-layout,
-  #dynamic-onboarding-fields-root {
-    display: flex !important;
-    flex-direction: column !important; /* Forces layout sections to flow vertically */
-    gap: 16px !important;              /* High-density grid data padding spacing */
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 24px 16px 120px 16px !important; /* Safe padding slot above sticky footer buttons */
-    box-sizing: border-box !important;
-  }
+    .wizard-container, 
+    .wizard-container-wrapper,
+    .master-onboarding-form {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 12px !important;
+        box-sizing: border-box !important;
+        box-shadow: none !important;
+    }
 
-  /* Force all dynamically injected script blocks to fit layout borders */
-  #dynamic-onboarding-fields-root > div {
-    grid-column: span 2 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
+    /* --- 2. STEP PANEL DISPLAY CONSTRAINT SAFEGUARDS --- */
+    /* 🔥 FIX: Explicitly target only the specific top-level layout panel elements */
+    div.wizard-panel,
+    div.wizard-step-panel,
+    div[id^="step-panel-"] {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 16px !important;
+        margin-bottom: 16px !important;
+    }
 
-  /* 5. Force the Application Map sidebar into a clean horizontal header tracking block */
-  .sticky-timeline-sidebar {
-    order: -1 !important; /* Moves map element stack above input fields canvas */
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
-    position: static !important; /* Cancels fixed desktop layout stickiness */
-    background: #0a1f44 !important; /* Seamless match with title header strip */
-    border: none !important;
-    margin: 0 !important;
-    padding: 0 20px 20px 20px !important;
-    box-sizing: border-box !important;
-  }
+    /* --- 3. MULTI-COLUMN ASYMMETRIC GRID BREAKDOWNS --- */
+    .form-row, 
+    .grid-2-col, 
+    .grid-3-col,
+    .wizard-split-layout,
+    .checkout-split-view {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        width: 100% !important;
+    }
 
-  .sticky-timeline-sidebar .sidebar-header-box {
-    display: none !important; /* Hides verbose titles to maximize screen real estate */
-  }
+    /* Force input wrapper blocks to expand horizontally without squeezing */
+    .form-group-wrapper, 
+    .wizard-input-group, 
+    .column-cell,
+    .half-width-field,
+    .third-width-field {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+        box-sizing: border-box !important;
+    }
 
-  /* Make map items slide smoothly sideways instead of bunching up */
-  .sidebar-nav-timeline {
-    display: flex !important;
-    flex-direction: row !important; /* Elements sit side-by-side */
-    flex-wrap: nowrap !important;   /* Protects horizontal slider scroll physics */
-    gap: 8px !important;
-    overflow-x: auto !important;     /* Smooth thumb swipe tracking */
-    overflow-y: hidden !important;
-    padding: 4px 0 8px 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
+    /* --- 4. STEP PROGRESS NAVIGATION & TIMELINE LIGHTS --- */
+    /* 🔥 FIX: Safely convert progress tracks without crushing raw multi-level tree modules */
+    .portal-sidebar, 
+    .wizard-navigation-sidebar, 
+    .multi-sidebar-progress {
+        width: 100% !important;
+        max-width: 100% !important;
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        margin: 0 0 20px 0 !important;
+        padding: 12px !important;
+        background: #ffffff !important;
+        border-radius: 8px !important;
+        box-sizing: border-box !important;
+    }
 
-  .sidebar-nav-timeline::-webkit-scrollbar {
-    display: none !important; /* Hides scroll tracks on chrome/safari engines */
-  }
+    /* Force child list wrappers to stack linearly across horizontal tracks */
+    .portal-sidebar ul,
+    .wizard-navigation-sidebar ul,
+    .multi-sidebar-progress .timeline-track-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+    }
 
-  /* Transform vertical text links into compact slider cards */
-  .toc-step-row {
-    flex-shrink: 0 !important; /* Stops items from being squeezed thin */
-    display: inline-flex !important;
-    align-items: flex-start !important; /* Aligns dots with top line of text */
-    justify-content: flex-start !important;
-    padding: 8px 12px !important;
-    background: rgba(255, 255, 255, 0.06) !important; /* High contrast tint on dark navy background */
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 6px !important;
-    box-sizing: border-box !important;
-    max-width: 150px !important;
-  }
+    .portal-sidebar li,
+    .wizard-navigation-sidebar li {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: inline-block !important;
+    }
 
-  .toc-step-row.active {
-    background: #ffffff !important; /* Inverts layout palette for active item visibility */
-    border-color: #10b981 !important;
-  }
+    /* Hide text labels on small screens to save valuable layout real estate */
+    .sidebar-timeline-node-text, 
+    .progress-label-text, 
+    .timeline-description {
+        display: none !important;
+    }
 
-  .toc-dot {
-    width: 6px !important;
-    height: 6px !important;
-    background: rgba(255, 255, 255, 0.4) !important;
-    border-radius: 50% !important;
-    margin-top: 4px !important; /* Top text alignment pin */
-    margin-right: 8px !important;
-    flex-shrink: 0 !important;
-  }
+    .timeline-bubble, 
+    .step-node-indicator {
+        margin: 0 !important;
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 0.85rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
 
-  .toc-step-row.active .toc-dot {
-    background: #10b981 !important;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
-  }
+    /* --- 5. MARKETPLACE UPSELL CARDS & PRICING SLOTS --- */
+    .upsell-market-card, 
+    .marketplace-panel-wrapper,
+    .plan-card-row {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 16px !important;
+        text-align: center !important;
+    }
 
-  .toc-text-group {
-    display: flex !important;
-    flex-direction: column !important;
-    white-space: normal !important; /* Allows labels to break onto a new line instead of clipping */
-    line-height: 1.2 !important;
-  }
+    .upsell-market-card .card-checkbox-cell, 
+    .upsell-market-card .card-pricing-cell {
+        width: 100% !important;
+        margin: 8px 0 !important;
+        justify-content: center !important;
+    }
 
-  .toc-step-title {
-    font-size: 0.75rem !important;
-    font-weight: 700 !important;
-    color: rgba(255, 255, 255, 0.8) !important;
-  }
+    /* --- 6. STEP 6 PAYMENTS INTERLOCK OVERRIDES --- */
+    #step-panel-6, .payment-gateway-wrapper {
+        padding: 12px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
 
-  .toc-step-row.active .toc-step-title {
-    color: #0a1f44 !important; /* Dark contrast typography color text swap when pill becomes active */
-  }
+    /* Prevent custom nested Stripe wrapper overlays from shifting out of boundary layers */
+    #stripe-payment-element, 
+    #card-element, 
+    .StripeElement {
+        width: 100% !important;
+        min-width: 100% !important;
+        box-sizing: border-box !important;
+    }
 
-  .toc-step-desc {
-    display: none !important; /* Suppresses wordy micro-descriptions */
-  }
+    /* --- 7. STEP 7 RECEIPT CANVAS FLOW --- */
+    main.success-container {
+        padding: 4px !important;
+        width: 100% !important;
+    }
 
-  /* 6. Form control alignment updates */
-  .wizard-input-group {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 6px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
+    main.success-container section.success-card {
+        padding: 16px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
 
-  .wizard-input-label {
-    font-size: 0.75rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.03em !important;
-    color: #0a1f44 !important;
-    margin: 0 !important;
-  }
+    .receipt-line-item {
+        display: flex !important;
+        flex-direction: row !important; 
+        justify-content: space-between !important;
+        width: 100% !important;
+        font-size: 0.85rem !important;
+        padding: 8px 0 !important;
+    }
 
-  .wizard-input-field {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 46px !important; /* Tap targeting scale adjustment */
-    padding: 0 14px !important;
-    font-size: 16px !important; /* Prevents auto-zoom scaling bugs on mobile inputs */
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 6px !important;
-    background-color: #ffffff !important;
-    color: #0a1f44 !important;
-    box-sizing: border-box !important;
-  }
+    /* --- 8. ACTION BAR PLACEMENTS & BUTTON ROW FLOATS --- */
+    .wizard-footer-action-row, 
+    .btn-action-container, 
+    .wizard-footer {
+        display: flex !important;
+        flex-direction: column-reverse !important; 
+        gap: 12px !important;
+        width: 100% !important;
+        padding: 12px 0 !important;
+        box-sizing: border-box !important;
+    }
 
-  .readonly-lock-field {
-    background-color: #e2e8f0 !important;
-    color: #64748b !important;
-  }
-
-  /* 7. Align control bar items (Back, Save, Continue) in an equal-width single row */
-  .wizard-action-footer {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    background: #ffffff !important;
-    border-top: 1px solid #cbd5e1 !important;
-    padding: 12px 16px !important;
-    margin: 0 !important;
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    gap: 8px !important;
-    z-index: 9999 !important;
-    box-sizing: border-box !important;
-  }
-
-  .btn-wizard-main,
-  .btn-wizard-alt,
-  .btn-wizard-save-progress {
-    flex: 1 1 0% !important; /* Forces equal width distribution across all three button modules */
-    height: 44px !important;
-    font-size: 0.82rem !important; /* Prevents button words from breaking into two lines */
-    font-weight: 700 !important;
-    border-radius: 6px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    white-space: nowrap !important;
-    padding: 0 4px !important;
-    box-sizing: border-box !important;
-    margin: 0 !important;
-  }
-
-  .btn-wizard-alt {
-    background: transparent !important;
-    border: 1px solid #cbd5e1 !important;
-    color: #0a1f44 !important;
-    display: inline-flex !important; /* Force displays element if script class suppresses it */
-  }
-
-  .btn-wizard-save-progress {
-    background: #0a1f44 !important;
-    color: #ffffff !important;
-  }
-
-  .btn-wizard-main {
-    background: #10b981 !important;
-    color: #ffffff !important;
-  }
-}
-
-
-/* ============================================================================
-   🏁 6. THREE-BUTTON SINGLE ROW COMPACT ACTIONS FOOTER
-   ============================================================================ */
-.is-mobile-device .wizard-action-footer {
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  background: #ffffff !important;
-  border-top: 1px solid #cbd5e1 !important;
-  padding: 12px 16px !important; /* Maximizes usable context grid box bounds */
-  margin-top: 0 !important;
-  
-  /* Forces all children elements directly onto a single row line */
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  
-  /* Distributes remaining viewport space equally between elements */
-  gap: 8px !important; 
-  z-index: 9999 !important;
-  box-sizing: border-box !important;
-}
-
-/* Base button rules to override complex desktop layouts */
-.is-mobile-device .btn-wizard-main,
-.is-mobile-device .btn-wizard-alt,
-.is-mobile-device .btn-wizard-save-progress {
-  /* Forces identical width across all 3 items regardless of text string lengths */
-  flex: 1 1 0% !important; 
-  
-  height: 44px !important; /* Enterprise standard mobile touch targets scale */
-  font-size: 0.85rem !important; /* Scales typography down cleanly to fit single row lines */
-  font-weight: 700 !important;
-  border-radius: 6px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  white-space: nowrap !important; /* Prevents button words from breaking into two lines */
-  padding: 0 4px !important;
-  box-sizing: border-box !important;
-}
-
-/* ⬅️ "Back" Button Branding Override */
-.is-mobile-device .btn-wizard-alt {
-  background: transparent !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #0a1f44 !important;
-  display: inline-flex !important; /* Forces visibility even if hidden on step 1 on desktop */
-}
-
-/* 💾 "Save" Button Branding Override */
-.is-mobile-device .btn-wizard-save-progress {
-  background: #0a1f44 !important;
-  color: #ffffff !important;
-}
-
-/* ➡️ "Continue" Button Branding Override */
-.is-mobile-device .btn-wizard-main {
-  background: #10b981 !important;
-  color: #ffffff !important;
-}
-
-
-/* ============================================================================
-   🏢 STEP 2 SPECIFIC: FLAT PROFILE & DYNAMIC FIELD OVERRIDES
-   ============================================================================ */
-
-/* 1. Global Reset for Step 2 Panel Canvas */
-.is-mobile-device #step-panel-2 {
-  padding: 0 !important;
-  margin: 0 !important;
-  background: #f4f7fa !important;
-}
-
-/* 2. Strip Desktop Grid Layout Splitter Columns */
-.is-mobile-device #step-panel-2 .workspace-split-layout {
-  display: flex !important;
-  flex-direction: column !important; /* Changes grid tracking to a single vertical row */
-  gap: 0 !important;
-  width: 100% !important;
-}
-
-/* 3. Reconstruct Dynamic Fields Grid Root to Stacking Block Row Elements */
-.is-mobile-device #dynamic-onboarding-fields-root {
-  display: flex !important;
-  flex-direction: column !important; /* Breaks the 2-column rule */
-  gap: 16px !important;              /* High-density padding space between inputs */
-  width: 100% !important;
-  padding: 24px 20px 120px 20px !important; /* Safe padding slot above sticky footer buttons */
-  box-sizing: border-box !important;
-}
-
-/* 4. Ensure Dynamically Injected Inputs Map Cleanly onto the Canvas */
-.is-mobile-device #dynamic-onboarding-fields-root > div {
-  grid-column: span 2 !important; /* Force injected form chunks to stretch edge-to-edge */
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-/* 5. Style Dynamic Injected Forms to Match Your Base Input Classes */
-.is-mobile-device #dynamic-onboarding-fields-root input,
-.is-mobile-device #dynamic-onboarding-fields-root select,
-.is-mobile-device #dynamic-onboarding-fields-root textarea {
-  width: 100% !important;
-  height: 46px !important; /* Finger tap targeting heights */
-  padding: 0 16px !important;
-  font-size: 16px !important; /* Resolves iOS focus screen jumping zoom bug */
-  border: 1px solid #cbd5e1 !important;
-  border-radius: 6px !important;
-  background: #ffffff !important;
-  color: #0a1f44 !important;
-  box-sizing: border-box !important;
-}
-
-.is-mobile-device #dynamic-onboarding-fields-root label {
-  font-size: 0.75rem !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.03em !important;
-  color: #0a1f44 !important;
-  margin-bottom: 6px !important;
-  display: block !important;
-}
-
-/* 6. Reposition Desktop Map to Top Horizontal Slider Band Inside Step 2 */
-.is-mobile-device #step-panel-2 .sticky-timeline-sidebar {
-  order: -1 !important; /* Moves map element stack above input fields canvas */
-  width: 100% !important;
-  min-width: 100% !important;
-  max-width: 100% !important;
-  background: #0a1f44 !important;
-  padding: 0 20px 20px 20px !important;
-  border: none !important;
-}
-
-/* Set Active Timeline Visual Marker for Step 2 Node */
-.is-mobile-device #step-panel-2 #timeline-row-2 {
-  background: #ffffff !important;
-  border-color: #10b981 !important;
-}
-.is-mobile-device #step-panel-2 #timeline-row-2 .toc-step-title {
-  color: #0a1f44 !important;
-}
-.is-mobile-device #step-panel-2 #timeline-row-2 .toc-dot {
-  background: #10b981 !important;
-}
-
-
-/* ============================================================================
-   🗺️ FIXED SLIDER BAND TEXT CONTAINMENT OVERRIDES
-   ============================================================================ */
-
-.is-mobile-device .sticky-timeline-sidebar {
-  width: 100% !important;
-  min-width: 100% !important;
-  max-width: 100% !important;
-  position: static !important;
-  background: #0a1f44 !important; /* Fixed: Solid enterprise navy layout panel */
-  border: none !important;
-  padding: 12px 16px 16px 16px !important;
-  box-sizing: border-box !important;
-}
-
-/* Scroll Slider Wrapper Track */
-.is-mobile-device .sidebar-nav-timeline {
-  display: flex !important;
-  flex-direction: row !important; /* Elements sit side-by-side */
-  flex-wrap: nowrap !important;   /* Protects horizontal slider scroll physics */
-  gap: 8px !important;
-  overflow-x: auto !important;     /* Smooth thumb swipe tracking */
-  overflow-y: hidden !important;
-  padding-bottom: 8px !important;
-  width: 100% !important;
-  -webkit-overflow-scrolling: touch !important; /* Smooth inertial scrolling on mobile iOS devices */
-}
-
-/* Step Link Layout Pills */
-.is-mobile-device .toc-step-row {
-  flex-shrink: 0 !important;      /* Stops items from being squeezed thin */
-  display: inline-flex !important;
-  align-items: flex-start !important; /* Align to the top of the text */
-  justify-content: flex-start !important;
-  padding: 8px 12px !important;
-  background: rgba(255, 255, 255, 0.06) !important; /* Highly translucent tint over the solid dark navy */
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: 6px !important;
-  box-sizing: border-box !important;
-  max-width: 160px !important;    /* Keeps pills compact so multiple steps peek on screen */
-}
-
-/* Text Container Stack */
-.is-mobile-device .toc-text-group {
-  display: flex !important;
-  flex-direction: column !important; /* Formats title and summary info in two stacked lines */
-  white-space: normal !important;    /* FIXED: Allows labels to break onto a new line instead of clipping */
-  word-break: break-word !important; /* Protects dense data text labels from escaping bounds */
-  line-height: 1.2 !important;
-}
-
-/* Step Label Text Rules */
-.is-mobile-device .toc-step-title {
-  font-size: 0.75rem !important;
-  font-weight: 700 !important;
-  color: rgba(255, 255, 255, 0.9) !important; /* White contrast visibility against dark background */
-}
-
-/* Active Step Modification Injections */
-.is-mobile-device .toc-step-row.active {
-  background: #ffffff !important; /* Inverts layout palette for active item visibility */
-  border-color: #10b981 !important;
-}
-
-.is-mobile-device .toc-step-row.active .toc-step-title {
-  color: #0a1f44 !important; /* Dark contrast typography color text swap when pill becomes active */
-}
-
-/* Dot Alignment Updates */
-.is-mobile-device .toc-dot {
-  width: 6px !important;
-  height: 6px !important;
-  background: rgba(255, 255, 255, 0.4) !important;
-  border-radius: 50% !important;
-  margin-top: 4px !important; /* Perfectly matches top text alignment track line */
-  margin-right: 6px !important;
-  flex-shrink: 0 !important;
-}
-
-.is-mobile-device .toc-step-row.active .toc-dot {
-  background: #10b981 !important;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
-}
-
-
-/* ============================================================================
-   📱 PATCH FOR MOBILE SCREEN OVERFLOWS (Under 991px Only)
-   ============================================================================ */
-@media (max-width: 991px) {
-
-  /* 1. FIX PROGRESS BAR CUTOFF: Enable native horizontal swiping on the step track */
-  .sticky-timeline-sidebar {
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
-    position: static !important;
-    padding: 0 16px !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-  }
-  .sidebar-nav-timeline {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    gap: 8px !important;
-    overflow-x: auto !important; /* Enables smooth finger thumb swiping */
-    padding: 12px 4px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-  .toc-step-row {
-    flex-shrink: 0 !important; /* Stops tabs from compressing text strings */
-    display: inline-flex !important;
-    padding: 8px 14px !important;
-  }
-  .toc-text-group {
-    white-space: nowrap !important; /* Stops layout words from breaking apart */
-  }
-
-  /* 2. FIX FORM FIELDS STRETCHING: Force horizontal layouts to collapse into rows */
-  .workspace-split-layout {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-  
-  /* Target the dynamic layout engine block container */
-  #dynamic-onboarding-fields-root {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    grid-template-columns: 1fr !important;
-    padding: 16px !important;
-    box-sizing: border-box !important;
-  }
-
-  /* 3. FIX CITY / STATE / ZIP SMASHING: Stack any elements sharing a line */
-  #dynamic-onboarding-fields-root div,
-  #dynamic-onboarding-fields-root > *,
-  .form-grid-layout div {
-    display: flex !important;
-    flex-direction: column !important; /* Breaks City, State, Zip into single lines */
-    width: 100% !important;
-    max-width: 100% !important;
-    grid-column: span 2 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Ensure inputs fill the newly created vertical row space */
-  input, select, textarea, .wizard-input-field {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
+    .btn-wizard-nav-next, 
+    .btn-wizard-nav-back, 
+    #wizard-next-trigger-btn, 
+    #portal-activation-submit-btn, 
+    .wizard-button {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 48px !important; 
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
 }
