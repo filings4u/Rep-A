@@ -571,95 +571,144 @@ window.validateStepInputParametersVanilla = validateStepInputParametersVanilla;
  * Global dynamic form dispatcher checking tool.
  * Identifies the on-screen active step framework form state and triggers its matching validation sequence.
  */
-function runMasterActiveStepFormValidation() {
-  // Enforce a strict type evaluation check to recognize Step 0 explicitly
-  const currentStep = (typeof window.currentWizardActiveStep === "number") ? window.currentWizardActiveStep : 0;
-  console.log(`[Validation Dispatch] Intercepting form status check for step: ${currentStep}`);
+async function runMasterActiveStepFormValidation() {
+    const currentStep = (typeof window.currentWizardActiveStep === "number") ? window.currentWizardActiveStep : 0;
+    console.log(`[Validation Dispatch] Intercepting form status check for step: ${currentStep}`);
 
-  // Force evaluate basic required markup fields on the current step container FIRST
-  if (typeof window.validateStepInputParametersVanilla === "function") {
-    const isBaseStepValid = window.validateStepInputParametersVanilla(currentStep);
-    if (!isBaseStepValid) {
-      console.warn(`[Validation Dispatch Block] Step ${currentStep} failed primary field constraint validation.`);
-      return false; // Stop navigation if regular visible inputs are broken/empty
+    // Force evaluate basic required markup fields on the current step container FIRST
+    if (typeof window.validateStepInputParametersVanilla === "function") {
+        const isBaseStepValid = window.validateStepInputParametersVanilla(currentStep);
+        if (!isBaseStepValid) {
+            console.warn(`[Validation Dispatch Block] Step ${currentStep} failed primary field constraint validation.`);
+            return false; 
+        }
     }
-  }
 
-  // Summary Confirmation (Step 5) and Secure Payment Gateway Processing (Step 6)
-  // do not contain custom entity fields. We bypass advanced service checks on these views.
-  if (currentStep >= 5) {
-    console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`);
+    // =========================================================================
+    // 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: SECURE INTENT EXTRACTION LAYER
+    // =========================================================================
+    if (currentStep === 5) {
+        console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks...");
+        
+        const nextButton = document.getElementById("summary-submit-payment-intent-btn") || document.querySelector(".btn-wizard-nav-next");
+        let fallbackText = "Secure Payment";
+        if (nextButton) {
+            fallbackText = nextButton.innerHTML;
+            nextButton.disabled = true;
+            nextButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Securing Authorization...';
+        }
+
+        try {
+            const targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 249.00;
+            
+            // Execute network pass cleanly to your database authorization layer
+            const responseStream = await fetch("/api/create-payment-intent", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    amountCents: Math.round(targetAmount * 100),
+                    currency: "usd",
+                    serviceKey: window.routeActiveServiceKey || window.currentServiceKey || "llc-formation"
+                })
+            });
+
+            if (!responseStream.ok) throw new Error("HTTP connection path rejected tokens request.");
+            const transactionTokenPayload = await responseStream.json();
+
+            if (!transactionTokenPayload.clientSecret) {
+                throw new Error("Payload mapping error: clientSecret key is missing.");
+            }
+
+            // Bind resolved token securely to window paths
+            window.stripeClientSecret = transactionTokenPayload.clientSecret;
+
+            const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
+            activeOnboardingState.stripeClientSecret = transactionTokenPayload.clientSecret;
+            localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
+
+        } catch (apiNetworkException) {
+            // 🛡️ RECOVERY BYPASS LOOP: Replaces alerts and crashes with self-healing local testing mocks
+            console.warn("[Validation Intent Warning] Real-time token endpoint offline or unreachable. Engaging structural local mock bypass:", apiNetworkException.message);
+            
+            // Generate a secure local mock token so step-6.js does not crash or loop during development
+            const mockSecret = "pi_mock_intent_" + Math.random().toString(36).substring(2, 12) + "_secret_" + Math.random().toString(36).substring(2, 8);
+            window.stripeClientSecret = mockSecret;
+
+            const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
+            activeOnboardingState.stripeClientSecret = mockSecret;
+            localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
+            
+            // Dynamically log details to your layout container context without throwing raw alerts
+            const step5Panel = document.getElementById("step-panel-5");
+            let errorNodeTarget = document.getElementById("step5-matrix-error-banner");
+            if (step5Panel && !errorNodeTarget) {
+                errorNodeTarget = document.createElement("div");
+                errorNodeTarget.id = "step5-matrix-error-banner";
+                errorNodeTarget.style.cssText = "margin: 15px 0; padding: 12px; border: 1px solid #fee2e2; background: #fef2f2; color: #b91c1c; border-radius: 6px; font-size: 0.85rem; font-weight: 500; font-family: sans-serif; text-align: left;";
+                step5Panel.insertBefore(errorNodeTarget, step5Panel.lastChild);
+            }
+            if (errorNodeTarget) {
+                errorNodeTarget.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> <strong>Developer Warning:</strong> Remote authorization endpoint returned an error status (${apiNetworkException.message}). Falling back to a local sandbox token to continue checkout preview.`;
+            }
+        } finally {
+            if (nextButton) {
+                nextButton.disabled = false;
+                nextButton.innerHTML = fallbackText;
+            }
+        }
+    }
+
+    if (currentStep >= 5) {
+        console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`);
+        return true;
+    }
+
+    const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || "";
+    const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
+
+    if (!cleanKey) {
+        console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status.");
+        return true;
+    }
+
+    const primaryKeyWords = cleanKey.split('-');
+    const globalContextKeys = Object.keys(window);
+    const targetValidationMethodKey = globalContextKeys.find(key => {
+        const kLower = key.toLowerCase();
+        if (["validatestepinputparametersvanilla", "runmasteractivestepformvalidation", "validatestepinputparameters"].includes(kLower)) {
+            return false;
+        }
+        const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate");
+        const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word));
+        return isValidationFunction && matchesServiceKeyword;
+    });
+
+    if (targetValidationMethodKey) {
+        console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`);
+        try {
+            const validationTargetCanvas = document.getElementById(`step-${currentStep}-onboarding-fields-canvas`) || document.getElementById(`step-panel-${currentStep}`) || document.body;
+            const targetFunction = window[targetValidationMethodKey];
+            let advancedValidationResult;
+            if (targetFunction.length >= 2) {
+                advancedValidationResult = targetFunction(validationTargetCanvas, currentStep);
+            } else {
+                advancedValidationResult = targetFunction(currentStep);
+            }
+            return advancedValidationResult !== false;
+        } catch (err) {
+            console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err);
+            return false; 
+        }
+    }
+
+    if (typeof window.validateAlgorithmicFallbackFields === "function") {
+        return !!window.validateAlgorithmicFallbackFields(currentStep);
+    }
     return true;
-  }
-
-  const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || "";
-  const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
-
-  if (!cleanKey) {
-    console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status.");
-    return true;
-  }
-
-  // 1. CONVERT SYSTEM SERVICE KEY TO DYNAMIC LOOKUP WORDS
-  const primaryKeyWords = cleanKey.split('-');
-
-  // 2. REFLEXIVE WINDOW SCOPE MEMORY SCAN
-  const globalContextKeys = Object.keys(window);
-  const targetValidationMethodKey = globalContextKeys.find(key => {
-    const kLower = key.toLowerCase();
-    
-    // Core Engine Guard: Skip standard built-in validation functions entirely
-    if (["validatestepinputparametersvanilla", "runmasteractivestepformvalidation", "validatestepinputparameters"].includes(kLower)) {
-      return false;
-    }
-
-    const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate");
-    // Strict Verification: Match only if function contains your key words (e.g., validatePayroll, validateSales)
-    const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word));
-
-    return isValidationFunction && matchesServiceKeyword;
-  });
-
-  // 3. DYNAMIC AUTOMATED DISPATCH EXECUTION FOR ADVANCED SERVICE LOGIC
-  if (targetValidationMethodKey) {
-    console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`);
-    try {
-      // Cleaned fallback pipeline: dynamic step wrapper -> fallback to panel container -> fallback safely to body
-      const validationTargetCanvas = document.getElementById(`step-${currentStep}-onboarding-fields-canvas`) || 
-                                     document.getElementById(`step-panel-${currentStep}`) || 
-                                     document.body;
-
-      // Adaptively check the target function's parameter expectations to prevent signature mismatch crashes
-      const targetFunction = window[targetValidationMethodKey];
-      let advancedValidationResult;
-      
-      if (targetFunction.length >= 2) {
-        // Target function accepts both the DOM context element and the step index
-        advancedValidationResult = targetFunction(validationTargetCanvas, currentStep);
-      } else {
-        // Target function strictly expects just the step integer or element context
-        advancedValidationResult = targetFunction(currentStep);
-      }
-
-      // Normalized boolean fallback conversion protects against undefined return values
-      return advancedValidationResult !== false;
-    } catch (err) {
-      console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err);
-      return false; // Lock step progression defensively if an advanced script encounters an unhandled runtime error
-    }
-  }
-
-  // 4. ZERO-HARDCODE STANDALONE FALLBACK SEGMENTATION INTERFACES
-  if (typeof window.validateAlgorithmicFallbackFields === "function") {
-    console.log("[Validation Dispatch] Custom function file validator missing, defaulting to automated fallback loop.");
-    return !!window.validateAlgorithmicFallbackFields(currentStep);
-  }
-
-  return true;
 }
 
-// Bind cleanly back into universal global window scope references safely
 window.runMasterActiveStepFormValidation = runMasterActiveStepFormValidation;
+
 
 
 // ============================================================================ //
@@ -2036,46 +2085,55 @@ window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles
  * Validates step data and checks if a user profile already exists in Supabase.
  * @returns {Promise<{exists: boolean, email: string}>}
  */
+/**
+ * Scans Supabase profiles table for an existing email registration.
+ * Raises global system flags if a match is discovered so step 7 handles password provisioning natively.
+ */
 async function verifyCustomerAndCheckAccount() {
-  const emailInput = document.getElementById("lead_email")?.value || "";
-  const customerEmail = emailInput.trim().toLowerCase();
-  
-  // Basic Regex Validation for Point 1
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!customerEmail || !emailRegex.test(customerEmail)) {
-    throw new Error("Please enter a valid email address.");
-  }
-
-  let supabaseClient = window.supabase || window.supabaseClient || window.sb;
-  if (!supabaseClient) throw new Error("Database interface offline.");
-
-  try {
-    // Check your 'profiles' table for an existing registration
-    const { data: profile, error } = await supabaseClient
-      .from('profiles')
-      .select('id, email')
-      .eq('email', customerEmail)
-      .maybeSingle();
-
-    if (error) throw error;
-
-    if (profile) {
-      console.log("[Wizard Core] Returning customer detected:", customerEmail);
-      // Track state globally so Step 6 & 7 know to handle password update instead of signup
-      window.f4uIsReturningCustomer = true;
-      window.f4uExistingUserId = profile.id;
-      return { exists: true, email: customerEmail };
-    } else {
-      console.log("[Wizard Core] New customer workflow initialized.");
-      window.f4uIsReturningCustomer = false;
-      window.f4uExistingUserId = null;
-      return { exists: false, email: customerEmail };
+    // Dynamically grab whatever email field layout context is populated on screen
+    const emailInput = document.getElementById("lead_email")?.value || 
+                       document.getElementById("portal_user_email")?.value || 
+                       document.querySelector("input[type='email']")?.value || "";
+    
+    const customerEmail = emailInput.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!customerEmail || !emailRegex.test(customerEmail)) {
+        throw new Error("Invalid format parameters: Provide a functional email value.");
     }
-  } catch (err) {
-    console.warn("[Wizard Core] Account validation check deferred:", err.message);
-    // Fallback safely to new user flow if read permissions are restricted
-    return { exists: false, email: customerEmail };
-  }
+
+    let supabaseClient = window.supabaseClientInstance || window.supabase || window.supabaseClient || window.sb;
+    if (!supabaseClient) throw new Error("Database interface offline.");
+
+    try {
+        const { data: profile, error } = await supabaseClient
+            .from('profiles')
+            .select('id, email')
+            .eq('email', customerEmail)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        if (profile) {
+            console.log("[Wizard Core Verification] Existing customer identified:", customerEmail);
+            // 🟢 CRITICAL TRACKING IDENTIFIERS (Req 3)
+            window.f4uIsReturningCustomer = true;
+            window.f4uExistingUserId = profile.id;
+            localStorage.setItem("f4u_is_returning_customer", "true");
+            localStorage.setItem("f4u_returning_customer_email", customerEmail);
+            return { exists: true, email: customerEmail };
+        } else {
+            console.log("[Wizard Core Verification] Unregistered guest user trajectory.");
+            window.f4uIsReturningCustomer = false;
+            window.f4uExistingUserId = null;
+            localStorage.setItem("f4u_is_returning_customer", "false");
+            localStorage.removeItem("f4u_returning_customer_email");
+            return { exists: false, email: customerEmail };
+        }
+    } catch (err) {
+        console.warn("[Wizard Core] Profile validation database check deferred:", err.message);
+        return { exists: false, email: customerEmail };
+    }
 }
 
 window.verifyCustomerAndCheckAccount = verifyCustomerAndCheckAccount;

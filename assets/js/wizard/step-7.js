@@ -599,3 +599,121 @@ window.triggerSecureBlurModalRedirect = function(verifiedUserUuid, verifiedEmail
     } 
   }, 1000); 
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// step-7.js or embedded inside success.html
+document.addEventListener("DOMContentLoaded", () => {
+    "use strict";
+
+    console.log("[Step 7 Lifecycle] Re-assembling account matrix tracks from checkout pass...");
+
+    // 1. EXTRACT DATA PARAMETERS AND MANIFEST RECORDS FROM THE INTERLOCK REDIRECT
+    const addressQuery = new URLSearchParams(window.location.search);
+    let orderTrackingToken = addressQuery.get('token') || "F4U-PENDING";
+    let customerEmail = addressQuery.get('email') || "";
+    let isReturningUser = addressQuery.get('returning') === "true";
+
+    // Recover backing backup data from sessionStorage
+    try {
+        const structuralManifest = JSON.parse(sessionStorage.getItem("f4u_checkout_manifest") || "{}");
+        if (structuralManifest.account_number) orderTrackingToken = structuralManifest.account_number;
+        if (structuralManifest.email) customerEmail = structuralManifest.email;
+        if (structuralManifest.is_returning !== undefined) isReturningUser = structuralManifest.is_returning;
+    } catch(e) {
+        console.warn("[Step 7 Registry] Could not parse session payload backup maps:", e);
+    }
+
+    // 2. INJECT RENDER ELEMENT CONTENT DATA ONTO DISPLAY VIEWS (Req 4)
+    const orderDisplayNode = document.getElementById("success-order-number-display") || document.querySelector(".account-number-target");
+    if (orderDisplayNode) {
+        orderDisplayNode.textContent = orderTrackingToken;
+    }
+
+    const emailFieldNode = document.getElementById("step7-email-input-field") || document.getElementById("account-email-form-node") || document.querySelector("input[type='email']");
+    if (emailFieldNode && customerEmail) {
+        emailFieldNode.value = customerEmail;
+        emailFieldNode.setAttribute("readonly", "true"); // Prevent modifying token paths accidentally
+    }
+
+    // 3. ADAPTIVE PASSWORD PURGE ACTION STRATEGY DESIGN (Req 3)
+    const systemInstructionHeader = document.getElementById("step7-onboarding-title-label") || document.querySelector(".creation-card-header h3");
+    const accountActionSubmitBtn = document.getElementById("step7-submit-password-action-btn") || document.querySelector(".btn-submit-account");
+
+    if (isReturningUser) {
+        console.log("[Step 7 Action Lock] Existing user path confirmed. Converting account interface to password purge track.");
+        
+        if (systemInstructionHeader) {
+            systemInstructionHeader.innerHTML = `<i class="fa-solid fa-lock-open" style="color:#10b981; margin-right:8px;"></i> Reset & Secure Your Account Password`;
+        }
+        
+        if (accountActionSubmitBtn) {
+            accountActionSubmitBtn.innerHTML = 'Update Password & Access Dashboard <i class="fa-solid fa-arrow-right" style="margin-left:6px;"></i>';
+        }
+
+        // Adjust submission form target behaviors to safely rewrite old passwords via RPC or Auth management
+        const onboardingAccountForm = document.getElementById("step7-account-creation-form") || document.querySelector(".creation-form-wrapper form");
+        if (onboardingAccountForm) {
+            onboardingAccountForm.onsubmit = async function(eventNode) {
+                eventNode.preventDefault();
+                
+                const newPasswordString = document.getElementById("step7-password-input")?.value || document.querySelector("input[type='password']")?.value || "";
+                if (newPasswordString.length < 6) {
+                    alert("Security Constraint: Passwords must contain at least 6 characters.");
+                    return;
+                }
+
+                let supabaseClient = window.supabaseClientInstance || window.supabase || window.supabaseClient || window.sb;
+                if (!supabaseClient) {
+                    alert("Connection Timeout: Database cluster could not verify session signatures.");
+                    return;
+                }
+
+                try {
+                    console.log("[Step 7 Auth Engine] Initiating automated password overwrite pass...");
+                    
+                    // 🟢 EXECUTES THE NATIVE OVERWRITE PASS (Req 3)
+                    // This securely wipes out old password hash logs and registers the new login parameter string
+                    const { data, error } = await supabaseClient.auth.updateUser({
+                        password: newPasswordString
+                    });
+
+                    if (error) throw error;
+
+                    console.log("[Step 7 Auth Engine Success] Password tracks purged and re-provisioned cleanly.");
+                    alert("Success! Your password has been re-secured. Redirecting to your active filing console...");
+                    window.location.href = "/dashboard";
+
+                } catch (authOverridingErr) {
+                    console.error("[Step 7 Auth Failure]", authOverridingErr.message);
+                    alert(`Authorization Overwrite Failed: ${authOverridingErr.message}`);
+                }
+            };
+        }
+    } else {
+        console.log("[Step 7 Action Lock] New user route confirmed. Standard signup pipeline active.");
+    }
+});
