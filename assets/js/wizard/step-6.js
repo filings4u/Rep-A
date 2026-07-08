@@ -98,80 +98,117 @@
 })();
 
 
-
-
+// ============================================================================ //
+// 💳 TRANSACTION PIPELINE SUBMISSION ENGINE (STRIPE-CONFIRM ARCHITECTURE)     //
+// ============================================================================ //
 window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) { 
     if (event && typeof event.preventDefault === "function") event.preventDefault(); 
     
     const submitBtn = document.getElementById("wizard-next-trigger-btn"); 
     const errorBanner = document.getElementById("step6-error-banner-target"); 
     const step6Panel = document.getElementById("step-panel-6"); 
-
+    
     if (errorBanner) { 
         errorBanner.style.display = "none"; 
         errorBanner.innerHTML = ""; 
     } 
-
+    
     try { 
-        // 1. INLINE CHECKOUT INPUT FIELD VALIDATOR SCAN
+        // 1. INLINE CHECKOUT INPUT FIELD VALIDATOR SCAN 
         let emptyFieldFound = null; 
         if (step6Panel) { 
             const inlineInputs = step6Panel.querySelectorAll("input:not([type='hidden']), select, textarea"); 
             inlineInputs.forEach(field => { 
-                if (field.closest('.StripeElement') || field.closest("[id*='stripe']")) return; 
+                if (field.closest('.StripeElement') || field.closest("[id*='stripe']") || field.closest("[id*='payment-element']")) return; 
                 if (field.hasAttribute("required") && field.value.trim() === "") { 
                     if (!emptyFieldFound) emptyFieldFound = field; 
                 } 
             }); 
         } 
-
+        
         if (emptyFieldFound) { 
             emptyFieldFound.focus(); 
+            emptyFieldFound.style.borderColor = "#b91c1c";
             return false; 
         } 
-
+        
         // 2. COMPILE PAYLOAD PARAMETERS AND ACCOUNT TRACKING SIGNATURES 
-        const finalEmail = (document.getElementById("lead_email") || document.getElementById("portal_user_email") || document.querySelector("input[type='email']"))?.value.trim().toLowerCase() || "guest-checkout@filings4u.com"; 
+        const finalEmail = (document.getElementById("lead_email") || document.getElementById("portal_user_email") || document.querySelector(".master-onboarding-form input[type='email']"))?.value.trim().toLowerCase() || "guest-checkout@filings4u.com"; 
         const activeGrandCost = parseFloat(document.getElementById("payment-gateway-total-display")?.textContent.replace(/[^0-9.]/g, "")) || 249.00; 
-
+        
         // 🟢 ACCOUNT GENERATOR: Appends dynamic tracking tag starting with F4U 
         const uniqueTrackingToken = "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase(); 
-
+        
         if (submitBtn) { 
             submitBtn.disabled = true; 
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...'; 
         } 
-
+        
         let isReturningUser = localStorage.getItem("f4u_is_returning_customer") === "true"; 
-
+        
         // 3. EXECUTE STRIPE PAYMENT GATEWAY SUBMISSION TO CLEAR LIABILITIES 
         if (window.stripeElementsContainer) { 
+            // First run baseline element form verification hooks
             const { error: stripeSubmitError } = await window.stripeElementsContainer.submit(); 
             if (stripeSubmitError) throw stripeSubmitError; 
-        } 
-
-        // 4. PACK UNIFIED ACCOUNT MANIFEST CONTEXT PASSTHROUGH (For step-7.js to read)
+            
+            // 🔥 FIX: Check if we are running in a mock environment vs a live Stripe.js integration instance
+            const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
+            
+            if (window.stripe && !isMockSecret) {
+                console.log("[Stripe Submission Engine] Directing active payment authorization intent via secure Stripe API...");
+                
+                // Invoke full 3D Secure / Card verification handlers safely
+                const { error: confirmError } = await window.stripe.confirmPayment({
+                    elements: window.stripeElementsContainer,
+                    clientSecret: window.stripeClientSecret,
+                    confirmParams: {
+                        return_url: `${window.location.origin}/wizard.html?step=7&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`,
+                        receipt_email: finalEmail
+                    },
+                    // Prevent page redirects if payment method doesn't strictly enforce it (e.g. standard cards)
+                    redirect: "if_required"
+                });
+                
+                if (confirmError) throw confirmError;
+            } else {
+                console.warn("[Stripe Submission Engine] Sandbox runtime pattern recognized. Bypassing Stripe confirmation infrastructure safely.");
+            }
+        } else {
+            throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
+        }
+        
+        // 4. PACK UNIFIED ACCOUNT MANIFEST CONTEXT PASSTHROUGH 
         const checkoutManifestPayload = { 
-            account_number: uniqueTrackingToken, 
-            email: finalEmail, 
+            transaction_hash_id: uniqueTrackingToken, 
+            communications_email: finalEmail, 
             is_returning: isReturningUser, 
-            financials_grand_total_charge: activeGrandCost 
+            financials_grand_total_charge: activeGrandCost,
+            legal_entity_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile", 
+            taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...", 
+            office_address_street: localStorage.getItem("wizard_field_principal_address") || "Form Submission Record Entry", 
+            selected_package_title: window.routeActivePlanTierName || "Compliance Update Filing Package", 
+            financials_subtotal_amount: parseFloat(localStorage.getItem("wizard_field-1-base-fee-value")) || 150.00
         }; 
-        sessionStorage.setItem("f4u_checkout_manifest", JSON.stringify(checkoutManifestPayload)); 
-
-        // 5. IN-WIZARD TRANSITION STRAIGHT TO STEP 7
-        // Your step-7.js file listens to this active step change and hydrates the view natively!
+        
+        // 🔥 FIX: Swapped cache target to 'f4u_finalized_checkout_receipt_manifest' to align with step-7.js reader expectations
+        sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload)); 
+        
+        // 5. IN-WIZARD TRANSITION STRAIGHT TO STEP 7 
         if (typeof window.switchWizardActiveViewLayout === "function") { 
-            console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js...");
+            console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js..."); 
             window.switchWizardActiveViewLayout(7); 
         } 
-
     } catch (checkoutError) { 
         console.error("[Fatal Payment Intercept Catch]", checkoutError); 
+        
         if (errorBanner) { 
             errorBanner.style.display = "block"; 
-            errorBanner.innerHTML = ` <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message} `; 
+            errorBanner.innerHTML = ` 
+                <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError} 
+            `; 
         } 
+        
         if (submitBtn) { 
             submitBtn.disabled = false; 
             submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>'; 

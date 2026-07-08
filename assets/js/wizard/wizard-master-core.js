@@ -195,201 +195,224 @@
     window.totalWizardSteps = 7;
 })();
 
-// ============================================================================ //
-// 🔌 ACTIVE ADD-ON SERVICE STATE FLAGS (STRIPE OVERWRITE SANITIZED)            //
-// ============================================================================ //
-(function initializeDynamicStateFlags() {
-    "use strict";
-
-    // Safeguard flag to prevent infinite loops inside your pricing compilation matrix
-    let isProcessingCompilationLoop = false;
-
-    // Helper to bind reactive property tracks to window keys dynamically
-    function createReactiveFlag(flagKey) {
-        // Prevent attempting to redefine existing properties on the window scope
-        if (Object.getOwnPropertyDescriptor(window, flagKey)) return;
-
-        let internalStateValue = false;
-
-        Object.defineProperty(window, flagKey, {
-            get() {
-                const storageVal = localStorage.getItem(`wizard_field_${flagKey}`);
-                if (storageVal !== null) {
-                    return storageVal === "true" || storageVal === "yes" || storageVal === true;
-                }
-                return internalStateValue;
-            },
-            set(newBooleanState) {
-                const normalizedState = newBooleanState === true || newBooleanState === "yes" || String(newBooleanState) === "true";
-
-                // Guard block: Only update and trigger calculator loops if the status is actually shifting
-                if (internalStateValue === normalizedState && localStorage.getItem(`wizard_field_${flagKey}`) === (normalizedState ? "true" : "false")) {
-                    return;
-                }
-
-                internalStateValue = normalizedState;
-                localStorage.setItem(`wizard_field_${flagKey}`, normalizedState ? "true" : "false");
-
-                // 🛡️ CRITICAL PAYMENT OVERWRITE FIX:
-                // Block compilation cascades if the user is on Step 6. Running DOM rewrites
-                // while Stripe is mounting its secure iframe elements completely destroys the input views.
-                const currentActiveWizardStep = parseInt(window.currentWizardActiveStep, 10) || 0;
-                
-                if (currentActiveWizardStep === 6) {
-                    console.log(`[State Guard] Suppressed compilation DOM rewrite for flag "${flagKey}" on payment canvas to protect Stripe Elements.`);
-                    return;
-                }
-
-                // Auto-trigger your calculator loop safely while blocking recursion loops for standard steps
-                if (typeof window.executeDynamicAddonCompilation === "function" && !isProcessingCompilationLoop) {
-                    try {
-                        isProcessingCompilationLoop = true;
-                        window.executeDynamicAddonCompilation();
-                    } catch (err) {
-                        console.error("[Compilation Lock Failure] Failed to compile totals safely:", err);
-                    } finally {
-                        isProcessingCompilationLoop = false;
-                    }
-                }
-            },
-            configurable: true,
-            enumerable: true
-        });
-    }
-
-    /**
-     * ENTERPRISE INTERCEPT FIX: Define the map property with an active setter descriptor.
-     */
-    let internalPropertyMapPayload = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
+// ============================================================================ // 
+// 🔌 ACTIVE ADD-ON SERVICE STATE FLAGS (STRIPE OVERWRITE SANITIZED)           // 
+// ============================================================================ // 
+(function initializeDynamicStateFlags() { 
+    "use strict"; 
     
-    Object.defineProperty(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP', {
-        get() {
-            return internalPropertyMapPayload;
-        },
-        set(newMapData) {
-            if (newMapData && typeof newMapData === 'object') {
-                // Merge the configurations safely into our active instance tracker
-                Object.assign(internalPropertyMapPayload, newMapData);
-
-                // Loop and register all unique keys instantly upon asset file arrival
-                Object.values(newMapData).forEach(stateFlagKey => {
-                    createReactiveFlag(stateFlagKey);
-                });
-                console.log("[State Registry Success] Late-binding enterprise tracking tokens initialized successfully.");
-            }
-        },
-        configurable: true,
-        enumerable: true
-    });
-
-    // Automatically process baseline values in case object data mounted prematurely
-    if (window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP) {
-        Object.values(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP).forEach(stateFlagKey => {
-            createReactiveFlag(stateFlagKey);
-        });
-    }
-
-    // Secondary specialized fallbacks
-    const additionalCoreFlags = [
-        "customSelectedRegisteredAgentServiceActive",
-        "customSelectedEinProcurementServiceActive",
-        "customSelectedScorpElectionServiceActive",
-        "customSelectedSolePropLicenseAuditServiceActive",
-        "customSelectedDbaLicenseAuditServiceActive",
-        "customSelectedNonprofitLicenseCheckActive",
-        "customSelectedDbaSearchServiceActive",
-        "customSelectedForeignQualLicenseSuiteActive",
-        "customSelectedExpeditedFilingServiceActive",
-        "customSelectedApostilleAuthenticationServiceActive",
-        "customSelectedGoodStandingCertificateServiceActive"
-    ];
-
-    additionalCoreFlags.forEach(fallbackFlagKey => {
-        createReactiveFlag(fallbackFlagKey);
-    });
-
-    console.log("[State Registry] Global compliance tracking tokens dynamically initialized successfully via loop iteration.");
+    // Safeguard flag to prevent infinite loops inside your pricing compilation matrix 
+    let isProcessingCompilationLoop = false; 
+    
+    // Helper to bind reactive property tracks to window keys dynamically 
+    function createReactiveFlag(flagKey) { 
+        // Prevent attempting to redefine existing properties on the window scope 
+        if (Object.getOwnPropertyDescriptor(window, flagKey)) return; 
+        
+        // 🔥 FIX: Declared INSIDE the function scope so every flag has its own unique, isolated memory track
+        let internalStateValue = false; 
+        
+        Object.defineProperty(window, flagKey, { 
+            get() { 
+                const storageVal = localStorage.getItem(`wizard_field_${flagKey}`); 
+                if (storageVal !== null) { 
+                    return storageVal === "true" || storageVal === "yes" || storageVal === true; 
+                } 
+                return internalStateValue; 
+            }, 
+            set(newBooleanState) { 
+                const normalizedState = newBooleanState === true || newBooleanState === "yes" || String(newBooleanState) === "true"; 
+                
+                // Guard block: Only update and trigger calculator loops if the status is actually shifting 
+                if (internalStateValue === normalizedState && localStorage.getItem(`wizard_field_${flagKey}`) === (normalizedState ? "true" : "false")) { 
+                    return; 
+                } 
+                
+                internalStateValue = normalizedState; 
+                localStorage.setItem(`wizard_field_${flagKey}`, normalizedState ? "true" : "false"); 
+                
+                // 🛡️ CRITICAL PAYMENT OVERWRITE FIX: 
+                // Block compilation cascades if the user is on Step 6. Running DOM rewrites 
+                // while Stripe is mounting its secure iframe elements completely destroys the input views. 
+                const currentActiveWizardStep = parseInt(window.currentWizardActiveStep, 10) || 0; 
+                if (currentActiveWizardStep === 6) { 
+                    console.log(`[State Guard] Suppressed compilation DOM rewrite for flag "${flagKey}" on payment canvas to protect Stripe Elements.`); 
+                    return; 
+                } 
+                
+                // Auto-trigger your calculator loop safely while blocking recursion loops for standard steps 
+                if (typeof window.executeDynamicAddonCompilation === "function" && !isProcessingCompilationLoop) { 
+                    try { 
+                        isProcessingCompilationLoop = true; 
+                        window.executeDynamicAddonCompilation(); 
+                    } catch (err) { 
+                        console.error("[Compilation Lock Failure] Failed to compile totals safely:", err); 
+                    } { 
+                        isProcessingCompilationLoop = false; 
+                    } 
+                } 
+            }, 
+            configurable: true, 
+            enumerable: true 
+        }); 
+    } 
+    
+    /** 
+     * ENTERPRISE INTERCEPT FIX: Define the map property with an active setter descriptor. 
+     */ 
+    let internalPropertyMapPayload = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}; 
+    
+    Object.defineProperty(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP', { 
+        get() { 
+            return internalPropertyMapPayload; 
+        }, 
+        set(newMapData) { 
+            if (newMapData && typeof newMapData === 'object') { 
+                // Merge the configurations safely into our active instance tracker 
+                Object.assign(internalPropertyMapPayload, newMapData); 
+                
+                // Loop and register all unique keys instantly upon asset file arrival 
+                Object.values(newMapData).forEach(stateFlagKey => { 
+                    createReactiveFlag(stateFlagKey); 
+                }); 
+                console.log("[State Registry Success] Late-binding enterprise tracking tokens initialized successfully."); 
+            } 
+        }, 
+        configurable: true, 
+        enumerable: true 
+    }); 
+    
+    // Automatically process baseline values in case object data mounted prematurely 
+    if (window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP) { 
+        Object.values(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP).forEach(stateFlagKey => { 
+            createReactiveFlag(stateFlagKey); 
+        }); 
+    } 
+    
+    // Secondary specialized fallbacks 
+    const additionalCoreFlags = [ 
+        "customSelectedRegisteredAgentServiceActive", 
+        "customSelectedEinProcurementServiceActive", 
+        "customSelectedScorpElectionServiceActive", 
+        "customSelectedSolePropLicenseAuditServiceActive", 
+        "customSelectedDbaLicenseAuditServiceActive", 
+        "customSelectedNonprofitLicenseCheckActive", 
+        "customSelectedDbaSearchServiceActive", 
+        "customSelectedForeignQualLicenseSuiteActive", 
+        "customSelectedExpeditedFilingServiceActive", 
+        "customSelectedApostilleAuthenticationServiceActive", 
+        "customSelectedGoodStandingCertificateServiceActive" 
+    ]; 
+    
+    additionalCoreFlags.forEach(fallbackFlagKey => { 
+        createReactiveFlag(fallbackFlagKey); 
+    }); 
+    
+    console.log("[State Registry] Global compliance tracking tokens dynamically initialized successfully via loop iteration."); 
 })();
 
+// ============================================================================ // 
+// 🗃️ MASTER STATE PROPERTY MAPPING & LEGACY REFERENCE DICTIONARIES             // 
+// ============================================================================ // 
 
-// ============================================================================ //
-// 🗃️ MASTER STATE PROPERTY MAPPING & LEGACY REFERENCE DICTIONARIES            //
-// ============================================================================ //
+// --- BACKWARDS COMPATIBLE STEP 2 HARDCODED UPSELL RECORDS --- 
+window.STEP_2_UPSELLS_REFERENCE = { 
+    "assemble-dqf": { name: "Assemble Driver Qualification Files (DQF)", price: 79.00 }, 
+    "drug-consortium": { name: "DOT Drug & Alcohol Consortium Enrollment", price: 149.00 }, 
+    "hos-review": { name: "Hours of Service (HOS) Log Audit Pre-Review", price: 195.00 }, 
+    "maintenance-ledger": { name: "Vehicle Maintenance Ledger & Inspection Set", price: 85.00 }, 
+    "expert-consultation": { name: "Independent Pre-Audit Consultation Package", price: 250.00 } 
+}; 
 
-// --- BACKWARDS COMPATIBLE STEP 2 HARDCODED UPSELL RECORDS ---
-window.STEP_2_UPSELLS_REFERENCE = {
-    "assemble-dqf": { name: "Assemble Driver Qualification Files (DQF)", price: 79.00 },
-    "drug-consortium": { name: "DOT Drug & Alcohol Consortium Enrollment", price: 149.00 },
-    "hos-review": { name: "Hours of Service (HOS) Log Audit Pre-Review", price: 195.00 },
-    "maintenance-ledger": { name: "Vehicle Maintenance Ledger & Inspection Set", price: 85.00 },
-    "expert-consultation": { name: "Independent Pre-Audit Consultation Package", price: 250.00 }
-};
+// Global Configuration Property State Keys Registry Map 
+const baselinePropertyMapPayload = { 
+    // 🏢 HARMONIZED STEP 2 TRACKING EXTENSIONS 
+    "assemble-dqf": "customSelectedDqfServiceActive", 
+    "drug-consortium": "customSelectedDrugConsortiumActive", 
+    "hos-review": "customSelectedHosReviewActive", 
+    "maintenance-ledger": "customSelectedMaintenanceActive", 
+    "expert-consultation": "customSelectedExpertConsultationActive", 
+    
+    // Standard Compliance & Layout Map Flags 
+    "corporate-veil-lock": "customSelectedCorporateVeilLockActive", 
+    "hazmat-liability-shield": "customSelectedHazmatLiabilityShieldActive", 
+    "cargo-indemnity-audit": "customSelectedCargoIndemnityAuditActive", 
+    "regulatory-defense-retainer": "customSelectedRegulatoryDefenseRetainerActive", 
+    "unified-carrier-reg-shield": "customSelectedUcrShieldActive", 
+    "biennial-update-lock": "customSelectedBiennialLockActive", 
+    "driver-monitoring-feed": "customSelectedMvrMonitoringActive", 
+    "process-agent-boc3": "customSelectedBoc3Active", 
+    "scac-alpha-code": "customSelectedScacActive", 
+    "ifr-tax-account-setup": "customSelectedIftaActive", 
+    "kyu-weight-distance": "customSelectedKyuActive", 
+    "ny-hut-permit": "customSelectedHutActive", 
+    "nm-wdt-permit": "customSelectedWdtActive", 
+    "or-weight-receipt": "customSelectedOregonActive", 
+    "ein-tax-id-expedite": "customSelectedEinActive", 
+    "llc-operating-agreement": "customSelectedOperatingAgreementActive", 
+    "s-corp-election-filing": "customSelectedSCorpActive", 
+    "corp-by-laws-package": "customSelectedByLawsActive", 
+    "registered-agent-year": "customSelectedAgentActive", 
+    "dun-bradstreet-setup": "customSelectedDnbActive", 
+    "trademark-name-lock": "customSelectedTrademarkActive" 
+}; 
 
-// Global Configuration Property State Keys Registry Map
-const baselinePropertyMapPayload = {
-    // 🏢 HARMONIZED STEP 2 TRACKING EXTENSIONS
-    // Added to prevent hardcoded selections from breaking Stripe Element trees during transitions
-    "assemble-dqf": "customSelectedDqfServiceActive",
-    "drug-consortium": "customSelectedDrugConsortiumActive",
-    "hos-review": "customSelectedHosReviewActive",
-    "maintenance-ledger": "customSelectedMaintenanceActive",
-    "expert-consultation": "customSelectedExpertConsultationActive",
-
-    // Standard Compliance & Layout Map Flags
-    "corporate-veil-lock": "customSelectedCorporateVeilLockActive",
-    "hazmat-liability-shield": "customSelectedHazmatLiabilityShieldActive",
-    "cargo-indemnity-audit": "customSelectedCargoIndemnityAuditActive",
-    "regulatory-defense-retainer": "customSelectedRegulatoryDefenseRetainerActive",
-    "unified-carrier-reg-shield": "customSelectedUcrShieldActive",
-    "biennial-update-lock": "customSelectedBiennialLockActive",
-    "driver-monitoring-feed": "customSelectedMvrMonitoringActive",
-    "process-agent-boc3": "customSelectedBoc3Active",
-    "scac-alpha-code": "customSelectedScacActive",
-    "ifr-tax-account-setup": "customSelectedIftaActive",
-    "kyu-weight-distance": "customSelectedKyuActive",
-    "ny-hut-permit": "customSelectedHutActive",
-    "nm-wdt-permit": "customSelectedWdtActive",
-    "or-weight-receipt": "customSelectedOregonActive",
-    "ein-tax-id-expedite": "customSelectedEinActive",
-    "llc-operating-agreement": "customSelectedOperatingAgreementActive",
-    "s-corp-election-filing": "customSelectedSCorpActive",
-    "corp-by-laws-package": "customSelectedByLawsActive",
-    "registered-agent-year": "customSelectedAgentActive",
-    "dun-bradstreet-setup": "customSelectedDnbActive",
-    "trademark-name-lock": "customSelectedTrademarkActive"
-};
-
-// 🟢 ASYNC ASSIGNMENT INTERLOCK:
-// If the Object.defineProperty interceptor is already active on the window object scope,
-// assigning this payload triggers the setter macro cleanly. If not, we assign the raw object
-// structure safely so that your initialization loop sweeps it up immediately.
-if (Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP')?.set) {
-    window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload;
-} else {
-    window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = Object.assign(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}, baselinePropertyMapPayload);
+// 🟢 SAFE ASYNC ASSIGNMENT INTERLOCK:
+function processPayloadBinding() {
+    const descriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP');
+    
+    if (descriptor && typeof descriptor.set === 'function') { 
+        console.log("[Data Map Asset] Core interceptor ready. Binding payload mapping properties to setup macros.");
+        window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload; 
+    } else { 
+        console.log("[Data Map Asset] Core interceptor uninstantiated. Delaying loop evaluation binding pass...");
+        window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = Object.assign(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}, baselinePropertyMapPayload); 
+        
+        // Polling retry check: If Block 4 comes in late, catch it when it attaches to the window scope
+        let retryCounter = 0;
+        const fallbackTrackingInterval = setInterval(() => {
+            retryCounter++;
+            const postDescriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP');
+            if (postDescriptor && typeof postDescriptor.set === 'function') {
+                window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload;
+                clearInterval(fallbackTrackingInterval);
+            }
+            if (retryCounter >= 20) clearInterval(fallbackTrackingInterval); // Cap search cycle at 1 second
+        }, 50);
+    } 
 }
 
-// ============================================================================ //
-// 🗃️ USA STATES DICTIONARY CONFIGURATION ARRAY MATRIX                        //
-// ============================================================================ //
-window.USA_STATES_DICTIONARY = [
-    { code: "AL", name: "Alabama" }, { code: "AK", name: "Alaska" }, { code: "AZ", name: "Arizona" }, 
-    { code: "AR", name: "Arkansas" }, { code: "CA", name: "California" }, { code: "CO", name: "Colorado" }, 
-    { code: "CT", name: "Connecticut" }, { code: "DE", name: "Delaware" }, { code: "FL", name: "Florida" }, 
-    { code: "GA", name: "Georgia" }, { code: "HI", name: "Hawaii" }, { code: "ID", name: "Idaho" }, 
-    { code: "IL", name: "Illinois" }, { code: "IN", name: "Indiana" }, { code: "IA", name: "Iowa" }, 
-    { code: "KS", name: "Kansas" }, { code: "KY", name: "Kentucky" }, { code: "LA", name: "Louisiana" }, 
-    { code: "ME", name: "Maine" }, { code: "MD", name: "Maryland" }, { code: "MA", name: "Massachusetts" }, 
-    { code: "MI", name: "Michigan" }, { code: "MN", name: "Minnesota" }, { code: "MS", name: "Mississippi" }, 
-    { code: "MO", name: "Missouri" }, { code: "MT", name: "Montana" }, { code: "NE", name: "Nebraska" }, 
-    { code: "NV", name: "Nevada" }, { code: "NH", name: "New Hampshire" }, { code: "NJ", name: "New Jersey" }, 
-    { code: "NM", name: "New Mexico" }, { code: "NY", name: "New York" }, { code: "NC", name: "North Carolina" }, 
-    { code: "ND", name: "North Dakota" }, { code: "OH", name: "Ohio" }, { code: "OK", name: "Oklahoma" }, 
-    { code: "OR", name: "Oregon" }, { code: "PA", name: "Pennsylvania" }, { code: "RI", name: "Rhode Island" }, 
-    { code: "SC", name: "South Carolina" }, { code: "SD", name: "South Dakota" }, { code: "TN", name: "Tennessee" }, 
-    { code: "TX", name: "Texas" }, { code: "UT", name: "Utah" }, { code: "VT", name: "Vermont" }, 
-    { code: "VA", name: "Virginia" }, { code: "WA", name: "Washington" }, { code: "WV", name: "West Virginia" }, 
-    { code: "WI", name: "Wisconsin" }, { code: "WY", name: "Wyoming" }
+processPayloadBinding();
+
+// ============================================================================ // 
+// 🗃️ USA STATES DICTIONARY CONFIGURATION ARRAY MATRIX                         // 
+// ============================================================================ // 
+window.USA_STATES_DICTIONARY = [ 
+    { code: "AL", name: "Alabama" }, { code: "AK", name: "Alaska" }, 
+    { code: "AZ", name: "Arizona" }, { code: "AR", name: "Arkansas" }, 
+    { code: "CA", name: "California" }, { code: "CO", name: "Colorado" }, 
+    { code: "CT", name: "Connecticut" }, { code: "DE", name: "Delaware" }, 
+    { code: "FL", name: "Florida" }, { code: "GA", name: "Georgia" }, 
+    { code: "HI", name: "Hawaii" }, { code: "ID", name: "Idaho" }, 
+    { code: "IL", name: "Illinois" }, { code: "IN", name: "Indiana" }, 
+    { code: "IA", name: "Iowa" }, { code: "KS", name: "Kansas" }, 
+    { code: "KY", name: "Kentucky" }, { code: "LA", name: "Louisiana" }, 
+    { code: "ME", name: "Maine" }, { code: "MD", name: "Maryland" }, 
+    { code: "MA", name: "Massachusetts" }, { code: "MI", name: "Michigan" }, 
+    { code: "MN", name: "Minnesota" }, { code: "MS", name: "Mississippi" }, 
+    { code: "MO", name: "Missouri" }, { code: "MT", name: "Montana" }, 
+    { code: "NE", name: "Nebraska" }, { code: "NV", name: "Nevada" }, 
+    { code: "NH", name: "New Hampshire" }, { code: "NJ", name: "New Jersey" }, 
+    { code: "NM", name: "New Mexico" }, { code: "NY", name: "New York" }, 
+    { code: "NC", name: "North Carolina" }, { code: "ND", name: "North Dakota" }, 
+    { code: "OH", name: "Ohio" }, { code: "OK", name: "Oklahoma" }, 
+    { code: "OR", name: "Oregon" }, { code: "PA", name: "Pennsylvania" }, 
+    { code: "RI", name: "Rhode Island" }, { code: "SC", name: "South Carolina" }, 
+    { code: "SD", name: "South Dakota" }, { code: "TN", name: "Tennessee" }, 
+    { code: "TX", name: "Texas" }, { code: "UT", name: "Utah" }, 
+    { code: "VT", name: "Vermont" }, { code: "VA", name: "Virginia" }, 
+    { code: "WA", name: "Washington" }, { code: "WV", name: "West Virginia" }, 
+    { code: "WI", name: "Wisconsin" }, { code: "WY", name: "Wyoming" } 
 ];
 
 // ============================================================================ //
@@ -1190,118 +1213,132 @@ window.executeStepLifecyclePipeline = executeStepLifecyclePipeline;
   }, 1);
 })();
 
-/**
- * URL Parameter Extractor Hook
- * Automatically populates routing states from URL tracking if left unassigned
- */
-function syncUrlStateToWizardEngine() {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  if (urlParams.has('service')) {
-    const val = urlParams.get('service');
-    if (val && window.routeActiveServiceKey !== val) {
-      window.routeActiveServiceKey = val;
-    }
-  }
-  
-  if (urlParams.has('plan')) {
-    const pVal = urlParams.get('plan');
-    if (pVal && window.routeActivePlanKey !== pVal) {
-      window.routeActivePlanKey = pVal;
-    }
-  }
-}
+// ============================================================================ //
+// 🔗 MODULAR HOOK: URL PARAMETER EXTRACTOR & DEFENSIVE BOOTSTRAPPER            //
+// ============================================================================ //
 
-// Fire initial parse pass
-syncUrlStateToWizardEngine();
-
-/**
- * Defensive Bootstrapper Guard
- * Stubs missing initialization frames dynamically to protect the pipeline from throwing fatal errors
- */
-if (typeof window.initSevenStepWizardSystem !== "function") {
-  window.initSevenStepWizardSystem = function() {
-    console.log("[Pricing Boot] Safety interceptor triggered: System initializing downstream templates...");
+/** 
+ * URL Parameter Extractor Hook 
+ * Automatically populates routing states from URL tracking if left unassigned 
+ */ 
+function syncUrlStateToWizardEngine() { 
+    const urlParams = new URLSearchParams(window.location.search); 
     
-    // Automatically kick off Step 1 overview processing if parameters exist
-    if (window.routeActiveServiceKey && typeof window.renderOnboardingPlanOverviewCard === "function") {
-      window.renderOnboardingPlanOverviewCard(null, null, null, 0);
-    }
-  };
+    if (urlParams.has('service')) { 
+        const val = urlParams.get('service'); 
+        if (val && window.routeActiveServiceKey !== val) { 
+            window.routeActiveServiceKey = val; 
+        } 
+    } 
+    
+    if (urlParams.has('plan')) { 
+        const pVal = urlParams.get('plan'); 
+        if (pVal && window.routeActivePlanKey !== pVal) { 
+            window.routeActivePlanKey = pVal; 
+        } 
+    } 
+} 
+
+// 🔥 FIX: Safety check sequence parameters to guarantee reactive setters are alive before execution pass
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", syncUrlStateToWizardEngine);
+} else {
+    // Wrap inside a microtask queue execution slice to let window descriptors finalize mounting paths
+    setTimeout(syncUrlStateToWizardEngine, 1);
 }
 
-// ============================================================================ //
-// 🚀 UNIFIED SMOOTH-SCROLL VIEWPORT TRACKING ENGINE                            //
-// ============================================================================ //
-(function() {
-    "use strict";
+/** 
+ * Defensive Bootstrapper Guard 
+ * Stubs missing initialization frames dynamically to protect the pipeline from throwing fatal errors 
+ */ 
+if (typeof window.initSevenStepWizardSystem !== "function") { 
+    window.initSevenStepWizardSystem = function() { 
+        console.log("[Pricing Boot] Safety interceptor triggered: System initializing downstream templates..."); 
+        
+        // Automatically kick off Step 1 overview processing if parameters exist 
+        if (window.routeActiveServiceKey && typeof window.renderOnboardingPlanOverviewCard === "function") { 
+            window.renderOnboardingPlanOverviewCard(null, null, null, 0); 
+        } 
+    }; 
+}
 
-    const masterLayoutPanels = document.querySelectorAll(".wizard-panel, [id^='step-panel-']");
-    window.activePanelVisibilityObserversArray = [];
-    window.lastConfirmedActiveStepId = null;
+console.log("[State Registry] URL Extractor Hook and Bootstrapper synchronized safely.");
 
-    // Guard flag to prevent infinite streaming execution loops on Step 3
-    let isStep3CatalogInitialized = false;
 
-    masterLayoutPanels.forEach(function(panel) {
-        const panelObserver = new MutationObserver(function(mutations) {
-            const panelStepIdMatch = panel.id ? panel.id.match(/\d+$/) : null;
-            const panelStepIndex = panelStepIdMatch ? parseInt(panelStepIdMatch[0], 10) : null;
-
-            if (panelStepIndex === null) return;
-
-            // Ensure panel display state matches the global active wizard step index exactly
-            const isVisible = panel.style.display === "block" && panelStepIndex === window.currentWizardActiveStep;
-
-            if (isVisible && window.lastConfirmedActiveStepId !== panel.id) {
-                window.lastConfirmedActiveStepId = panel.id;
-                console.log(`[Scroll Manager] Panel #${panel.id || 'wizard-step'} mounted active. Adjusting viewport anchors...`);
-
-                // 💳 FIXED MOUNT STABILITY GATEWAY (UPDATED FOR STEPS 6 & 7)
-                // Use a hardware-safe double animation frame pass for checkout and receipt layers
-                if (panelStepIndex === 6 || panelStepIndex === 7) {
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            try {
-                                window.scrollTo({ top: 0, behavior: "auto" });
-                            } catch(e) {}
-                        });
-                    });
-                } else {
-                    // Standard smooth scrolling adjustments for all non-payment views
-                    try {
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                    } catch(e) {}
-                }
-
-                // Safe Conditional Hook Execution Isolation
-                if (panel.id === "step-panel-2" && typeof window.attachStepTwoNavigationTriggers === "function") {
-                    window.attachStepTwoNavigationTriggers();
-                }
-
-                if ((panel.id === "step-panel-3" || panel.id === "step-3") && !isStep3CatalogInitialized) {
-                    console.log("[Scroll Manager Interlock] Step 3 container live. Invoking streaming layout engine safely once...");
-                    isStep3CatalogInitialized = true;
-                    if (typeof window.executeStepThreeUpsellStreaming === "function") {
-                        window.executeStepThreeUpsellStreaming();
-                    } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") {
-                        window.autoInitializeStep3MarketplaceCatalog();
+// ============================================================================ // 
+// 🚀 UNIFIED SMOOTH-SCROLL VIEWPORT TRACKING ENGINE                            // 
+// ============================================================================ // 
+(function() { 
+    "use strict"; 
+    
+    const masterLayoutPanels = document.querySelectorAll(".wizard-panel, [id^='step-panel-'], [id^='step-']"); 
+    window.activePanelVisibilityObserversArray = []; 
+    window.lastConfirmedActiveStepId = null; 
+    
+    // Guard flag to prevent infinite streaming execution loops on Step 3 
+    let isStep3CatalogInitialized = false; 
+    
+    masterLayoutPanels.forEach(function(panel) { 
+        const panelObserver = new MutationObserver(function(mutations) { 
+            const panelStepIdMatch = panel.id ? panel.id.match(/\d+$/) : null; 
+            const panelStepIndex = panelStepIdMatch ? parseInt(panelStepIdMatch[0], 10) : null; 
+            
+            if (panelStepIndex === null) return; 
+            
+            // Ensure panel display state matches the global active wizard step index exactly 
+            const isVisible = (panel.style.display === "block" || panel.classList.contains("active")) && 
+                              panelStepIndex === window.currentWizardActiveStep; 
+                              
+            if (isVisible && window.lastConfirmedActiveStepId !== panel.id) { 
+                window.lastConfirmedActiveStepId = panel.id; 
+                console.log(`[Scroll Manager] Panel #${panel.id || 'wizard-step'} mounted active. Adjusting viewport anchors...`); 
+                
+                // 💳 FIXED MOUNT STABILITY GATEWAY (UPDATED FOR STEPS 6 & 7) 
+                // Use a hardware-safe double animation frame pass for checkout and receipt layers 
+                if (panelStepIndex === 6 || panelStepIndex === 7) { 
+                    requestAnimationFrame(() => { 
+                        requestAnimationFrame(() => { 
+                            try { 
+                                window.scrollTo({ top: 0, behavior: "auto" }); 
+                            } catch(e) {} 
+                        }); 
+                    }); 
+                } else { 
+                    // Standard smooth scrolling adjustments for all non-payment views 
+                    try { 
+                        window.scrollTo({ top: 0, behavior: "smooth" }); 
+                    } catch(e) {} 
+                } 
+                
+                // Safe Conditional Hook Execution Isolation 
+                if (panel.id === "step-panel-2" && typeof window.attachStepTwoNavigationTriggers === "function") { 
+                    window.attachStepTwoNavigationTriggers(); 
+                } 
+                
+                // 🔥 FIX: Scopes the step 3 evaluation and execution strictly to the step 3 panel container node trigger
+                if (panelStepIndex === 3) {
+                    if (!isStep3CatalogInitialized) { 
+                        console.log("[Scroll Manager Interlock] Step 3 container live. Invoking streaming layout engine safely once..."); 
+                        isStep3CatalogInitialized = true; 
+                        
+                        if (typeof window.executeStepThreeUpsellStreaming === "function") { 
+                            window.executeStepThreeUpsellStreaming(); 
+                        } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") { 
+                            window.autoInitializeStep3MarketplaceCatalog(); 
+                        } 
                     }
+                } else {
+                    // 🔥 FIX: Wipes out the initialization check flag ONLY when the active user leaves step 3 completely
+                    isStep3CatalogInitialized = false; 
                 }
-
-                // Reset flag if the user moves away from Step 3 so it can re-initialize cleanly if they return
-                if (panelStepIndex !== 3) {
-                    isStep3CatalogInitialized = false;
-                }
-            }
-        });
-
-        // Arm the layout mutation tracker securely
-        panelObserver.observe(panel, { attributes: true, attributeFilter: ["style"] });
-        window.activePanelVisibilityObserversArray.push(panelObserver);
-    });
+            } 
+        }); 
+        
+        // Arm the layout mutation tracker securely 
+        panelObserver.observe(panel, { attributes: true, attributeFilter: ["style", "class"] }); 
+        window.activePanelVisibilityObserversArray.push(panelObserver); 
+    }); 
 })();
-
 
 
 /** 
@@ -1316,39 +1353,40 @@ function evaluateSystemViewportDesign() {
         setTimeout(evaluateSystemViewportDesign, 50); 
         return; 
     } 
-
+    
     // Handle responsive view mutations via standard utility definitions 
     const isMobileSize = window.innerWidth <= 991; 
     const standardMobileClass = 'is-mobile-device'; 
-
+    
     if (isMobileSize && !container.classList.contains(standardMobileClass)) { 
         container.classList.add(standardMobileClass); 
         console.log("[Viewport Engine] Mobile layout skinning parameters applied."); 
     } else if (!isMobileSize && container.classList.contains(standardMobileClass)) { 
         container.classList.remove(standardMobileClass); 
     } 
-
-    // 🟢 UNIFIED STATE LOOP: Handles panel 2, panel 3, and panel 7 contextually without duplication
-    const targetPanelIds = ["step-panel-2", "step-panel-3", "step-3", "step-panel-7", "step-7"];
     
-    targetPanelIds.forEach(id => {
-        const activePanel = document.getElementById(id);
-        if (activePanel && (activePanel.classList.contains("active") || activePanel.style.display === "block")) {
+    // 🟢 UNIFIED STATE LOOP: Handles panel 2, panel 3, and panel 7 contextually without duplication 
+    const targetPanelIds = ["step-panel-2", "step-panel-3", "step-3", "step-panel-5", "step-panel-6", "step-panel-7", "step-7"]; 
+    
+    targetPanelIds.forEach(id => { 
+        const activePanel = document.getElementById(id); 
+        if (activePanel && (activePanel.classList.contains("active") || activePanel.style.display === "block")) { 
             
-            // Read-before-write optimization rule for width matching
+            // Read-before-write optimization rule for width matching 
             if (activePanel.style.width !== "100%") { 
                 activePanel.style.setProperty("width", "100%", "important"); 
-            }
+            } 
             
-            // Apply minimum height tracking constraints to avoid layout collapse
-            if (id === "step-panel-2" || id === "step-panel-7" || id === "step-7") {
-                if (activePanel.style.minHeight !== "400px") { 
-                    activePanel.style.setProperty("min-height", "400px", "important"); 
-                }
-            }
-        }
-    });
+            // Apply minimum height tracking constraints to avoid layout collapse across viewports
+            if (activePanel.style.minHeight !== "400px") { 
+                activePanel.style.setProperty("min-height", "400px", "important"); 
+            } 
+        } 
+    }); 
 } 
+
+// 🔥 FIX: Expose to global window context so switchWizardActiveViewLayout can invoke it on step switches
+window.evaluateSystemViewportDesign = evaluateSystemViewportDesign;
 
 // Optimized Debounce Wrapper to protect hardware threads during drag/resize events 
 let resizeDebounceTimer; 
@@ -1363,6 +1401,7 @@ if (document.readyState === "loading") {
 } else { 
     evaluateSystemViewportDesign(); 
 }
+
 
 // ============================================================================ //
 // 🇺🇸 MODULE: UNIVERSAL SELF-HOOKING USA STATE DROPDOWN ENGINE                 //
@@ -2096,61 +2135,77 @@ function updateApplicationMapTimelineBubbles(currentStepIndex) {
 window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles;
 
 
-// wizard-master-core.js
-
-/**
- * Validates step data and checks if a user profile already exists in Supabase.
- * @returns {Promise<{exists: boolean, email: string}>}
- */
-/**
- * Scans Supabase profiles table for an existing email registration.
- * Raises global system flags if a match is discovered so step 7 handles password provisioning natively.
- */
-async function verifyCustomerAndCheckAccount() {
-    // Dynamically grab whatever email field layout context is populated on screen
+// ============================================================================ //
+// 🔐 EXTENSION MODULE: HARDENED CUSTOMER ACCOUNT ACCOUNT VERIFICATION CORE    //
+// ============================================================================ //
+/** 
+ * Validates step data and checks if a user profile already exists in Supabase. 
+ * @returns {Promise<{exists: boolean, email: string}>} 
+ */ 
+async function verifyCustomerAndCheckAccount() { 
+    // 🔥 FIX: Added rigorous ID constraints ahead of broad type queries to protect against Stripe element collisions
     const emailInput = document.getElementById("lead_email")?.value || 
                        document.getElementById("portal_user_email")?.value || 
-                       document.querySelector("input[type='email']")?.value || "";
+                       document.querySelector(".master-onboarding-form input[type='email']")?.value ||
+                       document.querySelector("#wizard-account-generation-form input[type='email']")?.value || ""; 
+                       
+    const customerEmail = emailInput.trim().toLowerCase(); 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
     
-    const customerEmail = emailInput.trim().toLowerCase();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!customerEmail || !emailRegex.test(customerEmail)) { 
+        throw new Error("Invalid format parameters: Provide a functional email value."); 
+    } 
     
-    if (!customerEmail || !emailRegex.test(customerEmail)) {
-        throw new Error("Invalid format parameters: Provide a functional email value.");
-    }
+    // Unified database resolver tracking hook
+    const supabaseClient = window.getSuccessPageSupabaseClient ? window.getSuccessPageSupabaseClient() : 
+                           (window.supabaseClientInstance || window.supabase || window.supabaseClient || window.sb); 
+                           
+    if (!supabaseClient) throw new Error("Database interface offline."); 
+    
+    try { 
+        const { data: profile, error } = await supabaseClient 
+            .from('profiles') 
+            .select('id, email') 
+            .eq('email', customerEmail) 
+            .maybeSingle(); 
+            
+        if (error) throw error; 
+        
+        if (profile) { 
+            console.log("[Wizard Core Verification] Existing customer identified:", customerEmail); 
+            
+            // 🟢 CRITICAL TRACKING IDENTIFIERS
+            window.f4uIsReturningCustomer = true; 
+            window.f4uExistingUserId = profile.id; 
+            
+            localStorage.setItem("f4u_is_returning_customer", "true"); 
+            localStorage.setItem("f4u_returning_customer_email", customerEmail); 
+            
+            return { exists: true, email: customerEmail }; 
+        } else { 
+            console.log("[Wizard Core Verification] Unregistered guest user trajectory."); 
+            
+            window.f4uIsReturningCustomer = false; 
+            window.f4uExistingUserId = null; 
+            
+            localStorage.setItem("f4u_is_returning_customer", "false"); 
+            localStorage.removeItem("f4u_returning_customer_email"); 
+            
+            return { exists: false, email: customerEmail }; 
+        } 
+    } catch (err) { 
+        console.warn("[Wizard Core] Profile validation database check deferred:", err.message); 
+        
+        // 🔥 FIX: Cleanly reset state parameters inside the catch block to guarantee error states don't leak old user profiles
+        window.f4uIsReturningCustomer = false; 
+        window.f4uExistingUserId = null; 
+        
+        localStorage.setItem("f4u_is_returning_customer", "false"); 
+        localStorage.removeItem("f4u_returning_customer_email"); 
+        
+        return { exists: false, email: customerEmail, error: err.message }; 
+    } 
+} 
 
-    let supabaseClient = window.supabaseClientInstance || window.supabase || window.supabaseClient || window.sb;
-    if (!supabaseClient) throw new Error("Database interface offline.");
-
-    try {
-        const { data: profile, error } = await supabaseClient
-            .from('profiles')
-            .select('id, email')
-            .eq('email', customerEmail)
-            .maybeSingle();
-
-        if (error) throw error;
-
-        if (profile) {
-            console.log("[Wizard Core Verification] Existing customer identified:", customerEmail);
-            // 🟢 CRITICAL TRACKING IDENTIFIERS (Req 3)
-            window.f4uIsReturningCustomer = true;
-            window.f4uExistingUserId = profile.id;
-            localStorage.setItem("f4u_is_returning_customer", "true");
-            localStorage.setItem("f4u_returning_customer_email", customerEmail);
-            return { exists: true, email: customerEmail };
-        } else {
-            console.log("[Wizard Core Verification] Unregistered guest user trajectory.");
-            window.f4uIsReturningCustomer = false;
-            window.f4uExistingUserId = null;
-            localStorage.setItem("f4u_is_returning_customer", "false");
-            localStorage.removeItem("f4u_returning_customer_email");
-            return { exists: false, email: customerEmail };
-        }
-    } catch (err) {
-        console.warn("[Wizard Core] Profile validation database check deferred:", err.message);
-        return { exists: false, email: customerEmail };
-    }
-}
-
+// Export verification layers back up into global window scope references safely
 window.verifyCustomerAndCheckAccount = verifyCustomerAndCheckAccount;
