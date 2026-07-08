@@ -149,3 +149,141 @@
         width: 100% !important;
     }
 }
+
+/* ============================================================================ */
+/* 📱 SCANNABLE SYSTEM OVERLAY: EXTRACTED MOBILE LOGO & DRAWER LAYOUT           */
+/* ============================================================================ */
+
+/* Hide the custom mobile header completely on full desktop layout viewports */
+.f4u-mobile-header-bar {
+    display: none !important;
+}
+
+@media screen and (max-width: 991px) {
+    
+    /* --- 1. THE EXTRACTION LOGO HEADER BAR (ANCHORED TOP LEFT) --- */
+    .f4u-mobile-header-bar {
+        display: flex !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 60px !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        align-items: center !important;
+        justify-content: flex-start !important; /* 🔥 Pins logo graphic directly to the top left */
+        padding-left: 16px !important; /* Clean margin padding alignment edge */
+        box-sizing: border-box !important;
+        z-index: 9998 !important; /* Floats safely right underneath your nav toggle trigger button */
+    }
+
+    /* Lock image size boundaries within the mobile extracted wrapper */
+    .f4u-mobile-header-bar img,
+    .f4u-mobile-header-bar [class*="logo"] img {
+        height: 28px !important;
+        width: auto !important;
+        display: block !important;
+        margin: 0 !important; /* Removes default template center rules */
+    }
+
+    /* --- 2. 🔥 THE ANTI-DUPLICATION LOGO STRIKE LAYER --- */
+    /* Target and remove the legacy logo nesting components residing INSIDE the sidebar on mobile exclusively */
+    .portal-sidebar .logo-box,
+    .portal-sidebar .brand-logo-header,
+    .wizard-navigation-sidebar .logo-container-wrapper,
+    .multi-sidebar-progress [class*="logo"],
+    .portal-sidebar img:first-child,
+    .wizard-navigation-sidebar img:first-child,
+    .multi-sidebar-progress img:first-child {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+   /* --- 3. VERTICALLY CENTER AND LIFT THE MENU TIMELINE TRACKS --- */
+.portal-sidebar, .wizard-navigation-sidebar, .multi-sidebar-progress {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 285px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important; 
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    border-right: 1px solid #e2e8f0 !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15) !important;
+    
+    /* 🛠️ FIX: Changed from center to space-between to spread items from top to bottom */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important; 
+    padding: 40px 24px !important;
+    transform: translateX(-110%);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 🛠️ FIX: Repair the Estimated completion time wrap tracking layout */
+.portal-sidebar h3, 
+.wizard-navigation-sidebar .sidebar-title,
+.multi-sidebar-progress .application-map-header {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 10px !important;
+}
+
+.portal-sidebar .estimated-time-block,
+.wizard-navigation-sidebar [class*="estimated"],
+.multi-sidebar-progress [class*="completion"] {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-bottom: 20px !important;
+}
+
+/* Stack your timeline list nodes cleanly inside the centered navigation container */
+.portal-sidebar ul, .wizard-navigation-sidebar ul, .multi-sidebar-progress .timeline-track-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    
+    /* 🛠️ FIX: Pushes the main list to dynamically grow and take up remaining middle space */
+    flex-grow: 1 !important; 
+    justify-content: space-evenly !important; 
+    gap: 12px !important;
+    
+    width: 100% !important;
+    margin: 0 0 24px 0 !important;
+    padding: 0 !important;
+}
+
+/* 🛠️ FIX: Pins the Save Progress action button wrapper firmly at the bottom */
+.portal-sidebar .btn,
+.wizard-navigation-sidebar button,
+.portal-sidebar [class*="save"],
+.wizard-navigation-sidebar [class*="save"] {
+    margin-top: auto !important;
+    width: 100% !important;
+}
+
+    /* --- 4. ALIGN THE NAVIGATION HAMBURGER MENU BUTTON TRACKS --- */
+    .mobile-nav-toggle-btn {
+        position: fixed !important;
+        top: 11px !important; /* Aligns onto the 60px header bar axis line */
+        right: 16px !important;
+        margin: 0 !important;
+        z-index: 10000 !important;
+    }
+
+    /* Adjust page steps positioning layout vectors to guard against top text crop clipping */
+    div.wizard-panel,
+    div.wizard-step-panel,
+    div[id^="step-panel-"] {
+        margin-top: 76px !important; /* Clear spacer headroom boundary */
+    }
+}

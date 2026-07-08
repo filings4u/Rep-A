@@ -33,15 +33,16 @@
         document.head.appendChild(styleSheetNode);
     }
 
-    // 2. BUILD PANEL GRID VIEW
-    const gateContainerBlock = document.createElement("div");
-    gateContainerBlock.id = "step-panel-0";
-    gateContainerBlock.className = "wizard-panel active";
-    gateContainerBlock.style.cssText = "display: none; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 35px 40px; width: 100%; max-width: 1200px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); box-sizing: border-box; position: relative; margin-top: 10px !important; margin-bottom: 20px !important; text-align: left; clear: both;";
+   // 2. BUILD PANEL GRID VIEW
+const gateContainerBlock = document.createElement("div");
+gateContainerBlock.id = "step-panel-0";
+gateContainerBlock.className = "wizard-panel active";
+
+// 🔥 INCREASED MARGIN-TOP FROM 10px TO 60px TO MOVE CONTAINER DOWN ON DESKTOP
+gateContainerBlock.style.cssText = "display: none; background: #ffffff; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 35px 40px; width: 100%; max-width: 1200px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); box-sizing: border-box; position: relative; margin-top: 70px !important; margin-bottom: 20px !important; text-align: left; clear: both;";
 
     gateContainerBlock.innerHTML = `
         <div class="step-header-container" style="border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; text-align: left;">
-            <span style="font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Filing Configuration</span>
             <h2 style="margin: 4px 0 0 0; color: #0a1f44; font-size: 1.5rem; font-weight: 800;">Select Your Jurisdiction State</h2>
             <p style="margin: 6px 0 0 0; color: #64748b; font-size: 0.875rem;">Please select the primary state where your business will register to calculate mandatory government processing fees.</p>
         </div>
