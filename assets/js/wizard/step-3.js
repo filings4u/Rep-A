@@ -582,35 +582,145 @@ function buildMarketplaceCardsHtml(catalogItems) {
         </div> 
       </div>
       
-      <style>
-  /* 📱 MOBILE VIEWPORT BREAKPOINT: STEP 3 ADD-ONS */
+ <style>
+  /* 📱 MOBILE VIEWPORT BREAKPOINT: PREMIUM STEP 3 CARD OPTIMIZATION */
   @media (max-width: 600px) {
-    /* Forces your side-by-side up-sell cards to stack cleanly in a single row column */
-    .upsell-market-card-container,
-    div[style*="display: grid; grid-template-columns"] {
+    
+    /* 1️⃣ OVERRIDE PARENT GRID RULES COHESIVELY */
+    div[style*="display: grid;"],
+    div[id*="marketplace"],
+    #wizard-account-generation-form {
       grid-template-columns: 1fr !important;
-      gap: 16px !important;
-    }
-    
-    /* Centers grid card elements for text visibility */
-    .upsell-market-card {
-      flex-direction: column !important;
-      align-items: stretch !important;
-      text-align: center !important;
-      gap: 14px !important;
-    }
-    
-    /* Moves your toggle checkbox inputs right below description copy paragraphs */
-    .upsell-market-card div[style*="align-items: flex-end"] {
-      align-items: center !important;
-      justify-content: center !important;
+      display: block !important;
       width: 100% !important;
-      border-top: 1px dashed #e2e8f0;
-      padding-top: 12px;
+    }
+
+    /* 2️⃣ THE COMPLIANCE CARD MATRIX HUB */
+    /* Remodels each up-sell envelope block into a premium mobile card layout */
+    .upsell-market-card,
+    div[class*="upsell-market-card"],
+    div[style*="background:#ffffff; border:1px solid"] {
+      display: flex !important;
+      flex-direction: column !important; /* Stack copy text on top of functional inputs row */
+      align-items: flex-start !important; /* Forces copy alignments to match the left margin */
+      text-align: left !important; /* Left-align the text layout for a highly professional look */
+      padding: 20px !important;
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 12px !important; /* Slightly more rounded corners to look elegant on phone screens */
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important; /* Elegant modern fluid shadows drop */
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin-bottom: 16px !important;
+    }
+
+    /* 3️⃣ TEXT DESCRIPTION WRAPPING COMPONENT */
+    /* Removes empty space fields to lock title text and descriptions closer together */
+    .upsell-market-card div[style*="display:flex; flex-direction:column; gap:4px;"] {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      text-align: left !important;
+      width: 100% !important;
+      gap: 6px !important;
+    }
+
+    /* Title size and weight emphasis controls */
+    .upsell-market-card span[style*="font-weight:800"] {
+      font-size: 1.05rem !important;
+      color: #0a1f44 !important;
+      letter-spacing: -0.2px !important;
+    }
+
+    /* Paragraph font optimization tracking rules */
+    .upsell-market-card p {
+      font-size: 0.825rem !important;
+      line-height: 1.45 !important;
+      color: #64748b !important;
+      margin: 0 !important;
+    }
+
+    /* 4️⃣ THE LOWER INPUTS TIERS: SIDE-BY-SIDE FIXED HORIZONTAL VIEWPORT TRACKING */
+    /* Transforms the lower price text element and active checkbox button back onto a clean side-by-side row */
+    .upsell-market-card div[style*="display:flex; flex-direction:column; align-items:flex-end;"] {
+      display: flex !important;
+      flex-direction: row !important; /* 🔥 MANDATORY: Moves the Price and the Activate checkbox side-by-side */
+      justify-content: space-between !important; /* Pushes price to the far left, and checkbox to the far right */
+      align-items: center !important;
+      width: 100% !important;
+      border-top: 1px solid #f1f5f9 !important; /* Clean, subtle horizontal divider line separating copy text row from options tier */
+      margin-top: 14px !important;
+      padding-top: 14px !important;
+    }
+
+    /* Price Label Typography Alignment */
+    .upsell-market-card .upsell-price-container,
+    .upsell-market-card span[style*="font-family:monospace"] {
+      font-size: 1.15rem !important;
+      font-weight: 800 !important;
+      color: #10b981 !important; /* Brand emerald text highlights */
+      display: inline-block !important;
+      margin: 0 !important;
+    }
+
+    /* The Interactive Checkbox Input Controls Container */
+    .upsell-market-card label {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      font-size: 0.825rem !important;
+      font-weight: 700 !important;
+      color: #0a1f44 !important;
+      cursor: pointer !important;
+      margin: 0 !important;
+      background: #f8fafc; /* Places the tiny checkbox text inside a clean button capsule frame */
+      padding: 6px 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px; /* Fully rounded capsule pill shape */
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* Force checkbox shape size configurations */
+    .upsell-market-card input[type="checkbox"] {
+      width: 16px !important;
+      height: 16px !important;
+      margin: 0 !important;
+      cursor: pointer !important;
+      accent-color: #0a1f44 !important; /* Checked boxes fill natively with your brand navy theme color */
     }
   }
 </style>
 
+<style>
+  /* 🟢 DESKTOP & MOBILE ACTIVE SELECTED CARD GLOW TRANSITIONS */
+  .upsell-market-card {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* Adds a smooth hover lift animation when mouse pointers hover over them on desktop */
+  @media (min-width: 601px) {
+    .upsell-market-card:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+    }
+  }
+
+  /* Real-time selector helper hook: if your underlying checkbox code flips active,
+     this immediately applies your brand emerald highlight ring to the card border! */
+  .upsell-market-card:has(input:checked) {
+    border-color: #10b981 !important; /* Brand emerald green border color */
+    background: #fbfdfb !important;   /* Subtle clean green hue wash canvas tint */
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.06) !important;
+  }
+  
+  /* Turns your pill capsule button solid brand dark navy text fill when checked active */
+  .upsell-market-card:has(input:checked) label {
+    background: #0a1f44 !important;
+    color: #ffffff !important;
+    border-color: #0a1f44 !important;
+  }
+</style>
       
       `;
       
@@ -1588,3 +1698,57 @@ if (step3TargetPanel) {
 window.renderOnboardingPlanOverviewCard = typeof window.renderOnboardingPlanOverviewCard !== "undefined" ? window.renderOnboardingPlanOverviewCard : null;
 window.cleanStep3MarketplaceDuplications = cleanStep3MarketplaceDuplications;
 
+// ============================================================================ //
+// 📡 AUTOMATED UI ENGINE: FULL-CARD INTUITIVE CLICK INTERCEPTOR MAPPER         //
+// ============================================================================ //
+function initializeIntuitiveFullCardClickListeners() {
+  console.log("[Marketplace UI] Binding full-card interactive click handlers...");
+  
+  // Target all your white up-sell cards sitting inside the viewport layout
+  const marketplaceCards = document.querySelectorAll(".upsell-market-card");
+
+  marketplaceCards.forEach(card => {
+    // Prevent double binding if this hydration script re-runs during wizard movement
+    if (card.dataset.clickBound) return;
+    card.dataset.clickBound = "true";
+
+    // 1. Add interactive cursor hints to signal clickability to the customer
+    card.style.cursor = "pointer";
+
+    // 2. Intercept the click event loop on the card container envelope
+    card.addEventListener("click", function(event) {
+      // Locate the actual checkbox input resting inside this card container node
+      const targetCheckbox = card.querySelector(".upsell-checkbox");
+      if (!targetCheckbox) return;
+
+      // 🟢 SAFETY FIX: If the user explicitly clicked the tiny input box directly, 
+      // let the browser's default behavior handle it so we don't cause an infinite toggle loop.
+      if (event.target.closest('input[type="checkbox"]') || event.target.closest('label')) {
+        return;
+      }
+
+      // 3. Programmatically flip the checked binary flag state parameters
+      targetCheckbox.checked = !targetCheckbox.checked;
+
+      // 4. Fire the exact native event dispatch routines your wizard script expects
+      if (typeof window.executeUpsellStateToggleIntercept === "function") {
+        window.executeUpsellStateToggleIntercept(targetCheckbox);
+      } else if (typeof window.handleBackgroundUpsellTogglePass === "function") {
+        window.handleBackgroundUpsellTogglePass(targetCheckbox);
+      }
+
+      // 5. Add a premium visual feedback pop to the capsule pill label state on click
+      const labelButtonCapsule = card.querySelector("label");
+      if (labelButtonCapsule) {
+        labelButtonCapsule.style.transform = "scale(0.95)";
+        setTimeout(() => { labelButtonCapsule.style.transform = "scale(1)"; }, 100);
+      }
+    });
+  });
+}
+
+// Automatically invoke the script framework on a clean timeout fallback lifecycle loop
+setTimeout(initializeIntuitiveFullCardClickListeners, 400);
+
+// Also expose it to the window global registry so core.js can trigger it on step changes
+window.initializeIntuitiveFullCardClickListeners = initializeIntuitiveFullCardClickListeners;
