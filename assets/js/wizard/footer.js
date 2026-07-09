@@ -18,64 +18,77 @@
    */
   targetNode.innerHTML = `
     <!-- 🟢 DYNAMIC MEDIA OVERRIDES WRAPPER -->
-    <style>
-      /* Desktop Defaults */
-      #f4u-standalone-footer-wrapper {
-        display: block !important;
-        width: 100% !important;
-        max-width: 1450px !important;
-        margin: 40px auto 0 auto !important;
-        clear: both;
-        position: relative;
-        z-index: 10;
-        box-sizing: border-box;
-        overflow: hidden !important;
-        border-radius: 12px !important;
-      }
+<style>
+  /* ============================================================================ */
+  /* 💻 GLOBAL & DESKTOP GRID DEFAULTS                                           */
+  /* ============================================================================ */
+  #f4u-standalone-footer-wrapper {
+    display: block !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 40px auto 0 auto !important;
+    clear: both;
+    position: relative;
+    z-index: 10;
+    box-sizing: border-box;
+    overflow: hidden !important;
+    border-radius: 12px !important;
+  }
+  
+  /* ============================================================================ */
+  /* 📱 MOBILE VIEWPORT BREAKPOINT BLOCK (UNDER 600px EXCLUSIVE)                 */
+  /* ============================================================================ */
+  @media (max-width: 600px) {
+    
+  
+    
+    /* 🟢 THE INLINE STRIPPER: Overrides hardcoded inline desktop constraints on the inner tag */
+    #f4u-standalone-footer-wrapper .portal-legal-footer {
+      display: flex !important;
+      flex-direction: column !important; /* Stacks your elements into 3 distinct centered tiers */
+      justify-content: center !important;
+      align-items: center !important;
+      text-align: center !important;
+      padding: 24px 16px !important;
+      gap: 16px !important;
       
-      /* 📱 MOBILE VIEWPORT BREAKPOINT (UNDER 600px) */
-      @media (max-width: 600px) {
-        /* Breaks past 12px wizard padding to stretch full width flat on phone screens */
-        #f4u-standalone-footer-wrapper {
-          width: calc(100% + 24px) !important;
-          max-width: calc(100% + 24px) !important;
-          margin: 40px -12px 0 -12px !important;
-          border-radius: 0px !important;
-        }
-        
-        /* Structures your elements into 3 stacked vertical rows instead of a single line */
-        #f4u-standalone-footer-wrapper .portal-legal-footer {
-          flex-direction: column !important;
-          justify-content: center !important;
-          align-items: center !important;
-          text-align: center !important;
-          padding: 24px 16px !important;
-          gap: 16px !important;
-          max-width: 100% !important;
-        }
-        
-        /* Row 1 Text Adjustment */
-        #f4u-standalone-footer-wrapper .copyright-text-block {
-          text-align: center !important;
-          width: 100% !important;
-          margin: 0 !important;
-        }
-        
-        /* Row 2 Links Optimization: Keeps them side-by-side but scales tracking width */
-        #f4u-standalone-footer-wrapper .footer-links-centered-row {
-          width: 100% !important;
-          justify-content: center !important;
-          gap: 16px !important;
-          margin: 0 !important;
-        }
-        
-        /* Row 3 Badge Optimization */
-        #f4u-standalone-footer-wrapper .trust-badge {
-          width: auto !important;
-          margin: 0 auto !important;
-        }
-      }
-    </style>
+      /* 🟢 CRITICAL: Overrides the hardcoded desktop layout inline metrics */
+      width: 100% !important;
+      max-width: 100% !important; 
+      margin: 0 !important; 
+    }
+    
+    /* ROW 1: Copyright text text wrapping tracks */
+    #f4u-standalone-footer-wrapper .copyright-text-block,
+    p.copyright-text-block, 
+    .portal-legal-footer p.copyright-text-block {
+      display: block !important;
+      text-align: center !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 0 4px 0 !important;
+      white-space: normal !important; /* Natural fluid tracking bounds */
+    }
+    
+    /* ROW 2: Middle links horizontal alignment row spacing */
+    #f4u-standalone-footer-wrapper .footer-links-centered-row {
+      display: flex !important;
+      flex-direction: row !important; /* Keeps links side-by-side */
+      width: 100% !important;
+      justify-content: center !important;
+      gap: 16px !important;
+      margin: 0 !important;
+    }
+    
+    /* ROW 3: Secure encryption badge capsule pill alignment */
+    #f4u-standalone-footer-wrapper .trust-badge {
+      display: inline-flex !important;
+      width: auto !important;
+      margin: 0 auto !important;
+    }
+  }
+</style>
+
 
     <!-- 🟢 MASTER CONTEXT LAYOUT CANVAS -->
     <div id="f4u-standalone-footer-wrapper">

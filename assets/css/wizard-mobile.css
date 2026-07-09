@@ -194,29 +194,4 @@
         justify-content: center !important;
     }
 
-
-
-
-
-/* --- 11. MOBILE COPYRIGHT WIDTH EXPANSION TRACKS --- */
-/* Allows the text block to stretch across fluid boundaries to eliminate awkward line wrapping */
-p.copyright-text-block, 
-.portal-legal-footer p.copyright-text-block {
-  display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  white-space: normal !important; /* Allows natural fluid text tracking layout flow */
-}
-
-/* 📱 MOBILE VIEW ONLY: Forces center-alignment on narrow viewports under 600px */
-@media (max-width: 600px) {
-  p.copyright-text-block, 
-  .portal-legal-footer p.copyright-text-block {
-    text-align: center !important;
-    line-height: 1.6 !important;
-  }
-}
-
-
-
 }
