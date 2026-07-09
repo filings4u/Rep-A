@@ -177,41 +177,68 @@ if (window.stripeElementsContainer) {
   throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
 }
 
-        
-        // 4. PACK UNIFIED ACCOUNT MANIFEST CONTEXT PASSTHROUGH 
-        const checkoutManifestPayload = { 
-            transaction_hash_id: uniqueTrackingToken, 
-            communications_email: finalEmail, 
-            is_returning: isReturningUser, 
-            financials_grand_total_charge: activeGrandCost,
-            legal_entity_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile", 
-            taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...", 
-            office_address_street: localStorage.getItem("wizard_field_principal_address") || "Form Submission Record Entry", 
-            selected_package_title: window.routeActivePlanTierName || "Compliance Update Filing Package", 
-            financials_subtotal_amount: parseFloat(localStorage.getItem("wizard_field-1-base-fee-value")) || 150.00
-        }; 
-        
-        // 🔥 FIX: Swapped cache target to 'f4u_finalized_checkout_receipt_manifest' to align with step-7.js reader expectations
-        sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload)); 
-        
-        // 5. IN-WIZARD TRANSITION STRAIGHT TO STEP 7 
-        if (typeof window.switchWizardActiveViewLayout === "function") { 
-            console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js..."); 
-            window.switchWizardActiveViewLayout(7); 
-        } 
-    } catch (checkoutError) { 
-        console.error("[Fatal Payment Intercept Catch]", checkoutError); 
-        
-        if (errorBanner) { 
-            errorBanner.style.display = "block"; 
-            errorBanner.innerHTML = ` 
-                <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError} 
-            `; 
-        } 
-        
-        if (submitBtn) { 
-            submitBtn.disabled = false; 
-            submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>'; 
-        } 
-    } 
+    // 4. PACK UNIFIED ACCOUNT MANIFEST CONTEXT PASSTHROUGH
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "llc-formation").toLowerCase().trim();
+    const activePlanKeyString = String(urlParams.get('plan') || window.routeActivePlanKey || window.currentPlanKey || "enterprise").toLowerCase().trim();
+
+    // Dynamically look up base cost matching step-5 schemas
+    let foundationFilingCost = 0;
+    if (window._tempCalcContext && window._tempCalcContext.baseTierPrice !== undefined) {
+      foundationFilingCost = parseFloat(window._tempCalcContext.baseTierPrice) || 0;
+    }
+
+    if (foundationFilingCost === 0 && window.CENTRAL_SERVICE_PLAN_DB && window.CENTRAL_SERVICE_PLAN_DB[serviceSlug]) {
+      const serviceNode = window.CENTRAL_SERVICE_PLAN_DB[serviceSlug];
+      if (activePlanKeyString.includes("enterprise") || activePlanKeyString.includes("premium")) {
+        foundationFilingCost = parseFloat(serviceNode.enterprise || serviceNode.premium) || 0;
+      } else if (activePlanKeyString.includes("standard") || activePlanKeyString.includes("compliance") || activePlanKeyString.includes("pro")) {
+        foundationFilingCost = parseFloat(serviceNode.compliance || serviceNode.standard || serviceNode.pro) || 0;
+      } else {
+        foundationFilingCost = parseFloat(serviceNode.starter || serviceNode.economy) || 0;
+      }
+    }
+
+    if (foundationFilingCost === 0) {
+      if (activePlanKeyString.includes("enterprise") || activePlanKeyString.includes("premium")) foundationFilingCost = 399.00;
+      else if (activePlanKeyString.includes("standard") || activePlanKeyString.includes("pro")) foundationFilingCost = 149.00;
+      else foundationFilingCost = 49.00;
+    }
+
+    let extractedTierTokenName = activePlanKeyString.toUpperCase();
+    const dynamicLabelTextString = `filings4u Processing Fee (${extractedTierTokenName})`;
+
+    const checkoutManifestPayload = {
+      transaction_hash_id: uniqueTrackingToken,
+      communications_email: finalEmail,
+      is_returning: isReturningUser,
+      financials_grand_total_charge: activeGrandCost,
+      legal_entity_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
+      taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...",
+      office_address_street: localStorage.getItem("wizard_field_principal_address") || "Form Submission Record Entry",
+      selected_package_title: dynamicLabelTextString,
+      financials_subtotal_amount: foundationFilingCost
+    };
+
+    // Save to sync with step-7.js reader expectations
+    sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload));
+    // 5. IN-WIZARD TRANSITION STRAIGHT TO STEP 7
+    if (typeof window.switchWizardActiveViewLayout === "function") {
+      console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js...");
+      window.switchWizardActiveViewLayout(7);
+    }
+  } catch (checkoutError) {
+    console.error("[Fatal Payment Intercept Catch]", checkoutError);
+    if (errorBanner) {
+      errorBanner.style.display = "block";
+      errorBanner.innerHTML = `
+        <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> 
+        <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError}
+      `;
+    }
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
+    }
+  }
 };

@@ -39,6 +39,7 @@ function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, act
           </div>
         `;
       }
+      
     }
 
     // 2. SAFE STRING ESCAPE PROCESSING
