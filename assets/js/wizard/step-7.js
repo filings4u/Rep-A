@@ -296,6 +296,108 @@ container.insertAdjacentHTML('beforeend', `
       }
     }
   </style>
+
+  <!-- STEP 7 EXCLUSIVE MOBILE-RESPONSIVE MEDIA OVERRIDES -->
+<style>
+  /* 🟢 BASE DESKTOP PARITY: Sanitize box-sizing constraints */
+  #live-poa-document-manifest *, 
+  .runtime-state-fee-notice-card *,
+  #receipt-items-injector-frame * {
+    box-sizing: border-box !important;
+  }
+
+  /* 📱 MOBILE VIEWPORT BREAKPOINT OPTIMIZATION MATRIX */
+  @media (max-width: 600px) {
+    /* 1. Status Grid Re-alignment (Stacks account stats vertically) */
+    .print-canvas > div:first-child > div[style*="display: grid"] {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+      padding: 16px !important;
+    }
+
+    /* 2. Headline Font Scaling (Prevents awkward multi-line breaking) */
+    .print-canvas h1 {
+      font-size: 1.6rem !important;
+      line-height: 1.25 !important;
+    }
+    
+    /* 3. Itemized Billing Rows Formatting */
+    #receipt-items-injector-frame {
+      padding: 12px !important;
+    }
+    #receipt-items-injector-frame > div {
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: flex-start !important;
+      gap: 12px !important;
+    }
+    #receipt-items-injector-frame span,
+    #receipt-items-injector-frame strong {
+      font-size: 0.85rem !important;
+    }
+
+    /* 4. Action Utility Button Rows Optimization (Full width stacking) */
+    .no-print[style*="text-align: right"] {
+      text-align: center !important;
+      width: 100% !important;
+    }
+    .no-print button {
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 14px !important;
+    }
+
+    /* 5. Slate Callout Banner Formatting */
+    .runtime-state-fee-notice-card {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 12px !important;
+      padding: 16px !important;
+    }
+    .runtime-state-fee-notice-card h4 {
+      font-size: 0.9rem !important;
+    }
+    .runtime-state-fee-notice-card p {
+      font-size: 0.8rem !important;
+    }
+    .runtime-state-fee-notice-card div[style*="display: inline-flex"] {
+      display: flex !important;
+      width: 100% !important;
+      justify-content: center !important;
+    }
+
+    /* 6. Power of Attorney Document Card View Adjustments */
+    #poa-print-canvas {
+      padding: 20px !important;
+    }
+    #poa-print-canvas h4 {
+      font-size: 1.05rem !important;
+    }
+    #poa-print-canvas p {
+      font-size: 0.775rem !important;
+      padding: 10px !important;
+    }
+
+    /* 7. POA Audit Signature Grid (Transforms columns to fluid rows) */
+    #poa-print-canvas div[style*="display: grid"] {
+      grid-template-columns: 1fr !important;
+      gap: 20px !important;
+      text-align: center !important;
+    }
+    #poa-certified-signer {
+      font-size: 1.8rem !important; /* Maximizes handwritten impact */
+      text-align: center !important;
+      margin-top: 4px !important;
+    }
+    #poa-certified-timestamp {
+      font-size: 0.8rem !important;
+      text-align: center !important;
+    }
+  }
+</style>
+
   </div>
 
  

@@ -499,6 +499,7 @@ function buildMarketplaceCardsHtml(catalogItems) {
       <h3 style="color: #0a1f44; font-size: 1.25rem; font-weight: 800; margin: 0 0 6px 0;">3. Add-Ons</h3> 
       <p style="color: #64748b; font-size: 0.88rem; margin: 0; line-height: 1.5;">Maximize your protection, streamline banking requirements, and ensure corporate liability shields remain secure.</p> 
     </div>
+
   `;
 
   let accumulatorHtml = "";
@@ -579,7 +580,40 @@ function buildMarketplaceCardsHtml(catalogItems) {
             <input type="checkbox" class="upsell-checkbox" id="${trackingKey}" data-id="${trackingKey}" data-price="${itemPrice}" data-name="${itemName}" style="width:18px; height:18px; cursor:pointer;" ${isChecked ? 'checked' : ''} onchange="if(typeof window.executeUpsellStateToggleIntercept === 'function') { window.executeUpsellStateToggleIntercept(this); } else if(typeof window.handleBackgroundUpsellTogglePass === 'function') { window.handleBackgroundUpsellTogglePass(this); }"> Activate 
           </label> 
         </div> 
-      </div>`;
+      </div>
+      
+      <style>
+  /* 📱 MOBILE VIEWPORT BREAKPOINT: STEP 3 ADD-ONS */
+  @media (max-width: 600px) {
+    /* Forces your side-by-side up-sell cards to stack cleanly in a single row column */
+    .upsell-market-card-container,
+    div[style*="display: grid; grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+    }
+    
+    /* Centers grid card elements for text visibility */
+    .upsell-market-card {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      text-align: center !important;
+      gap: 14px !important;
+    }
+    
+    /* Moves your toggle checkbox inputs right below description copy paragraphs */
+    .upsell-market-card div[style*="align-items: flex-end"] {
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 12px;
+    }
+  }
+</style>
+
+      
+      `;
+      
   });
 
   // ============================================================================ //

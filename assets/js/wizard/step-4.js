@@ -156,7 +156,34 @@ step4PanelContainer.innerHTML += `
       Continue to Summary <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
     </button>
   </div>
-</div>`;
+</div>
+
+<style>
+  /* 📱 MOBILE VIEWPORT BREAKPOINT: STEP 4 POA CONTROLS */
+  @media (max-width: 600px) {
+    /* Converts your horizontal layout into a vertical stacking box grid */
+    .wizard-footer-action-row {
+      flex-direction: column-reverse !important;
+      gap: 12px !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
+    
+    /* Stretches your Back and Next actions to crisp full-width buttons */
+    .wizard-footer-action-row button,
+    .wizard-footer-action-row a {
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 14px !important;
+      box-sizing: border-box !important;
+    }
+  }
+</style>
+
+
+`;
 
 
     const signatureInputNode = document.getElementById("poa_typed_signature");

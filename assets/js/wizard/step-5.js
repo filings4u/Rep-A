@@ -288,7 +288,39 @@ window.finalizePricingMatrixUiRender = function(foundationFilingCost, aggregateU
       </button>
       <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(6, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.2);">
         Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>
-      </button>`;
+      </button>
+      
+      
+      <style>
+  /* 📱 MOBILE VIEWPORT BREAKPOINT: STEP 5 SUMMARY CONTROLS */
+  @media (max-width: 600px) {
+    /* Stacks your Review Page action items vertically on mobile viewports */
+    div[style*="display: flex; justify-content: space-between"][class*="action"],
+    .wizard-action-row,
+    .wizard-footer-action-row {
+      flex-direction: column !important;
+      gap: 12px !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
+    
+    /* Ensures buttons stretch uniformly without text squishing gaps */
+    #wizard-next-trigger-btn,
+    button[onclick*="goToPreviousWizardStep"],
+    .btn-wizard-main,
+    .btn-wizard-nav-back {
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 14px !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+  }
+</style>
+
+      `;
       
     parentCardShell.appendChild(actionRowFooter);
   }

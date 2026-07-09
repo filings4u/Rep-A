@@ -194,199 +194,29 @@
         justify-content: center !important;
     }
 
-    /* --- 9. EXACT MOBILE FOOTER LAYOUT OVERRIDES --- */
 
-/* Force container layout boundaries to match your 12px wizard padding bounds */
-#f4u-standalone-footer-wrapper {
-    width: calc(100% + 24px) !important;
-    margin: 40px -12px 0 -12px !important;
-    overflow: hidden !important;
-}
 
-/* Strip desktop flex rules and treat the footer as a standard vertical block stack */
-#f4u-standalone-footer-wrapper footer.portal-legal-footer {
-    display: block !important;
-    padding: 28px 16px !important; /* Increased top/bottom padding breathing room */
-    text-align: center !important;
-}
 
-/* 1️⃣ TOP LAYER: Force-center the text strings and separate from the middle links */
-#f4u-standalone-footer-wrapper p.copyright-text-block {
-    text-align: center !important; /* 🔥 Explicitly forces left-aligned text lines to center */
-    width: 100% !important;
-    margin: 0 0 24px 0 !important; /* 🔥 Adds space directly below the copyright block */
-}
-
-/* 2️⃣ MIDDLE LAYER: Distribute clean row links spacing */
-#f4u-standalone-footer-wrapper div.footer-links-centered-row {
-    display: flex !important;
-    flex-direction: row !important; /* Keeps links side-by-side */
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 16px !important;
-    width: 100% !important;
-    margin: 0 0 20px 0 !important; /* 🔥 Adds clean separation space above the secure badge capsule */
-}
-
-/* 3️⃣ BOTTOM LAYER: Align badge pill container seamlessly */
-#f4u-standalone-footer-wrapper div.trust-badge {
-    display: inline-flex !important; /* Restricts width dynamically around text track bounds */
-    justify-content: center !important;
-    align-items: center !important;
-    margin: 0 auto !important; /* Centers block alignment container layout horizontally */
-    width: auto !important;
-    max-width: 100% !important;
-}
-
-/* --- 9. MOBILE FOOTER SPECIFICITY OVERRIDES --- */
-
-/* Force the copyright text layout to center on mobile devices */
-#f4u-standalone-footer-wrapper p.copyright-text-block,
-footer.portal-legal-footer p.copyright-text-block {
-    text-align: center !important;
-    display: block !important;
-    width: 100% !important;
-    margin: 0 auto 24px auto !important; /* Centers the block elements and adds spacing underneath */
-}
-
-/* Ensure the links row container separates cleanly from the badge pill on mobile viewports */
-#f4u-standalone-footer-wrapper div.footer-links-centered-row,
-footer.portal-legal-footer div.footer-links-centered-row {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    width: 100% !important;
-    margin: 0 0 20px 0 !important; /* Adds clear separation spacing above the secure capsule block */
-}
-
-/* Force standard vertical block stacking rules on the main mobile footer grid envelope */
-#f4u-standalone-footer-wrapper footer.portal-legal-footer {
-    display: block !important;
-    text-align: center !important;
-    padding: 24px 16px !important;
-}
-
-/* --- 9. PURE MOBILE THREE-COLUMN BREAKOUT & ALIGNMENT FIX --- */
-
-/* 1. Smash the desktop 3-column distribution engine completely */
-footer.portal-legal-footer,
-[id^="f4u- standalone"] footer,
-.portal-legal-footer {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: 10px !important; /* Forces spacing directly in the middle layers */
-    padding: 24px 16px !important;
-    width: 100% !important;
-}
-
-/* 2. Break down left-floating inline properties on the copyright element container */
-.portal-legal-footer p.copyright-text-block,
-p.copyright-text-block,
-.copyright-text-block * {
-    display: block !important;
-    float: none !important;
-    text-align: center !important;
-    margin: 0 auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-/* 3. Ensure the links layout row spreads out evenly but stays dead centered */
-.portal-legal-footer .footer-links-centered-row,
-div.footer-links-centered-row {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    gap: 16px !important;
-}
-
-/* 4. Kill legacy desktop spacing values on the security capsule block */
-.portal-legal-footer .trust-badge,
-div.trust-badge {
-    display: inline-flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    margin: 0 auto !important;
-    width: auto !important;
-    max-width: 100% !important;
-}
 
 /* --- 11. MOBILE COPYRIGHT WIDTH EXPANSION TRACKS --- */
-
-/* 1. Reset the outer container breakout fields to use fluid mobile sizing metrics */
-#f4u-standalone-footer-wrapper {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: 40px !important;
-    box-sizing: border-box !important;
-}
-
-/* 2. Expand inner container layout bounds to allow standard full width horizontal tracking */
-footer.portal-legal-footer {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 24px 16px !important;
-    box-sizing: border-box !important;
-}
-
-/* 3. Let the text block stretch across the screen to eliminate bad line-break wrapping */
-p.copyright-text-block,
+/* Allows the text block to stretch across fluid boundaries to eliminate awkward line wrapping */
+p.copyright-text-block, 
 .portal-legal-footer p.copyright-text-block {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    white-space: normal !important; /* Allows natural fluid tracking bounds */
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important; /* Allows natural fluid text tracking layout flow */
+}
+
+/* 📱 MOBILE VIEW ONLY: Forces center-alignment on narrow viewports under 600px */
+@media (max-width: 600px) {
+  p.copyright-text-block, 
+  .portal-legal-footer p.copyright-text-block {
     text-align: center !important;
+    line-height: 1.6 !important;
+  }
 }
 
-/* 4. Ensure internal baseline anchors don't hold layout width restrictions */
-p.copyright-text-block a {
-    display: inline-block !important;
-    width: auto !important;
-}
-
-/* --- 12. MOBILE SPACING COMPRESSION & CHAT ELEVATION --- */
-
-/* 1. Tighten the space inside the columns by shrinking the gaps and padding */
-footer.portal-legal-footer {
-    padding-top: 16px !important;    /* Reduced top padding */
-    padding-bottom: 16px !important; /* Reduced bottom padding */
-}
-
-/* Decrease the gap directly beneath the copyright block */
-p.copyright-text-block,
-.portal-legal-footer p.copyright-text-block {
-    margin-bottom: 12px !important;  /* Cut down from 24px */
-}
-
-/* Decrease the gap beneath the links row */
-div.footer-links-centered-row,
-.portal-legal-footer div.footer-links-centered-row {
-    margin-bottom: 12px !important;  /* Cut down from 20px */
-    gap: 12px !important;            /* Brings the links slightly closer together horizontally */
-}
-
-/* 2. Move the floating chat bubble up to allow the footer to sit flat at the bottom */
-div[class*="chat-launcher"], 
-div[id*="chat-widget"], 
-.chat-bubble, 
-#chat-bubble, 
-iframe[title*="chat" i], 
-iframe[id*="hubspot-messages-iframe-container"] {
-    bottom: 85px !important;   /* Keeps the chat widget lifted safely above the footer */
-    left: auto !important;     /* 🛠️ CLEARS the left-side tracking alignment rule */
-    right: 12px !important;    /* 🛠️ SNAPS it clean to the right with balanced padding edge margins */
-    z-index: 10000 !important;
-}
 
 
 }

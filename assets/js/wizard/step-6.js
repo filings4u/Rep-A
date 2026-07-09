@@ -114,6 +114,33 @@
             Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>
           </button>
         </div>
+
+        <style>
+  /* 📱 MOBILE VIEWPORT BREAKPOINT: STEP 6 CHECKOUT GATEWAY */
+  @media (max-width: 600px) {
+    /* Clears side-by-side flex constraints next to your mounted iframe card mount point */
+    .wizard-action-row {
+      flex-direction: column-reverse !important;
+      gap: 12px !important;
+      align-items: center !important;
+      width: 100% !important;
+      margin-top: 24px !important;
+    }
+    
+    /* Expands your inline payment processing tap boundaries safely */
+    #wizard-next-trigger-btn,
+    .wizard-action-row button {
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 14px !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+  }
+</style>
+
       `;
 
       if (window.stripePaymentElementInstance) {
