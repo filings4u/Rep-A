@@ -206,60 +206,6 @@ window.buildAndRenderStep7LayoutStructure = function() {
                 Download or Print Receipt
             </button>
         </div>
-<!-- RIGHT COLUMN: CLIENT SECURED GATEWAY ACCOUNT CREATION CARD --> 
-<aside class="success-card no-print" style="position: relative; box-sizing: border-box; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; margin-top: 16px; width: 100%;"> 
-  <div style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;"> 
-    <h2 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;"> 
-      <i class="fa-solid fa-user-plus" style="color: #10b981; font-size: 1.2rem;"></i> Activate Client Portal </h2> 
-    <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.4;">Activate your account to download documents and track status of your filings in real time.</p> 
-  </div> 
-
-  <!-- SECURE PORTAL USER REGISTRATION MATRIX FORM --> 
-  <form id="wizard-account-generation-form" onsubmit="return window.handleClientAccountActivation(event);"> 
-    
-    <!-- AUTO-FILLED REGISTRY BUSINESS CONTACT EMAIL TARGET --> 
-    <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;"> 
-      <label for="portal_user_email" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Registered Account Username / Email</label> 
-      <div style="position: relative; display: flex; align-items: center;"> 
-        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span> 
-        <input type="email" id="portal_user_email" required readonly style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; font-weight: 600; border-radius: 6px; border: 1px solid #e2e8f0; background: #f1f5f9; color: #64748b; cursor: not-allowed; outline: none; box-sizing: border-box;"> 
-      </div> 
-      <span style="font-size: 0.7rem; color: #64748b; font-weight: 500; padding-left: 2px;">Auto-locked to your corporate registry filing email.</span> 
-    </div> 
-
-    <!-- LINKED ROW: FIRST NAME & LAST NAME INPUTS (Required by your script constants) -->
-    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-      <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
-        <label for="portal_user_first_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: #64748b;">First Name</label>
-        <input type="text" id="portal_user_first_name" required placeholder="John" style="width: 100%; padding: 12px 14px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; outline: none; box-sizing: border-box; background: #ffffff; color: #0a1f44;">
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
-        <label for="portal_user_last_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Last Name</label>
-        <input type="text" id="portal_user_last_name" required placeholder="Doe" style="width: 100%; padding: 12px 14px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; outline: none; box-sizing: border-box; background: #ffffff; color: #0a1f44;">
-      </div>
-    </div>
-
-    <!-- LINKED FIELD: CONTACT PHONE NUMBER INPUT (Required by your script constants) -->
-    <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;">
-      <label for="portal_user_phone" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Contact Phone Number</label>
-      <div style="position: relative; display: flex; align-items: center;">
-        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-phone"></i></span>
-        <input type="tel" id="portal_user_phone" required placeholder="(555) 000-0000" style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; outline: none; box-sizing: border-box; background: #ffffff; color: #0a1f44;">
-      </div>
-    </div>
-
-    <!-- SUBMIT ACTIVATION SUBMISSION ACTION TRIGGER --> 
-    <button type="submit" id="portal-activation-submit-btn" style="width: 100%; text-align: center; background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 1rem; padding: 16px 0; border-radius: 6px; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);"> 
-      <i class="fa-solid fa-unlock-keyhole" style="margin-right: 6px;"></i> Initialize Secured Dashboard 
-    </button> 
-  </form> 
-
-  <!-- TRUST MATRIX COMPLIANCE LOCK BANNER --> 
-  <div style="margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 16px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.75rem; color: #64748b; line-height: 1.4;"> 
-    <span style="color: #10b981; font-size: 1rem; margin-top: 2px;"><i class="fa-solid fa-shield-halved"></i></span> 
-    <span><strong>Encrypted Vault Lock:</strong> Verification tokens undergo secure serverless integrity signing processes inside database clusters. filings4u staff cannot access your security credentials.</span> 
-  </div> 
-</aside>
 
     </div>
     `;
@@ -798,3 +744,46 @@ if (document.readyState === "loading") {
 } else { 
   if (parseInt(window.currentWizardActiveStep, 10) === 7) window.initializeSecureStep7AccountHydration(); 
 }
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // Intercept variables built cleanly from Stripe's query parameters string array
+  const returnedEmail = urlParams.get('email');
+  const returnedToken = urlParams.get('token');
+
+  const emailField = document.getElementById("portal_user_email");
+
+  if (returnedEmail && emailField) {
+    const decodedEmail = decodeURIComponent(returnedEmail).trim().toLowerCase();
+    
+    // 1. Assign the actual paid email right into your layout field element node view
+    emailField.value = decodedEmail;
+    
+    // 2. Save token reference into global window memory block for your activation button logic to read
+    window.currentGeneratedMbeAccountNumber = returnedToken;
+
+    // 3. Silently query Supabase profiles schema view to determine if this email already exists
+    try {
+      const supabaseClient = window.getSuccessPageSupabaseClient();
+      if (supabaseClient) {
+        const { data: profileCheck, error } = await supabaseClient
+          .from('profiles') // Replace with your actual core system user profiles lookup table
+          .select('id')
+          .eq('email', decodedEmail)
+          .maybeSingle();
+
+        if (profileCheck && !error) {
+          // Returning customer profile matched! Gatekeeper functions will invoke password updates.
+          localStorage.setItem("f4u_is_returning_customer", "true");
+        } else {
+          // Absolute guest checkout user matched! Gatekeeper functions will execute fresh initialization routines.
+          localStorage.setItem("f4u_is_returning_customer", "false");
+        }
+      }
+    } catch (dbError) {
+      console.warn("[Gatekeeper State Fallback Context]:", dbError);
+    }
+  }
+});
