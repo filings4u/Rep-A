@@ -206,59 +206,61 @@ window.buildAndRenderStep7LayoutStructure = function() {
                 Download or Print Receipt
             </button>
         </div>
+<!-- RIGHT COLUMN: CLIENT SECURED GATEWAY ACCOUNT CREATION CARD --> 
+<aside class="success-card no-print" style="position: relative; box-sizing: border-box; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; margin-top: 16px; width: 100%;"> 
+  <div style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;"> 
+    <h2 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;"> 
+      <i class="fa-solid fa-user-plus" style="color: #10b981; font-size: 1.2rem;"></i> Activate Client Portal </h2> 
+    <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.4;">Activate your account to download documents and track status of your filings in real time.</p> 
+  </div> 
 
-        <!-- RIGHT COLUMN: CLIENT SECURED GATEWAY ACCOUNT CREATION CARD -->
-        <aside class="success-card no-print" style="position: relative; box-sizing: border-box; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; margin-top: 16px; width: 100%;">
-            <div style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
-                <h2 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-user-plus" style="color: #10b981; font-size: 1.2rem;"></i> Activate Client Portal
-                </h2>
-                <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.4;">Activate your account to download documents and track status of your filings in real time.</p>
-            </div>
+  <!-- SECURE PORTAL USER REGISTRATION MATRIX FORM --> 
+  <form id="wizard-account-generation-form" onsubmit="return window.handleClientAccountActivation(event);"> 
+    
+    <!-- AUTO-FILLED REGISTRY BUSINESS CONTACT EMAIL TARGET --> 
+    <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;"> 
+      <label for="portal_user_email" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Registered Account Username / Email</label> 
+      <div style="position: relative; display: flex; align-items: center;"> 
+        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span> 
+        <input type="email" id="portal_user_email" required readonly style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; font-weight: 600; border-radius: 6px; border: 1px solid #e2e8f0; background: #f1f5f9; color: #64748b; cursor: not-allowed; outline: none; box-sizing: border-box;"> 
+      </div> 
+      <span style="font-size: 0.7rem; color: #64748b; font-weight: 500; padding-left: 2px;">Auto-locked to your corporate registry filing email.</span> 
+    </div> 
 
-            <!-- SECURE PORTAL USER REGISTRATION MATRIX FORM -->
-            <form id="wizard-account-generation-form" onsubmit="return handleClientAccountActivation(event);">
-                
-                <!-- AUTO-FILLED REGISTRY BUSINESS CONTACT EMAIL TARGET -->
-                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;">
-                    <label for="portal_user_email" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Registered Account Username / Email</label>
-                    <div style="position: relative; display: flex; align-items: center;">
-                        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" id="portal_user_email" required readonly style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; font-weight: 600; border-radius: 6px; border: 1px solid #e2e8f0; background: #f1f5f9; color: #64748b; cursor: not-allowed; outline: none; box-sizing: border-box;">
-                    </div>
-                    <span style="font-size: 0.7rem; color: #64748b; font-weight: 500; padding-left: 2px;">Auto-locked to your corporate registry filing email.</span>
-                </div>
+    <!-- LINKED ROW: FIRST NAME & LAST NAME INPUTS (Required by your script constants) -->
+    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+        <label for="portal_user_first_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: #64748b;">First Name</label>
+        <input type="text" id="portal_user_first_name" required placeholder="John" style="width: 100%; padding: 12px 14px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; outline: none; box-sizing: border-box; background: #ffffff; color: #0a1f44;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+        <label for="portal_user_last_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Last Name</label>
+        <input type="text" id="portal_user_last_name" required placeholder="Doe" style="width: 100%; padding: 12px 14px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; outline: none; box-sizing: border-box; background: #ffffff; color: #0a1f44;">
+      </div>
+    </div>
 
-                <!-- NEW ACCOUNT AUTHENTICATION SECURITY PASSWORD -->
-                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;">
-                    <label for="portal_user_password" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Create Security Password</label>
-                    <div style="position: relative; display: flex; align-items: center;">
-                        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-key"></i></span>
-                        <input type="password" id="portal_user_password" required minlength="8" placeholder="Minimum 8 characters..." style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: border-color 0.2s;">
-                    </div>
-                </div>
+    <!-- LINKED FIELD: CONTACT PHONE NUMBER INPUT (Required by your script constants) -->
+    <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;">
+      <label for="portal_user_phone" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Contact Phone Number</label>
+      <div style="position: relative; display: flex; align-items: center;">
+        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-phone"></i></span>
+        <input type="tel" id="portal_user_phone" required placeholder="(555) 000-0000" style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; outline: none; box-sizing: border-box; background: #ffffff; color: #0a1f44;">
+      </div>
+    </div>
 
-                <!-- PASSWORD VERIFICATION STRUT CHANNELS -->
-                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;">
-                    <label for="portal_user_password_confirm" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Confirm Security Password</label>
-                    <div style="position: relative; display: flex; align-items: center;">
-                        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-circle-check"></i></span>
-                        <input type="password" id="portal_user_password_confirm" required minlength="8" placeholder="Re-type password..." style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: border-color 0.2s;">
-                    </div>
-                </div>
+    <!-- SUBMIT ACTIVATION SUBMISSION ACTION TRIGGER --> 
+    <button type="submit" id="portal-activation-submit-btn" style="width: 100%; text-align: center; background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 1rem; padding: 16px 0; border-radius: 6px; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);"> 
+      <i class="fa-solid fa-unlock-keyhole" style="margin-right: 6px;"></i> Initialize Secured Dashboard 
+    </button> 
+  </form> 
 
-                <!-- SUBMIT ACTIVATION SUBMISSION ACTION TRIGGER -->
-                <button type="submit" id="portal-activation-submit-btn" style="width: 100%; text-align: center; background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 1rem; padding: 16px 0; border-radius: 6px; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
-                    <i class="fa-solid fa-unlock-keyhole" style="margin-right: 6px;"></i> Initialize Secured Dashboard
-                </button>
-            </form>
+  <!-- TRUST MATRIX COMPLIANCE LOCK BANNER --> 
+  <div style="margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 16px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.75rem; color: #64748b; line-height: 1.4;"> 
+    <span style="color: #10b981; font-size: 1rem; margin-top: 2px;"><i class="fa-solid fa-shield-halved"></i></span> 
+    <span><strong>Encrypted Vault Lock:</strong> Verification tokens undergo secure serverless integrity signing processes inside database clusters. filings4u staff cannot access your security credentials.</span> 
+  </div> 
+</aside>
 
-            <!-- TRUST MATRIX COMPLIANCE LOCK BANNER -->
-            <div style="margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 16px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.75rem; color: #64748b; line-height: 1.4;">
-                <span style="color: #10b981; font-size: 1rem; margin-top: 2px;"><i class="fa-solid fa-shield-halved"></i></span>
-                <span><strong>Encrypted Vault Lock:</strong> Portal passwords undergo one-way cryptographic SHA-256 hashing prior to serialization inside database clusters. filings4u staff cannot view or access your security password.</span>
-            </div>
-        </aside>
     </div>
     `;
 
@@ -628,156 +630,114 @@ window.extractAndRenderReceiptManifestData = async function() {
 };
 
 
-// ============================================================================ //
-// 📄 FILE: step-7.js - BLOCK 4 OF 4 (OPTIMIZED)                                //
-// 🧾 MODULE: ACCOUNT SIGN-UP SECURITY TUNNEL & SINGLE-PAGE INTERLOCK METHOD    //
-// ============================================================================ //
-// ============================================================================ //
-// 🔐 GATEKEEPER SERVICE SECURITY ENGINE: VERIFIES TOKEN THEN REDIRECTS        //
-// ============================================================================ //
 window.handleClientAccountActivation = async function(event) {
-  // Securely intercept traditional HTML form submissions instantly
-  if (event) {
-    if (typeof event.preventDefault === "function") event.preventDefault();
-    if (typeof event.stopImmediatePropagation === "function") event.stopImmediatePropagation();
-  }
-
-  const passField = document.getElementById("portal_user_password");
-  const confirmField = document.getElementById("portal_user_password_confirm");
-  const targetUsernameEmail = document.getElementById("portal_user_email")?.value.trim().toLowerCase() || "";
-  const actionSubmitBtn = document.getElementById("portal-activation-submit-btn");
-
-  if (!passField || !confirmField || !targetUsernameEmail || !actionSubmitBtn) {
-    console.error("[Gatekeeper Error] Missing interactive DOM inputs. Verify template mounting paths.");
-    return false;
-  }
-
-  if (passField.value.length < 8) {
-    alert("Security Validation Failed: Your password configuration must contain at least 8 characters.");
-    return false;
-  }
-
-  if (passField.value !== confirmField.value) {
-    alert("Security Validation Failed: Input verification credentials mismatch. Please re-type matching passwords.");
-    return false;
-  }
-
-  // Apply loading parameters immediately to block double form submissions
-  let originalBtnHtml = actionSubmitBtn.innerHTML;
-  actionSubmitBtn.disabled = true;
-  actionSubmitBtn.style.background = "#64748b";
-  actionSubmitBtn.innerHTML = '<i class="fa-solid fa-shield-halved fa-spin" style="margin-right: 6px;"></i> Verifying Cryptographic Token...';
-
-  try {
-    const supabaseClient = window.getSuccessPageSupabaseClient();
-    if (!supabaseClient) throw new Error("Supabase auth engine instance could not be located.");
-
-    const urlQueryTrackingStrings = new URLSearchParams(window.location.search);
-    const trackingTokenString = urlQueryTrackingStrings.get('token') || window.currentGeneratedMbeAccountNumber || "";
-    
-    console.log("[Security Gate] Scanning system ledgers for transaction records matching tracking string:", trackingTokenString);
-
-    const { data: verifiedPurchase, error: purchaseCheckError } = await supabaseClient
-      .from('orders')
-      .select('id, user_id')
-      .eq('tracking_number', trackingTokenString)
-      .maybeSingle();
-
-    if (purchaseCheckError) throw purchaseCheckError;
-    
-    // 🩹 BACKUP BYPASS FOR TESTING: Allows execution in mock sandbox environments
-    if (!verifiedPurchase && trackingTokenString.startsWith("F4U-")) {
-      console.warn("[Security Gate] Dev sandbox trace recognized. Provisioning simulation placeholder token.");
-    } else if (!verifiedPurchase) {
-      throw new Error("Access Denied: Registration is strictly reserved for verified, paid customer checkout tokens.");
+    if (event) {
+        if (typeof event.preventDefault === "function") event.preventDefault();
+        if (typeof event.stopImmediatePropagation === "function") event.stopImmediatePropagation();
     }
 
-    // Anti-duplicate intercept: Trigger countdown overlay immediately if profile is already mapped
-    if (verifiedPurchase?.user_id && verifiedPurchase.user_id.length > 10) {
-      if (typeof window.triggerSecureBlurModalRedirect === "function") {
-        window.triggerSecureBlurModalRedirect(verifiedPurchase.user_id, targetUsernameEmail);
+    // Target the newly defined profile information inputs
+    const emailField = document.getElementById("portal_user_email");
+    const firstNameField = document.getElementById("portal_user_first_name");
+    const lastNameField = document.getElementById("portal_user_last_name");
+    const phoneField = document.getElementById("portal_user_phone");
+    const actionSubmitBtn = document.getElementById("portal-activation-submit-btn");
+    const formElement = document.getElementById("wizard-account-generation-form");
+
+    if (!emailField || !actionSubmitBtn || !formElement) {
+        console.error("[Gatekeeper Error] Core interactive input elements missing from DOM.");
         return false;
-      }
     }
 
-    let activeUserUuid = "DEV-MOCK-USER-UUID-" + Math.random().toString(36).substring(2, 7).toUpperCase();
-    
-    // Check early registration trajectories to route standard sign-ups vs updates
-    const currentSessionCheck = await supabaseClient.auth.getSession();
-    
-    if (currentSessionCheck.data?.session?.user) {
-      console.log("[Auth Tunnel] Active staging session found. Securing account profile...");
-      const { data: updateData, error: updateError } = await supabaseClient.auth.updateUser({ password: passField.value });
-      if (updateError) throw updateError;
-      if (updateData?.user?.id) activeUserUuid = updateData.user.id;
-    } else {
-      console.log("[Auth Tunnel] Executing customer credential provisioning pass...");
-      const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({ email: targetUsernameEmail, password: passField.value });
-      
-      if (signUpError) {
-        const errMsg = signUpError.message.toLowerCase();
-        const isAlreadyRegistered = signUpError.status === 400 || errMsg.includes("already registered") || errMsg.includes("exists");
-        
-        if (isAlreadyRegistered) {
-          console.log("[Auth Tunnel] Email match identified in ledger. Synchronizing configuration credentials...");
-          const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({ email: targetUsernameEmail, password: passField.value });
-          
-          if (signInError) {
-            // 🔥 QUERY THE BASELINE PROFILE MAP TO SECURE THEIR VALID ORIGINAL RECORD ID
-            const { data: recoveredRecord } = await supabaseClient
-              .from('orders')
-              .select('user_id')
-              .eq('tracking_number', trackingTokenString)
-              .maybeSingle();
+    const targetEmail = emailField.value.trim().toLowerCase();
+    const firstName = firstNameField ? firstNameField.value.trim() : "";
+    const lastName = lastNameField ? lastNameField.value.trim() : "";
+    const phone = phoneField ? phoneField.value.trim() : "";
 
-            if (recoveredRecord && recoveredRecord.user_id) {
-              activeUserUuid = recoveredRecord.user_id;
-            } else {
-              throw new Error("Account link pending: This email address is registered to another profile. Please check your password fields.");
-            }
-          } else {
-            if (signInData?.user?.id) activeUserUuid = signInData.user.id;
-          }
-        } else {
-          throw signUpError;
-        }
-      } else {
-        if (signUpData?.user?.id) activeUserUuid = signUpData.user.id;
-      }
+    if (!targetEmail) {
+        alert("Validation Failed: A valid email address is required to register your secure portal profile.");
+        return false;
     }
 
-    // Guard against any corrupted or blank ID updates
-    if (!activeUserUuid || activeUserUuid === "session_active") {
-      throw new Error("Cryptographic session user token failed verification validation check passes.");
-    }
-
-    console.log("[Data Link] Binding cryptographic user session token to repository rows...");
-    await supabaseClient.from('orders').update({ user_id: activeUserUuid }).eq('tracking_number', trackingTokenString);
-    await supabaseClient.from('filing_orders').update({ user_id: activeUserUuid }).eq('reference_id', trackingTokenString);
+    let originalBtnHtml = actionSubmitBtn.innerHTML;
+    actionSubmitBtn.disabled = true;
+    actionSubmitBtn.style.background = "#64748b";
+    actionSubmitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right: 6px;"></i> Securing Identity Payload...';
 
     try {
-      await supabaseClient.from('wizard_abandoned_leads').delete().eq('email', targetUsernameEmail);
-    } catch (e) {
-      console.log("[Data Link Cleanup] Lead record already deleted.");
-    }
+        const supabaseClient = window.getSuccessPageSupabaseClient();
+        if (!supabaseClient) throw new Error("Supabase authentication connection engine unavailable.");
 
-    if (typeof window.triggerSecureBlurModalRedirect === "function") {
-      window.triggerSecureBlurModalRedirect(activeUserUuid, targetUsernameEmail);
-    } else {
-      alert("Registration Successful! Your account has been provisioned.");
-      window.location.href = `/dashboard/login?email=${encodeURIComponent(targetUsernameEmail)}`;
-    }
+        const urlParams = new URLSearchParams(window.location.search);
+        const trackingToken = urlParams.get('token') || window.currentGeneratedMbeAccountNumber || "";
 
-  } catch (authException) {
-    console.error("[Gatekeeper Block Exception Triggered]", authException);
-    alert(`Registration Suspended: ${authException.message || authException}`);
-    actionSubmitBtn.disabled = false;
-    actionSubmitBtn.style.background = "#0a1f44";
-    actionSubmitBtn.innerHTML = originalBtnHtml;
-  }
-  
-  return false;
+        // 1. DYNAMICALLY COMPILE PROFILE METADATA METRICS ON ORDERS TABLE
+        console.log("[Gatekeeper] Synchronizing account demographic parameters to order token:", trackingToken);
+        await supabaseClient.from('orders').update({
+            customer_first_name: firstName,
+            customer_last_name: lastName,
+            customer_phone: phone,
+            communications_email: targetEmail
+        }).eq('tracking_number', trackingToken);
+
+        // 2. DISPATCH IDENTITY CONFIRMATION SECURITY REQUESTS VIA SUPABASE
+        console.log("[Gatekeeper] Initiating identity verification pipeline context for:", targetEmail);
+        
+        // This programmatic layout points to your Edge Function routing to intercept the auth token validation loop
+        const verificationRedirectUrl = `${window.location.origin}/functions/v1/verify-and-detect-fraud?token=${trackingToken}`;
+
+        // Attempt a baseline sign-up generation. If user exists, Supabase Auth will trigger a user-exists protection hook.
+        const { error: signUpError } = await supabaseClient.auth.signUp({
+            email: targetEmail,
+            password: "F4U-Temporary-Pass-" + Math.random().toString(36).substring(2, 10).toUpperCase() + "!",
+            options: {
+                emailRedirectTo: verificationRedirectUrl,
+                data: { first_name: firstName, last_name: lastName, phone_number: phone }
+            }
+        });
+
+        if (signUpError) {
+            const errMsg = signUpError.message.toLowerCase();
+            const isRegistered = signUpError.status === 400 || errMsg.includes("already registered") || errMsg.includes("exists");
+
+            if (isRegistered) {
+                console.log("[Gatekeeper] Existing account identity resolved. Dispatching password recovery stream...");
+                // Force dispatch a dynamic password configuration link to the returning email path
+                const { error: resetError } = await supabaseClient.auth.resetPasswordForEmail(targetEmail, {
+                    redirectTo: verificationRedirectUrl
+                });
+                if (resetError) throw resetError;
+            } else {
+                throw signUpError;
+            }
+        }
+
+        // 3. DISPLAY ON-SCREEN SECURITY TOOLTIP INSTEAD OF BLIND REDIRECT
+        formElement.innerHTML = `
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 20px; text-align: left; box-sizing: border-box; width: 100%;">
+                <h4 style="color: #1e40af; font-size: 1rem; font-weight: 800; margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-paper-plane"></i> Verification Link Transmitted
+                </h4>
+                <p style="color: #1e3a8a; font-size: 0.85rem; margin: 0 0 12px 0; line-height: 1.5;">
+                    A secure identity access verification token has been dispatched to <strong>${targetEmail}</strong>. 
+                </p>
+                <div style="background: #ffffff; border: 1px solid #dbeafe; border-radius: 6px; padding: 12px; font-size: 0.775rem; color: #475569; line-height: 1.4;">
+                    <span style="color: #fbbf24; font-size: 1rem; margin-right: 4px;"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                    <strong>Important Action Required:</strong> Open your email application, locate the verification button message, and select it to establish your password configuration parameters. Be sure to check your <strong>Spam or Junk email folders</strong> if the card does not render inside your primary ledger view in 60 seconds.
+                </div>
+            </div>
+        `;
+
+    } catch (err) {
+        console.error("[Gatekeeper Suspended Exception]", err);
+        alert(`Account Initialization Suspended: ${err.message || err}`);
+        actionSubmitBtn.disabled = false;
+        actionSubmitBtn.style.background = "#10b981";
+        actionSubmitBtn.innerHTML = originalBtnHtml;
+    }
+    return false;
 };
+
 
 // ======================================================== // 
 // 🎯 FIXED OVERLAY TIMER ENGINE 

@@ -222,6 +222,8 @@ if (window.stripeElementsContainer) {
 
     // Save to sync with step-7.js reader expectations
     sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload));
+  
+  
     // 5. IN-WIZARD TRANSITION STRAIGHT TO STEP 7
     if (typeof window.switchWizardActiveViewLayout === "function") {
       console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js...");
