@@ -232,8 +232,6 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...';
     }
 
-    let isReturningUser = localStorage.getItem("f4u_is_returning_customer") === "true";
-
     // 3. RESOLVE URL METRICS IN LINE WITH YOUR LIVE SCHEMAS
     const urlParams = new URLSearchParams(window.location.search);
     const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "llc-formation").toLowerCase().trim();
@@ -251,7 +249,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     const checkoutManifestPayload = {
       transaction_hash_id: uniqueTrackingToken,
       communications_email: finalEmail,
-      is_returning: isReturningUser,
+      is_returning: false, // Default state; updated dynamically below via database check
       financials_grand_total_charge: activeGrandCost,
       legal_entity_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
       taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...",
@@ -260,14 +258,42 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       financials_subtotal_amount: foundationFilingCost
     };
 
+    const supabaseClient = window.getSuccessPageSupabaseClient();
+    let isReturningUser = false;
+
+    // 4. EXTRACT INTERLOCK DISCOVERY PARAMS FROM ABANDONED LIFECYCLE REGISTERS
+    if (supabaseClient) {
+      console.log("[Gatekeeper] Interrogating wizard_abandoned_leads registry context...");
+      const { data: leadCheck, error: leadCheckError } = await supabaseClient
+        .from('wizard_abandoned_leads')
+        .select('id')
+        .eq('email', finalEmail)
+        .maybeSingle();
+
+      if (!leadCheckError && leadCheck) {
+        isReturningUser = true;
+        checkoutManifestPayload.is_returning = true;
+        localStorage.setItem("f4u_is_returning_customer", "true");
+      } else {
+        localStorage.setItem("f4u_is_returning_customer", "false");
+      }
+    }
+
     sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload));
     localStorage.setItem("f4u_checkout_email", finalEmail);
 
+    // 5. EXTRACT POA STEP DATA DIRECTLY FROM WIZARD PROGRESS INTAKE MEMORY
+    const isPoaSigned = localStorage.getItem("wizard_field_poa_accepted") === "true" || 
+                        localStorage.getItem("wizard_field_poa_signed") === "true";
+                        
+    const poaSignatureString = localStorage.getItem("wizard_field_poa_signature_string") || 
+                               localStorage.getItem("wizard_field_poa_verification_hash") || null;
+
     // ============================================================================ //
-    // 🟢 PRODUCTION FIX: MAP ACCOUNT SIGNATURES DIRECTLY TO YOUR JSONB COLUMN
+    // DATA PRESERVATION: UPSERT RECORD TO DATABASE MATRIX PRIOR TO STRIPE PAY CALL //
     // ============================================================================ //
-    const supabaseClient = window.getSuccessPageSupabaseClient();
     if (supabaseClient) {
+      console.log("[Gatekeeper] Preserving transaction log signatures inside Supabase database cluster...");
       const { error: dbUpsertError } = await supabaseClient
         .from('orders')
         .upsert({
@@ -278,7 +304,9 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
           plan_tier: activePlanKeyString,
           total_fee: activeGrandCost,
           status: 'pending',
-          // Stashing your exact registration variables natively inside your live jsonb bucket
+          tax_id_status: 'Fulfillment Lane',
+          poa_signed_state: isPoaSigned,
+          poa_signature_verification_string: poaSignatureString,
           collected_payload_metadata: {
             customer_email: finalEmail,
             customer_first_name: firstName,
@@ -291,8 +319,9 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       if (dbUpsertError) throw new Error(`Database Pre-Synchronization Failed: ${dbUpsertError.message}`);
     }
 
-    // 4. STRIPE PAYMENT ELEMENTS HANDSHAKE EXECUTION LOOP
+    // 6. EXECUTE INLINE STRIPE CONFIRMATION INTERFACE ENGINE HANDSHAKE
     if (window.stripeElementsContainer) {
+      // Inline validation interceptor for card expiration/zip missing checks
       const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
       if (stripeSubmitError) {
         if (submitBtn) {
@@ -305,6 +334,8 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
 
       if (window.stripeInstance && !isMockSecret) {
+        console.log("[Stripe Submission Engine] Directing active payment authorization intent via secure Stripe API...");
+        
         const { error: confirmError } = await window.stripeInstance.confirmPayment({
           elements: window.stripeElementsContainer,
           clientSecret: window.stripeClientSecret,
@@ -321,15 +352,17 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
     }
 
+    // Explicit update backup loop in case window redirect rules bypass standard hook lifecycles
     if (supabaseClient) {
       await supabaseClient
         .from('orders')
-        .update({ status: 'paid' }) // Targets your production column "status" instead of "payment_status"
+        .update({ status: 'paid' })
         .eq('tracking_number', uniqueTrackingToken);
     }
 
-    // 5. VIEW NAVIGATION TRIGGER SWITCH TO STEP 7 RECEIPT
+    // 7. SWAP OVER IN-WIZARD PANEL TO STEP 7 RECEIPT DISPLAY
     if (typeof window.switchWizardActiveViewLayout === "function") {
+      console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js...");
       window.switchWizardActiveViewLayout(7);
     }
 
@@ -343,8 +376,4 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       `;
     }
     if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
-    }
-  }
-};
+submitBtn.disabled = false;submitBtn.innerHTML = 'Secure Payment ';}}};
