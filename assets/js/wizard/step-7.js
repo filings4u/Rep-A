@@ -1,49 +1,94 @@
 // ============================================================================ //
-// 📄 FILE: step-7.js - BLOCK 1 OF 4 (OPTIMIZED & CRASH-PROOFED)                //
+// 📄 FILE: step-7.js - BLOCK 1 OF 4 (OPTIMIZED & CRASH-PROOFED)               //
 // 🧾 MODULE: GLOBAL INITIALIZATION, SUPABASE CONNECT & PRINT ISOLATION LAYER  //
 // ============================================================================ //
 (function() {
-  "use strict";
+    "use strict";
 
-  // Track active stylesheet injections to prevent duplication loops
-  window.isStep7StylesheetsMounted = window.isStep7StylesheetsMounted || false;
+    window.isStep7StylesheetsMounted = window.isStep7StylesheetsMounted || false;
 
-  /**
-   * Injects surgical media print sheets onto document head headers.
-   * Removes sidebars, wrappers, buttons, overlays, and fields from the printer canvas.
-   */
-  window.injectStep7VisualInterfaceStyles = function() {
+window.injectStep7VisualInterfaceStyles = function() {
     if (document.getElementById("f4u-step7-compliance-and-print-sheets") || window.isStep7StylesheetsMounted) return;
-    
+
     const styleNode = document.createElement("style");
     styleNode.id = "f4u-step7-compliance-and-print-sheets";
     styleNode.textContent = `
-      /* ANTI-FRAUD ELEMENT DECORATION CARDS */
-      @keyframes f4uComplianceShake {
-        0%, 100% { transform: translateX(0); }
-        15%, 45%, 75% { transform: translateX(-6px); }
-        30%, 60%, 90% { transform: translateX(6px); }
-      }
-      .compliance-shake-triggered { animation: f4uComplianceShake 0.4s cubic-bezier(.36,.07,.19,.97) both !important; }
+        @keyframes f4uComplianceShake {
+            0%, 100% { transform: translateX(0); }
+            15%, 45%, 75% { transform: translateX(-6px); }
+            30%, 60%, 90% { transform: translateX(6px); }
+        }
+        .compliance-shake-triggered { 
+            animation: f4uComplianceShake 0.4s cubic-bezier(.36,.07,.19,.97) both !important; 
+        }
 
-      /* 🖨️ PHYSICAL PRINT SHEET EXTRACTION LAYER */
-      @media print {
-        body *, html * { display: none !important; visibility: hidden !important; }
-        header, footer, aside, nav, button, .portal-sidebar, .wizard-footer-action-row, .sidebar-footer-lock, #secure-redirect-blur-overlay { display: none !important; visibility: hidden !important; }
-        
-        main.success-container, main.success-container * { display: block !important; visibility: visible !important; }
-        main.success-container aside, main.success-container aside * { display: none !important; visibility: hidden !important; }
-        main.success-container section.success-card, main.success-container section.success-card * { visibility: visible !important; display: block !important; }
-        
-        main.success-container { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; margin: 0 !important; padding: 0 !important; display: block !important; }
-        main.success-container section.success-card { width: 100% !important; max-width: 100% !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
-        .receipt-line-item { display: flex !important; justify-content: space-between !important; width: 100% !important; page-break-inside: avoid; }
-      }
+        @media print {
+            /* 1. Unhide the root nodes and allow them to pass rendering styles down */
+            html, body, main, #app, #wizard-wrapper, .master-layout {
+                display: block !important;
+                visibility: visible !important;
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                height: auto !important;
+            }
+            
+            /* 2. Force the parent path elements of the receipt container to display */
+            #step-7-injection-placeholder {
+                display: block !important;
+                visibility: visible !important;
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                z-index: 9999999 !important;
+            }
+
+            /* 3. If any parent elements of the placeholder have active hiding selectors, force them open */
+            #step-7-injection-placeholder,
+            #step-7-injection-placeholder * {
+                display: block !important;
+                visibility: visible !important;
+            }
+
+            /* 4. Ensure line items and flex containers keep layout formats */
+            #step-7-injection-placeholder #receipt-items-injector-frame, 
+            #step-7-injection-placeholder .receipt-line-item, 
+            #step-7-injection-placeholder div[style*="display: flex"],
+            #step-7-injection-placeholder div[style*="display:flex"] {
+                display: flex !important;
+                visibility: visible !important;
+            }
+
+            /* 5. Hide everything else: sidebars, footers, headers, buttons, and other wizard sections */
+            header, footer, aside, nav, button, 
+            .portal-sidebar, .wizard-footer-action-row, 
+            .sidebar-footer-lock, #secure-redirect-blur-overlay, 
+            [class*="sidebar"], [id*="sidebar"],
+            .wizard-step:not(#step-7-injection-placeholder),
+            .step-panel:not(#step-7-injection-placeholder) {
+                display: none !important;
+                visibility: hidden !important;
+            }
+
+            /* 6. Strip interactive dashboard enrollment blocks underneath the isolated frame */
+            #step-7-injection-placeholder .no-print, 
+            #step-7-injection-placeholder .no-print * {
+                display: none !important;
+                visibility: hidden !important;
+            }
+        }
+
     `;
     document.head.appendChild(styleNode);
     window.isStep7StylesheetsMounted = true;
     console.log("[Success Portal] Print media stylesheets injected successfully.");
-  };
+};
+
 
   // Client connection variables mapping parameters
   const DYNAMIC_SUPABASE_URL = "https://lrbimrlbskjweynxlgas.supabase.co";
@@ -108,89 +153,115 @@ window.buildAndRenderStep7LayoutStructure = function() {
     container.style.boxSizing = "border-box";
 
 
-    // Build edge-to-edge content layers
+      // 3. Build HTML Skeleton Wrapper Shell
     container.innerHTML = `
-        <div style="width: 100%; box-sizing: border-box;">
-            <!-- RECEIPT DATA ONLY WINDOW -->
-            <div class="print-canvas" style="width: 100%; box-sizing: border-box;">
-                <!-- Enclosed Upper Status Panel Border Box Wrapper -->
-                <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; box-sizing: border-box; margin-bottom: 32px; width: 100%;">
-                    <div style="background: #ecfdf5; color: #10b981; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-                        <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
+    <div style="width: 100%; box-sizing: border-box;">
+        <div class="print-canvas" style="width: 100%; box-sizing: border-box;">
+            <!-- STATUS UPPER PANEL BOX -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; box-sizing: border-box; margin-bottom: 32px; width: 100%;">
+                <div style="background: #ecfdf5; color: #10b981; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <h1 style="color: #0a1f44; font-size: 2rem; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -0.5px;">Order Successfully Deployed</h1>
+                <p style="color: #64748b; font-size: 0.95rem; margin: 0 0 32px 0; line-height: 1.5;">Your compliance metadata package has been parsed, encrypted, and transmitted directly to target authority filing networks.</p>
+                
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; box-sizing: border-box; width: 100%;">
+                    <div>
+                        <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Secure Account Number</span>
+                        <strong id="receipt-tracking-token-display" style="font-family: monospace; font-size: 0.85rem; color: #0a1f44; display: block;">F4U-TOKEN-RETRIEVING...</strong>
                     </div>
-                    <h1 style="color: #0a1f44; font-size: 2rem; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -0.5px;">Order Successfully Deployed</h1>
-                    <p style="color: #64748b; font-size: 0.95rem; margin: 0 0 32px 0; line-height: 1.5;">Your compliance metadata package has been parsed, encrypted, and transmitted directly to target authority filing networks.</p>
-                    
-                    <!-- Responsive status information row grid -->
-                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; box-sizing: border-box; width: 100%;">
-                        <div>
-                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Secure Account Number</span>
-                            <strong id="receipt-tracking-token-display" style="font-family: monospace; font-size: 0.85rem; color: #0a1f44; display: block;">F4U-TOKEN-RETRIEVING...</strong>
-                        </div>
-                        <div>
-                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Deployment Timestamp</span>
-                            <strong id="receipt-timestamp-display" style="font-family: monospace; font-size: 0.85rem; color: #0a1f44; display: block;">GENERATING...</strong>
-                        </div>
-                        <div>
-                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Filing Status</span>
-                            <strong style="color: #10b981; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
-                                <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;"></span> VALIDATED &amp; QUEUED
-                            </strong>
-                        </div>
+                    <div>
+                        <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Deployment Timestamp</span>
+                        <strong id="receipt-timestamp-display" style="font-family: monospace; font-size: 0.85rem; color: #0a1f44; display: block;">GENERATING...</strong>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Filing Status</span>
+                        <strong style="color: #10b981; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
+                            <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;"></span> VALIDATED &amp; QUEUED
+                        </strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STATEMENT ITEMIZATION LIST AREA -->
+            <div style="margin-bottom: 32px; width: 100%; box-sizing: border-box;">
+                <h3 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 800; color: #0a1f44; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Itemized Billing Statement</h3>
+                <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column; width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; padding: 12px 24px; box-sizing: border-box; gap: 12px;"></div>
+                <div style="background: #ffffff; padding: 24px 0; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; border-bottom: 2px solid #f1f5f9;">
+                    <span style="font-size: 1.1rem; color: #0a1f44; font-weight: 800;">Total Paid Amount</span>
+                    <span id="receipt-grand-total-display" style="font-family: monospace; font-size: 1.35rem; color: #10b981; font-weight: 900;">$0.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+
+    // 4. Append Interactive Lower Form Layout Sections (Keep only non-printed interactive elements here)
+    container.innerHTML += `
+    <div class="no-print" style="width: 100%; box-sizing: border-box; margin-top: 32px;">
+        <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 32px;">
+            <button type="button" onclick="window.print();" style="background: #ffffff; color: #0a1f44; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 18px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+                Download or Print Receipt
+            </button>
+        </div>
+
+        <!-- RIGHT COLUMN: CLIENT SECURED GATEWAY ACCOUNT CREATION CARD -->
+        <aside class="success-card no-print" style="position: relative; box-sizing: border-box; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; margin-top: 16px; width: 100%;">
+            <div style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
+                <h2 style="color: #0a1f44; font-size: 1.4rem; font-weight: 800; margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-user-plus" style="color: #10b981; font-size: 1.2rem;"></i> Activate Client Portal
+                </h2>
+                <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.4;">Activate your account to download documents and track status of your filings in real time.</p>
+            </div>
+
+            <!-- SECURE PORTAL USER REGISTRATION MATRIX FORM -->
+            <form id="wizard-account-generation-form" onsubmit="return handleClientAccountActivation(event);">
+                
+                <!-- AUTO-FILLED REGISTRY BUSINESS CONTACT EMAIL TARGET -->
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;">
+                    <label for="portal_user_email" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Registered Account Username / Email</label>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" id="portal_user_email" required readonly style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; font-weight: 600; border-radius: 6px; border: 1px solid #e2e8f0; background: #f1f5f9; color: #64748b; cursor: not-allowed; outline: none; box-sizing: border-box;">
+                    </div>
+                    <span style="font-size: 0.7rem; color: #64748b; font-weight: 500; padding-left: 2px;">Auto-locked to your corporate registry filing email.</span>
+                </div>
+
+                <!-- NEW ACCOUNT AUTHENTICATION SECURITY PASSWORD -->
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;">
+                    <label for="portal_user_password" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Create Security Password</label>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-key"></i></span>
+                        <input type="password" id="portal_user_password" required minlength="8" placeholder="Minimum 8 characters..." style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: border-color 0.2s;">
                     </div>
                 </div>
 
-                <!-- STATEMENT ITEMIZATION LIST AREA -->
-                <div style="margin-bottom: 32px; width: 100%; box-sizing: border-box;">
-                    <h3 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 800; color: #0a1f44; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Itemized Billing Statement</h3>
-                    
-                    <!-- Shared html element target node clones content natively from Step 5 -->
-                    <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column; width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; padding: 12px 24px; box-sizing: border-box; gap: 12px;"></div>
-                    
-                    <div style="background: #ffffff; padding: 24px 0; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box;">
-                        <span style="font-size: 1.1rem; color: #0a1f44; font-weight: 800;">Total Paid Amount</span>
-                        <span id="receipt-grand-total-display" style="font-family: monospace; font-size: 1.35rem; color: #10b981; font-weight: 900;">$0.00</span>
+                <!-- PASSWORD VERIFICATION STRUT CHANNELS -->
+                <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;">
+                    <label for="portal_user_password_confirm" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Confirm Security Password</label>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-circle-check"></i></span>
+                        <input type="password" id="portal_user_password_confirm" required minlength="8" placeholder="Re-type password..." style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: border-color 0.2s;">
                     </div>
                 </div>
-            </div>
-        </div>
-    `;
-    // Append lower cards, entity fields, and account portal forms
-    container.innerHTML += `
-        <div class="no-print" style="width: 100%; box-sizing: border-box;">
-            <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 32px;">
-                <button type="button" onclick="window.print();" style="background: #ffffff; color: #0a1f44; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 18px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
-                    Download or Print Receipt
+
+                <!-- SUBMIT ACTIVATION SUBMISSION ACTION TRIGGER -->
+                <button type="submit" id="portal-activation-submit-btn" style="width: 100%; text-align: center; background: #10b981; color: #ffffff; border: none; font-weight: 700; font-size: 1rem; padding: 16px 0; border-radius: 6px; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
+                    <i class="fa-solid fa-unlock-keyhole" style="margin-right: 6px;"></i> Initialize Secured Dashboard
                 </button>
+            </form>
+
+            <!-- TRUST MATRIX COMPLIANCE LOCK BANNER -->
+            <div style="margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 16px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.75rem; color: #64748b; line-height: 1.4;">
+                <span style="color: #10b981; font-size: 1rem; margin-top: 2px;"><i class="fa-solid fa-shield-halved"></i></span>
+                <span><strong>Encrypted Vault Lock:</strong> Portal passwords undergo one-way cryptographic SHA-256 hashing prior to serialization inside database clusters. filings4u staff cannot view or access your security password.</span>
             </div>
-            <!-- Entity profiles records card summary container layout -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; box-sizing: border-box; width: 100%; margin-bottom: 40px;">
-                <h4 style="margin: 0 0 16px 0; font-size: 0.9rem; font-weight: 800; color: #0a1f44; text-transform: uppercase;">Registered Entity Profile Target</h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; font-size: 0.85rem; width: 100%; box-sizing: border-box;">
-                    <div>
-                        <span style="color: #64748b; display: block; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; font-size: 0.75rem;">Legal Corporate Name</span>
-                        <strong id="receipt-profile-name" style="color: #0a1f44;">Your Corporate Entity Profile</strong>
-                    </div>
-                    <div>
-                        <span style="color: #64748b; display: block; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; font-size: 0.75rem;">Taxpayer ID / EIN</span>
-                        <strong id="receipt-profile-ein" style="color: #0a1f44;">Processing Summary...</strong>
-                    </div>
-                    <div style="grid-column: span 2;">
-                        <span style="color: #64748b; display: block; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; font-size: 0.75rem;">Principal Office Address</span>
-                        <strong id="receipt-profile-address" style="color: #0a1f44;">Form Submission Record Entry</strong>
-                    </div>
-                </div>
-            </div>
-            <!-- System activation security parameters registration form panels -->
-            <div style="border-top: 1px solid #e2e8f0; padding-top: 32px; width: 100%; box-sizing: border-box; text-align: left;">
-                <h2 style="color: #0a1f44; font-size: 1.3rem; font-weight: 800; margin: 0 0 8px 0;">Activate Client Portal</h2>
-                <p style="color: #64748b; font-size: 0.85rem; margin: 0 0 24px 0; line-height: 1.4;">Establish your security parameters to monitor state approvals and fetch documents.</p>
-                <button id="initialize-secured-dashboard" style="background-color: #0a1f44; color: #fff; border: none; padding: 12px 24px; font-size: 0.85rem; cursor: pointer;">Initialize Secured Dashboard</button>
-            </div>
-        </div>
+        </aside>
+    </div>
     `;
+
 
 // DYNAMIC DATA INJECTION PIPELINE: Read from SessionStorage instead of missing DOM nodes!
 const executeInjectionPipeline = function() {
@@ -213,82 +284,81 @@ const executeInjectionPipeline = function() {
     let itemsHtml = '';
     let billingTotal = "$0.00";
 
-    if (manifestRaw) {
-        try {
-            const manifest = JSON.parse(manifestRaw);
-            
-            const baseFee = manifest.financials_subtotal_amount ? manifest.financials_subtotal_amount.toFixed(2) : "399.00";
-            const baseLabel = manifest.selected_package_title || "filings4u Processing Fee (ENTERPRISE)";
-            
-            itemsHtml += `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44;">
-                    <span style="font-weight: 500;">${baseLabel}</span>
-                    <strong style="font-weight: 700;">$${baseFee}</strong>
-                </div>
-            `;
+        if (manifestRaw) {
+            try {
+                const manifest = JSON.parse(manifestRaw);
+                
+                // 1. EXTRACT DATA DIRECTLY FROM TRANSITION DATA OBJECTS
+                const baseFeeValue = parseFloat(manifest.financials_subtotal_amount);
+                const baseLabel = manifest.selected_package_title;
+                
+                itemsHtml += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44;">
+                        <span style="font-weight: 500;">${baseLabel}</span>
+                        <strong style="font-weight: 700;">$${baseFeeValue.toFixed(2)}</strong>
+                    </div>
+                `;
 
-            const activeAddonsList = window.currentCartState?.addons || window.currentSelectedAddonsListArrayMatrix || [];
-            if (Array.isArray(activeAddonsList)) {
-                activeAddonsList.forEach(addon => {
-                    if (addon && addon.price) {
-                        const addonTitle = addon.title || addon.name || "Selected Addon Service";
-                        const addonPrice = parseFloat(addon.price) || 0;
-                        itemsHtml += `
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #475569; border-top: 1px dashed #f1f5f9;">
-                                <span style="font-weight: 400;">+ ${addonTitle}</span>
-                                <strong style="font-weight: 600; font-family: monospace;">$${addonPrice.toFixed(2)}</strong>
-                            </div>
-                        `;
-                    }
-                });
+                // 2. LOOP DYNAMIC ADDONS ACCORDING TO CURRENT APPLICATION CART STATE
+                const activeAddonsList = window.currentCartState?.addons || window.currentSelectedAddonsListArrayMatrix || [];
+                if (Array.isArray(activeAddonsList)) {
+                    activeAddonsList.forEach(addon => {
+                        if (addon && addon.price) {
+                            itemsHtml += `
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #475569; border-top: 1px dashed #f1f5f9;">
+                                    <span style="font-weight: 400;">+ ${addon.title || addon.name}</span>
+                                    <strong style="font-weight: 600; font-family: monospace;">$${parseFloat(addon.price).toFixed(2)}</strong>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+                
+                // 3. MAP GRAND TOTAL AMOUNT FROM TRANSACTION METADATA
+                if (manifest.financials_grand_total_charge) {
+                    billingTotal = `$${manifest.financials_grand_total_charge.toFixed(2)}`;
+                }
+                
+                // 4. BIND FORM PROFILE STRINGS NATIVELY TO IDENTICAL UI NODE FIELDS
+                if (document.getElementById("receipt-profile-name")) document.getElementById("receipt-profile-name").textContent = manifest.legal_entity_name;
+                if (document.getElementById("receipt-profile-ein")) document.getElementById("receipt-profile-ein").textContent = manifest.taxpayer_ein;
+                if (document.getElementById("receipt-profile-address")) document.getElementById("receipt-profile-address").textContent = manifest.office_address_street;
+                if (document.getElementById("receipt-tracking-token-display") && manifest.transaction_hash_id) {
+                    document.getElementById("receipt-tracking-token-display").textContent = manifest.transaction_hash_id;
+                }
+            } catch (e) {
+                console.error("[Receipt Manifest Parser Error]", e);
             }
-            
-            if (manifest.financials_grand_total_charge) {
-                billingTotal = `$${manifest.financials_grand_total_charge.toFixed(2)}`;
-            } else if (window.computedWizardGrandTotalAmount) {
-                billingTotal = `$${parseFloat(window.computedWizardGrandTotalAmount).toFixed(2)}`;
-            }
-
-            if (document.getElementById("receipt-profile-name")) document.getElementById("receipt-profile-name").textContent = manifest.legal_entity_name;
-            if (document.getElementById("receipt-profile-ein")) document.getElementById("receipt-profile-ein").textContent = manifest.taxpayer_ein;
-            if (document.getElementById("receipt-profile-address")) document.getElementById("receipt-profile-address").textContent = manifest.office_address_street;
-            if (document.getElementById("receipt-tracking-token-display") && manifest.transaction_hash_id) {
-                document.getElementById("receipt-tracking-token-display").textContent = manifest.transaction_hash_id;
-            }
-        } catch (e) {
-            console.error("[Receipt Manifest Parser Error]", e);
         }
-    }
+
 
     step7Frame.innerHTML = itemsHtml;
 
-    const finalGovFee = parseFloat(window.computedWizardStateGovernmentFee) || 0;
-    if (finalGovFee > 0) {
-        let stateDropdown = document.getElementById("wizard_state_select") || document.getElementById("state_select");
-        let selectedStateCode = window.currentCartState?.selectedState || (stateDropdown ? stateDropdown.value : window.selectedJurisdiction || "State");
-        let stateFriendlyName = selectedStateCode;
+        // 🟢 INJECT CORRECT STEP 3 STATE GOVERNMENT FEE
+        const finalGovFee = parseFloat(window.computedWizardStateGovernmentFee) || 0;
+        if (finalGovFee > 0) {
+            let stateDropdown = document.getElementById("wizard_state_select") || document.getElementById("state_select");
+            let selectedStateCode = window.currentCartState?.selectedState || (stateDropdown ? stateDropdown.value : window.selectedJurisdiction || "State");
+            let stateFriendlyName = selectedStateCode;
 
-        if (selectedStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[selectedStateCode]) {
-            stateFriendlyName = window.STATE_FILING_FEES[selectedStateCode].name || selectedStateCode;
+            if (selectedStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[selectedStateCode]) {
+                stateFriendlyName = window.STATE_FILING_FEES[selectedStateCode].name || selectedStateCode;
+            }
+
+            // Renders on a single line, bold, matching the native line items precisely
+            const stateFilingFeeRowHtml = `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44; border-top: 1px dashed #f1f5f9;">
+                <span style="font-weight: 700;">+ Mandatory ${stateFriendlyName} Filing Fee</span>
+                <strong style="font-weight: 700;">$${finalGovFee.toFixed(2)}</strong>
+            </div>
+            `;
+            step7Frame.insertAdjacentHTML('beforeend', stateFilingFeeRowHtml);
         }
 
-        const stateFilingFeeRowHtml = `
-        <div class="runtime-state-fee-notice-card" style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; text-align: left; box-sizing: border-box; width: 100%;">
-            <div style="display: flex; flex-direction: column;">
-                <span style="font-weight: 700; color: #0a1f44; font-size: 0.85rem;">Mandatory ${stateFriendlyName} Filing Fee:</span>
-                <small style="color: #0a1f44; font-weight: 500; font-size: 0.725rem;"><i class="fa-solid fa-clock"></i> Est. Processing: Managed</small>
-            </div>
-            <strong style="font-family: monospace; color: #10b981; font-size: 1.1rem;">+$${finalGovFee.toFixed(2)}</strong>
-        </div>
-        `;
-
-        step7Frame.insertAdjacentHTML('beforeend', stateFilingFeeRowHtml);
-    }
-
-    if (grandTotalField) {
-        grandTotalField.textContent = billingTotal;
-    }
-    
+        if (grandTotalField) {
+            grandTotalField.textContent = billingTotal;
+        }
+    s
     // Clear retry flag for subsequent runs
     window._step7RetryCounter = 0;
     return true;

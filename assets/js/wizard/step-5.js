@@ -219,7 +219,7 @@ window.processSummaryItemizedProductLoops = function(rowsContainer, subtotalDisp
       <div class="runtime-state-fee-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; box-sizing: border-box; width: 100%; clear: both; margin-bottom: 4px;">
         <div style="display: flex; flex-direction: column; text-align: left;">
           <span style="font-weight: 700; font-size: 0.95rem; color: #0a1f44; text-align: left;">${feeLabelTextString}:</span>
-          <small style="color: #64748b; font-weight: 500; margin-top: 2px; text-align: left;"><i class="fa-solid fa-building-shield"></i> ${feeDescriptionTextString}</small>
+          <small style="color: #0a1f44; font-weight: 500; margin-top: 2px; text-align: left;"><i class="fa-solid fa-building-shield"></i> ${feeDescriptionTextString}</small>
         </div>
         <div style="font-weight: 800; font-size: 1.05rem; color: #0a1f44; font-family: monospace;">+$${baseGovAgencyFee.toFixed(2)}</div>
       </div>`;
