@@ -153,87 +153,155 @@ window.buildAndRenderStep7LayoutStructure = function() {
     container.style.boxSizing = "border-box";
 
 
-      // 3. Build HTML Skeleton Wrapper Shell
-    container.innerHTML = `
-    <div style="width: 100%; box-sizing: border-box;">
-        <div class="print-canvas" style="width: 100%; box-sizing: border-box;">
-            <!-- STATUS UPPER PANEL BOX -->
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; box-sizing: border-box; margin-bottom: 32px; width: 100%;">
-                <div style="background: #ecfdf5; color: #10b981; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                </div>
-                <h1 style="color: #0a1f44; font-size: 2rem; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -0.5px;">Order Successfully Deployed</h1>
-                <p style="color: #64748b; font-size: 0.95rem; margin: 0 0 32px 0; line-height: 1.5;">Your compliance metadata package has been parsed, encrypted, and transmitted directly to target authority filing networks.</p>
-                
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; box-sizing: border-box; width: 100%;">
-                    <div>
-                        <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Secure Account Number</span>
-                        <strong id="receipt-tracking-token-display" style="font-family: monospace; font-size: 0.85rem; color: #0a1f44; display: block;">F4U-TOKEN-RETRIEVING...</strong>
-                    </div>
-                    <div>
-                        <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Deployment Timestamp</span>
-                        <strong id="receipt-timestamp-display" style="font-family: monospace; font-size: 0.85rem; color: #0a1f44; display: block;">GENERATING...</strong>
-                    </div>
-                    <div>
-                        <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Filing Status</span>
-                        <strong style="color: #10b981; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
-                            <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;"></span> VALIDATED &amp; QUEUED
-                        </strong>
-                    </div>
-                </div>
-            </div>
-
-            <!-- STATEMENT ITEMIZATION LIST AREA -->
-            <div style="margin-bottom: 32px; width: 100%; box-sizing: border-box;">
-                <h3 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 800; color: #0a1f44; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Itemized Billing Statement</h3>
-                <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column; width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; padding: 12px 24px; box-sizing: border-box; gap: 12px;"></div>
-                <div style="background: #ffffff; padding: 24px 0; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; border-bottom: 2px solid #f1f5f9;">
-                    <span style="font-size: 1.1rem; color: #0a1f44; font-weight: 800;">Total Paid Amount</span>
-                    <span id="receipt-grand-total-display" style="font-family: monospace; font-size: 1.35rem; color: #10b981; font-weight: 900;">$0.00</span>
-                </div>
-            </div>
+// ============================================================================ //
+// 3. Build HTML Skeleton Wrapper Shell (Unified Production Engine)             //
+// ============================================================================ //
+container.innerHTML = `
+  <div style="width: 100%; box-sizing: border-box; display: block !important; clear: both;">
+    <div class="print-canvas" style="width: 100%; box-sizing: border-box; display: block !important;">
+      
+      <!-- STATUS UPPER PANEL BOX -->
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; box-sizing: border-box; margin-bottom: 32px; width: 100%;">
+        <div style="background: #ecfdf5; color: #10b981; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+          <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
         </div>
+        <h1 style="color: #0a1f44; font-size: 2rem; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -0.5px;">Order Successfully Deployed</h1>
+        <p style="color: #64748b; font-size: 0.95rem; margin: 0 0 32px 0; line-height: 1.5;">Your compliance metadata package has been parsed, encrypted, and transmitted directly to target authority filing networks.</p>
+        
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; box-sizing: border-box; width: 100%;">
+          <div>
+            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Secure Account Number</span>
+            <strong id="receipt-tracking-token-display" style="font-family: monospace; font-size: 0.85rem; color: #0a1f44; display: block;">F4U-TOKEN-RETRIEVING...</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Deployment Timestamp</span>
+            <strong id="receipt-timestamp-display" style="font-family: monospace; font-size: 0.85rem; color: #0a1f44; display: block;">GENERATING...</strong>
+          </div>
+          <div>
+            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 4px;">Filing Status</span>
+            <strong style="color: #10b981; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
+              <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;"></span> VALIDATED &amp; QUEUED
+            </strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATEMENT ITEMIZATION LIST AREA -->
+      <div style="margin-bottom: 32px; width: 100%; box-sizing: border-box; text-align: left; display: block !important;">
+        <h3 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 800; color: #0a1f44; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Itemized Billing Statement</h3>
+        <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column; width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; padding: 12px 24px; box-sizing: border-box; gap: 12px;"></div>
+        <div style="background: #ffffff; padding: 24px 0; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; border-bottom: 2px solid #f1f5f9;">
+          <span style="font-size: 1.1rem; color: #0a1f44; font-weight: 800;">Total Paid Amount</span>
+          <span id="receipt-grand-total-display" style="font-family: monospace; font-size: 1.35rem; color: #10b981; font-weight: 900;">$0.00</span>
+        </div>
+      </div>
+
+        <!-- CONTROL UTILITY ACTION ROW -->
+    <div class="no-print" style="text-align: right; width: 100%; box-sizing: border-box; margin-bottom: 24px;">
+      <button type="button" onclick="window.print();" style="background: #ffffff; border: 1px solid #cbd5e1; color: #0a1f44; font-weight: 700; font-size: 0.9rem; padding: 12px 24px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;">
+        <i class="fa-solid fa-print"></i> Download or Print Receipt
+      </button>
     </div>
-    `;
 
-    // 4. Append Interactive Lower Form Layout Sections (Keep only non-printed interactive elements here)
-    container.innerHTML += `
-    <div class="no-print" style="width: 100%; box-sizing: border-box; margin-top: 32px;">
-    
-        <!-- BOTTOM UTILITY INTERACTION SECTION IN STEP 7 -->
-<div style="margin-top: 24px; text-align: right; width: 100%; box-sizing: border-box;">
-  
-  <!-- YOUR EXISTING PRINT UTILITY ACTION ACTION -->
-  <button type="button" onclick="window.print();" class="no-print" style="background: #ffffff; border: 1px solid #cbd5e1; color: #0a1f44; font-weight: 700; font-size: 0.9rem; padding: 12px 24px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;">
-    <i class="fa-solid fa-print"></i> Download or Print Receipt
-  </button>
+      <!-- STEP 7 EXTENSION: COMPLIANCE LEGAL RECORD HUB -->
+      <!-- 🟢 CSS FIX: Changed display: none to block !important to permanently force layout rendering on your live page -->
+      <div id="live-poa-document-manifest" style="display: block !important; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; overflow: hidden; margin-top: 28px; box-sizing: border-box; width: 100%; text-align: left; clear: both;">
+        
+        <!-- Accordion Header Header (Hidden natively when printing the core receipt) -->
+        <div class="no-print" style="background: #0a1f44; padding: 16px; color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Executed Legal Records</span>
+          <span style="font-size: 0.8rem; font-weight: 600; opacity: 0.9;"><i class="fa-solid fa-file-signature"></i> Power of Attorney</span>
+        </div>
 
-  <!-- ADDED: IDENTITY ACTIVATION BANNER CALLOUT TOOLTIP -->
-  <div class="no-print" style="margin-top: 28px; border-top: 1px dashed #e2e8f0; padding-top: 24px; text-align: left;">
-    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 20px; box-sizing: border-box; width: 100%; display: flex; align-items: flex-start; gap: 14px;">
-      <span style="color: #2563eb; font-size: 1.4rem; margin-top: 2px;">
-        <i class="fa-solid fa-envelope-open-text"></i>
-      </span>
-      <div style="flex: 1;">
-        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 800; margin: 0 0 6px 0;">
-          Secure Account Activation Link Dispatched
-        </h4>
-        <p style="color: #1e3a8a; font-size: 0.85rem; margin: 0 0 12px 0; line-height: 1.5;">
-          A privileged encryption setup token has been transmitted to your registered corporate filing email. For your data safety, you must complete verification from your inbox.
-        </p>
-        <div style="display: inline-flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid #dbeafe; padding: 10px 16px; border-radius: 6px; font-weight: 700; color: #1e40af; font-size: 0.8rem; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.04);">
-          <i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i> Next Step: Check your email inbox to verify your secure portal account profile
+        <!-- THE CERTIFIED POA CANVAS SECTOR (The clean document area) -->
+        <div id="poa-print-canvas" style="padding: 32px; color: #0a1f44; line-height: 1.6; font-size: 0.9rem; background: #ffffff; width: 100%; box-sizing: border-box; display: block !important;">
+          <h4 style="margin: 0 0 16px 0; font-size: 1.2rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: -0.2px; color: #0a1f44;">Digital Power of Attorney Certification</h4>
+      
+          <!-- SCROLL-BOX INNER TEXT CONTENT HOLDER -->
+        <div id="poa-scroll-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; font-size: 0.85rem; color: #334155; line-height: 1.6; max-height: 220px; overflow-y: scroll; font-family: system-ui, sans-serif; text-align: justify; margin-bottom: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; width: 100%;">
+            LIMITED POWER OF ATTORNEY &amp; CORPORATE AGENCY AGREEMENT<br><br>
+            WHEREAS, the undersigned Principal does hereby nominatively appoint, designate, and empower filings4u, LLC, an Illinois limited liability company, along with its authorized operational agents, officers, employees, and designees, as its true and lawful Attorney-in-Fact and Corporate Agent in accordance with the strict terms and limitations set forth herein.<br><br>
+            <strong>1. EXPRESS LIMITED SCOPE OF APPOINTMENT</strong><br>
+            The scope of this appointment is strictly restricted and expressly limited to administrative, regulatory, and compliance-related document processing. The Attorney-in-Fact is granted the authority to execute, sign, modify, amend, submit, and process applications, registrations, forms, and renewals across Corporate Management, Tax Registration, and Government Procurement on behalf of the Principal.<br><br>
+            <strong>2. GRANT OF OPERATIONAL POWERS</strong><br>
+            The Principal hereby grants, conveys, and delivers unto the said Attorney-in-Fact full operational power, authority, and jurisdiction to undertake, execute, and perform any and all acts deemed necessary to fulfill the service requests initiated by the Principal within the filings4u, LLC digital wizard interface.<br><br>
+            <strong>3. ELECTRONIC SIGNATURES &amp; INTENT</strong><br>
+            This Agreement is executed electronically in strict conformity with the federal Electronic Signatures in Global and National Commerce Act (ESIGN) and the Uniform Electronic Transactions Act (UETA). The Principal expressly understands, agrees, and consents that typing their name into the designated input field—resulting in a script-generated cursive font rendering of their name on the screen—constitutes their valid, legally binding electronic signature carrying identical weight to a handwritten wet ink signature.<br><br>
+            <strong>4. RATIFICATION, REVOCATION, AND DURATION</strong><br>
+            This agreement shall remain in full force and effect from the date of electronic execution until explicitly revoked. Revocation may occur via written physical notification delivered to filings4u, LLC corporate networks or electronic cancellation processed through verified client portal pathways.<br><br>
+            Corporate Entity Information:<br>
+            filings4u, LLC | A Subsidiary of Roseland Companies, LLC<br>
+            Contact Support: support@filings4u.com
+        </div>
+
+          <!-- METADATA AUDIT SIGNATURE ROW -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <div>
+              <small style="color: #64748b; font-weight: 700; display: block; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; margin-bottom: 4px;">Authorized Principal</small>
+              <!-- 🟢 VARIATION FIXED: Hydrated directly with fallback variables matching your typed choices -->
+              <span id="poa-certified-signer" style="font-size: 1.8rem; font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-weight: 600; color: #1e3a8a; display: block; min-height: 30px;">Extracting Signature...</span>
+            </div>
+            <div>
+              <small style="color: #64748b; font-weight: 700; display: block; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; margin-bottom: 6px;">Execution Date Stamp</small>
+              <span id="poa-certified-timestamp" style="font-family: monospace; font-size: 0.85rem; font-weight: 700; color: #334155; display: block;">Extracting Clock Timestamp...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTROL DOWNLOAD ACTION BUTTON (Completely ignored during printing) -->
+        <div class="no-print" style="padding: 0 32px 32px 32px; background: #ffffff;">
+          <button type="button" onclick="window.printSpecificPoaDocument();" style="width: 100%; padding: 14px; background: #0a1f44; color: #ffffff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; transition: background 0.2s; box-shadow: 0 4px 12px rgba(10, 31, 68, 0.15);">
+            <i class="fa-solid fa-file-pdf"></i> Download or Print Certified POA Record
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+`;
+
+// ============================================================================ //
+// 4. Append Interactive Lower Form Layout Sections (Cleaned UI Handoff)        //
+// ============================================================================ //
+container.insertAdjacentHTML('beforeend', `
+  <div class="no-print" style="width: 100%; box-sizing: border-box; margin-top: 24px; clear: both; text-align: right; display: block !important;">
+
+    <!-- SLATE ACCOUNT ACTIVATION CALLOUT BANNER WITH EMERALD BORDER -->
+    <div style="margin-top: 28px; border-top: 1px dashed #e2e8f0; padding-top: 24px; text-align: left; width: 100%;">
+      <div class="runtime-state-fee-notice-card" style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 20px; display: flex; align-items: flex-start; gap: 14px; box-sizing: border-box; width: 100%;">
+        <span style="color: #10b981; font-size: 1.25rem; margin-top: 2px;">
+          <i class="fa-solid fa-circle-info"></i>
+        </span>
+        <div style="flex: 1;">
+          <h4 style="color: #0a1f44; font-size: 0.95rem; font-weight: 800; margin: 0 0 6px 0;">Action Required: Secure Account Activation Link Dispatched</h4>
+          <p style="color: #475569; font-size: 0.85rem; margin: 0 0 12px 0; line-height: 1.5; font-weight: 500;">A privileged encryption setup token has been transmitted to your registered corporate filing email. For your identity safety protection parameters, you must open your inbox to complete verification.</p>
+          <div style="display: inline-flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 6px; font-weight: 700; color: #0a1f44; font-size: 0.8rem; box-shadow: 0 2px 4px rgba(10, 31, 68, 0.02);">
+            <i class="fa-solid fa-envelope-open-text" style="color: #10b981;"></i> Next Step: Check your email inbox to verify your secure portal account profile
+          </div>
         </div>
       </div>
     </div>
+
+     <!-- PRINT OVERRIDE STYLESHEET LAYER -->
+  <style>
+    @media print {
+      /* Hides the POA card view ONLY when they are running a standard receipt download command */
+      #live-poa-document-manifest, 
+      #live-poa-document-manifest * {
+        display: none !important;
+        opacity: 0 !important;
+        height: 0 !important;
+      }
+    }
+  </style>
   </div>
 
-</div>
+ 
+`);
 
-    </div>
-    `;
+
 
 
 // DYNAMIC DATA INJECTION PIPELINE: Read from SessionStorage instead of missing DOM nodes!
@@ -743,41 +811,198 @@ window.triggerSecureBlurModalRedirect = function(verifiedUserUuid, verifiedEmail
   }, 1000); 
 }; 
 
-// ============================================================================ // 
-// 🔗 INTERLOCK HOOK: CALLED BY core.js UPON SINGLE-PAGE STEP ADVANCEMENT 
-// ============================================================================ // 
-window.initializeSecureStep7AccountHydration = function() { 
-  console.log("[Single-Page Trigger] Awakening Step 7 account hydration processing loops..."); 
-  window.extractAndRenderReceiptManifestData(); 
+// ============================================================================ //
+// 🔗 INTERLOCK HOOK: CALLED BY core.js UPON SINGLE-PAGE STEP ADVANCEMENT      //
+// ============================================================================ //
+window.initializeSecureStep7AccountHydration = function() {
+  console.log("[Single-Page Trigger] Awakening Step 7 account hydration processing loops...");
   
-  // Safe dynamic execution listener anchor maps directly to your exact template form element ID 
-  const targetFormNode = document.getElementById("wizard-account-generation-form"); 
-  if (targetFormNode) { 
-    // Force the layout event function intercept layer to resolve async blocks safely 
-    targetFormNode.onsubmit = function(eventRef) { 
-      window.handleClientAccountActivation(eventRef); 
-      return false; 
-    }; 
-  } 
-}; 
+  // 1. Run dynamic manifest parsing loaders
+  window.extractAndRenderReceiptManifestData();
+  window.extractAndRenderCertifiedLegalPoaDocument();
 
-// Deep-link / hard page refresh mount controls fallback layer 
-if (document.readyState === "loading") { 
-  document.addEventListener("DOMContentLoaded", () => { 
-    if (parseInt(window.currentWizardActiveStep, 10) === 7) window.initializeSecureStep7AccountHydration(); 
-  }); 
-} else { 
-  if (parseInt(window.currentWizardActiveStep, 10) === 7) window.initializeSecureStep7AccountHydration(); 
+  // Safe dynamic execution listener anchor maps directly to your exact template form element ID
+  const targetFormNode = document.getElementById("wizard-account-generation-form");
+  if (targetFormNode) {
+    targetFormNode.onsubmit = function(eventRef) {
+      window.handleClientAccountActivation(eventRef);
+      return false;
+    };
+  }
+};
+
+// Deep-link / hard page refresh mount controls fallback layer
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    if (parseInt(window.currentWizardActiveStep, 10) === 7 || window.location.search.includes("step=7")) {
+      window.initializeSecureStep7AccountHydration();
+    }
+  });
+} else {
+  if (parseInt(window.currentWizardActiveStep, 10) === 7 || window.location.search.includes("step=7")) {
+    window.initializeSecureStep7AccountHydration();
+  }
 }
 
+/**
+ * 🟢 DYNAMIC LAYOUT ENGINE: RENDERS THE RECORDED POWER OF ATTORNEY WITH AUTOMATED TIMESTAMPING
+ */
+window.extractAndRenderCertifiedLegalPoaDocument = async function() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const returnedToken = urlParams.get('token') || localStorage.getItem("f4u_active_tracking_token");
 
+    const signerNode = document.getElementById("poa-certified-signer");
+    const timestampNode = document.getElementById("poa-certified-timestamp");
+
+    // 1. Establish core date and time parameters immediately on screen
+    if (timestampNode) {
+      const currentClock = new Date();
+      const dateString = currentClock.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      const timeString = currentClock.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      timestampNode.textContent = `${dateString} @ ${timeString} (Local Platform Time)`;
+    }
+
+    // 2. Query your live Supabase table to pull the authorized signature text string
+    const supabaseClient = window.getSuccessPageSupabaseClient ? window.getSuccessPageSupabaseClient() : window.supabaseClientInstance;
+    
+    if (supabaseClient && returnedToken) {
+      const { data: orderRow, error } = await supabaseClient
+        .from('orders')
+        .select('poa_signature_verification_string, created_at')
+        .eq('tracking_number', returnedToken)
+        .maybeSingle();
+
+      if (!error && orderRow && orderRow.poa_signature_verification_string) {
+        console.log("[Gatekeeper] Verified signature text found in database orders row.");
+        if (signerNode) signerNode.textContent = orderRow.poa_signature_verification_string;
+        
+        if (orderRow.created_at && timestampNode) {
+          const dbDate = new Date(orderRow.created_at);
+          timestampNode.textContent = `${dbDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })} @ ${dbDate.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })} (UTC Database Log)`;
+        }
+        return;
+      }
+    }
+
+    // ============================================================================ //
+    // 🟢 BRIDGING FALLBACK HOOK: SEARCH ALL STEP 4 SIGNATURE STORAGE POSSIBILITIES //
+    // ============================================================================ //
+    console.log("[Gatekeeper Warning] Database row trace sync pending. Checking local session memory...");
+    
+    // Check every key your wizard forms use to hold the raw signature name text string
+    const localCachedSignature = localStorage.getItem("wizard_field_poa_signature") || 
+                                 localStorage.getItem("wizard_field_poa_signature_string") ||
+                                 localStorage.getItem("wizard_field_poa_typed_signature") ||
+                                 localStorage.getItem("poa_typed_signature") ||
+                                 // Check if the input field element is still resting in hidden single-page DOM layers
+                                 document.getElementById("poa_typed_signature")?.value ||
+                                 document.getElementById("poa_typed_signature")?.textContent;
+
+    if (signerNode && localCachedSignature && localCachedSignature.trim() !== "") {
+      signerNode.textContent = localCachedSignature.trim();
+    } else if (signerNode) {
+      // Final smart fallback: if name storage is blank, pull the corporate entity name from Step 6 
+      const bizNameFallback = localStorage.getItem("wizard_field_company_name") || "Authorized Principal Account";
+      signerNode.textContent = bizNameFallback;
+    }
+
+  } catch (err) {
+    console.error("[POA Hydration Fault Inbound Intercept]:", err);
+  }
+};
+
+// Force invoke the layout hydration function immediately on system entry loop
+setTimeout(() => {
+  if (typeof window.extractAndRenderCertifiedLegalPoaDocument === "function") {
+    window.extractAndRenderCertifiedLegalPoaDocument();
+  }
+}, 100);
+
+
+
+/**
+ * 🟢 PRINT ENGINE: Isolates only the signature canvas area so sidebars/receipt elements are ignored
+ */
+window.printSpecificPoaDocument = function() {
+  const poaCanvas = document.getElementById("poa-print-canvas");
+  if (!poaCanvas) return;
+
+  // 1. Capture the exact values currently filled inside your live preview inputs
+  const currentSigner = document.getElementById("poa-certified-signer").textContent;
+  const currentTimestamp = document.getElementById("poa-certified-timestamp").textContent;
+
+  // 2. Open an isolated sandbox context browser popup frame
+  const printWindow = window.open('', '_blank', 'width=800,height=900');
+  
+  // 3. Write a clean, 100% full-width document sheet layout
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Power of Attorney Certification Record</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #0a1f44; padding: 40px; line-height: 1.6; }
+          h4 { font-size: 24px; text-transform: uppercase; text-align: center; margin-bottom: 20px; font-weight: 800; border-bottom: 2px solid #0a1f44; padding-bottom: 12px; }
+          p { font-size: 14px; color: #334155; text-align: justify; margin-bottom: 30px; line-height: 1.6; }
+          .meta-row { display: table; width: 100%; margin-top: 40px; border-top: 1px solid #cbd5e1; padding-top: 20px; }
+          .meta-cell { display: table-cell; width: 50%; vertical-align: top; }
+          .label { font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px; }
+          .signer { font-size: 28px; font-family: "Brush Script MT", "Dancing Script", cursive, sans-serif; color: #1e3a8a; }
+          .stamp { font-family: monospace; font-size: 13px; color: #334155; font-weight: 700; }
+        </style>
+      </head>
+      <body>
+        <h4>Digital Power of Attorney Certification</h4>
+        <p>
+            LIMITED POWER OF ATTORNEY &amp; CORPORATE AGENCY AGREEMENT<br><br>
+            WHEREAS, the undersigned Principal does hereby nominatively appoint, designate, and empower filings4u, LLC, an Illinois limited liability company, along with its authorized operational agents, officers, employees, and designees, as its true and lawful Attorney-in-Fact and Corporate Agent in accordance with the strict terms and limitations set forth herein.<br><br>
+            <strong>1. EXPRESS LIMITED SCOPE OF APPOINTMENT</strong><br>
+            The scope of this appointment is strictly restricted and expressly limited to administrative, regulatory, and compliance-related document processing. The Attorney-in-Fact is granted the authority to execute, sign, modify, amend, submit, and process applications, registrations, forms, and renewals across Corporate Management, Tax Registration, and Government Procurement on behalf of the Principal.<br><br>
+            <strong>2. GRANT OF OPERATIONAL POWERS</strong><br>
+            The Principal hereby grants, conveys, and delivers unto the said Attorney-in-Fact full operational power, authority, and jurisdiction to undertake, execute, and perform any and all acts deemed necessary to fulfill the service requests initiated by the Principal within the filings4u, LLC digital wizard interface.<br><br>
+            <strong>3. ELECTRONIC SIGNATURES &amp; INTENT</strong><br>
+            This Agreement is executed electronically in strict conformity with the federal Electronic Signatures in Global and National Commerce Act (ESIGN) and the Uniform Electronic Transactions Act (UETA). The Principal expressly understands, agrees, and consents that typing their name into the designated input field—resulting in a script-generated cursive font rendering of their name on the screen—constitutes their valid, legally binding electronic signature carrying identical weight to a handwritten wet ink signature.<br><br>
+            <strong>4. RATIFICATION, REVOCATION, AND DURATION</strong><br>
+            This agreement shall remain in full force and effect from the date of electronic execution until explicitly revoked. Revocation may occur via written physical notification delivered to filings4u, LLC corporate networks or electronic cancellation processed through verified client portal pathways.<br><br>
+            Corporate Entity Information:<br>
+            filings4u, LLC | A Subsidiary of Roseland Companies, LLC<br>
+            Contact Support: support@filings4u.com        </p>
+        
+        <div class="meta-row">
+          <div class="meta-cell">
+            <div class="label">Authorized Principal</div>
+            <div class="signer">${currentSigner}</div>
+          </div>
+          <div class="meta-cell">
+            <div class="label">Execution Date Stamp</div>
+            <div class="stamp">${currentTimestamp}</div>
+          </div>
+        </div>
+        
+        <script>
+          // Auto-trigger printing the instant page compilation completes
+          window.onload = function() {
+            window.print();
+            setTimeout(function() { window.close(); }, 100);
+          };
+        <\/script>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+};
+
+
+/**
+ * MASTER DOM LIFECYCLE MONITOR LAYER
+ */
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   
   // Intercept variables built cleanly from Stripe's query parameters string array
   const returnedEmail = urlParams.get('email');
   const returnedToken = urlParams.get('token');
-
   const emailField = document.getElementById("portal_user_email");
 
   if (returnedEmail && emailField) {
@@ -794,7 +1019,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const supabaseClient = window.getSuccessPageSupabaseClient();
       if (supabaseClient) {
         const { data: profileCheck, error } = await supabaseClient
-          .from('profiles') // Replace with your actual core system user profiles lookup table
+          .from('profiles') 
           .select('id')
           .eq('email', decodedEmail)
           .maybeSingle();

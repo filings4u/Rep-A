@@ -1,159 +1,201 @@
 // step-6.js
 (function() {
-    const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE';
+  "use strict";
+
+  const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE';
+  
+  window.stripeInstance = window.stripeInstance || null;
+  window.stripeElementsContainer = window.stripeElementsContainer || null;
+  window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
+
+  async function initializeFlatStripeCheckoutElement() {
+    console.log("[Stripe Loader] Initiating payment elements accordion layout...");
     
-    window.stripeInstance = window.stripeInstance || null;
-    window.stripeElementsContainer = window.stripeElementsContainer || null;
-    window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
+    const baseContainer = document.getElementById("step-6-injection-placeholder");
+    if (!baseContainer) return;
 
-    async function initializeFlatStripeCheckoutElement() {
-        console.log("[Stripe Loader] Initiating payment elements accordion layout...");
-        
-        const baseContainer = document.getElementById("step-6-injection-placeholder");
-        if (!baseContainer) return;
+    if (typeof Stripe === "undefined") {
+      baseContainer.innerHTML = "<p style='color: red; font-size: 0.85rem; font-weight: 600;'>Payment system offline. Please refresh.</p>";
+      return;
+    }
 
-        if (typeof Stripe === "undefined") {
-            baseContainer.innerHTML = "<p style='color: red; font-size: 0.85rem; font-weight: 600;'>Payment system offline. Please refresh.</p>";
-            return;
-        }
+    try {
+      if (!window.stripeInstance) {
+        window.stripeInstance = Stripe(ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
+      }
 
-        try {
-            if (!window.stripeInstance) {
-                window.stripeInstance = Stripe(ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
+      // 🟢 FIXED: Dynamic variable tracking hook check with total safeguard rules applied
+      const currentGrandTotal = parseFloat(window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || localStorage.getItem("f4u_running_total"));
+      
+      if (isNaN(currentGrandTotal) || currentGrandTotal <= 0) {
+        console.warn("[Stripe Loader] Calculation parameters missing. Refreshing running values...");
+        baseContainer.innerHTML = "<p style='color: #475569; font-size: 0.85rem;'>Calculating final statement values... Please wait a moment.</p>";
+        setTimeout(initializeFlatStripeCheckoutElement, 300);
+        return;
+      }
+
+      baseContainer.innerHTML = `
+        <div class="step-header-container" style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; display: flex; justify-content: space-between; align-items: center; clear: both; width: 100%; box-sizing: border-box;">
+          <div style="text-align: left;">
+            <h2 class="step-main-title" style="margin: 0 0 4px 0; color: #0a1f44; font-weight: 800; font-size: 1.35rem;">Secure Checkout</h2>
+            <p class="step-subtitle" style="color: #64748b; font-size: 0.88rem; margin: 0;">Authorize your compliance filing package payment below.</p>
+          </div>
+          <div style="text-align: right; background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 6px;">
+            <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: #64748b; display: block; letter-spacing: 0.05em;">Total Due:</span>
+            <span id="payment-gateway-total-display" style="font-size: 1.5rem; font-weight: 800; color: #10b981; font-family: monospace;">$${currentGrandTotal.toFixed(2)}</span>
+          </div>
+        </div>
+
+        <!-- INTEGRATED PORTAL ACCOUNT PROFILE GENERATION LAYER -->
+        <div class="integrated-profile-matrix" style="margin-bottom: 20px; box-sizing: border-box; text-align: left; width: 100%; display: flex; flex-direction: column; gap: 16px;">
+          
+          <!-- ROW 1: FIRST NAME & LAST NAME (Side by Side) -->
+          <div style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
+            <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+              <label for="portal_user_first_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">First Name</label>
+              <input type="text" id="portal_user_first_name" required placeholder="John" style="width: 100%; padding: 14px 16px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+              <label for="portal_user_last_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Last Name</label>
+              <input type="text" id="portal_user_last_name" required placeholder="Doe" style="width: 100%; padding: 14px 16px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
+            </div>
+          </div>
+
+          <!-- ROW 2: EMAIL ADDRESS & PHONE NUMBER (Side by Side) -->
+          <div style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
+            <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+              <label for="portal_user_email_input" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Account Email Address</label>
+              <div style="position: relative; display: flex; align-items: center; width: 100%;">
+                <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span>
+                <input type="email" id="portal_user_email_input" required placeholder="you@example.com" style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+              <label for="portal_user_phone" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Contact Phone Number</label>
+              <div style="position: relative; display: flex; align-items: center; width: 100%;">
+                <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-phone"></i></span>
+                <input type="tel" id="portal_user_phone" required placeholder="(555) 000-0000" style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <style>
+          .field-error-shake {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+            animation: inlineFieldShake 0.4s ease-in-out;
+          }
+          .field-validated-emerald {
+            border-color: #10b981 !important;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
+          }
+          @keyframes inlineFieldShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+          }
+          @media (max-width: 480px) {
+            .integrated-profile-matrix > div {
+              flex-direction: column !important;
+              gap: 16px !important;
             }
+          }
+        </style>
 
-            const currentGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 249.00;
+        <div id="stripe-payment-element-mount-point" style="min-height: 200px; margin-bottom: 24px; clear: both; width: 100%;"></div>
+        <div id="step6-error-banner-target" style="display: none; color: #ef4444; background: #fef2f2; border: 1px solid #fee2e2; padding: 12px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 24px; font-weight: 500; text-align: left; clear: both;"></div>
 
-            baseContainer.innerHTML = `
-                <div class="step-header-container" style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; display: flex; justify-content: space-between; align-items: center; clear: both; width: 100%; box-sizing: border-box;">
-                    <div style="text-align: left;">
-                        <h2 class="step-main-title" style="margin: 0 0 4px 0; color: #0a1f44; font-weight: 800; font-size: 1.35rem;">Secure Checkout</h2>
-                        <p class="step-subtitle" style="color: #64748b; font-size: 0.88rem; margin: 0;">Authorize your compliance filing package payment below.</p>
-                    </div>
-                    <div style="text-align: right; background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 6px;">
-                        <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: #64748b; display: block; letter-spacing: 0.05em;">Total Due:</span>
-                        <span id="payment-gateway-total-display" style="font-size: 1.5rem; font-weight: 800; color: #10b981; font-family: monospace;">$${currentGrandTotal.toFixed(2)}</span>
-                    </div>
-                </div>
+        <div class="wizard-action-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid #f1f5f9; width: 100%; box-sizing: border-box; clear: both;">
+          <button type="button" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center;">
+            <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to PoA
+          </button>
+          <button id="wizard-next-trigger-btn" type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.executeOnboardingTransactionPayloadSubmitVanilla === 'function') { window.executeOnboardingTransactionPayloadSubmitVanilla(event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.2); display: inline-flex; align-items: center;">
+            Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>
+          </button>
+        </div>
+      `;
 
-               <!-- INTEGRATED PORTAL ACCOUNT PROFILE GENERATION LAYER -->
-<div class="integrated-profile-matrix" style="margin-bottom: 20px; box-sizing: border-box; text-align: left; width: 100%; display: flex; flex-direction: column; gap: 16px;">
-  
-  <!-- ROW 1: FIRST NAME & LAST NAME (Side by Side) -->
-  <div style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
-    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
-      <label for="portal_user_first_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">First Name</label>
-      <input type="text" id="portal_user_first_name" required placeholder="John" style="width: 100%; padding: 14px 16px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
-      <label for="portal_user_last_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Last Name</label>
-      <input type="text" id="portal_user_last_name" required placeholder="Doe" style="width: 100%; padding: 14px 16px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
-    </div>
-  </div>
+      if (window.stripePaymentElementInstance) {
+        window.stripePaymentElementInstance.destroy();
+        window.stripePaymentElementInstance = null;
+      }
 
-  <!-- ROW 2: EMAIL ADDRESS & PHONE NUMBER (Side by Side) -->
-  <div style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
-    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
-      <label for="portal_user_email_input" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Account Email Address</label>
-      <div style="position: relative; display: flex; align-items: center; width: 100%;">
-        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span>
-        <input type="email" id="portal_user_email_input" required placeholder="you@example.com" style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
-      </div>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
-      <label for="portal_user_phone" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Contact Phone Number</label>
-      <div style="position: relative; display: flex; align-items: center; width: 100%;">
-        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-phone"></i></span>
-        <input type="tel" id="portal_user_phone" required placeholder="(555) 000-0000" style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-  .field-error-shake {
-    border-color: #ef4444 !important;
-    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
-    animation: inlineFieldShake 0.4s ease-in-out;
-  }
-  .field-validated-emerald {
-    border-color: #10b981 !important;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
-  }
-  @keyframes inlineFieldShake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-6px); }
-    40%, 80% { transform: translateX(6px); }
-  }
-  
-  /* Responsive breakpoint layout fallback for mobile devices */
-  @media (max-width: 480px) {
-    .integrated-profile-matrix > div {
-      flex-direction: column !important;
-      gap: 16px !important;
-    }
-  }
-</style>
-                <div id="stripe-payment-element-mount-point" style="min-height: 200px; margin-bottom: 24px; clear: both; width: 100%;"></div>
-
-                <div id="step6-error-banner-target" style="display: none; color: #ef4444; background: #fef2f2; border: 1px solid #fee2e2; padding: 12px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 24px; font-weight: 500; text-align: left; clear: both;"></div>
-
-                <div class="wizard-action-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid #f1f5f9; width: 100%; box-sizing: border-box; clear: both;">
-                    <button type="button" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center;">
-                        <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to PoA
-                    </button>
-                    <button id="wizard-next-trigger-btn" type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.executeOnboardingTransactionPayloadSubmitVanilla === 'function') { window.executeOnboardingTransactionPayloadSubmitVanilla(event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.2); display: inline-flex; align-items: center;">
-                        Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>
-                    </button>
-                </div>
-            `;
-
-            if (window.stripePaymentElementInstance) {
-                window.stripePaymentElementInstance.destroy();
-                window.stripePaymentElementInstance = null;
+      // 🟢 STRIPE APPEARANCE ENGINE HOOKS: Synchronizes iframe card nodes to flash red and turn emerald green perfectly
+      window.stripeElementsContainer = window.stripeInstance.elements({
+        mode: 'setup',
+        currency: 'usd',
+        appearance: {
+          theme: 'stripe',
+          variables: {
+            colorPrimary: '#0a1f44',
+            colorBackground: '#ffffff',
+            colorText: '#0a1f44',
+            colorTextPlaceholder: '#94a3b8',
+            borderRadius: '6px',
+            spacingGridRow: '16px',
+            // Default active element state configurations
+            borderWidth: '1px',
+            borderColor: '#e2e8f0',
+            boxShadow: 'none'
+          },
+                   rules: {
+            '.Input': {
+              padding: '12px',
+              fontSize: '15px',
+              transition: 'all 0.2s ease-in-out'
+            },
+            '.Input:focus': {
+              borderColor: '#10b981',
+              boxShadow: '0 0 0 4px rgba(16, 185, 129, 0.1)'
+            },
+            // 🟢 ERROR SYNCHRONIZATION: Causes Stripe iframe elements to match your exact crimson theme border
+            '.Input--invalid': {
+              borderColor: '#ef4444',
+              boxShadow: '0 0 0 4px rgba(239, 68, 68, 0.15)'
             }
-
-            window.stripeElementsContainer = window.stripeInstance.elements({
-                mode: 'setup',
-                currency: 'usd',
-                appearance: {
-                    theme: 'stripe',
-                    variables: { colorPrimary: '#0a1f44', colorBackground: '#ffffff', colorText: '#0a1f44', borderRadius: '6px', spacingGridRow: '16px' }
-                }
-            });
-
-            window.stripePaymentElementInstance = window.stripeElementsContainer.create("payment", {
-                layout: { type: 'accordion', defaultCollapsed: false, radios: false, spacedAccordionItems: true }
-            });
-
-            window.stripePaymentElementInstance.mount("#stripe-payment-element-mount-point");
-            console.log("[Stripe Success] Secure payment elements accordion successfully attached.");
-
-            // 🟢 FIXED LISTENER VARIABLE TRACKER
-            window.stripePaymentElementInstance.on("change", function(event) {
-                const errorDisplayNode = document.getElementById("step6-error-banner-target");
-                if (errorDisplayNode) {
-                    if (event.error) {
-                        errorDisplayNode.style.display = "block";
-                        errorDisplayNode.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${event.error.message}`;
-                    } else {
-                        errorDisplayNode.style.display = "none";
-                        errorDisplayNode.innerHTML = "";
-                    }
-                }
-            });
-
-        } catch (mountError) {
-            console.error(mountError);
+          }
         }
-    }
+      });
 
-    window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
+      window.stripePaymentElementInstance = window.stripeElementsContainer.create("payment", {
+        layout: {
+          type: 'accordion',
+          defaultCollapsed: false,
+          radios: false,
+          spacedAccordionItems: true
+        }
+      });
 
-    if (parseInt(window.currentWizardActiveStep, 10) === 6) {
-        initializeFlatStripeCheckoutElement();
+      window.stripePaymentElementInstance.mount("#stripe-payment-element-mount-point");
+      console.log("[Stripe Success] Secure payment elements accordion successfully attached.");
+
+      window.stripePaymentElementInstance.on("change", function(event) {
+        const errorDisplayNode = document.getElementById("step6-error-banner-target");
+        if (errorDisplayNode) {
+          if (event.error) {
+            errorDisplayNode.style.display = "block";
+            errorDisplayNode.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${event.error.message}`;
+          } else {
+            errorDisplayNode.style.display = "none";
+            errorDisplayNode.innerHTML = "";
+          }
+        }
+      });
+
+    } catch (mountError) {
+      console.error(mountError);
     }
+  }
+
+  window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
+
+  if (parseInt(window.currentWizardActiveStep, 10) === 6) {
+    initializeFlatStripeCheckoutElement();
+  }
 })();
+
+
 
 
 // ============================================================================ //

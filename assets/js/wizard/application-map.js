@@ -59,9 +59,9 @@ function renderDynamicWizardApplicationMap() {
   }
 
   const timelineRegistryMatrix = [ 
-    { idx: 0, title: "0. State Selection", desc: "State of Formation or Registration" }, 
+    { idx: 0, title: "State Selection", desc: "State of Formation or Registration" }, 
     { idx: 1, title: "1. Selected Package", desc: "Items and inclusions" }, 
-    { idx: 2, title: "2. Service Form", desc: "Purchase configuration profile" }, 
+    { idx: 2, title: "2. Corporate Profile Intake", desc: "Corporate entity details" }, 
     { idx: 3, title: "3. Add-Ons", desc: "Compliance assets & shields" }, 
     { idx: 4, title: "4. Power of Attorney", desc: "Digital signature execution" }, 
     { idx: 5, title: "5. Purchase Summary", desc: "Order item breakdowns" }, 

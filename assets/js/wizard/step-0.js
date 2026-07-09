@@ -44,7 +44,7 @@ gateContainerBlock.style.cssText = "display: none; background: #ffffff; border: 
     gateContainerBlock.innerHTML = `
         <div class="step-header-container" style="border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; text-align: left;">
             <h2 style="margin: 4px 0 0 0; color: #0a1f44; font-size: 1.5rem; font-weight: 800;">Select Your Jurisdiction State</h2>
-            <p style="margin: 6px 0 0 0; color: #64748b; font-size: 0.875rem;">Please select the primary state where your business will register to calculate mandatory government processing fees.</p>
+            <p style="margin: 6px 0 0 0; color: #64748b; font-size: 0.875rem;">Please select the primary state where your business will register to calculate mandatory processing fees.</p>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 40px auto; text-align: left;">

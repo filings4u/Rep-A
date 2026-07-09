@@ -489,104 +489,115 @@ function extractCatalogAddonsDynamically(databaseSource) {
   return Object.values(unifiedCatalogItems);
 }
 
-// ============================================================================ // 
-// 📊 PART 2 OF 3: WORKSPACE COMPONENT STRING BUILDER (ANTI-FLICKER PRO) 
-// ============================================================================ // 
-function buildMarketplaceCardsHtml(catalogItems) { 
-  let accumulatorHtml = ""; 
-  
-  // Normalize inputs safely into a pure array dataset structure 
-  let processedItemsList = []; 
-  if (catalogItems && typeof catalogItems === 'object') { 
-    processedItemsList = Array.isArray(catalogItems) ? catalogItems : Object.values(catalogItems); 
-  } 
+// ============================================================================ //
+// 📊 PART 2 OF 3: WORKSPACE COMPONENT STRING BUILDER (ANTI-FLICKER PRO)       //
+// ============================================================================ //
+function buildMarketplaceCardsHtml(catalogItems) {
+  // 🟢 FIXED: Forced grid-column span 2 for absolute 100% full-width expansion & updated description text
+  const stepHeaderHtml = `
+    <div style="grid-column: span 2; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; width: 100%; box-sizing: border-box; clear: both;"> 
+      <h3 style="color: #0a1f44; font-size: 1.25rem; font-weight: 800; margin: 0 0 6px 0;">3. Add-Ons</h3> 
+      <p style="color: #64748b; font-size: 0.88rem; margin: 0; line-height: 1.5;">Maximize your protection, streamline banking requirements, and ensure corporate liability shields remain secure.</p> 
+    </div>
+  `;
 
-  if (processedItemsList.length === 0) { 
-    console.warn("[Marketplace Skinner] Provided catalog items parameters are un-iterable or empty."); 
-    return ` 
-     <div style="grid-column: span 2; text-align: center; padding: 24px; color: #64748b; font-weight: 500;"> 
-       No additional operational up-sells are required for your selected service profile parameters. 
-     </div> 
-     <div class="wizard-footer-action-row" style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; width: 100% !important; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border, #e2e8f0); clear: both; box-sizing: border-box;"> 
-       <button type="button" class="btn-wizard-nav-back" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;"> 
-         <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Previous Step 
-       </button> 
-       <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(4, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);"> 
-         Continue to PoA <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i> 
-       </button> 
-     </div>`; 
-  } 
+  let accumulatorHtml = "";
 
-  const coordinateMaps = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}; 
+  // Normalize inputs safely into a pure array dataset structure
+  let processedItemsList = [];
+  if (catalogItems && typeof catalogItems === 'object') {
+    processedItemsList = Array.isArray(catalogItems) ? catalogItems : Object.values(catalogItems);
+  }
 
-  processedItemsList.forEach(item => { 
-  if (!item || !item.id) return; 
-  const catalogSlug = item.id; 
-  const itemDesc = item.description || item.desc || ""; 
-  const trackingKey = coordinateMaps[catalogSlug] || catalogSlug; 
-  const storedFieldState = localStorage.getItem(`wizard_field_${trackingKey}`) || localStorage.getItem(`wizard_field_${catalogSlug}`); 
-  
-  let isChecked = false; 
-  if (storedFieldState !== null) { 
-    isChecked = (storedFieldState === "true" || storedFieldState === "yes" || storedFieldState === true); 
-  } else { 
-    const flatSnakeKey = String(trackingKey).toLowerCase().replace(/[-]/g, '_'); 
-    if (Object.prototype.hasOwnProperty.call(window, trackingKey)) { 
-      isChecked = (window[trackingKey] === true || window[trackingKey] === "yes" || String(window[trackingKey]) === "true"); 
-    } else if (Object.prototype.hasOwnProperty.call(window, flatSnakeKey)) { 
-      isChecked = (window[flatSnakeKey] === true || window[flatSnakeKey] === "yes" || String(window[flatSnakeKey]) === "true"); 
-    } 
-  } 
+  // SCENARIO 1: Handle layout state frames if the marketplace catalog is empty
+  if (processedItemsList.length === 0) {
+    console.warn("[Marketplace Skinner] Provided catalog items parameters are un-iterable or empty.");
+    return `
+      ${stepHeaderHtml}
+      <div style="grid-column: span 2; text-align: center; padding: 24px; color: #64748b; font-weight: 500;"> 
+        No additional operational up-sells are required for your selected service profile parameters. 
+      </div> 
+      <div class="wizard-footer-action-row" style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; width: 100% !important; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border, #e2e8f0); clear: both; box-sizing: border-box;"> 
+        <button type="button" class="btn-wizard-nav-back" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;"> 
+          <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Previous Step 
+        </button> 
+        <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(4, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);"> 
+          Continue to PoA <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i> 
+        </button> 
+      </div>
+    `;
+  }
 
-  const itemName = item.label || item.name || "Optional Add-on"; 
-  
-  // Clean price extraction strings cleanly prior to parsing 
-  let cleanPrice = item.price; 
-  if (typeof cleanPrice === 'string') { 
-    cleanPrice = cleanPrice.replace(/[^0-9.]/g, ''); 
-  } 
-  const itemPrice = parseFloat(cleanPrice) || 0; 
-  const displayPrice = itemPrice > 0 ? `$${itemPrice.toFixed(2)}` : 'Included'; 
+  // SCENARIO 2: Catalog has active data items. Inject the full-width header block first.
+  accumulatorHtml += stepHeaderHtml;
 
-  accumulatorHtml += ` 
-   <div class="upsell-market-card" data-id="${catalogSlug}" style="background:#ffffff; border:1px solid var(--border, #e2e8f0); padding:16px; border-radius:8px; display:flex; gap:16px; align-items:center; justify-content:space-between; box-sizing:border-box; width:100%; transition:all 0.2s ease; margin-bottom: 12px;"> 
-     <div style="display:flex; flex-direction:column; gap:4px; min-width:0; flex:1;"> 
-       <span style="font-weight:800; font-size:1rem; color:var(--navy, #0a1f44);">${itemName}</span> 
-       <p style="margin:0; font-size:0.85rem; color:var(--slate, #64748b); line-height:1.4;">${itemDesc}</p> 
-     </div> 
-     <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0;"> 
-       
-       <!-- 🟢 ANTI-TIMING FLASH ENCLOSURE BLOCK -->
-       <span class="upsell-price-container" style="font-family:monospace; font-weight:700; color:var(--primary, #10b981); font-size:1.1rem;">
-         <span class="upsell-price-display upsell-card-price-render" data-base-price="${itemPrice}" style="display:none !important;"></span>
-         <span class="static-persistent-price-label">${displayPrice}</span>
-       </span> 
-       
-       <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:700; color:var(--navy, #0a1f44); cursor:pointer; margin:0;"> 
-         <input type="checkbox" class="upsell-checkbox" id="${trackingKey}" data-id="${trackingKey}" data-price="${itemPrice}" data-name="${itemName}" style="width:18px; height:18px; cursor:pointer;" ${isChecked ? 'checked' : ''} onchange="if(typeof window.executeUpsellStateToggleIntercept === 'function') { window.executeUpsellStateToggleIntercept(this); } else if(typeof window.handleBackgroundUpsellTogglePass === 'function') { window.handleBackgroundUpsellTogglePass(this); }"> Activate 
-       </label> 
-     </div> 
-   </div>`; 
-});
+  const coordinateMaps = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
 
+  processedItemsList.forEach(item => {
+    if (!item || !item.id) return;
+    const catalogSlug = item.id;
+    const itemDesc = item.description || item.desc || "";
+    const trackingKey = coordinateMaps[catalogSlug] || catalogSlug;
+    
+    const storedFieldState = localStorage.getItem(`wizard_field_${trackingKey}`) || localStorage.getItem(`wizard_field_${catalogSlug}`);
+    let isChecked = false;
+    
+    if (storedFieldState !== null) {
+      isChecked = (storedFieldState === "true" || storedFieldState === "yes" || storedFieldState === true);
+    } else {
+      const flatSnakeKey = String(trackingKey).toLowerCase().replace(/[-]/g, '_');
+      if (Object.prototype.hasOwnProperty.call(window, trackingKey)) {
+        isChecked = (window[trackingKey] === true || window[trackingKey] === "yes" || String(window[trackingKey]) === "true");
+      } else if (Object.prototype.hasOwnProperty.call(window, flatSnakeKey)) {
+        isChecked = (window[flatSnakeKey] === true || window[flatSnakeKey] === "yes" || String(window[flatSnakeKey]) === "true");
+      }
+    }
 
-  // ============================================================================ // 
-  // 🚀 FIXED: AUTOMATED NAVIGATION ACTION FOOTER INJECTION PASS 
-  // ============================================================================ // 
-  accumulatorHtml += ` 
-   <div class="wizard-footer-action-row" style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; width: 100% !important; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border, #e2e8f0); clear: both; box-sizing: border-box;"> 
-     <button type="button" class="btn-wizard-nav-back" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;"> 
-       <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Service Form
-     </button> 
-     <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(4, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);"> 
-       Continue to PoA <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i> 
-     </button> 
-   </div>`; 
+    const itemName = item.label || item.name || "Optional Add-on";
 
-  return accumulatorHtml; 
-} 
+    // Clean price extraction strings prior to parsing
+    let cleanPrice = item.price;
+    if (typeof cleanPrice === 'string') {
+      cleanPrice = cleanPrice.replace(/[^0-9.]/g, '');
+    }
+    const itemPrice = parseFloat(cleanPrice) || 0;
+    const displayPrice = itemPrice > 0 ? `$${itemPrice.toFixed(2)}` : 'Included';
 
-window.extractCatalogAddonsDynamically = extractCatalogAddonsDynamically; 
+    accumulatorHtml += `
+      <div class="upsell-market-card" data-id="${catalogSlug}" style="background:#ffffff; border:1px solid var(--border, #e2e8f0); padding:16px; border-radius:8px; display:flex; gap:16px; align-items:center; justify-content:space-between; box-sizing:border-box; width:100%; transition:all 0.2s ease; margin-bottom: 12px;"> 
+        <div style="display:flex; flex-direction:column; gap:4px; min-width:0; flex:1;"> 
+          <span style="font-weight:800; font-size:1rem; color:var(--navy, #0a1f44);">${itemName}</span> 
+          <p style="margin:0; font-size:0.85rem; color:var(--slate, #64748b); line-height:1.4;">${itemDesc}</p> 
+        </div> 
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0;"> 
+          <!-- ANTI-TIMING FLASH ENCLOSURE BLOCK --> 
+          <span class="upsell-price-container" style="font-family:monospace; font-weight:700; color:var(--primary, #10b981); font-size:1.1rem;"> 
+            <span class="upsell-price-display upsell-card-price-render" data-base-price="${itemPrice}" style="display:none !important;"></span> 
+            <span class="static-persistent-price-label">${displayPrice}</span> 
+          </span> 
+          <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:700; color:var(--navy, #0a1f44); cursor:pointer; margin:0;"> 
+            <input type="checkbox" class="upsell-checkbox" id="${trackingKey}" data-id="${trackingKey}" data-price="${itemPrice}" data-name="${itemName}" style="width:18px; height:18px; cursor:pointer;" ${isChecked ? 'checked' : ''} onchange="if(typeof window.executeUpsellStateToggleIntercept === 'function') { window.executeUpsellStateToggleIntercept(this); } else if(typeof window.handleBackgroundUpsellTogglePass === 'function') { window.handleBackgroundUpsellTogglePass(this); }"> Activate 
+          </label> 
+        </div> 
+      </div>`;
+  });
+
+  // ============================================================================ //
+  // 🚀 AUTOMATED NAVIGATION ACTION FOOTER INJECTION PASS                        //
+  // ============================================================================ //
+  accumulatorHtml += `
+    <div class="wizard-footer-action-row" style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; width: 100% !important; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border, #e2e8f0); clear: both; box-sizing: border-box;"> 
+      <button type="button" class="btn-wizard-nav-back" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;"> 
+        <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Service Form 
+      </button> 
+      <button type="button" class="btn-wizard-main btn-wizard-nav-next" onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(4, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);"> 
+        Continue to PoA <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i> 
+      </button> 
+    </div>`;
+
+  return accumulatorHtml;
+}
+
 window.buildMarketplaceCardsHtml = buildMarketplaceCardsHtml;
 
 

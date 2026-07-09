@@ -89,10 +89,13 @@ window.initCursiveSignatureCaptureLivePreview = function() {
         </div>
 
         <!-- INFORMATIONAL TOOLTIP GUIDE BANNER -->
-        <div id="poa-scroll-tooltip-banner" style="background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 12px 16px; border-radius: 6px; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; clear: both; width: 100%; box-sizing: border-box;">
-            <i class="fa-solid fa-circle-info" style="color: #3b82f6; font-size: 1rem;"></i>
-            <span id="poa-tooltip-text-label">Action Required: Please scroll down to the bottom of the legal mandate document below to unlock consent fields.</span>
-        </div>
+     <div class="runtime-state-fee-notice-card" style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 14px 16px; margin-top: 16px; display: flex; align-items: center; text-align: left; box-sizing: border-box; width: 100%;">
+  <div style="display: flex; align-items: center; gap: 10px; color: #475569; font-size: 0.825rem; font-weight: 600; line-height: 1.4;">
+    <span style="color: #10b981; font-size: 1rem;"><i class="fa-solid fa-circle-info"></i></span>
+    <span><strong>Action Required:</strong> Please scroll down to the bottom of the legal mandate document below to unlock consent fields.</span>
+  </div>
+</div>
+
 
         <!-- SCROLL-BOX INNER TEXT CONTENT HOLDER -->
         <div id="poa-scroll-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; font-size: 0.85rem; color: #334155; line-height: 1.6; max-height: 220px; overflow-y: scroll; font-family: system-ui, sans-serif; text-align: justify; margin-bottom: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; width: 100%;">
@@ -108,46 +111,53 @@ window.initCursiveSignatureCaptureLivePreview = function() {
             This agreement shall remain in full force and effect from the date of electronic execution until explicitly revoked. Revocation may occur via written physical notification delivered to filings4u, LLC corporate networks or electronic cancellation processed through verified client portal pathways.<br><br>
             Corporate Entity Information:<br>
             filings4u, LLC | A Subsidiary of Roseland Companies, LLC<br>
-            filings4u Compliance Hub | Roseland Companies Management<br>
             Contact Support: support@filings4u.com
         </div>
 `;
 
 // ============================================================================ //
-// 🖋️ PART 3 OF 3: THE INTERACTION LISTENERS HOOK                             //
+// 🖋️ PART 3 OF 3: THE INTERACTION LISTENERS HOOK                               //
 // ============================================================================ //
-        // Continued template inner content matrix layout append passes
-        step4PanelContainer.innerHTML += `
-        <div class="form-group-wrapper" style="display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box;">
-            <label style="font-weight: 700; font-size: 0.88rem; color: #0a1f44;">Type Full Legal Name (First and Last) <span style="color: #b91c1c;">*</span></label>
-            <input type="text" id="poa_typed_signature" autocomplete="off" placeholder="John Doe" class="wizard-input-field" style="font-size: 0.95rem !important; height: 44px !important; padding: 10px 14px !important; width: 100% !important; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box !important; font-family: monospace;">
-        </div>
+// Continued template inner content matrix layout append passes
+step4PanelContainer.innerHTML += `
+  <!-- INPUT FIELD WRAPPER -->
+  <!-- 🟢 ADDED: margin-top: 24px; to drop the input row away from the legal document scroll window -->
+  <div class="form-group-wrapper" style="display: flex; flex-direction: column; gap: 6px; width: 100%; box-sizing: border-box; margin-top: 24px;">
+    <label style="font-weight: 700; font-size: 0.88rem; color: #0a1f44;">Type Full Legal Name (First and Last) <span style="color: #b91c1c;">*</span></label>
+    <input type="text" id="poa_typed_signature" autocomplete="off" placeholder="John Doe" class="wizard-input-field" style="font-size: 0.95rem !important; height: 44px !important; padding: 10px 14px !important; width: 100% !important; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box !important; font-family: monospace;">
+  </div>
 
-        <!-- LIVE CURSIVE PREVIEW CANVAS CARD -->
-        <div style="display: flex; flex-direction: column; gap: 6px; background: #fafafa; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 8px; text-align: center; justify-content: center; min-height: 80px; box-sizing: border-box;">
-            <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 2px;">Legal Electronic Signature Preview</span>
-            <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 2.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;"></div>
-        </div>
+  <!-- LIVE CURSIVE PREVIEW CANVAS CARD -->
+  <div style="display: flex; flex-direction: column; gap: 6px; background: #fafafa; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 8px; text-align: center; justify-content: center; min-height: 80px; box-sizing: border-box; margin-top: 20px;">
+    <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 2px;">Legal Electronic Signature Preview</span>
+    <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 2.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;"></div>
+  </div>
 
-        <div id="poa_consent_wrapper" style="opacity: 0.5; pointer-events: none; transition: opacity 0.25s ease;" title="Read agreement text to unlock field channel options.">
-            <div class="form-group-wrapper" style="display: flex; align-items: flex-start; gap: 10px; width: 100%; box-sizing: border-box; margin-top: 4px;">
-                <input type="checkbox" id="poa_consent_checkbox" disabled style="width: 18px; height: 18px; margin-top: 2px; cursor: not-allowed; flex-shrink: 0;">
-                <label for="poa_consent_checkbox" style="font-size: 0.85rem; font-weight: 600; color: #334155; cursor: not-allowed; line-height: 1.4; user-select: none;">
-                    I explicitly consent to the terms of the digital Power of Attorney authorization and certify that all corporate entity registration details provided are legally accurate. <span style="color: #b91c1c;">*</span>
-                </label>
-            </div>
-        </div>
+  <!-- CONSENT CHECBOX MATRIX WRAPPER -->
+  <!-- 🟢 ADDED: margin-top: 24px; to push the checkbox layout cleanly down from the cursive box -->
+  <div id="poa_consent_wrapper" style="opacity: 0.5; pointer-events: none; transition: opacity 0.25s ease; margin-top: 24px;" title="Read agreement text to unlock field channel options.">
+    <div class="form-group-wrapper" style="display: flex; align-items: flex-start; gap: 10px; width: 100%; box-sizing: border-box;">
+      
+      <!-- 🟢 ADDED: accent-color: #0a1f44; to color the box your brand navy color when checked -->
+      <input type="checkbox" id="poa_consent_checkbox" disabled style="width: 18px; height: 18px; margin-top: 2px; cursor: not-allowed; flex-shrink: 0; accent-color: #0a1f44;">
+      
+      <label for="poa_consent_checkbox" style="font-size: 0.85rem; font-weight: 600; color: #0a1f44; cursor: not-allowed; line-height: 1.4; user-select: none;">
+        I explicitly consent to the terms of the digital Power of Attorney authorization and certify that all corporate entity registration details provided are legally accurate. <span style="color: #0a1f44;">*</span>
+      </label>
+    </div>
+  </div>
 
-        <!-- NAVIGATION ACTION BUTTONS ROW -->
-        <div class="wizard-footer-action-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; clear: both; box-sizing: border-box;">
-            <button type="button" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
-                <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Add Ons
-            </button>
-            <button type="button" id="poa-next-btn" disabled onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(5, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; opacity: 0.5; cursor: not-allowed; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);">
-                Continue to Summary <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
-            </button>
-        </div>
-    </div>`;
+  <!-- NAVIGATION ACTION BUTTONS ROW -->
+  <div class="wizard-footer-action-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 28px; padding-top: 20px; border-top: 1px solid #e2e8f0; clear: both; box-sizing: border-box;">
+    <button type="button" onclick="if(typeof window.goToPreviousWizardStep === 'function') { window.goToPreviousWizardStep(); }" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+      <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Add Ons
+    </button>
+    <button type="button" id="poa-next-btn" disabled onclick="if(typeof window.goToNextWizardStep === 'function') { window.goToNextWizardStep(5, event); }" style="background: #0a1f44; border: none; color: #ffffff; padding: 12px 32px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; opacity: 0.5; cursor: not-allowed; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(10, 31, 68, 0.15);">
+      Continue to Summary <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+    </button>
+  </div>
+</div>`;
+
 
     const signatureInputNode = document.getElementById("poa_typed_signature");
     const consentCheckboxNode = document.getElementById("poa_consent_checkbox");
