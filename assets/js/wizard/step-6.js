@@ -36,6 +36,64 @@
                     </div>
                 </div>
 
+               <!-- INTEGRATED PORTAL ACCOUNT PROFILE GENERATION LAYER -->
+<div class="integrated-profile-matrix" style="margin-bottom: 20px; box-sizing: border-box; text-align: left; width: 100%; display: flex; flex-direction: column; gap: 16px;">
+  
+  <!-- ROW 1: FIRST NAME & LAST NAME (Side by Side) -->
+  <div style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
+    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+      <label for="portal_user_first_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">First Name</label>
+      <input type="text" id="portal_user_first_name" required placeholder="John" style="width: 100%; padding: 14px 16px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+      <label for="portal_user_last_name" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Last Name</label>
+      <input type="text" id="portal_user_last_name" required placeholder="Doe" style="width: 100%; padding: 14px 16px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
+    </div>
+  </div>
+
+  <!-- ROW 2: EMAIL ADDRESS & PHONE NUMBER (Side by Side) -->
+  <div style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
+    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+      <label for="portal_user_email_input" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Account Email Address</label>
+      <div style="position: relative; display: flex; align-items: center; width: 100%;">
+        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-envelope"></i></span>
+        <input type="email" id="portal_user_email_input" required placeholder="you@example.com" style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+      <label for="portal_user_phone" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Contact Phone Number</label>
+      <div style="position: relative; display: flex; align-items: center; width: 100%;">
+        <span style="position: absolute; left: 16px; color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-phone"></i></span>
+        <input type="tel" id="portal_user_phone" required placeholder="(555) 000-0000" style="width: 100%; padding: 14px 16px 14px 44px; font-size: 0.95rem; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #0a1f44; outline: none; box-sizing: border-box; transition: all 0.2s ease-in-out;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .field-error-shake {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+    animation: inlineFieldShake 0.4s ease-in-out;
+  }
+  .field-validated-emerald {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
+  }
+  @keyframes inlineFieldShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  
+  /* Responsive breakpoint layout fallback for mobile devices */
+  @media (max-width: 480px) {
+    .integrated-profile-matrix > div {
+      flex-direction: column !important;
+      gap: 16px !important;
+    }
+  }
+</style>
                 <div id="stripe-payment-element-mount-point" style="min-height: 200px; margin-bottom: 24px; clear: both; width: 100%;"></div>
 
                 <div id="step6-error-banner-target" style="display: none; color: #ef4444; background: #fef2f2; border: 1px solid #fee2e2; padding: 12px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 24px; font-weight: 500; text-align: left; clear: both;"></div>
@@ -99,115 +157,97 @@
 
 
 // ============================================================================ //
-// 💳 TRANSACTION PIPELINE SUBMISSION ENGINE (STRIPE-CONFIRM ARCHITECTURE)     //
+// 💳 TRANSACTION PIPELINE SUBMISSION ENGINE (STRIPE-CONFIRM ARCHITECTURE)      //
 // ============================================================================ //
-window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) { 
-    if (event && typeof event.preventDefault === "function") event.preventDefault(); 
-    
-    const submitBtn = document.getElementById("wizard-next-trigger-btn"); 
-    const errorBanner = document.getElementById("step6-error-banner-target"); 
-    const step6Panel = document.getElementById("step-panel-6"); 
-    
-    if (errorBanner) { 
-        errorBanner.style.display = "none"; 
-        errorBanner.innerHTML = ""; 
-    } 
-    
-    try { 
-        // 1. INLINE CHECKOUT INPUT FIELD VALIDATOR SCAN 
-        let emptyFieldFound = null; 
-        if (step6Panel) { 
-            const inlineInputs = step6Panel.querySelectorAll("input:not([type='hidden']), select, textarea"); 
-            inlineInputs.forEach(field => { 
-                if (field.closest('.StripeElement') || field.closest("[id*='stripe']") || field.closest("[id*='payment-element']")) return; 
-                if (field.hasAttribute("required") && field.value.trim() === "") { 
-                    if (!emptyFieldFound) emptyFieldFound = field; 
-                } 
-            }); 
-        } 
-        
-        if (emptyFieldFound) { 
-            emptyFieldFound.focus(); 
-            emptyFieldFound.style.borderColor = "#b91c1c";
-            return false; 
-        } 
-        
-        // 2. COMPILE PAYLOAD PARAMETERS AND ACCOUNT TRACKING SIGNATURES 
-        const finalEmail = (document.getElementById("lead_email") || document.getElementById("portal_user_email") || document.querySelector(".master-onboarding-form input[type='email']"))?.value.trim().toLowerCase() || "guest-checkout@filings4u.com"; 
-        const activeGrandCost = parseFloat(document.getElementById("payment-gateway-total-display")?.textContent.replace(/[^0-9.]/g, "")) || 249.00; 
-        
-        // 🟢 ACCOUNT GENERATOR: Appends dynamic tracking tag starting with F4U 
-        const uniqueTrackingToken = "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase(); 
-        
-        if (submitBtn) { 
-            submitBtn.disabled = true; 
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...'; 
-        } 
-        
-        let isReturningUser = localStorage.getItem("f4u_is_returning_customer") === "true"; 
-        
-// 3. EXECUTE STRIPE PAYMENT GATEWAY SUBMISSION TO CLEAR LIABILITIES
-if (window.stripeElementsContainer) {
-  // First run baseline element form verification hooks
-  const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
-  if (stripeSubmitError) throw stripeSubmitError;
-
-  const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
+window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) {
+  if (event && typeof event.preventDefault === "function") event.preventDefault();
   
-  // 🟢 FIXED: Changed window.stripe to window.stripeInstance
-  if (window.stripeInstance && !isMockSecret) { 
-    console.log("[Stripe Submission Engine] Directing active payment authorization intent via secure Stripe API...");
-    
-    // Invoke full 3D Secure / Card verification handlers safely
-    const { error: confirmError } = await window.stripeInstance.confirmPayment({ // 🟢 FIXED HERE TOO
-      elements: window.stripeElementsContainer,
-      clientSecret: window.stripeClientSecret,
-      confirmParams: { 
-        return_url: `${window.location.origin}/wizard.html?step=7&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`, 
-        receipt_email: finalEmail 
-      },
-      redirect: "if_required"
-    });
+  const submitBtn = document.getElementById("wizard-next-trigger-btn");
+  const errorBanner = document.getElementById("step6-error-banner-target");
+  
+  // 1. Target your exact 4 horizontal layout fields
+  const emailInput = document.getElementById("portal_user_email_input");
+  const firstNameInput = document.getElementById("portal_user_first_name");
+  const lastNameInput = document.getElementById("portal_user_last_name");
+  const phoneInput = document.getElementById("portal_user_phone");
 
-    if (confirmError) throw confirmError;
-  } else {
-    console.warn("[Stripe Submission Engine] Sandbox runtime pattern recognized. Bypassing Stripe confirmation infrastructure safely.");
+  const fieldsArray = [emailInput, firstNameInput, lastNameInput, phoneInput];
+  let validationHasFailed = false;
+
+  if (errorBanner) {
+    errorBanner.style.display = "none";
+    errorBanner.innerHTML = "";
   }
-} else {
-  throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
-}
 
-    // 4. PACK UNIFIED ACCOUNT MANIFEST CONTEXT PASSTHROUGH
+  // Clear previous error styles and bind real-time emerald transition checks
+  fieldsArray.forEach(input => {
+    if (input) {
+      input.classList.remove("field-error-shake");
+      
+      if (!input.dataset.listenerBound) {
+        input.dataset.listenerBound = "true";
+        input.addEventListener("input", () => {
+          if (input.value.trim() !== "") {
+            input.classList.remove("field-error-shake");
+            input.classList.add("field-validated-emerald");
+          } else {
+            input.classList.remove("field-validated-emerald");
+          }
+        });
+      }
+    }
+  });
+
+  // 2. RUN VALIDATION LAYER: Shake empty fields without browser alerts
+  fieldsArray.forEach(input => {
+    if (input && input.value.trim() === "") {
+      validationHasFailed = true;
+      input.classList.add("field-error-shake");
+    }
+  });
+
+  if (validationHasFailed) {
+    const firstEmpty = fieldsArray.find(i => i && i.value.trim() === "");
+    if (firstEmpty) firstEmpty.focus();
+    return false;
+  }
+
+  try {
+    const finalEmail = emailInput.value.trim().toLowerCase();
+    const firstName = firstNameInput.value.trim();
+    const lastName = lastNameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    
+    const activeGrandCost = parseFloat(document.getElementById("payment-gateway-total-display")?.textContent.replace(/[^0-9.]/g, "")) || 249.00;
+
+    // ACCOUNT GENERATOR: Pull tracking token from state parameters or generate new
+    let uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token");
+    if (!uniqueTrackingToken) {
+      uniqueTrackingToken = "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+      localStorage.setItem("f4u_active_tracking_token", uniqueTrackingToken);
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...';
+    }
+
+    let isReturningUser = localStorage.getItem("f4u_is_returning_customer") === "true";
+
+    // 3. RESOLVE URL METRICS IN LINE WITH YOUR LIVE SCHEMAS
     const urlParams = new URLSearchParams(window.location.search);
     const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "llc-formation").toLowerCase().trim();
     const activePlanKeyString = String(urlParams.get('plan') || window.routeActivePlanKey || window.currentPlanKey || "enterprise").toLowerCase().trim();
 
-    // Dynamically look up base cost matching step-5 schemas
     let foundationFilingCost = 0;
     if (window._tempCalcContext && window._tempCalcContext.baseTierPrice !== undefined) {
       foundationFilingCost = parseFloat(window._tempCalcContext.baseTierPrice) || 0;
     }
 
-    if (foundationFilingCost === 0 && window.CENTRAL_SERVICE_PLAN_DB && window.CENTRAL_SERVICE_PLAN_DB[serviceSlug]) {
-      const serviceNode = window.CENTRAL_SERVICE_PLAN_DB[serviceSlug];
-      if (activePlanKeyString.includes("enterprise") || activePlanKeyString.includes("premium")) {
-        foundationFilingCost = parseFloat(serviceNode.enterprise || serviceNode.premium) || 0;
-      } else if (activePlanKeyString.includes("standard") || activePlanKeyString.includes("compliance") || activePlanKeyString.includes("pro")) {
-        foundationFilingCost = parseFloat(serviceNode.compliance || serviceNode.standard || serviceNode.pro) || 0;
-      } else {
-        foundationFilingCost = parseFloat(serviceNode.starter || serviceNode.economy) || 0;
-      }
-    }
-
-    if (foundationFilingCost === 0) {
-      if (activePlanKeyString.includes("enterprise") || activePlanKeyString.includes("premium")) foundationFilingCost = 399.00;
-      else if (activePlanKeyString.includes("standard") || activePlanKeyString.includes("pro")) foundationFilingCost = 149.00;
-      else foundationFilingCost = 49.00;
-    }
-
     let extractedTierTokenName = activePlanKeyString.toUpperCase();
     const dynamicLabelTextString = `filings4u Processing Fee (${extractedTierTokenName})`;
 
+    // Compile receipt payload for session context
     const checkoutManifestPayload = {
       transaction_hash_id: uniqueTrackingToken,
       communications_email: finalEmail,
@@ -220,15 +260,79 @@ if (window.stripeElementsContainer) {
       financials_subtotal_amount: foundationFilingCost
     };
 
-    // Save to sync with step-7.js reader expectations
     sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload));
-  
-  
-    // 5. IN-WIZARD TRANSITION STRAIGHT TO STEP 7
+    localStorage.setItem("f4u_checkout_email", finalEmail);
+
+    // ============================================================================ //
+    // 🟢 PRODUCTION FIX: MAP ACCOUNT SIGNATURES DIRECTLY TO YOUR JSONB COLUMN
+    // ============================================================================ //
+    const supabaseClient = window.getSuccessPageSupabaseClient();
+    if (supabaseClient) {
+      const { error: dbUpsertError } = await supabaseClient
+        .from('orders')
+        .upsert({
+          tracking_number: uniqueTrackingToken,
+          company_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
+          service_key: serviceSlug,
+          service_title: dynamicLabelTextString,
+          plan_tier: activePlanKeyString,
+          total_fee: activeGrandCost,
+          status: 'pending',
+          // Stashing your exact registration variables natively inside your live jsonb bucket
+          collected_payload_metadata: {
+            customer_email: finalEmail,
+            customer_first_name: firstName,
+            customer_last_name: lastName,
+            customer_phone: phone,
+            is_returning_customer: isReturningUser
+          }
+        }, { onConflict: 'tracking_number' });
+
+      if (dbUpsertError) throw new Error(`Database Pre-Synchronization Failed: ${dbUpsertError.message}`);
+    }
+
+    // 4. STRIPE PAYMENT ELEMENTS HANDSHAKE EXECUTION LOOP
+    if (window.stripeElementsContainer) {
+      const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
+      if (stripeSubmitError) {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
+        }
+        return false; 
+      }
+
+      const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
+
+      if (window.stripeInstance && !isMockSecret) {
+        const { error: confirmError } = await window.stripeInstance.confirmPayment({
+          elements: window.stripeElementsContainer,
+          clientSecret: window.stripeClientSecret,
+          confirmParams: {
+            return_url: `${window.location.origin}/wizard.html?step=7&status=success&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`,
+            receipt_email: finalEmail
+          },
+          redirect: "if_required"
+        });
+
+        if (confirmError) throw confirmError;
+      }
+    } else {
+      throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
+    }
+
+    if (supabaseClient) {
+      await supabaseClient
+        .from('orders')
+        .update({ status: 'paid' }) // Targets your production column "status" instead of "payment_status"
+        .eq('tracking_number', uniqueTrackingToken);
+    }
+
+    // 5. VIEW NAVIGATION TRIGGER SWITCH TO STEP 7 RECEIPT
     if (typeof window.switchWizardActiveViewLayout === "function") {
-      console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js...");
       window.switchWizardActiveViewLayout(7);
     }
+
   } catch (checkoutError) {
     console.error("[Fatal Payment Intercept Catch]", checkoutError);
     if (errorBanner) {

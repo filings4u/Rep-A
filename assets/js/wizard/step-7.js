@@ -201,11 +201,36 @@ window.buildAndRenderStep7LayoutStructure = function() {
     // 4. Append Interactive Lower Form Layout Sections (Keep only non-printed interactive elements here)
     container.innerHTML += `
     <div class="no-print" style="width: 100%; box-sizing: border-box; margin-top: 32px;">
-        <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: 32px;">
-            <button type="button" onclick="window.print();" style="background: #ffffff; color: #0a1f44; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 18px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
-                Download or Print Receipt
-            </button>
+    
+        <!-- BOTTOM UTILITY INTERACTION SECTION IN STEP 7 -->
+<div style="margin-top: 24px; text-align: right; width: 100%; box-sizing: border-box;">
+  
+  <!-- YOUR EXISTING PRINT UTILITY ACTION ACTION -->
+  <button type="button" onclick="window.print();" class="no-print" style="background: #ffffff; border: 1px solid #cbd5e1; color: #0a1f44; font-weight: 700; font-size: 0.9rem; padding: 12px 24px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;">
+    <i class="fa-solid fa-print"></i> Download or Print Receipt
+  </button>
+
+  <!-- ADDED: IDENTITY ACTIVATION BANNER CALLOUT TOOLTIP -->
+  <div class="no-print" style="margin-top: 28px; border-top: 1px dashed #e2e8f0; padding-top: 24px; text-align: left;">
+    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 20px; box-sizing: border-box; width: 100%; display: flex; align-items: flex-start; gap: 14px;">
+      <span style="color: #2563eb; font-size: 1.4rem; margin-top: 2px;">
+        <i class="fa-solid fa-envelope-open-text"></i>
+      </span>
+      <div style="flex: 1;">
+        <h4 style="color: #1e40af; font-size: 0.95rem; font-weight: 800; margin: 0 0 6px 0;">
+          Secure Account Activation Link Dispatched
+        </h4>
+        <p style="color: #1e3a8a; font-size: 0.85rem; margin: 0 0 12px 0; line-height: 1.5;">
+          A privileged encryption setup token has been transmitted to your registered corporate filing email. For your data safety, you must complete verification from your inbox.
+        </p>
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid #dbeafe; padding: 10px 16px; border-radius: 6px; font-weight: 700; color: #1e40af; font-size: 0.8rem; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.04);">
+          <i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i> Next Step: Check your email inbox to verify your secure portal account profile
         </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
     </div>
     `;
