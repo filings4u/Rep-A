@@ -1505,75 +1505,97 @@ async function saveActiveServiceFormStates(fieldsRoot) {
 }
 
 
-// ============================================================================ // 
-// 🎯 RESOLVED THE SIGNATURE MISMATCH TARGET ROUTING LOOP & DUPLICATION BUG     // 
-// ============================================================================ // 
-async function finalizeServiceFormHydration(formInjectionWrapper, rawUrlSlug) { 
-    // 🟢 STEP BOUNDARY LOCK: Terminate execution immediately if the wizard is on Step 3 or later 
-    const activeStepNum = typeof window.currentWizardActiveStep === "number" ? window.currentWizardActiveStep : 2; 
-    if (activeStepNum > 2) { 
-        console.log("[Asset Router Guard] Workflow progressed past Step 2. Safely skipping background layout handover."); 
-        return; 
-    } 
+// ============================================================================ //
+// 🎯 FIXED STEP 2 EXCLUSIVITY GATEKEEPER & WORKSPACE RELEASER                  //
+// ============================================================================ //
+async function finalizeServiceFormHydration(formInjectionWrapper, rawUrlSlug) {
+    const activeStepNum = typeof window.currentWizardActiveStep === "number" ? window.currentWizardActiveStep : 2;
+    const canvasTargetNode = document.getElementById("step-2-onboarding-fields-canvas");
 
-    const targetRegistryMasterKey = `${rawUrlSlug}-form-master`; 
-    const registeredFormInit = window.formRegistry && window.formRegistry[targetRegistryMasterKey]; 
-    
-    // Resolve the true specialized field generator function matching this specific step 
-    const finalFormHydratorEngine = registeredFormInit || window.executeStepTwoFormFieldsHydrationOnly || window.initLlcFormationServices || window.initCorporationsServices; 
-    
-    if (typeof finalFormHydratorEngine === "function") { 
-        // 🟢 ISOLATED TARGETING: Force the canvas target to look strictly for the Step 2 element 
-        const canvasTargetNode = document.getElementById("step-2-onboarding-fields-canvas"); 
-        if (!canvasTargetNode) { 
-            console.warn("[Asset Router Critical] Target canvas node '#step-2-onboarding-fields-canvas' not found in viewport. Aborting handover pass."); 
-            return; 
-        } 
-
-        // 🛑 ANTI-DUPLICATION LOCK: Prevent multiple hydration cycles on the same element
-        if (canvasTargetNode.getAttribute("data-form-hydrated") === "true") {
-            console.log("[Asset Router Guard] Canvas already hydrated. Aborting execution to prevent duplicate forms.");
-            return;
-        }
-        
-        console.log("[Asset Router] Step 2 execution handoff successful. Running dynamic step field renderer..."); 
-        
-        // Safely strip the placeholder out of the DOM before rendering fields
-        const placeholderNode = formInjectionWrapper.querySelector(".dynamic-form-loading-placeholder"); 
-        if (placeholderNode) { 
-            placeholderNode.remove(); 
-        } 
-        
-        try {
-            // Set the execution lock immediately before async rendering begins
-            canvasTargetNode.setAttribute("data-form-hydrated", "true");
-            
-            // Render the form fields
-            await finalFormHydratorEngine(canvasTargetNode, rawUrlSlug); 
-            
-            // Trigger late-binding layout listeners now that inputs are safely mounted 
-            if (typeof window.attachStepTwoNavigationTriggers === "function") { 
-                window.attachStepTwoNavigationTriggers(); 
-            } 
-            if (typeof window.bindDbaEngineConditionListeners === "function") { 
-                window.bindDbaEngineConditionListeners(); 
-            } 
-        } catch (error) {
-            // Release lock and restore UI placeholder if rendering completely fails
+    // 🌟 THE NEXT BUTTON FIX: If the workflow is moving to Step 3+, clear the locks and exit!
+    // This immediately releases the event handlers so the navigation thread can proceed.
+    if (activeStepNum > 2) {
+        if (canvasTargetNode) {
             canvasTargetNode.removeAttribute("data-form-hydrated");
-            console.error("[Asset Router Critical] Hydration engine crashed during form execution:", error);
+            canvasTargetNode.removeAttribute("data-step2-initialized");
         }
-    } else { 
-        console.warn(`[Asset Router Critical] No valid rendering hydrator engine found for service step: "${rawUrlSlug}"`); 
-        const loadingWheel = formInjectionWrapper.querySelector(".dynamic-form-loading-placeholder"); 
-        if (loadingWheel) { 
-            loadingWheel.innerHTML = ` 
- <div style="color: #64748b; font-weight: 500; font-size: 0.95rem; padding: 10px 0;"> Configuration initialized. Ready for user profile compilation details. </div>`; 
-        } 
-    } 
-} 
+        console.log("[Asset Router Releaser] Workflow advanced past Step 2. Safely released layout canvas interlocks.");
+        return;
+    }
 
-// Bind method cleanly back to global window boundaries 
+    if (!canvasTargetNode) {
+        console.warn("[Asset Router Critical] Target canvas node '#step-2-onboarding-fields-canvas' not found in viewport.");
+        return;
+    }
+
+    // 🛑 ANTI-DUPLICATION IMMUTABLE GATE: Bounces loop out if form is already loaded on Step 2
+    if (canvasTargetNode.getAttribute("data-form-hydrated") === "true") {
+        return;
+    }
+
+    // Hand over control to the single-pass compilation engine
+    await commitCleanFormLayoutHandover(canvasTargetNode, formInjectionWrapper, rawUrlSlug);
+}
+/**
+ * Processes safe form rendering by handling template strings cleanly without duplication loops.
+ */
+async function commitCleanFormLayoutHandover(canvasTargetNode, formInjectionWrapper, rawUrlSlug) {
+    const targetRegistryMasterKey = `${rawUrlSlug}-form-master`;
+    const registeredFormInit = window.formRegistry && window.formRegistry[targetRegistryMasterKey];
+
+    console.log("[Asset Router] Step 2 execution handoff successful. Running dynamic step field renderer...");
+
+    // Safely strip the loading placeholder out of the DOM before injection begins
+    const placeholderNode = formInjectionWrapper.querySelector(".dynamic-form-loading-placeholder");
+    if (placeholderNode) {
+        placeholderNode.remove();
+    }
+
+    try {
+        // Apply the rendering interlock lock immediately before any engine work begins
+        canvasTargetNode.setAttribute("data-form-hydrated", "true");
+
+        // Evaluate if the payload is a raw string constructor or functional renderer
+        if (typeof registeredFormInit === "function") {
+            const dropdownOptions = typeof window.buildStateDropdownOptions === "function" ? window.buildStateDropdownOptions() : "";
+            
+            // Wipe the workspace canvas and drop the master template string in exactly ONCE
+            canvasTargetNode.innerHTML = registeredFormInit(dropdownOptions);
+            
+            // Manually bind the child interactive listeners now that elements are mounted
+            if (typeof window.bindAnnualReportConditionalDisplayTriggers === "function") {
+                window.bindAnnualReportConditionalDisplayTriggers();
+            }
+            
+            const validationEngine = window.formRegistry && window.formRegistry[`${rawUrlSlug}-validation-engine`];
+            if (validationEngine && typeof validationEngine.setupLiveInputFilters === "function") {
+                validationEngine.setupLiveInputFilters();
+            }
+        } else if (typeof window.executeStepTwoFormFieldsHydrationOnly === "function") {
+            // Fall back cleanly to function runners if a direct master string layout isn't mapped
+            await window.executeStepTwoFormFieldsHydrationOnly(canvasTargetNode, rawUrlSlug);
+        } else if (typeof window.initLlcFormationServices === "function") {
+            await window.initLlcFormationServices(canvasTargetNode, rawUrlSlug);
+        } else if (typeof window.initCorporationsServices === "function") {
+            await window.initCorporationsServices(canvasTargetNode, rawUrlSlug);
+        }
+
+        // Trigger navigation listeners now that inputs are safely mounted
+        if (typeof window.attachStepTwoNavigationTriggers === "function") {
+            window.attachStepTwoNavigationTriggers();
+        }
+        if (typeof window.bindDbaEngineConditionListeners === "function") {
+            window.bindDbaEngineConditionListeners();
+        }
+
+    } catch (error) {
+        // Release validation lock if rendering completely crashes
+        canvasTargetNode.removeAttribute("data-form-hydrated");
+        console.error("[Asset Router Critical] Hydration engine crashed during form execution:", error);
+    }
+}
+
+// Bind method cleanly back to global window boundaries
 window.finalizeServiceFormHydration = finalizeServiceFormHydration;
 
 

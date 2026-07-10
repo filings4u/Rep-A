@@ -1,184 +1,204 @@
-/**
- * ANNUAL REPORTS SERVICE ENGINE
- * Step 1: Initialize Unified Form Registries & Core Input Filtering Rules
- */
-function initAnnualReportsService() {
-  window.formRegistry = window.formRegistry || {};
+/** 
+ * ANNUAL REPORTS SERVICE ENGINE 
+ * Step 1: Initialize Unified Form Registries & Core Input Filtering Rules 
+ */ 
+function initAnnualReportsService() { 
+  window.formRegistry = window.formRegistry || {}; 
 
-  // ---------------------------------------------------------------------------- //
-  // SECTION A: DATA CORRECTION AND ENGINE RE-VALIDATION OBJECT
-  // ---------------------------------------------------------------------------- //
-  window.formRegistry['annual-reports-validation-engine'] = {
-    requiredFields: [
-      // Part 1 Structure
-      { id: 'ar_business_name', msg: 'Business Name is required.' },
-      { id: 'ar_business_id', msg: 'Business ID Number is required.' },
-      { id: 'ar_business_type', msg: 'Please select a Business Type.' },
-      { id: 'ar_principal_street', msg: 'Principal Address Street is required.' },
-      { id: 'ar_principal_city', msg: 'Principal Address City is required.' },
-      { id: 'ar_principal_state', msg: 'Principal Address State is required.' },
-      { id: 'ar_principal_zip', msg: 'Principal Address Zip Code is required.' },
-      { id: 'ar_mailing_choice', msg: 'Mailing Address Selection choice is required.' },
-      { id: 'ar_mailing_street', msg: 'Mailing Address Street is required.' },
-      { id: 'ar_mailing_city', msg: 'Mailing Address City is required.' },
-      { id: 'ar_mailing_state', msg: 'Mailing Address State is required.' },
-      { id: 'ar_mailing_zip', msg: 'Mailing Address Zip Code is required.' },
-      { id: 'ar_contact_name', msg: "Primary Contact Person's Full Name is required." },
-      { id: 'ar_contact_phone', msg: "Contact Person's Phone Number is required." },
-      { id: 'ar_contact_email', msg: "Contact Person's Email Address is required." },
-      // Part 2 Structure
-      { id: 'ar_state_due_date', msg: 'Annual Report Filing Due Date is required.' },
-      { id: 'ar_state_filed_choice', msg: 'Please specify if your state annual report has been filed.' },
-      { id: 'ar_city_filed_choice', msg: 'Please specify if your city annual report has been filed.' },
-      { id: 'ar_federal_ein', msg: 'Federal Employer Identification Number (EIN) is required.' },
-      { id: 'ar_fed_filed_choice', msg: 'Please specify if your federal taxes have been filed.' },
-      { id: 'ar_state_reason', msg: 'Please specify why the state annual filing is outstanding.' },
-      { id: 'ar_city_reason', msg: 'Please specify why the city annual filing is outstanding.' },
-      { id: 'ar_fed_reason', msg: 'Please specify why the federal tax filing is outstanding.' },
-      // Part 3 Structure
-      { id: 'ar_other_filed_choice', msg: 'Please answer the peripheral paperwork filing question.' },
-      { id: 'ar_compliance_verified', msg: 'Please answer the compliance verification check question.' },
-      { id: 'ar_other_filings_list', msg: 'Please list the types of other peripheral filings and their due dates.' },
-      { id: 'ar_pending_renewals_list', msg: 'Please list the operational licenses or permits that need to be renewed or updated.' }
-    ],
+  // ---------------------------------------------------------------------------- // 
+  // SECTION A: DATA CORRECTION AND ENGINE RE-VALIDATION OBJECT 
+  // ---------------------------------------------------------------------------- // 
+  
+  // 🛡️ FIX 1: Idempotency Check. If already initialized, do not re-assign the object
+  // This prevents triggering your framework's global state change watch-listeners.
+  if (window.formRegistry['annual-reports-validation-engine']) {
+    // Optional: Re-run input filtering setups safely if DOM elements were swapped
+    window.formRegistry['annual-reports-validation-engine'].setupLiveInputFilters();
+    return;
+  }
 
-    /**
-     * 🔘 LIVE CHARACTER INPUT FILTERS
-     * Instantly cleans values and restricts sizes dynamically across all sub-fields
-     */
-    setupLiveInputFilters: function() {
-      // Standard Digits Group
-      const numericIds = ['ar_business_id', 'ar_principal_zip', 'ar_mailing_zip'];
-      numericIds.forEach(id => {
-        const inputNode = document.getElementById(id);
-        if (inputNode) {
-          inputNode.addEventListener('input', function() {
-            this.value = this.value.replace(/\D/g, '');
-          });
+  window.formRegistry['annual-reports-validation-engine'] = { 
+    requiredFields: [ 
+      // Part 1 Structure 
+      { id: 'ar_business_name', msg: 'Business Name is required.' }, 
+      { id: 'ar_business_id', msg: 'Business ID Number is required.' }, 
+      { id: 'ar_business_type', msg: 'Please select a Business Type.' }, 
+      { id: 'ar_principal_street', msg: 'Principal Address Street is required.' }, 
+      { id: 'ar_principal_city', msg: 'Principal Address City is required.' }, 
+      { id: 'ar_principal_state', msg: 'Principal Address State is required.' }, 
+      { id: 'ar_principal_zip', msg: 'Principal Address Zip Code is required.' }, 
+      { id: 'ar_mailing_choice', msg: 'Mailing Address Selection choice is required.' }, 
+      { id: 'ar_mailing_street', msg: 'Mailing Address Street is required.' }, 
+      { id: 'ar_mailing_city', msg: 'Mailing Address City is required.' }, 
+      { id: 'ar_mailing_state', msg: 'Mailing Address State is required.' }, 
+      { id: 'ar_mailing_zip', msg: 'Mailing Address Zip Code is required.' }, 
+      { id: 'ar_contact_name', msg: "Primary Contact Person's Full Name is required." }, 
+      { id: 'ar_contact_phone', msg: "Contact Person's Phone Number is required." }, 
+      { id: 'ar_contact_email', msg: "Contact Person's Email Address is required." }, 
+      // Part 2 Structure 
+      { id: 'ar_state_due_date', msg: 'Annual Report Filing Due Date is required.' }, 
+      { id: 'ar_state_filed_choice', msg: 'Please specify if your state annual report has been filed.' }, 
+      { id: 'ar_city_filed_choice', msg: 'Please specify if your city annual report has been filed.' }, 
+      { id: 'ar_federal_ein', msg: 'Federal Employer Identification Number (EIN) is required.' }, 
+      { id: 'ar_fed_filed_choice', msg: 'Please specify if your federal taxes have been filed.' }, 
+      { id: 'ar_state_reason', msg: 'Please specify why the state annual filing is outstanding.' }, 
+      { id: 'ar_city_reason', msg: 'Please specify why the city annual filing is outstanding.' }, 
+      { id: 'ar_fed_reason', msg: 'Please specify why the federal tax filing is outstanding.' }, 
+      // Part 3 Structure 
+      { id: 'ar_other_filed_choice', msg: 'Please answer the peripheral paperwork filing question.' }, 
+      { id: 'ar_compliance_verified', msg: 'Please answer the compliance verification check question.' }, 
+      { id: 'ar_other_filings_list', msg: 'Please list the types of other peripheral filings and their due dates.' }, 
+      { id: 'ar_pending_renewals_list', msg: 'Please list the operational licenses or permits that need to be renewed or updated.' } 
+    ], 
+
+    /** 
+     * 🔘 LIVE CHARACTER INPUT FILTERS 
+     * Instantly cleans values and restricts sizes dynamically across all sub-fields 
+     */ 
+    setupLiveInputFilters: function() { 
+      // Standard Digits Group 
+      const numericIds = ['ar_business_id', 'ar_principal_zip', 'ar_mailing_zip']; 
+      numericIds.forEach(id => { 
+        const inputNode = document.getElementById(id); 
+        if (inputNode) { 
+          // 🛡️ FIX 2: Use a tracking flag property to ensure we never duplicate the 
+          // input event listeners if this lifecycle runs multiple times on the same nodes.
+          if (inputNode.dataset.listenerAttached) return;
+
+          inputNode.addEventListener('input', function() { 
+            this.value = this.value.replace(/\D/g, ''); 
+          }); 
+          inputNode.dataset.listenerAttached = "true";
+        } 
+      }); 
+
+      // Federal EIN Special Cap 
+      const einNode = document.getElementById('ar_federal_ein'); 
+      if (einNode) { 
+        if (!einNode.dataset.listenerAttached) {
+          einNode.addEventListener('input', function() { 
+            let numVal = this.value.replace(/\D/g, ''); 
+            if (numVal.length > 9) numVal = numVal.slice(0, 9); 
+            this.value = numVal; 
+          }); 
+          einNode.dataset.listenerAttached = "true";
         }
-      });
+      } 
+    }, 
 
-      // Federal EIN Special Cap
-      const einNode = document.getElementById('ar_federal_ein');
-      if (einNode) {
-        einNode.addEventListener('input', function() {
-          let numVal = this.value.replace(/\D/g, '');
-          if (numVal.length > 9) numVal = numVal.slice(0, 9);
-          this.value = numVal;
-        });
-      }
-    },
+    /** 
+     * 🔍 FORM RE-VALIDATION MATRIX EXECUTION BLOCK 
+     */ 
+    validate: function() { 
+      let isValid = true; 
+      let errors = []; 
 
-    /**
-     * 🔍 FORM RE-VALIDATION MATRIX EXECUTION BLOCK
-     */
-    validate: function() {
-      let isValid = true;
-      let errors = [];
+      // 1. FIRST PASS: Standard non-empty checks with conditional skipping 
+      this.requiredFields.forEach(f => { 
+        const el = document.getElementById(f.id); 
+        if (!el) return; 
 
-      // 1. FIRST PASS: Standard non-empty checks with conditional skipping
-      this.requiredFields.forEach(f => {
-        const el = document.getElementById(f.id);
-        if (!el) return;
+        // A. Alternate Mailing Field Filtering Rules 
+        const isConditionalMailingField = f.id.startsWith('ar_mailing_') && f.id !== 'ar_mailing_choice'; 
+        const mailingChoice = document.getElementById("ar_mailing_choice")?.value; 
+        if (isConditionalMailingField && mailingChoice !== "different") { 
+          el.style.setProperty("border-color", "#cbd5e1", "important"); 
+          return; 
+        } 
 
-        // A. Alternate Mailing Field Filtering Rules
-        const isConditionalMailingField = f.id.startsWith('ar_mailing_') && f.id !== 'ar_mailing_choice';
-        const mailingChoice = document.getElementById("ar_mailing_choice")?.value;
-        if (isConditionalMailingField && mailingChoice !== "different") {
-          el.style.setProperty("border-color", "#cbd5e1", "important");
-          return;
-        }
+        // B. Part 2 Filing Reason Field Filtering Rules 
+        if (f.id === 'ar_state_reason' && document.getElementById('ar_state_filed_choice')?.value !== 'no') { 
+          el.style.setProperty("border-color", "#cbd5e1", "important"); 
+          return; 
+        } 
+        if (f.id === 'ar_city_reason' && document.getElementById('ar_city_filed_choice')?.value !== 'no') { 
+          el.style.setProperty("border-color", "#cbd5e1", "important"); 
+          return; 
+        } 
+        if (f.id === 'ar_fed_reason' && document.getElementById('ar_fed_filed_choice')?.value !== 'no') { 
+          el.style.setProperty("border-color", "#cbd5e1", "important"); 
+          return; 
+        } 
 
-        // B. Part 2 Filing Reason Field Filtering Rules
-        if (f.id === 'ar_state_reason' && document.getElementById('ar_state_filed_choice')?.value !== 'no') {
-          el.style.setProperty("border-color", "#cbd5e1", "important");
-          return;
-        }
-        if (f.id === 'ar_city_reason' && document.getElementById('ar_city_filed_choice')?.value !== 'no') {
-          el.style.setProperty("border-color", "#cbd5e1", "important");
-          return;
-        }
-        if (f.id === 'ar_fed_reason' && document.getElementById('ar_fed_filed_choice')?.value !== 'no') {
-          el.style.setProperty("border-color", "#cbd5e1", "important");
-          return;
-        }
+        // C. Part 3 Peripheral & Permit Lists Filtering Rules 
+        if (f.id === 'ar_other_filings_list' && document.getElementById('ar_other_filed_choice')?.value !== 'yes') { 
+          el.style.setProperty("border-color", "#cbd5e1", "important"); 
+          return; 
+        } 
+        if (f.id === 'ar_pending_renewals_list' && document.getElementById('ar_compliance_verified')?.value !== 'no') { 
+          el.style.setProperty("border-color", "#cbd5e1", "important"); 
+          return; 
+        } 
 
-        // C. Part 3 Peripheral & Permit Lists Filtering Rules
-        if (f.id === 'ar_other_filings_list' && document.getElementById('ar_other_filed_choice')?.value !== 'yes') {
-          el.style.setProperty("border-color", "#cbd5e1", "important");
-          return;
-        }
-        if (f.id === 'ar_pending_renewals_list' && document.getElementById('ar_compliance_verified')?.value !== 'no') {
-          el.style.setProperty("border-color", "#cbd5e1", "important");
-          return;
-        }
+        // Run alphanumeric check for long textareas, regular trim check for standard inputs 
+        const isTextAreaField = f.id.endsWith('_list'); 
+        const passCheck = isTextAreaField ? (el.value.trim() && /[a-zA-Z0-9]/.test(el.value)) : el.value.trim(); 
+        if (!passCheck) { 
+          el.style.setProperty("border-color", "#ef4444", "important"); 
+          isValid = false; 
+          if (!errors.includes(f.msg)) errors.push(f.msg); 
+        } else { 
+          el.style.setProperty("border-color", "#cbd5e1", "important"); 
+        } 
+      }); 
 
-        // Run alphanumeric check for long textareas, regular trim check for standard inputs
-        const isTextAreaField = f.id.endsWith('_list');
-        const passCheck = isTextAreaField ? (el.value.trim() && /[a-zA-Z0-9]/.test(el.value)) : el.value.trim();
+      // 2. Business ID Format Check 
+      const idEl = document.getElementById("ar_business_id"); 
+      if (idEl && idEl.value.trim() && !/^\d+$/.test(idEl.value.trim())) { 
+        idEl.style.setProperty("border-color", "#ef4444", "important"); 
+        isValid = false; 
+        errors.push('Business ID Number must consist strictly of digits.'); 
+      } 
 
-        if (!passCheck) {
-          el.style.setProperty("border-color", "#ef4444", "important");
-          isValid = false;
-          if (!errors.includes(f.msg)) errors.push(f.msg);
-        } else {
-          el.style.setProperty("border-color", "#cbd5e1", "important");
-        }
-      });
+      // 3. Zip Code Format Checks (Principal & Alternate) 
+      ['ar_principal_zip', 'ar_mailing_zip'].forEach(id => { 
+        const zipEl = document.getElementById(id); 
+        if (id === 'ar_mailing_zip' && document.getElementById("ar_mailing_choice")?.value !== "different") return; 
+        if (zipEl && zipEl.value.trim() && !/^\d{5}$/.test(zipEl.value.trim())) { 
+          zipEl.style.setProperty("border-color", "#ef4444", "important"); 
+          isValid = false; 
+          const msg = id.includes('principal') ? 'Principal Zip must be exactly 5 digits.' : 'Mailing Zip must be exactly 5 digits.'; 
+          errors.push(msg); 
+        } 
+      }); 
 
-      // 2. Business ID Format Check
-      const idEl = document.getElementById("ar_business_id");
-      if (idEl && idEl.value.trim() && !/^\d+$/.test(idEl.value.trim())) {
-        idEl.style.setProperty("border-color", "#ef4444", "important");
-        isValid = false;
-        errors.push('Business ID Number must consist strictly of digits.');
-      }
+      // 4. Contact Email Format Check 
+      const emailEl = document.getElementById("ar_contact_email"); 
+      if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) { 
+        emailEl.style.setProperty("border-color", "#ef4444", "important"); 
+        isValid = false; 
+        errors.push("Please enter a valid contact person email address."); 
+      } 
 
-      // 3. Zip Code Format Checks (Principal & Alternate)
-      ['ar_principal_zip', 'ar_mailing_zip'].forEach(id => {
-        const zipEl = document.getElementById(id);
-        if (id === 'ar_mailing_zip' && document.getElementById("ar_mailing_choice")?.value !== "different") return;
-        if (zipEl && zipEl.value.trim() && !/^\d{5}$/.test(zipEl.value.trim())) {
-          zipEl.style.setProperty("border-color", "#ef4444", "important");
-          isValid = false;
-          const msg = id.includes('principal') ? 'Principal Zip must be exactly 5 digits.' : 'Mailing Zip must be exactly 5 digits.';
-          errors.push(msg);
-        }
-      });
+      // 5. Contact Phone Format Check (Strict 10 digits check block) 
+      const phoneEl = document.getElementById("ar_contact_phone"); 
+      if (phoneEl && phoneEl.value.trim()) { 
+        const strippedPhone = phoneEl.value.replace(/\D/g, ""); 
+        if (strippedPhone.length < 10) { 
+          phoneEl.style.setProperty("border-color", "#ef4444", "important"); 
+          isValid = false; 
+          errors.push("Contact Person's Phone Number must contain at least 10 numbers."); 
+        } 
+      } 
 
-      // 4. Contact Email Format Check
-      const emailEl = document.getElementById("ar_contact_email");
-      if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-        emailEl.style.setProperty("border-color", "#ef4444", "important");
-        isValid = false;
-        errors.push("Please enter a valid contact person email address.");
-      }
+      // 6. Strict Federal EIN Check Block (9 Digits) 
+      const einEl = document.getElementById("ar_federal_ein"); 
+      if (einEl && einEl.value.trim()) { 
+        if (einEl.value.replace(/\D/g, "").length !== 9) { 
+          einEl.style.setProperty("border-color", "#ef4444", "important"); 
+          isValid = false; 
+          errors.push("Federal Employer Identification Number (EIN) must be exactly 9 digits."); 
+        } 
+      } 
 
-      // 5. Contact Phone Format Check (Strict 10 digits check block)
-      const phoneEl = document.getElementById("ar_contact_phone");
-      if (phoneEl && phoneEl.value.trim()) {
-        const strippedPhone = phoneEl.value.replace(/\D/g, "");
-        if (strippedPhone.length < 10) {
-          phoneEl.style.setProperty("border-color", "#ef4444", "important");
-          isValid = false;
-          errors.push("Contact Person's Phone Number must contain at least 10 numbers.");
-        }
-      }
-
-      // 6. Strict Federal EIN Check Block (9 Digits)
-      const einEl = document.getElementById("ar_federal_ein");
-      if (einEl && einEl.value.trim()) {
-        if (einEl.value.replace(/\D/g, "").length !== 9) {
-          einEl.style.setProperty("border-color", "#ef4444", "important");
-          isValid = false;
-          errors.push("Federal Employer Identification Number (EIN) must be exactly 9 digits.");
-        }
-      }
-
-      return { isValid, errors };
-    }
+      return { isValid, errors }; 
+    } 
   };
-}
+
+  // Run filters for the very first initialization
+  window.formRegistry['annual-reports-validation-engine'].setupLiveInputFilters();
+} 
+
 initAnnualReportsService();
 
 
