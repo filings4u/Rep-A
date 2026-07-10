@@ -102,81 +102,81 @@
 
 
 
-// ============================================================================ //
-// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (TIMING SYNCHRONIZED) //
-// ============================================================================ //
-(function() {
-    "use strict";
+// ============================================================================ // 
+// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (TIMING SYNCHRONIZED) // 
+// ============================================================================ // 
+(function() { 
+    "use strict"; 
+    const cacheKeyNamespace = "f4u_wizard_onboarding_state"; 
+    const urlParams = new URLSearchParams(window.location.search); 
 
-    const cacheKeyNamespace = "f4u_wizard_onboarding_state";
-    const urlParams = new URLSearchParams(window.location.search);
-
-    // 🛡️ STEP 1: INSTANT SYNCHRONOUS MEMORY HYDRATION
-    // Populate layout variables instantly on execution pass so Step 6 Stripe configurations
-    // are never left with null parameters while the thread evaluates database tokens.
-    const activeStepTracker = parseInt(window.currentWizardActiveStep, 10);
-    const isActivelyProgressingInWizard = !isNaN(activeStepTracker) && activeStepTracker > 0;
-
-    // Grab cached data keys instantly before running background network promises
-    const cachedStateJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || urlParams.get('stateCode') || null;
+    // 🛡 STEP 1: INSTANT SYNCHRONOUS MEMORY HYDRATION 
+    // Populate layout variables instantly on execution pass so Step 6 Stripe configurations 
+    // are never left with null parameters while the thread evaluates database tokens. 
+    const activeStepTracker = parseInt(window.currentWizardActiveStep, 10); 
+    const isActivelyProgressingInWizard = !isNaN(activeStepTracker) && activeStepTracker > 0; 
     
-    if (isActivelyProgressingInWizard || cachedStateJurisdiction) {
-        window.selectedJurisdiction = window.selectedJurisdiction || cachedStateJurisdiction;
-    }
+    // Grab cached data keys instantly before running background network promises 
+    const cachedStateJurisdiction = localStorage.getItem('wizard_selected_state') || 
+                                    urlParams.get('state') || 
+                                    urlParams.get('stateCode') || 
+                                    null; 
+                                    
+    if (isActivelyProgressingInWizard || cachedStateJurisdiction) { 
+        window.selectedJurisdiction = window.selectedJurisdiction || cachedStateJurisdiction; 
+    } 
 
-    // 🛡️ STEP 2: ASYNC DATABASE AUTHENTICATION RUNNER
-    // Evaluates security permissions safely without pausing the global window variables
-    async function evaluateSupabaseAuthorizationGateway() {
-        const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null);
-        let isAuthenticatedUserSession = false;
-
-        if (supabase && typeof supabase.auth === "object") {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) isAuthenticatedUserSession = true;
-            } catch(e) {
-                isAuthenticatedUserSession = false;
-            }
-        }
-
-        if (!isAuthenticatedUserSession) {
-            if (!isActivelyProgressingInWizard) {
-                console.log("[Session Engine] Public Guest Session Landing: Purging residual caching allocations.");
-                localStorage.clear();
-                sessionStorage.clear();
-                
-                if (window.collectedFormMetadata) {
-                    window.collectedFormMetadata = {};
-                }
-                
-                window.selectedJurisdiction = null;
-                localStorage.removeItem('wizard_selected_state');
-
-                if (urlParams.has('state')) {
-                    urlParams.delete('state');
-                    const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`;
-                    window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath);
-                }
-            } else {
-                console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStepTracker}). Retaining data keys.`);
-                window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
-            }
-        } else {
-            console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active.");
-            window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
+    // 🛡 STEP 2: ASYNC DATABASE AUTHENTICATION RUNNER 
+    // Evaluates security permissions safely without pausing the global window variables 
+    async function evaluateSupabaseAuthorizationGateway() { 
+        const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null); 
+        let isAuthenticatedUserSession = false; 
+        
+        if (supabase && typeof supabase.auth === "object") { 
+            try { 
+                const { data: { user } } = await supabase.auth.getUser(); 
+                if (user) isAuthenticatedUserSession = true; 
+            } catch(e) { 
+                isAuthenticatedUserSession = false; 
+            } 
+        } 
+        
+        if (!isAuthenticatedUserSession) { 
+            if (!isActivelyProgressingInWizard) { 
+                console.log("[Session Engine] Public Guest Session Landing: Purging residual caching allocations."); 
+                localStorage.clear(); 
+                sessionStorage.clear(); 
+                if (window.collectedFormMetadata) { 
+                    window.collectedFormMetadata = {}; 
+                } 
+                window.selectedJurisdiction = null; 
+                localStorage.removeItem('wizard_selected_state'); 
+                if (urlParams.has('state')) { 
+                    urlParams.delete('state'); 
+                    const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`; 
+                    window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath); 
+                } 
+            } else { 
+                console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStepTracker}). Retaining data keys.`); 
+                window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null; 
+            } 
+        } else { 
+            console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active."); 
+            window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null; 
             
-            // 💳 STRIPE RECOVERY INTERLOCK
-            // If the user is logged in, verify if a Stripe client token is waiting inside their backend account record
-            if (activeStepTracker === 6 && typeof window.forceStep6StripePaymentGatewayRefreshPass === "function") {
-                console.log("[Session Engine] Synchronizing active dashboard session back to Step 6 payment gateway viewports.");
-                window.forceStep6StripePaymentGatewayRefreshPass();
-            }
-        }
-    }
+            // 💳 STRIPE RECOVERY INTERLOCK 
+            // If the user is logged in, verify if a Stripe client token is waiting inside their backend account record 
+            if (activeStepTracker === 6 && typeof window.forceStep6StripePaymentGatewayRefreshPass === "function") { 
+                console.log("[Session Engine] Synchronizing active dashboard session back to Step 6 payment gateway viewports."); 
+                window.forceStep6StripePaymentGatewayRefreshPass(); 
+            } 
+        } 
+    } 
 
-    // Execute background validation non-destructively
-    evaluateSupabaseAuthorizationGateway();
+    // Execute background validation non-destructively 
+    evaluateSupabaseAuthorizationGateway(); 
 })();
+
 
 
 // ============================================================================ //
@@ -312,9 +312,8 @@
 })();
 
 // ============================================================================ // 
-// 🗃️ MASTER STATE PROPERTY MAPPING & LEGACY REFERENCE DICTIONARIES             // 
+// 🗃 MASTER STATE PROPERTY MAPPING & LEGACY REFERENCE DICTIONARIES             // 
 // ============================================================================ // 
-
 // --- BACKWARDS COMPATIBLE STEP 2 HARDCODED UPSELL RECORDS --- 
 window.STEP_2_UPSELLS_REFERENCE = { 
     "assemble-dqf": { name: "Assemble Driver Qualification Files (DQF)", price: 79.00 }, 
@@ -357,32 +356,31 @@ const baselinePropertyMapPayload = {
     "trademark-name-lock": "customSelectedTrademarkActive" 
 }; 
 
-// 🟢 SAFE ASYNC ASSIGNMENT INTERLOCK:
-function processPayloadBinding() {
-    const descriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP');
-    
+// 🟢 SAFE ASYNC ASSIGNMENT INTERLOCK: 
+function processPayloadBinding() { 
+    const descriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP'); 
     if (descriptor && typeof descriptor.set === 'function') { 
-        console.log("[Data Map Asset] Core interceptor ready. Binding payload mapping properties to setup macros.");
+        console.log("[Data Map Asset] Core interceptor ready. Binding payload mapping properties to setup macros."); 
         window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload; 
     } else { 
-        console.log("[Data Map Asset] Core interceptor uninstantiated. Delaying loop evaluation binding pass...");
+        console.log("[Data Map Asset] Core interceptor uninstantiated. Delaying loop evaluation binding pass..."); 
         window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = Object.assign(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}, baselinePropertyMapPayload); 
         
-        // Polling retry check: If Block 4 comes in late, catch it when it attaches to the window scope
-        let retryCounter = 0;
-        const fallbackTrackingInterval = setInterval(() => {
-            retryCounter++;
-            const postDescriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP');
-            if (postDescriptor && typeof postDescriptor.set === 'function') {
-                window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload;
-                clearInterval(fallbackTrackingInterval);
-            }
-            if (retryCounter >= 20) clearInterval(fallbackTrackingInterval); // Cap search cycle at 1 second
-        }, 50);
+        // Polling retry check: If Block 4 comes in late, catch it when it attaches to the window scope 
+        let retryCounter = 0; 
+        const fallbackTrackingInterval = setInterval(() => { 
+            retryCounter++; 
+            const postDescriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP'); 
+            if (postDescriptor && typeof postDescriptor.set === 'function') { 
+                window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload; 
+                clearInterval(fallbackTrackingInterval); 
+            } 
+            if (retryCounter >= 20) clearInterval(fallbackTrackingInterval); // Cap search cycle at 1 second 
+        }, 50); 
     } 
-}
-
+} 
 processPayloadBinding();
+
 
 // ============================================================================ // 
 // 🗃️ USA STATES DICTIONARY CONFIGURATION ARRAY MATRIX                         // 
@@ -990,18 +988,20 @@ function switchWizardActiveViewLayout(activeStepTarget) {
 function executeStepLifecyclePipeline(targetStepInt) { 
     targetStepInt = parseInt(targetStepInt, 10) || 0; 
 
-    // ===================================================================== // 
-    // STEP 2 DYNAMIC INJECTION CORRECTION                                   // 
-    // ===================================================================== // 
+    // ===================================================================== 
+    // STEP 2 DYNAMIC INJECTION CORRECTION 
+    // ===================================================================== 
     if (targetStepInt === 2) { 
         const targetUrlParams = new URLSearchParams(window.location.search); 
         const activeServiceKey = window.routeActiveServiceKey || String(targetUrlParams.get('service') || "").toLowerCase().trim(); 
         const innerPlaceholderCanvas = document.getElementById("step-2-injection-placeholder"); 
+        
         if (innerPlaceholderCanvas) { 
             innerPlaceholderCanvas.style.setProperty("display", "block", "important"); 
             innerPlaceholderCanvas.style.setProperty("opacity", "1", "important"); 
             innerPlaceholderCanvas.style.setProperty("visibility", "visible", "important"); 
         } 
+        
         if (typeof window.executeStepTwoDynamicFormInjection === "function") { 
             try { 
                 window.executeStepTwoDynamicFormInjection(null, activeServiceKey); 
@@ -1009,7 +1009,9 @@ function executeStepLifecyclePipeline(targetStepInt) {
                 console.error("[CRITICAL FAILURE INSIDE STEP 2 SCRIPT]:", stepTwoError); 
             } 
         } 
-    } 
+    }
+    // [Function kept open here intentionally for subsequent step execution blocks under it]
+
 
     // ===================================================================== // 
     // STEP 3 DYNAMIC MARKETPLACE PACKAGES INJECTION BRIDGE                  // 
@@ -1428,37 +1430,40 @@ if (document.readyState === "loading") {
   window.getUsaStatesHtml = function() { return window.globalStateDropdownOptionsHtml; };
   window.buildGlobalUsaStateDropdownOptionsHtml = function() { return window.globalStateDropdownOptionsHtml; };
 
-  /**
-   * Scans the active DOM playground for state select boxes and instantly attaches data.
-   */
-  function autoDiscoverAndHydrateStateDropdowns() {
-    // Target selectors based on your taxonomy naming patterns
-    const stateSelectors = document.querySelectorAll(
-      'select[id*="state"], select[name*="state"], select[id*="formation"], select[name*="formation"], .state-dropdown-select'
-    );
+  /** 
+ * Scans the active DOM playground for state select boxes and instantly attaches data. 
+ */ 
+function autoDiscoverAndHydrateStateDropdowns() { 
+    // Target selectors based on your taxonomy naming patterns 
+    const stateSelectors = document.querySelectorAll( 
+        'select[id*="state"], select[name*="state"], select[id*="formation"], select[name*="formation"], .state-dropdown-select' 
+    ); 
 
-    stateSelectors.forEach(dropdown => {
-      if (!dropdown) return;
+    stateSelectors.forEach(dropdown => { 
+        if (!dropdown) return; 
 
-      // 🟢 STEP 1: Element-level recursion guard instead of a fragile global lockout flag
-      if (dropdown.children.length <= 1 && !dropdown.dataset.statesHydrated) {
-        console.log(`[State Engine] Automatically injecting options into dropdown element: #${dropdown.id || dropdown.name}`);
-        
-        // Track current value configurations cleanly to preserve selections
-        const currentSelectedValueBackup = dropdown.value || localStorage.getItem('wizard_selected_state') || "";
-        
-        dropdown.innerHTML = window.globalStateDropdownOptionsHtml || "";
-        dropdown.dataset.statesHydrated = "true";
-
-        // 🟢 STEP 2: Restore previous choices seamlessly if a cache record exists
-        if (currentSelectedValueBackup) {
-          const normalizedStateCode = currentSelectedValueBackup.toUpperCase().trim();
-          dropdown.value = normalizedStateCode;
-          
-          window.selectedJurisdiction = normalizedStateCode;
-          localStorage.setItem('wizard_selected_state', normalizedStateCode);
+        // 🟢 STEP 1: Element-level recursion guard instead of a fragile global lockout flag 
+        if (dropdown.children.length <= 1 && !dropdown.dataset.statesHydrated) { 
+            console.log(`[State Engine] Automatically injecting options into dropdown element: #${dropdown.id || dropdown.name}`); 
+            
+            // Track current value configurations cleanly to preserve selections 
+            const currentSelectedValueBackup = dropdown.value || localStorage.getItem('wizard_selected_state') || ""; 
+            
+            // FIX: Remapped the reference from an unassigned string variable to execute your actual global building function
+            const buildOptionsEngine = typeof window.buildGlobalUsaStateDropdownOptionsHtml === "function" ? window.buildGlobalUsaStateDropdownOptionsHtml : function() { return ""; };
+            dropdown.innerHTML = buildOptionsEngine(currentSelectedValueBackup); 
+            dropdown.dataset.statesHydrated = "true"; 
+            
+            // 🟢 STEP 2: Restore previous choices seamlessly if a cache record exists 
+            if (currentSelectedValueBackup) { 
+                const normalizedStateCode = currentSelectedValueBackup.toUpperCase().trim(); 
+                dropdown.value = normalizedStateCode; 
+                window.selectedJurisdiction = normalizedStateCode; 
+                localStorage.setItem('wizard_selected_state', normalizedStateCode); 
+            } 
         }
-      }
+        // [Function track kept open here intentionally for inner loop mapping parameters under it]
+
 
       // 🟢 STEP 3: Arm real-time change interceptors to save selections instantly
       if (!dropdown.dataset.stateChangeHooked) {
@@ -1915,52 +1920,54 @@ function runUnifiedPlatformLifecycleBoot() {
     window.initializeDigitalSignatureMirrorSync();
   }
 
-  // =========================================================================
-  // DEEP-LINK TIMELINE RESOLUTION GATEWAY (ZERO-HARDCODE REBOOT)
-  // =========================================================================
-  const urlParams = new URLSearchParams(window.location.search);
-  const hasService = urlParams.get('service');
-  const hasPlan = urlParams.get('plan');
-  const hasState = urlParams.get('state') || urlParams.get('stateCode');
-  
-  let currentActiveStepIndex = parseInt(window.currentWizardActiveStep, 10);
+  // ========================================================================= // 
+// DEEP-LINK TIMELINE RESOLUTION GATEWAY (ZERO-HARDCODE REBOOT)              // 
+// ========================================================================= // 
+const urlParams = new URLSearchParams(window.location.search); 
+const hasService = urlParams.get('service'); 
+const hasPlan = urlParams.get('plan'); 
+const hasState = urlParams.get('state') || urlParams.get('stateCode'); 
+let currentActiveStepIndex = parseInt(window.currentWizardActiveStep, 10); 
 
-  // PROGRAMMATIC FEDERAL ROUTING VERIFICATION
-  const serviceKeyCheck = String(hasService || window.routeActiveServiceKey || "").toLowerCase().trim();
-  const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {};
-  const isFederalServicePath = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceKeyCheck) && 
-                               serviceKeyCheck !== "llc-formation" && 
-                               serviceKeyCheck !== "corporations";
+// PROGRAMMATIC FEDERAL ROUTING VERIFICATION 
+const serviceKeyCheck = String(hasService || window.routeActiveServiceKey || "").toLowerCase().trim(); 
+const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {}; 
+const isFederalServicePath = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceKeyCheck) && serviceKeyCheck !== "llc-formation" && serviceKeyCheck !== "corporations"; 
 
-  // Determine deep-link eligibility dynamically without hardcoded text blocks
-  const isDeepLinkValid = !!(hasService && hasPlan && (hasState || isFederalServicePath));
+// Determine deep-link eligibility dynamically without hardcoded text blocks 
+const isDeepLinkValid = !!(hasService && hasPlan && (hasState || isFederalServicePath)); 
 
-  if (isDeepLinkValid) {
-    if (isNaN(currentActiveStepIndex) || currentActiveStepIndex <= 1) {
-      console.log("[Lifecycle Engine Override] Deep link active. Syncing internal states cleanly to Step 2.");
-      currentActiveStepIndex = 2;
-      window.currentWizardActiveStep = 2;
-    }
-  } else if (isNaN(currentActiveStepIndex)) {
-    // If this is a completely brand new session layout with no parameters, default to 0
-    currentActiveStepIndex = 0;
-    window.currentWizardActiveStep = 0;
-  }
+if (isDeepLinkValid) { 
+    if (isNaN(currentActiveStepIndex) || currentActiveStepIndex <= 1) { 
+        console.log("[Lifecycle Engine Override] Deep link active. Syncing internal states cleanly to Step 2."); 
+        currentActiveStepIndex = 2; 
+        window.currentWizardActiveStep = 2; 
+    } 
+} else if (isNaN(currentActiveStepIndex)) { 
+    // If this is a completely brand new session layout with no parameters, default to 0 
+    currentActiveStepIndex = 0; 
+    window.currentWizardActiveStep = 0; 
+} 
 
-  // Only restore cached form inputs directly here if the current active target view is NOT Step 2.
-  if (currentActiveStepIndex !== 2) {
-    if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") {
-      window.cacheAndRestoreWizardFormStatesVanilla(true);
-    }
-  }
+// Only restore cached form inputs directly here if the current active target view is NOT Step 2. 
+if (currentActiveStepIndex !== 2) { 
+    if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") { 
+        window.cacheAndRestoreWizardFormStatesVanilla(true); 
+    } 
+} 
 
-  if (typeof window.initializeFormDisplayLayoutSync === "function") {
-    window.initializeFormDisplayLayoutSync();
-  }
+if (typeof window.initializeFormDisplayLayoutSync === "function") { 
+    window.initializeFormDisplayLayoutSync(); 
+} 
 
-  if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
-    window.updateDynamicPricingMatrixVanilla();
-  }
+// FIX: Throttled execution pass gives asynchronous sub-scripts and dynamic layout elements time to paint completely 
+// before letting pricing and layout sync loops read width constraints for side-by-side tracks.
+setTimeout(() => {
+    if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
+        window.updateDynamicPricingMatrixVanilla(); 
+    } 
+}, 50);
+
 
     // =========================================================================
   // 🟢 FIXED VIEW PORT ROUTER HOOK (STRIPE-SAFE INTERLOCK)
@@ -1999,56 +2006,69 @@ function runUnifiedPlatformLifecycleBoot() {
 window.runUnifiedPlatformLifecycleBoot = runUnifiedPlatformLifecycleBoot;
 
 
-// ============================================================================ //
-// 🧠 WIZARD MASTER CORE DATA ARCHITECTURE                                      //
-// ============================================================================ //
-(function() {
-  "use strict";
+// ============================================================================ // 
+// 🧠 WIZARD MASTER CORE DATA ARCHITECTURE                                      // 
+// ============================================================================ // 
+(function() { 
+    "use strict"; 
+    
+    // Completely isolated, private data vault. Step scripts cannot overwrite this directly. 
+    const WIZARD_CENTRAL_VAULT = { 
+        step_0: {}, 
+        step_1: {}, 
+        step_2: { addons: [] }, 
+        step_3: { packages: [], upsells: [] }, 
+        step_4: {}, 
+        step_5: {}, 
+        step_6: {}, 
+        step_7: {} 
+    }; 
 
-  // Completely isolated, private data vault. Step scripts cannot overwrite this directly.
-  const WIZARD_CENTRAL_VAULT = {
-    step_0: {}, step_1: {}, step_2: { addons: [] }, step_3: { packages: [], upsells: [] },
-    step_4: {}, step_5: {}, step_6: {}, step_7: {}
-  };
-
-  window.wizardCentralState = {
-    // Isolated setter that rejects accidental cross-step overwrites
-    updateStepData: function(stepNumber, key, value) {
-      const stepKey = `step_${stepNumber}`;
-      if (!WIZARD_CENTRAL_VAULT[stepKey]) return;
-      
-      WIZARD_CENTRAL_VAULT[stepKey][key] = value;
-      this.syncCalculatedTotals();
-    },
-
-    getStepData: function(stepNumber, key) {
-      const stepKey = `step_${stepNumber}`;
-      if (!WIZARD_CENTRAL_VAULT[stepKey]) return null;
-      return WIZARD_CENTRAL_VAULT[stepKey][key] || null;
-    },
-
-    // Aggregates prices from step modules cleanly without triggering mutations
-    syncCalculatedTotals: function() {
-      let finalCalculatedSum = 0;
-
-      // Extract validated step 2 addon pricing totals
-      const step2Addons = WIZARD_CENTRAL_VAULT.step_2.addons || [];
-      step2Addons.forEach(item => { finalCalculatedSum += (parseFloat(item.price) || 0); });
-
-      // Extract validated step 3 upsell/package totals
-      const step3Upsells = WIZARD_CENTRAL_VAULT.step_3.upsells || [];
-      step3Upsells.forEach(item => { finalCalculatedSum += (parseFloat(item.price) || 0); });
-
-      window.computedWizardGrandTotalAmount = finalCalculatedSum;
-      window.wizardCalculatedFinalTotalAmount = finalCalculatedSum;
-
-      // Push updates forward safely to the Stripe & Summary screens if visible
-      if (typeof window.executeMarketplaceSummaryRenderLoop === "function") {
-        window.executeMarketplaceSummaryRenderLoop();
-      }
-    }
-  };
+    window.wizardCentralState = { 
+        // Isolated setter that rejects accidental cross-step overwrites 
+        updateStepData: function(stepNumber, key, value) { 
+            const stepKey = `step_${stepNumber}`; 
+            if (!WIZARD_CENTRAL_VAULT[stepKey]) return; 
+            WIZARD_CENTRAL_VAULT[stepKey][key] = value; 
+            this.syncCalculatedTotals(); 
+        }, 
+        
+        getStepData: function(stepNumber, key) { 
+            const stepKey = `step_${stepNumber}`; 
+            if (!WIZARD_CENTRAL_VAULT[stepKey]) return null; 
+            return WIZARD_CENTRAL_VAULT[stepKey][key] || null; 
+        }, 
+        
+        // Aggregates prices from step modules cleanly without triggering mutations 
+        syncCalculatedTotals: function() { 
+            let finalCalculatedSum = 0; 
+            
+            // Extract validated step 2 addon pricing totals 
+            const step2Addons = WIZARD_CENTRAL_VAULT.step_2.addons || []; 
+            step2Addons.forEach(item => { 
+                finalCalculatedSum += (parseFloat(item.price) || 0); 
+            }); 
+            
+            // Extract validated step 3 upsell/package totals 
+            const step3Upsells = WIZARD_CENTRAL_VAULT.step_3.upsells || []; 
+            step3Upsells.forEach(item => { 
+                finalCalculatedSum += (parseFloat(item.price) || 0); 
+            }); 
+            
+            window.computedWizardGrandTotalAmount = finalCalculatedSum; 
+            window.wizardCalculatedFinalTotalAmount = finalCalculatedSum; 
+            
+            // FIX: Use a tiny rendering engine lifecycle gap to let dynamic fields settle onto their side-by-side 
+            // layout tracks perfectly before calculating summary values and redrawing the invoice pane.
+            if (typeof window.executeMarketplaceSummaryRenderLoop === "function") { 
+                requestAnimationFrame(() => {
+                    window.executeMarketplaceSummaryRenderLoop(); 
+                });
+            } 
+        } 
+    }; 
 })();
+
 
 
 // ============================================================================ // 
