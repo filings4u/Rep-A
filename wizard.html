@@ -56,68 +56,74 @@
     
 <!-- RIGHT MAIN SCREEN CONTENT AREA --> 
 <main class="portal-main"> 
-  <div class="wizard-container-wrapper"> 
+    <div class="wizard-container-wrapper"> 
     
-    <!-- STEP 1 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel active" id="step-panel-1"> 
-      <!-- Header Block --> 
-      <div class="step-header-container" style="margin-bottom: 30px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 20px; width: 100%; box-sizing: border-box; clear: both;"> 
-        <h2 class="step-main-title" style="margin: 0 0 6px 0; color: var(--navy, #0a1f44); font-weight: 800; font-size: 1.5rem; text-align: left;">1. Your Selection Overview</h2> 
-        <p class="step-subtitle" style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0; text-align: left;">Review your selected package and features below.</p> 
-      </div> 
-      
-      <!-- Target Injection Slots --> 
-      <div id="step-0-injection-placeholder"></div> 
-      <div id="step-1-injection-placeholder"></div> 
-    </div> <!-- 🟢 FIXED: This closing tag now safely encapsulates Step 1! --> 
-    
-    <!-- STEP 2 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-2" style="display: none;"> 
-      <div id="step-2-injection-placeholder"></div> 
-    </div> 
-    
-    <!-- STEP 3 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-3" style="display: none;"> 
-      <div id="step-3-injection-placeholder"></div> 
-    </div> 
-    
-    <!-- STEP 4 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-4" style="display: none;"> 
-      <div id="step-4-injection-placeholder"></div> 
-    </div> 
-    
-    <!-- STEP 5 INNER WIZARD PANEL CARD --> 
-    <div class="wizard-panel" id="step-panel-5" style="display: none;"> 
-      <div id="step-5-injection-placeholder"></div> 
-    </div> 
-    
-  <!-- STEP 6 INNER WIZARD PANEL CARD -->
-<div class="wizard-panel" id="step-panel-6" style="display: none;">
-  <div id="step-6-injection-placeholder">
-    
-    <!-- 💳 CRITICAL STRIPE ELEMENT MOUNT TARGET -->
-    <div id="stripe-payment-element-mount-point" style="min-height: 250px; margin-bottom: 20px;"></div>
-    
-    <!-- ERROR BANNER DISPLAY TARGET -->
-    <div id="step6-error-banner-target" style="display: none; color: #ef4444; background: #fef2f2; border: 1px solid #fee2e2; padding: 12px; border-radius: 6px; font-size: 0.85rem; margin-top: 15px; font-weight: 500;"></div>
-    
-  </div>
-</div>
- 
-    
- <!-- STEP 7 INNER WIZARD PANEL CARD -->
-<div class="wizard-panel" id="step-panel-7" style="display: none;">
-  <div id="step-7-injection-placeholder" style="padding: 40px; text-align: center; color: #64748b;">
-    <p><i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i> Securely completing transaction routing... Please wait.</p>
-  </div>
-</div>
+        <!-- STEP 1 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel active" id="step-panel-1"> 
+            <!-- Header Block --> 
+            <div class="step-header-container" style="margin-bottom: 30px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 20px; width: 100%; box-sizing: border-box; clear: both;"> 
+                <h2 class="step-main-title" style="margin: 0 0 6px 0; color: var(--navy, #0a1f44); font-weight: 800; font-size: 1.5rem; text-align: left;">1. Your Selection Overview</h2> 
+                <p class="step-subtitle" style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0; text-align: left;">Review your selected package and features below.</p> 
+            </div> 
+            <!-- Target Injection Slots --> 
+            <div id="step-0-injection-placeholder"></div> 
+            <div id="step-1-injection-placeholder"></div> 
+        </div> 
 
-    
-    <!-- FIXED FULL WIDTH FOOTER TARGET --> 
-    <div id="wizard-footer-injection-target" style="width: 100%; max-width: 1450px; margin: 0px auto 0 auto; box-sizing: border-box; padding: 0 0;"></div> 
-  
-  </div> 
+        <!-- STEP 2 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-2" style="display: none;"> 
+            <div id="step-2-injection-placeholder" style="width: 100%; display: block; clear: both;">
+                <!-- 🟢 FIXED CANVAS TARGET: Restores the exact CSS Grid tracks required for side-by-side elements -->
+                <div id="step-2-onboarding-fields-canvas" class="isolated-form-payload-container" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; width: 100% !important; box-sizing: border-box !important; clear: both !important;"></div>
+            </div> 
+        </div> 
+
+        <!-- STEP 3 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-3" style="display: none;"> 
+            <div id="step-3-injection-placeholder" style="width: 100%; display: block; clear: both;">
+                <!-- 🟢 FIXED CANVAS TARGET: Restores the exact marketplace rendering grid tracks -->
+                <div id="step-3-onboarding-fields-canvas" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; width: 100% !important; box-sizing: border-box !important; clear: both !important;"></div>
+            </div> 
+        </div> 
+
+        <!-- STEP 4 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-4" style="display: none;"> 
+            <div id="step-4-injection-placeholder" style="width: 100%; display: block; clear: both;">
+                <!-- 🟢 FIXED CANVAS TARGET: Restores the exact digital signature view tracks -->
+                <div id="step-4-onboarding-fields-canvas" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; width: 100% !important; box-sizing: border-box !important; clear: both !important;"></div>
+            </div> 
+        </div> 
+
+        <!-- STEP 5 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-5" style="display: none;"> 
+            <div id="step-5-injection-placeholder" style="width: 100%; display: block; clear: both;">
+                <!-- 🟢 FIXED CANVAS TARGET: Restores the exact summary invoice layout track columns -->
+                <div id="step-5-onboarding-fields-canvas" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; width: 100% !important; box-sizing: border-box !important; clear: both !important;"></div>
+            </div> 
+        </div> 
+
+        <!-- STEP 6 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-6" style="display: none;"> 
+            <div id="step-6-injection-placeholder" style="width: 100%; display: block; clear: both; box-sizing: border-box;"> 
+                <!-- 💳 CRITICAL STRIPE ELEMENT MOUNT TARGET --> 
+                <div id="stripe-payment-element-mount-point" style="min-height: 250px; margin-bottom: 20px; width: 100%; box-sizing: border-box;"></div> 
+                <!-- ERROR BANNER DISPLAY TARGET --> 
+                <div id="step6-error-banner-target" style="display: none; color: #ef4444; background: #fef2f2; border: 1px solid #fee2e2; padding: 12px; border-radius: 6px; font-size: 0.85rem; margin-top: 15px; font-weight: 500; width: 100%; box-sizing: border-box; clear: both;"></div> 
+            </div> 
+        </div> 
+
+        <!-- STEP 7 INNER WIZARD PANEL CARD --> 
+        <div class="wizard-panel" id="step-panel-7" style="display: none;"> 
+            <div id="step-7-injection-placeholder" style="padding: 40px; text-align: center; color: #64748b; width: 100%; box-sizing: border-box; clear: both;"> 
+                <p><i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i> Securely completing transaction routing... Please wait.</p> 
+            </div> 
+        </div> 
+
+        <!-- FIXED FULL WIDTH FOOTER TARGET --> 
+        <div id="wizard-footer-injection-target" style="width: 100%; max-width: 1450px; margin: 0px auto 0 auto; box-sizing: border-box; padding: 0 0; clear: both; display: block;"></div> 
+    </div> 
 </main>
+
 
 
 
