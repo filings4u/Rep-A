@@ -1775,11 +1775,28 @@ if (document.readyState === "loading") {
                                serviceSlug !== "corporations";
 
     // Explicit keyword safety catch-all
-    const isFederalKeyword = serviceSlug.includes("cage") || 
-                             serviceSlug.includes("sam") || 
-                             serviceSlug.includes("tax") || 
-                             serviceSlug.includes("ein") || 
-                             serviceSlug.includes("authority");
+    const isFederalKeyword = serviceSlug.includes("federal-tax") || 
+                             serviceSlug.includes("employer-id-ein") || 
+                             serviceSlug.includes("heavy-use-tax-2290") || 
+                             serviceSlug.includes("cage-code") || 
+                              serviceSlug.includes("owner-operators") || 
+                             serviceSlug.includes("trucker-authority") || 
+                             serviceSlug.includes("broker-authority") || 
+                              serviceSlug.includes("ucr-registration") || 
+                             serviceSlug.includes("scac-code") || 
+                             serviceSlug.includes("dot-consortium") || 
+                              serviceSlug.includes("driver-file") || 
+                             serviceSlug.includes("process-agents-boc-3") || 
+                             serviceSlug.includes("hazmat-registration") || 
+                              serviceSlug.includes("trucker-insurance-quote") || 
+                             serviceSlug.includes("broker-insurance-quote") || 
+                             serviceSlug.includes("hazmat-registration") || 
+                              serviceSlug.includes("trucker-insurance-quote") || 
+                             serviceSlug.includes("broker-insurance-quote") || 
+                             serviceSlug.includes("new-entrant-audit") || 
+                              serviceSlug.includes("mcs-150-update") || 
+                             serviceSlug.includes("boc-3-amendment") || 
+                             serviceSlug.includes("apostille-services");
 
     if (isFederalFilingKey || isFederalKeyword) {
       console.log(`[Gate Engine] Federal Service path "${serviceSlug}" verified. Automatically bypassing Step 0 state selection.`);
