@@ -31,12 +31,10 @@ function renderStepTwoLayoutMarkup() {
   <!-- 🏢 STEP 2 CONTAINER CARD FRAMEWORK                                           -->
   <!-- ============================================================================ -->
   <div class="step-panel-form-card" data-step="2" style="width: 100%; box-sizing: border-box; clear: both;">
-<!-- STEP 2: PROFESSIONAL CORPORATE FORM HEADER INTERFACE -->
-<div style="grid-column: span 2; width: 100%; box-sizing: border-box; margin-bottom: 28px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 16px; text-align: left; clear: both;"> 
-  <h2 style="color: var(--navy, #0a1f44); font-size: 1.4rem; font-weight: 800; margin: 0 0 6px 0; letter-spacing: -0.5px;">2. Corporate Profile Intake</h2> 
-  <p style="color: var(--slate, #64748b); font-size: 0.88rem; margin: 0; line-height: 1.5;">Establish your official corporate identifier variables, declare state jurisdictional preferences, and specify target operational parameters for registry serialization.</p> 
-</div>
-
+    <div style="margin-bottom: 25px; border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 15px; text-align: left;">
+      <h2 style="color: var(--navy, #0a1f44); font-size: 1.6rem; font-weight: 900; margin: 0 0 6px 0; letter-spacing: -0.5px;">Corporate Entity Details</h2>
+      <p style="color: var(--slate, #64748b); font-size: 0.95rem; margin: 0;">Provide company identifier records, operational parameters, and target communications parameters.</p>
+    </div>
     <div class="workspace-split-layout" style="display: grid; grid-template-columns: 1fr; gap: 32px; width: 100%; box-sizing: border-box; align-items: start;">
       <!-- UNIQUE FIELD TARGET CANVAS -->
       <div id="step-2-onboarding-fields-canvas" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; min-width: 0; box-sizing: border-box;">
@@ -57,7 +55,7 @@ function renderStepTwoLayoutMarkup() {
     style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center;"
   >
     <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> 
-    <span>Back to Selected Package</span>
+    <span>Back to Selected</span>
   </button>
 
   <!-- Next Button (Advances directly to Step 3) -->

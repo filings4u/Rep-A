@@ -1,83 +1,75 @@
-(function () {
-  // Safe global namespace initialization to prevent script-loader crashes
-  window.formRegistry = window.formRegistry || {};
+(function () { 
+    // Safe global namespace initialization to prevent script-loader crashes 
+    window.formRegistry = window.formRegistry || {}; 
 
-  /**
-   * Generates HTML dropdown options for all 50 US States.
-   * @param {string} [selected] - 2-digit uppercase code to pre-select.
-   * @returns {string} HTML option tags.
-   */
-  window.buildGlobalUsaStateDropdownOptionsHtml = function (selected) {
-    const states = [
-      "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA",
-      "HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
-      "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
-      "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC",
-      "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"
-    ];
-    
-    const target = String(selected || "").toUpperCase().trim();
-    
-    // Map array directly to string blocks for faster rendering performance
-    const options = states.map(st => 
-      `<option value="${st}" ${st === target ? "selected" : ""}>${st}</option>`
-    );
+    /** 
+     * Generates HTML dropdown options for all 50 US States. 
+     * @param {string} [selected] - 2-digit uppercase code to pre-select. 
+     * @returns {string} HTML option tags. 
+     */ 
+    window.buildGlobalUsaStateDropdownOptionsHtml = function (selected) { 
+        const states = [ 
+            "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA", 
+            "HI","ID","IL","IN","IA","KS","KY","LA","ME","MD", 
+            "MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ", 
+            "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC", 
+            "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY" 
+        ]; 
+        const target = String(selected || "").toUpperCase().trim(); 
+        const options = states.map(st => `<option value="${st}" ${st === target ? "selected" : ""}>${st}</option>`); 
+        return '<option value="">-- Select State --</option>' + options.join(""); 
+    }; 
+})(); 
 
-    return '<option value="">-- Select State --</option>' + options.join("");
-  };
-})();
+window.formRegistry = window.formRegistry || {}; 
+window.formRegistry['llc-formation-part1-layout'] = function(stateDropdownOptionsHtml) { 
+    console.log("[LLC Layout] Running initial step configuration pass..."); 
 
+    // Extract values safely from Step 0 context parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedStateCode = String(window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || "TX").toUpperCase().trim();
+    const serviceSlug = String(window.currentServiceKey || window.routeActiveServiceKey || urlParams.get('service') || "llc-formation").toLowerCase().trim();
 
-/**
- * Part 2 of Step 1: Context Resolution & Base Selection Panels.
- * Saves directly to window registries to avoid script re-loader execution errors.
- */
-window.formRegistry = window.formRegistry || {};
+    // Context mappings for state codes and service types
+    const stateMapping = { "AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming" };
+    const fullStateName = stateMapping[selectedStateCode] || selectedStateCode;
 
-window.formRegistry['llc-formation-part1-layout'] = function(stateDropdownOptionsHtml) {
-  console.log("[LLC Layout] Running initial step configuration pass...");
-  
-  var jurisdiction = window.selectedFormationStateCode || "TX";
-  
-  // Resolve dynamic vs global state drop-down fallback engines safely
-  var buildStateHtml = typeof window.getUsaStatesHtml === "function" 
-    ? window.getUsaStatesHtml 
-    : window.buildGlobalUsaStateDropdownOptionsHtml;
+    let readableServiceTitle = "Business Filing";
+    if (serviceSlug.includes("llc")) readableServiceTitle = "LLC Formation";
+    else if (serviceSlug.includes("corp")) readableServiceTitle = "Corporation Formation";
+    else if (serviceSlug.includes("annual")) readableServiceTitle = "Annual Filing";
 
-  var currentStatesHtml = stateDropdownOptionsHtml || buildStateHtml(jurisdiction);
-  var blankStatesHtml = buildStateHtml("");
+    var buildStateHtml = typeof window.getUsaStatesHtml === "function" ? window.getUsaStatesHtml : window.buildGlobalUsaStateDropdownOptionsHtml; 
+    var blankStatesHtml = buildStateHtml(""); 
 
-  return `
-    <!-- Info Banner Component -->
- <!-- Info Banner -->
-<div style="width: 100%; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-top: -12px; margin-bottom: 0px;">
-<strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> What is an LLC?</strong>
-An LLC (Limited Liability Company) is a formal business structure that protects your personal assets by separating them from your business liabilities.
-</div>
+    return ` 
+ <!-- Context-Aware Tooltip Container Box -->
+ <div class="context-jurisdiction-tooltip-banner" style="grid-column: span 2; width: 100%; background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #10b981; padding: 16px; border-radius: 6px; box-sizing: border-box; margin-top: -12px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; clear: both;">
+    <span style="color: #10b981; font-size: 1.15rem; display: flex; align-items: center;"><i class="fa-solid fa-circle-check"></i></span>
+    <p style="margin: 0; color: #14532d; font-size: 0.92rem; font-weight: 700; line-height: 1.4;">
+        You are completing an <span style="color: #0a1f44; font-weight: 800; border-bottom: 2px solid #10b981; padding-bottom: 1px;">${readableServiceTitle}</span> for the State of <span style="color: #0a1f44; font-weight: 800; border-bottom: 2px solid #10b981; padding-bottom: 1px;">${fullStateName}</span>.
+    </p>
+ </div>
 
+ <!-- Info Banner --> 
+ <div style="grid-column: span 2; width: 100%; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 20px; clear: both;"> 
+ <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> What is an LLC?</strong> An LLC (Limited Liability Company) is a formal business structure that protects your personal assets by separating them from your business liabilities. 
+ </div> 
 
-    <!-- Section 1 Title Row -->
-    <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 12px;">
-      <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Business Information</h3>
-    </div>
+ <!-- Section 1 Title Row --> 
+ <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 12px; margin-bottom: 16px; clear: both;"> 
+ <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Business Information</h3> </div> 
 
-    <!-- Jurisdiction State Selection Row -->
-    <div class="wizard-input-group">
-      <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">What state do you want to form your business in? *</label>
-      <select name="formation_state" id="wizard-target-jurisdiction" required class="wizard-input-field" 
-              onchange="window.selectedFormationStateCode = this.value; if(typeof updateDynamicPricingMatrixVanilla === 'function') updateDynamicPricingMatrixVanilla();">
-        ${currentStatesHtml}
-      </select>
-    </div>
-
-    <div class="wizard-input-group">
-      <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">What state will your headquarters be in? *</label>
-      <select name="headquarters_state" id="headquarters_state" required class="wizard-input-field">
-        ${blankStatesHtml}
-      </select>
-    </div>
-  `;
+ <!-- Headquarter Dropdown Field --> 
+ <div class="wizard-input-group" style="grid-column: span 1; display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;"> 
+ <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">What state will your headquarters be in? *</label> 
+ <select name="headquarters_state" id="headquarters_state" required class="wizard-input-field" style="padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.95rem; width: 100%; box-sizing: border-box; background-color: #ffffff;"> 
+ ${blankStatesHtml} 
+ </select> 
+ </div> 
+`; 
 };
+
 /**
  * Part 3 of Step 1: Address Collection Rows & Industry Classification Drop-downs.
  */
