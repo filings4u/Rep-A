@@ -101,80 +101,83 @@
 })();
 
 
+// ============================================================================ //
+// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (TIMING SYNCHRONIZED)
+// ============================================================================ //
+(function() {
+  "use strict";
 
-// ============================================================================ // 
-// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (TIMING SYNCHRONIZED) // 
-// ============================================================================ // 
-(function() { 
-    "use strict"; 
-    const cacheKeyNamespace = "f4u_wizard_onboarding_state"; 
-    const urlParams = new URLSearchParams(window.location.search); 
+  const cacheKeyNamespace = "f4u_wizard_onboarding_state";
+  const urlParams = new URLSearchParams(window.location.search);
 
-    // 🛡 STEP 1: INSTANT SYNCHRONOUS MEMORY HYDRATION 
-    // Populate layout variables instantly on execution pass so Step 6 Stripe configurations 
-    // are never left with null parameters while the thread evaluates database tokens. 
-    const activeStepTracker = parseInt(window.currentWizardActiveStep, 10); 
-    const isActivelyProgressingInWizard = !isNaN(activeStepTracker) && activeStepTracker > 0; 
-    
-    // Grab cached data keys instantly before running background network promises 
-    const cachedStateJurisdiction = localStorage.getItem('wizard_selected_state') || 
-                                    urlParams.get('state') || 
-                                    urlParams.get('stateCode') || 
-                                    null; 
-                                    
-    if (isActivelyProgressingInWizard || cachedStateJurisdiction) { 
-        window.selectedJurisdiction = window.selectedJurisdiction || cachedStateJurisdiction; 
-    } 
+  // 🛡️ STEP 1: INSTANT SYNCHRONOUS MEMORY HYDRATION
+  // Populate layout variables instantly on execution pass so Step 6 Stripe configurations
+  // are never left with null parameters while the thread evaluates database tokens.
+  const activeStepTracker = parseInt(window.currentWizardActiveStep, 10);
+  const isActivelyProgressingInWizard = !isNaN(activeStepTracker) && activeStepTracker > 0;
 
-    // 🛡 STEP 2: ASYNC DATABASE AUTHENTICATION RUNNER 
-    // Evaluates security permissions safely without pausing the global window variables 
-    async function evaluateSupabaseAuthorizationGateway() { 
-        const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null); 
-        let isAuthenticatedUserSession = false; 
+  // Grab cached data keys instantly before running background network promises
+  const cachedStateJurisdiction = localStorage.getItem('wizard_selected_state') || 
+                                  urlParams.get('state') || 
+                                  urlParams.get('stateCode') || 
+                                  null;
+
+  if (isActivelyProgressingInWizard || cachedStateJurisdiction) {
+    window.selectedJurisdiction = window.selectedJurisdiction || cachedStateJurisdiction;
+  }
+
+  // 🛡️ STEP 2: ASYNC DATABASE AUTHENTICATION RUNNER
+  // Evaluates security permissions safely without pausing the global window variables
+  async function evaluateSupabaseAuthorizationGateway() {
+    const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null);
+    let isAuthenticatedUserSession = false;
+
+    if (supabase && typeof supabase.auth === "object") {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) isAuthenticatedUserSession = true;
+      } catch(e) {
+        isAuthenticatedUserSession = false;
+      }
+    }
+
+    if (!isAuthenticatedUserSession) {
+      if (!isActivelyProgressingInWizard) {
+        console.log("[Session Engine] Public Guest Session Landing: Purging residual caching allocations.");
+        localStorage.clear();
+        sessionStorage.clear();
         
-        if (supabase && typeof supabase.auth === "object") { 
-            try { 
-                const { data: { user } } = await supabase.auth.getUser(); 
-                if (user) isAuthenticatedUserSession = true; 
-            } catch(e) { 
-                isAuthenticatedUserSession = false; 
-            } 
-        } 
+        if (window.collectedFormMetadata) {
+          window.collectedFormMetadata = {};
+        }
         
-        if (!isAuthenticatedUserSession) { 
-            if (!isActivelyProgressingInWizard) { 
-                console.log("[Session Engine] Public Guest Session Landing: Purging residual caching allocations."); 
-                localStorage.clear(); 
-                sessionStorage.clear(); 
-                if (window.collectedFormMetadata) { 
-                    window.collectedFormMetadata = {}; 
-                } 
-                window.selectedJurisdiction = null; 
-                localStorage.removeItem('wizard_selected_state'); 
-                if (urlParams.has('state')) { 
-                    urlParams.delete('state'); 
-                    const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`; 
-                    window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath); 
-                } 
-            } else { 
-                console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStepTracker}). Retaining data keys.`); 
-                window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null; 
-            } 
-        } else { 
-            console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active."); 
-            window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null; 
-            
-            // 💳 STRIPE RECOVERY INTERLOCK 
-            // If the user is logged in, verify if a Stripe client token is waiting inside their backend account record 
-            if (activeStepTracker === 6 && typeof window.forceStep6StripePaymentGatewayRefreshPass === "function") { 
-                console.log("[Session Engine] Synchronizing active dashboard session back to Step 6 payment gateway viewports."); 
-                window.forceStep6StripePaymentGatewayRefreshPass(); 
-            } 
-        } 
-    } 
+        window.selectedJurisdiction = null;
+        localStorage.removeItem('wizard_selected_state');
+        
+        if (urlParams.has('state')) {
+          urlParams.delete('state');
+          const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`;
+          window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath);
+        }
+      } else {
+        console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStepTracker}). Retaining data keys.`);
+        window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
+      }
+    } else {
+      console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active.");
+      window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
 
-    // Execute background validation non-destructively 
-    evaluateSupabaseAuthorizationGateway(); 
+      // 💳 STRIPE RECOVERY INTERLOCK
+      // If the user is logged in, verify if a Stripe client token is waiting inside their backend account record
+      if (activeStepTracker === 6 && typeof window.forceStep6StripePaymentGatewayRefreshPass === "function") {
+        console.log("[Session Engine] Synchronizing active dashboard session back to Step 6 payment gateway viewports.");
+        window.forceStep6StripePaymentGatewayRefreshPass();
+      }
+    }
+  }
+
+  // Execute background validation non-destructively
+  evaluateSupabaseAuthorizationGateway();
 })();
 
 
@@ -958,164 +961,304 @@ function switchWizardActiveViewLayout(activeStepTarget) {
   });
 }
 
-/** 
- * Core Step Lifecycle Router and Pipeline Execution Engine. 
- * This handles dynamic element injection and mounts secure gateways after layout stability. 
+/**
+ * Core Step Lifecycle Router and Pipeline Execution Engine.
+ * This handles dynamic element injection and mounts secure gateways after layout stability.
  * 
- * @param {number} targetStepInt The active targeted form step index. 
- */ 
-function executeStepLifecyclePipeline(targetStepInt) { 
-    targetStepInt = parseInt(targetStepInt, 10) || 0; 
+ * @param {number} targetStepInt The active targeted form step index.
+ */
+function executeStepLifecyclePipeline(targetStepInt) {
+    targetStepInt = parseInt(targetStepInt, 10) || 0;
 
-    // ===================================================================== 
-    // STEP 2 DYNAMIC INJECTION CORRECTION 
-    // ===================================================================== 
-    if (targetStepInt === 2) { 
-        const targetUrlParams = new URLSearchParams(window.location.search); 
-        const activeServiceKey = window.routeActiveServiceKey || String(targetUrlParams.get('service') || "").toLowerCase().trim(); 
-        
+    // =====================================================================
+    // STEP 2 DYNAMIC INJECTION CORRECTION (FIXED FOCUS LOSS & BLINKING)
+    // =====================================================================
+    if (targetStepInt === 2) {
+        const targetUrlParams = new URLSearchParams(window.location.search);
+        const activeServiceKey = window.routeActiveServiceKey || String(targetUrlParams.get('service') || "").toLowerCase().trim();
+
         // FIX: Prioritize the clean side-by-side canvas track container to prevent layout squeezing
-        const innerPlaceholderCanvas = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder"); 
-        if (innerPlaceholderCanvas) { 
+        const innerPlaceholderCanvas = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder");
+        
+        if (innerPlaceholderCanvas) {
             // Enforce display grid rules so child elements participate natively in side-by-side column paths
-            innerPlaceholderCanvas.style.setProperty("display", "grid", "important"); 
-            innerPlaceholderCanvas.style.setProperty("opacity", "1", "important"); 
-            innerPlaceholderCanvas.style.setProperty("visibility", "visible", "important"); 
-        } 
-        
-        // FIX: Add a structural interlock flag check. If your step-2.js proxy layer or form hydrators 
-        // have already built the questionnaire fields on the canvas, block this loop from dual-appending elements!
-        const hasFormBeenCompiledAlready = innerPlaceholderCanvas && innerPlaceholderCanvas.querySelectorAll(".service-form-part-segment").length > 0;
-
-        if (typeof window.executeStepTwoDynamicFormInjection === "function" && !hasFormBeenCompiledAlready) { 
-            try { 
-                window.executeStepTwoDynamicFormInjection(null, activeServiceKey); 
-            } catch (stepTwoError) { 
-                console.error("[CRITICAL FAILURE INSIDE STEP 2 SCRIPT]:", stepTwoError); 
-            } 
-        } else {
-            console.log("[Core Lifecycle Guard] Duplicate render cascade prevented: Step 2 form tracks already active on the canvas layout.");
+            innerPlaceholderCanvas.style.setProperty("display", "grid", "important");
+            innerPlaceholderCanvas.style.setProperty("opacity", "1", "important");
+            innerPlaceholderCanvas.style.setProperty("visibility", "visible", "important");
         }
-    } 
 
-    // ===================================================================== 
-    // STEP 3 DYNAMIC MARKETPLACE PACKAGES INJECTION BRIDGE 
-    // ===================================================================== 
-    if (targetStepInt === 3) { 
-        console.log("[Navigation Router] Step 3 visibility confirmed. Triggering marketplace generation pass..."); 
-        const marketplaceContainer = document.getElementById("step-panel-3") || document.getElementById("step-3-injection-placeholder"); 
-        if (marketplaceContainer) { 
-            marketplaceContainer.style.setProperty("display", "block", "important"); 
-        } 
-        if (typeof window.executeStepThreeUpsellStreaming === "function") { 
-            window.executeStepThreeUpsellStreaming(); 
-        } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") { 
-            window.autoInitializeStep3MarketplaceCatalog(); 
-        } 
-        requestAnimationFrame(() => { 
-            requestAnimationFrame(() => { 
-                if (window.currentWizardActiveStep !== 3) return; 
-                try { 
-                    if (typeof window.cleanStep3MarketplaceDuplications === "function") { 
-                        window.cleanStep3MarketplaceDuplications(); 
-                    } 
-                    if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
-                        window.updateDynamicPricingMatrixVanilla(); 
-                    } 
-                    if (typeof window.autoSkinSelectedUpsellCards === "function") { 
-                        window.autoSkinSelectedUpsellCards(); 
-                    } 
-                    if (typeof window.updateApplicationMapTimelineBubbles === "function") { 
-                        window.updateApplicationMapTimelineBubbles(3); 
-                    } 
-                } catch (lifecycleError) { 
-                    console.error("[Navigation Router Timing Exception] Error in Step 3 rendering pipeline:", lifecycleError); 
-                } 
-            }); 
-        }); 
-    } 
+        // 🌟 THE PERMANENT BLINKING FIX: Evaluate an absolute string flag gate check first.
+        // If the template engine marked the canvas as loaded or locked, bounce this loop out instantly!
+        const isAlreadyInitialized = innerPlaceholderCanvas && (
+            innerPlaceholderCanvas.getAttribute("data-step2-initialized") === "true" || 
+            innerPlaceholderCanvas.getAttribute("data-form-hydrated") === "true"
+        );
 
-    // ===================================================================== 
-    // LIFECYCLE REBOOT COOLDOWN PRESERVING STEP 0 & OTHER VIEWS 
-    // ===================================================================== 
-    if ((targetStepInt === 0 || targetStepInt === 1) && typeof window.runUnifiedWizardBootEngine === "function") { 
-        try { 
-            window.runUnifiedWizardBootEngine(); 
-        } catch (bootErr) { 
-            console.warn("[Navigation Engine] Unified boot engine fallback caught:", bootErr); 
-        } 
-    } 
+        if (!isAlreadyInitialized) {
+            // Secondary fallback selector checking rules
+            const hasFormBeenCompiledAlready = innerPlaceholderCanvas && innerPlaceholderCanvas.querySelectorAll(".service-form-part-segment").length > 0;
+            
+            if (typeof window.executeStepTwoDynamicFormInjection === "function" && !hasFormBeenCompiledAlready) {
+                try {
+                    // Stamp the lock right now synchronously so subsequent background loop cycles bounce off instantly
+                    if (innerPlaceholderCanvas) {
+                        innerPlaceholderCanvas.setAttribute("data-step2-initialized", "true");
+                    }
+                    window.executeStepTwoDynamicFormInjection(null, activeServiceKey);
+                } catch (stepTwoError) {
+                    // Release execution validation lock if the initializer routine completely crashes
+                    if (innerPlaceholderCanvas) {
+                        innerPlaceholderCanvas.removeAttribute("data-step2-initialized");
+                    }
+                    console.error("[CRITICAL FAILURE INSIDE STEP 2 SCRIPT]:", stepTwoError);
+                }
+            } else {
+                if (innerPlaceholderCanvas && hasFormBeenCompiledAlready) {
+                    innerPlaceholderCanvas.setAttribute("data-step2-initialized", "true");
+                }
+                console.log("[Core Lifecycle Guard] Duplicate render cascade prevented: Step 2 form tracks already active on the canvas layout.");
+            }
+        }
+    }
 
-    // ===================================================================== 
-    // DETACHED LIFECYCLE FOR STEPS 4, 5, 6, 7 (STRIPE ISOLATION LAYER) 
-    // ===================================================================== 
-    if (targetStepInt !== 3) { 
-        if (targetStepInt === 6) { 
-            const stripePanelContainer = document.getElementById("step-panel-6"); 
-            if (stripePanelContainer) { 
-                stripePanelContainer.style.setProperty("display", "block", "important"); 
-                stripePanelContainer.style.setProperty("opacity", "1", "important"); 
-                stripePanelContainer.style.setProperty("visibility", "visible", "important"); 
-                stripePanelContainer.classList.add("active"); 
-                stripePanelContainer.offsetHeight; 
+    // =====================================================================
+    // STEP 3 DYNAMIC MARKETPLACE PACKAGES INJECTION BRIDGE
+    // =====================================================================
+    if (targetStepInt === 3) {
+        console.log("[Navigation Router] Step 3 visibility confirmed. Triggering marketplace generation pass...");
+        const marketplaceContainer = document.getElementById("step-panel-3") || document.getElementById("step-3-injection-placeholder");
+        if (marketplaceContainer) {
+            marketplaceContainer.style.setProperty("display", "block", "important");
+        }
+
+        if (typeof window.executeStepThreeUpsellStreaming === "function") {
+            window.executeStepThreeUpsellStreaming();
+        } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") {
+            window.autoInitializeStep3MarketplaceCatalog();
+        }
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (window.currentWizardActiveStep !== 3) return;
+                try {
+                    if (typeof window.cleanStep3MarketplaceDuplications === "function") {
+                        window.cleanStep3MarketplaceDuplications();
+                    }
+                    if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+                        window.updateDynamicPricingMatrixVanilla();
+                    }
+                    if (typeof window.autoSkinSelectedUpsellCards === "function") {
+                        window.autoSkinSelectedUpsellCards();
+                    }
+                    if (typeof window.updateApplicationMapTimelineBubbles === "function") {
+                        window.updateApplicationMapTimelineBubbles(3);
+                    }
+                } catch (lifecycleError) {
+                    console.error("[Navigation Router Timing Exception] Error in Step 3 rendering pipeline:", lifecycleError);
+                }
+            });
+        });
+    }
+
+    // =====================================================================
+    // LIFECYCLE REBOOT COOLDOWN PRESERVING STEP 0 & OTHER VIEWS
+    // =====================================================================
+    if ((targetStepInt === 0 || targetStepInt === 1) && typeof window.runUnifiedWizardBootEngine === "function") {
+        try {
+            window.runUnifiedWizardBootEngine();
+        } catch (bootErr) {
+            console.warn("[Navigation Engine] Unified boot engine fallback caught:", bootErr);
+        }
+    }
+
+    // =====================================================================
+    // DETACHED LIFECYCLE FOR STEPS 4, 5, 6, 7 (STRIPE ISOLATION LAYER)
+    // =====================================================================
+    if (targetStepInt !== 3) {
+        if (targetStepInt === 6) {
+            const stripePanelContainer = document.getElementById("step-panel-6");
+            if (stripePanelContainer) {
+                stripePanelContainer.style.setProperty("display", "block", "important");
+                stripePanelContainer.style.setProperty("opacity", "1", "important");
+                stripePanelContainer.style.setProperty("visibility", "visible", "important");
+                stripePanelContainer.classList.add("active");
+                stripePanelContainer.offsetHeight;
                 
-                if (typeof window.initializeFlatStripeCheckoutElement === "function") { 
-                    console.log("[Validation Pipeline Interlock] Transferring control to step-6.js setup function..."); 
-                    window.initializeFlatStripeCheckoutElement(); 
-                } else { 
-                    console.warn("[Validation Pipeline Error] initializeFlatStripeCheckoutElement function from step-6.js is not loaded."); 
-                } 
-            } 
-        } 
-        
-        if (targetStepInt === 7) { 
-            console.log("[Core Lifecycle] Step 7 panel activated. Awakening step-7.js layout engine..."); 
-            const successPanelContainer = document.getElementById("step-panel-7"); 
-            if (successPanelContainer) { 
-                successPanelContainer.style.setProperty("display", "block", "important"); 
-                successPanelContainer.style.setProperty("opacity", "1", "important"); 
-                successPanelContainer.style.setProperty("visibility", "visible", "important"); 
-                successPanelContainer.classList.add("active"); 
-                successPanelContainer.offsetHeight; 
-            } 
-            if (typeof window.initializeSecureStep7AccountHydration === "function") { 
-                window.initializeSecureStep7AccountHydration(); 
-            } else { 
-                console.error("[Core Lifecycle Error] initializeSecureStep7AccountHydration from step-7.js is unmapped."); 
-            } 
-        } 
-        
-        requestAnimationFrame(() => { 
-            requestAnimationFrame(() => { 
-                if (window.currentWizardActiveStep !== targetStepInt) return; 
-                if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
-                    window.updateDynamicPricingMatrixVanilla(); 
-                } 
-                if (typeof window.autoSkinSelectedUpsellCards === "function") { 
-                    window.autoSkinSelectedUpsellCards(); 
-                } 
-                if (typeof window.updateApplicationMapTimelineBubbles === "function") { 
-                    window.updateApplicationMapTimelineBubbles(targetStepInt); 
-                } 
-                if (typeof window.executeMarketplaceSummaryRenderLoop === "function" && targetStepInt === 5) { 
-                    window.executeMarketplaceSummaryRenderLoop(); 
-                } 
-            }); 
-        }); 
-    } 
-} 
+                if (typeof window.initializeFlatStripeCheckoutElement === "function") {
+                    console.log("[Validation Pipeline Interlock] Transferring control to step-6.js setup function...");
+                    window.initializeFlatStripeCheckoutElement();
+                } else {
+                    console.warn("[Validation Pipeline Error] initializeFlatStripeCheckoutElement function from step-6.js is not loaded.");
+                }
+            }
+        }
 
-window.goToNextWizardStep = goToNextWizardStep; 
-window.goToPreviousWizardStep = goToPreviousWizardStep; 
-window.switchWizardActiveViewLayout = switchWizardActiveViewLayout; 
+        if (targetStepInt === 7) {
+            console.log("[Core Lifecycle] Step 7 panel activated. Awakening step-7.js layout engine...");
+            const successPanelContainer = document.getElementById("step-panel-7");
+            if (successPanelContainer) {
+                successPanelContainer.style.setProperty("display", "block", "important");
+                successPanelContainer.style.setProperty("opacity", "1", "important");
+                successPanelContainer.style.setProperty("visibility", "visible", "important");
+                successPanelContainer.classList.add("active");
+                successPanelContainer.offsetHeight;
+            }
+            if (typeof window.initializeSecureStep7AccountHydration === "function") {
+                window.initializeSecureStep7AccountHydration();
+            } else {
+                console.error("[Core Lifecycle Error] initializeSecureStep7AccountHydration from step-7.js is unmapped.");
+            }
+        }
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (window.currentWizardActiveStep !== targetStepInt) return;
+                if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+                    window.updateDynamicPricingMatrixVanilla();
+                }
+                if (typeof window.autoSkinSelectedUpsellCards === "function") {
+                    window.autoSkinSelectedUpsellCards();
+                }
+                if (typeof window.updateApplicationMapTimelineBubbles === "function") {
+                    window.updateApplicationMapTimelineBubbles(targetStepInt);
+                }
+                if (typeof window.executeMarketplaceSummaryRenderLoop === "function" && targetStepInt === 5) {
+                    window.executeMarketplaceSummaryRenderLoop();
+                }
+            });
+        });
+    }
+}
+
+// Bind methods cleanly back to global window boundaries
 window.executeStepLifecyclePipeline = executeStepLifecyclePipeline;
 
+/**
+ * Isolated pipeline router for processing post-step 2 timeline requirements.
+ */
+function processPostStepTwoTimelineTracks(targetStepInt) {
+  // =====================================================================
+  // STEP 3 DYNAMIC MARKETPLACE PACKAGES INJECTION BRIDGE
+  // =====================================================================
+  if (targetStepInt === 3) {
+    console.log("[Navigation Router] Step 3 visibility confirmed. Triggering marketplace generation pass...");
+    const marketplaceContainer = document.getElementById("step-panel-3") || document.getElementById("step-3-injection-placeholder");
+    
+    if (marketplaceContainer) {
+      marketplaceContainer.style.setProperty("display", "block", "important");
+    }
+
+    if (typeof window.executeStepThreeUpsellStreaming === "function") {
+      window.executeStepThreeUpsellStreaming();
+    } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") {
+      window.autoInitializeStep3MarketplaceCatalog();
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (window.currentWizardActiveStep !== 3) return;
+        try {
+          if (typeof window.cleanStep3MarketplaceDuplications === "function") {
+            window.cleanStep3MarketplaceDuplications();
+          }
+          if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+            window.updateDynamicPricingMatrixVanilla();
+          }
+          if (typeof window.autoSkinSelectedUpsellCards === "function") {
+            window.autoSkinSelectedUpsellCards();
+          }
+          if (typeof window.updateApplicationMapTimelineBubbles === "function") {
+            window.updateApplicationMapTimelineBubbles(3);
+          }
+        } catch (lifecycleError) {
+          console.error("[Navigation Router Timing Exception] Error in Step 3 rendering pipeline:", lifecycleError);
+        }
+      });
+    });
+  }
+
+  // =====================================================================
+  // LIFECYCLE REBOOT COOLDOWN PRESERVING STEP 0 & OTHER VIEWS
+  // =====================================================================
+  if ((targetStepInt === 0 || targetStepInt === 1) && typeof window.runUnifiedWizardBootEngine === "function") {
+    try {
+      window.runUnifiedWizardBootEngine();
+    } catch (bootErr) {
+      console.warn("[Navigation Engine] Unified boot engine fallback caught:", bootErr);
+    }
+  }
+
+  // =====================================================================
+  // DETACHED LIFECYCLE FOR STEPS 4, 5, 6, 7 (STRIPE ISOLATION LAYER)
+  // =====================================================================
+  if (targetStepInt !== 3) {
+    if (targetStepInt === 6) {
+      const stripePanelContainer = document.getElementById("step-panel-6");
+      if (stripePanelContainer) {
+        stripePanelContainer.style.setProperty("display", "block", "important");
+        stripePanelContainer.style.setProperty("opacity", "1", "important");
+        stripePanelContainer.style.setProperty("visibility", "visible", "important");
+        stripePanelContainer.classList.add("active");
+        stripePanelContainer.offsetHeight;
+        
+        if (typeof window.initializeFlatStripeCheckoutElement === "function") {
+          console.log("[Validation Pipeline Interlock] Transferring control to step-6.js setup function...");
+          window.initializeFlatStripeCheckoutElement();
+        } else {
+          console.warn("[Validation Pipeline Error] initializeFlatStripeCheckoutElement function from step-6.js is not loaded.");
+        }
+      }
+    }
+
+    if (targetStepInt === 7) {
+      console.log("[Core Lifecycle] Step 7 panel activated. Awakening step-7.js layout engine...");
+      const successPanelContainer = document.getElementById("step-panel-7");
+      if (successPanelContainer) {
+        successPanelContainer.style.setProperty("display", "block", "important");
+        successPanelContainer.style.setProperty("opacity", "1", "important");
+        successPanelContainer.style.setProperty("visibility", "visible", "important");
+        successPanelContainer.classList.add("active");
+        successPanelContainer.offsetHeight;
+      }
+      if (typeof window.initializeSecureStep7AccountHydration === "function") {
+        window.initializeSecureStep7AccountHydration();
+      } else {
+        console.error("[Core Lifecycle Error] initializeSecureStep7AccountHydration from step-7.js is unmapped.");
+      }
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (window.currentWizardActiveStep !== targetStepInt) return;
+        if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
+          window.updateDynamicPricingMatrixVanilla();
+        }
+        if (typeof window.autoSkinSelectedUpsellCards === "function") {
+          window.autoSkinSelectedUpsellCards();
+        }
+        if (typeof window.updateApplicationMapTimelineBubbles === "function") {
+          window.updateApplicationMapTimelineBubbles(targetStepInt);
+        }
+        if (typeof window.executeMarketplaceSummaryRenderLoop === "function" && targetStepInt === 5) {
+          window.executeMarketplaceSummaryRenderLoop();
+        }
+      });
+    });
+  }
+}
+
+// 🌟 FIX: Safe window binding fallback assignment pattern to prevent script loading crashes
+window.goToNextWizardStep = typeof window.goToNextWizardStep === "function" ? window.goToNextWizardStep : (typeof goToNextWizardStep === "function" ? goToNextWizardStep : null);
+window.goToPreviousWizardStep = typeof window.goToPreviousWizardStep === "function" ? window.goToPreviousWizardStep : (typeof goToPreviousWizardStep === "function" ? goToPreviousWizardStep : null);
+window.switchWizardActiveViewLayout = typeof window.switchWizardActiveViewLayout === "function" ? window.switchWizardActiveViewLayout : (typeof switchWizardActiveViewLayout === "function" ? switchWizardActiveViewLayout : null);
+
+window.processPostStepTwoTimelineTracks = processPostStepTwoTimelineTracks;
 
 
 
 
 // ============================================================================ //
-// 🛡️ REFACTORED REFLECTIVE INFRASTRUCTURE HYDRATION LAYER & ANTI-CRASH SHIELD //
+// 🛡️ REFACTORED REFLECTIVE INFRASTRUCTURE HYDRATION LAYER & ANTI-CRASH SHIELD
 // ============================================================================ //
 (function() {
   "use strict";
@@ -1143,27 +1286,26 @@ window.executeStepLifecyclePipeline = executeStepLifecyclePipeline;
       
       let fallbackInitialKey = Object.keys(window.CENTRAL_SERVICE_PLAN_DB)[0] || "";
       let activeKeyToCommit = rawUrlService ? rawUrlService : fallbackInitialKey;
-
+      
       if (typeof window.resolvePricingConfigurationDynamically === "function" && activeKeyToCommit) {
         const dynamicMatch = window.resolvePricingConfigurationDynamically(activeKeyToCommit);
         if (dynamicMatch && dynamicMatch.matchedKey) {
           activeKeyToCommit = dynamicMatch.matchedKey;
         }
       }
-
+      
       // Ultimate fallback safety: map directly to your screen context token if variables are empty
       if (!activeKeyToCommit) {
         activeKeyToCommit = "llc-formation";
       }
-
+      
       return String(activeKeyToCommit).toLowerCase().trim();
     },
     set(newKey) {
       if (!newKey) return;
-      
       const cleanKey = String(newKey).toLowerCase().trim();
       internalServiceKey = cleanKey;
-
+      
       // Safe Parallel Synchronization: Only write if the target value differs to prevent recursion loops
       if (window.currentServiceKey !== cleanKey) window.currentServiceKey = cleanKey;
       if (window.currentServicePathKey !== cleanKey) window.currentServicePathKey = cleanKey;
@@ -1193,6 +1335,7 @@ window.executeStepLifecyclePipeline = executeStepLifecyclePipeline;
     console.log(`[Dynamic Boot] Active system paths verified. Selected node target: "${window.routeActiveServiceKey}"`);
   }, 1);
 })();
+
 
 // ============================================================================ // 
 // 🔗 MODULAR HOOK: URL PARAMETER EXTRACTOR & DEFENSIVE BOOTSTRAPPER            // 
@@ -1232,133 +1375,151 @@ function syncUrlStateToWizardEngine() {
     } 
 } 
 
-// ============================================================================ // 
-// 🚀 UNIFIED SMOOTH-SCROLL VIEWPORT TRACKING ENGINE                            // 
-// ============================================================================ // 
-(function() { 
-    "use strict"; 
-    
-    const masterLayoutPanels = document.querySelectorAll(".wizard-panel, [id^='step-panel-'], [id^='step-']"); 
-    window.activePanelVisibilityObserversArray = []; 
-    window.lastConfirmedActiveStepId = null; 
-    
-    // Guard flag to prevent infinite streaming execution loops on Step 3 
-    let isStep3CatalogInitialized = false; 
-    
-    masterLayoutPanels.forEach(function(panel) { 
-        const panelObserver = new MutationObserver(function(mutations) { 
-            const panelStepIdMatch = panel.id ? panel.id.match(/\d+$/) : null; 
-            const panelStepIndex = panelStepIdMatch ? parseInt(panelStepIdMatch[0], 10) : null; 
-            if (panelStepIndex === null) return; 
+// ============================================================================ //
+// 🚀 UNIFIED SMOOTH-SCROLL VIEWPORT TRACKING ENGINE
+// ============================================================================ //
+(function() {
+  "use strict";
+
+  const masterLayoutPanels = document.querySelectorAll(".wizard-panel, [id^='step-panel-'], [id^='step-']");
+  window.activePanelVisibilityObserversArray = [];
+  window.lastConfirmedActiveStepId = null;
+
+  // Guard flag to prevent infinite streaming execution loops on Step 3
+  let isStep3CatalogInitialized = false;
+
+  masterLayoutPanels.forEach(function(panel) {
+    const panelObserver = new MutationObserver(function(mutations) {
+      const panelStepIdMatch = panel.id ? panel.id.match(/\d+$/) : null;
+      const panelStepIndex = panelStepIdMatch ? parseInt(panelStepIdMatch[0], 10) : null;
+      
+      if (panelStepIndex === null) return;
+
+      // Ensure panel display state matches the global active wizard step index exactly
+      const isVisible = (panel.style.display === "block" || panel.classList.contains("active")) && 
+                        panelStepIndex === window.currentWizardActiveStep;
+
+      if (isVisible && window.lastConfirmedActiveStepId !== panel.id) {
+        window.lastConfirmedActiveStepId = panel.id;
+        console.log(`[Scroll Manager] Panel #${panel.id || 'wizard-step'} mounted active. Adjusting viewport anchors...`);
+
+        // 💳 MOUNT STABILITY GATEWAY (UPDATED FOR STEPS 6 & 7)
+        if (panelStepIndex === 6 || panelStepIndex === 7) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              try {
+                window.scrollTo({ top: 0, behavior: "auto" });
+              } catch(e) {}
+            });
+          });
+        } else {
+          try {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } catch(e) {}
+        }
+
+        // FIX: Scopes navigation re-binding triggers strictly to explicit step canvas targets
+        const isStepTwoActiveNode = panel.id === "step-panel-2" || 
+                                     panel.id === "step-2-onboarding-fields-canvas" || 
+                                     panel.id === "step-2-injection-placeholder";
+                                     
+        if (isStepTwoActiveNode && typeof window.attachStepTwoNavigationTriggers === "function") {
+          window.attachStepTwoNavigationTriggers();
+        }
+
+        if (panelStepIndex === 3) {
+          if (!isStep3CatalogInitialized) {
+            console.log("[Scroll Manager Interlock] Step 3 container live. Invoking streaming marketplace layout safely once...");
+            isStep3CatalogInitialized = true;
             
-            // Ensure panel display state matches the global active wizard step index exactly 
-            const isVisible = (panel.style.display === "block" || panel.classList.contains("active")) && panelStepIndex === window.currentWizardActiveStep; 
-            
-            if (isVisible && window.lastConfirmedActiveStepId !== panel.id) { 
-                window.lastConfirmedActiveStepId = panel.id; 
-                console.log(`[Scroll Manager] Panel #${panel.id || 'wizard-step'} mounted active. Adjusting viewport anchors...`); 
-                
-                // 💳 MOUNT STABILITY GATEWAY (UPDATED FOR STEPS 6 & 7) 
-                if (panelStepIndex === 6 || panelStepIndex === 7) { 
-                    requestAnimationFrame(() => { 
-                        requestAnimationFrame(() => { 
-                            try { window.scrollTo({ top: 0, behavior: "auto" }); } catch(e) {} 
-                        }); 
-                    }); 
-                } else { 
-                    try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch(e) {} 
-                } 
-                
-                // FIX: Scopes navigation re-binding triggers strictly to explicit step canvas targets 
-                // to eliminate background layout realignments from hijacking the workflow viewport.
-                const isStepTwoActiveNode = panel.id === "step-panel-2" || panel.id === "step-2-onboarding-fields-canvas" || panel.id === "step-2-injection-placeholder";
-                if (isStepTwoActiveNode && typeof window.attachStepTwoNavigationTriggers === "function") { 
-                    window.attachStepTwoNavigationTriggers(); 
-                } 
-                
-                if (panelStepIndex === 3) { 
-                    if (!isStep3CatalogInitialized) { 
-                        console.log("[Scroll Manager Interlock] Step 3 container live. Invoking streaming marketplace layout safely once..."); 
-                        isStep3CatalogInitialized = true; 
-                        if (typeof window.executeStepThreeUpsellStreaming === "function") { 
-                            window.executeStepThreeUpsellStreaming(); 
-                        } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") { 
-                            window.autoInitializeStep3MarketplaceCatalog(); 
-                        } 
-                    } 
-                } else { 
-                    isStep3CatalogInitialized = false; 
-                } 
-            } 
-        }); 
-        
-        // Arm the layout mutation tracker securely 
-        panelObserver.observe(panel, { attributes: true, attributeFilter: ["style", "class"] }); 
-        window.activePanelVisibilityObserversArray.push(panelObserver); 
-    }); 
+            if (typeof window.executeStepThreeUpsellStreaming === "function") {
+              window.executeStepThreeUpsellStreaming();
+            } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") {
+              window.autoInitializeStep3MarketplaceCatalog();
+            }
+          }
+        } else {
+          isStep3CatalogInitialized = false;
+        }
+      }
+    });
+
+    // Arm the layout mutation tracker securely
+    panelObserver.observe(panel, { attributes: true, attributeFilter: ["style", "class"] });
+    window.activePanelVisibilityObserversArray.push(panelObserver);
+  });
 })();
 
 
-/** 
- * Monitors active layout dimensions to handle responsive stylesheet skinning 
- * and prevent styling collisions on narrow smartphone viewports. 
- */ 
-function evaluateSystemViewportDesign() { 
-    const container = document.querySelector('.wizard-container') || 
-                      document.querySelector('.wizard-container-wrapper') || 
-                      (document.getElementById('step-panel-2')?.parentElement); 
-                      
-    if (!container) { 
-        // FIX: Replaced rapid polling loops with a quiet console check to keep the thread stable
-        console.log("[Viewport Engine] Container context missing. Standing by for master layout activation.");
-        return; 
-    } 
+/**
+ * Monitors active layout dimensions to handle responsive stylesheet skinning
+ * and prevent styling collisions on narrow smartphone viewports.
+ */
+function evaluateSystemViewportDesign() {
+  const container = document.querySelector('.wizard-container') || 
+                    document.querySelector('.wizard-container-wrapper') || 
+                    (document.getElementById('step-panel-2')?.parentElement);
+                    
+  if (!container) {
+    // FIX: Replaced rapid polling loops with a quiet console check to keep the thread stable
+    console.log("[Viewport Engine] Container context missing. Standing by for master layout activation.");
+    return;
+  }
 
-    // Handle responsive view mutations via standard utility definitions 
-    const isMobileSize = window.innerWidth <= 991; 
-    const standardMobileClass = 'is-mobile-device'; 
-    
-    if (isMobileSize && !container.classList.contains(standardMobileClass)) { 
-        container.classList.add(standardMobileClass); 
-        console.log("[Viewport Engine] Mobile layout skinning parameters applied."); 
-    } else if (!isMobileSize && container.classList.contains(standardMobileClass)) { 
-        container.classList.remove(standardMobileClass); 
-    } 
+  // Handle responsive view mutations via standard utility definitions
+  const isMobileSize = window.innerWidth <= 991;
+  const standardMobileClass = 'is-mobile-device';
 
-    // 🟢 UNIFIED STATE LOOP: Handles panel 2, panel 3, and panel 7 contextually without duplication 
-    // FIX: Removed '#step-panel-2' from direct style mutation overrides to protect your clean 2-column grid columns from dropping.
-    const targetPanelIds = ["step-2-onboarding-fields-canvas", "step-2-injection-placeholder", "step-panel-3", "step-3", "step-panel-5", "step-panel-6", "step-panel-7", "step-7"]; 
-    
-    targetPanelIds.forEach(id => { 
-        const activePanel = document.getElementById(id); 
-        if (activePanel && (activePanel.classList.contains("active") || activePanel.style.display === "block" || activePanel.style.display === "grid")) { 
-            // Read-before-write optimization rule for width matching 
-            if (activePanel.style.width !== "100%") { 
-                activePanel.style.setProperty("width", "100%", "important"); 
-            } 
-            // Apply minimum height tracking constraints to avoid layout collapse across viewports 
-            if (activePanel.style.minHeight !== "400px") { 
-                activePanel.style.setProperty("min-height", "400px", "important"); 
-            } 
-        } 
-    }); 
-} 
+  if (isMobileSize && !container.classList.contains(standardMobileClass)) {
+    container.classList.add(standardMobileClass);
+    console.log("[Viewport Engine] Mobile layout skinning parameters applied.");
+  } else if (!isMobileSize && container.classList.contains(standardMobileClass)) {
+    container.classList.remove(standardMobileClass);
+  }
 
-// 🔥 FIX: Expose to global window context so switchWizardActiveViewLayout can invoke it on step switches 
-window.evaluateSystemViewportDesign = evaluateSystemViewportDesign; 
+  // 🟢 UNIFIED STATE LOOP: Handles panel 2, panel 3, and panel 7 contextually without duplication
+  // FIX: Removed '#step-panel-2' from direct style mutation overrides to protect your clean 2-column grid columns from dropping.
+  const targetPanelIds = [
+    "step-2-onboarding-fields-canvas", 
+    "step-2-injection-placeholder", 
+    "step-panel-3", 
+    "step-3", 
+    "step-panel-5", 
+    "step-panel-6", 
+    "step-panel-7", 
+    "step-7"
+  ];
 
-// Optimized Debounce Wrapper to protect hardware threads during drag/resize events 
-let resizeDebounceTimer; 
-window.addEventListener("resize", () => { 
-    clearTimeout(resizeDebounceTimer); 
-    resizeDebounceTimer = setTimeout(evaluateSystemViewportDesign, 15); 
-}); 
+  targetPanelIds.forEach(id => {
+    const activePanel = document.getElementById(id);
+    if (activePanel && (activePanel.classList.contains("active") || activePanel.style.display === "block" || activePanel.style.display === "grid")) {
+      // Read-before-write optimization rule for width matching
+      if (activePanel.style.width !== "100%") {
+        activePanel.style.setProperty("width", "100%", "important");
+      }
+      // Apply minimum height tracking constraints to avoid layout collapse across viewports
+      if (activePanel.style.minHeight !== "400px") {
+        activePanel.style.setProperty("min-height", "400px", "important");
+      }
+    }
+  });
+}
 
-// Run initial system initialization metrics safely 
-if (document.readyState === "loading") { 
-    document.addEventListener("DOMContentLoaded", evaluateSystemViewportDesign); 
-} else { 
-    evaluateSystemViewportDesign(); 
+// 🔥 FIX: Expose to global window context so switchWizardActiveViewLayout can invoke it on step switches
+window.evaluateSystemViewportDesign = evaluateSystemViewportDesign;
+
+// Optimized Debounce Wrapper to protect hardware threads during drag/resize events
+let resizeDebounceTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeDebounceTimer);
+  resizeDebounceTimer = setTimeout(evaluateSystemViewportDesign, 15);
+});
+
+// Run initial system initialization metrics safely
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", evaluateSystemViewportDesign);
+} else {
+  evaluateSystemViewportDesign();
 }
 
 // ============================================================================ // 
@@ -1708,35 +1869,38 @@ if (document.readyState === "loading") {
   window.enforceJurisdictionGateEvaluation = enforceJurisdictionGateEvaluation;
 })();
 
-
-// ============================================================================ // 
-// 🔌 ASYNCHRONOUS BACKGROUND FILE PRE-FETCH AND MOUNTING INTERLOCK            // 
-// ============================================================================ // 
+// ============================================================================ //
+// 🔌 ASYNCHRONOUS BACKGROUND FILE PRE-FETCH AND MOUNTING INTERLOCK
+// ============================================================================ //
 (function() {
-    "use strict";
+  "use strict";
 
-    function evaluateAsynchronousScriptPreFetchPass() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const activeStep = typeof window.currentWizardActiveStep !== 'undefined' ? parseInt(window.currentWizardActiveStep, 10) : 0;
-        
-        console.log(`[Script Pre-Fetch Engine] Running routing evaluations. Current viewport active step is: ${activeStep}`);
+  /**
+   * Evaluates if script asset pre-fetching should hand off compilation control.
+   * Features a strict step enforcement block to keep the background loop thread stable.
+   */
+  function evaluateAsynchronousScriptPreFetchPass() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeStep = typeof window.currentWizardActiveStep !== 'undefined' ? parseInt(window.currentWizardActiveStep, 10) : 0;
+    
+    console.log(`[Script Pre-Fetch Engine] Running routing evaluations. Current viewport active step is: ${activeStep}`);
 
-        // FIX: Strict step enforcement check block. If the user is on Step 1, completely suppress 
-        // the background Step 2 initialization functions from compiling fields early onto the DOM canvas!
-        if (activeStep !== 2) {
-            console.log(`[Script Pre-Fetch Guard] Postponing Step 2 questionnaire injection. User is intentionally sitting on Step ${activeStep}.`);
-            return;
-        }
-
-        // Only allow execution to flow downstream if the user is explicitly sitting on Step 2 tracks
-        if (typeof window.runStepTwoLayoutInitialization === "function") {
-            console.log("[Script Pre-Fetch Engine] Viewport match verified. Passing control to Step 2 template layout hydrator...");
-            window.runStepTwoLayoutInitialization();
-        }
+    // FIX: Strict step enforcement check block. If the user is on Step 1, completely suppress
+    // the background Step 2 initialization functions from compiling fields early onto the DOM canvas!
+    if (activeStep !== 2) {
+      console.log(`[Script Pre-Fetch Guard] Postponing Step 2 questionnaire injection. User is intentionally sitting on Step ${activeStep}.`);
+      return;
     }
 
-    // Bind methods back securely to prevent asynchronous script-loader crossovers
-    window.evaluateAsynchronousScriptPreFetchPass = evaluateAsynchronousScriptPreFetchPass;
+    // Only allow execution to flow downstream if the user is explicitly sitting on Step 2 tracks
+    if (typeof window.runStepTwoLayoutInitialization === "function") {
+      console.log("[Script Pre-Fetch Engine] Viewport match verified. Passing control to Step 2 template layout hydrator...");
+      window.runStepTwoLayoutInitialization();
+    }
+  }
+
+  // Bind methods back securely to prevent asynchronous script-loader crossovers
+  window.evaluateAsynchronousScriptPreFetchPass = evaluateAsynchronousScriptPreFetchPass;
 })();
 
 
@@ -1994,69 +2158,78 @@ setTimeout(() => {
 // Clean namespace registration map blocks safely
 window.runUnifiedPlatformLifecycleBoot = runUnifiedPlatformLifecycleBoot;
 
+// ============================================================================ //
+// 🧠 WIZARD MASTER CORE DATA ARCHITECTURE
+// ============================================================================ //
+(function() {
+  "use strict";
 
-// ============================================================================ // 
-// 🧠 WIZARD MASTER CORE DATA ARCHITECTURE                                      // 
-// ============================================================================ // 
-(function() { 
-    "use strict"; 
-    
-    // Completely isolated, private data vault. Step scripts cannot overwrite this directly. 
-    const WIZARD_CENTRAL_VAULT = { 
-        step_0: {}, 
-        step_1: {}, 
-        step_2: { addons: [] }, 
-        step_3: { packages: [], upsells: [] }, 
-        step_4: {}, 
-        step_5: {}, 
-        step_6: {}, 
-        step_7: {} 
-    }; 
+  // Completely isolated, private data vault. Step scripts cannot overwrite this directly.
+  const WIZARD_CENTRAL_VAULT = {
+    step_0: {},
+    step_1: {},
+    step_2: { addons: [] },
+    step_3: { packages: [], upsells: [] },
+    step_4: {},
+    step_5: {},
+    step_6: {},
+    step_7: {}
+  };
 
-    window.wizardCentralState = { 
-        // Isolated setter that rejects accidental cross-step overwrites 
-        updateStepData: function(stepNumber, key, value) { 
-            const stepKey = `step_${stepNumber}`; 
-            if (!WIZARD_CENTRAL_VAULT[stepKey]) return; 
-            WIZARD_CENTRAL_VAULT[stepKey][key] = value; 
-            this.syncCalculatedTotals(); 
-        }, 
-        
-        getStepData: function(stepNumber, key) { 
-            const stepKey = `step_${stepNumber}`; 
-            if (!WIZARD_CENTRAL_VAULT[stepKey]) return null; 
-            return WIZARD_CENTRAL_VAULT[stepKey][key] || null; 
-        }, 
-        
-        // Aggregates prices from step modules cleanly without triggering mutations 
-        syncCalculatedTotals: function() { 
-            let finalCalculatedSum = 0; 
-            
-            // Extract validated step 2 addon pricing totals 
-            const step2Addons = WIZARD_CENTRAL_VAULT.step_2.addons || []; 
-            step2Addons.forEach(item => { 
-                finalCalculatedSum += (parseFloat(item.price) || 0); 
-            }); 
-            
-            // Extract validated step 3 upsell/package totals 
-            const step3Upsells = WIZARD_CENTRAL_VAULT.step_3.upsells || []; 
-            step3Upsells.forEach(item => { 
-                finalCalculatedSum += (parseFloat(item.price) || 0); 
-            }); 
-            
-            window.computedWizardGrandTotalAmount = finalCalculatedSum; 
-            window.wizardCalculatedFinalTotalAmount = finalCalculatedSum; 
-            
-            // FIX: Use a tiny rendering engine lifecycle gap to let dynamic fields settle onto their side-by-side 
-            // layout tracks perfectly before calculating summary values and redrawing the invoice pane.
-            if (typeof window.executeMarketplaceSummaryRenderLoop === "function") { 
-                requestAnimationFrame(() => {
-                    window.executeMarketplaceSummaryRenderLoop(); 
-                });
-            } 
-        } 
-    }; 
+  window.wizardCentralState = {
+    /**
+     * Isolated setter that rejects accidental cross-step overwrites.
+     */
+    updateStepData: function(stepNumber, key, value) {
+      const stepKey = `step_${stepNumber}`;
+      if (!WIZARD_CENTRAL_VAULT[stepKey]) return;
+      
+      WIZARD_CENTRAL_VAULT[stepKey][key] = value;
+      this.syncCalculatedTotals();
+    },
+
+    /**
+     * Isolated getter to query stored vault metrics safely.
+     */
+    getStepData: function(stepNumber, key) {
+      const stepKey = `step_${stepNumber}`;
+      if (!WIZARD_CENTRAL_VAULT[stepKey]) return null;
+      
+      return WIZARD_CENTRAL_VAULT[stepKey][key] || null;
+    },
+
+    /**
+     * Aggregates prices from step modules cleanly without triggering mutations.
+     */
+    syncCalculatedTotals: function() {
+      let finalCalculatedSum = 0;
+
+      // Extract validated step 2 addon pricing totals
+      const step2Addons = WIZARD_CENTRAL_VAULT.step_2.addons || [];
+      step2Addons.forEach(item => {
+        finalCalculatedSum += (parseFloat(item.price) || 0);
+      });
+
+      // Extract validated step 3 upsell/package totals
+      const step3Upsells = WIZARD_CENTRAL_VAULT.step_3.upsells || [];
+      step3Upsells.forEach(item => {
+        finalCalculatedSum += (parseFloat(item.price) || 0);
+      });
+
+      window.computedWizardGrandTotalAmount = finalCalculatedSum;
+      window.wizardCalculatedFinalTotalAmount = finalCalculatedSum;
+
+      // FIX: Use a tiny rendering engine lifecycle gap to let dynamic fields settle onto their side-by-side
+      // layout tracks perfectly before calculating summary values and redrawing the invoice pane.
+      if (typeof window.executeMarketplaceSummaryRenderLoop === "function") {
+        requestAnimationFrame(() => {
+          window.executeMarketplaceSummaryRenderLoop();
+        });
+      }
+    }
+  };
 })();
+
 
 
 

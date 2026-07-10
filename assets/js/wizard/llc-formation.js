@@ -48,6 +48,8 @@ window.formRegistry['llc-formation-part1-layout'] = function(stateDropdownOption
   var blankStatesHtml = buildStateHtml("");
 
   return `
+
+  
     <!-- Info Banner Component -->
  <!-- Info Banner -->
 <div style="width: 100%; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-top: -12px; margin-bottom: 0px;">
