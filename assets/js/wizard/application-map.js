@@ -88,8 +88,12 @@ function renderDynamicWizardApplicationMap() {
          <span class="toc-step-title" style="font-size: 0.9rem; color: #64748b; font-weight: 500; transition: color 0.2s; display: block; width: 100% !important; line-height: 1.3; margin: 0 !important; padding: 0 !important;">${stepItem.title}</span> 
          <span class="toc-step-desc" style="font-size: 0.80rem; color: #94a3b8; font-weight: 500; display: block; width: 100% !important; line-height: 1.3; margin: 0 !important; padding: 0 !important; word-wrap: break-word; overflow-wrap: break-word; white-space: normal !important;">${stepItem.desc}</span> 
        </div> 
-     </div> `; 
+     </div> 
+    
+     `;
+      
   }); 
+  
   
   compiledMapHtml += ` 
      </nav> 
@@ -155,7 +159,10 @@ function updateApplicationMapTimelineBubbles(currentStepIndex) {
       } 
     }); 
   } 
+  
 } 
+
+
 
 window.renderDynamicWizardApplicationMap = renderDynamicWizardApplicationMap; 
 window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles; 
