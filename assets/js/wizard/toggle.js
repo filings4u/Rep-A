@@ -160,15 +160,6 @@ document.addEventListener("click", function(e) {
 });
 
 
-document.addEventListener("click", function(e) {
-  const navPanel = document.getElementById("f4u-dropdown-menu-panel");
-  if (!navPanel || navPanel.style.display !== "block") return;
-  if (!e.target.closest('#f4u-dropdown-menu-panel') && !e.target.closest('#mobileNavToggleBtn')) {
-    navPanel.style.setProperty("display", "none", "important");
-    const icon = document.getElementById("mobileNavTriggerIcon");
-    if (icon) icon.innerHTML = "☰ Menu";
-  }
-});
 
 window.initializeOverlayMenuAssets = function() {
   window.extractLogoForMobileHeader();
@@ -180,3 +171,4 @@ if (document.readyState === "loading") {
 } else {
   window.initializeOverlayMenuAssets();
 }
+

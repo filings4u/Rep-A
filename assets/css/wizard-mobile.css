@@ -195,3 +195,27 @@
     }
 
 }
+
+
+/* 1. HIDE THE TOGGLE BUTTON BY DEFAULT ON DESKTOP VIEWPORTS */
+#mobileNavToggleBtn,
+#f4u-dropdown-menu-panel,
+#f4u-mobile-header-bar {
+  display: none !important;
+}
+
+/* 2. REVEAL THE TOP DROPDOWN ELEMENTS ONLY ON MOBILE BREAKPOINTS */
+@media screen and (max-width: 768px) {
+  #mobileNavToggleBtn {
+    display: block !important;
+  }
+  
+  #f4u-mobile-header-bar {
+    display: flex !important;
+  }
+  
+  /* Keep the dropdown menu completely hidden until the button is clicked */
+  #f4u-dropdown-menu-panel {
+    display: none; 
+  }
+}
