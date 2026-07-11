@@ -413,36 +413,68 @@ function initEmployerIdEinService() {
     }
   });
 
-  // ------------------------------------------------------------------------ //
-  // SECTION B: MASTER SYSTEM CONSTRUCTOR RENDER ALLOCATION
+   // ------------------------------------------------------------------------ //
+  // MODULE 5: STEP-AWARE MASTER CONSTRUCTOR RENDER ALLOCATION ENGINE
   // ------------------------------------------------------------------------ //
   window.formRegistry['employer-id-ein-form-master'] = function(stateDropdownOptionsHtml = "") {
-    const cleanStateOptions = stateDropdownOptionsHtml.replace(/\\/g, '');
+    // CRITICAL LIFECYCLE FILTER: Check what step index the framework is currently rendering
+    const exactActiveStepIndex = parseInt(window.currentWizardActiveStep || window.activeStepIndex || 0, 10);
+    
+    // If the customer is still on Step 1 (State Selection) or Step 2 (Package Review), 
+    // immediately exit and return an empty string to let the core framework render normally.
+    if (exactActiveStepIndex < 2) {
+      console.log(`[EIN Lifecycle Engine] Active step index is ${exactActiveStepIndex}. Suppressing intake layout injection to protect early step structures.`);
+      return "";
+    }
 
-    const layer1 = window.formRegistry['employer-id-ein-part1-layout'] ? window.formRegistry['employer-id-ein-part1-layout'](cleanStateOptions) : '';
-    const layer2 = window.formRegistry['employer-id-ein-part2-layout'] ? window.formRegistry['employer-id-ein-part2-layout']() : '';
-    const layer3 = window.formRegistry['employer-id-ein-part3-layout'] ? window.formRegistry['employer-id-ein-part3-layout']() : '';
-    const layer4 = window.formRegistry['employer-id-ein-part4-layout'] ? window.formRegistry['employer-id-ein-part4-layout']() : '';
-    const layer5 = window.formRegistry['employer-id-ein-part5-layout'] ? window.formRegistry['employer-id-ein-part5-layout']() : '';
+    console.log("[EIN Interlock Bridge] Compiling multi-part form data structures for active workspace...");
+    
+    // Fallback protection loop: Populate state choices safely if missing
+    let targetStateOptions = stateDropdownOptionsHtml;
+    if (!targetStateOptions) {
+      targetStateOptions = (typeof window.buildGlobalUsaStateDropdownOptionsHtml === 'function') 
+        ? window.buildGlobalUsaStateDropdownOptionsHtml("") 
+        : '<option value="" disabled selected>-- Select State --</option><option value="WY">Wyoming</option>';
+    }
+    
+    const cleanStateOptions = String(targetStateOptions).replace(/\\/g, '');
 
-    // Synchronize toggle displays post layout compilation initialization
+    // Compile your 5 sub-sections sequentially inside a single string pass
+    const part1 = window.formRegistry['employer-id-ein-part1-layout'] ? window.formRegistry['employer-id-ein-part1-layout'](cleanStateOptions) : '';
+    const part2 = window.formRegistry['employer-id-ein-part2-layout'] ? window.formRegistry['employer-id-ein-part2-layout']() : '';
+    const part3 = window.formRegistry['employer-id-ein-part3-layout'] ? window.formRegistry['employer-id-ein-part3-layout']() : '';
+    const part4 = window.formRegistry['employer-id-ein-part4-layout'] ? window.formRegistry['employer-id-ein-part4-layout']() : '';
+    const part5 = window.formRegistry['employer-id-ein-part5-layout'] ? window.formRegistry['employer-id-ein-part5-layout']() : '';
+    
+    const totalCompiledHtmlMarkup = part1 + part2 + part3 + part4 + part5;
+
+    // TARGET LOCATOR PASS: Find the HTML container on your screen
+    const liveTargetPanel = document.getElementById("step-panel-2") || 
+                            document.querySelector(".wizard-panel-active") || 
+                            document.getElementById("wizard-form-container");
+
+    if (liveTargetPanel) {
+      liveTargetPanel.innerHTML = totalCompiledHtmlMarkup;
+      console.log("[EIN Interlock Bridge Success] Intake form painted safely onto active view workspace.");
+    }
+
+    // Synchronize conditional display layers post-DOM paint
     setTimeout(() => {
       if (typeof window.toggleEinConditionalFieldWrappers === "function") {
         window.toggleEinConditionalFieldWrappers();
       }
     }, 15);
 
-    return layer1 + layer2 + layer3 + layer4 + layer5;
+    return totalCompiledHtmlMarkup;
   };
 
-  // Explicit framework step aliases mapping to clear step-2.js proxy handlers
-  window.formRegistry['employer-id-ein'] = function(html) {
-    return window.formRegistry['employer-id-ein-form-master'](html);
-  };
-  window.formRegistry['employer-id-ein-layout'] = window.formRegistry['employer-id-ein'];
+  // Re-map service key anchors cleanly to bypass proxy loops safely
+  window.executeStepTwoFormHydrationPipeline = window.formRegistry['employer-id-ein-form-master'];
+  window.formRegistry['employer-id-ein'] = window.executeStepTwoFormHydrationPipeline;
+  window.formRegistry['employer-id-ein-layout'] = window.executeStepTwoFormHydrationPipeline;
 
-  console.log("[EIN Wizard Engine] All decoupled multi-part components compiled successfully.");
+  console.log("[EIN Layout Linker] Step-aware active rendering guard armed successfully.");
 
 
-// Global Core Ignition Loop Run Trigger
+// Re-execute master ignition loop to update active framework bindings safely
 initEmployerIdEinService();
