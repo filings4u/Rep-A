@@ -313,134 +313,151 @@ function runStepTwoLayoutInitialization() {
 window.runStepTwoLayoutInitialization = runStepTwoLayoutInitialization;
 
 
-// ============================================================================ //
-// 🛡 REFIXTURED ADVANCEMENT GATE: IN-LINE CONTEXTUAL FORM VALIDATION           //
-// ============================================================================ //
+// ============================================================================ // 
+// 🛡 REFIXTURED ADVANCEMENT GATE: IN-LINE CONTEXTUAL FORM VALIDATION           // 
+// ============================================================================ // 
+window.processStepTwoFunnelAdvancementGate = function(event) { 
+    const currentEvent = event || window.event; 
+    if (currentEvent && typeof currentEvent.preventDefault === "function") { 
+        currentEvent.preventDefault(); 
+    } 
+    console.log("[Step 2 Validation] Running data integrity compilation checks..."); 
 
-window.processStepTwoFunnelAdvancementGate = function(event) {
-  const currentEvent = event || window.event;
-  if (currentEvent && typeof currentEvent.preventDefault === "function") {
-    currentEvent.preventDefault();
-  }
-  console.log("[Step 2 Validation] Running data integrity compilation checks...");
+    // 1. CLEAR ALL PREVIOUS IN-LINE ERRORS BEFORE RE-CHECKING 
+    document.querySelectorAll(".inline-error-message-node").forEach(node => node.remove()); 
+    document.querySelectorAll(".wizard-input-field-error-state").forEach(el => { 
+        el.classList.remove("wizard-input-field-error-state"); 
+        el.style.borderColor = "#cbd5e1"; 
+    }); 
 
-  // 1. CLEAR ALL PREVIOUS IN-LINE ERRORS BEFORE RE-CHECKING
-  document.querySelectorAll(".inline-error-message-node").forEach(node => node.remove());
-  document.querySelectorAll(".wizard-input-field-error-state").forEach(el => {
-    el.classList.remove("wizard-input-field-error-state");
-    el.style.borderColor = "#cbd5e1";
-  });
+    const urlParams = new URLSearchParams(window.location.search); 
+    const serviceSlugKey = String(window.currentServiceKey || window.routeActiveServiceKey || urlParams.get('service') || "").toLowerCase().trim(); 
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const serviceSlugKey = String(window.currentServiceKey || window.routeActiveServiceKey || urlParams.get('service') || "").toLowerCase().trim();
+    // Pure dynamic validation mapping. Avoids hardcoding service-specific keys. 
+    let aggregatedValidationResults = { isValid: true, errors: [] }; 
 
-  // FIX 1: Pure dynamic validation mapping. Avoids hardcoding service-specific keys.
-  let aggregatedValidationResults = { isValid: true, errors: [] };
-  
-  // Dynamically probe the form registry for any validation scripts matching the current service workflow
-  if (window.formRegistry) {
-    Object.keys(window.formRegistry).forEach(registryKey => {
-      // Safely checks if the registered validation object belongs to the active dynamic service slug
-      if (registryKey.startsWith(serviceSlugKey) && registryKey.includes("validation")) {
-        const activeValidatorObject = window.formRegistry[registryKey];
-        if (activeValidatorObject && typeof activeValidatorObject.validate === "function") {
-          const currentResult = activeValidatorObject.validate();
-          if (!currentResult.isValid) {
-            aggregatedValidationResults.isValid = false;
-            if (Array.isArray(currentResult.errors)) {
-              currentResult.errors.forEach(err => {
-                if (!aggregatedValidationResults.errors.includes(err)) {
-                  aggregatedValidationResults.errors.push(err);
-                }
-              });
-            }
-          }
-        }
-      }
-    });
-  }
-  // 2. ERROR LAYOUT GEN: Draw clean error states on active fields without text-matching dictionaries
-  if (!aggregatedValidationResults.isValid) {
-    console.log("[Step 2 Validation Failure] Requirements blocked. Drawing in-line warnings.");
+    // Dynamically probe the form registry for any validation scripts matching the current service workflow 
+    if (window.formRegistry) { 
+        Object.keys(window.formRegistry).forEach(registryKey => { 
+            // Safely checks if the registered validation object belongs to the active dynamic service slug 
+            if (registryKey.startsWith(serviceSlugKey) && registryKey.includes("validation")) { 
+                const activeValidatorObject = window.formRegistry[registryKey]; 
+                
+                if (activeValidatorObject && typeof activeValidatorObject.validate === "function") { 
+                    const currentResult = activeValidatorObject.validate(); 
+                    
+                    // FIXED: Read the validator results whether they are raw booleans OR custom structured validation object maps!
+                    let isThisModuleValid = true;
+                    let moduleErrors = [];
 
-    let firstInvalidElement = null;
+                    if (typeof currentResult === "object" && currentResult !== null) {
+                        isThisModuleValid = currentResult.isValid !== false; // Fall back gracefully if field missing
+                        moduleErrors = Array.isArray(currentResult.errors) ? currentResult.errors : [];
+                    } else {
+                        // The sub-modules throw a raw boolean. Map it safely here.
+                        isThisModuleValid = !!currentResult;
+                        
+                        // If it failed but provided no text array, pull the module's error rules array for display
+                        if (!isThisModuleValid) {
+                            moduleErrors = Array.isArray(activeValidatorObject.requiredFields) 
+                                ? activeValidatorObject.requiredFields 
+                                : ["Please verify your onboarding parameters layout details."];
+                        }
+                    }
 
-    aggregatedValidationResults.errors.forEach(errorItem => {
-      // Fall back gracefully whether error payloads pass text strings or structured field metadata objects
-      const errMsg = typeof errorItem === "object" ? errorItem.message : errorItem;
-      const explicitFieldId = typeof errorItem === "object" ? errorItem.fieldId : null;
-
-      let fieldInput = null;
-
-      if (explicitFieldId) {
-        fieldInput = document.getElementById(explicitFieldId) || document.querySelector(`[name="${explicitFieldId}"]`);
-      }
-
-      // FIX 2: If no explicit element ID is returned, resolve fields directly by parsing the required form attributes
-      if (!fieldInput) {
-        const visibleRequiredFields = document.querySelectorAll("#step-2-onboarding-fields-canvas input[required], #step-2-onboarding-fields-canvas select[required], #step-2-onboarding-fields-canvas textarea[required]");
-        for (let i = 0; i < visibleRequiredFields.length; i++) {
-          const currentField = visibleRequiredFields[i];
-          // Match inputs safely if they are empty OR contain failed structural values
-          if (!currentField.value.trim() || currentField.classList.contains("invalid-value-flag")) {
-            fieldInput = currentField;
-            break;
-          }
-        }
-      }
-
-      // Draw inline validation warning labels cleanly inside layout boundaries
-      if (fieldInput) {
-        if (!firstInvalidElement) firstInvalidElement = fieldInput;
-        
-        fieldInput.classList.add("wizard-input-field-error-state");
-        fieldInput.style.borderColor = "#b91c1c";
-
-        const inputParentWrapper = fieldInput.closest(".wizard-input-group") || fieldInput.closest(".form-group-wrapper") || fieldInput.parentElement;
-        if (inputParentWrapper) {
-          if (!inputParentWrapper.querySelector(".inline-error-message-node")) {
-            const errorLabel = document.createElement("span");
-            errorLabel.className = "inline-error-message-node";
-            errorLabel.style.cssText = "color: #b91c1c; font-size: 0.78rem; font-weight: 600; display: block; margin-top: 4px; text-align: left; clear: both; width: 100%; animation: fadeIn 0.15s ease;";
-            errorLabel.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="margin-right: 4px;"></i> ${errMsg}`;
-            inputParentWrapper.appendChild(errorLabel);
-          }
-        }
-      }
-    });
-
-    if (firstInvalidElement) {
-      firstInvalidElement.scrollIntoView({ behavior: "smooth", block: "center" });
-      firstInvalidElement.focus();
+                    if (!isThisModuleValid) { 
+                        aggregatedValidationResults.isValid = false; 
+                        moduleErrors.forEach(err => { 
+                            if (!aggregatedValidationResults.errors.includes(err)) { 
+                                aggregatedValidationResults.errors.push(err); 
+                            } 
+                        }); 
+                    } 
+                } 
+            } 
+        }); 
     }
-    return; // HARD BLOCK forward progression
-  }
-  // 3. STEP TRANSITION ROUTING PASS
-  // Commit valid step 2 input variables to local state cache memory
-  if (typeof window.saveWizardFormStatesVanilla === "function") {
-    window.saveWizardFormStatesVanilla();
-  }
 
-  // Perform the panel step layout transition assignment safely
-  if (typeof window.switchWizardActiveViewLayout === "function") {
-    window.switchWizardActiveViewLayout(3);
-  }
+    // 2. ERROR LAYOUT GEN: Draw clean error states on active fields without text-matching dictionaries 
+    if (!aggregatedValidationResults.isValid) { 
+        console.log("[Step 2 Validation Failure] Requirements blocked. Drawing in-line warnings."); 
+        let firstInvalidElement = null; 
+        
+        aggregatedValidationResults.errors.forEach(errorItem => { 
+            // Fall back gracefully whether error payloads pass text strings or structured field metadata objects 
+            const errMsg = typeof errorItem === "object" ? (errorItem.message || errorItem.msg) : errorItem; 
+            const explicitFieldId = typeof errorItem === "object" ? errorItem.id : null; 
+            
+            let fieldInput = null; 
+            if (explicitFieldId) { 
+                fieldInput = document.getElementById(explicitFieldId) || document.querySelector(`[name="${explicitFieldId}"]`); 
+            } 
+            
+            // If no explicit element ID is returned, resolve fields directly by parsing the required form attributes 
+            if (!fieldInput) { 
+                const visibleRequiredFields = document.querySelectorAll("#step-2-onboarding-fields-canvas input[required], #step-2-onboarding-fields-canvas select[required], #step-2-onboarding-fields-canvas textarea[required]"); 
+                for (let i = 0; i < visibleRequiredFields.length; i++) { 
+                    const currentField = visibleRequiredFields[i]; 
+                    // Match inputs safely if they are empty OR contain failed structural values 
+                    if (!currentField.value.trim() || currentField.classList.contains("invalid-value-flag")) { 
+                        fieldInput = currentField; 
+                        break; 
+                    } 
+                } 
+            } 
+            
+            // Draw inline validation warning labels cleanly inside layout boundaries 
+            if (fieldInput) { 
+                if (!firstInvalidElement) firstInvalidElement = fieldInput; 
+                fieldInput.classList.add("wizard-input-field-error-state"); 
+                fieldInput.style.borderColor = "#b91c1c"; 
+                
+                const inputParentWrapper = fieldInput.closest(".wizard-input-group") || fieldInput.closest(".form-group-wrapper") || fieldInput.parentElement; 
+                if (inputParentWrapper) { 
+                    if (!inputParentWrapper.querySelector(".inline-error-message-node")) { 
+                        const errorLabel = document.createElement("span"); 
+                        errorLabel.className = "inline-error-message-node"; 
+                        errorLabel.style.cssText = "color: #b91c1c; font-size: 0.78rem; font-weight: 600; display: block; margin-top: 4px; text-align: left; clear: both; width: 100%; animation: fadeIn 0.15s ease;"; 
+                        errorLabel.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="margin-right: 4px;"></i> ${errMsg}`; 
+                        inputParentWrapper.appendChild(errorLabel); 
+                    } 
+                } 
+            } 
+        }); 
+        
+        if (firstInvalidElement) { 
+            firstInvalidElement.scrollIntoView({ behavior: "smooth", block: "center" }); 
+            firstInvalidElement.focus(); 
+        } 
+        return; // HARD BLOCK forward progression 
+    } 
 
-  // Pass system execution controls cleanly forward to Step 3 lifecycle initializers
-  if (typeof window.runStepThreeLayoutInitialization === "function") {
-    console.log("[Advancement Gate Success] Passing control cleanly to Step 3 Lifecycle initialization...");
-    window.runStepThreeLayoutInitialization();
-  } else if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
-    console.log("[Advancement Gate Warning] Step 3 layout initialization missing. Running total matrix recalculation fallback...");
-    window.updateDynamicPricingMatrixVanilla();
-  }
-};
+    // 3. STEP TRANSITION ROUTING PASS 
+    // Commit valid step 2 input variables to local state cache memory 
+    if (typeof window.saveWizardFormStatesVanilla === "function") { 
+        window.saveWizardFormStatesVanilla(); 
+    } 
+    
+    // Perform the panel step layout transition assignment safely 
+    if (typeof window.switchWizardActiveViewLayout === "function") { 
+        window.switchWizardActiveViewLayout(3); 
+    } 
+    
+    // Pass system execution controls cleanly forward to Step 3 lifecycle initializers 
+    if (typeof window.runStepThreeLayoutInitialization === "function") { 
+        console.log("[Advancement Gate Success] Passing control cleanly to Step 3 Lifecycle initialization..."); 
+        window.runStepThreeLayoutInitialization(); 
+    } else if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
+        console.log("[Advancement Gate Warning] Step 3 layout initialization missing. Running total matrix recalculation fallback..."); 
+        window.updateDynamicPricingMatrixVanilla(); 
+    } 
+}; 
 
-// Safety initialization mappings
-if (typeof window.runStepTwoLayoutInitialization === "function") {
-  window.initializeDynamicServiceFormLayout = window.runStepTwoLayoutInitialization;
-} else {
-  console.warn("[Step 2 Bootstrap Warning] 'runStepTwoLayoutInitialization' was not found globally. Mapping skipped.");
+// Safety initialization mappings 
+if (typeof window.runStepTwoLayoutInitialization === "function") { 
+    window.initializeDynamicServiceFormLayout = window.runStepTwoLayoutInitialization; 
+} else { 
+    console.warn("[Step 2 Bootstrap Warning] 'runStepTwoLayoutInitialization' was not found globally. Mapping skipped."); 
 }
 
 // ============================================================================ //
@@ -2784,25 +2801,36 @@ function bootstrapStepTwoLifecycleEngine() {
                     const value = Reflect.get(target, propertyKey, receiver); 
                     return typeof value === 'function' ? value.bind(target) : value; 
                 }, 
-                set(target, propertyKey, incomingValue) { 
-                    const result = Reflect.set(target, propertyKey, incomingValue); 
+       set(target, propertyKey, incomingValue) { 
+    const result = Reflect.set(target, propertyKey, incomingValue); 
 
-                    clearTimeout(window.proxyRenderDebounceTimeout); 
-                    window.proxyRenderDebounceTimeout = setTimeout(() => { 
-                        requestAnimationFrame(() => { 
-                            const currentStepCheck = parseInt(window.currentWizardActiveStep, 10); 
-                            
-                            // CLEAN FIX: If it targets Step 1 or 2 while rendering correctly, silence the warnings completely
-                            if (currentStepCheck !== 1 && currentStepCheck !== 2) { 
-                                return; // Silently yield without logging a warning box
-                            } 
-                            
-                            // Execute layout modules quietly
-                            safelyTriggerLayoutCompilation();
-                        }); 
-                    }, 40); 
-                    return result; 
-                } 
+    clearTimeout(window.proxyRenderDebounceTimeout); 
+    window.proxyRenderDebounceTimeout = setTimeout(() => { 
+        requestAnimationFrame(() => { 
+            // 1. Dynamic Check: Fallback safely if wizard target strings or steps are not resolved
+            const activeStepRaw = window.currentWizardActiveStep;
+            if (activeStepRaw === undefined || activeStepRaw === null) {
+                // If the tracking state isn't ready yet, compile layout dependencies safely
+                safelyTriggerLayoutCompilation();
+                return;
+            }
+
+            const currentStepCheck = parseInt(activeStepRaw, 10); 
+            
+            // 2. FIXED STEP RANGE ALLOWANCE: Ensure Step 1 (Applicant Info) and Step 2 (Contact/Addons) 
+            // can cleanly execute layout compilations when the next button is clicked!
+            if (isNaN(currentStepCheck) || currentStepCheck < 0 || currentStepCheck > 3) { 
+                console.warn(`[Step 2 Proxy Guard] Navigation out of bounds. Layout suppressed for Step: ${currentStepCheck}`);
+                return; 
+            } 
+            
+            // 3. Trigger compilation silently to pass control to the navigation wizard handler
+            safelyTriggerLayoutCompilation();
+        }); 
+    }, 40); 
+    return result; 
+}
+
             }); 
         }
 

@@ -194,78 +194,97 @@ function initEmployerIdEinService() {
         `;
     };
 
-    // ------------------------------------------------------------------------
-    // MODULE 3: PART 2 VALIDATION REGISTER
-    // ------------------------------------------------------------------------
-    window.formRegistry['employer-id-ein-part2-validation'] = {
-        requiredFields: [
-            { id: 'ein_applicant_phone', msg: 'Applicant Contact Phone Number is required.' },
-            { id: 'ein_applicant_email', msg: 'Applicant Contact Email Address is required.' }
-        ],
-        validate: function() {
-            let isValid = true;
-            let errors = [];
-
-            const setError = (el, msg) => {
-                if (el) el.style.borderColor = "#ef4444";
-                isValid = false;
-                if (!errors.includes(msg)) errors.push(msg);
-            };
-
-            const clearError = (el) => {
-                if (el) el.style.borderColor = "#cbd5e1";
-            };
-
-            // 1. Process base mandatory input items presence checks
-            this.requiredFields.forEach(field => {
-                const el = document.getElementById(field.id);
-                if (el) {
-                    if (!el.value.trim()) setError(el, field.msg);
-                    else clearError(el);
-                }
-            });
-
-            // 2. Validate Contact Email Layout String Formatting
-            const emailEl = document.getElementById("ein_applicant_email");
-            if (emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-                setError(emailEl, "Please provide a valid applicant email address.");
-            }
-
-            // 3. Validate Phone Number Characters Array Length
-            const phoneEl = document.getElementById("ein_applicant_phone");
-            if (phoneEl && phoneEl.value.trim()) {
-                const cleanDigits = phoneEl.value.replace(/\D/g, "");
-                if (cleanDigits.length < 10) setError(phoneEl, "Applicant Phone Number must contain at least 10 digits.");
-            }
-
-            // 4. Validate Checkbox Group: Verify at least one application reason is chosen
-            let baselineReasonChecked = false;
-            for (let i = 1; i <= 5; i++) {
-                const reasonBox = document.getElementById(`ein_reason_${i}`);
-                if (reasonBox && reasonBox.checked) {
-                    baselineReasonChecked = true;
-                    break;
-                }
-            }
-            if (!baselineReasonChecked) {
-                isValid = false;
-                errors.push("Please select at least one reason for applying to obtain an EIN.");
-            }
-
-            // 5. Conditional Check: Validate custom reason text box if checkbox #5 is active
-            const otherReasonBox = document.getElementById("ein_reason_5");
-            if (otherReasonBox && otherReasonBox.checked) {
-                const customTextEl = document.getElementById("ein_reason_other_text");
-                if (customTextEl && !customTextEl.value.trim()) {
-                    setError(customTextEl, "Please specify your unique parameter reasons for obtaining an EIN.");
-                } else if (customTextEl) {
-                    clearError(customTextEl);
-                }
-            }
-
-            return isValid;
+// ------------------------------------------------------------------------ // 
+// MODULE 3: PART 2 VALIDATION REGISTER (FORM ISOLATED FIX)                 // 
+// ------------------------------------------------------------------------ // 
+window.formRegistry['employer-id-ein-part2-validation'] = { 
+    requiredFields: [ 
+        { id: 'ein_applicant_phone', msg: 'Applicant Contact Phone Number is required.' }, 
+        { id: 'ein_applicant_email', msg: 'Applicant Contact Email Address is required.' } 
+    ], 
+    validate: function() { 
+        if (!document.getElementById('ein_applicant_phone')) {
+            return { isValid: true, errors: [] }; 
         }
-    };
+
+        let isValid = true; 
+        let errors = []; 
+        
+        const setError = (el, msg, fieldId) => { 
+            if (el) el.style.borderColor = "#ef4444"; 
+            isValid = false; 
+            // FIXED: Explicitly attach the precise EIN ID so the master gate doesn't guess
+            if (!errors.some(e => e.id === fieldId)) {
+                errors.push({ id: fieldId, msg: msg }); 
+            }
+        }; 
+        const clearError = (el) => { 
+            if (el) el.style.borderColor = "#cbd5e1"; 
+        }; 
+
+        // 1. Process explicit presence checks
+        this.requiredFields.forEach(field => { 
+            const el = document.getElementById(field.id); 
+            if (el) { 
+                if (!el.value.trim()) {
+                    setError(el, field.msg, field.id); 
+                } else {
+                    clearError(el); 
+                }
+            } 
+        }); 
+
+        // 2. Validate Contact Email Layout String Formatting 
+        const emailEl = document.getElementById("ein_applicant_email"); 
+        if (emailEl && emailEl.value.trim()) {
+            const cleanEmail = emailEl.value.trim().toLowerCase();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+                setError(emailEl, "Please provide a valid applicant email address.", "ein_applicant_email"); 
+            } else {
+                clearError(emailEl);
+            }
+        } 
+
+        // 3. Validate Phone Number Characters Array Length 
+        const phoneEl = document.getElementById("ein_applicant_phone"); 
+        if (phoneEl && phoneEl.value.trim()) { 
+            const cleanDigits = phoneEl.value.replace(/\D/g, ""); 
+            if (cleanDigits.length < 10) {
+                setError(phoneEl, "Applicant Phone Number must contain at least 10 digits.", "ein_applicant_phone"); 
+            } else {
+                clearError(phoneEl);
+            }
+        } 
+
+        // 4. Validate Checkbox Group 
+        let baselineReasonChecked = false; 
+        for (let i = 1; i <= 5; i++) { 
+            const reasonBox = document.getElementById(`ein_reason_${i}`); 
+            if (reasonBox && reasonBox.checked) { 
+                baselineReasonChecked = true; 
+                break; 
+            } 
+        } 
+        if (!baselineReasonChecked) { 
+            isValid = false; 
+            errors.push({ id: "ein_reason_1", msg: "Please select at least one reason for applying to obtain an EIN." }); 
+        } 
+
+        // 5. Conditional Check: Validate custom reason text box if checkbox #5 is active 
+        const otherReasonBox = document.getElementById("ein_reason_5"); 
+        if (otherReasonBox && otherReasonBox.checked) { 
+            const customTextEl = document.getElementById("ein_reason_other_text"); 
+            if (customTextEl && !customTextEl.value.trim()) { 
+                setError(customTextEl, "Please specify your unique parameter reasons for obtaining an EIN.", "ein_reason_other_text"); 
+            } else if (customTextEl) { 
+                clearError(customTextEl); 
+            } 
+        } 
+
+        return { isValid: isValid, errors: errors }; 
+    } 
+};
+
 
 
     // ------------------------------------------------------------------------
@@ -326,136 +345,140 @@ function initEmployerIdEinService() {
     };
 
 
-    // ------------------------------------------------------------------------
-    // MODULE 5: PART 3 VALIDATION REGISTER
-    // ------------------------------------------------------------------------
-    window.formRegistry['employer-id-ein-part3-validation'] = {
-        requiredFields: [
-            { id: 'ein_activities_desc', msg: 'Description of Business Activities is required.' },
-            { id: 'ein_employee_count', msg: 'Expected employee headcount projection metric is required.' }
-        ],
-        validate: function() {
-            let isValid = true;
-            let errors = [];
-
-            const setError = (el, msg) => {
-                if (el) el.style.borderColor = "#ef4444";
-                isValid = false;
-                if (!errors.includes(msg)) errors.push(msg);
-            };
-
-            const clearError = (el) => {
-                if (el) el.style.borderColor = "#cbd5e1";
-            };
-
-            // 1. Process validation checks for active step fields
-            this.requiredFields.forEach(field => {
-                const el = document.getElementById(field.id);
-                if (el) {
-                    if (!el.value.trim()) setError(el, field.msg);
-                    else clearError(el);
-                }
-            });
-
-            // 2. Validate Headcount Range Logic
-            const countEl = document.getElementById("ein_employee_count");
-            if (countEl && countEl.value.trim()) {
-                const parsedVal = parseInt(countEl.value, 10);
-                if (isNaN(parsedVal) || parsedVal < 0) {
-                    setError(countEl, "Expected headcount must be a valid positive integer choice.");
-                }
-            }
-
-            return isValid;
+   // ------------------------------------------------------------------------ // 
+// MODULE 5: PART 3 VALIDATION REGISTER                                     // 
+// ------------------------------------------------------------------------ // 
+window.formRegistry['employer-id-ein-part3-validation'] = { 
+    requiredFields: [ 
+        { id: 'ein_activities_desc', msg: 'Description of Business Activities is required.' }, 
+        { id: 'ein_employee_count', msg: 'Expected employee headcount projection metric is required.' } 
+    ], 
+    validate: function() { 
+        // FIXED STEP GUARD: If the activities description box isn't in the DOM yet, pass safely!
+        if (!document.getElementById('ein_activities_desc')) {
+            return true; 
         }
-    };
 
-    // ------------------------------------------------------------------------
-    // MODULE 6: PART 4 VALIDATION REGISTER
-    // ------------------------------------------------------------------------
-    window.formRegistry['employer-id-ein-part4-validation'] = {
-        requiredFields: [
-            { id: 'ein_responsible_name', msg: 'Name of the Responsible Party is required.' },
-            { id: 'ein_responsible_id', msg: 'Responsible Party Social Security Number (SSN) or ITIN is required.' }
-        ],
-        validate: function() {
-            let isValid = true;
-            let errors = [];
+        let isValid = true; 
+        let errors = []; 
+        const setError = (el, msg) => { 
+            if (el) el.style.borderColor = "#ef4444"; 
+            isValid = false; 
+            if (!errors.includes(msg)) errors.push(msg); 
+        }; 
+        const clearError = (el) => { 
+            if (el) el.style.borderColor = "#cbd5e1"; 
+        }; 
 
-            const setError = (el, msg) => {
-                if (el) el.style.borderColor = "#ef4444";
-                isValid = false;
-                if (!errors.includes(msg)) errors.push(msg);
-            };
+        // 1. Process validation checks for active step fields 
+        this.requiredFields.forEach(field => { 
+            const el = document.getElementById(field.id); 
+            if (el) { 
+                if (!el.value.trim()) setError(el, field.msg); 
+                else clearError(el); 
+            } 
+        }); 
 
-            const clearError = (el) => {
-                if (el) el.style.borderColor = "#cbd5e1";
-            };
+        // 2. Validate Headcount Range Logic 
+        const countEl = document.getElementById("ein_employee_count"); 
+        if (countEl && countEl.value.trim()) { 
+            const parsedVal = parseInt(countEl.value, 10); 
+            if (isNaN(parsedVal) || parsedVal < 0) { 
+                setError(countEl, "Expected headcount must be a valid positive integer choice."); 
+            } 
+        } 
+        return isValid; 
+    } 
+};
 
-            // 1. Process validation checks for responsible party fields
-            this.requiredFields.forEach(field => {
-                const el = document.getElementById(field.id);
-                if (el) {
-                    if (!el.value.trim()) setError(el, field.msg);
-                    else clearError(el);
-                }
-            });
 
-            // 2. Validate Responsible Party Taxpayer Identification Format (9-Digits SSN/ITIN check)
-            const ssnEl = document.getElementById("ein_responsible_id");
-            if (ssnEl && ssnEl.value.trim()) {
-                const pureSsn = ssnEl.value.replace(/\D/g, "");
-                if (pureSsn.length !== 9) {
-                    setError(ssnEl, "Responsible Party Identification must consist of exactly 9 digits (XXX-XX-XXXX).");
-                }
-            }
-
-            return isValid;
+ // ------------------------------------------------------------------------ // 
+// MODULE 6: PART 4 VALIDATION REGISTER                                     // 
+// ------------------------------------------------------------------------ // 
+window.formRegistry['employer-id-ein-part4-validation'] = { 
+    requiredFields: [ 
+        { id: 'ein_responsible_name', msg: 'Name of the Responsible Party is required.' }, 
+        { id: 'ein_responsible_id', msg: 'Responsible Party Social Security Number (SSN) or ITIN is required.' } 
+    ], 
+    validate: function() { 
+        // FIXED STEP GUARD: If the fields aren't even on the page, don't block the wizard!
+        if (!document.getElementById('ein_responsible_name')) {
+            return true; 
         }
-    };
 
-    // ------------------------------------------------------------------------
-    // MODULE 7: PART 5 VALIDATION REGISTER
-    // ------------------------------------------------------------------------
-    window.formRegistry['employer-id-ein-part5-validation'] = {
-        requiredFields: [
-            { id: 'ein_start_date', msg: 'Date Business Started is required.' }
-        ],
-        validate: function() {
-            let isValid = true;
-            let errors = [];
+        let isValid = true; 
+        let errors = []; 
+        const setError = (el, msg) => { 
+            if (el) el.style.borderColor = "#ef4444"; 
+            isValid = false; 
+            if (!errors.includes(msg)) errors.push(msg); 
+        }; 
+        const clearError = (el) => { 
+            if (el) el.style.borderColor = "#cbd5e1"; 
+        }; 
 
-            const setError = (el, msg) => {
-                if (el) el.style.borderColor = "#ef4444";
-                isValid = false;
-                if (!errors.includes(msg)) errors.push(msg);
-            };
+        this.requiredFields.forEach(field => { 
+            const el = document.getElementById(field.id); 
+            if (el) { 
+                if (!el.value.trim()) setError(el, field.msg); 
+                else clearError(el); 
+            } 
+        }); 
 
-            const clearError = (el) => {
-                if (el) el.style.borderColor = "#cbd5e1";
-            };
+        const ssnEl = document.getElementById("ein_responsible_id"); 
+        if (ssnEl && ssnEl.value.trim()) { 
+            const pureSsn = ssnEl.value.replace(/\D/g, ""); 
+            if (pureSsn.length !== 9) { 
+                setError(ssnEl, "Responsible Party Identification must consist of exactly 9 digits (XXX-XX-XXXX)."); 
+            } 
+        } 
+        return isValid; 
+    } 
+}; 
 
-            // 1. Process start date checks
-            this.requiredFields.forEach(field => {
-                const el = document.getElementById(field.id);
-                if (el) {
-                    if (!el.value.trim()) setError(el, field.msg);
-                    else clearError(el);
-                }
-            });
-
-            // 2. Validate Optional Prior Historical EIN Format if filled
-            const pastEinEl = document.getElementById("ein_existing_number");
-            if (pastEinEl && pastEinEl.value.trim()) {
-                const purePast = pastEinEl.value.replace(/\D/g, "");
-                if (purePast.length !== 9) {
-                    setError(pastEinEl, "Optional existing EIN must consist of exactly 9 digits (XX-XXXXXXX).");
-                }
-            }
-
-            return isValid;
+// ------------------------------------------------------------------------ // 
+// MODULE 7: PART 5 VALIDATION REGISTER                                     // 
+// ------------------------------------------------------------------------ // 
+window.formRegistry['employer-id-ein-part5-validation'] = { 
+    requiredFields: [ 
+        { id: 'ein_start_date', msg: 'Date Business Started is required.' } 
+    ], 
+    validate: function() { 
+        // FIXED STEP GUARD: If the start date field isn't on the page, bypass quietly
+        if (!document.getElementById('ein_start_date')) {
+            return true; 
         }
-    };
+
+        let isValid = true; 
+        let errors = []; 
+        const setError = (el, msg) => { 
+            if (el) el.style.borderColor = "#ef4444"; 
+            isValid = false; 
+            if (!errors.includes(msg)) errors.push(msg); 
+        }; 
+        const clearError = (el) => { 
+            if (el) el.style.borderColor = "#cbd5e1"; 
+        }; 
+
+        this.requiredFields.forEach(field => { 
+            const el = document.getElementById(field.id); 
+            if (el) { 
+                if (!el.value.trim()) setError(el, field.msg); 
+                else clearError(el); 
+            } 
+        }); 
+
+        const pastEinEl = document.getElementById("ein_existing_number"); 
+        if (pastEinEl && pastEinEl.value.trim()) { 
+            const purePast = pastEinEl.value.replace(/\D/g, ""); 
+            if (purePast.length !== 9) { 
+                setError(pastEinEl, "Optional existing EIN must consist of exactly 9 digits (XX-XXXXXXX)."); 
+            } 
+        } 
+        return isValid; 
+    } 
+};
+
 
 
     // ------------------------------------------------------------------------
