@@ -1,95 +1,96 @@
-// ============================================================================ //
-// 📐 EMPLOYER ID (EIN) WIZARD ENGINE REGISTER                                 //
-// ============================================================================ //
-function initEmployerIdEinService() {
-    window.formRegistry = window.formRegistry || {};
+// ============================================================================ // 
+// 📐 EMPLOYER ID (EIN) WIZARD ENGINE REGISTER                                  // 
+// ============================================================================ // 
+function initEmployerIdEinService() { 
+    // BREAK THE INFINITE LOOP: If this module's validation layout has already been registered, exit immediately
+    if (window.formRegistry && window.formRegistry['employer-id-ein-part1-validation']) {
+        return; 
+    }
 
-    // ------------------------------------------------------------------------
-    // MODULE 1: PART 1 VALIDATION REGISTER
-    // ------------------------------------------------------------------------
-    window.formRegistry['employer-id-ein-part1-validation'] = {
-        requiredFields: [
-            { id: 'ein_applicant_name', msg: 'Full Name or Business Name is required.' },
-            { id: 'ein_business_structure', msg: 'Please select a Business Structure.' },
-            { id: 'ein_business_street', msg: 'Business Physical Address Street is required.' },
-            { id: 'ein_business_city', msg: 'Business Physical Address City is required.' },
-            { id: 'ein_business_state', msg: 'Business Physical Address State selection is required.' },
-            { id: 'ein_business_zip', msg: 'Business Physical Address Zip Code is required.' },
-            { id: 'ein_mailing_choice', msg: 'Mailing Address Selection is required.' }
-        ],
-        validate: function() {
-            let isValid = true;
-            let errors = [];
+    window.formRegistry = window.formRegistry || {}; 
 
-            const setError = (el, msg) => {
-                if (el) el.style.borderColor = "#ef4444";
-                isValid = false;
-                if (!errors.includes(msg)) errors.push(msg);
-            };
+    // ------------------------------------------------------------------------ // 
+    // MODULE 1: PART 1 VALIDATION REGISTER                                     // 
+    // ------------------------------------------------------------------------ // 
+    window.formRegistry['employer-id-ein-part1-validation'] = { 
+        requiredFields: [ 
+            { id: 'ein_applicant_name', msg: 'Full Name or Business Name is required.' }, 
+            { id: 'ein_business_structure', msg: 'Please select a Business Structure.' }, 
+            { id: 'ein_business_street', msg: 'Business Physical Address Street is required.' }, 
+            { id: 'ein_business_city', msg: 'Business Physical Address City is required.' }, 
+            { id: 'ein_business_state', msg: 'Business Physical Address State selection is required.' }, 
+            { id: 'ein_business_zip', msg: 'Business Physical Address Zip Code is required.' }, 
+            { id: 'ein_mailing_choice', msg: 'Mailing Address Selection is required.' } 
+        ], 
+        validate: function() { 
+            let isValid = true; 
+            let errors = []; 
+            const setError = (el, msg) => { 
+                if (el) el.style.borderColor = "#ef4444"; 
+                isValid = false; 
+                if (!errors.includes(msg)) errors.push(msg); 
+            }; 
+            const clearError = (el) => { 
+                if (el) el.style.borderColor = "#cbd5e1"; 
+            }; 
 
-            const clearError = (el) => {
-                if (el) el.style.borderColor = "#cbd5e1";
-            };
+            // 1. Process standard mandatory fields presence checks 
+            this.requiredFields.forEach(field => { 
+                const el = document.getElementById(field.id); 
+                if (el) { 
+                    if (!el.value.trim()) setError(el, field.msg); 
+                    else clearError(el); 
+                } 
+            }); 
 
-            // 1. Process standard mandatory fields presence checks
-            this.requiredFields.forEach(field => {
-                const el = document.getElementById(field.id);
-                if (el) {
-                    if (!el.value.trim()) setError(el, field.msg);
-                    else clearError(el);
-                }
-            });
+            // 2. Validate Baseline Physical Business ZIP Formatting 
+            const zipEl = document.getElementById("ein_business_zip"); 
+            if (zipEl && zipEl.value.trim() && !/^\d{5}$/.test(zipEl.value.trim())) { 
+                setError(zipEl, 'Business Physical Address Zip Code must consist of exactly 5 numbers.'); 
+            } 
 
-            // 2. Validate Baseline Physical Business ZIP Formatting
-            const zipEl = document.getElementById("ein_business_zip");
-            if (zipEl && zipEl.value.trim() && !/^\d{5}$/.test(zipEl.value.trim())) {
-                setError(zipEl, 'Business Physical Address Zip Code must consist of exactly 5 numbers.');
-            }
+            // 3. Conditional Check: Validate Custom Structure Textbox if choice equals OTHER 
+            const structureChoice = document.getElementById("ein_business_structure"); 
+            if (structureChoice && structureChoice.value === "other") { 
+                const otherTextEl = document.getElementById("ein_structure_other_text"); 
+                if (otherTextEl && !otherTextEl.value.trim()) { 
+                    setError(otherTextEl, "Please specify your structural entity classification."); 
+                } else if (otherTextEl) { 
+                    clearError(otherTextEl); 
+                } 
+            } 
 
-            // 3. Conditional Check: Validate Custom Structure Textbox if choice equals OTHER
-            const structureChoice = document.getElementById("ein_business_structure");
-            if (structureChoice && structureChoice.value === "other") {
-                const otherTextEl = document.getElementById("ein_structure_other_text");
-                if (otherTextEl && !otherTextEl.value.trim()) {
-                    setError(otherTextEl, "Please specify your structural entity classification.");
-                } else if (otherTextEl) {
-                    clearError(otherTextEl);
-                }
-            }
+            // 4. Conditional Check: Validate Alternate Mailing records if choice equals DIFFERENT 
+            const mailingChoice = document.getElementById("ein_mailing_choice"); 
+            if (mailingChoice && mailingChoice.value === "different") { 
+                const alternateMailingFields = [ 
+                    { id: 'ein_mailing_street', msg: 'Alternate Mailing Street Address is required.' }, 
+                    { id: 'ein_mailing_city', msg: 'Alternate Mailing City is required.' }, 
+                    { id: 'ein_mailing_state', msg: 'Alternate Mailing State selection is required.' }, 
+                    { id: 'ein_mailing_zip', msg: 'Alternate Mailing Zip Code is required.' } 
+                ]; 
+                alternateMailingFields.forEach(field => { 
+                    const el = document.getElementById(field.id); 
+                    if (el) { 
+                        const val = el.value.trim(); 
+                        let isFieldValid = !!val; 
+                        if (field.id === 'ein_mailing_zip' && val && !/^\d{5}$/.test(val)) { 
+                            isFieldValid = false; 
+                            setError(el, 'Alternate Mailing Zip Code must consist of exactly 5 numbers.'); 
+                        } 
+                        if (!isFieldValid) { 
+                            setError(el, field.msg); 
+                        } else if (field.id !== 'ein_mailing_zip' || /^\d{5}$/.test(val)) { 
+                            clearError(el); 
+                        } 
+                    } 
+                }); 
+            } 
+            return isValid; 
+        } 
+    }; 
 
-            // 4. Conditional Check: Validate Alternate Mailing records if choice equals DIFFERENT
-            const mailingChoice = document.getElementById("ein_mailing_choice");
-            if (mailingChoice && mailingChoice.value === "different") {
-                const alternateMailingFields = [
-                    { id: 'ein_mailing_street', msg: 'Alternate Mailing Street Address is required.' },
-                    { id: 'ein_mailing_city', msg: 'Alternate Mailing City is required.' },
-                    { id: 'ein_mailing_state', msg: 'Alternate Mailing State selection is required.' },
-                    { id: 'ein_mailing_zip', msg: 'Alternate Mailing Zip Code is required.' }
-                ];
 
-                alternateMailingFields.forEach(field => {
-                    const el = document.getElementById(field.id);
-                    if (el) {
-                        const val = el.value.trim();
-                        let isFieldValid = !!val;
-
-                        if (field.id === 'ein_mailing_zip' && val && !/^\d{5}$/.test(val)) {
-                            isFieldValid = false;
-                            setError(el, 'Alternate Mailing Zip Code must consist of exactly 5 numbers.');
-                        }
-
-                        if (!isFieldValid) {
-                            setError(el, field.msg);
-                        } else if (field.id !== 'ein_mailing_zip' || /^\d{5}$/.test(val)) {
-                            clearError(el);
-                        }
-                    }
-                });
-            }
-
-            return isValid;
-        }
-    };
 
 
 // ------------------------------------------------------------------------

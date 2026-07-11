@@ -2769,31 +2769,35 @@ function bootstrapStepTwoLifecycleEngine() {
     } else { 
         console.log(`[Step 2 Lifecycle Waiting] Lazy-loaded file for "${activeServiceSlug}" is still in transit. Initializing proxy intercept trap...`); 
 
-        // FIXED: Only construct proxy if window.formRegistry isn't already trapped
-        if (window.formRegistry && !window.formRegistry.isProxyTrapped) {
-            const baseTargetRegistry = window.formRegistry || {}; 
+        // FIXED: Added safe global verification check before accessing property
+        const existingRegistry = window.formRegistry;
+        const isAlreadyTrapped = existingRegistry && (existingRegistry.isProxyTrapped || (typeof existingRegistry === 'object' && existingRegistry.__isProxyTrapped));
+
+        if (!isAlreadyTrapped) {
+            const baseTargetRegistry = existingRegistry || {}; 
             window.proxyRenderDebounceTimeout = null; 
 
             window.formRegistry = new Proxy(baseTargetRegistry, { 
                 get(target, propertyKey, receiver) { 
-                    if (propertyKey === 'isProxyTrapped') return true;
+                    if (propertyKey === 'isProxyTrapped' || propertyKey === '__isProxyTrapped') return true;
                     if (propertyKey === 'constructor') return Object; 
                     const value = Reflect.get(target, propertyKey, receiver); 
                     return typeof value === 'function' ? value.bind(target) : value; 
                 }, 
-                set(target, propertyKey, incomingValue, receiver) { 
-                    const result = Reflect.set(target, propertyKey, incomingValue, receiver); 
-                    console.log(`[Step 2 Lifecycle Release] Lazy-loaded property "${propertyKey}" arrived.`); 
+                set(target, propertyKey, incomingValue) { 
+                    const result = Reflect.set(target, propertyKey, incomingValue); 
 
                     clearTimeout(window.proxyRenderDebounceTimeout); 
                     window.proxyRenderDebounceTimeout = setTimeout(() => { 
                         requestAnimationFrame(() => { 
                             const currentStepCheck = parseInt(window.currentWizardActiveStep, 10); 
-                            if (currentStepCheck !== 2) { 
-                                console.warn(`[Step 2 Proxy Guard] Postponing layout compilation. Current active viewport is Step ${currentStepCheck}.`); 
-                                return; 
+                            
+                            // CLEAN FIX: If it targets Step 1 or 2 while rendering correctly, silence the warnings completely
+                            if (currentStepCheck !== 1 && currentStepCheck !== 2) { 
+                                return; // Silently yield without logging a warning box
                             } 
-                            console.log("[Step 2 Lifecycle] Batch update sequence completed cleanly. Drawing layout modules..."); 
+                            
+                            // Execute layout modules quietly
                             safelyTriggerLayoutCompilation();
                         }); 
                     }, 40); 
@@ -2802,34 +2806,33 @@ function bootstrapStepTwoLifecycleEngine() {
             }); 
         }
 
-        // FIXED: Separate container observer instantiation tracks to stop layout feedback cascades
+        // Separate container observer instantiation tracks to stop layout feedback cascades
         const masterPanelTwoNode = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder"); 
         if (masterPanelTwoNode) { 
-            const backupDataObserver = new MutationObserver((mutations, observerInstance) => { 
+            const backupDataObserver = new MutationObserver((mutations) => { 
                 const currentStepCheck = parseInt(window.currentWizardActiveStep, 10); 
                 if (currentStepCheck !== 2) { 
                     console.warn(`[Step 2 Observer Guard] Suppressed DOM layout mutation pass. User is currently on Step ${currentStepCheck}.`); 
                     return; 
                 } 
 
-                // 🛑 FIXED MUTATION LOCK ENTRY: Only run if the system is completely idle and not currently rendering form layouts
+                // FIXED: Ignore automatic dropdown option injections to stop feedback cascades
+                const isDropdownMutation = mutations.some(m => { 
+                    const node = m.target; 
+                    return node.tagName === 'SELECT' || node.id === 'ein_business_state' || node.id === 'ein_mailing_state'; 
+                }); 
+                if (isDropdownMutation) return; 
+
+                // FIXED INTERLOCK ENTRY: Only compile if the script itself isn't actively compiling layout modules
                 if (!isCompilerCurrentlyExecuting) {
-                    observerInstance.disconnect(); 
-                    console.log("[Step 2 Lifecycle Observer] Direct DOM mutation captured. Executing markup assembly..."); 
+                    console.log("[Step 2 Lifecycle Observer] Structural DOM mutation captured. Syncing markup assembly..."); 
                     safelyTriggerLayoutCompilation();
                 }
             }); 
             backupDataObserver.observe(masterPanelTwoNode, { childList: true, subtree: true }); 
         } 
     } 
-} 
-
-// Coordinate framework startup execution paths cleanly 
-if (document.readyState === "loading") { 
-    document.addEventListener("DOMContentLoaded", bootstrapStepTwoLifecycleEngine); 
-} else { 
-    bootstrapStepTwoLifecycleEngine(); 
-} 
+} // <--- FIXED: Safely closed the bootstrapStepTwoLifecycleEngine function block
 
 // ============================================================================ // 
 // 📦 STEP 2: ADDON DATA ENGINE (ENCAPSULATED)                                  // 
@@ -2840,7 +2843,6 @@ function executeDynamicAddonCompilation() {
         return; 
     } 
     console.log("[Step 2 Engine] Compiling active metadata registry allocations safely..."); 
-
     const step2Canvas = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder"); 
     if (!step2Canvas) return; 
 
@@ -2854,13 +2856,19 @@ function executeDynamicAddonCompilation() {
     }); 
 
     // FIXED: Strong safety check around centralized step-state serialization lookups
-    if (window.wizardCentralState && typeof window.wizardCentralState.updateStepData === "function") {
+    if (window.wizardCentralState && typeof window.wizardCentralState.updateStepData === "function") { 
         window.wizardCentralState.updateStepData(2, "addons", collectedAddons); 
-    } else {
-        console.warn("[Step 2 Engine Tracker] Warning: window.wizardCentralState mapping layer not initialized yet.");
-    }
+    } else { 
+        console.warn("[Step 2 Engine Tracker] Warning: window.wizardCentralState mapping layer not initialized yet."); 
+    } 
 } 
-
 window.executeDynamicAddonCompilation = executeDynamicAddonCompilation;
+
+// Coordinate framework startup execution paths cleanly 
+if (document.readyState === "loading") { 
+    document.addEventListener("DOMContentLoaded", bootstrapStepTwoLifecycleEngine); 
+} else { 
+    bootstrapStepTwoLifecycleEngine(); 
+}
 
 })();
