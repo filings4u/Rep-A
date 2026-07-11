@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="images/fav.png">
     <link rel="stylesheet" href="assets/css/new-wizard.css">
     <link rel="stylesheet" href="assets/css/wizard-mobile.css">
-   
+    <link rel="stylesheet" href="assets/css/wizard-toggle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -25,6 +25,29 @@
     
 </head>
 <body>
+
+<!-- UPDATED DROPDOWN STRUCTURE: US RIGHT-SIDE ALIGNMENT -->
+<div id="f4u-app-container" style="width: 100%; box-sizing: border-box;">
+  
+  <!-- Safe Hidden Base Logo for Extractor Backup Processing -->
+  <div class="app-logo-area" style="display: none !important;">
+    <img src="images/logo.png" alt="filings4u Logo">
+  </div>
+
+  <!-- Mobile Toggle Button (Right Aligned, Rounded Corners) -->
+  <button id="mobileNavToggleBtn" onclick="window.toggleMobileSidebarMenuOverlay(event)" style="position: fixed; top: 12px; right: 16px; left: auto; z-index: 9999; display: block; min-height: 38px; padding: 0 14px; background: #0a1f44; color: #ffffff; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+    <span id="mobileNavTriggerIcon">☰ Menu</span>
+  </button>
+
+  <!-- Clean Dropdown Card (Aligned on the Right, Max Width Set) -->
+  <div id="f4u-dropdown-menu-panel" style="position: fixed; top: 60px; right: 16px; left: auto; z-index: 9998; display: none; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 4px 20px rgba(10,31,68,0.15); box-sizing: border-box; width: 100%; max-width: 320px; max-height: calc(100vh - 80px); overflow-y: auto;">
+    <ul id="f4u-dropdown-list-container" style="list-style: none; padding: 0; margin: 0; width: 100%;">
+      <!-- Step rows with indicator status lamps render here -->
+    </ul>
+  </div>
+
+</div>
+
 
 
 
@@ -144,8 +167,8 @@
     <script src="assets/js/wizard/step-5.js"></script>
     <script src="assets/js/wizard/step-6.js"></script>
     <script src="assets/js/wizard/step-7.js"></script>
-   <script src="assets/js/wizard/footer.js"></script>
-
+    <script src="assets/js/wizard/footer.js"></script>
+    <script src="assets/js/wizard/toggle.js"></script>
    
     <script src="assets/js/wizard/step2-popup.js"></script>
     <script src="assets/js/wizard/wizard-chat-widget.js"></script>
