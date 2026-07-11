@@ -146,7 +146,7 @@ function initEmployerIdEinService() {
                 <div>
                     <label for="ein_business_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label>
                     <select id="ein_business_state" required class="wizard-input-field" style="font-weight: 600; width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 6px; background-color: #ffffff; color: var(--slate); box-sizing: border-box; height: 42px;">
-                        \${stateDropdownOptionsHtml}
+                        ${stateDropdownOptionsHtml}
                     </select>
                 </div>
                 <div>
@@ -174,15 +174,14 @@ function initEmployerIdEinService() {
                     <input type="text" id="ein_mailing_street" placeholder="Mailing Street Name and Number, P.O. Box, or Suite" class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; height: 42px;" onfocus="attachGooglePlacesAutocompleteToNode(this, 'ein_mailing')">
                 </div> <div style="grid-column: span 2; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; box-sizing: border-box;">
                     <div>
-                        <label for="ein_mailing_city" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">City <span style="color: #ef4444;">*</span></label>
-                        <input type="text" id="ein_mailing_city" placeholder="City" class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radiu                    <div>
+                       
                         <label for="ein_mailing_city" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">City <span style="color: #ef4444;">*</span></label>
                         <input type="text" id="ein_mailing_city" placeholder="City" class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; height: 42px;">
                     </div>
                     <div>
                         <label for="ein_mailing_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label>
                         <select id="ein_mailing_state" class="wizard-input-field" style="font-weight: 600; width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 6px; background-color: #ffffff; color: var(--slate); box-sizing: border-box; height: 42px;">
-                            \${stateDropdownOptionsHtml}
+                            ${stateDropdownOptionsHtml}
                         </select>
                     </div>
                     <div>
