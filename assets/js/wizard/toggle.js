@@ -54,29 +54,45 @@ window.toggleMobileSidebarMenuOverlay = function(explicitEventRef) {
   }
 };
 
-// Part 3: Clean Menu Construction Block
+// Part 3: Clean Menu Construction Block (FIXED: SAVE PROGRESS DROPDOWN INJECTION)
 window.generateMenuMarkupFromMatrix = function() {
-  const listContainer = document.getElementById("f4u-dropdown-list-container");
-  if (!listContainer) {
-    setTimeout(window.generateMenuMarkupFromMatrix, 50);
-    return;
-  }
+    const listContainer = document.getElementById("f4u-dropdown-list-container");
+    if (!listContainer) {
+        setTimeout(window.generateMenuMarkupFromMatrix, 50);
+        return;
+    }
 
-  listContainer.innerHTML = timelineRegistryMatrix.map(step => `
-    <li data-index="${step.idx}" class="menu-toggle-wrapper" style="border-bottom: 1px solid #f1f5f9; padding: 12px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background 0.15s ease; width: 100%; box-sizing: border-box; background: #ffffff;">
-      <div class="status-light" id="nav_light_step_${step.idx}" style="width: 10px; height: 10px; border-radius: 50%; background-color: #cbd5e1; flex-shrink: 0; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #cbd5e1;"></div>
-      <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; text-align: left;">
-        <span class="step-title" style="font-weight: 700; font-size: 0.85rem; color: #0a1f44; margin: 0; display: block; line-height: 1.2;">${step.title}</span>
-        <span class="step-desc" style="display: block; font-size: 0.725rem; color: #64748b; margin: 0; line-height: 1.2;">${step.desc}</span>
-      </div>
-    </li>
-  `).join('');
+    // 1. Map out your native wizard steps arrays
+    let dropdownMarkup = timelineRegistryMatrix.map(step => `
+        <li data-index="${step.idx}" class="menu-toggle-wrapper" style="border-bottom: 1px solid #f1f5f9; padding: 12px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background 0.15s ease; width: 100%; box-sizing: border-box; background: #ffffff;">
+            <div class="status-light" id="nav_light_step_${step.idx}" style="width: 10px; height: 10px; border-radius: 50%; background-color: #cbd5e1; flex-shrink: 0; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #cbd5e1;"></div>
+            <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; text-align: left;">
+                <span class="step-title" style="font-weight: 700; font-size: 0.85rem; color: #0a1f44; margin: 0; display: block; line-height: 1.2;">${step.title}</span>
+                <span class="step-desc" style="display: block; font-size: 0.725rem; color: #64748b; margin: 0; line-height: 1.2;">${step.desc}</span>
+            </div>
+        </li>
+    `).join('');
 
-  requestAnimationFrame(() => {
-    window.attachDropdownRowNavigationClickListeners();
-    window.syncDropdownStepIndicatorLights();
-  });
+    // 2. 🟢 APPEND THE DYNAMIC SAVE PROGRESS ACTION ROW AT THE ABSOLUTE BOTTOM
+    dropdownMarkup += `
+        <li style="padding: 16px; width: 100%; box-sizing: border-box; background: #ffffff; list-style-type: none;">
+            <button id="sidebarFallbackLogoutBtn" class="logout-btn" type="button" 
+                onclick="if(typeof window.saveWizardFormStatesVanilla === 'function'){ window.saveWizardFormStatesVanilla(); alert('Progress saved successfully!'); } else { console.warn('Core storage save hook missing.'); }"
+                style="width: 100%; cursor: pointer; box-sizing: border-box; padding: 12px; background: #0a1f44; color: white; border: none; border-radius: 6px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; -webkit-appearance: none;">
+                <i class="fa-solid fa-floppy-disk"></i> Save Progress
+            </button>
+        </li>
+    `;
+
+    // Render aggregated structural window blocks to the viewport container layout
+    listContainer.innerHTML = dropdownMarkup;
+
+    requestAnimationFrame(() => {
+        window.attachDropdownRowNavigationClickListeners();
+        window.syncDropdownStepIndicatorLights();
+    });
 };
+
 
 // Part 4: Dynamic Lamp Status Synchronizer
 window.syncDropdownStepIndicatorLights = function() {
