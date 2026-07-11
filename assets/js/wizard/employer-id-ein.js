@@ -2,10 +2,10 @@
 // 📐 EMPLOYER ID (EIN) WIZARD ENGINE REGISTER                                  // 
 // ============================================================================ // 
 function initEmployerIdEinService() { 
-    // BREAK THE INFINITE LOOP: If this module's validation layout has already been registered, exit immediately
-    if (window.formRegistry && window.formRegistry['employer-id-ein-part1-validation']) {
+    // BREAK THE INFINITE LOOP: If this module's validation layout has already been registered, exit immediately 
+    if (window.formRegistry && window.formRegistry['employer-id-ein-part1-validation']) { 
         return; 
-    }
+    } 
 
     window.formRegistry = window.formRegistry || {}; 
 
@@ -25,10 +25,16 @@ function initEmployerIdEinService() {
         validate: function() { 
             let isValid = true; 
             let errors = []; 
-            const setError = (el, msg) => { 
+            
+            // FIXED: setError now captures the exact fieldId so errors map perfectly
+            const setError = (el, msg, fieldId) => { 
                 if (el) el.style.borderColor = "#ef4444"; 
                 isValid = false; 
-                if (!errors.includes(msg)) errors.push(msg); 
+                
+                // Avoid duplicating the exact error tracking payload
+                if (!errors.some(err => err.id === fieldId)) {
+                    errors.push({ id: fieldId, msg: msg }); 
+                }
             }; 
             const clearError = (el) => { 
                 if (el) el.style.borderColor = "#cbd5e1"; 
@@ -38,26 +44,35 @@ function initEmployerIdEinService() {
             this.requiredFields.forEach(field => { 
                 const el = document.getElementById(field.id); 
                 if (el) { 
-                    if (!el.value.trim()) setError(el, field.msg); 
-                    else clearError(el); 
+                    if (!el.value.trim()) {
+                        setError(el, field.msg, field.id); 
+                    } else {
+                        clearError(el); 
+                    }
                 } 
             }); 
 
             // 2. Validate Baseline Physical Business ZIP Formatting 
             const zipEl = document.getElementById("ein_business_zip"); 
-            if (zipEl && zipEl.value.trim() && !/^\d{5}$/.test(zipEl.value.trim())) { 
-                setError(zipEl, 'Business Physical Address Zip Code must consist of exactly 5 numbers.'); 
+            if (zipEl && zipEl.value.trim()) {
+                if (!/^\d{5}$/.test(zipEl.value.trim())) {
+                    setError(zipEl, 'Business Physical Address Zip Code must consist of exactly 5 numbers.', 'ein_business_zip'); 
+                } else {
+                    clearError(zipEl);
+                }
             } 
 
             // 3. Conditional Check: Validate Custom Structure Textbox if choice equals OTHER 
             const structureChoice = document.getElementById("ein_business_structure"); 
             if (structureChoice && structureChoice.value === "other") { 
                 const otherTextEl = document.getElementById("ein_structure_other_text"); 
-                if (otherTextEl && !otherTextEl.value.trim()) { 
-                    setError(otherTextEl, "Please specify your structural entity classification."); 
-                } else if (otherTextEl) { 
-                    clearError(otherTextEl); 
-                } 
+                if (otherTextEl) {
+                    if (!otherTextEl.value.trim()) { 
+                        setError(otherTextEl, "Please specify your structural entity classification.", "ein_structure_other_text"); 
+                    } else { 
+                        clearError(otherTextEl); 
+                    } 
+                }
             } 
 
             // 4. Conditional Check: Validate Alternate Mailing records if choice equals DIFFERENT 
@@ -74,22 +89,26 @@ function initEmployerIdEinService() {
                     if (el) { 
                         const val = el.value.trim(); 
                         let isFieldValid = !!val; 
+                        
                         if (field.id === 'ein_mailing_zip' && val && !/^\d{5}$/.test(val)) { 
                             isFieldValid = false; 
-                            setError(el, 'Alternate Mailing Zip Code must consist of exactly 5 numbers.'); 
+                            setError(el, 'Alternate Mailing Zip Code must consist of exactly 5 numbers.', field.id); 
                         } 
+                        
                         if (!isFieldValid) { 
-                            setError(el, field.msg); 
+                            setError(el, field.msg, field.id); 
                         } else if (field.id !== 'ein_mailing_zip' || /^\d{5}$/.test(val)) { 
                             clearError(el); 
                         } 
                     } 
                 }); 
             } 
-            return isValid; 
+
+            // FIXED: Return structured object payload matching global advancement criteria
+            return { isValid: isValid, errors: errors }; 
         } 
     }; 
-
+}
 
 
 
@@ -615,7 +634,4 @@ window.formRegistry['employer-id-ein-part5-validation'] = {
 
         return combinedHtml;
     };
-}
-// End of initEinService() closure wrapper
-
 
