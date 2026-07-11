@@ -280,3 +280,101 @@ window.CENTRAL_SERVICE_PLAN_DB["heavy-use-tax-2290"] = {
 };
 
 
+// ============================================================================ //
+// 🏛️ CENTRAL STATE & REGULATORY JURISDICTION FILING FEES DATABASE              //
+// ============================================================================ //
+window.GOVT_REGULATORY_FEES = window.GOVT_REGULATORY_FEES || {};
+
+Object.assign(window.GOVT_REGULATORY_FEES, {
+  // Existing requested authorities
+  "trucker-authority": { 
+    name: "trucker-authority", 
+    time: "25-30 Business Days", 
+    "trucker-authority": 300.00
+  }, 
+  "broker-authority": { 
+    name: "broker-authority", 
+    time: "25-30 Business Days", 
+    "trucker-authority": 300.00
+  },
+
+  // Additional FMCSA Core Registrations
+  "fmcsa-cargo-tank-facility": {
+    name: "Cargo Tank Facility Registration (CT Number)",
+    time: "15-20 Business Days",
+    "filing-fee": 0.00
+  },
+  "fmcsa-hazmat-safety-permit": {
+    name: "Hazardous Materials Safety Permit (HMSP)",
+    time: "20-30 Business Days",
+    "filing-fee": 0.00
+  },
+
+  // Federal Identity & Operational Codes
+  "usdot-number": {
+    name: "USDOT Number Registration",
+    time: "Instant Processing",
+    "filing-fee": 0.00
+  },
+  "scac-code": {
+    name: "Standard Carrier Alpha Code (SCAC)",
+    time: "1-2 Business Days",
+    "filing-fee": 95.00
+  },
+
+  // Legal Filings & Compliance Services
+  "boc-3-filing": {
+    name: "BOC-3 Designate Process Agent Filing",
+    time: "1-2 Business Days",
+    "filing-fee": 50.00
+  },
+  "fmcsa-name-change": {
+    name: "FMCSA Operating Authority Name Change",
+    time: "5-7 Business Days",
+    "filing-fee": 14.00
+  },
+  "fmcsa-reinstatement": {
+    name: "Operating Authority Reinstatement Application",
+    time: "3-5 Business Days",
+    "filing-fee": 80.00
+  },
+
+  // Unified Carrier Registration (UCR) 2026 Tier Structure Base Fees
+  "ucr-tier-1": {
+    name: "UCR Fleet Size 0-2 Vehicles",
+    time: "1-2 Business Days",
+    "filing-fee": 37.00
+  },
+  "ucr-tier-2": {
+    name: "UCR Fleet Size 3-5 Vehicles",
+    time: "1-2 Business Days",
+    "filing-fee": 111.00
+  },
+  "ucr-tier-3": {
+    name: "UCR Fleet Size 6-20 Vehicles",
+    time: "1-2 Business Days",
+    "filing-fee": 221.00
+  },
+  "ucr-tier-4": {
+    name: "UCR Fleet Size 21-100 Vehicles",
+    time: "1-2 Business Days",
+    "filing-fee": 769.00
+  },
+
+  // Additional Trucking Tax & Exemption Permits
+  "heavy-vehicle-use-tax": {
+    name: "IRS Form 2290 Heavy Highway Vehicle Use Tax (Base)",
+    time: "Instant Processing",
+    "filing-fee": 100.00
+  },
+  "ifta-permit": {
+    name: "International Fuel Tax Agreement (IFTA) License",
+    time: "7-14 Business Days",
+    "filing-fee": 10.00
+  },
+  "irp-registration": {
+    name: "International Registration Plan (IRP) Setup",
+    time: "10-15 Business Days",
+    "filing-fee": 0.00
+  }
+});

@@ -1,5 +1,5 @@
 // ============================================================================ //
-// 🧱 STEP 1 PACKAGE REVIEWS AND PLAN MARKUP CARD BUILDER (EXACT ALIGNMENT)     //
+// 🧱 STEP 1 PACKAGE REVIEWS AND PLAN MARKUP CARD BUILDER (COMBINED SYSTEM)     //
 // ============================================================================ //
 function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, activeBullets = [], finalBaseFee = 0.00) {
   if (window.isPlanCardRenderingLockActive) return;
@@ -10,14 +10,15 @@ function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, act
     const tierName = tierTitleDisplay || "Selected Package";
     const finalizedPlanTitleContainerHeaderText = serviceName + " (" + tierName.toUpperCase() + ")";
 
-    // 1. EXTRACT REGIONAL STATE FEE DETAILS DYNAMICALLY FROM THE URL
+    // 1. EXTRACT PARAMS DYNAMICALLY FROM THE URL
     const urlParams = new URLSearchParams(window.location.search);
     const urlStateCode = String(urlParams.get('state') || "").toUpperCase().trim();
     const urlServiceSlug = String(urlParams.get('service') || "").toLowerCase().trim();
 
-    let stateGovFee = 0;
-    let stateFilingFeeRowHtml = "";
+    let combinedGovernmentFees = 0;
+    let extraFilingFeesHtmlRows = "";
 
+    // --- A. REGIONAL STATE FILING FEE LOGIC ---
     if (urlStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[urlStateCode]) {
       const stateRecord = window.STATE_FILING_FEES[urlStateCode];
       let mappingKey = urlServiceSlug.replace("-formation", "");
@@ -25,41 +26,59 @@ function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, act
       if (mappingKey === "series-llc") mappingKey = "series_llc";
       if (mappingKey === "nonprofits") mappingKey = "non_profit";
 
-      const discoveredFee = stateRecord[mappingKey] || stateRecord["llc"] || 0;
-      stateGovFee = parseFloat(discoveredFee) || 0;
+      const discoveredStateFee = stateRecord[mappingKey] || stateRecord["llc"] || 0;
+      const stateGovFee = parseFloat(discoveredStateFee) || 0;
 
       if (stateGovFee > 0) {
-        stateFilingFeeRowHtml = `
-          <div class="runtime-state-fee-notice-card" style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; text-align: left; box-sizing: border-box; width: 100%;">
+        combinedGovernmentFees += stateGovFee;
+        extraFilingFeesHtmlRows += `
+          <div class="runtime-state-fee-notice-card" style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; text-align: left; box-sizing: border-box; width: 100%;">
             <div style="display: flex; flex-direction: column;">
-              <span style="font-weight: 700; color: #0a1f44; font-size: 0.85rem;">Mandatory ${stateRecord.name} Fee:</span>
-              <small style="color: #0a1f44; font-weight: 500; font-size: 0.725rem;"><i class="fa-solid fa-clock"></i> Est. Processing: ${stateRecord.time}</small>
+              <span style="font-weight: 700; color: var(--navy, #0a1f44); font-size: 0.85rem;">Mandatory ${stateRecord.name} Fee:</span>
+              <small style="color: var(--navy, #0a1f44); font-weight: 500; font-size: 0.725rem;"><i class="fa-solid fa-clock"></i> Est. Processing: ${stateRecord.time}</small>
             </div>
             <strong style="font-family: monospace; color: #10b981; font-size: 1.1rem;">+$${stateGovFee.toFixed(2)}</strong>
           </div>
         `;
       }
-      
+    }
+
+    // --- B. FMCSA & REGULATORY GOVERNMENT FEE LOGIC ---
+    if (urlServiceSlug && window.GOVT_REGULATORY_FEES && window.GOVT_REGULATORY_FEES[urlServiceSlug]) {
+      const govRecord = window.GOVT_REGULATORY_FEES[urlServiceSlug];
+      const discoveredGovFee = govRecord[urlServiceSlug] !== undefined ? govRecord[urlServiceSlug] : (govRecord["filing-fee"] || 0);
+      const targetGovRegulatoryFee = parseFloat(discoveredGovFee) || 0;
+
+      if (targetGovRegulatoryFee > 0) {
+        combinedGovernmentFees += targetGovRegulatoryFee;
+        extraFilingFeesHtmlRows += `
+          <div class="runtime-gov-fee-notice-card" style="background: #f8fafc; border: 1px solid var(--border, #e2e8f0); border-left: 4px solid #0a1f44; border-radius: 8px; padding: 12px 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; text-align: left; box-sizing: border-box; width: 100%;">
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-weight: 700; color: var(--navy, #0a1f44); font-size: 0.85rem;">Mandatory Gov Filing Fee:</span>
+              <small style="color: var(--navy, #0a1f44); font-weight: 500; font-size: 0.725rem;"><i class="fa-solid fa-clock"></i> Est. Processing: ${govRecord.time || "Processing"}</small>
+            </div>
+            <strong style="font-family: monospace; color: #10b981; font-size: 1.1rem;">+$${targetGovRegulatoryFee.toFixed(2)}</strong>
+          </div>
+        `;
+      }
     }
 
     // 2. SAFE STRING ESCAPE PROCESSING
     let mainBoxListMarkup = "";
     activeBullets.forEach(function(bulletItem) {
       const safeText = (typeof window.secureWizardStringEscape === "function") ? window.secureWizardStringEscape(bulletItem) : bulletItem;
-      mainBoxListMarkup += `<li style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span class="f4u-pristine-bullet-text" style="font-size: 0.9rem; color: #0a1f44; font-weight: 600;">${safeText}</span></li>`;
+      mainBoxListMarkup += `<li style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span class="f4u-pristine-bullet-text" style="font-size: 0.9rem; color: var(--navy, #0a1f44); font-weight: 600;">${safeText}</span></li>`;
     });
 
     /**
      * ONE CONTAINER FIX: Stripped out the inner wrapper container card.
-     * Elements flow directly inside the outer placeholder box context, 
+     * Elements flow directly inside the outer placeholder box context,
      * making the card footprint identical to Step 0's layout container.
      */
     const masterPanelTarget = document.getElementById("step-1-injection-placeholder");
-
     if (masterPanelTarget) {
       masterPanelTarget.innerHTML = `
         <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; text-align: left; clear: both;">
-          
           <div style="border-bottom: 1px solid var(--border, #e2e8f0); padding-bottom: 12px;">
             <span style="font-size: 0.75rem; font-weight: 800; color: var(--slate, #64748b); text-transform: uppercase; letter-spacing: 0.5px;">Selected Package</span>
             <h3 style="margin: 4px 0 0 0; color: var(--navy, #0a1f44); font-size: 1.15rem; font-weight: 800;">${finalizedPlanTitleContainerHeaderText}</h3>
@@ -77,7 +96,7 @@ function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, act
             <strong style="font-family: monospace; color: #10b981; font-size: 1.35rem;">$${finalBaseFee.toFixed(2)}</strong>
           </div>
 
-          ${stateFilingFeeRowHtml}
+          ${extraFilingFeesHtmlRows}
 
           <!-- Integrated Action Footer Navigation Bar -->
           <div class="wizard-action-footer" style="display: flex; justify-content: flex-end; align-items: center; width: 100%; margin-top: 16px; border-top: 1px solid var(--border, #e2e8f0); padding-top: 16px; box-sizing: border-box; clear: both;">
@@ -85,7 +104,6 @@ function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, act
               Continue to Service Form <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
-
         </div>
       `;
     }
@@ -97,12 +115,13 @@ function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, act
       numericalBaseInput.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
-    window.computedWizardStateGovernmentFee = stateGovFee;
+    // Sync calculated combined government fees back to your processing engine variable
+    window.computedWizardStateGovernmentFee = combinedGovernmentFees;
 
     if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
       window.updateDynamicPricingMatrixVanilla();
     }
-    
+
     if (typeof window.populatePurchaseSummaryReviewMatrix === "function") {
       window.populatePurchaseSummaryReviewMatrix();
     }
@@ -115,6 +134,7 @@ function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, act
 }
 
 window.renderOnboardingPlanOverviewCard = renderOnboardingPlanOverviewCard;
+
 
 
 
