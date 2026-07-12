@@ -1653,10 +1653,29 @@ async function executeTemplateCompilationPipeline(fieldsRoot, rawUrlSlug) {
         if (rawUrlSlug === "corporations") dynamicInitName = "initCorporationsServices";
         if (rawUrlSlug === "llc-formation") dynamicInitName = "initLlcFormationServices";
         
-        if (typeof window[dynamicInitName] === "function") {
-            console.log(`[Lifecycle Engine] Executing service sub-script initializer: window.${dynamicInitName}()`);
-            window[dynamicInitName]();
-        }
+     // Initialize a global tracking registry for run once operations
+window.initializedLifecycleServices = window.initializedLifecycleServices || {};
+
+if (typeof window[dynamicInitName] === "function") {
+  // Check if this specific service has already run its initial setup
+  if (window.initializedLifecycleServices[dynamicInitName]) {
+    console.log(`[Lifecycle Engine Guard] Suppressing recursive execution pass for already initialized initializer: window.${dynamicInitName}()`);
+  } else {
+    console.log(`[Lifecycle Engine] Executing service sub-script initializer: window.${dynamicInitName}()`);
+    
+    // Mark as initialized BEFORE calling to absorb rapid async re-entries
+    window.initializedLifecycleServices[dynamicInitName] = true;
+    
+    try {
+      window[dynamicInitName]();
+    } catch (initError) {
+      console.error(`[Lifecycle Engine] Error during window.${dynamicInitName}() execution:`, initError);
+      // Optional: uncomment below if you want failed initializations to retry on next cycle
+      // window.initializedLifecycleServices[dynamicInitName] = false;
+    }
+  }
+}
+
 
         const targetRegistryMasterKey = `${rawUrlSlug}-form-master`;
         const hasMasterFormBuilder = typeof window.formRegistry[targetRegistryMasterKey] === "function";
