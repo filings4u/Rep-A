@@ -30,14 +30,15 @@
 
 <!-- FIELD: ENTITY TYPE SELECTION -->
 <div class="wizard-input-group" style="grid-column: span 1;">
-  <label>Entity Type <span style="color: #ef4444;">*</span></label>
-  <select required>
+  <label style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Entity Type<span style="color: #ef4444;">*</span></label>
+        <select id="fq_state_of_formation" required class="wizard-input-field" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 12px; font-size: 0.95rem; font-weight: 600; background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; line-height: 1.2;">
     <option value="" disabled selected>Select Entity Type...</option>
     <option value="llc">Limited Liability Company (LLC)</option>
     <option value="corporation">Corporation</option>
     <option value="partnership">Partnership</option>
   </select>
 </div>
+
 
       
       <!-- FIELD: PRINCIPAL OFFICE STREET ADDRESS -->
