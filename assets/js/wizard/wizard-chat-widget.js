@@ -121,8 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * filings4u Platform Architecture
- * Module: assets/js/wizard-chat-client.js (Part 2 of 5)
- * 🟢 COMPLETE COUPLING: Fail-Silent Intake Mapper (No Dialog Boxes)
+ * Module: assets/js/wizard-chat-client.js (Part 1 of 2)
+ * 🟢 COMPLETE ENGINE ARCHITECTURE: 100% Fail-Silent Execution Pass
  */
 
 const f4uWizardSupabaseInstance = window.supabaseClient || window.supabase;
@@ -130,29 +130,62 @@ let clientSessionUserId = null;
 let clientLiveSocketChannel = null;
 
 /**
- * Validates detail profiles and launches a secure database session silently.
+ * Manually extracts form inputs, validates presence parameters, and connects database states.
  */
-async function validateAndLaunchAgentChatSession(event) {
-  event.preventDefault();
-  event.stopPropagation();
+window.validateAndLaunchAgentChatSession = async function(event) {
+  if (event) {
+    if (typeof event.preventDefault === "function") event.preventDefault();
+    if (typeof event.stopPropagation === "function") event.stopPropagation();
+  }
+
+  const submitButton = document.getElementById("f4uWizardChatSubmitBtn");
   
-  const submitButton = event.target.querySelector('button[type="submit"]');
+  // 1. Manually resolve baseline raw text node targets
+  const fNameField = document.getElementById("chat_first_name");
+  const lNameField = document.getElementById("chat_last_name");
+  const phoneField = document.getElementById("chat_phone");
+  const emailField = document.getElementById("chat_email");
+
+  if (!fNameField || !lNameField || !phoneField || !emailField) {
+    console.error("[Intake Fault] Critical input box reference nodes are missing from the current active canvas layout tree.");
+    return;
+  }
+
+  const fName = fNameField.value.trim();
+  const lName = lNameField.value.trim();
+  const phone = phoneField.value.trim();
+  const email = emailField.value.trim();
+
+  // Reset any previous visual error indicators from validation sweeps
+  fNameField.style.borderColor = "#cbd5e1";
+  lNameField.style.borderColor = "#cbd5e1";
+  phoneField.style.borderColor = "#cbd5e1";
+  emailField.style.borderColor = "#cbd5e1";
+
+  // 2. Perform field string parameter checking loops
+  if (!fName || !lName || !phone || !email) {
+    if (!fName) fNameField.style.borderColor = "#ef4444";
+    if (!lName) lNameField.style.borderColor = "#ef4444";
+    if (!phone) phoneField.style.borderColor = "#ef4444";
+    if (!email) emailField.style.borderColor = "#ef4444";
+    console.warn("[Validation Intercept] User session launch blocked: One or more form fields are blank.");
+    return;
+  }
+
+  // Prevent multiple identical execution clicks from firing during slow database pings
   if (submitButton) {
     submitButton.disabled = true;
     submitButton.innerText = "Connecting...";
   }
 
-  const fName = document.getElementById("chat_first_name").value.trim();
-  const lName = document.getElementById("chat_last_name").value.trim();
-  const phone = document.getElementById("chat_phone").value.trim();
-  const email = document.getElementById("chat_email").value.trim();
-
-  // Generate unique numeric customer context reference key matching BIGINT requirements
+  // Generate unique numeric customer context key sequence mapping
   clientSessionUserId = Math.floor(100000 + Math.random() * 900000);
 
   try {
-    // 1. Ingest customer context rows directly inside wizard_intake_sessions table
-    const { error: intakeError } = await f4uWizardSupabaseInstance
+    const activeInstance = window.supabaseClient || window.supabase || f4uWizardSupabaseInstance;
+
+    // A: Ingest details parameters into wizard_intake_sessions table
+    const { error: intakeError } = await activeInstance
       .from('wizard_intake_sessions')
       .insert({
         user_id: clientSessionUserId,
@@ -166,80 +199,37 @@ async function validateAndLaunchAgentChatSession(event) {
 
     if (intakeError) throw intakeError;
 
-    // 2. Insert initial baseline entry record node directly inside chat_messages table
-    const initialTextPayload = `System Notice: Compliance broker bridging session initialized for ${fName}.`;
-    const { error: msgError } = await f4uWizardSupabaseInstance
+    // B: Insert initial message context record node into centralized logs
+    const initialPayloadString = `System Notice: Compliance broker bridging session initialized for ${fName}.`;
+    const { error: msgError } = await activeInstance
       .from('chat_messages')
       .insert({
         user_id: clientSessionUserId,
         sender_type: 'client',
-        message_content: initialTextPayload,
+        message_content: initialPayloadString,
         is_read_by_admin: false
       });
 
     if (msgError) throw msgError;
 
-    // 3. Kick off the background latency tracker to process out-of-office inbox notifications
+    // C: Trigger out-of-office automated email fallback delay timer sequence in the background
     if (typeof window.dispatchOutOfOfficeUnreadChatNotification === "function") {
-      window.dispatchOutOfOfficeUnreadChatNotification(f4uWizardSupabaseInstance, clientSessionUserId, initialTextPayload);
+      window.dispatchOutOfOfficeUnreadChatNotification(activeInstance, clientSessionUserId, initialPayloadString);
     }
 
-  } catch (dbFailToken) {
-    // 🟢 SILENT INTERCEPT: 1980s alerts removed. Exceptions bypass UI and route right to backgrounds.
-    console.error("[Supabase Session Intake Error] Fault captured silently:", dbFailToken.message);
+  } catch (supabaseExceptionTelemetry) {
+    // 🟢 SILENT INTERCEPT PROTOCOL: 1980s alerts removed. Traces route straight to background logging networks.
+    console.error("[Supabase Intake Engine Exception] Data pipeline rejected mutation row:", supabaseExceptionTelemetry.message);
   }
 
   // Always transfer views smoothly to the chat window layout so the customer experiences a fluid interface
-  mountClientActiveChatViewportPanel(fName);
-}
-
-/**
- * Removes preflight input boxes and confines the streaming chat panel right inside your card dimensions.
- */
-function mountClientActiveChatViewportPanel(customerFirstName) {
-  const rootWrapperFormBox = document.getElementById("chat-preflight-input-form");
-  if (!rootWrapperFormBox) return;
-
-  rootWrapperFormBox.style.setProperty("padding", "0px", "important");
-  rootWrapperFormBox.style.setProperty("margin", "0px", "important");
-  rootWrapperFormBox.style.setProperty("width", "100%", "important");
-  rootWrapperFormBox.style.setProperty("display", "block", "important");
-
-  // 🟢 FIXED CONTAINER FRAME: Locks layout parameters securely inside your compact widget boundaries
-  rootWrapperFormBox.innerHTML = `
-    <div class="f4u-chat-embedded-card" style="display: flex !important; flex-direction: column !important; height: 420px !important; width: 100% !important; background: #ffffff !important; border-radius: 8px !important; overflow: hidden !important; box-sizing: border-box !important;">
-      
-      <!-- SUB-HEADER LAYER -->
-      <div style="background: rgba(10, 31, 68, 0.04); padding: 10px 14px; display: flex; align-items: center; gap: 8px; width: 100%; box-sizing: border-box; border-bottom: 1px solid #cbd5e1;">
-        <div style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 4px #10b981;"></div>
-        <span style="color: #475569; font-size: 0.75rem; font-weight: 700; font-family: sans-serif; text-transform: uppercase; letter-spacing: 0.5px;">🟢 filings4u Compliance Support Desk</span>
-      </div>
-
-      <!-- STREAMING MESSAGE TIMELINE WELL -->
-      <div id="wizardChatScrollWell" style="flex: 1 !important; overflow-y: auto !important; padding: 14px !important; background: #f8fafc !important; display: flex !important; flex-direction: column !important; gap: 10px !important; box-sizing: border-box !important; width: 100% !important; height: 300px !important;">
-        <div style="margin-right: auto; max-width: 85%; background: #edf2f7; color: #0f172a; padding: 10px 12px; border-radius: 8px; font-size: 0.825rem; font-weight: 500; border-bottom-left-radius: 2px; line-height: 1.4; text-align: left;">
-          Hello ${customerFirstName}! An expert agent has been pinged and is reviewing your details parameters. How can we optimize your filing setup layout tonight?
-        </div>
-      </div>
-
-      <!-- BOTTOM INTEGRATED INPUT CONTROLLER CONTAINER -->
-      <div style="padding: 12px; background: #ffffff; border-top: 1px solid #cbd5e1; box-sizing: border-box; width: 100%;">
-        <div style="display: flex; gap: 8px; width: 100%; box-sizing: border-box; align-items: center;">
-          <input type="text" id="wizardClientChatMessageInputField" placeholder="Type your message here..." style="flex: 1; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 0.85rem; box-sizing: border-box; font-family: inherit; font-weight: 500;" onkeydown="if(event.key==='Enter'){ dispatchWizardClientChatMessagePayload(); }">
-          <button type="button" onclick="dispatchWizardClientChatMessagePayload()" style="background: #0a1f44; color: #ffffff; border: none; font-weight: 700; font-size: 0.8rem; border-radius: 6px; padding: 0 14px; cursor: pointer; height: 38px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">Send</button>
-        </div>
-      </div>
-
-    </div>
-  `;
-
-  if (typeof connectClientIncomingSocketStream === "function") {
-    connectClientIncomingSocketStream();
+  if (typeof window.mountClientActiveChatViewportPanel === "function") {
+    window.mountClientActiveChatViewportPanel(fName);
   }
-}
+};
 
-// Expose functions globally to prevent event scope errors
-window.validateAndLaunchAgentChatSession = validateAndLaunchAgentChatSession;
+
+
 
 /**
  * filings4u Platform Architecture
