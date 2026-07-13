@@ -16,6 +16,7 @@
     <!-- 2. STYLESHEETS & FONTS TYPOGRAPHY ASSETS -->
     <link rel="icon" type="image/png" href="images/fav.png">
     <link rel="stylesheet" href="assets/css/new-wizard.css">
+    <link rel="stylesheet" href="assets/css/wizard-chat-wizard.css">
     <link rel="stylesheet" href="assets/css/wizard-mobile.css">
     <link rel="stylesheet" href="assets/css/wizard-toggle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -175,77 +176,214 @@
     
 
 
-   <!-- ============================================================================ -->
-  <!-- 💬 COMPACT, REPOSITIONABLE & RESPONSIVE FLOATING EXPERT CHAT LAYOUT          -->
-  <!-- ============================================================================ -->
-  <div class="chat-bubble-widget" onclick="window.toggleSupportFlyoutContainer(true)" title="Chat with an Expert" style="cursor: pointer;">
-    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px; display: block; margin: 0; padding: 0;">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-    </svg>
-  </div>
+<style>
+  /* 1. Core Structural Sizing & Mobile Fixes */
+  .chat-bubble-widget-launcher, .support-slide-container {
+    box-sizing: border-box !important;
+    font-family: system-ui, -apple-system, sans-serif !important;
+  }
+  .f4u-form-row {
+    display: flex !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-bottom: 10px !important;
+  }
+  .f4u-input-group {
+    flex: 1 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .f4u-input-field {
+    width: 100% !important;
+    height: 38px !important;
+    padding: 0 10px !important;
+    border-radius: 6px !important;
+    border: 1px solid #cbd5e1 !important;
+    box-sizing: border-box !important;
+    font-size: 0.85rem !important;
+  }
 
-  <!-- 🟢 FIXED CONTAINER OVERHAUL: Replaced full-height sidebar layout rules with a compact floating chat box wrapper -->
-  <div class="support-slide-container" id="support-chat-flyout-panel" style="display: none !important; position: fixed !important; bottom: 90px !important; right: 24px !important; top: auto !important; width: 360px !important; max-width: calc(100vw - 32px) !important; height: 480px !important; max-height: calc(100vh - 120px) !important; background: #ffffff !important; border-radius: 12px !important; box-shadow: 0 12px 40px rgba(10,31,68,0.15) !important; z-index: 99999 !important; border: 1px solid #e2e8f0 !important; overflow: hidden !important; box-sizing: border-box !important; opacity: 0; transform: translateY(30px); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;">
-    
-    <!-- DRAG HEADER DRAG HANDLE STRIP -->
-    <header id="support-chat-drag-handle" style="background: #0a1f44; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; color: #ffffff; box-sizing: border-box !important; width: 100% !important; border-top-left-radius: 11px; border-top-right-radius: 11px;">
-      <h3 style="margin: 0; font-size: 0.95rem; font-weight: 800; display: flex; align-items: center; gap: 8px; pointer-events: none; font-family: system-ui, sans-serif;">
-        <i class="fa-solid fa-comments" style="color: #10b981;"></i> filings4u Support 
-      </h3>
-      <button type="button" onclick="window.toggleSupportFlyoutContainer(false)" style="background: transparent; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; font-weight: 400; line-height: 1; padding: 4px; outline: none; display: flex; align-items: center; justify-content: center;">&times;</button>
-    </header>
-
-    <!-- CORE INTERACTIVE TARGET FILL AREA -->
-    <div style="padding: 0px; display: flex; flex-direction: column; box-sizing: border-box; width: 100% !important; height: calc(100% - 45px) !important;" id="chat-preflight-input-form">
-      
-      <!-- DEFAULT PRE-FLIGHT CAPTURE SCREEN VIEW -->
-      <div style="padding: 20px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; height: 100%; overflow-y: auto;">
-        <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #64748b; line-height: 1.4; font-weight: 400; text-align: left;">Provide your verified details parameters to bypass automated queues and bridge instantly to an expert broker.</p>
-        
-        <form onsubmit="window.validateAndLaunchAgentChatSession(event)" style="display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0;">
-          <div style="display: flex; gap: 10px; width: 100%;">
-            <div class="wizard-input-group" style="flex: 1;">
-              <input type="text" id="chat_first_name" required class="wizard-input-field" placeholder="First Name" style="width: 100%; height: 38px; padding: 0 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 0.85rem;">
-            </div>
-            <div class="wizard-input-group" style="flex: 1;">
-              <input type="text" id="chat_last_name" required class="wizard-input-field" placeholder="Last Name" style="width: 100%; height: 38px; padding: 0 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 0.85rem;">
-            </div>
-          </div>
-          <div class="wizard-input-group">
-            <input type="tel" id="chat_phone" required class="wizard-input-field" placeholder="Phone Number" style="width: 100%; height: 38px; padding: 0 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 0.85rem;">
-          </div>
-          <div class="wizard-input-group">
-            <input type="email" id="chat_email" required class="wizard-input-field" placeholder="Business Email" style="width: 100%; height: 38px; padding: 0 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 0.85rem;">
-          </div>
-          <button type="submit" class="btn-wizard-main" style="width: 100%; margin-top: 4px; padding: 10px 0; background: #0a1f44; color: #ffffff; border: none; font-weight: 700; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(10,31,68,0.1); box-sizing: border-box; font-size: 0.85rem;"> Connect to Live Agent </button>
-        </form>
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- 📱 MOBILE RESPONSIVE INJECTOR CSS OVERRIDE -->
-  <style>
-    @media screen and (max-width: 500px) {
-      #support-chat-flyout-panel {
-        bottom: 0px !important;
-        right: 0px !important;
-        width: 100vw !important;
-        max-width: 100vw !important;
-        height: 100vh !important;
-        max-height: 100vh !important;
-        border-radius: 0px !important;
-        border: none !important;
-        transform: translateY(100%) !important;
-      }
-      #support-chat-drag-handle {
-        border-radius: 0px !important;
-        height: 55px !important;
-      }
-      #support-chat-drag-handle h3 { font-size: 1.05rem !important; }
+  @media screen and (max-width: 500px) {
+    #support-chat-flyout-panel {
+      bottom: 0px !important;
+      right: 0px !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      border-radius: 0px !important;
+      border: none !important;
+      transform: translateY(100%) !important;
+      position: fixed !important;
+      z-index: 99999 !important;
     }
-  </style>
+    #support-chat-drag-handle { border-radius: 0px !important; height: 55px !important; }
+    #support-chat-drag-handle h3 { font-size: 1.05rem !important; }
+    .chat-bubble-widget-launcher {
+      bottom: 16px !important;
+      right: 16px !important;
+      display: flex !important;
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+    }
+    .f4u-form-row {
+      flex-direction: column !important;
+      gap: 10px !important;
+      margin-bottom: 0px !important;
+    }
+    .f4u-spacing-mobile {
+      margin-bottom: 10px !important;
+    }
+  }
+
+  @keyframes f4uValidationShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  .f4u-error-shake {
+    animation: f4uValidationShake 0.4s ease-in-out !important;
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+  }
+</style>
+
+<!-- Floating launcher trigger button widget bubble -->
+<div class="chat-bubble-widget-launcher" onclick="window.toggleSupportFlyoutContainer(true)" title="Chat with an Expert" style="cursor: pointer; position: fixed !important; bottom: 24px !important; right: 24px !important; background: #0a1f44 !important; width: 50px !important; height: 50px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 4px 12px rgba(10,31,68,0.2) !important; z-index: 99998 !important;">
+  <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px; display: block; pointer-events: none;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+</div>
+
+<!-- Main Support Sliding Overlay Container Panel Box -->
+<div class="support-slide-container" id="support-chat-flyout-panel" style="display: none !important; position: fixed !important; bottom: 90px !important; right: 24px !important; top: auto !important; width: 360px !important; max-width: calc(100vw - 32px) !important; height: auto !important; background: #ffffff !important; border-radius: 12px !important; box-shadow: 0 12px 40px rgba(10,31,68,0.15) !important; z-index: 99999 !important; border: 1px solid #e2e8f0 !important; overflow: hidden; opacity: 0; transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;">
+  <header id="support-chat-drag-handle" style="background: #0a1f44; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; color: #ffffff;">
+    <h3 style="margin: 0; font-size: 0.95rem; font-weight: 800;">filings4u Support</h3>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button type="button" onclick="window.confirmAndTerminateChatSession()" style="background: #ef4444; border: none; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; cursor: pointer;">End Chat</button>
+      <button type="button" onclick="window.toggleSupportFlyoutContainer(false)" style="background: transparent; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer;">&times;</button>
+    </div>
+  </header>
+
+  <div style="padding: 20px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box;">
+    <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #64748b; line-height: 1.4; text-align: left;">Provide your verified details parameters to bypass automated queues.</p>
+    <form onsubmit="window.validateAndLaunchAgentChatSession(event)" novalidate style="margin: 0; padding: 0;">
+      
+      <!-- First & Last Name Rows Layout -->
+      <div class="f4u-form-row">
+        <div class="f4u-input-group f4u-spacing-mobile">
+          <input type="text" id="chat_first_name" required class="f4u-input-field" placeholder="First Name" oninput="this.classList.remove('f4u-error-shake')">
+        </div>
+        <div class="f4u-input-group f4u-spacing-mobile">
+          <input type="text" id="chat_last_name" required class="f4u-input-field" placeholder="Last Name" oninput="this.classList.remove('f4u-error-shake')">
+        </div>
+      </div>
+      
+      <!-- Clean Phone Row Without Paperclip at Start -->
+      <div class="f4u-input-group f4u-spacing-mobile" style="margin-bottom: 10px;">
+        <input type="tel" id="chat_phone" required class="f4u-input-field" placeholder="Phone Number" oninput="this.classList.remove('f4u-error-shake')">
+      </div>
+      
+      <!-- Business Email Field Form Entry Row -->
+      <div class="f4u-input-group" style="margin-bottom: 12px;">
+        <input type="email" id="chat_email" required class="f4u-input-field" placeholder="Business Email" oninput="this.classList.remove('f4u-error-shake')">
+      </div>
+      
+      <button type="submit" id="f4uSubmitBtn" style="width:100%; padding:10px 0; background:#0a1f44; color:#ffffff; border:none; font-weight:700; border-radius:6px; cursor:pointer; font-size:0.85rem;">Connect to Live Agent</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const f4uWizardSupabaseInstance = window.supabaseClient || window.supabase;
+  let clientSessionUserId = null;
+  let clientLiveSocketChannel = null;
+
+  window.toggleSupportFlyoutContainer = function(shouldOpenMenuPanel) {
+    const flyoutContainerNode = document.getElementById("support-chat-flyout-panel");
+    if (!flyoutContainerNode) return;
+
+    const isMobileFullScreenLayout = window.innerWidth <= 500;
+
+    if (shouldOpenMenuPanel) {
+      flyoutContainerNode.style.setProperty("display", "block", "important");
+      setTimeout(() => {
+        if (isMobileFullScreenLayout) {
+          flyoutContainerNode.style.setProperty("transform", "translateY(0)", "important");
+        } else {
+          flyoutContainerNode.style.setProperty("transform", "translateY(0)", "important");
+        }
+        flyoutContainerNode.style.setProperty("opacity", "1", "important");
+      }, 10);
+
+      const initialInputFieldName = document.getElementById("chat_first_name");
+      if (initialInputFieldName) { initialInputFieldName.focus(); }
+    } else {
+      flyoutContainerNode.style.setProperty("opacity", "0", "important");
+      if (isMobileFullScreenLayout) {
+        flyoutContainerNode.style.setProperty("transform", "translateY(100%)", "important");
+      } else {
+        flyoutContainerNode.style.setProperty("transform", "translateY(20px)", "important");
+      }
+      setTimeout(() => {
+        if (flyoutContainerNode.style.opacity === "0") {
+          flyoutContainerNode.style.setProperty("display", "none", "important");
+        }
+      }, 250);
+    }
+  };
+
+  /* Fixed Global off-canvas click-away listener framework to match .chat-bubble-widget-launcher */
+  document.addEventListener("click", function(canvasEventPayload) {
+    const panel = document.getElementById("support-chat-flyout-panel");
+    if (!panel) return;
+
+    const activeComputedDisplay = window.getComputedStyle(panel).display;
+    if (activeComputedDisplay === "none") return;
+
+    /* Class updated here to correctly retain panel focus state when clicking bubble icon */
+    const didUserClickLauncher = canvasEventPayload.target.closest('.chat-bubble-widget-launcher');
+    const isClickInsidePanel = panel.contains(canvasEventPayload.target);
+
+    if (!isClickInsidePanel && !didUserClickLauncher) {
+      window.toggleSupportFlyoutContainer(false);
+    }
+  });
+
+  window.validateAndLaunchAgentChatSession = function(event) {
+    event.preventDefault();
+    const targetFields = [
+      document.getElementById('chat_first_name'),
+      document.getElementById('chat_last_name'),
+      document.getElementById('chat_phone'),
+      document.getElementById('chat_email')
+    ];
+    let fieldFailureDetected = false;
+    targetFields.forEach(el => {
+      if (el && !el.value.trim()) {
+        el.classList.remove('f4u-error-shake');
+        void el.offsetWidth;
+        el.classList.add('f4u-error-shake');
+        fieldFailureDetected = true;
+      }
+    });
+    if (!fieldFailureDetected) {
+      const submitBtn = document.getElementById('f4uSubmitBtn');
+      submitBtn.innerText = 'Connecting...';
+      
+      // Connection feedback fail route
+      setTimeout(() => {
+        submitBtn.innerText = 'Connection Failed. Try Again.';
+        submitBtn.style.background = '#ef4444';
+      }, 5000);
+    }
+  };
+
+  window.confirmAndTerminateChatSession = function() {
+    window.toggleSupportFlyoutContainer(false);
+  };
+</script>
+
+
+
 
 
 
