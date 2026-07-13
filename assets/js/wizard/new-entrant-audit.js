@@ -1,483 +1,414 @@
-function validateNewEntrantAuditFormPart1() {
+// ============================================================================ //
+// 📋 DUAL-COLUMN REFACTOR: STEPS 1 AND 2 SUB-GRIDS (PART 1 OF 2)               //
+// ============================================================================ //
+window.formRegistry = window.formRegistry || {};
+
+// Step 1: Owner Demographics Form Panel with Side-by-Side Field Positioning
+window.formRegistry['new-entrant-audit-part1-layout'] = function() {
+  return `
+    <div id="nea_panel_part1" style="width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; box-sizing: border-box;">
+      <h3 style="grid-column: span 2; color: var(--navy, #0a1f44); margin: 0; font-size: 1.1rem; font-weight: 800; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">1. Company Owner Profile</h3>
+      
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">OWNER FIRST NAME *</label>
+        <input type="text" id="nea_owner_first_name" required placeholder="First Name" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
+        <div id="err_nea_owner_first_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">OWNER LAST NAME *</label>
+        <input type="text" id="nea_owner_last_name" required placeholder="Last Name" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
+        <div id="err_nea_owner_last_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">EMAIL ADDRESS *</label>
+        <input type="email" id="nea_owner_email" required placeholder="email@company.com" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
+        <div id="err_nea_owner_email" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">DIRECT PHONE NUMBER *</label>
+        <input type="tel" id="nea_owner_phone" required placeholder="512-555-0199" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
+        <div id="err_nea_owner_phone" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+    </div>
+  `;
+};
+
+// Step 2: Core FMCSA Registry Identifiers with Balanced Side-by-Side Drops
+window.formRegistry['new-entrant-audit-part2-layout'] = function() {
+  return `
+    <div id="nea_panel_part2" style="width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; box-sizing: border-box; margin-top: 10px;">
+      <h3 style="grid-column: span 2; color: var(--navy, #0a1f44); margin: 0; font-size: 1.1rem; font-weight: 800; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">2. Motor Carrier Operational Parameters</h3>
+      
+      <div class="wizard-input-group" style="grid-column: span 2;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">OFFICIAL MOTOR CARRIER NAME *</label>
+        <input type="text" id="nea_legal_name" required placeholder="Exact name matching USDOT registry" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
+        <div id="err_nea_legal_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">USDOT NUMBER *</label>
+        <input type="text" id="nea_usdot_number" required placeholder="e.g., 1234567" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        <div id="err_nea_usdot_number" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">MC / MX NUMBER</label>
+        <input type="text" id="nea_mc_number" placeholder="e.g., 123456" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">PRIMARY OPERATIONAL CLASSIFICATION *</label>
+        <select id="nea_operation_class" required class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #fff; box-sizing: border-box;">
+          <option value="" disabled selected>Select Classification...</option>
+          <option value="interstate-for-hire">Interstate Authorized Common/Contract Carrier</option>
+          <option value="interstate-private">Interstate Private Motor Carrier</option>
+          <option value="intrastate-for-hire">Intrastate For-Hire Operations Only</option>
+          <option value="intrastate-private">Intrastate Private Operations Only</option>
+        </select>
+        <div id="err_nea_operation_class" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">FMCSA AUDIT NOTICE STATUS *</label>
+        <select id="nea_audit_trigger_status" required class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #fff; box-sizing: border-box;" onchange="
+          var wrapper = document.getElementById('nea_letter_deadline_wrapper');
+          var input = document.getElementById('nea_audit_deadline');
+          if (this.value === 'letter-received') {
+            if (wrapper) wrapper.style.display = 'block';
+            if (input) input.required = true;
+          } else {
+            if (wrapper) wrapper.style.display = 'none';
+            if (input) { input.required = false; input.value = ''; }
+          }
+        ">
+          <option value="preemptive" selected>Preemptive System Alignment (Proactive setup before notice)</option>
+          <option value="letter-received">Official Audit Notification Letter Received</option>
+        </select>
+        <div id="err_nea_audit_trigger_status" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div id="nea_letter_deadline_wrapper" class="wizard-input-group" style="grid-column: span 2; display: none;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">MANDATORY SUBMISSION DEADLINE DATE *</label>
+        <input type="date" id="nea_audit_deadline" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
+        <div id="err_nea_audit_deadline" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+    </div>
+  `;
+};
+
+
+// ============================================================================ //
+// 📋 STEP 3 LAYOUT: PREMIUM COMPLIANCE VAULT & UPSELL MATRIX PANEL             //
+// ============================================================================ //
+
+// Step 3: Expanded Folder Packages featuring Select-All and Top Dismissal Controls
+window.formRegistry['new-entrant-audit-part3-layout'] = function() {
+  return `
+    <div id="nea_panel_addons" style="position: relative; background: #ffffff; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; width: 100%; box-sizing: border-box; margin-top: 10px;">
+      
+      <!-- TOP DISMISS X BUTTON LINK -->
+      <button type="button" onclick="if(typeof window.dismissNewEntrantUpsellCard==='function'){window.dismissNewEntrantUpsellCard();}" style="position: absolute; top: 12px; right: 12px; background: transparent; border: none; font-size: 1.25rem; font-weight: 700; color: #94a3b8; cursor: pointer; outline: none;">✕</button>
+
+      <h3 style="color: var(--navy, #0a1f44); margin: 0 24px 0 0; font-size: 1.1rem; font-weight: 800; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">3. Certified Audit Support & Compliance Vault</h3>
+      <p style="color: #64748b; font-size: 0.8rem; margin: 6px 0 12px 0;">Select premium filing options to pass your audit. Selections stream straight to Step 5.</p>
+
+      <!-- PROGRAMMATIC MASTER TOGGLE FRAME -->
+      <div style="display: flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.06); padding: 12px; border-radius: 6px; border: 1px dashed #10b981; margin-bottom: 16px; width: 100%; box-sizing: border-box;">
+        <input type="checkbox" id="nea_select_all_upsells" style="cursor: pointer; width: 16px; height: 16px;" onchange="if(typeof window.toggleAllNewEntrantUpsellNodes==='function'){window.toggleAllNewEntrantUpsellNodes(this.checked);}">
+        <label for="nea_select_all_upsells" style="font-size: 0.85rem; font-weight: 800; color: #065f46; cursor: pointer;">OPT-IN TO FULL COMPREHENSIVE AUDIT SUITE (SELECT ALL)</label>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; box-sizing: border-box;">
+        
+        <!-- ITEM 1: DQF ASSEMBLY -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px;">
+          <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <input type="checkbox" id="nea_service_dqf" value="79.00" data-price="79.00" data-name="Driver Qualifications Folder (DQF Assembly)" class="nea-addon-checkbox" style="margin-top: 3px;" onchange="if(typeof window.syncNewEntrantUpsellsToSummary==='function'){window.syncNewEntrantUpsellsToSummary();}">
+            <div>
+              <label for="nea_service_dqf" style="font-size: 0.85rem; font-weight: 700; color: #0a1f44; cursor: pointer;">Driver Qualifications Folder (DQF) Assembly</label>
+              <span style="display: block; font-size: 0.75rem; color: #64748b; margin-top: 2px;">Compiles mandatory driver files, medical certificates, background logs, and dynamic records.</span>
+            </div>
+          </div>
+          <strong style="color: #10b981; font-family: monospace; font-size: 0.85rem; white-space: nowrap; padding-left: 10px;">+$79.00</strong>
+        </div>
+
+        <!-- ITEM 2: DOT TESTING DRUG POOL CONSORTIUM -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px;">
+          <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <input type="checkbox" id="nea_service_consortium" value="149.00" data-price="149.00" data-name="DOT Drug & Alcohol Consortium Enrollment" class="nea-addon-checkbox" style="margin-top: 3px;" onchange="if(typeof window.syncNewEntrantUpsellsToSummary==='function'){window.syncNewEntrantUpsellsToSummary();}">
+            <div>
+              <label for="nea_service_consortium" style="font-size: 0.85rem; font-weight: 700; color: #0a1f44; cursor: pointer;">DOT Drug &amp; Alcohol Consortium Enrollment</label>
+              <span style="display: block; font-size: 0.75rem; color: #64748b; margin-top: 2px;">Secures required testing certificates and active randomly drawn pool matching parameters.</span>
+            </div>
+          </div>
+          <strong style="color: #10b981; font-family: monospace; font-size: 0.85rem; white-space: nowrap; padding-left: 10px;">+$149.00</strong>
+        </div>
+
+        <!-- ITEM 3: HOS DATA LOG REVIEW -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px;">
+          <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <input type="checkbox" id="nea_service_hos" value="195.00" data-price="195.00" data-name="Record-Keeping Practices (HOS Log Audit)" class="nea-addon-checkbox" style="margin-top: 3px;" onchange="if(typeof window.syncNewEntrantUpsellsToSummary==='function'){window.syncNewEntrantUpsellsToSummary();}">
+            <div>
+              <label for="nea_service_hos" style="font-size: 0.85rem; font-weight: 700; color: #0a1f44; cursor: pointer;">Hours of Service (HOS) Log Audit Pre-Review</label>
+              <span style="display: block; font-size: 0.75rem; color: #64748b; margin-top: 2px;">Examines ELD graph tracking telemetry logs to resolve layout parsing exceptions.</span>
+            </div>
+          </div>
+          <strong style="color: #10b981; font-family: monospace; font-size: 0.85rem; white-space: nowrap; padding-left: 10px;">+$195.00</strong>
+        </div>
+
+        <!-- ITEM 4: MAINTENANCE RECORD FOLDER SET -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px;">
+          <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <input type="checkbox" id="nea_service_maintenance" value="85.00" data-price="85.00" data-name="Vehicle Maintenance Records Folder" class="nea-addon-checkbox" style="margin-top: 3px;" onchange="if(typeof window.syncNewEntrantUpsellsToSummary==='function'){window.syncNewEntrantUpsellsToSummary();}">
+            <div>
+              <label for="nea_service_maintenance" style="font-size: 0.85rem; font-weight: 700; color: #0a1f44; cursor: pointer;">Vehicle Maintenance Records &amp; Inspection Files</label>
+              <span style="display: block; font-size: 0.75rem; color: #64748b; margin-top: 2px;">Compiles Part 396 annual verification sheets, inspection logs, and DVIR trackers.</span>
+            </div>
+          </div>
+          <strong style="color: #10b981; font-family: monospace; font-size: 0.85rem; white-space: nowrap; padding-left: 10px;">+$85.00</strong>
+        </div>
+
+        <!-- ITEM 5: STRATEGIC MOCK AUDIT PRE-CONSULTATION -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; background: rgba(10, 31, 68, 0.02); border: 1px dashed #10b981; padding: 12px; border-radius: 6px;">
+          <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <input type="checkbox" id="nea_service_consultation" value="250.00" data-price="250.00" data-name="Independent Mock Pre-Audit Package" class="nea-addon-checkbox" style="margin-top: 3px;" onchange="if(typeof window.syncNewEntrantUpsellsToSummary==='function'){window.syncNewEntrantUpsellsToSummary();}">
+            <div>
+              <label for="nea_service_consultation" style="font-size: 0.85rem; font-weight: 700; color: #0a1f44; cursor: pointer;">Safety Management Plan Consultation</label>
+              <span style="display: block; font-size: 0.75rem; color: #64748b; margin-top: 2px;">Provides a private 1-on-1 dossier mock review session with a senior specialist.</span>
+            </div>
+          </div>
+          <strong style="color: #10b981; font-family: monospace; font-size: 0.85rem; white-space: nowrap; padding-left: 10px;">+$250.00</strong>
+        </div>
+
+        <div id="err_nea_services_matrix" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+    </div>
+  `;
+};
+
+// ============================================================================ //
+// 📋 DUAL-COLUMN REFACTOR: STEP 4 FLEET SUB-GRID (PART 2 OF 2)                 //
+// ============================================================================ //
+
+// Step 4: Fleet Volumetrics Inventory with Side-by-Side Positioning
+window.formRegistry['new-entrant-audit-part4-layout'] = function() {
+  return `
+    <div id="nea_panel_equipment" style="width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; box-sizing: border-box; margin-top: 10px;">
+      <h3 style="grid-column: span 2; color: var(--navy, #0a1f44); margin: 0; font-size: 1.1rem; font-weight: 800; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">4. Fleet Volumetrics &amp; Equipment Inventory</h3>
+      <p style="grid-column: span 2; color: #64748b; font-size: 0.8rem; margin: 0 0 4px 0;">Declare the total active power units, operators, and trailering assets in your fleet profile:</p>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">TOTAL POWER UNITS / TRUCKS *</label>
+        <input type="number" id="nea_trucks_count" required min="1" placeholder="e.g., 5" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;" oninput="this.value = this.value.replace(/\\D/g, '')">
+        <div id="err_nea_trucks_count" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 1;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">TOTAL COMMERCIAL DRIVERS *</label>
+        <input type="number" id="nea_drivers_count" required min="1" placeholder="e.g., 4" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;" oninput="this.value = this.value.replace(/\\D/g, '')">
+        <div id="err_nea_drivers_count" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="wizard-input-group" style="grid-column: span 2;">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy); display: block; margin-bottom: 6px;">TOTAL TRAILING EQUIPMENT / TRAILERS *</label>
+        <input type="number" id="nea_trailers_count" required min="0" placeholder="e.g., 6 (Enter 0 if none)" class="wizard-input-field" style="width: 100%; min-height: 44px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;" oninput="this.value = this.value.replace(/\\D/g, '')">
+        <div id="err_nea_trailers_count" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
+      </div>
+    </div>
+  `;
+};
+
+console.log("[Grid Refactor Fix] Side-by-side positioning matrices applied cleanly for desktop structures.");
+
+
+// Step 5: Special Handling Remarks & Form Compilation Hooks
+window.formRegistry['new-entrant-audit-part5-layout'] = function() {
+  return `
+    <div id="nea_panel_part3_step" style="width: 100%; display: flex; flex-direction: column; gap: 15px; margin-top: 10px;">
+      <h3 style="color: var(--navy, #0a1f44); margin: 0; font-size: 1.1rem; font-weight: 800; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">5. Special Handling Instructions</h3>
+      
+      <div class="wizard-input-group">
+        <label style="font-weight: 700; font-size: 0.85rem; color: var(--navy);">SPECIAL AUDIT INSTRUCTIONS</label>
+        <textarea id="nea_provisions" placeholder="Detail any safety write-ups, custom ELD platforms, operational route exceptions, or temporary state enforcement extensions relevant to your safety audit dossier..." class="wizard-input-field" style="width: 100%; min-height: 100px; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-weight: 600; box-sizing: border-box; outline: none; resize: vertical; display: block;"></textarea>
+      </div>
+    </div>
+  `;
+};
+
+// ============================================================================ //
+// ⚙️ RUNTIME PLATFORM CONTROLLERS & DATA TOTALIZERS                           //
+// ============================================================================ //
+
+window.syncNewEntrantUpsellsToSummary = function() {
+  const summaryRoot = document.getElementById("nea_summary_addons_ledger_root") || document.getElementById("wizard_cart_addons_summary");
+  if (!summaryRoot) return;
+
+  let totalAddonPrice = 0;
+  let summaryHtml = "";
+  const checkboxes = document.querySelectorAll(".nea-addon-checkbox");
+  
+  checkboxes.forEach(box => {
+    if (box.checked) {
+      const name = box.getAttribute("data-name") || "Compliance Package Addon";
+      const price = parseFloat(box.getAttribute("data-price") || "0");
+      totalAddonPrice += price;
+      
+      summaryHtml += `
+        <div class="summary-addon-row" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #e2e8f0; width: 100%; box-sizing: border-box;">
+          <span style="font-size: 0.85rem; font-weight: 600; color: #0a1f44;"><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 6px;"></i> \${name}</span>
+          <span style="font-family: monospace; font-weight: 700; color: #10b981; font-size: 0.85rem;">+\$\${price.toFixed(2)}</span>
+        </div>
+      `;
+    }
+  });
+
+  summaryRoot.innerHTML = summaryHtml || `
+    <p style="margin: 0; color: #94a3b8; font-size: 0.85rem; font-style: italic;">No additional compliance folder optimization selections active.</p>
+  `;
+
+  if (typeof window.globalOrchestratedCartRefreshSync === "function") {
+    window.globalOrchestratedCartRefreshSync(totalAddonPrice);
+  }
+};
+
+window.toggleAllNewEntrantUpsellNodes = function(shouldCheckAll) {
+  const checkboxes = document.querySelectorAll(".nea-addon-checkbox");
+  checkboxes.forEach(box => {
+    box.checked = shouldCheckAll;
+  });
+  window.syncNewEntrantUpsellsToSummary();
+};
+
+window.dismissNewEntrantUpsellCard = function() {
+  window.toggleAllNewEntrantUpsellNodes(false);
+  const panel = document.getElementById("nea_panel_addons");
+  if (panel) {
+    panel.style.setProperty("display", "none", "important");
+  }
+};
+
+console.log("[Pipeline Success] Lightweight structural setup complete. Shard loops aligned sequentially.");
+
+// ============================================================================ //
+// 🛠️ NEW ENTRANT AUDIT SERVICE: COMPLETE FIELD VALIDATION ENGINE               //
+// ============================================================================ //
+window.validateEntireNewEntrantWizard = function() {
   let isValid = true;
 
-  const markInvalid = (inputEl, errorEl, msg) => {
-    errorEl.textContent = msg;
-    errorEl.style.display = "block";
-    inputEl.style.border = "1px solid #ef4444";
+  const markInvalid = (id, msg) => {
+    const inputEl = document.getElementById(id);
+    const errorEl = document.getElementById("err_" + id);
+    if (errorEl) {
+      errorEl.textContent = msg;
+      errorEl.style.setProperty("display", "block", "important");
+    }
+    if (inputEl) {
+      inputEl.style.setProperty("border-color", "#ef4444", "important");
+    }
     isValid = false;
   };
 
-  const markValid = (inputEl, errorEl) => {
-    errorEl.style.display = "none";
-    inputEl.style.border = "";
+  const markValid = (id) => {
+    const inputEl = document.getElementById(id);
+    const errorEl = document.getElementById("err_" + id);
+    if (errorEl) {
+      errorEl.style.setProperty("display", "none", "important");
+      errorEl.textContent = "";
+    }
+    if (inputEl) {
+      inputEl.style.setProperty("border-color", "#cbd5e1", "important");
+    }
   };
 
-  // 1. Validate Owner First Name
-  const firstNameField = document.getElementById('nea_owner_first_name');
-  const firstNameErr = document.getElementById('err_nea_owner_first_name');
-  if (!firstNameField || !firstNameField.value.trim()) {
-    markInvalid(firstNameField, firstNameErr, "Owner first name is required.");
-  } else {
-    markValid(firstNameField, firstNameErr);
-  }
-
-  // 2. Validate Owner Last Name
-  const lastNameField = document.getElementById('nea_owner_last_name');
-  const lastNameErr = document.getElementById('err_nea_owner_last_name');
-  if (!lastNameField || !lastNameField.value.trim()) {
-    markInvalid(lastNameField, lastNameErr, "Owner last name is required.");
-  } else {
-    markValid(lastNameField, lastNameErr);
-  }
-
-  // 3. Validate Owner Email Address
-  const emailField = document.getElementById('nea_owner_email');
-  const emailErr = document.getElementById('err_nea_owner_email');
-  if (emailField && emailErr) {
-    const emailVal = emailField.value.trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailVal) {
-      markInvalid(emailField, emailErr, "Owner profile email address is required.");
-    } else if (!emailRegex.test(emailVal)) {
-      markInvalid(emailField, emailErr, "Please supply a valid administrative contact email format.");
-    } else {
-      markValid(emailField, emailErr);
+  const checkRequired = (id, msg) => {
+    const el = document.getElementById(id);
+    if (el && document.body.contains(el)) {
+      if (!el.value || el.value.trim() === "" || el.value.startsWith("--")) {
+        markInvalid(id, msg);
+      } else {
+        markValid(id);
+      }
     }
+  };
+
+  // 1. Step 1 (Owner Demographics) Field Scanning Loops
+  checkRequired('nea_owner_first_name', "Owner first name is required.");
+  checkRequired('nea_owner_last_name', "Owner last name is required.");
+  checkRequired('nea_owner_phone', "Owner contact phone number is required.");
+  
+  const email = document.getElementById('nea_owner_email');
+  if (email && document.body.contains(email)) {
+    const emailVal = email.value.trim();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailVal) markInvalid('nea_owner_email', "Contact profile email address is required.");
+    else if (!regex.test(emailVal)) markInvalid('nea_owner_email', "Please enter a valid business email layout format.");
+    else markValid('nea_owner_email');
   }
 
-  // 4. Validate Owner Phone Number
-  const phoneField = document.getElementById('nea_owner_phone');
-  const phoneErr = document.getElementById('err_nea_owner_phone');
-  if (!phoneField || !phoneField.value.trim()) {
-    markInvalid(phoneField, phoneErr, "Owner phone number is required.");
-  } else {
-    markValid(phoneField, phoneErr);
+  // 2. Step 2 (Carrier Identification) Field Scanning Loops
+  checkRequired('nea_legal_name', "Official motor carrier name matching state registration is required.");
+  checkRequired('nea_usdot_number', "Active 7-digit USDOT tracking sequence is required.");
+  checkRequired('nea_operation_class', "Primary business operational class selection is required.");
+  checkRequired('nea_audit_trigger_status', "Please confirm your current safety audit notice status.");
+
+  const trigger = document.getElementById('nea_audit_trigger_status');
+  const deadline = document.getElementById('nea_audit_deadline');
+  if (trigger && trigger.value === 'letter-received' && deadline && document.body.contains(deadline)) {
+    if (!deadline.value) markInvalid('nea_audit_deadline', "Submission deadline date is required for received letters.");
+    else markValid('nea_audit_deadline');
   }
 
-  // 5. Validate Official Motor Carrier Name
-  const legalNameField = document.getElementById('nea_legal_name');
-  const legalNameErr = document.getElementById('err_nea_legal_name');
-  if (!legalNameField || !legalNameField.value.trim()) {
-    markInvalid(legalNameField, legalNameErr, "Official motor carrier name is required.");
-  } else {
-    markValid(legalNameField, legalNameErr);
-  }
-
-  // 6. Validate USDOT Number (Input layer filters non-numbers; checking non-empty status)
-  const usdotField = document.getElementById('nea_usdot_number');
-  const usdotErr = document.getElementById('err_nea_usdot_number');
-  if (!usdotField || !usdotField.value.trim()) {
-    markInvalid(usdotField, usdotErr, "USDOT number is required.");
-  } else {
-    markValid(usdotField, usdotErr);
-  }
-
-  // 7. Validate MC Number (Input layer filters non-numbers; checking non-empty status)
-  const mcField = document.getElementById('nea_mc_number');
-  const mcErr = document.getElementById('err_nea_mc_number');
-  if (!mcField || !mcField.value.trim()) {
-    markInvalid(mcField, mcErr, "MC number is required.");
-  } else {
-    markValid(mcField, mcErr);
-  }
-
-  // 8. Validate Safety Audit Notice Status Dropdown
-  const triggerField = document.getElementById('nea_audit_trigger_status');
-  const triggerErr = document.getElementById('err_nea_audit_trigger_status');
-  if (!triggerField || !triggerField.value) {
-    markInvalid(triggerField, triggerErr, "Please select your current safety audit notice status.");
-  } else {
-    markValid(triggerField, triggerErr);
-  }
-
-  // 9. Conditional Validation for Submission Deadline Date
-  const deadlineWrapper = document.getElementById('nea_letter_deadline_wrapper');
-  const deadlineField = document.getElementById('nea_audit_deadline');
-  const deadlineErr = document.getElementById('err_nea_audit_deadline');
-
-  if (deadlineWrapper && (deadlineWrapper.style.display === "block" || deadlineWrapper.style.display === "grid" || (triggerField && triggerField.value === "letter-received"))) {
-    if (!deadlineField || !deadlineField.value) {
-      markInvalid(deadlineField, deadlineErr, "Submission deadline date is required when an official notice letter has been received.");
-    } else {
-      markValid(deadlineField, deadlineErr);
-    }
-  } else {
-    if (deadlineField && deadlineErr) markValid(deadlineField, deadlineErr);
-  }
-
-  return isValid;
-}
-window.validateNewEntrantAuditFormPart1 = validateNewEntrantAuditFormPart1;
-
-
-// ============================================================================
-// 📋 FAMILY 34: NEW ENTRANT SAFETY AUDIT LAYOUT MATRIX (PART A)
-// ============================================================================
-function buildNewEntrantAuditFormPart1(stateDropdownOptionsHtml = "") {
- return `
- <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-top: 12px; margin-bottom: 8px;">
-   <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> FMCSA New Entrant Safety Assurance Program</strong> 
-   All newly registered motor carriers are placed into a 18-month federal monitoring window. The FMCSA mandates a compulsory **New Entrant Safety Audit** within this timeframe to verify robust administrative tracking of driver logs, vehicle records, drug screens, and security structures. Failing this audit results in immediate, permanent revocation of operating authority.
- </div>
-
- <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-   <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">1. Company Owner Information Profile</h3>
- </div>
-
- <!-- FIELD 1: OWNER FIRST NAME -->
- <div class="wizard-input-group" style="grid-column: span 1;">
-   <label for="nea_owner_first_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Owner First Name <span style="color: #ef4444;">*</span></label>
-   <input type="text" id="nea_owner_first_name" required placeholder="First Name" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
-   <div class="wizard-error-message" id="err_nea_owner_first_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
-
- <!-- FIELD 2: OWNER LAST NAME -->
- <div class="wizard-input-group" style="grid-column: span 1;">
-   <label for="nea_owner_last_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Owner Last Name <span style="color: #ef4444;">*</span></label>
-   <input type="text" id="nea_owner_last_name" required placeholder="Last Name" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
-   <div class="wizard-error-message" id="err_nea_owner_last_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
-
- <!-- FIELD 3: OWNER EMAIL -->
- <div class="wizard-input-group" style="grid-column: span 1;">
-   <label for="nea_owner_email" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy); display: flex; align-items: center; gap: 4px;">Owner Email Address <span style="color: #ef4444;">*</span></label>
-   <input type="email" id="nea_owner_email" required placeholder="e.g. name@company.com" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
-   <div class="wizard-error-message" id="err_nea_owner_email" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
-   <div style="margin-top: 4px; font-size: 0.75rem; color: var(--slate, #64748b); line-height: 1.3; font-weight: 500;">
-     <i class="fa-solid fa-circle-info" style="color: #10b981;"></i> This email will be used to access your secure client dashboard and initialize your corporate profile account.
-   </div>
- </div>
-
- <!-- FIELD 4: OWNER PHONE -->
- <div class="wizard-input-group" style="grid-column: span 1;">
-   <label for="nea_owner_phone" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Owner Phone Number <span style="color: #ef4444;">*</span></label>
-   <input type="tel" id="nea_owner_phone" required placeholder="e.g. 773-245-7079" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
-   <div class="wizard-error-message" id="err_nea_owner_phone" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
-
- <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-   <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">2. Motor Carrier Audit Identification Profile</h3>
- </div>
-
- <!-- FIELD 5: OFFICIAL MOTOR CARRIER NAME -->
- <div class="wizard-input-group" style="grid-column: span 2;">
-   <label for="nea_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Official Motor Carrier Name <span style="color: #ef4444;">*</span></label>
-   <input type="text" id="nea_legal_name" required placeholder="Enter exact name registered on your USDOT portal" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
-   <div class="wizard-error-message" id="err_nea_legal_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
-
- <!-- FIELD 6: USDOT NUMBER -->
- <div class="wizard-input-group" style="grid-column: span 1;">
-   <label for="nea_usdot_number" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">USDOT Number <span style="color: #ef4444;">*</span></label>
-   <input type="text" id="nea_usdot_number" required placeholder="e.g. 1234567" class="wizard-input-field" style="width: 100%; box-sizing: border-box;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-   <div class="wizard-error-message" id="err_nea_usdot_number" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
-
- <!-- FIELD 7: MC NUMBER -->
- <div class="wizard-input-group" style="grid-column: span 1;">
-   <label for="nea_mc_number" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">MC Number <span style="color: #ef4444;">*</span></label>
-   <input type="text" id="nea_mc_number" required placeholder="e.g. 123456" class="wizard-input-field" style="width: 100%; box-sizing: border-box;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-   <div class="wizard-error-message" id="err_nea_mc_number" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
-
- <!-- FIELD 8: SAFETY AUDIT NOTICE STATUS DROPDOWN -->
- <div class="wizard-input-group" style="grid-column: span 1;">
-   <label for="nea_audit_trigger_status" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">FMCSA Safety Audit Notice Status <span style="color: #ef4444;">*</span></label>
-   <select id="nea_audit_trigger_status" required class="wizard-input-field" style="font-weight: 600; max-width: 100%; width: 100%; box-sizing: border-box; white-space: normal; word-wrap: break-word;" onchange="var wrapper = document.getElementById('nea_letter_deadline_wrapper'); var input = document.getElementById('nea_audit_deadline'); if(this.value === 'letter-received') { if(wrapper) wrapper.style.display = 'block'; if(input) input.required = true; } else { if(wrapper) wrapper.style.display = 'none'; if(input) { input.required = false; input.value = ''; } }">
-     <option value="preemptive" selected>Preemptive Check (Proactively setting up compliance before receiving state tracking letters)</option>
-     <option value="letter-received">Official Audit Letter Received (FMCSA has issued an explicit document request deadline)</option>
-   </select>
-   <div class="wizard-error-message" id="err_nea_audit_trigger_status" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
-
- <!-- CONDITIONAL FIELD 9: MANDATORY SUBMISSION DEADLINE DATE -->
- <div id="nea_letter_deadline_wrapper" class="wizard-input-group" style="grid-column: span 1; display: none;">
-   <label for="nea_audit_deadline" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Mandatory Submission Deadline Date <span style="color: #ef4444;">*</span></label>
-   <input type="date" id="nea_audit_deadline" class="wizard-input-field" style="width: 100%; box-sizing: border-box;">
-   <div class="wizard-error-message" id="err_nea_audit_deadline" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
-
- <div style="grid-column: span 2; margin: 12px 0;">
-   <button type="button" onclick="window.launchNewEntrantAuditRequirementsGuideModal()" style="background: var(--navy); color: #ffffff; font-weight: 800; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.15); width: 100%; justify-content: center;">
-     <i class="fa-solid fa-list-check"></i> Launch New Entrant Audit Requirements Checklist & Price Guide
-   </button>
- </div>
- `;
-}
-window.buildNewEntrantAuditFormPart1 = buildNewEntrantAuditFormPart1;
-
-function validateNewEntrantAuditFormPart2() {
-  let isValid = true;
-
-  const servicesList = [
-    'nea_service_dqf',
-    'nea_service_consortium',
-    'nea_service_hos',
-    'nea_service_maintenance',
-    'nea_service_consultation'
-  ];
-
-  let selectedCount = 0;
-  servicesList.forEach(function(id) {
-    const box = document.getElementById(id);
-    if (box && box.checked) {
-      selectedCount++;
+  // 3. Step 4 (Fleet Equipment) Field Scanning Loops
+  const metrics = ['nea_trucks_count', 'nea_drivers_count', 'nea_trailers_count'];
+  metrics.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && document.body.contains(el)) {
+      const parsedVal = parseInt(el.value, 10);
+      if (isNaN(parsedVal) || parsedVal < 0 || (id !== 'nea_trailers_count' && parsedVal < 1)) {
+        markInvalid(id, "Please provide a valid whole integer count metric.");
+      } else {
+        markValid(id);
+      }
     }
   });
 
-  const matrixErr = document.getElementById('err_nea_services_matrix');
-  if (matrixErr) {
-    // Modify selection requirement conditions here if choosing an option is completely optional
-    const requiresAtLeastOneAddon = false; 
-
-    if (requiresAtLeastOneAddon && selectedCount === 0) {
-      matrixErr.textContent = "Please opt into at least one compliance preparation folder package.";
-      matrixErr.style.display = "block";
-      isValid = false;
-    } else {
-      matrixErr.style.display = "none";
-    }
-  }
-
   return isValid;
-}
-window.validateNewEntrantAuditFormPart2 = validateNewEntrantAuditFormPart2;
-
-function buildNewEntrantAuditFormPart2(stateDropdownOptionsHtml = "") {
- return `
- <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-   <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">3. Authorized Audit Preparation Support</h3>
-   <p style="color: var(--slate); font-size: 0.8rem; margin: 4px 0 0 0;">Select which critical compliance folders you want Filings4u to assemble and optimize. Checked items add dynamically to your checkout balance:</p>
- </div>
- <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 12px; width: 100%; box-sizing: border-box;">
-   
-   <!-- SERVICE BOX 1: DQF -->
-   <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box; width: 100%;">
-     <div style="display: flex; align-items: flex-start; gap: 10px;">
-       <input type="checkbox" id="nea_service_dqf" value="79.00" data-price="79.00" data-name="Driver Qualifications Folder (DQF Assembly)" class="addon-checkbox" style="margin-top: 4px;" onchange="if(window.globalOrchestratedCartRefreshSync) { window.globalOrchestratedCartRefreshSync(); }">
-       <div>
-         <label for="nea_service_dqf" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Driver Qualifications Folder Assembly</label>
-         <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px; line-height: 1.45;">Verify that all drivers meet the necessary qualifications and training standards required for their roles within the organization. Compiles mandatory medical examiner certificates, training certifications, 3-year historical background safety investigations, and annual motor vehicle driving records.</span>
-       </div>
-     </div>
-     <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$79.00</div>
-   </div>
-
-   <!-- SERVICE BOX 2: DRUG & ALCOHOL CONSORTIUM -->
-   <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box; width: 100%;">
-     <div style="display: flex; align-items: flex-start; gap: 10px;">
-       <input type="checkbox" id="nea_service_consortium" value="149.00" data-price="149.00" data-name="Compliance with Regulations (DOT Consortium Enrollment)" class="addon-checkbox" style="margin-top: 4px;" onchange="if(window.globalOrchestratedCartRefreshSync) { window.globalOrchestratedCartRefreshSync(); }">
-       <div>
-         <label for="nea_service_consortium" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">DOT Drug & Alcohol Consortium Enrollment</label>
-         <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px; line-height: 1.45;">Check adherence to applicable local, state, and federal regulations governing the industry. Secures verification of authority, up-to-date active registrations, licenses, appropriate insurance policies to protect against liabilities, and complete Part 382 random drug pool screening registries.</span>
-       </div>
-     </div>
-     <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$149.00</div>
-   </div>
-
- </div>
- `;
-}
-
-function buildNewEntrantAuditFormPart2_Extended() {
- return `
- <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 12px; width: 100%; box-sizing: border-box;">
-   
-   <!-- SERVICE BOX 3: HOS -->
-   <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box; width: 100%;">
-     <div style="display: flex; align-items: flex-start; gap: 10px;">
-       <input type="checkbox" id="nea_service_hos" value="195.00" data-price="195.00" data-name="Record-Keeping Practices (HOS Log Audit)" class="addon-checkbox" style="margin-top: 4px;" onchange="if(window.globalOrchestratedCartRefreshSync) { window.globalOrchestratedCartRefreshSync(); }">
-       <div>
-         <label for="nea_service_hos" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Hours of Service (HOS) Log Audit Pre-Review</label>
-         <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px; line-height: 1.45;">Examine record-keeping practices to ensure processes are efficient, accurate, and in line with auditing standards. Conducts dynamic reviews across operational procedures, electronic logging device (ELD) data feeds, and compliance training programs to iron out graph exceptions.</span>
-       </div>
-     </div>
-     <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$195.00</div>
-   </div>
-
-   <!-- SERVICE BOX 4: MAINTENANCE -->
-   <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box; width: 100%;">
-     <div style="display: flex; align-items: flex-start; gap: 10px;">
-       <input type="checkbox" id="nea_service_maintenance" value="85.00" data-price="85.00" data-name="Vehicle Maintenance Records Folder" class="addon-checkbox" style="margin-top: 4px;" onchange="if(window.globalOrchestratedCartRefreshSync) { window.globalOrchestratedCartRefreshSync(); }">
-       <div>
-         <label for="nea_service_maintenance" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Vehicle Maintenance Records & Periodic Inspection Files</label>
-         <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px; line-height: 1.45;">Inspect maintenance records to confirm that all vehicles are regularly serviced and meet rigorous safety requirements. Assembles systematic Part 396 annual test sheets, daily driver vehicle inspection reports (DVIR), repair invoices, and active asset tracking dossiers.</span>
-       </div>
-     </div>
-     <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$85.00</div>
-   </div>
-
-   <!-- SERVICE BOX 5: MOCK AUDIT MP CONSULTATION -->
-   <div style="display: flex; align-items: flex-start; justify-content: space-between; background: rgba(10, 31, 68, 0.02); border: 1px dashed var(--primary, #10b981); padding: 14px; border-radius: 8px; box-sizing: border-box; width: 100%;">
-     <div style="display: flex; align-items: flex-start; gap: 10px;">
-       <input type="checkbox" id="nea_service_consultation" value="250.00" data-price="250.00" data-name="Independent Mock Pre-Audit Package" class="addon-checkbox" style="margin-top: 4px;" onchange="if(window.globalOrchestratedCartRefreshSync) { window.globalOrchestratedCartRefreshSync(); }">
-       <div>
-         <label for="nea_service_consultation" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Operational Systems & Safety Management Plan Consultation</label>
-         <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px; line-height: 1.45;">Evaluate your entire safety management plan to ensure it adequately addresses potential operational risks and sustains business viability. Delivers a private 1-on-1 mock review session with a senior safety strategist to pass strict compliance criteria before your official upload deadline.</span>
-       </div>
-     </div>
-     <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$250.00</div>
-   </div>
-
-   <!-- REGULATORY OPTION MATRIX ERROR LAYOUT PLACEHOLDER -->
-   <div class="wizard-error-message" id="err_nea_services_matrix" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
- `;
-}
-
-window.buildNewEntrantAuditFormPart2 = buildNewEntrantAuditFormPart2;
-window.buildNewEntrantAuditFormPart2_Extended = buildNewEntrantAuditFormPart2_Extended;
-
-
-function validateNewEntrantAuditFormParts2And3() {
-  let isValid = true;
-
-  const servicesList = [
-    'nea_service_dqf',
-    'nea_service_consortium',
-    'nea_service_hos',
-    'nea_service_maintenance',
-    'nea_service_consultation'
-  ];
-
-  let selectedCount = 0;
-  servicesList.forEach(function(id) {
-    const box = document.getElementById(id);
-    if (box && box.checked) {
-      selectedCount++;
-    }
-  });
-
-  const matrixErr = document.getElementById('err_nea_services_matrix');
-  if (matrixErr) {
-    // If selecting folders is strictly mandatory, modify flag to true
-    const requiresAtLeastOneAddon = false; 
-
-    if (requiresAtLeastOneAddon && selectedCount === 0) {
-      matrixErr.textContent = "Please select at least 1 compliance preparation option to continue.";
-      matrixErr.style.display = "block";
-      isValid = false;
-    } else {
-      matrixErr.style.display = "none";
-    }
-  }
-
-  // Note: Part 3 provisions textarea is optional and does not block submission
-  return isValid;
-}
-window.validateNewEntrantAuditFormPart2 = validateNewEntrantAuditFormParts2And3;
-
-function buildNewEntrantAuditFormPart2_Extended() {
- return `
- <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 12px; width: 100%; box-sizing: border-box;">
-   
-   <!-- FIELD 3: HOS CHECKBOX -->
-   <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box; margin-bottom: 12px; width: 100%;">
-     <div style="display: flex; align-items: flex-start; gap: 10px;">
-       <input type="checkbox" id="nea_service_hos" value="195.00" data-price="195.00" data-name="Record-Keeping Practices (HOS Log Audit)" class="addon-checkbox" style="margin-top: 4px;" onchange="if(window.globalOrchestratedCartRefreshSync) { window.globalOrchestratedCartRefreshSync(); }">
-       <div>
-         <label for="nea_service_hos" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Record-Keeping Practices (Hours of Service Log Audit Pre-Review)</label>
-         <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px; line-height: 1.4;">Examine the record-keeping processes to ensure they are efficient, accurate, and in compliance with auditing standards, utilizing ELD graph telemetry assessments and structural exception auditing.</span>
-       </div>
-     </div>
-     <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$195.00</div>
-   </div>
-
-   <!-- FIELD 4: MAINTENANCE CHECKBOX -->
-   <div style="display: flex; align-items: flex-start; justify-content: space-between; background: #ffffff; border: 1px solid var(--border); padding: 14px; border-radius: 8px; box-sizing: border-box; margin-bottom: 12px; width: 100%;">
-     <div style="display: flex; align-items: flex-start; gap: 10px;">
-       <input type="checkbox" id="nea_service_maintenance" value="85.00" data-price="85.00" data-name="Vehicle Maintenance Records (Ledger Setup)" class="addon-checkbox" style="margin-top: 4px;" onchange="if(window.globalOrchestratedCartRefreshSync) { window.globalOrchestratedCartRefreshSync(); }">
-       <div>
-         <label for="nea_service_maintenance" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Vehicle Maintenance Records (Ledger & Inspection Folder Set)</label>
-         <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px; line-height: 1.4;">Inspect maintenance records to confirm that all vehicles are regularly serviced and meet safety and operational standards, integrating Part 396 systemic annual visual documentation sheets and DVIR trackers.</span>
-       </div>
-     </div>
-     <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$85.00</div>
-   </div>
-
-   <!-- FIELD 5: CONSULTATION CHECKBOX -->
-   <div style="display: flex; align-items: flex-start; justify-content: space-between; background: rgba(10, 31, 68, 0.02); border: 1px dashed var(--primary, #10b981); padding: 14px; border-radius: 8px; box-sizing: border-box; width: 100%;">
-     <div style="display: flex; align-items: flex-start; gap: 10px;">
-       <input type="checkbox" id="nea_service_consultation" value="250.00" data-price="250.00" data-name="Operational & Safety Management (Mock Audit Package)" class="addon-checkbox" style="margin-top: 4px;" onchange="if(window.globalOrchestratedCartRefreshSync) { window.globalOrchestratedCartRefreshSync(); }">
-       <div>
-         <label for="nea_service_consultation" style="font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer;">Operational Procedures & Safety Management Plan (Pre-Audit Consultation Package)</label>
-         <span style="display: block; font-size: 0.775rem; color: var(--slate); margin-top: 2px; line-height: 1.4;">Review operational systems, establish compliance, evaluate safety management setups to protect against insurance liabilities, check verification of authority, and assess financial viability via a 1-on-1 dossier mock review session.</span>
-       </div>
-     </div>
-     <div style="font-family: monospace; font-weight: 700; color: var(--primary); font-size: 0.9rem; padding-left: 12px; white-space: nowrap;">+$250.00</div>
-   </div>
-   
-   <!-- GLOBAL MATRIX ERROR TEXT ROW -->
-   <div class="wizard-error-message" id="err_nea_services_matrix" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
- </div>
- `;
-}
-
-function buildNewEntrantAuditFormPart3(stateDropdownOptionsHtml = "") {
- return `
- <div style="grid-column: span 2; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 16px;">
-   <h3 style="color: var(--navy); font-size: 1.1rem; font-weight: 800; margin: 0;">4. Special Handling Instructions & Carrier Authorization</h3>
- </div>
- <div class="wizard-input-group" style="grid-column: span 2; margin-top: 12px; width: 100%; box-sizing: border-box;">
-   <label for="nea_provisions" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Special Audit Instructions</label>
-   <textarea id="nea_provisions" placeholder="Detail any safety write-ups, custom ELD platforms..." class="wizard-input-field" style="width: 100%; min-height: 80px; box-sizing: border-box; padding: 12px; font-family: inherit; resize: vertical; border: 1px solid var(--border); border-radius: 6px; font-weight: 600;"></textarea>
- </div>
- `;
-}
-
-// Global script tracking windows mapping assignments
-window.buildNewEntrantAuditFormPart2 = buildNewEntrantAuditFormPart2;
-window.buildNewEntrantAuditFormPart2_Extended = buildNewEntrantAuditFormPart2_Extended;
-window.buildNewEntrantAuditFormPart3 = buildNewEntrantAuditFormPart3;
-// ============================================================================
-// 📦 MASTER NEW ENTRANT SAFETY AUDIT APPLICATION ASSEMBLY HOOK (REPAIRED)
-// ============================================================================
-function buildNewEntrantAuditForm(stateDropdownOptionsHtml = "") {
-  const section1Html = typeof window.buildNewEntrantAuditFormPart1 === "function" ? window.buildNewEntrantAuditFormPart1(stateDropdownOptionsHtml) : "";
-  const section2Html = (typeof window.buildNewEntrantAuditFormPart2 === "function" ? window.buildNewEntrantAuditFormPart2(stateDropdownOptionsHtml) : "") + 
-                       (typeof window.buildNewEntrantAuditFormPart2_Extended === "function" ? window.buildNewEntrantAuditFormPart2_Extended() : "");
-  const section3Html = typeof window.buildNewEntrantAuditFormPart3 === "function" ? window.buildNewEntrantAuditFormPart3(stateDropdownOptionsHtml) : "";
-  
-  return section1Html + section2Html + section3Html;
-}
+};
+// ============================================================================ //
+// 📦 MASTER SYSTEM ROUTER COMPILER ASSEMBLY HOOK                               //
+// ============================================================================ //
 
 /**
- * Dynamic summary item card ledger generator helper.
+ * Programmatic fallback loader layout constructor for single-card themes.
  */
-function appendSummaryRowItem(targetContainer, itemText, monetaryCost, optionalInlineCSS = "") {
-  if (!targetContainer) return;
-  const itemRow = document.createElement("div");
-  itemRow.style.cssText = "display: flex; justify-content: space-between; font-size: 1rem; color: var(--navy, #0a1f44); border-bottom: 1px dashed #e2e8f0; padding-bottom: 8px;" + optionalInlineCSS;
-  
-  const labelSpan = document.createElement("span");
-  labelSpan.innerText = itemText;
-  
-  const priceStrong = document.createElement("strong");
-  priceStrong.style.fontFamily = "monospace";
-  priceStrong.innerText = "$" + Number(monetaryCost).toFixed(2);
-  
-  itemRow.appendChild(labelSpan);
-  itemRow.appendChild(priceStrong);
-  targetContainer.appendChild(itemRow);
-}
+window.buildNewEntrantAuditForm = function(stateDropdownOptionsHtml = "") {
+  const s1 = typeof window.formRegistry['new-entrant-audit-part1-layout'] === "function" ? window.formRegistry['new-entrant-audit-part1-layout'](stateDropdownOptionsHtml) : "";
+  const s2 = typeof window.formRegistry['new-entrant-audit-part2-layout'] === "function" ? window.formRegistry['new-entrant-audit-part2-layout']() : "";
+  const s3 = typeof window.formRegistry['new-entrant-audit-part3-layout'] === "function" ? window.formRegistry['new-entrant-audit-part3-layout']() : "";
+  const s4 = typeof window.formRegistry['new-entrant-audit-part4-layout'] === "function" ? window.formRegistry['new-entrant-audit-part4-layout']() : "";
+  const s5 = typeof window.formRegistry['new-entrant-audit-part5-layout'] === "function" ? window.formRegistry['new-entrant-audit-part5-layout']() : "";
 
-// 📦 SECURE EXPOSURE TO GLOBAL PARAMETERS CONTEXT MATRIX
-window.buildNewEntrantAuditForm = buildNewEntrantAuditForm;
-window.appendSummaryRowItem = appendSummaryRowItem;
+  return `
+    <div class="new-entrant-audit-master-container" style="grid-column: span 2 !important; width: 100% !important; display: flex !important; flex-direction: column !important; gap: 24px !important; box-sizing: border-box !important;">
+      <div class="nea-card-row">${s1}</div>
+      <div class="nea-card-row">${s2}</div>
+      <div class="nea-card-row">${s3}</div>
+      <div class="nea-card-row">${s4}</div>
+      <div class="nea-card-row">${s5}</div>
+    </div>
+  `;
+};
 
-console.log("[Dynamic Registry] Unified new-entrant script shards loaded and configured successfully.");
+// Map structural framework pointers across active global registries safely
+window.formRegistry = window.formRegistry || {};
+window.formRegistry['new-entrant-audit-form-master'] = function(stateDropdownOptionsHtml = "") {
+  return window.buildNewEntrantAuditForm(stateDropdownOptionsHtml);
+};
 
+// Mirror alias pass to preserve dynamic step validation sweeps
+window.formRegistry['new-entrant-safety-audit-form-master'] = window.formRegistry['new-entrant-audit-form-master'];
 
-/**
- * Scans all field parameters inside the New Entrant Safety Audit Wizard.
- * Updates UI layout parameters with error cues and reports structural status.
- * @returns {boolean} Outcome indicating global form validation success.
- */
-function validateEntireNewEntrantWizard() {
-  const isPart1Valid = typeof window.validateNewEntrantAuditFormPart1 === 'function' ? window.validateNewEntrantAuditFormPart1() : true;
-  const isPart23Valid = typeof window.validateNewEntrantAuditFormPart2 === 'function' ? window.validateNewEntrantAuditFormPart2() : true;
-
-  return (isPart1Valid && isPart23Valid);
-}
-window.validateEntireNewEntrantWizard = validateEntireNewEntrantWizard;
+console.log("[Master Closure] Complete New Entrant pipeline assembled and closed successfully.");
