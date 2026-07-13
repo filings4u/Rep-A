@@ -2386,3 +2386,119 @@ async function verifyCustomerAndCheckAccount() {
 
 // Export verification layers back up into global window scope references safely
 window.verifyCustomerAndCheckAccount = verifyCustomerAndCheckAccount;
+
+// ============================================================================ //
+// 📱 LIGHTWEIGHT MOBILE BREAKOUT SKINNER (INJECT ONCE AT GLOBAL SCOPE)        //
+// ============================================================================ //
+
+/**
+ * Programmatically appends a localized structural style override panel.
+ * Targets both .wizard-input-group and custom grid partitions natively.
+ */
+window.injectNewEntrantMobileResponsiveStyles = function() {
+  const existingOverrideNode = document.getElementById("nea_mobile_responsive_overrides");
+  if (existingOverrideNode) return; // Prevent duplication cascades
+
+  const styleElement = document.createElement("style");
+  styleElement.id = "nea_mobile_responsive_overrides";
+  styleElement.textContent = `
+    /* 📱 GLOBAL RESPONSIVE ADJUSTMENTS FOR DEVICES UP TO LAPTOP AND TABLET PROPORTIONS */
+    @media screen and (max-width: 768px) {
+      
+      /* Force all 2-column grid segments to drop elements into standard single vertical columns */
+      #nea_panel_part1,
+      #nea_panel_part2,
+      #nea_panel_equipment,
+      .new-entrant-audit-grid-segment {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        padding: 12px !important;
+        width: 100% !important;
+      }
+
+      /* Force standard side-by-side elements to stretch out to full-width constraints */
+      .wizard-input-group,
+      [style*="grid-column: span 1"],
+      [style*="grid-column: span 2"] {
+        grid-column: span 2 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      /* Scale down header titles to look clean on compact canvas displays */
+      h3, 
+      #nea_panel_part1 h3, 
+      #nea_panel_part2 h3, 
+      #nea_panel_addons h3, 
+      #nea_panel_equipment h3, 
+      #nea_panel_part3_step h3 {
+        font-size: 0.95rem !important;
+        font-weight: 800 !important;
+        line-height: 1.3 !important;
+        margin-bottom: 4px !important;
+      }
+
+      /* Shrink accompanying descriptions slightly to match smaller text rules */
+      p, 
+      #nea_panel_addons p, 
+      #nea_panel_equipment p {
+        font-size: 0.75rem !important;
+        line-height: 1.4 !important;
+      }
+
+      /* Adjust text field inputs and selectors for precise mobile finger interactions */
+      .wizard-input-field,
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="number"],
+      input[type="date"],
+      select,
+      textarea {
+        width: 100% !important;
+        min-height: 40px !important; /* Slightly optimized tactical height */
+        padding: 8px 10px !important;
+        font-size: 0.8rem !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Shrink form upper labels */
+      label,
+      .wizard-input-group label {
+        font-size: 0.75rem !important;
+        margin-bottom: 2px !important;
+      }
+
+      /* Optimize premium folder rows inside Step 3 to keep check icons and text tight */
+      #nea_panel_addons div[style*="display: flex; justify-content: space-between"] {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        padding: 10px !important;
+      }
+
+      /* Move item prices below descriptions neatly instead of letting them slide off-screen */
+      #nea_panel_addons strong,
+      #nea_panel_addons div[style*="font-family: monospace"] {
+        padding-left: 26px !important;
+        font-size: 0.8rem !important;
+        display: block !important;
+      }
+
+      /* Adjust custom requirement guide launch action buttons to fit clean screen layout margins */
+      button,
+      button[style*="padding: 12px 20px"] {
+        padding: 10px 14px !important;
+        font-size: 0.775rem !important;
+        min-height: 40px !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(styleElement);
+  console.log("[Responsive Engine] Localized mobile CSS override panel attached cleanly to document head structure.");
+};
+
+// Programmatic execution run call link to instantiate styles immediately on file parse passes
+window.injectNewEntrantMobileResponsiveStyles();

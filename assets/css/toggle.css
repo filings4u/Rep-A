@@ -1,362 +1,311 @@
-/** 
+/**
  * filings4u Platform Architecture
- * Module: navigation.css (Combined Architecture - Fixed Layout Mismatch)
+ * Module: navigation.css (Hover Containment Overhaul - Part 1 of 2)
  */
 
 /* ==========================================================================
    === GLOBAL HEADER & FONTS LOCK ===
    ========================================================================== */
-.nav-links, 
-.nav-links a, 
-.nav-item-dropdown > a, 
-.mega-column .column-title { 
-  font-family: system-ui, -apple-system, sans-serif !important; 
+.nav-links, .nav-links a, .nav-item-dropdown > a, .mega-column .column-title {
+  font-family: system-ui, -apple-system, sans-serif !important;
 }
 
 /* ==========================================================================
    === BREAKPOINT 1: DESKTOP MONITOR EXPANSIONS (min-width: 992px) ===
    ========================================================================== */
-@media (min-width: 992px) { 
+@media (min-width: 992px) {
   /* --- TOGGLE STATE PURGE --- */
-  .mobile-toggle-btn { 
-    display: none !important; 
-    visibility: hidden !important; 
-    opacity: 0 !important; 
-    pointer-events: none !important; 
+  .mobile-toggle-btn {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   /* --- DESKTOP CLIENT PORTAL BUTTON --- */
-  nav .btn-client-portal, 
-  a.btn-client-portal { 
-    order: initial !important; 
-    margin-top: 0 !important; 
-    margin-bottom: 0 !important; 
-    display: inline-block !important; 
-    background-color: #0a1f44 !important; 
-    color: #ffffff !important; 
-    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important; 
+  nav .btn-client-portal, a.btn-client-portal {
+    order: initial !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    display: inline-block !important;
+    background-color: #0a1f44 !important;
+    color: #ffffff !important;
+    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 
-  nav .btn-client-portal:hover, 
-  a.btn-client-portal:hover { 
-    background: #10b981 !important; 
-    color: #ffffff !important; 
+  nav .btn-client-portal:hover, a.btn-client-portal:hover {
+    background: #10b981 !important;
+    color: #ffffff !important;
   }
 
   /* --- DESKTOP STRUCTURES --- */
-  .nav-links .nav-item-dropdown, 
-  .nav-item-dropdown.static-dropdown { 
-    position: relative !important; 
-    height: 100% !important; 
+  .nav-links .nav-item-dropdown, .nav-item-dropdown.static-dropdown {
+    position: relative !important;
+    height: 100% !important;
   }
 
-  /* --- MEGA PANELS CORE LAYER --- */
+  /* --- MEGA PANELS CORE LAYER (HIDDEN BY DEFAULT ON DESKTOP INITIAL VIEW) --- */
   nav .dropdown-content.mega-panel-two-col, 
-  nav .dropdown-content.mega-panel-three-col, 
+  nav .dropdown-content.mega-panel-three-col,
+  nav .dropdown-content.mega-panel-four-col,
   .dropdown-content.mega-panel-two-col, 
-  .dropdown-content.mega-panel-three-col { 
-    display: none !important; 
-    position: absolute !important; 
-    top: 100% !important; 
-    left: 0 !important; 
-    transform: none !important; 
-    right: auto !important; 
-    width: max-content !important; 
-    background: #ffffff !important; 
-    border-top: 3px solid #10b981 !important; 
-    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08) !important; 
-    border-radius: 0 0 12px 12px !important; 
-    padding: 24px 28px !important; 
-    gap: 28px !important; 
-    z-index: 100000 !important; 
+  .dropdown-content.mega-panel-three-col,
+  .dropdown-content.mega-panel-four-col {
+    display: none !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    transform: none !important;
+    right: auto !important;
+    width: max-content !important;
+    background: #ffffff !important;
+    border-top: 3px solid #10b981 !important;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08) !important;
+    border-radius: 0 0 12px 12px !important;
+    padding: 24px 28px !important;
+    gap: 28px !important;
+    z-index: 100000 !important;
   }
 
-  /* --- DYNAMIC DESKTOP HOVER ROUTER --- */
+  /* --- 🟢 SAFELY ISOLATED HOVER CORES ---
+     Hover commands now exist ONLY within desktop display boundaries.
+     Mobile and tablet viewports will completely ignore these instructions. */
   .nav-item-dropdown:hover .dropdown-content.mega-panel-two-col, 
-  .nav-item-dropdown:hover .dropdown-content.mega-panel-three-col, 
+  .nav-item-dropdown:hover .dropdown-content.mega-panel-three-col,
+  .nav-item-dropdown:hover .dropdown-content.mega-panel-four-col,
   .static-dropdown:hover .dropdown-content.mega-panel-two-col, 
-  .static-dropdown:hover .dropdown-content.mega-panel-three-col { 
-    display: grid !important; 
+  .static-dropdown:hover .dropdown-content.mega-panel-three-col,
+  .static-dropdown:hover .dropdown-content.mega-panel-four-col {
+    display: grid !important;
   }
 
-  /* --- GRID COLUMNS STRUCTURING --- */
-  nav .dropdown-content.mega-panel-two-col { 
-    grid-template-columns: repeat(2, minmax(160px, max-content)) !important; 
-  }
+  /* --- DESKTOP GRID LAYOUT FORMATS --- */
+  nav .dropdown-content.mega-panel-two-col { grid-template-columns: repeat(2, minmax(160px, max-content)) !important; }
+  nav .dropdown-content.mega-panel-three-col { grid-template-columns: repeat(3, minmax(160px, max-content)) !important; }
+  nav .dropdown-content.mega-panel-four-col { grid-template-columns: repeat(4, minmax(160px, max-content)) !important; }
 
-  nav .dropdown-content.mega-panel-three-col { 
-    grid-template-columns: repeat(3, minmax(160px, max-content)) !important; 
-  }
-
-  .mega-column { 
-    flex: 0 0 auto !important; 
-    width: max-content !important; 
-    min-width: 160px !important; 
-    max-width: 200px !important; 
+  .mega-column {
+    flex: 0 0 auto !important;
+    width: max-content !important;
+    min-width: 160px !important;
+    max-width: 200px !important;
   }
 
   /* --- RIGHT EDGE DROPDOWN FIX --- */
-  .nav-links .nav-item-dropdown:nth-child(4) .dropdown-content.mega-panel-three-col { 
-    left: auto !important; 
-    right: 0 !important; 
-    gap: 20px !important; 
-  } 
+  .nav-links .nav-item-dropdown:nth-child(4) .dropdown-content.mega-panel-three-col,
+  .nav-links .nav-item-dropdown:nth-child(5) .dropdown-content.mega-panel-four-col {
+    left: auto !important;
+    right: 0 !important;
+    gap: 20px !important;
+  }
 }
+
+/**
+ * filings4u Platform Architecture
+ * Module: navigation.css (Hover Containment Overhaul - Part 2 of 2)
+ */
 
 /* ==========================================================================
    === BREAKPOINT 2: MOBILE DRAWER ENGINE & TABLET (max-width: 991px) ===
    ========================================================================== */
-@media (max-width: 991px) { 
+@media (max-width: 991px) {
+  
+  /* --- 🟢 FORCE OVERWRITE BLOCK STICKY HOVER GLITCH ---
+     If any mobile browser attempts to simulate a cursor hover on touch,
+     this command completely shuts it down until a tap class matches. */
+  .nav-links .nav-item-dropdown:hover .dropdown-content,
+  .nav-links .nav-item-dropdown:hover .mega-panel-two-col,
+  .nav-links .nav-item-dropdown:hover .mega-panel-three-col,
+  .nav-links .nav-item-dropdown:hover .mega-panel-four-col,
+  .static-dropdown:hover .dropdown-content {
+    display: none !important;
+  }
+
   /* --- WRAPPER BOX STRUCTURING (CLEAN UNIFIED FLEX) --- */
-  .nav-content-wrapper { 
-    display: flex !important; 
-    justify-content: space-between !important; 
-    align-items: center !important; 
-    width: 100% !important; 
-    position: relative !important; 
+  .nav-content-wrapper {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    position: relative !important;
     padding: 0 20px !important;
     box-sizing: border-box !important;
   }
 
-  /* --- LOGO RE-ALIGNMENT LOCKS --- */
-  .logo-link img, 
-  nav img.logo { 
-    margin-right: auto !important; 
-    margin-left: 0 !important; 
-    display: block !important; 
+  .logo-link img, nav img.logo {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    display: block !important;
   }
 
-  /* --- COORDINATE CORNER ANCHOR (YOUR EXACT LOOK AND SIZING) --- */
-  .mobile-toggle-btn { 
-    display: flex !important; 
-    visibility: visible !important; 
-    opacity: 1 !important; 
-    pointer-events: auto !important; 
-    margin-left: auto !important; 
-    margin-right: 0 !important; 
-    background: transparent !important; 
-    border: none !important; 
-    cursor: pointer !important; 
-    z-index: 100005 !important; 
-    font-family: system-ui, -apple-system, sans-serif !important; 
-    font-size: 2.2rem !important; 
-    color: #0a1f44 !important; 
-    min-width: 44px !important; 
-    min-height: 44px !important; 
-    align-items: center !important; 
-    justify-content: center !important; 
+  .mobile-toggle-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    z-index: 100005 !important;
+    font-size: 2.2rem !important;
+    color: #0a1f44 !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   /* --- MOBILE DRAWER SLIDE MECHANICS --- */
-  .nav-links { 
-    display: none !important; 
-    flex-direction: column !important; 
-    position: fixed !important; 
-    top: 70px !important; 
-    right: -100% !important; 
-    left: auto !important; 
-    width: 85vw !important; 
-    max-width: 85vw !important; 
-    height: calc(100vh - 70px) !important; 
-    background: #ffffff !important; 
-    z-index: 99999 !important; 
-    overflow-y: auto !important; 
-    padding: 24px 20px !important; 
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; 
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; 
-    box-sizing: border-box !important; 
+  .nav-links {
+    display: none !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 70px !important;
+    right: -100% !important;
+    left: auto !important;
+    width: 85vw !important;
+    max-width: 85vw !important;
+    height: calc(100vh - 70px) !important;
+    background: #ffffff !important;
+    z-index: 99999 !important;
+    overflow-y: auto !important;
+    padding: 24px 20px !important;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-sizing: border-box !important;
   }
 
-  /* --- MOBILE DRAWER ACTIVE MECHANICS (MATCHES JS .mobile-active) --- */
-  .nav-links.mobile-active { 
-    display: flex !important; 
-    right: 0 !important; 
-    left: auto !important; 
-    visibility: visible !important; 
-    opacity: 1 !important; 
-    flex-direction: column !important; 
-    align-items: stretch !important; 
+  .nav-links.mobile-active {
+    display: flex !important;
+    right: 0 !important;
+    left: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
   }
 
-  /* --- MOBILE MENU INTERIOR MENU LINKS --- */
-  .nav-links > a:not(.mobile-toggle-btn) { 
-    color: #0a1f44 !important; 
-    padding: 14px 10px !important; 
-    display: block !important; 
-    font-size: 1.1rem !important; 
-    font-weight: 700 !important; 
-    border-bottom: 1px solid #f1f5f9 !important; 
-    text-align: left !important; 
-    width: 100% !important; 
-    box-sizing: border-box !important; 
+  .nav-links > a:not(.mobile-toggle-btn) {
+    color: #0a1f44 !important;
+    padding: 8px 10px !important;
+    display: block !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    text-align: left !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* --- INTERIOR MOBILE ACCORDIONS --- */
-  .nav-item-dropdown { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    width: 100% !important; 
-    height: auto !important; 
-    position: relative !important; 
+  .nav-item-dropdown {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important;
+    position: relative !important;
   }
 
-  .nav-item-dropdown > a { 
-    background: transparent !important; 
-    border: none !important; 
-    padding: 14px 10px !important; 
-    display: flex !important; 
-    justify-content: space-between !important; 
-    align-items: center !important; 
-    width: 100% !important; 
-    box-shadow: none !important; 
-    border-radius: 0 !important; 
-    color: #0a1f44 !important; 
-    font-weight: 700 !important; 
-    text-decoration: none !important; 
+  .nav-item-dropdown > a {
+    background: transparent !important;
+    border: none !important;
+    padding: 8px 10px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    color: #0a1f44 !important;
+    font-weight: 700 !important;
   }
 
-  .nav-item-dropdown > a span { 
-    margin-left: auto !important; 
-    color: #0a1f44 !important; 
-    font-size: 0.75rem !important; 
-    display: inline-block !important; 
+  .nav-item-dropdown > a span {
+    margin-left: auto !important;
+    color: #0a1f44 !important;
+    font-size: 0.75rem !important;
+    display: inline-block !important;
   }
 
-  /* --- ACCORDION LIST WRAPPER INITIAL LAYER --- */
+  /* --- INITIAL CLOSED HIDDEN VALUES --- */
   .nav-item-dropdown .dropdown-content, 
   .nav-item-dropdown .mega-panel-two-col, 
-  .nav-item-dropdown .mega-panel-three-col { 
-    display: none !important; 
-    position: relative !important; 
-    top: 0 !important; 
-    left: 0 !important; 
-    max-height: none !important; 
-    overflow: visible !important; 
-    background: transparent !important; 
-    width: 100% !important; 
-    border: none !important; 
-    box-shadow: none !important; 
-    padding: 0 !important; 
-    margin: 0 !important; 
+  .nav-item-dropdown .mega-panel-three-col,
+  .nav-item-dropdown .mega-panel-four-col {
+    display: none !important;
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    background: transparent !important;
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* --- ACCORDION ACTIVE MECHANICS (MATCHES JS .mobile-open) --- */
+  /* --- ACTIVE ACCORDION OPEN STATE (.mobile-open) --- */
   .nav-item-dropdown.mobile-open .dropdown-content, 
   .nav-item-dropdown.mobile-open .mega-panel-two-col, 
-  .nav-item-dropdown.mobile-open .mega-panel-three-col { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    grid-template-columns: none !important; 
-    padding: 15px !important; 
-    margin-top: 5px !important; 
-    height: auto !important; 
-    background: #f8fafc !important; 
-    border-bottom-left-radius: 24px !important; 
-    border-bottom-right-radius: 24px !important; 
-    visibility: visible !important; 
-    opacity: 1 !important; 
-  }
-
-  /* --- INTERIOR DROPDOWN STRUCTURAL UNITS --- */
-  .mega-column { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    width: 100% !important; 
-    gap: 0 !important; 
-    height: auto !important; 
-  }
-
-  .mega-column .column-title { 
-    display: block !important; 
-    font-size: 0.75rem !important; 
-    color: #0a1f44 !important; 
-    text-align: left !important; 
-    margin-top: 15px !important; 
-    padding: 0 0 5px 0 !important; 
-    border-bottom: none !important; 
-    font-weight: 700 !important; 
-    text-transform: uppercase !important; 
-    letter-spacing: 0.5px !important; 
-  }
-
-  .mega-column a { 
-    display: block !important; 
-    color: #0a1f44 !important; 
-    font-size: 0.95rem !important; 
-    font-weight: 600 !important; 
-    padding: 10px 0 !important; 
-    text-align: left !important; 
-    border-bottom: none !important; 
-    width: 100% !important; 
-  }
-
-  /* --- MOBILE CLIENT PORTAL SYSTEM BUTTON --- */
-  .nav-links .btn-client-portal { 
-    display: block !important; 
-    width: 100% !important; 
-    text-align: center !important; 
-    margin-top: 25px !important; 
-    margin-bottom: 0 !important; 
-    padding: 14px 0 !important; 
-    border-radius: 8px !important; 
-    font-weight: 700 !important; 
-    position: relative !important; 
-    order: 9999 !important; 
-    color: #ffffff !important; 
-    background-color: #0a1f44 !important; 
-  }
-
-  .nav-links .btn-client-portal:hover { 
-    color: #ffffff !important; 
-    background-color: #10b981 !important; 
-  } 
-}
-
-
-
-
-
-/* === MOBILE VIEW STATE: CENTER BUTTON TEXT PERFECTLY === */
-@media (max-width: 991px) {
-  .nav-links .btn-client-portal,
-  .nav-links a.btn-client-portal {
+  .nav-item-dropdown.mobile-open .mega-panel-three-col,
+  .nav-item-dropdown.mobile-open .mega-panel-four-col {
     display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important; 
+    padding: 10px 12px !important;
+    margin-top: 2px !important;
+    height: auto !important;
+    background: #f8fafc !important;
+    border-radius: 12px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* --- TIGHTEN INTERIOR LINES --- */
+  .mega-column {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 0 !important;
+  }
+
+  .mega-column .column-title {
+    display: block !important;
+    font-size: 0.75rem !important;
+    color: #0a1f44 !important;
+    margin-top: 8px !important;
+    padding: 0 0 3px 0 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+  }
+
+  .mega-column a {
+    display: block !important;
+    color: #0a1f44 !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    padding: 6px 0 !important;
+    width: 100% !important;
+  }
+
+  /* --- MOBILE CLIENT PORTAL BUTTON SYSTEM --- */
+  .nav-links .btn-client-portal, .nav-links a.btn-client-portal {
+    display: flex !important;
+    width: 100% !important;
     align-items: center !important;
     justify-content: center !important;
-    box-sizing: border-box !important;
+    margin-top: 25px !important;
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    order: 9999 !important;
     color: #ffffff !important;
-  }
-}
-
-
-/* === MOBILE DRAWER STATE: TIGHTEN LINK SPACING === */
-@media (max-width: 991px) {
-  /* Shrinks space on standard top-level mobile links */
-  .nav-links > a:not(.mobile-toggle-btn) { 
-    padding: 8px 10px !important; 
+    background-color: #0a1f44 !important;
+    box-sizing: border-box !important;
   }
 
-  /* Shrinks space on top-level dropdown trigger headers */
-  .nav-item-dropdown > a { 
-    padding: 8px 10px !important; 
-  }
-
-  /* Shrinks space around sub-menu column titles */
-  .mega-column .column-title { 
-    margin-top: 8px !important; 
-    padding: 0 0 3px 0 !important; 
-  }
-
-  /* Shrinks space on individual interior submenu link items */
-  .mega-column a { 
-    padding: 6px 0 !important; 
-  }
-
-  /* Pulls the interior dropdown container tighter when expanded */
-  .nav-item-dropdown.mobile-open .dropdown-content, 
-  .nav-item-dropdown.mobile-open .mega-panel-two-col, 
-  .nav-item-dropdown.mobile-open .mega-panel-three-col { 
-    padding: 10px 12px !important; 
-    margin-top: 2px !important; 
+  .nav-links .btn-client-portal:hover, .nav-links a.btn-client-portal:hover {
+    background-color: #10b981 !important;
   }
 }

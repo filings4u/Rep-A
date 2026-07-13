@@ -20,7 +20,7 @@ async function renderMasterSystem() {
   try { 
     const activeSlug = window.location.pathname.split("/").pop().replace(".html", "").trim().toLowerCase(); 
     // ADDED "blog" FALLBACK ROUTE MAPPER HERE
-    const cleanPageKey = (!activeSlug || activeSlug === "home" || activeSlug === "index" || activeSlug === "blog") ? "index" : activeSlug; 
+    const cleanPageKey = (!activeSlug || activeSlug === "home" || activeSlug === "compliance" || activeSlug === "blog") ? "compliance" : activeSlug; 
     let meta = { slug: cleanPageKey, title: "" }; 
     const heroTarget = document.getElementById("filings4u-global-hero-root"); 
     
