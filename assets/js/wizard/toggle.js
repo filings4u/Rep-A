@@ -26,7 +26,7 @@ window.extractLogoForMobileHeader = function() {
   mobileHeader.style.cssText = "position: fixed; top: 0; left: 0; right: 0; height: 60px; background: #ffffff; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 16px; z-index: 9990; box-sizing: border-box;";
   
   const logoClone = sidebarLogo.cloneNode(true);
-  logoClone.style.cssText = "max-height: 32px; width: auto; padding: 0; margin: 0;";
+  logoClone.style.cssText = "max-height: 39px; width: auto; padding: 0; margin: 0;";
   
   mobileHeader.appendChild(logoClone);
   document.body.insertBefore(mobileHeader, document.body.firstChild);
