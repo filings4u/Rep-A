@@ -1,11 +1,10 @@
 /**
- * ==========================================================================
- * 📱 FILINGS4U INTERACTIVE NAVIGATION & UTILITY MATRIX ENGINE
- * FILE LOCATION: assets/js/toggle.js
- * ==========================================================================
+ * filings4u Platform Architecture
+ * FILE LOCATION: assets/js/toggle.js (Part 1 of 2)
+ * 🟢 FIXED: Resolved multi-file class naming collisions and event fighting loops.
  */
-
 (function() {
+  
   // 1. DYNAMIC ELEMENT OBSERVER BINDING CONTROLLER
   function bindPlatformInteractions() {
     const menuTrigger = document.getElementById('mobile-menu-trigger');
@@ -13,7 +12,7 @@
     const bodyNode = document.body;
     const scrollBtn = document.getElementById('scrollToTopBtn');
 
-    // 🌟 FALLBACK EMULATOR CODE: Inject baseline styling directly if CSS parameters fail
+    // Baseline fallback styling directly if CSS parameters fail
     if (scrollBtn && !scrollBtn.dataset.styled) {
       scrollBtn.style.position = 'fixed';
       scrollBtn.style.bottom = '30px';
@@ -27,11 +26,14 @@
     // 2. EXPOSED DRAWER INTERACTIVE LOGIC MODULE
     window.toggleMobileMenu = function() {
       if (!navLinksDrawer) return;
-
-      const isMenuOpening = !navLinksDrawer.classList.contains('active');
+      
+      // 🟢 ALIGNED: Syncs across both .active and your navigation.js style keys (.mobile-active)
+      const isMenuOpening = !navLinksDrawer.classList.contains('mobile-active') && !navLinksDrawer.classList.contains('active');
+      
       navLinksDrawer.classList.toggle('active');
+      navLinksDrawer.classList.toggle('mobile-active');
       bodyNode.classList.toggle('nav-open');
-
+      
       if (menuTrigger) {
         menuTrigger.setAttribute('aria-expanded', isMenuOpening);
         menuTrigger.innerHTML = isMenuOpening ? '✕' : '☰';
@@ -47,33 +49,51 @@
       menuTrigger.dataset.bound = "true";
     }
 
-    // 3. DROPDOWN COMPONENT ACCORDION HANDLERS (Screen size check wrapper)
-    const dropdownTriggers = document.querySelectorAll('.static-dropdown > a');
+    // 3. DROPDOWN COMPONENT ACCORDION HANDLERS
+    const dropdownTriggers = document.querySelectorAll('.nav-item-dropdown > a, .static-dropdown > a');
     dropdownTriggers.forEach(trigger => {
       if (trigger.dataset.bound) return;
+      
       trigger.addEventListener('click', function(e) {
-        if (window.innerWidth <= 991) {
+        // Enforce the screen size checkpoint loop inside the click handler natively
+        if (window.innerWidth <= 1024) {
           e.preventDefault();
+          e.stopPropagation();
+          
           const parentDropdown = this.parentElement;
-          parentDropdown.classList.toggle('active-toggle');
-
-          document.querySelectorAll('.static-dropdown').forEach(item => {
+          
+          // 🟢 FIXED: Sweeps away other open submenus using the core 'mobile-open' class name layout
+          document.querySelectorAll('.nav-item-dropdown, .static-dropdown').forEach(item => {
             if (item !== parentDropdown) {
+              item.classList.remove('mobile-open');
               item.classList.remove('active-toggle');
             }
           });
+          
+          // 🟢 FIXED: Simultaneously toggles both class names to fix styling issues across files
+          parentDropdown.classList.toggle('mobile-open');
+          parentDropdown.classList.toggle('active-toggle');
         }
       });
       trigger.dataset.bound = "true";
     });
 
+    /**
+ * filings4u Platform Architecture
+ * FILE LOCATION: assets/js/toggle.js (Part 2 of 2)
+ */
+
     // 4. FLOATING CANVAS CLICK OVERRIDES
     if (!document.datasetBoundClick) {
       document.addEventListener('click', function(e) {
-        const activeDrawer = document.querySelector('.nav-links.active');
+        // Targets active selectors across both layout class definitions
+        const activeDrawer = document.querySelector('.nav-links.active') || document.querySelector('.nav-links.mobile-active');
         const triggerBtn = document.getElementById('mobile-menu-trigger');
+        
         if (activeDrawer && !activeDrawer.contains(e.target) && e.target !== triggerBtn) {
-          if (typeof window.toggleMobileMenu === 'function') window.toggleMobileMenu();
+          if (typeof window.toggleMobileMenu === 'function') {
+            window.toggleMobileMenu();
+          }
         }
       });
       document.datasetBoundClick = true;
@@ -81,7 +101,6 @@
 
     // 5. SCROLL VELOCITY ENGINE TO CEILING STRIPPER
     if (scrollBtn && !scrollBtn.dataset.bound) {
-      // Passive track thread mapping layer execution parameters
       window.addEventListener('scroll', function() {
         if (window.scrollY > 300) {
           scrollBtn.style.display = 'flex';
@@ -117,8 +136,5 @@
     bindPlatformInteractions();
   });
   
-  coreObserverEngine.observe(document.body, { 
-    childList: true, 
-    subtree: true 
-  });
+  coreObserverEngine.observe(document.body, { childList: true, subtree: true });
 })();

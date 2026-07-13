@@ -1,6 +1,7 @@
 /**
  * filings4u Platform Architecture
- * Module: navigation.js (Part 1 - Canvas Engine Initialization)
+ * Module: navigation.js (Part 1 - Dynamic Structural Blueprint)
+ * 🟢 REPAIRED: Cleaned out conflicting event listeners to stop menu toggle freezes.
  */
 
 // 1. Setup global target configurations to point cleanly to your root container element
@@ -39,7 +40,7 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
 
 /**
  * filings4u Platform Architecture
- * Module: navigation.js (Part 2 - Link Injections & Single Event Control)
+ * Module: navigation.js (Part 2 - Clean Blueprint Matrix Injection)
  */
 (function() {
   const targetId = window.FILINGS4U_NAV_TARGET || "filings4u-global-navigation-root";
@@ -172,50 +173,6 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
       <a href="https://filings4u.com" class="btn-client-portal">Client Portal</a>
     `;
     linksContainer.innerHTML = fullMenuHTML;
-
-    // 2. Mobile menu master drawer trigger button controller
-    const menuTrigger = zone.querySelector("#mobile-menu-trigger");
-    if (menuTrigger) {
-      menuTrigger.addEventListener("click", function(e) {
-        e.stopPropagation();
-        const isActive = linksContainer.classList.toggle("mobile-active");
-        menuTrigger.setAttribute("aria-expanded", isActive ? "true" : "false");
-      });
-    }
-
-    // 3. UNIFIED ACCORDION SINGLE-EVENT ROUTER
-    const dropdownToggles = zone.querySelectorAll(".dropdown-toggle");
-    dropdownToggles.forEach(function(toggle) {
-      toggle.addEventListener("click", function(e) {
-        // Enforce the screen size checkpoint loop inside the click handler natively
-        if (window.innerWidth <= 1024) {
-          e.preventDefault();
-          e.stopPropagation();
-          
-          const parentDropdown = this.parentElement;
-          
-          // Sweep away any other open drop lists to maintain clean accordion structure
-          zone.querySelectorAll(".nav-item-dropdown").forEach(function(item) {
-            if (item !== parentDropdown) {
-              item.classList.remove("mobile-open");
-            }
-          });
-          
-          // Smooth toggle matching the target click state
-          parentDropdown.classList.toggle("mobile-open");
-        }
-      });
-    });
-
-    // 4. Click off-canvas dismiss handling loops
-    document.addEventListener("click", function(e) {
-      // Do not auto-close if clicking inside an active sub-menu container link panel
-      if (linksContainer && linksContainer.contains(e.target)) return;
-
-      if (linksContainer) linksContainer.classList.remove("mobile-active");
-      dropdownToggles.forEach(function(toggle) {
-        toggle.parentElement.classList.remove("mobile-open");
-      });
-    });
+    console.log("[Navigation Matrix] Blueprint HTML templates mounted successfully. Event delegation deferred to toggle.js.");
   }, 50);
 })();
