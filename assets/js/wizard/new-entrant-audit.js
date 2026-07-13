@@ -293,54 +293,42 @@ window.dismissNewEntrantUpsellCard = function() {
 console.log("[Pipeline Success] Lightweight structural setup complete. Shard loops aligned sequentially.");
 
 // ============================================================================ //
-// 🛠️ NEW ENTRANT AUDIT SERVICE: COMPLETE FIELD VALIDATION ENGINE               //
+// 🛠️ NEW ENTRANT AUDIT SERVICE: FIELD SCANCE ENGINE (PART 1 OF 2)               //
 // ============================================================================ //
-window.validateEntireNewEntrantWizard = function() {
+
+/**
+ * 🟢 STEP 1 EXPLICIT SCANNER: Validates Owner Demographics only.
+ * Bound to the first transition checkpoint explicitly to clear step 1 advancement.
+ */
+window.validateNewEntrantAuditFormPart1 = function() {
   let isValid = true;
 
   const markInvalid = (id, msg) => {
-    const inputEl = document.getElementById(id);
-    const errorEl = document.getElementById("err_" + id);
-    if (errorEl) {
-      errorEl.textContent = msg;
-      errorEl.style.setProperty("display", "block", "important");
-    }
-    if (inputEl) {
-      inputEl.style.setProperty("border-color", "#ef4444", "important");
-    }
+    const el = document.getElementById(id);
+    const err = document.getElementById("err_" + id);
+    if (err) { err.textContent = msg; err.style.setProperty("display", "block", "important"); }
+    if (el) el.style.setProperty("border-color", "#ef4444", "important");
     isValid = false;
   };
 
   const markValid = (id) => {
-    const inputEl = document.getElementById(id);
-    const errorEl = document.getElementById("err_" + id);
-    if (errorEl) {
-      errorEl.style.setProperty("display", "none", "important");
-      errorEl.textContent = "";
-    }
-    if (inputEl) {
-      inputEl.style.setProperty("border-color", "#cbd5e1", "important");
-    }
-  };
-
-  const checkRequired = (id, msg) => {
     const el = document.getElementById(id);
-    if (el && document.body.contains(el)) {
-      if (!el.value || el.value.trim() === "" || el.value.startsWith("--")) {
-        markInvalid(id, msg);
-      } else {
-        markValid(id);
-      }
-    }
+    const err = document.getElementById("err_" + id);
+    if (err) { err.style.setProperty("display", "none", "important"); err.textContent = ""; }
+    if (el) el.style.setProperty("border-color", "#cbd5e1", "important");
   };
 
-  // 1. Step 1 (Owner Demographics) Field Scanning Loops
-  checkRequired('nea_owner_first_name', "Owner first name is required.");
-  checkRequired('nea_owner_last_name', "Owner last name is required.");
-  checkRequired('nea_owner_phone', "Owner contact phone number is required.");
-  
+  const fName = document.getElementById('nea_owner_first_name');
+  if (fName) { if (!fName.value.trim()) markInvalid('nea_owner_first_name', "Owner first name is required."); else markValid('nea_owner_first_name'); }
+
+  const lName = document.getElementById('nea_owner_last_name');
+  if (lName) { if (!lName.value.trim()) markInvalid('nea_owner_last_name', "Owner last name is required."); else markValid('nea_owner_last_name'); }
+
+  const phone = document.getElementById('nea_owner_phone');
+  if (phone) { if (!phone.value.trim()) markInvalid('nea_owner_phone', "Owner contact phone number is required."); else markValid('nea_owner_phone'); }
+
   const email = document.getElementById('nea_owner_email');
-  if (email && document.body.contains(email)) {
+  if (email) {
     const emailVal = email.value.trim();
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailVal) markInvalid('nea_owner_email', "Contact profile email address is required.");
@@ -348,20 +336,87 @@ window.validateEntireNewEntrantWizard = function() {
     else markValid('nea_owner_email');
   }
 
-  // 2. Step 2 (Carrier Identification) Field Scanning Loops
-  checkRequired('nea_legal_name', "Official motor carrier name matching state registration is required.");
-  checkRequired('nea_usdot_number', "Active 7-digit USDOT tracking sequence is required.");
-  checkRequired('nea_operation_class', "Primary business operational class selection is required.");
-  checkRequired('nea_audit_trigger_status', "Please confirm your current safety audit notice status.");
+  return isValid;
+};
+
+/**
+ * 🟢 STEP 2 EXPLICIT SCANNER: Validates Motor Carrier IDs only.
+ * Bound to the second transition checkpoint explicitly to clear step 2 advancement.
+ */
+window.validateNewEntrantAuditFormPart2 = function() {
+  let isValid = true;
+
+  const markInvalid = (id, msg) => {
+    const el = document.getElementById(id);
+    const err = document.getElementById("err_" + id);
+    if (err) { err.textContent = msg; err.style.setProperty("display", "block", "important"); }
+    if (el) el.style.setProperty("border-color", "#ef4444", "important");
+    isValid = false;
+  };
+
+  const markValid = (id) => {
+    const el = document.getElementById(id);
+    const err = document.getElementById("err_" + id);
+    if (err) { err.style.setProperty("display", "none", "important"); err.textContent = ""; }
+    if (el) el.style.setProperty("border-color", "#cbd5e1", "important");
+  };
+
+  const legal = document.getElementById('nea_legal_name');
+  if (legal) { if (!legal.value.trim()) markInvalid('nea_legal_name', "Official motor carrier name matching state registration is required."); else markValid('nea_legal_name'); }
+
+  const usdot = document.getElementById('nea_usdot_number');
+  if (usdot) { if (!usdot.value.trim()) markInvalid('nea_usdot_number', "Active 7-digit USDOT tracking sequence is required."); else markValid('nea_usdot_number'); }
+
+  const opClass = document.getElementById('nea_operation_class');
+  if (opClass) { if (!opClass.value || opClass.value.startsWith("--")) markInvalid('nea_operation_class', "Primary business operational class selection is required."); else markValid('nea_operation_class'); }
 
   const trigger = document.getElementById('nea_audit_trigger_status');
+  if (trigger) { if (!trigger.value || trigger.value.startsWith("--")) markInvalid('nea_audit_trigger_status', "Please confirm your current safety audit notice status."); else markValid('nea_audit_trigger_status'); }
+
   const deadline = document.getElementById('nea_audit_deadline');
-  if (trigger && trigger.value === 'letter-received' && deadline && document.body.contains(deadline)) {
+  if (trigger && trigger.value === 'letter-received' && deadline) {
     if (!deadline.value) markInvalid('nea_audit_deadline', "Submission deadline date is required for received letters.");
     else markValid('nea_audit_deadline');
   }
 
-  // 3. Step 4 (Fleet Equipment) Field Scanning Loops
+  return isValid;
+};
+
+// ============================================================================ //
+// 🛠️ NEW ENTRANT AUDIT SERVICE: FIELD SCANCE ENGINE (PART 2 OF 2)               //
+// ============================================================================ //
+
+/**
+ * 🟢 STEP 3 EXPLICIT SCANNER: Validates Premium Addons / Upsells Package folder matrix.
+ * Bound to the third transition checkpoint explicitly to clear step 3 advancement.
+ */
+window.validateNewEntrantAuditFormPart3 = function() {
+  // Returns true as selecting addon compliance folders is completely optional
+  return true;
+};
+
+/**
+ * 🟢 STEP 4 EXPLICIT SCANNER: Validates Fleet Volumetrics / Equipment Inventory.
+ * Bound to the fourth transition checkpoint explicitly to clear step 4 advancement.
+ */
+window.validateNewEntrantAuditFormPart4 = function() {
+  let isValid = true;
+
+  const markInvalid = (id, msg) => {
+    const el = document.getElementById(id);
+    const err = document.getElementById("err_" + id);
+    if (err) { err.textContent = msg; err.style.setProperty("display", "block", "important"); }
+    if (el) el.style.setProperty("border-color", "#ef4444", "important");
+    isValid = false;
+  };
+
+  const markValid = (id) => {
+    const el = document.getElementById(id);
+    const err = document.getElementById("err_" + id);
+    if (err) { err.style.setProperty("display", "none", "important"); err.textContent = ""; }
+    if (el) el.style.setProperty("border-color", "#cbd5e1", "important");
+  };
+
   const metrics = ['nea_trucks_count', 'nea_drivers_count', 'nea_trailers_count'];
   metrics.forEach(id => {
     const el = document.getElementById(id);
@@ -377,6 +432,53 @@ window.validateEntireNewEntrantWizard = function() {
 
   return isValid;
 };
+
+/**
+ * 🟢 STEP 5 EXPLICIT SCANNER: Validates Special Audit Memo Field parameters.
+ * Bound to the fifth transition checkpoint explicitly to clear step 5 advancement.
+ */
+window.validateNewEntrantAuditFormPart5 = function() {
+  // Returns true as text entry inside the instructions area is entirely optional
+  return true;
+};
+
+/**
+ * MASTER ROUTER INTERLOC SYSTEM SWEAPER BINDINGS MAP
+ * Re-routes the framework registry's main check loops to query your stepped validation functions.
+ */
+window.validateEntireNewEntrantWizard = function() {
+  // Checks active DOM sections cleanly depending on which part template is rendered on the viewport canvas
+  if (document.getElementById('nea_owner_first_name')) {
+    return window.validateNewEntrantAuditFormPart1();
+  }
+  if (document.getElementById('nea_legal_name')) {
+    return window.validateNewEntrantAuditFormPart2();
+  }
+  if (document.getElementById('nea_panel_addons')) {
+    return window.validateNewEntrantAuditFormPart3();
+  }
+  if (document.getElementById('nea_panel_equipment')) {
+    return window.validateNewEntrantAuditFormPart4();
+  }
+  if (document.getElementById('nea_provisions')) {
+    return window.validateNewEntrantAuditFormPart5();
+  }
+  return true;
+};
+
+// Rebind verified master check loops directly back onto global form framework objects
+window.formRegistry = window.formRegistry || {};
+if (window.formRegistry["new-entrant-audit"]) {
+  window.formRegistry["new-entrant-audit"].isValid = function() {
+    return window.validateEntireNewEntrantWizard();
+  };
+}
+
+console.log("[Pipeline Verified] Multi-part tracking step validators mapped independently and connected to the registry.");
+
+
+
+
 // ============================================================================ //
 // 📦 MASTER SYSTEM ROUTER COMPILER ASSEMBLY HOOK                               //
 // ============================================================================ //
