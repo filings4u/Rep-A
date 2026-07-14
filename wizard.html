@@ -499,40 +499,38 @@ window.appendIncomingMsgBubbleToWizardUI = function(textString, senderTypeRole) 
   setTimeout(() => { well.scrollTop = well.scrollHeight; }, 10);
 };
 
-window.dispatchWizardClientChatMessagePayload = async function() { 
-  const inputEl = document.getElementById("wizardClientChatMessageInputField"); 
-  const activeInstance = window.f4uWizardSupabaseInstance; 
-  const currentId = window.clientSessionUserId; 
+window.dispatchWizardClientChatMessagePayload = async function() {
+  const inputEl = document.getElementById("wizardClientChatMessageInputField");
+  const activeInstance = window.f4uWizardSupabaseInstance || window.supabaseClient || window.supabase;
+  const currentId = window.clientSessionUserId;
 
-  if (!inputEl) return; 
+  if (!inputEl || !currentId || !activeInstance) return;
 
-  const content = inputEl.value.trim(); 
-  if (!content) return; 
+  const content = inputEl.value.trim();
+  if (!content) return;
 
-  // Optimistic UI response loop clearance step
-  inputEl.value = ""; 
-  window.appendIncomingMsgBubbleToWizardUI(content, 'client'); 
+  // Optimistic layout clear for immediate response speeds
+  inputEl.value = "";
+  
+  if (typeof window.appendIncomingMsgBubbleToWizardUI === "function") {
+    window.appendIncomingMsgBubbleToWizardUI(content, 'client');
+  }
 
-  if (!currentId || !activeInstance) { 
-    console.error("[Payload Delivery Fault] Client context tracking layer parameters are missing. Cannot transmit.", { currentId }); 
-    return; 
-  } 
-
-  try { 
-    console.log("[Supabase Push] Dispatching chat message payload row..."); 
-    const { error } = await activeInstance 
-      .from('chat_messages') 
-      .insert({ 
-        client_id: currentId, 
-        sender_type: 'client', 
-        message_content: content 
-      }); 
-
-    if (error) console.error("[Supabase Error] Database rejected client message insert:", error.message); 
-  } catch (backgroundFault) { 
-    console.error("[Network Exception Engine] Core exception during send pass:", backgroundFault.message); 
-  } 
+  try {
+    // Write directly to your verified column format layout
+    await activeInstance
+      .from('chat_messages')
+      .insert({
+        client_id: currentId,
+        sender_type: 'client',
+        message_content: content,
+        is_read_by_admin: false
+      });
+  } catch (backgroundFault) {
+    console.error("[Wizard Send Exception]", backgroundFault.message);
+  }
 };
+
 
   // ========================================================================= 
   // UNIFIED DATABASE INJECTION PASS (TRIGGER BYPASS ROUTE)
@@ -559,11 +557,68 @@ window.dispatchWizardClientChatMessagePayload = async function() {
 
     if (msgError) throw msgError; 
     console.log("[Supabase Sync] User handshake metadata committed cleanly!"); 
+/**
+ * Module: Unified Wizard Realtime Stream Listener
+ * Target: Opens a direct postgres database stream channel matching your true UUID token
+ */
+window.connectClientIncomingSocketStream = function() {
+  const activeInstance = window.f4uWizardSupabaseInstance || window.supabaseClient || window.supabase;
+  const currentId = window.clientSessionUserId;
 
-    // 1. KICKSTART REAL-TIME STREAM PIPELINES CLEANLY
-    if (typeof window.connectClientIncomingSocketStream === "function") { 
-      window.connectClientIncomingSocketStream(); 
-    } 
+  if (!activeInstance) {
+    console.error("[Wizard Socket Error] Supabase database client instance is unavailable.");
+    return;
+  }
+
+  if (!currentId) {
+    console.error("[Wizard Socket Error] Abandoning subscription: clientSessionUserId is null.");
+    return;
+  }
+
+  console.log(`[Wizard Socket Link] Initiating subscription wire for channel token: live_wizard_stream_${currentId}`);
+
+  // Disconnect any lingering stale background channel connections to avoid duplicate rendering loops
+  if (window.clientLiveSocketChannel) {
+    console.log("[Wizard Socket] Cleaning up old active channel tracker elements...");
+    activeInstance.removeChannel(window.clientLiveSocketChannel);
+  }
+
+  // FIXED SYNCHRONIZATION LOOP: Binds directly to the postgres insert updates of chat_messages
+  window.clientLiveSocketChannel = activeInstance
+    .channel('live_wizard_stream_' + currentId)
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'chat_messages',
+      filter: `client_id=eq.${currentId}` // Verified text string UUID filter matching
+    }, (payload) => {
+      console.log("[Wizard Socket Signal Received] Over-the-air database payload captured:", payload.new);
+      
+      const incomingSender = String(payload.new.sender_type || '').toLowerCase();
+      
+      // Check if the incoming message was written by a fulfillment staff agent or broker
+      if (incomingSender === 'admin' || incomingSender === 'agent' || incomingSender === 'broker' || incomingSender === 'staff') {
+        // FIXED RENDERING MAPPING: Fallback path ensures text injects right onto your layout regardless of build timing
+        if (typeof window.appendIncomingMsgBubbleToWizardUI === "function") {
+          window.appendIncomingMsgBubbleToWizardUI(payload.new.message_content, 'admin');
+        } else {
+          // Manual fallback injector if the main theme compiler script is delayed
+          const scrollWell = document.getElementById("wizardChatScrollWell");
+          if (scrollWell) {
+            const bubbleRow = document.createElement("div");
+            bubbleRow.style.cssText = "margin-right: auto; background: #edf2f7; color: #0f172a; border-radius: 8px; padding: 8px 12px; max-width: 85%; font-size: 0.825rem; font-weight: 500; clear: both; margin-bottom: 4px; border-bottom-left-radius: 2px;";
+            bubbleRow.innerText = payload.new.message_content;
+            scrollWell.appendChild(bubbleRow);
+            scrollWell.scrollTop = scrollWell.scrollHeight;
+          }
+        }
+      }
+    })
+    .subscribe((status) => {
+      console.log(`[Wizard Socket Connection Status Update]: ${status}`);
+    });
+};
+
 
     // 2. MOUNT ACTIVE TIMELINE VIEWPORT PANEL INSTANTLY
     if (typeof window.mountClientActiveChatViewportPanel === "function") { 
