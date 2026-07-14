@@ -264,101 +264,164 @@
 
 </style>
 
-<!-- Floating launcher trigger button widget bubble --> 
-<div class="chat-bubble-widget-launcher" onclick="window.toggleSupportFlyoutContainer(true)" title="Chat with an Expert" style="cursor: pointer; position: fixed !important; bottom: 24px !important; right: 24px !important; background: #0a1f44 !important; width: 50px !important; height: 50px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 4px 12px rgba(10,31,68,0.2) !important; z-index: 99998 !important;"> 
-    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px; display: block; pointer-events: none;">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-    </svg> 
-</div> 
+<!-- Floating launcher trigger button widget bubble -->
+<div class="chat-bubble-widget-launcher" onclick="window.toggleSupportFlyoutContainer(true)" title="Chat with an Expert" style="cursor: pointer; position: fixed !important; bottom: 24px !important; right: 24px !important; background: #0a1f44 !important; width: 50px !important; height: 50px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 4px 12px rgba(10,31,68,0.2) !important; z-index: 99998 !important;">
+  <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px; display: block; pointer-events: none;">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+  </svg>
+</div>
 
 <!-- Main Support Sliding Overlay Container Panel Box --> 
-<div class="support-slide-container" id="support-chat-flyout-panel" style="display: none !important; position: fixed !important; bottom: 90px !important; right: 24px !important; top: auto !important; width: 360px !important; max-width: calc(100vw - 32px) !important; height: auto !important; background: #ffffff !important; border-radius: 12px !important; box-shadow: 0 12px 40px rgba(10,31,68,0.15) !important; z-index: 99999 !important; border: 1px solid #e2e8f0 !important; overflow: hidden; opacity: 0; transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;"> 
-    <header id="support-chat-drag-handle" style="background: #0a1f44; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; color: #ffffff;"> 
-        <h3 style="margin: 0; font-size: 0.95rem; font-weight: 800;">filings4u Support</h3> 
-        <div style="display: flex; align-items: center; gap: 12px;"> 
-            <button type="button" onclick="window.confirmAndTerminateChatSession()" style="background: #ef4444; border: none; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; cursor: pointer;">End Chat</button> 
-            <button type="button" onclick="window.toggleSupportFlyoutContainer(false)" style="background: transparent; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer;">&times;</button> 
-        </div> 
-    </header> 
-    
-    <!-- FIXED: Added explicit id target wrapper row to allow the DOM transition renderer to mount chat logs -->
-    <div id="chat-preflight-input-form" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box;"> 
-        <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #64748b; line-height: 1.4; text-align: left;">Please provide your information to be connected to a Live Agent.</p> 
-        
-<!-- Change your form tag to look exactly like this -->
-        <form id="f4uActiveIntakeForm" novalidate style="margin: 0; padding: 0;">
-            <!-- First & Last Name Rows Layout --> 
-            <div class="f4u-form-row"> 
-                <div class="f4u-input-group f4u-spacing-mobile"> 
-                    <input type="text" id="chat_first_name" required class="f4u-input-field" placeholder="First Name" oninput="this.classList.remove('f4u-error-shake')"> 
-                </div> 
-                <div class="f4u-input-group f4u-spacing-mobile"> 
-                    <input type="text" id="chat_last_name" required class="f4u-input-field" placeholder="Last Name" oninput="this.classList.remove('f4u-error-shake')"> 
-                </div> 
-            </div> 
-            <!-- Clean Phone Row --> 
-            <div class="f4u-input-group f4u-spacing-mobile" style="margin-bottom: 10px;"> 
-                <input type="tel" id="chat_phone" required class="f4u-input-field" placeholder="Phone Number" oninput="this.classList.remove('f4u-error-shake')"> 
-                </div> 
-            <!-- Business Email Field Form Entry Row --> 
-            <div class="f4u-input-group" style="margin-bottom: 12px;"> 
-                <input type="email" id="chat_email" required class="f4u-input-field" placeholder="Email Address" oninput="this.classList.remove('f4u-error-shake')"> 
-            </div> 
-            
-            <button type="submit" id="f4uSubmitBtn" class="btn-wizard-main" style="width:100%; padding:10px 0; background:#0a1f44; color:#ffffff; border:none; font-weight:700; border-radius:6px; cursor:pointer; font-size:0.85rem;">Connect to Live Agent</button> 
-        </form> 
+<!-- Main Support Sliding Overlay Container Panel Box --> 
+<div class="support-slide-container" id="support-chat-flyout-panel" style="display: none !important; position: fixed !important; bottom: 90px !important; right: 24px !important; top: auto !important; width: 380px !important; max-width: calc(100vw - 32px) !important; height: 520px !important; background: #ffffff !important; border-radius: 12px !important; box-shadow: 0 12px 40px rgba(10,31,68,0.15) !important; z-index: 99999 !important; border: 1px solid #e2e8f0 !important; overflow: hidden; opacity: 0; transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, height 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;"> 
+  
+  <header id="support-chat-drag-handle" style="background: #0a1f44; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; color: #ffffff; user-select: none;"> 
+    <h3 style="margin: 0; font-size: 0.95rem; font-weight: 800;">filings4u Support</h3> 
+    <div style="display: flex; align-items: center; gap: 12px;"> 
+      <button type="button" id="wizardHeaderEndChatBtn" onclick="if(typeof window.confirmAndTerminateChatSession === 'function') { window.confirmAndTerminateChatSession(); }" style="display: none; background: #ef4444; border: none; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; cursor: pointer;">End Chat</button> 
+      <button type="button" onclick="window.toggleSupportFlyoutContainer(false)" style="background: transparent; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; line-height: 1;">&times;</button> 
     </div> 
-</div> 
+  </header> 
+
+  <!-- FIXED HOOK: This parent container box keeps your 520px height rules fully locked! -->
+  <div id="wizardChatDynamicInterfaceBox" style="height: calc(100% - 49px) !important; width: 100% !important; display: flex !important; flex-direction: column !important; box-sizing: border-box !important; position: relative !important;">
+    
+    <!-- THE INTAKE FORM WELL (Swapped away dynamically on user login) -->
+    <div id="chat-preflight-input-form" style="padding: 26px 24px 12px 24px; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; background: #ffffff; flex: 1 !important; justify-content: center !important;">
+      <p style="margin: 0; font-size: 0.875rem; color: #475569; line-height: 1.5; text-align: left; font-weight: 500;">Please provide your corporate contact credentials below to connect to a live compliance fulfillment agent.</p>
+      
+      <form id="f4uActiveIntakeForm" novalidate style="margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; width: 100%;">
+        <div class="f4u-form-row" style="display: flex; gap: 12px; width: 100%;">
+          <div class="f4u-input-group" style="flex: 1;">
+            <input type="text" id="chat_first_name" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="First Name">
+          </div>
+          <div class="f4u-input-group" style="flex: 1;">
+            <input type="text" id="chat_last_name" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="Last Name">
+          </div>
+        </div>
+        <div class="f4u-input-group" style="width: 100%;">
+          <input type="tel" id="chat_phone" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="Phone Number">
+        </div>
+        <div class="f4u-input-group" style="width: 100%;">
+          <input type="email" id="chat_email" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.875rem; box-sizing: border-box;" placeholder="Email Address">
+        </div>
+        <button type="submit" id="f4uSubmitBtn" class="btn-wizard-main" style="width:100%; padding:12px 0; background:#0a1f44; color:#ffffff; border:none; font-weight:700; border-radius:6px; cursor:pointer; font-size:0.875rem; margin-top: 4px; transition: background 0.15s ease;" onmouseover="this.style.background='#122d5a'" onmouseout="this.style.background='#0a1f44'">Connect to Live Agent</button>
+      </form>
+    </div>
+
+    <!-- MONITORING PILL BAR -->
+    <div id="f4uChatComplianceNoticeBar" style="background: #fff2e8 !important; border-top: 1px solid #ffd591 !important; padding: 10px 18px !important; font-size: 0.725rem !important; color: #d46b08 !important; font-weight: 600 !important; display: flex !important; align-items: center !important; gap: 8px !important; box-sizing: border-box !important; width: 100% !important; margin: 0 !important; flex-shrink: 0 !important;">
+      <span>🔒</span>
+      <span style="line-height: 1.4 !important; text-align: left !important;">Notice: For security and identity compliance tracking guidelines, this chat session is actively monitored and recorded.</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- 🪟 BLURRED BACKDROP TERMINATION CONFIRMATION MODAL OVERLAY -->
+<div id="f4uChatTerminationModalOverlay" style="display: none !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(15, 23, 42, 0.4) !important; backdrop-filter: blur(5px) !important; -webkit-backdrop-filter: blur(5px) !important; z-index: 999999 !important; align-items: center !important; justify-content: center !important; padding: 20px !important; box-sizing: border-box !important; opacity: 0; transition: opacity 0.2s ease;">
+  <div style="background: #ffffff !important; width: 100% !important; max-width: 340px !important; border-radius: 12px !important; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important; border: 1px solid #e2e8f0 !important; overflow: hidden !important; transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important; box-sizing: border-box !important;">
+    <div style="background: #0a1f44 !important; padding: 14px 18px !important; display: flex !important; align-items: center; gap: 8px !important;">
+      <span style="font-size: 1.15rem !important;">⚠️</span>
+      <h4 style="margin: 0 !important; font-size: 0.9rem !important; font-weight: 800 !important; color: #ffffff !important;">Terminate Conversation?</h4>
+    </div>
+    <div style="padding: 20px 18px !important; text-align: left !important; box-sizing: border-box !important;">
+      <p style="margin: 0 0 16px 0 !important; font-size: 0.85rem !important; color: #475569 !important; line-height: 1.5 !important; font-weight: 500 !important;">Are you sure you want to end this chat conversation? A copy of the full text discussion logs transcript will be immediately delivered to your business email address.</p>
+      <div style="display: flex !important; gap: 10px !important; justify-content: flex-end !important; width: 100% !important; box-sizing: border-box !important;">
+        <button type="button" onclick="window.closeTerminalModalInterfaceWindow(false)" style="padding: 8px 14px !important; background: #f1f5f9 !important; color: #475569 !important; border: 1px solid #cbd5e1 !important; border-radius: 6px !important; font-size: 0.8rem !important; font-weight: 700 !important; cursor: pointer !important; transition: background 0.15s ease !important;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">Cancel</button>
+        <button type="button" id="f4uConfirmCloseActionBtn" onclick="window.executeHardSessionClearPipeline()" style="padding: 8px 16px !important; background: #ef4444 !important; color: #ffffff !important; border: none !important; border-radius: 6px !important; font-size: 0.8rem !important; font-weight: 700 !important; cursor: pointer !important; transition: background 0.15s ease !important;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">Yes, End Chat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================================================== 
+     🚀 THE PLATFORM ENGINE PROGRAM CODE HOOK IS CURRENTLY OPEN
+     ========================================================================== -->
+
 
 
 <script>
-// =========================================================================
-// WIDGET UI SHELL INTERFACE LOGIC
-// CLEANED: Removed all placeholder duplicate validate functions to give wizard.js total execution priority
-// =========================================================================
-window.toggleSupportFlyoutContainer = function(shouldOpenMenuPanel) {
-    const flyoutContainerNode = document.getElementById("support-chat-flyout-panel");
-    if (!flyoutContainerNode) return;
-    
-    const isMobileFullScreenLayout = window.innerWidth <= 500;
+// ========================================================================= 
+// WIDGET UI SHELL INTERFACE LOGIC & MODAL LAYOUT ENGINE
+// ========================================================================= 
 
-    if (shouldOpenMenuPanel) {
-        flyoutContainerNode.style.setProperty("display", "block", "important");
-        setTimeout(() => {
-            flyoutContainerNode.style.setProperty("transform", "translateY(0)", "important");
-            flyoutContainerNode.style.setProperty("opacity", "1", "important");
-        }, 10);
-        
-        const initialInputFieldName = document.getElementById("chat_first_name");
-        if (initialInputFieldName) initialInputFieldName.focus();
-    } else {
-        flyoutContainerNode.style.setProperty("opacity", "0", "important");
-        if (isMobileFullScreenLayout) {
-            flyoutContainerNode.style.setProperty("transform", "translateY(100%)", "important");
-        } else {
-            flyoutContainerNode.style.setProperty("transform", "translateY(20px)", "important");
-        }
-        setTimeout(() => {
-            if (flyoutContainerNode.style.opacity === "0") {
-                flyoutContainerNode.style.setProperty("display", "none", "important");
-            }
-        }, 250);
-    }
+window.toggleSupportFlyoutContainer = function(shouldOpenMenuPanel) { 
+  const flyoutContainerNode = document.getElementById("support-chat-flyout-panel"); 
+  if (!flyoutContainerNode) return; 
+  
+  const isMobileFullScreenLayout = window.innerWidth <= 500; 
+  
+  if (shouldOpenMenuPanel) { 
+    flyoutContainerNode.style.setProperty("display", "block", "important"); 
+    setTimeout(() => { 
+      flyoutContainerNode.style.setProperty("transform", "translateY(0)", "important"); 
+      flyoutContainerNode.style.setProperty("opacity", "1", "important"); 
+    }, 10); 
+    const initialInputFieldName = document.getElementById("chat_first_name"); 
+    if (initialInputFieldName) initialInputFieldName.focus(); 
+  } else { 
+    flyoutContainerNode.style.setProperty("opacity", "0", "important"); 
+    if (isMobileFullScreenLayout) { 
+      flyoutContainerNode.style.setProperty("transform", "translateY(100%)", "important"); 
+    } else { 
+      flyoutContainerNode.style.setProperty("transform", "translateY(20px)", "important"); 
+    } 
+    setTimeout(() => { 
+      if (flyoutContainerNode.style.opacity === "0") { 
+        flyoutContainerNode.style.setProperty("display", "none", "important"); 
+      } 
+    }, 250); 
+  } 
+}; 
+
+// 🪟 NEW: BLUR-BACKGROUND MODAL OVERLAY INTERFACE INTERCEPTORS
+window.closeTerminalModalInterfaceWindow = function(shouldOpen) {
+  const overlay = document.getElementById("f4uChatTerminationModalOverlay");
+  if (!overlay) return;
+  
+  const dialogBox = overlay.querySelector("div");
+
+  if (shouldOpen) {
+    overlay.style.setProperty("display", "flex", "important");
+    setTimeout(() => {
+      overlay.style.setProperty("opacity", "1", "important");
+      if (dialogBox) dialogBox.style.setProperty("transform", "scale(1)", "important");
+    }, 10);
+  } else {
+    overlay.style.setProperty("opacity", "0", "important");
+    if (dialogBox) dialogBox.style.setProperty("transform", "scale(0.95)", "important");
+    setTimeout(() => {
+      if (overlay.style.opacity === "0") {
+        overlay.style.setProperty("display", "none", "important");
+      }
+    }, 200);
+  }
 };
 
-/* Global off-canvas click-away listener framework */
-document.addEventListener("click", function(canvasEventPayload) {
-    const panel = document.getElementById("support-chat-flyout-panel");
-    if (!panel) return;
-    if (window.getComputedStyle(panel).display === "none") return;
-    
-    const didUserClickLauncher = canvasEventPayload.target.closest('.chat-bubble-widget-launcher');
-    const isClickInsidePanel = panel.contains(canvasEventPayload.target);
-    
-    if (!isClickInsidePanel && !didUserClickLauncher) {
-        window.toggleSupportFlyoutContainer(false);
-    }
+// Map the "End Chat" header button straight to our newly animated overlay panel
+window.confirmAndTerminateChatSession = function() {
+  window.closeTerminalModalInterfaceWindow(true);
+};
+
+/* Global off-canvas click-away listener framework */ 
+document.addEventListener("click", function(canvasEventPayload) { 
+  const panel = document.getElementById("support-chat-flyout-panel"); 
+  if (!panel) return; 
+  if (window.getComputedStyle(panel).display === "none") return; 
+  
+  const didUserClickLauncher = canvasEventPayload.target.closest('.chat-bubble-widget-launcher'); 
+  const isClickInsidePanel = panel.contains(canvasEventPayload.target); 
+  
+  // Safety lock prevents clicking background elements from auto-closing your popups
+  const isClickInsideModal = canvasEventPayload.target.closest('#f4uChatTerminationModalOverlay');
+
+  if (!isClickInsidePanel && !didUserClickLauncher && !isClickInsideModal) { 
+    window.toggleSupportFlyoutContainer(false); 
+  } 
 });
+
 
 // ========================================================================= 
 // filings4u Platform Architecture - UNIFIED CHAT RESCUE ENGINE (POLYFILL MODE)
@@ -409,7 +472,49 @@ window.initSupabaseInstance = function() {
   return window.f4uWizardSupabaseInstance; 
 }; 
 
-// 3. Main Data Validation & Supabase Pipeline Insertion Engine
+// Execute initialization phase pass
+window.initSupabaseInstance();
+
+// --- OPTIMIZED ANIMATION KEYFRAME STYLE INJECTOR ---
+// Automatically drops slide-in popup animations and button loading spinners into document head parameters
+(function injectWizardGlobalEngineStyles() {
+  if (document.getElementById("f4u-wizard-core-animations-tag")) return;
+  const styleTag = document.createElement("style");
+  styleTag.id = "f4u-wizard-core-animations-tag";
+  styleTag.textContent = `
+    @keyframes wizardBubblePopUp {
+      0% { opacity: 0; transform: translateY(12px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes f4uBtnSpinnerRotate {
+      to { transform: rotate(360deg); }
+    }
+    .f4u-btn-spinner {
+      width: 16px !important;
+      height: 16px !important;
+      border: 2px solid rgba(255, 255, 255, 0.3) !important;
+      border-radius: 50% !important;
+      border-top-color: #ffffff !important;
+      animation: f4uBtnSpinnerRotate 0.6s linear infinite !important;
+      display: inline-block !important;
+    }
+    .chat-inline-thumbnail-preview {
+      display: block !important;
+      max-width: 100% !important;
+      max-height: 160px !important;
+      border-radius: 6px !important;
+      margin-top: 4px !important;
+      cursor: pointer !important;
+      transition: opacity 0.15s ease !important;
+      border: 1px solid rgba(0,0,0,0.05) !important;
+    }
+  `;
+  document.head.appendChild(styleTag);
+})();
+
+// ========================================================================= 
+// 🧱 MODULE 3: COMPLETE DATA INTROSPECTION & TURNKEY ENGINE INITIALIZER
+// ========================================================================= 
 window.validateAndLaunchAgentChatSession = async function(event) { 
   if (event) { 
     if (typeof event.preventDefault === "function") event.preventDefault(); 
@@ -432,119 +537,38 @@ window.validateAndLaunchAgentChatSession = async function(event) {
   const phone = phoneField.value.trim(); 
   const email = emailField.value.trim(); 
 
-  if (!fName || !lName || !phone || !email) {
-    alert("Please fill in all fields to launch the live chat session.");
-    return;
-  }
+  if (!fName || !lName || !phone || !email) { 
+    alert("Please fill in all layout fields to launch the live chat session."); 
+    return; 
+  } 
 
   if (submitButton) { 
     submitButton.disabled = true; 
     submitButton.innerText = "Connecting Securely..."; 
   } 
 
+  // Lock down a single static 36-character string UUID anchor token in memory
   window.clientSessionUserId = crypto.randomUUID(); 
+  localStorage.setItem("f4u_user_id", window.clientSessionUserId);
 
-  // Force local parsing extraction checks
-  const verifiedInstance = window.initSupabaseInstance();
-
-  if (!verifiedInstance || typeof verifiedInstance.from !== "function") {
-    console.error("[Supabase Failure] Uninstantiated client API layer wrapper parameters.", verifiedInstance);
+  const verifiedInstance = window.initSupabaseInstance(); 
+  if (!verifiedInstance || typeof verifiedInstance.from !== "function") { 
+    console.error("[Supabase Failure] Uninstantiated client API layer wrapper parameters.", verifiedInstance); 
     if (submitButton) { 
       submitButton.disabled = false; 
       submitButton.innerText = "Connection Blueprint Mismatch"; 
-    }
-    return;
-  }
-
-  // ========================================================================= 
-// UNIFIED TEXT RENDERING & TELEMETRY ENGINE
-// ========================================================================= 
-
-window.appendIncomingMsgBubbleToWizardUI = function(textString, senderTypeRole) { 
-  const well = document.getElementById("wizardChatScrollWell"); 
-  
-  if (!well) { 
-    console.warn("[UI Stream Warning] Target chat window selector element #wizardChatScrollWell not found in active DOM layout canvas."); 
+    } 
     return; 
   } 
 
-  const bubbleRow = document.createElement("div"); 
-  const isAdmin = senderTypeRole === 'admin'; 
-  
-  // Clean presentation theme styles matching your filings4u UI panel framework layout
-  const alignmentStyles = isAdmin 
-    ? "margin-right: auto; background: #edf2f7; color: #0f172a; border-bottom-left-radius: 2px;" 
-    : "margin-left: auto; background: #0a1f44; color: #ffffff; border-bottom-right-radius: 2px;"; 
-
-  bubbleRow.style.cssText = ` 
-    max-width: 85% !important; 
-    padding: 8px 12px !important; 
-    border-radius: 8px !important; 
-    font-size: 0.825rem !important; 
-    font-weight: 500 !important; 
-    word-break: break-word !important; 
-    box-shadow: 0 1px 2px rgba(0,0,0,0.01) !important; 
-    line-height: 1.4 !important; 
-    text-align: left !important; 
-    margin-bottom: 4px !important; 
-    display: block !important;
-    clear: both !important;
-    ${alignmentStyles} 
-  `; 
-
-  bubbleRow.innerText = textString; 
-  well.appendChild(bubbleRow); 
-  
-  // Smooth scroll panel baseline viewport adjustments down to track new text additions
-  setTimeout(() => { well.scrollTop = well.scrollHeight; }, 10);
-};
-
-window.dispatchWizardClientChatMessagePayload = async function() {
-  const inputEl = document.getElementById("wizardClientChatMessageInputField");
-  const activeInstance = window.f4uWizardSupabaseInstance || window.supabaseClient || window.supabase;
-  const currentId = window.clientSessionUserId;
-
-  if (!inputEl || !currentId || !activeInstance) return;
-
-  const content = inputEl.value.trim();
-  if (!content) return;
-
-  // Optimistic layout clear for immediate response speeds
-  inputEl.value = "";
-  
-  if (typeof window.appendIncomingMsgBubbleToWizardUI === "function") {
-    window.appendIncomingMsgBubbleToWizardUI(content, 'client');
-  }
-
   try {
-    // Write directly to your verified column format layout
-    await activeInstance
-      .from('chat_messages')
-      .insert({
-        client_id: currentId,
-        sender_type: 'client',
-        message_content: content,
-        is_read_by_admin: false
-      });
-  } catch (backgroundFault) {
-    console.error("[Wizard Send Exception]", backgroundFault.message);
-  }
-};
-
-
-  // ========================================================================= 
-  // UNIFIED DATABASE INJECTION PASS (TRIGGER BYPASS ROUTE)
-  // ========================================================================= 
-  // ========================================================================= 
-  // UNIFIED DATABASE INJECTION PASS (TRIGGER BYPASS ROUTE - HARDENED UI MOUNT)
-  // ========================================================================= 
-  try { 
     console.log("[Supabase Sync] Bypassing trigger restrictions. Logging customer details to message stream..."); 
-
-    const textHandshakePayload = `System Notice: Chat workspace window launched.\n` +
-                                 `Name: ${fName} ${lName}\n` +
-                                 `Email: ${email}\n` +
-                                 `Phone: ${phone}`;
+    
+    // Bundle form entries into system notice payload to alert your administrative staff instantly
+    const textHandshakePayload = `System Notice: Chat workspace window launched.\n` + 
+                                 `Name: ${fName} ${lName}\n` + 
+                                 `Email: ${email}\n` + 
+                                 `Phone: ${phone}`; 
 
     // Write straight to chat_messages—skipping the breaking wizard_intake_sessions table trigger constraints
     const { error: msgError } = await verifiedInstance 
@@ -552,115 +576,56 @@ window.dispatchWizardClientChatMessagePayload = async function() {
       .insert({ 
         client_id: window.clientSessionUserId, 
         sender_type: 'client', 
-        message_content: textHandshakePayload 
+        message_content: textHandshakePayload,
+        is_read_by_admin: false
       }); 
 
     if (msgError) throw msgError; 
     console.log("[Supabase Sync] User handshake metadata committed cleanly!"); 
-/**
- * Module: Unified Wizard Realtime Stream Listener
- * Target: Opens a direct postgres database stream channel matching your true UUID token
- */
-window.connectClientIncomingSocketStream = function() {
-  const activeInstance = window.f4uWizardSupabaseInstance || window.supabaseClient || window.supabase;
-  const currentId = window.clientSessionUserId;
 
-  if (!activeInstance) {
-    console.error("[Wizard Socket Error] Supabase database client instance is unavailable.");
-    return;
-  }
-
-  if (!currentId) {
-    console.error("[Wizard Socket Error] Abandoning subscription: clientSessionUserId is null.");
-    return;
-  }
-
-  console.log(`[Wizard Socket Link] Initiating subscription wire for channel token: live_wizard_stream_${currentId}`);
-
-  // Disconnect any lingering stale background channel connections to avoid duplicate rendering loops
-  if (window.clientLiveSocketChannel) {
-    console.log("[Wizard Socket] Cleaning up old active channel tracker elements...");
-    activeInstance.removeChannel(window.clientLiveSocketChannel);
-  }
-
-  // FIXED SYNCHRONIZATION LOOP: Binds directly to the postgres insert updates of chat_messages
-  window.clientLiveSocketChannel = activeInstance
-    .channel('live_wizard_stream_' + currentId)
-    .on('postgres_changes', {
-      event: 'INSERT',
-      schema: 'public',
-      table: 'chat_messages',
-      filter: `client_id=eq.${currentId}` // Verified text string UUID filter matching
-    }, (payload) => {
-      console.log("[Wizard Socket Signal Received] Over-the-air database payload captured:", payload.new);
-      
-      const incomingSender = String(payload.new.sender_type || '').toLowerCase();
-      
-      // Check if the incoming message was written by a fulfillment staff agent or broker
-      if (incomingSender === 'admin' || incomingSender === 'agent' || incomingSender === 'broker' || incomingSender === 'staff') {
-        // FIXED RENDERING MAPPING: Fallback path ensures text injects right onto your layout regardless of build timing
-        if (typeof window.appendIncomingMsgBubbleToWizardUI === "function") {
-          window.appendIncomingMsgBubbleToWizardUI(payload.new.message_content, 'admin');
-        } else {
-          // Manual fallback injector if the main theme compiler script is delayed
-          const scrollWell = document.getElementById("wizardChatScrollWell");
-          if (scrollWell) {
-            const bubbleRow = document.createElement("div");
-            bubbleRow.style.cssText = "margin-right: auto; background: #edf2f7; color: #0f172a; border-radius: 8px; padding: 8px 12px; max-width: 85%; font-size: 0.825rem; font-weight: 500; clear: both; margin-bottom: 4px; border-bottom-left-radius: 2px;";
-            bubbleRow.innerText = payload.new.message_content;
-            scrollWell.appendChild(bubbleRow);
-            scrollWell.scrollTop = scrollWell.scrollHeight;
-          }
-        }
+    // [VIEWPORT PANEL TEMPLATE MOUNTER] 
+    // FIXED: Targets the isolated interface box to keep your height limits stable and un-collapsed!
+    const interfaceBox = document.getElementById("wizardChatDynamicInterfaceBox"); 
+    const masterPanelContainer = document.getElementById("support-chat-flyout-panel"); 
+    const headerEndBtn = document.getElementById("wizardHeaderEndChatBtn");
+    
+    if (interfaceBox) { 
+      if (masterPanelContainer) { 
+        masterPanelContainer.style.setProperty("height", "550px", "important"); 
+      } 
+      if (headerEndBtn) {
+        headerEndBtn.style.setProperty("display", "block", "important");
       }
-    })
-    .subscribe((status) => {
-      console.log(`[Wizard Socket Connection Status Update]: ${status}`);
-    });
-};
-
-
-    // 2. MOUNT ACTIVE TIMELINE VIEWPORT PANEL INSTANTLY
-    if (typeof window.mountClientActiveChatViewportPanel === "function") { 
-      window.mountClientActiveChatViewportPanel(fName); 
-    } else { 
-      // Manual fallback UI generator to construct the chat pane nodes directly if layout functions are late
-           // Manual fallback UI generator to construct the chat pane nodes directly if layout functions are late
-      // Manual fallback UI generator to construct the chat pane nodes directly if layout functions are late
-      console.warn("[UI Mount Warning] Manual layout fallback constructor triggered to bypass loading state freeze.");
-      const formFrame = document.getElementById("chat-preflight-input-form");
-      if (formFrame) {
-        // FIXED: Clear out the parent styles to eliminate the double-container look entirely!
-        formFrame.style.setProperty("background", "transparent", "important");
-        formFrame.style.setProperty("padding", "0", "important");
-        formFrame.style.setProperty("box-shadow", "none", "important");
-        formFrame.style.setProperty("border", "none", "important");
-
-        formFrame.innerHTML = `
-          <div id="chat-active-timeline-viewport" style="display: flex !important; flex-direction: column !important; height: 500px !important; width: 100% !important; min-width: 340px !important; box-sizing: border-box !important; border-radius: 8px !important; overflow: hidden !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important; border: 1px solid #e2e8f0 !important;">
-            
-            <!-- Chat Timeline Scroll Frame Window Content -->
-            <div id="wizardChatScrollWell" style="flex: 1 !important; padding: 20px !important; overflow-y: auto !important; background: #ffffff !important; box-sizing: border-box !important; display: flex !important; flex-direction: column !important; gap: 10px !important; scroll-behavior: smooth !important;"></div>
-            
-            <!-- Secure Telemetry Input Bar Footer Well -->
-            <div style="padding: 14px 16px !important; background: #f8fafc !important; border-top: 1px solid #e2e8f0 !important; display: flex !important; gap: 10px !important; align-items: center !important; box-sizing: border-box !important;">
-              <input type="text" id="wizardClientChatMessageInputField" onkeypress="if(event.key === 'Enter') { window.dispatchWizardClientChatMessagePayload(); }" style="flex: 1 !important; padding: 12px 14px !important; border: 1px solid #cbd5e1 !important; border-radius: 6px !important; font-size: 0.875rem !important; outline: none !important; font-weight: 500 !important; background: #ffffff !important; transition: border-color 0.15s ease !important; box-sizing: border-box !important;" placeholder="Type a message..." onfocus="this.style.borderColor='#0a1f44'" onblur="this.style.borderColor='#cbd5e1'">
-              <button onclick="window.dispatchWizardClientChatMessagePayload()" style="padding: 12px 22px !important; background: #0a1f44 !important; color: #ffffff !important; font-weight: 600 !important; font-size: 0.875rem !important; border: none !important; border-radius: 6px !important; cursor: pointer !important; transition: background 0.15s ease !important; box-sizing: border-box !important;" onmouseover="this.style.background='#122d5a'" onmouseout="this.style.background='#0a1f44'">Send</button>
-            </div>
-          </div>
-        `;
-      }
-
+      
+      // FIXED FULL HEIGHT INJECTION: Forces scroll well container log windows to occupy 100% of space
+      interfaceBox.innerHTML = ` 
+        <div id="chat-active-timeline-viewport" style="display: flex !important; flex-direction: column !important; height: 100% !important; width: 100% !important; box-sizing: border-box !important; background: #ffffff !important;"> 
+          <div id="wizardChatScrollWell" style="flex: 1 !important; padding: 20px !important; overflow-y: auto !important; background: #ffffff !important; box-sizing: border-box !important; display: flex !important; flex-direction: column !important; gap: 10px !important; scroll-behavior: smooth !important; min-height: 380px !important;"></div> 
+          <div style="padding: 14px 16px !important; background: #f8fafc !important; border-top: 1px solid #e2e8f0 !important; display: flex !important; gap: 10px !important; align-items: flex-end !important; box-sizing: border-box !important; width: 100% !important;"> 
+            <textarea 
+              id="wizardClientChatMessageInputField" 
+              style="flex: 1 !important; height: 54px !important; min-height: 54px !important; max-height: 120px !important; padding: 12px 14px !important; border: 1px solid #cbd5e1 !important; border-radius: 6px !important; font-size: 0.85rem !important; outline: none !important; resize: none !important; font-family: inherit !important; line-height: 1.4 !important; box-sizing: border-box !important; background: #ffffff !important; transition: border-color 0.15s ease !important;" 
+              placeholder="Type your compliance message here... (Enter to Send)" 
+              onfocus="this.style.borderColor='#0a1f44'" 
+              onblur="this.style.borderColor='#cbd5e1'" 
+              onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); window.dispatchWizardClientChatMessagePayload(); }"></textarea> 
+            <button onclick="window.dispatchWizardClientChatMessagePayload()" style="height: 54px !important; padding: 0 22px !important; background: #0a1f44 !important; color: #ffffff !important; font-weight: 600 !important; font-size: 0.875rem !important; border: none !important; border-radius: 6px !important; cursor: pointer !important; transition: background 0.15s ease !important; box-sizing: border-box !important;" onmouseover="this.style.background='#122d5a'" onmouseout="this.style.background='#0a1f44'">Send</button> 
+          </div> 
+        </div>`; 
     } 
 
-    // 3. FORCE-RENDER INITIAL BROKER GREETING INTO THE PANEL
-    setTimeout(() => {
-      if (typeof window.appendIncomingMsgBubbleToWizardUI === "function") {
-        window.appendIncomingMsgBubbleToWizardUI(`Hello ${fName}! An expert filings4u compliance broker is connecting to your session tracking wire. How can we help you today?`, 'admin');
-      } else {
-        console.error("[UI Layout Error] window.appendIncomingMsgBubbleToWizardUI is missing from the global window scope.");
-      }
-    }, 100);
+    // ACTIVATES SOCKET LISTENERS IMMEDIATELY ON USER LOGIN SUCCESS
+    if (typeof window.connectClientIncomingSocketStream === "function") {
+      window.connectClientIncomingSocketStream();
+    } else {
+      console.error("[Wizard Stream Error] window.connectClientIncomingSocketStream is not initialized inside browser memory.");
+    }
+
+    // ✨ RENDERS WELCOME GREETING & ESTIMATED RESPONSE TIME ALERTS IMMEDIATELY
+    if (typeof window.appendIncomingMsgBubbleToWizardUI === "function") { 
+      window.appendIncomingMsgBubbleToWizardUI(`Hello ${fName}! An expert filings4u compliance broker is connecting to your session tracking wire.`, 'admin'); 
+      window.appendIncomingMsgBubbleToWizardUI(`⏱️ System Notice: Current estimated live broker response wait time is under 4 minutes. Thank you for your patience!`, 'admin');
+    } 
 
   } catch (supabaseExceptionTelemetry) { 
     console.error("[Supabase Intake Engine Exception] Data pipeline rejected mutation row:", supabaseExceptionTelemetry.message); 
@@ -669,34 +634,194 @@ window.connectClientIncomingSocketStream = function() {
       submitButton.innerText = "Connection Failed. Try Again."; 
     } 
   } 
-
 };
 
+
+
+// =========================================================================
+// 📡 MODULE 3.5: UNIFIED WIZARD REALTIME STREAM LISTENER
+// Target: Opens a direct postgres database stream channel matching your true UUID token
+// =========================================================================
+window.connectClientIncomingSocketStream = function() { 
+  // FIXED: Explicitly prioritize your custom project connection instance to bypass variable overrides
+  const activeInstance = window.f4uWizardSupabaseInstance || window.supabaseClient || window.supabase; 
+  const currentId = window.clientSessionUserId; 
+
+  if (!activeInstance || typeof activeInstance.channel !== "function") { 
+    console.error("[Wizard Socket Error] Supabase query client instance is uninstantiated or missing the .channel() constructor."); 
+    
+    // Emergency Rescue: If outer scripts over-wrote the instance, re-instantiate locally inside this scope
+    if (typeof window.supabase !== "undefined" && typeof window.supabase.createClient === "function") {
+      console.log("[Wizard Socket Rescue] Re-building isolated query client container inside socket channel context...");
+      const DB_URL = "https://lrbimrlbskjweynxlgas.supabase.co";
+      const DB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";
+      window.f4uWizardSupabaseInstance = window.supabase.createClient(DB_URL, DB_KEY);
+    } else {
+      return;
+    }
+  } 
+
+  const verifiedClient = window.f4uWizardSupabaseInstance || activeInstance;
+  if (!currentId) { 
+    console.error("[Wizard Socket Error] Abandoning subscription: clientSessionUserId is null."); 
+    return; 
+  } 
+
+  console.log(`[Wizard Socket Link] Initiating subscription wire for channel token: live_wizard_stream_${currentId}`); 
+
+  // Clean up duplicate background channel connections to avoid memory leaks or double rendering loops
+  if (window.clientLiveSocketChannel) { 
+    console.log("[Wizard Socket] Cleaning up old active channel tracker elements..."); 
+    try {
+      verifiedClient.removeChannel(window.clientLiveSocketChannel); 
+    } catch(e) {}
+  } 
+
+  // FIXED SYNCHRONIZATION LOOP: Binds directly to the postgres insert updates of chat_messages 
+  window.clientLiveSocketChannel = verifiedClient 
+    .channel('live_wizard_stream_' + currentId) 
+    .on('postgres_changes', { 
+      event: 'INSERT', 
+      schema: 'public', 
+      table: 'chat_messages', 
+      filter: `client_id=eq.${currentId}` // Strict text string UUID filter matching 
+    }, (payload) => { 
+      console.log("[Wizard Socket Signal Received] Over-the-air database payload captured:", payload.new); 
+      
+      const incomingSender = String(payload.new.sender_type || '').toLowerCase(); 
+      
+      // Check if the incoming message was written by a fulfillment staff agent or broker
+      if (incomingSender === 'admin' || incomingSender === 'agent' || incomingSender === 'broker' || incomingSender === 'staff') { 
+        if (typeof window.appendIncomingMsgBubbleToWizardUI === "function") { 
+          window.appendIncomingMsgBubbleToWizardUI(payload.new.message_content, 'admin'); 
+        } else { 
+          // Manual fallback injector if page script modules load asynchronously
+          const scrollWell = document.getElementById("wizardChatScrollWell"); 
+          if (scrollWell) { 
+            const bubbleRow = document.createElement("div"); 
+            bubbleRow.style.cssText = "margin-right: auto; background: #edf2f7; color: #0f172a; border-radius: 8px; padding: 10px 14px; max-width: 85%; font-size: 0.825rem; font-weight: 500; clear: both; margin-bottom: 4px; border-bottom-left-radius: 2px; animation: wizardBubblePopUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;"; 
+            bubbleRow.innerText = payload.new.message_content; 
+            scrollWell.appendChild(bubbleRow); 
+            scrollWell.scrollTop = scrollWell.scrollHeight; 
+          } 
+        } 
+      } 
+    }) 
+    .subscribe((status) => { 
+      console.log(`[Wizard Socket Connection Status Update]: ${status}`); 
+    }); 
+};
+
+
 // ========================================================================= 
-// HARDENED INTERCEPTOR MOUNT LOCK 
+// 🧹 MODULE 5: BLUR BACKDROP TRANSCRIPT TRANSFERS AND CLOSING ACTIONS
 // ========================================================================= 
-function attachHardenedFormInterceptor() {
-  const activeForm = document.querySelector("#chat-preflight-input-form form"); 
+
+window.executeHardSessionClearPipeline = async function() {
+  const confirmBtn = document.getElementById("f4uConfirmCloseActionBtn");
+  const activeInstance = window.f4uWizardSupabaseInstance || window.supabaseClient || window.supabase;
+  const currentId = window.clientSessionUserId;
+  const emailField = document.getElementById("chat_email");
+  const customerTargetEmail = emailField ? emailField.value.trim() : "support@filings4u.com";
+
+  if (!activeInstance || !currentId) {
+    window.closeTerminalModalInterfaceWindow(false);
+    return;
+  }
+
+  if (confirmBtn) {
+    confirmBtn.disabled = true;
+    confirmBtn.innerText = "Compiling Logs...";
+  }
+
+  try {
+    console.log(`[Transcript Engine] Recovering text records for client session ID: ${currentId}`);
+    
+    // 1. Gather all dialogue matrix rows chronologically from the server
+    const { data: records, error } = await activeInstance
+      .from('chat_messages')
+      .select('sender_type, message_content, created_at')
+      .eq('client_id', currentId)
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+
+    let structuredTranscriptString = `=== filings4u Chat Transcript Summary ===\n`;
+    structuredTranscriptString += `Session Client Tracking ID: ${currentId}\n`;
+    structuredTranscriptString += `Export Generated Timestamp: ${new Date().toISOString()}\n`;
+    structuredTranscriptString += `=========================================\n\n`;
+
+    if (records && records.length > 0) {
+      records.forEach(msg => {
+        if (msg.message_content.startsWith("System Notice:")) return;
+        const displayTimestamp = new Date(msg.created_at).toLocaleTimeString();
+        const senderLabel = String(msg.sender_type).toLowerCase() === 'admin' ? "Support Broker" : "Client Customer";
+        structuredTranscriptString += `[${displayTimestamp}] ${senderLabel}: ${msg.message_content}\n`;
+      });
+    } else {
+      structuredTranscriptString += "(No messages were exchanged during this support session.)\n";
+    }
+
+    // 2. Mark the onboarding intake row tracking state status parameters to 'ended'
+    await activeInstance
+      .from('wizard_intake_sessions')
+      .update({ company_name: `Transcript for: ${customerTargetEmail}`, session_status: 'ended' })
+      .eq('id', currentId);
+
+    // 3. EXECUTE OVER-THE-AIR BRANDED TRANSCRIPT EMAIL DELIVERY VIA RESEND EDGE FUNCTIONS
+    console.log("[Transcript Engine] Invoking live 'send-chat-transcript' Edge Function pipeline...");
+    await activeInstance.functions.invoke('send-chat-transcript', {
+      body: {
+        client_id: currentId,
+        target_email: customerTargetEmail,
+        formatted_transcript_text: structuredTranscriptString
+      }
+    });
+
+    console.log("[Transcript Success] Branded email summary routed to Resend tracking keys.");
+
+    // 4. RESET FRONTEND WORKSPACE ENVIRONMENT
+    window.closeTerminalModalInterfaceWindow(false);
+    window.toggleSupportFlyoutContainer(false);
+    
+    // Clear out local token trackers to allow starting completely fresh channels on next click
+    localStorage.removeItem("f4u_user_id");
+    window.clientSessionUserId = null;
+
+    // Re-apply base layouts so if the user launches again, they see the form clean
+    window.location.reload(); 
+
+  } catch (faultTrace) {
+    console.error("[Session Clear Critical Crash]", faultTrace.message);
+    alert("Session clear completed with delivery warning. Connection refreshed.");
+    window.location.reload();
+  }
+};
+
+
+// ========================================================================= 
+// 🔒 MODULE 6: HARDENED INTERCEPTOR MOUNT LOCK
+// ========================================================================= 
+function attachHardenedFormInterceptor() { 
+  const activeForm = document.getElementById("f4uActiveIntakeForm"); 
   if (activeForm) { 
-    activeForm.removeAttribute("onsubmit"); 
     activeForm.addEventListener("submit", function(event) { 
       event.preventDefault(); 
       event.stopPropagation(); 
       console.log("[Chat Widget] Form submit intercepted. Executing integrated database sequence..."); 
-      window.validateAndLaunchAgentChatSession(event);
+      window.validateAndLaunchAgentChatSession(event); 
     }); 
     console.log("[Chat Widget] Secure submit listener attached successfully."); 
   } 
-}
+} 
 
 if (document.readyState === "loading") { 
   document.addEventListener("DOMContentLoaded", attachHardenedFormInterceptor); 
 } else { 
   attachHardenedFormInterceptor(); 
-}
-window.initSupabaseInstance();
-</script>
+} 
 
-  
-</body>
+window.initSupabaseInstance(); 
+</script> 
+</body> 
 </html>
