@@ -1052,7 +1052,8 @@ window.dispatchWizardClientChatMessagePayload = async function() {
 
 
 window.compileAndSendFinalTranscript = async function() { 
-  const activeInstance = window.supabaseClient || window.supabase || window.f4uWizardSupabaseInstance; 
+  // Ensure we extract the active, working client instance constructed during initialization
+  const activeInstance = window.f4uWizardSupabaseInstance || window.supabaseClient || window.supabase; 
   const currentId = window.clientSessionUserId; 
 
   if (!currentId || !activeInstance) { 
@@ -1066,7 +1067,7 @@ window.compileAndSendFinalTranscript = async function() {
   console.log(`[Transcript Compiler] Fetching historical chat records for client payload query context: ${currentId}`); 
 
   try { 
-    // 1. FIXED: Aligned lookup key back to client_id to synchronize with your active live real-time sockets
+    // 1. Fetch clean, chronologically sorted historical entries matching your UUID client_id key
     const { data: records, error } = await activeInstance 
       .from('chat_messages') 
       .select('sender_type, message_content, created_at') 
@@ -1080,7 +1081,7 @@ window.compileAndSendFinalTranscript = async function() {
       return; 
     } 
 
-    // 2. Loop through parameters to build a clean string log block structure 
+    // 2. Build structured plain-text conversation log map summary blocks
     let structuredTranscriptString = `=== filings4u Chat Transcript Summary ===\n`; 
     structuredTranscriptString += `Session Client Tracking ID: ${currentId}\n`; 
     structuredTranscriptString += `Export Generated Timestamp: ${new Date().toISOString()}\n`; 
@@ -1094,26 +1095,41 @@ window.compileAndSendFinalTranscript = async function() {
 
     console.log("📝 Chat log compiled successfully. Saving session payload data summary state to Supabase..."); 
 
-    // 3. FIXED: Kept client_id query constraint uniform across the entire data stream layer
+    // 3. Mark the intake tracking row session_status as 'ended' to update the admin feed views
     const { error: sessionUpdateError } = await activeInstance 
       .from('wizard_intake_sessions') 
       .update({ 
         company_name: `Transcript for: ${customerTargetEmail}`, 
         session_status: 'ended' 
       }) 
-      .eq('client_id', currentId); 
+      .eq('id', currentId); // Matches your verified table UUID primary key column 'id'
 
-    if (sessionUpdateError) throw sessionUpdateError; 
-    console.log("[Supabase Sync] Transcript status updated on database session row successfully."); 
+    // Quietly log if the optional wizard intake table update falls behind or runs into a trigger conflict
+    if (sessionUpdateError) {
+      console.warn("[Transcript Engine Warning] Skipping wizard_intake_sessions column sync:", sessionUpdateError.message);
+    } else {
+      console.log("[Supabase Sync] Transcript status updated on database session row successfully."); 
+    }
 
-    // OPTIONAL UPSTREAM FORWARDING PATHWAY:
-    // If you need this transcript delivered straight to your staff via email, post the structured transcript string here:
-    // await fetch('https://filings4u.com', { method: 'POST', body: JSON.stringify({ text: structuredTranscriptString }) });
+    // 4. DISPATCH UPSTREAM TRANSCRIPT PIPELINE TO EDGE FUNCTION VIA RESEND
+    console.log("[Transcript Engine] Invoking 'send-chat-transcript' Edge Function pipeline execution layer...");
+    
+    const { data: functionData, error: functionError } = await activeInstance.functions.invoke('send-chat-transcript', {
+      body: {
+        client_id: currentId,
+        target_email: customerTargetEmail,
+        formatted_transcript_text: structuredTranscriptString
+      }
+    });
+
+    if (functionError) throw functionError;
+    console.log("[Supabase Sync] Edge Function executed successfully. Email routed via Resend API tracking keys.", functionData);
 
   } catch (networkFaultTrace) { 
     console.error("Critical error while compiling final discussion logs map structure:", networkFaultTrace.message); 
   } 
-}; 
+};
+
 
 /**
  * Module: Preflight Form Interceptor Frame
