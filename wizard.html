@@ -262,6 +262,44 @@
     }
 }
 
+/* ✨ SMOOTH SLIDE-IN POP-UP CHAT BUBBLE ANIMATION */
+@keyframes f4uBubbleSlideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Attaches the pop animation dynamically onto freshly drawn conversation blocks */
+.admin-chat-row-bubble, .chat-bubble {
+  animation: f4uBubbleSlideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  transform-origin: bottom right;
+}
+
+/* Flips the animation anchor points cleanly across profile message boxes alignment lines */
+.chat-bubble.inbound {
+  transform-origin: bottom left !important;
+}
+
+/* 🖼️ HIGH-RESOLUTION CLICKABLE INLINE PREVIEW THUMBNAILS */
+.chat-inline-thumbnail-preview {
+  display: block !important;
+  max-width: 240px !important;
+  max-height: 180px !important;
+  border-radius: 6px !important;
+  margin-top: 6px !important;
+  cursor: pointer !important;
+  transition: opacity 0.15s ease !important;
+  border: 1px solid rgba(0,0,0,0.05) !important;
+}
+.chat-inline-thumbnail-preview:hover {
+  opacity: 0.9 !important;
+}
+
 </style>
 
 <!-- Floating launcher trigger button widget bubble -->
