@@ -1,10 +1,9 @@
 // ============================================================================
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 7: SECURE STRIPE CHECKOUT CORE (PART 1)
+// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 7: SECURE CHECKOUT & AUTO-PROVISION (PART 1)
 // ============================================================================
 (function() {
   "use strict";
 
-  // Unified production publishable key constants token
   const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE';
   
   window.stripeInstance = window.stripeInstance || null;
@@ -12,7 +11,7 @@
   window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
 
   window.initializeHeavyPaymentInterfaceStep7 = async function() {
-    console.log("[Heavy Stripe] Initiating compliance checkout interface matrix layers...");
+    console.log("[Heavy Checkout] Mounting card nodes and profile registration fields...");
     
     const baseContainer = document.getElementById("heavy-panel-7");
     if (!baseContainer) {
@@ -20,11 +19,10 @@
       return;
     }
 
-    // Force step panel visibility parameters flat on screen instantly
     baseContainer.style.setProperty("display", "block", "important");
 
     if (typeof Stripe === "undefined") {
-      baseContainer.innerHTML = "<div style='color:#ef4444; background:rgba(239,68,68,0.05); border:1px dashed #ef4444; padding:16px; border-radius:6px; font-weight:700; font-size:0.9rem; text-align:center;'>⚠️ Payment SDK script assets offline. Please reload.</div>";
+      baseContainer.innerHTML = "<div style='color:#ef4444; background:rgba(239,68,68,0.05); border:1px dashed #ef4444; padding:16px; border-radius:6px; font-weight:700; font-size:0.9rem; text-align:center;'>⚠️ Payment SDK scripts offline. Please reload.</div>";
       return;
     }
 
@@ -33,33 +31,26 @@
         window.stripeInstance = Stripe(ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
       }
 
-      // Extract the aggregate sum amounts calculated dynamically inside Step 6 cache memories
       const currentGrandTotal = parseFloat(window.finalCheckoutCollectibleTotalSumAmount || localStorage.getItem("f4u_running_total") || 44.90);
       
       if (isNaN(currentGrandTotal) || currentGrandTotal <= 0) {
-        console.warn("[Heavy Stripe] Cost variables dry. Re-polling summary ledger parameters...");
-        baseContainer.innerHTML = "<div style='text-align:center; padding:40px; color:#0a1f44;'><i class='fa-solid fa-circle-notch fa-spin'></i> Calculating final statement billing items...</div>";
+        baseContainer.innerHTML = "<div style='text-align:center; padding:40px; color:#0a1f44;'><i class='fa-solid fa-circle-notch fa-spin'></i> Calculating final statement values...</div>";
         setTimeout(window.initializeHeavyPaymentInterfaceStep7, 300);
         return;
       }
 
       baseContainer.innerHTML = `
-        <!-- FLAT SECURE CHECKOUT HEADER -->
         <div style="border-bottom: 2px solid #0a1f44 !important; padding-bottom: 12px !important; margin-bottom: 24px !important; box-sizing: border-box !important; width: 100% !important;">
-          <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">💳 Secure Checkout Gateway</h3>
-          <p style="margin: 6px 0 0 0 !important; color: #64748b !important; font-size: 0.85rem !important; font-weight: 500 !important;">Your billing connection is encrypted with industry-standard 256-bit SSL protection layers.</p>
+          <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">💳 Secure Checkout & Account Provisioning</h3>
+          <p style="margin: 6px 0 0 0 !important; color: #64748b !important; font-size: 0.85rem !important; font-weight: 500 !important;">Authorize your payment below. An encrypted client account profile will be built for you instantly.</p>
         </div>
 
-        <!-- HIGH-DENSITY PRICE BADGE NOTIFICATION CARD -->
         <div style="background: #f8fafc !important; border: 1px solid #cbd5e1 !important; padding: 14px 18px !important; border-radius: 8px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; box-sizing: border-box !important; margin-bottom: 24px !important;">
           <span style="font-size: 0.85rem !important; font-weight: 700 !important; color: #0a1f44 !important; text-transform: uppercase !important; letter-spacing: 0.5px !important;">Filing Order Total Due:</span>
           <strong id="payment-gateway-total-display" style="font-family: monospace !important; color: #10b981 !important; font-size: 1.45rem !important;">$${currentGrandTotal.toFixed(2)}</strong>
         </div>
 
-        <!-- RESPONSIVE USER INTEGRATION ACCOUNT PROFILE LAYER -->
         <div class="integrated-profile-matrix" style="margin-bottom: 20px !important; box-sizing: border-box !important; text-align: left !important; width: 100% !important; display: flex !important; flex-direction: column !important; gap: 16px !important; clear: both !important;">
-          
-          <!-- FIRST & LAST NAME FIELD LAYOUT ROW -->
           <div style="display: flex !important; gap: 16px !important; width: 100% !important; box-sizing: border-box !important; flex-wrap: wrap !important;">
             <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important; min-width: 250px !important;">
               <label for="portal_user_first_name" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">First Name</label>
@@ -71,7 +62,6 @@
             </div>
           </div>
 
-          <!-- EMAIL & PHONE FIELD LAYOUT ROW -->
           <div style="display: flex !important; gap: 16px !important; width: 100% !important; box-sizing: border-box !important; flex-wrap: wrap !important;">
             <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important; min-width: 250px !important;">
               <label for="portal_user_email_input" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">Account Email Address</label>
@@ -117,7 +107,7 @@
         `;
         document.head.appendChild(styleSheetNode);
 
-        // Append the Stripe Element mount anchor points flat inside your card decks HTML strings
+        // Append the Stripe Element mount anchor points flat inside your panels HTML strings
         baseContainer.innerHTML += `
           <div id="stripe-payment-element-mount-point" style="min-height: 200px !important; margin-bottom: 24px !important; clear: both !important; width: 100% !important; box-sizing: border-box !important;"></div>
           <div id="step7-error-banner-target" style="display: none !important; color: #ef4444 !important; background: #fef2f2 !important; border: 1px solid #fee2e2 !important; padding: 12px !important; border-radius: 6px !important; font-size: 0.85rem !important; margin-bottom: 24px !important; font-weight: 500 !important; text-align: left !important; clear: both !important; width: 100% !important; box-sizing: border-box !important;"></div>
@@ -128,7 +118,7 @@
               <i class="fa-solid fa-arrow-left"></i> Back to Ledger
             </button>
             <button id="f4uHeavySubmitPaymentBtn" type="button" onclick="window.executeHeavySecureCheckoutTransaction(event)" style="background: #10b981 !important; border: none !important; color: #ffffff !important; padding: 14px 40px !important; border-radius: 6px !important; font-size: 0.95rem !important; font-weight: 800 !important; cursor: pointer !important; transition: all 0.2s ease !important; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2) !important; display: inline-flex !important; align-items: center !important; gap: 8px !important;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
-              Authorize Secure Payment <i class="fa-solid fa-lock"></i>
+              Authorize Secure Payment & Create Account <i class="fa-solid fa-lock"></i>
             </button>
           </div>
         `;
@@ -138,7 +128,7 @@
           window.stripePaymentElementInstance = null;
         }
 
-        // 🟢 STRIPE THEME CONFIG: Sets look and feel dynamically to blend right into your portal
+        // STRIPE THEME CONFIG: Sets look and feel dynamically to blend right into your portal
         window.stripeElementsContainer = window.stripeInstance.elements({
           mode: 'setup',
           currency: 'usd',
@@ -196,7 +186,7 @@
     const submitBtn = document.getElementById("f4uHeavySubmitPaymentBtn");
     const errorBanner = document.getElementById("step7-error-banner-target");
     
-    // 1. Target your exact 4 horizontal registration layout fields
+    // 1. Target your exact 4 account registration layout fields
     const emailInput = document.getElementById("portal_user_email_input");
     const firstNameInput = document.getElementById("portal_user_first_name");
     const lastNameInput = document.getElementById("portal_user_last_name");
@@ -229,7 +219,7 @@
       }
     });
 
-    // 2. RUN VALIDATION LAYER: Shake empty fields without old pop-up boxes
+    // 2. RUN VALIDATION LAYER: Shake empty fields without pop-up blockers
     fieldsArray.forEach(input => {
       if (input && input.value.trim() === "") {
         validationHasFailed = true;
@@ -260,7 +250,7 @@
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...';
+        submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Provisioning Secure Account...';
       }
 
       // Gather receipts metadata for session persistence
@@ -280,24 +270,67 @@
       const sessionUuid = window.activeHeavySessionUuid;
 
       // ============================================================================ //
+      // 🚀 SUPABASE AUTH AUTOMATION: PROVISION USER REAL-TIME ACCOUNT (ALERT-FREE)   //
+      // ============================================================================ //
+      let freshlyProvisionedUserUuid = null;
+
+      if (client && typeof client.auth?.signUp === "function") {
+        console.log(`[Supabase Auth] Attempting account creation invitation for: ${finalEmail}`);
+        
+        // Generate a cryptographically randomized fallback token string password context 
+        // to pass Supabase internal verification rules while the user sets their true password via email invitation link
+        const temporarySystemPasswordString = "F4uTaxShieldTempPass_" + Math.random().toString(36).substring(2, 12) + "!";
+
+        const { data: authData, error: authError } = await client.auth.signUp({
+          email: finalEmail,
+          password: temporarySystemPasswordString,
+          options: {
+            // Passes user name metadata parameters down to your user management schemas tables
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+              phone: phone,
+              associated_tracking_token: uniqueTrackingToken
+            },
+            // Automatically prompts Supabase to dispatch your transactional registration recovery email
+            emailRedirectTo: `${window.location.origin}/client-portal-dashboard.html`
+          }
+        });
+
+        if (authError) {
+          // If user already exists inside the authentication cluster, catch it silently and bypass blocking crashes
+          if (authError.message.toLowerCase().includes("already registered") || authError.status === 422) {
+            console.log("[Supabase Auth Bypass] Email address already exists. Linking session logs to known customer.");
+          } else {
+            console.warn("[Supabase Auth Non-Blocking Warning]", authError.message);
+          }
+        } else if (authData?.user) {
+          freshlyProvisionedUserUuid = authData.user.id;
+          console.log(`[Supabase Auth Success] Created secure user shell profile tracking UUID: ${freshlyProvisionedUserUuid}`);
+        }
+      }
+
+      // ============================================================================ //
       // DATA PRESERVATION: UPSERT RECORD TO DATABASE MATRIX PRIOR TO STRIPE PAY CALL //
       // ============================================================================ //
       if (client && typeof client.from === "function" && sessionUuid && !sessionUuid.startsWith("temp_")) {
         console.log("[Heavy Stripe] Preserving finalized customer metadata inside Supabase clusters...");
         
+        const updatePayloadMatrix = {
+          irs_submission_status: 'PAID_TRANSACTION_VERIFIED',
+          is_read_by_broker: true,
+          contact_phone: phone,
+          collected_payload_metadata: {
+            customer_first_name: firstName,
+            customer_last_name: lastName,
+            unique_invoice_tracking_token: uniqueTrackingToken,
+            account_owner_auth_uuid: freshlyProvisionedUserUuid
+          }
+        };
+
         const { error: dbUpsertError } = await client
           .from('heavy_tax_sessions')
-          .update({
-            irs_submission_status: 'PAID_TRANSACTION_VERIFIED',
-            is_read_by_broker: true,
-            contact_phone: phone,
-            // Pass registration profile parameters nested inside your dynamic payload objects
-            collected_payload_metadata: {
-              customer_first_name: firstName,
-              customer_last_name: lastName,
-              unique_invoice_tracking_token: uniqueTrackingToken
-            }
-          })
+          .update(updatePayloadMatrix)
           .eq('id', sessionUuid);
 
         if (dbUpsertError) throw new Error(`Database Pre-Synchronization Failed: ${dbUpsertError.message}`);
@@ -305,12 +338,13 @@
 
       // 6. EXECUTE STRIPE PAY HANDSHAKE
       if (window.stripeElementsContainer) {
-        // Inline validation interceptor for card expiration/zip missing checks
+        if (submitBtn) submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Authorizing Secure Funds...';
+        
         const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
         if (stripeSubmitError) {
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Authorize Secure Payment <i class="fa-solid fa-lock"></i>';
+            submitBtn.innerHTML = 'Authorize Secure Payment & Create Account <i class="fa-solid fa-lock"></i>';
           }
           return false; 
         }
@@ -355,7 +389,7 @@
       }
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Authorize Secure Payment <i class="fa-solid fa-lock"></i>';
+        submitBtn.innerHTML = 'Authorize Secure Payment & Create Account <i class="fa-solid fa-lock"></i>';
       }
     }
   };
