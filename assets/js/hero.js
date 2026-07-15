@@ -67,8 +67,11 @@ function renderMasterHeroEngine(overrideTargetId, metaDataRecord) {
       const displayHeroLead = liveRecordSource.hero_lead || 'Execute business formations, state tax registrations, and federal logistics applications seamlessly without manual structural processing errors.'; 
       const dynamicHeroImgSrc = liveRecordSource.img_src || ("images/" + slug + "-hero.jpg"); 
       
-      var computedActionLinkDestination = "get-started.html"; 
-      if (slug === "index") { 
+      var computedActionLinkDestination = "#pricing-framework-target"; 
+      if (slug === "filings4u.com") { 
+        computedActionLinkDestination = "get-started.html"; 
+      } 
+       if (slug === "index") { 
         computedActionLinkDestination = "get-started.html"; 
       } 
       
