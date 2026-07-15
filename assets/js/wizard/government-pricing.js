@@ -267,7 +267,7 @@ window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING;
 window.CENTRAL_SERVICE_PLAN_DB = window.CENTRAL_SERVICE_PLAN_DB || {}; 
 
 window.CENTRAL_SERVICE_PLAN_DB["heavy-use-tax-2290"] = { 
-    name: "IRS Form 2290 Filing", 
+    name: "Heavy Use Tax 2290", 
     starter: 39.00, 
     compliance: 59.00, 
     enterprise: 99.00, 
@@ -288,14 +288,14 @@ window.GOVT_REGULATORY_FEES = window.GOVT_REGULATORY_FEES || {};
 Object.assign(window.GOVT_REGULATORY_FEES, {
   // Existing requested authorities
   "trucker-authority": { 
-    name: "trucker-authority", 
+    name: "Trucker Authority", 
     time: "25-30 Business Days", 
     "trucker-authority": 300.00
   }, 
   "broker-authority": { 
-    name: "broker-authority", 
+    name: "Broker Authority", 
     time: "25-30 Business Days", 
-    "trucker-authority": 300.00
+    "broker-authority": 300.00
   },
 
   // Additional FMCSA Core Registrations
@@ -304,7 +304,7 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
     time: "15-20 Business Days",
     "filing-fee": 0.00
   },
-  "fmcsa-hazmat-safety-permit": {
+  "hazmat-registration": {
     name: "Hazardous Materials Safety Permit (HMSP)",
     time: "20-30 Business Days",
     "filing-fee": 0.00
@@ -323,7 +323,7 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
   },
 
   // Legal Filings & Compliance Services
-  "boc-3-filing": {
+  "process-agents-boc-3": {
     name: "BOC-3 Designate Process Agent Filing",
     time: "1-2 Business Days",
     "filing-fee": 50.00
@@ -362,10 +362,10 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
   },
 
   // Additional Trucking Tax & Exemption Permits
-  "heavy-vehicle-use-tax": {
+  "heavy-use-tax-2290": {
     name: "IRS Form 2290 Heavy Highway Vehicle Use Tax (Base)",
     time: "Instant Processing",
-    "filing-fee": 100.00
+    "filing-fee": 0.00
   },
   "ifta-permit": {
     name: "International Fuel Tax Agreement (IFTA) License",
