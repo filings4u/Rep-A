@@ -1752,42 +1752,56 @@ if (document.readyState === "loading") {
 
 
 // ============================================================================ //
-// 🗺️ MODULE: STEP 0 JURISDICTION GATE ROUTER ENGINE (FEDERAL BYPASS)          //
+// 🗺️ MODULE: STEP 0 JURISDICTION GATE ROUTER ENGINE (MASTER CORE DISPATCHER)   //
 // ============================================================================ //
 (function() {
   "use strict";
 
-  // Persistent tracking reference to defuse rapid synchronous redirect cascades
   let isCurrentlyProcessingGateRoute = false;
 
   function enforceJurisdictionGateEvaluation() {
-    // Interlock guard defuses layout routing reflection stack crashes
     if (isCurrentlyProcessingGateRoute) return;
 
     const urlParams = new URLSearchParams(window.location.search);
     const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "").toLowerCase().trim();
     const stateParam = urlParams.get('state');
 
-    // 1. PURE ZERO-HARDCODE FEDERAL TRACK BYPASS DETERMINATION
-    const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {};
-    const isFederalFilingKey = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceSlug) && 
-                               serviceSlug !== "llc-formation" && 
-                               serviceSlug !== "corporations";
+    // 1. PURE DATA-DRIVEN GOVERNMENT RECOVERY SCANNER
+    const federalPricingDbRegistry = window.GOVT_REGULATORY_FEES || window.GOVERNMENT_PRICING_DB || window.GOVERNMENT_PRICING || {};
+    
+    // Direct lookup verification
+    const isFederalFilingKey = Object.prototype.hasOwnProperty.call(federalPricingDbRegistry, serviceSlug);
 
-    // Explicit keyword safety catch-all
-    const isFederalKeyword = serviceSlug.includes("cage") || 
-                             serviceSlug.includes("sam") || 
-                             serviceSlug.includes("tax") || 
-                             serviceSlug.includes("ein") || 
-                             serviceSlug.includes("authority");
+    // Dynamic fuzzy matching lookup pass to automatically catch multi-word services like broker-authority
+    const isFederalDatabaseMatch = isFederalFilingKey || Object.keys(federalPricingDbRegistry).some(dbKey => {
+      return serviceSlug === dbKey.toLowerCase().trim() || dbKey.toLowerCase().trim().includes(serviceSlug);
+    });
 
-    if (isFederalFilingKey || isFederalKeyword) {
-      console.log(`[Gate Engine] Federal Service path "${serviceSlug}" verified. Automatically bypassing Step 0 state selection.`);
+    const isTrueFederalRoute = isFederalDatabaseMatch && serviceSlug !== "llc-formation" && serviceSlug !== "corporations";
+
+    if (isTrueFederalRoute) {
+      console.log(`[Master Gatekeeper] Government route verified dynamically: "${serviceSlug}". Bypassing Step 0 completely.`);
+      
       const gatePanel = document.getElementById("step-panel-0");
-      if (gatePanel) gatePanel.style.setProperty("display", "none", "important");
+      if (gatePanel) {
+        gatePanel.classList.remove("active");
+        gatePanel.style.setProperty("display", "none", "important");
+      }
 
-      // Verify layout step alignment state before dispatching transitions
-      if (window.currentWizardActiveStep !== 1 && typeof window.switchWizardActiveViewLayout === "function") {
+      // 🎨 ELIMINATE PAGE STRETCHING: Destroy hidden container bounding heights completely!
+      const step0LayoutPaneBox = document.getElementById("step-0-state-selector-wrapper-box") || document.getElementById("step0-panel");
+      if (step0LayoutPaneBox) {
+        step0LayoutPaneBox.style.setProperty("display", "none", "important");
+        step0LayoutPaneBox.style.setProperty("height", "0px", "important");
+        step0LayoutPaneBox.style.setProperty("margin", "0", "important");
+        step0LayoutPaneBox.style.setProperty("padding", "0", "important");
+        step0LayoutPaneBox.style.setProperty("overflow", "hidden", "important");
+      }
+
+      // Force state mapping to synchronize safely into Step 1
+      window.currentWizardActiveStep = 1;
+
+      if (typeof window.switchWizardActiveViewLayout === "function") {
         try {
           isCurrentlyProcessingGateRoute = true;
           window.switchWizardActiveViewLayout(1);
@@ -1804,6 +1818,7 @@ if (document.readyState === "loading") {
 
     if (requiresStateSelection && !stateParam) {
       console.log(`[Gate Engine] State Service "${serviceSlug}" requires jurisdiction. Mounting Step 0...`);
+      
       for (let i = 1; i <= 7; i++) {
         const p = document.getElementById(`step-panel-${i}`);
         if (p) {
@@ -1811,28 +1826,32 @@ if (document.readyState === "loading") {
           p.style.setProperty("display", "none", "important");
         }
       }
+      
       const gatePanel = document.getElementById("step-panel-0");
       if (gatePanel) {
         gatePanel.classList.add("active");
         gatePanel.style.setProperty("display", "block", "important");
       }
+      
       if (window.currentWizardActiveStep !== 0) {
         window.currentWizardActiveStep = 0;
       }
+      
       if (typeof window.autoDiscoverAndHydrateStateDropdowns === "function") {
         window.autoDiscoverAndHydrateStateDropdowns();
       }
     } else {
       const gatePanel = document.getElementById("step-panel-0");
-      if (gatePanel) gatePanel.style.setProperty("display", "none", "important");
-
+      if (gatePanel) {
+        gatePanel.style.setProperty("display", "none", "important");
+      }
+      
       if (typeof window.switchWizardActiveViewLayout === "function") {
         const savedStateCache = localStorage.getItem("f4u_wizard_onboarding_state");
         let stepToLoad = 1;
-
+        
         try {
           const parsedState = savedStateCache ? JSON.parse(savedStateCache) : {};
-          // Direct entry URL parameter configurations always override stale cached layout points
           if (stateParam && urlParams.has('service')) {
             stepToLoad = 1;
           } else {
@@ -1845,9 +1864,6 @@ if (document.readyState === "loading") {
         if (window.currentWizardActiveStep !== stepToLoad) {
           try {
             isCurrentlyProcessingGateRoute = true;
-
-            // STRIPE COMPATIBILITY GUARD: If restoring progress directly into Step 6 checkout,
-            // unhide the DOM target wrapper panel instantly so Stripe sees real container metrics.
             if (stepToLoad === 6) {
               const paymentPanel = document.getElementById("step-panel-6");
               if (paymentPanel) {
@@ -1855,7 +1871,6 @@ if (document.readyState === "loading") {
                 paymentPanel.classList.add("active");
               }
             }
-
             window.switchWizardActiveViewLayout(stepToLoad);
           } finally {
             isCurrentlyProcessingGateRoute = false;
@@ -1865,9 +1880,9 @@ if (document.readyState === "loading") {
     }
   }
 
-  // Bind cleanly back into universal global window scope references safely
   window.enforceJurisdictionGateEvaluation = enforceJurisdictionGateEvaluation;
 })();
+
 
 // ============================================================================ //
 // 🔌 ASYNCHRONOUS BACKGROUND FILE PRE-FETCH AND MOUNTING INTERLOCK

@@ -467,22 +467,32 @@ async function runUnifiedWizardBootEngine() {
         if (!activeContext) return; // Exit gracefully; let fallback parameters catch up
     }
 
-    if (typeof synchronizeActiveWizardStepTracker === "function") {
-        synchronizeActiveWizardStepTracker();
-    }
+  if (typeof synchronizeActiveWizardStepTracker === "function") { 
+    synchronizeActiveWizardStepTracker(); 
+  } 
 
-    // FIX 1: Enforce zero-index fallback if step tracker parsing returns unassigned or falsy
-    if (window.currentWizardActiveStep === undefined || window.currentWizardActiveStep === null || isNaN(window.currentWizardActiveStep)) {
-        const stateCache = localStorage.getItem("f4u_wizard_onboarding_state");
-        try {
-            const parsed = stateCache ? JSON.parse(stateCache) : {};
-            window.currentWizardActiveStep = parsed.currentWizardActiveStep !== undefined ? parseInt(parsed.currentWizardActiveStep, 10) : 0;
-        } catch (e) {
-            window.currentWizardActiveStep = 0;
-        }
-    }
+  // FIX 1: Enforce zero-index fallback if step tracker parsing returns unassigned or falsy 
+  if (window.currentWizardActiveStep === undefined || window.currentWizardActiveStep === null || isNaN(window.currentWizardActiveStep)) { 
+    const stateCache = localStorage.getItem("f4u_wizard_onboarding_state"); 
+    try { 
+      const parsed = stateCache ? JSON.parse(stateCache) : {}; 
+      window.currentWizardActiveStep = parsed.currentWizardActiveStep !== undefined ? parseInt(parsed.currentWizardActiveStep, 10) : 0; 
+    } catch (e) { 
+      window.currentWizardActiveStep = 0; 
+    } 
+  } 
 
-    console.log(`[Boot Engine] Pipeline executing for Active Step Index: ${window.currentWizardActiveStep}`);
+  console.log(`[Boot Engine Presenter] Pipeline aligned for Active Step Index: ${window.currentWizardActiveStep}`); 
+
+  // =========================================================================
+  // 🚀 MODULE 3: CONDITIONAL DOWNSTREAM VIEW CONTENT INJECTOR (PURE PRESENTATION)
+  // =========================================================================
+  // FIXED: All duplicate federal routing rules and includes loops have been completely 
+  // removed. This block now smoothly reads from your unified master core variables.
+  if (typeof autoInjectMainWebsitePricingPlan === "function") { 
+    autoInjectMainWebsitePricingPlan(); 
+  }
+
 
     // 3. Conditional Downstream Execution Matrix (Strict Step Routing)
     if (typeof autoInjectMainWebsitePricingPlan === "function") {
