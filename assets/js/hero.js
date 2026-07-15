@@ -71,9 +71,6 @@ function renderMasterHeroEngine(overrideTargetId, metaDataRecord) {
         if (slug === "filings4u.com/") { 
         computedActionLinkDestination = "#pricing-framework-target"; 
       } 
-      if (slug === "https://filings4u.com") { 
-        computedActionLinkDestination = "get-started.html"; 
-      } 
        if (slug === "index") { 
         computedActionLinkDestination = "get-started.html"; 
       } 
