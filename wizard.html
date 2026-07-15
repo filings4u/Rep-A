@@ -310,8 +310,8 @@
 </div>
 
 <!-- Main Support Sliding Overlay Container Panel Box --> 
-<!-- Main Support Sliding Overlay Container Panel Box --> 
-<div class="support-slide-container" id="support-chat-flyout-panel" style="display: none !important; position: fixed !important; bottom: 90px !important; right: 24px !important; top: auto !important; width: 380px !important; max-width: calc(100vw - 32px) !important; height: 520px !important; background: #ffffff !important; border-radius: 12px !important; box-shadow: 0 12px 40px rgba(10,31,68,0.15) !important; z-index: 99999 !important; border: 1px solid #e2e8f0 !important; overflow: hidden; opacity: 0; transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, height 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;"> 
+<!-- FIXED MOBILE COMPRESSION: Changed fixed height to a fluid 'max-height' blueprint that dynamically adjusts sizing scales natively on mobile screens -->
+<div class="support-slide-container" id="support-chat-flyout-panel" style="display: none !important; position: fixed !important; bottom: 90px !important; right: 24px !important; top: auto !important; width: 380px !important; max-width: calc(100vw - 32px) !important; height: auto !important; max-height: calc(100vh - 120px) !important; background: #ffffff !important; border-radius: 12px !important; box-shadow: 0 12px 40px rgba(10,31,68,0.15) !important; z-index: 99999 !important; border: 1px solid #e2e8f0 !important; overflow: hidden; opacity: 0; transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, height 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;"> 
   
   <header id="support-chat-drag-handle" style="background: #0a1f44; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; color: #ffffff; user-select: none;"> 
     <h3 style="margin: 0; font-size: 0.95rem; font-weight: 800;">filings4u Support</h3> 
@@ -323,7 +323,28 @@
 
   <!-- FIXED HOOK: This parent container box keeps your 520px height rules fully locked! -->
   <div id="wizardChatDynamicInterfaceBox" style="height: calc(100% - 49px) !important; width: 100% !important; display: flex !important; flex-direction: column !important; box-sizing: border-box !important; position: relative !important;">
-    
+   
+    <!-- NEW: AUTO-TRIGGERED OUT OF OFFICE COVER MESSAGE LAYER (HIDDEN BY DEFAULT) -->
+<!-- FIXED VISUAL SPACE: Added explicit 24px inner padding to keep elements well away from the layout boundaries edges -->
+<div id="f4uChatClosedOfflineStateContainer" style="display: none; flex-direction: column; padding: 24px 24px 16px 24px !important; box-sizing: border-box !important; width: 100% !important; text-align: left !important;">
+  <div style="width: 44px; height: 44px; background: rgba(10,31,68,0.06); color: #0a1f44; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 16px;">⏱️</div>
+  <h3 style="margin: 0 0 8px 0; color: #0a1f44; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px;">Live Chat is Currently Offline</h3>
+  <p style="margin: 0 0 20px 0; font-size: 0.875rem; color: #475569; line-height: 1.5; font-weight: 500;">
+    Our expert fulfillment brokers are available live from <strong style="color:#0a1f44;">9:00 AM to 5:00 PM CST</strong>, Monday through Friday. 
+  </p>
+  
+  <div style="background: #f1f5f9; border: 1px solid #e2e8f0; padding: 16px; border-radius: 8px; box-sizing: border-box; margin-bottom: 24px;">
+    <p style="margin: 0 0 6px 0; font-size: 0.825rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Next Immediate Step:</p>
+    <p style="margin: 0; font-size: 0.875rem; color: #0f172a; line-height: 1.45; font-weight: 600;">
+      Please send an email directly to our support desk at 
+      <a href="mailto:support@filings4u.com" style="color: #10b981; text-decoration: underline; font-weight: 700;">support@filings4u.com</a>. 
+      A compliance broker will personally contact you on the very next business day!
+    </p>
+  </div>
+  
+  <button type="button" onclick="window.toggleSupportFlyoutContainer(false)" style="width: 100%; padding: 12px 0; background: #0a1f44; color: #ffffff; border: none; font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">Close Window</button>
+</div>
+
     <!-- THE INTAKE FORM WELL (Swapped away dynamically on user login) -->
     <div id="chat-preflight-input-form" style="padding: 26px 24px 12px 24px; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; background: #ffffff; flex: 1 !important; justify-content: center !important;">
       <p style="margin: 0; font-size: 0.875rem; color: #475569; line-height: 1.5; text-align: left; font-weight: 500;">Please provide your corporate contact credentials below to connect to a live compliance fulfillment agent.</p>
@@ -405,20 +426,67 @@
 // WIDGET UI SHELL INTERFACE LOGIC & MODAL LAYOUT ENGINE
 // ========================================================================= 
 
+// ========================================================================= 
+// WIDGET UI SHELL INTERFACE LOGIC & AUTOMATED HOURS GATEKEEPER
+// ========================================================================= 
 window.toggleSupportFlyoutContainer = function(shouldOpenMenuPanel) { 
   const flyoutContainerNode = document.getElementById("support-chat-flyout-panel"); 
   if (!flyoutContainerNode) return; 
   
   const isMobileFullScreenLayout = window.innerWidth <= 500; 
   
-  if (shouldOpenMenuPanel) { 
+  if (shouldOpenMenuPanel) {
+    // 🔍 REAL-TIME CENTRAL STANDARD TIME (CST) COMPLIANCE AUDIT
+    const currentCstTimeString = new Date().toLocaleTimeString("en-US", { timeZone: "America/Chicago", hour12: false });
+    const currentCstDayIndex = new Date().toLocaleDateString("en-US", { timeZone: "America/Chicago", weekday: "long" });
+    
+    // Parse out the current hour and minute integers (Format: "HH:MM:SS")
+    const hoursArray = currentCstTimeString.split(":");
+    const currentCstHour = parseInt(hoursArray[0], 10);
+    const currentCstMinute = parseInt(hoursArray[1], 10);
+
+    // Define availability gate limits (9:00 AM = hour 9, 5:00 PM = hour 17)
+    const isBeforeNineAM = currentCstHour < 9;
+    const isAfterFivePM = currentCstHour >= 17;
+    const isWeekend = currentCstDayIndex === "Saturday" || currentCstDayIndex === "Sunday";
+
+    const formFieldsView = document.getElementById("f4uActiveIntakeForm");
+    const intakeMessagePrompt = document.querySelector("#chat-preflight-input-form p");
+    const offlineNoticeView = document.getElementById("f4uChatClosedOfflineStateContainer");
+    const complianceNoticeBar = document.getElementById("f4uChatComplianceNoticeBar");
+
+    // 🔒 EVALUATE GATE LIMITS: Lock down entries if out of bounds or during weekends
+    if (isBeforeNineAM || isAfterFivePM || isWeekend) {
+      console.log(`[Gatekeeper Triggered] Live desk is CLOSED. CST Time Logged: ${currentCstTimeString} (${currentCstDayIndex})`);
+      
+      // Hide the intake elements completely
+      if (formFieldsView) formFieldsView.style.setProperty("display", "none", "important");
+      if (intakeMessagePrompt) intakeMessagePrompt.style.setProperty("display", "none", "important");
+      if (complianceNoticeBar) complianceNoticeBar.style.setProperty("display", "none", "important");
+      
+      // Animate and reveal your Out-of-Office support desk panel routing view instead
+      if (offlineNoticeView) offlineNoticeView.style.setProperty("display", "flex", "important");
+    } else {
+      console.log(`[Gatekeeper Approved] Live desk is OPEN. CST Time Logged: ${currentCstTimeString}`);
+      
+      // Ensure the standard intake elements present normally if inside business hours
+      if (offlineNoticeView) offlineNoticeView.style.setProperty("display", "none", "important");
+      if (formFieldsView) formFieldsView.style.setProperty("display", "flex", "important");
+      if (intakeMessagePrompt) intakeMessagePrompt.style.setProperty("display", "block", "important");
+      if (complianceNoticeBar) complianceNoticeBar.style.setProperty("display", "flex", "important");
+    }
+
+    // Slide open the outer container smoothly into viewport canvas area
     flyoutContainerNode.style.setProperty("display", "block", "important"); 
     setTimeout(() => { 
       flyoutContainerNode.style.setProperty("transform", "translateY(0)", "important"); 
       flyoutContainerNode.style.setProperty("opacity", "1", "important"); 
     }, 10); 
+    
     const initialInputFieldName = document.getElementById("chat_first_name"); 
-    if (initialInputFieldName) initialInputFieldName.focus(); 
+    if (initialInputFieldName && (!isBeforeNineAM && !isAfterFivePM && !isWeekend)) {
+      initialInputFieldName.focus(); 
+    }
   } else { 
     flyoutContainerNode.style.setProperty("opacity", "0", "important"); 
     if (isMobileFullScreenLayout) { 
@@ -433,6 +501,7 @@ window.toggleSupportFlyoutContainer = function(shouldOpenMenuPanel) {
     }, 250); 
   } 
 }; 
+
 
 // 🪟 NEW: BLUR-BACKGROUND MODAL OVERLAY INTERFACE INTERCEPTORS
 window.closeTerminalModalInterfaceWindow = function(shouldOpen) {
