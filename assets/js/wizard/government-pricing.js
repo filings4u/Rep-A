@@ -376,7 +376,7 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
   "heavy-use-tax-2290": { 
     name: "Heavy Highway Vehicle Use Tax (Form 2290)", 
     time: "1 Business Day", 
-    "filing-fee": 44.90
+    "filing-fee": 0.00
   }, 
   "employer-id-ein": { 
     name: "Federal Employer Identification Number (EIN)", 
