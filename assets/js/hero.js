@@ -68,6 +68,9 @@ function renderMasterHeroEngine(overrideTargetId, metaDataRecord) {
       const dynamicHeroImgSrc = liveRecordSource.img_src || ("images/" + slug + "-hero.jpg"); 
       
       var computedActionLinkDestination = "#pricing-framework-target"; 
+        if (slug === "filings4u.com/") { 
+        computedActionLinkDestination = "#pricing-framework-target"; 
+      } 
       if (slug === "filings4u.com") { 
         computedActionLinkDestination = "get-started.html"; 
       } 
