@@ -170,7 +170,7 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
         </div>
       </div>
       
-      <a href="https://portal.filings4u.com/client-dashboard.html" class="btn-client-portal">Client Portal</a>
+      <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Client Portal</a>
     `;
     linksContainer.innerHTML = fullMenuHTML;
     console.log("[Navigation Matrix] Blueprint HTML templates mounted successfully. Event delegation deferred to toggle.js.");
