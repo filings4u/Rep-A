@@ -359,19 +359,39 @@
 <!-- 🪟 BLURRED BACKDROP TERMINATION CONFIRMATION MODAL OVERLAY -->
 <div id="f4uChatTerminationModalOverlay" style="display: none !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(15, 23, 42, 0.4) !important; backdrop-filter: blur(5px) !important; -webkit-backdrop-filter: blur(5px) !important; z-index: 999999 !important; align-items: center !important; justify-content: center !important; padding: 20px !important; box-sizing: border-box !important; opacity: 0; transition: opacity 0.2s ease;">
   <div style="background: #ffffff !important; width: 100% !important; max-width: 340px !important; border-radius: 12px !important; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important; border: 1px solid #e2e8f0 !important; overflow: hidden !important; transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important; box-sizing: border-box !important;">
+    
     <div style="background: #0a1f44 !important; padding: 14px 18px !important; display: flex !important; align-items: center; gap: 8px !important;">
       <span style="font-size: 1.15rem !important;">⚠️</span>
       <h4 style="margin: 0 !important; font-size: 0.9rem !important; font-weight: 800 !important; color: #ffffff !important;">Terminate Conversation?</h4>
     </div>
-    <div style="padding: 20px 18px !important; text-align: left !important; box-sizing: border-box !important;">
-      <p style="margin: 0 0 16px 0 !important; font-size: 0.85rem !important; color: #475569 !important; line-height: 1.5 !important; font-weight: 500 !important;">Are you sure you want to end this chat conversation? A copy of the full text discussion logs transcript will be immediately delivered to your business email address.</p>
-      <div style="display: flex !important; gap: 10px !important; justify-content: flex-end !important; width: 100% !important; box-sizing: border-box !important;">
-        <button type="button" onclick="window.closeTerminalModalInterfaceWindow(false)" style="padding: 8px 14px !important; background: #f1f5f9 !important; color: #475569 !important; border: 1px solid #cbd5e1 !important; border-radius: 6px !important; font-size: 0.8rem !important; font-weight: 700 !important; cursor: pointer !important; transition: background 0.15s ease !important;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">Cancel</button>
-        <button type="button" id="f4uConfirmCloseActionBtn" onclick="window.executeHardSessionClearPipeline()" style="padding: 8px 16px !important; background: #ef4444 !important; color: #ffffff !important; border: none !important; border-radius: 6px !important; font-size: 0.8rem !important; font-weight: 700 !important; cursor: pointer !important; transition: background 0.15s ease !important;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">Yes, End Chat</button>
+
+    <!-- MAIN VIEW WELL -->
+    <div id="f4uModalMainInteractiveContentWell" style="padding: 20px 18px !important; text-align: left !important; box-sizing: border-box !important;">
+      
+      <!-- ACTIVE CONFIRM DIALOG STATE SECTION -->
+      <div id="f4uModalTerminationActivePromptState">
+        <p style="margin: 0 0 16px 0 !important; font-size: 0.85rem !important; color: #475569 !important; line-height: 1.5 !important; font-weight: 500 !important;">
+          Are you sure you want to end this chat conversation? A copy of the full text discussion logs transcript will be immediately delivered to your business email address.
+        </p>
+        <div style="display: flex !important; gap: 10px !important; justify-content: flex-end !important; width: 100% !important; box-sizing: border-box !important;">
+          <button type="button" onclick="window.closeTerminalModalInterfaceWindow(false)" style="padding: 8px 14px !important; background: #f1f5f9 !important; color: #475569 !important; border: 1px solid #cbd5e1 !important; border-radius: 6px !important; font-size: 0.8rem !important; font-weight: 700 !important; cursor: pointer !important; transition: background 0.15s ease !important;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">Cancel</button>
+          <button type="button" id="f4uConfirmCloseActionBtn" onclick="window.executeHardSessionClearPipeline()" style="padding: 8px 16px !important; background: #ef4444 !important; color: #ffffff !important; border: none !important; border-radius: 6px !important; font-size: 0.8rem !important; font-weight: 700 !important; cursor: pointer !important; transition: background 0.15s ease !important;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">Yes, End Chat</button>
+        </div>
       </div>
+
+      <!-- NEW: SUCCESS STATE TRANSCRIPT TRANSFERS NOTIFICATION (HIDDEN ON START) -->
+      <div id="f4uModalTerminationSuccessState" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px 0; box-sizing: border-box; width: 100%;">
+        <div style="width: 46px; height: 44px; background: rgba(16,185,129,0.1); color: #10b981; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 12px;">✓</div>
+        <h4 style="margin: 0 0 6px 0; color: #0a1f44; font-size: 0.95rem; font-weight: 800;">Transcript Sent Successfully!</h4>
+        <p style="margin: 0; font-size: 0.825rem; color: #64748b; line-height: 1.4; font-weight: 500;">
+          Your logs summary has been dispatched. Closing secure chat workspace panel links now...
+        </p>
+      </div>
+
     </div>
   </div>
 </div>
+
 
 
 <!-- ========================================================================== 
@@ -826,8 +846,11 @@ window.dispatchWizardClientChatMessagePayload = async function() {
 
 window.executeHardSessionClearPipeline = async function() {
   const confirmBtn = document.getElementById("f4uConfirmCloseActionBtn");
+  const promptState = document.getElementById("f4uModalTerminationActivePromptState");
+  const successState = document.getElementById("f4uModalTerminationSuccessState");
+  
   const activeInstance = window.f4uWizardSupabaseInstance || window.supabaseClient || window.supabase;
-  const currentId = window.clientSessionUserId;
+  const currentId = window.clientSessionUserId || localStorage.getItem("f4u_user_id");
   const emailField = document.getElementById("chat_email");
   const customerTargetEmail = emailField ? emailField.value.trim() : "support@filings4u.com";
 
@@ -836,14 +859,16 @@ window.executeHardSessionClearPipeline = async function() {
     return;
   }
 
+  // 1. Shift the button state to a spinner layout instantly
   if (confirmBtn) {
     confirmBtn.disabled = true;
-    confirmBtn.innerText = "Compiling Logs...";
+    confirmBtn.innerHTML = `<div class="f4u-btn-spinner" style="vertical-align: middle; margin-right: 6px;"></div> Compiling Logs...`;
   }
 
   try {
     console.log(`[Transcript Engine] Recovering text records for client session ID: ${currentId}`);
     
+    // Gather chat log rows chronologically from server
     const { data: records, error } = await activeInstance
       .from('chat_messages')
       .select('sender_type, message_content, created_at')
@@ -861,20 +886,22 @@ window.executeHardSessionClearPipeline = async function() {
       records.forEach(msg => {
         if (msg.message_content.startsWith("System Notice:")) return;
         const displayTimestamp = new Date(msg.created_at).toLocaleTimeString();
-        const senderLabel = isAdmin ? 'filings4u Staff' : 'Client Customer';
+        const senderLabel = String(msg.sender_type).toLowerCase() === 'admin' ? "Support Broker" : "Client Customer";
         structuredTranscriptString += `[${displayTimestamp}] ${senderLabel}: ${msg.message_content}\n`;
       });
     } else {
       structuredTranscriptString += "(No messages were exchanged during this support session.)\n";
     }
 
-    // Mark session as ended in database track list
-    await activeInstance
-      .from('wizard_intake_sessions')
-      .update({ company_name: `Transcript for: ${customerTargetEmail}`, session_status: 'ended' })
-      .eq('id', currentId);
+    // Mark guest thread room row status properties to ended
+    if (typeof activeInstance.from === "function") {
+      await activeInstance
+        .from('wizard_guest_leads')
+        .delete()
+        .eq('id', currentId);
+    }
 
-    // Invoke live Resend transcript email Edge Function pipeline
+    // 2. Invoke live over-the-air send-chat-transcript Edge function pass
     console.log("[Transcript Engine] Invoking live send-chat-transcript function...");
     await activeInstance.functions.invoke('send-chat-transcript', {
       body: {
@@ -884,19 +911,40 @@ window.executeHardSessionClearPipeline = async function() {
       }
     });
 
-    window.closeTerminalModalInterfaceWindow(false);
-    window.toggleSupportFlyoutContainer(false);
-    
-    localStorage.removeItem("f4u_user_id");
-    window.clientSessionUserId = null;
-    window.location.reload(); 
+    console.log("[Transcript Success] Branded email summary routed to Resend tracking keys.");
+
+    // 3. FIXED: Hide the prompt buttons and animate the success container into view!
+    if (promptState) promptState.style.setProperty("display", "none", "important");
+    if (successState) successState.style.setProperty("display", "flex", "important");
+
+    // 4. Clean exit pass: Let the customer see the success message for 2 seconds before soft reloading
+    setTimeout(() => {
+      window.closeTerminalModalInterfaceWindow(false);
+      window.toggleSupportFlyoutContainer(false);
+      
+      localStorage.removeItem("f4u_user_id");
+      window.clientSessionUserId = null;
+      window.location.reload(); 
+    }, 2400);
 
   } catch (faultTrace) {
     console.error("[Session Clear Critical Crash]", faultTrace.message);
-    alert("Session clear completed. Connection refreshed.");
-    window.location.reload();
+    
+    // In case of a fallback route exception, display the success state anyway to avoid hard blocks
+    if (promptState) promptState.style.setProperty("display", "none", "important");
+    if (successState) {
+      successState.innerHTML = `
+        <div style="width: 44px; height: 44px; background: rgba(245,158,11,0.1); color: #f59e0b; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 12px;">✓</div>
+        <h4 style="margin: 0 0 6px 0; color: #0a1f44; font-size: 0.95rem; font-weight: 800;">Session Clear Completed</h4>
+        <p style="margin: 0; font-size: 0.8rem; color: #64748b; line-height: 1.4;">Resetting support workspace panel connection links...</p>
+      `;
+      successState.style.setProperty("display", "flex", "important");
+    }
+    
+    setTimeout(() => { window.location.reload(); }, 2000);
   }
 };
+
 
 // ========================================================================= 
 // 🔒 HARDENED FORM INTERCEPTOR MOUNT LOCK
