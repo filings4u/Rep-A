@@ -286,27 +286,118 @@ window.CENTRAL_SERVICE_PLAN_DB["heavy-use-tax-2290"] = {
 window.GOVT_REGULATORY_FEES = window.GOVT_REGULATORY_FEES || {};
 
 Object.assign(window.GOVT_REGULATORY_FEES, {
+
   // Existing requested authorities
-  "trucker-authority": { 
+"trucker-authority": { 
     name: "Trucker Authority", 
     time: "25-30 Business Days", 
-    "trucker-authority": 300.00
+    "filing-fee": 300.00
   }, 
   "broker-authority": { 
     name: "Broker Authority", 
     time: "25-30 Business Days", 
-    "broker-authority": 300.00
+    "filing-fee": 300.00
+  }, 
+  "dot-consortium": { 
+    name: "DOT Drug & Alcohol Consortium Enrollment", 
+    time: "1-2 Business Days", 
+    "filing-fee": 0.00
+  }, 
+  "driver-file": { 
+    name: "Driver Qualification File Maintenance", 
+    time: "1-2 Business Days", 
+    "filing-fee": 0.00
+  }, 
+  "process-agents-boc-3": { 
+    name: "Process Agent Filing (BOC-3)", 
+    time: "1 Business Day", 
+    "filing-fee": 50.00
+  }, 
+  "boc-3-amendment": { 
+    name: "BOC-3 Designation Amendment", 
+    time: "1-2 Business Days", 
+    "filing-fee": 50.00
+  }, 
+  "mcs-150-update": { 
+    name: "MCS-150 Biennial Update", 
+    time: "1-2 Business Days", 
+    "filing-fee": 60.00
+  }, 
+  "new-entrant-audit": { 
+    name: "New Entrant Safety Audit Assistance", 
+    time: "3-5 Business Days", 
+    "filing-fee": 150.00
+  }, 
+  "scac-code": { 
+    name: "Standard Carrier Alpha Code (SCAC)", 
+    time: "5-7 Business Days", 
+    "filing-fee": 95.00
+  }, 
+  "hazmat-registration": { 
+    name: "PHMSA HAZMAT Registration", 
+    time: "2-3 Business Days", 
+    "filing-fee": 275.00
+  }, 
+  "trucker-insurance-quote": { 
+    name: "Trucker Commercial Insurance Quote", 
+    time: "1-3 Business Days", 
+    "filing-fee": 0.00
+  }, 
+  "broker-insurance-quote": { 
+    name: "Broker Surety Bond & Insurance Quote", 
+    time: "1-3 Business Days", 
+    "filing-fee": 0.00
+  }, 
+  "cage-code": { 
+    name: "CAGE Code Registration & SAM.gov Setup", 
+    time: "10-14 Business Days", 
+    "filing-fee": 0.00
+  }, 
+  "duns-number": { 
+    name: "DUNS Number Expedited Allocation", 
+    time: "1-2 Business Days", 
+    "filing-fee": 0.00
+  }, 
+  "grant-procurement": { 
+    name: "Federal Grant Procurement Assistance", 
+    time: "30-45 Business Days", 
+    "filing-fee": 250.00
+  }, 
+  "trademark-filing": { 
+    name: "USPTO Federal Trademark Filing", 
+    time: "5-7 Business Days", 
+    "filing-fee": 250.00
+  }, 
+  "federal-income-tax": { 
+    name: "Corporate Federal Income Tax Filing", 
+    time: "5-10 Business Days", 
+    "filing-fee": 0.00
+  }, 
+  "heavy-use-tax-2290": { 
+    name: "Heavy Highway Vehicle Use Tax (Form 2290)", 
+    time: "1 Business Day", 
+    "filing-fee": 44.90
+  }, 
+  "employer-id-ein": { 
+    name: "Federal Employer Identification Number (EIN)", 
+    time: "1 Business Day", 
+    "filing-fee": 0.00
+  }, 
+  "foreign-qualification": { 
+    name: "Out-of-State Foreign Qualification Filing", 
+    time: "7-10 Business Days", 
+    "filing-fee": 149.00
+  }, 
+  "apostille-services": { 
+    name: "Federal Document Apostille Certification", 
+    time: "15-20 Business Days", 
+    "filing-fee": 175.00
   },
 
   // Additional FMCSA Core Registrations
   "fmcsa-cargo-tank-facility": {
     name: "Cargo Tank Facility Registration (CT Number)",
     time: "15-20 Business Days",
-    "filing-fee": 0.00
-  },
-  "hazmat-registration": {
-    name: "Hazardous Materials Safety Permit (HMSP)",
-    time: "20-30 Business Days",
     "filing-fee": 0.00
   },
 
@@ -316,18 +407,8 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
     time: "Instant Processing",
     "filing-fee": 0.00
   },
-  "scac-code": {
-    name: "Standard Carrier Alpha Code (SCAC)",
-    time: "1-2 Business Days",
-    "filing-fee": 95.00
-  },
 
   // Legal Filings & Compliance Services
-  "process-agents-boc-3": {
-    name: "BOC-3 Designate Process Agent Filing",
-    time: "1-2 Business Days",
-    "filing-fee": 50.00
-  },
   "fmcsa-name-change": {
     name: "FMCSA Operating Authority Name Change",
     time: "5-7 Business Days",
@@ -339,7 +420,55 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
     "filing-fee": 80.00
   },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Unified Carrier Registration (UCR) 2026 Tier Structure Base Fees
+
+  "ucr-registration": { 
+    name: "Unified Carrier Registration (UCR)", 
+    time: "1-2 Business Days", 
+    "filing-fee": 59.00
+  }, 
   "ucr-tier-1": {
     name: "UCR Fleet Size 0-2 Vehicles",
     time: "1-2 Business Days",
@@ -360,21 +489,4 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
     time: "1-2 Business Days",
     "filing-fee": 769.00
   },
-
-  // Additional Trucking Tax & Exemption Permits
-  "heavy-use-tax-2290": {
-    name: "IRS Form 2290 Heavy Highway Vehicle Use Tax (Base)",
-    time: "Instant Processing",
-    "filing-fee": 0.00
-  },
-  "ifta-permit": {
-    name: "International Fuel Tax Agreement (IFTA) License",
-    time: "7-14 Business Days",
-    "filing-fee": 10.00
-  },
-  "irp-registration": {
-    name: "International Registration Plan (IRP) Setup",
-    time: "10-15 Business Days",
-    "filing-fee": 0.00
-  }
 });
