@@ -123,7 +123,6 @@ window.renderDynamicGlobalCorporateNavigation = renderDynamicGlobalCorporateNavi
             <span class="column-title">Government Identifiers</span>
             <a href="cage-code.html">CAGE Code</a>
             <a href="duns-number.html">DUNS Number</a>
-            <a href="procurement.html">Grant Procurement</a>
             <a href="minority-certificate.html">Minority Certificate</a>
           </div>
           <div class="mega-column">

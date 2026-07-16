@@ -235,6 +235,19 @@ const regulatoryPackagePayload = {
     ]
   }
 },
+
+    "trademark-filing": {
+  name: "Trademark Filing",
+  starter: 299.00,
+  compliance: 399.00,
+  enterprise: 499.00,
+  bullets: {
+    starter: ["Trademark search", "Application filing"],
+    compliance: ["Everything in Starter (Plus)", "Status tracking for 1 year", "Common Law Usage Evaluation"],
+    enterprise: ["Everything in Compliance (Plus)", "Legal consultation on infringement issues", "Continuous Brand Watch Monitoring"]
+  }
+},
+
 };
 
 // Map parameters smoothly into the centralized core database reference context pool
