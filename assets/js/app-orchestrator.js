@@ -265,6 +265,148 @@ function executeFullGlobalSEOEngine() {
             document.head.appendChild(metaNode);
         }
         metaNode.setAttribute('content', contentValue);
+
+        /**
+ * Filings4U Platform Architecture
+ * Target Module: assets/js/app-orchestrator.js (Block 1 of 2)
+ * Automated GA4 Tracker Loops & Asset Scraper Rules Optimization
+ */
+
+// --- 🛠️ DYNAMIC ASSET SCRAPER RULES REVIEW & ENHANCEMENT ---
+function runRefinedAssetScraperRegistry() {
+    const heroSection = document.getElementById("filings4u-global-hero-root");
+    const h1Element = document.querySelector('h1');
+    let dynamicShareImage = "https://filings4u.com"; // Strict root fallback
+
+    // Rule 1: Gather and sort all layout images by dimension properties to avoid using tiny icons
+    const rawVisualAssets = Array.from(document.querySelectorAll('img, [style*="background-image"]'));
+    let verifiedHighResSource = null;
+
+    for (let asset of rawVisualAssets) {
+        let testSrc = "";
+        if (asset.tagName === 'IMG') {
+            testSrc = asset.getAttribute('src');
+        } else {
+            const backgroundStyle = asset.style.backgroundImage;
+            const matchPattern = backgroundStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
+            if (matchPattern) testSrc = matchPattern[1];
+        }
+
+        // Rule 2: Strict content blacklist filters to ignore low-quality shapes or stars
+        if (testSrc && !testSrc.includes('fav') && !testSrc.includes('star') && !testSrc.includes('icon') && !testSrc.includes('shield') && !testSrc.includes('arrow')) {
+            // Rule 3: Enforce client layout dimension checks (skip hidden or invisible assets)
+            if (asset.offsetWidth > 50 || asset.offsetHeight > 50 || asset.tagName !== 'IMG') {
+                verifiedHighResSource = testSrc;
+                break;
+            }
+        }
+    }
+
+    // Rule 4: Structure relative URLs into clean, search-engine-ready absolute link formats
+    if (verifiedHighResSource) {
+        dynamicShareImage = verifiedHighResSource.startsWith('http') ? 
+            verifiedHighResSource : window.location.origin + (verifiedHighResSource.startsWith('/') ? '' : '/') + verifiedHighResSource;
+    }
+
+    // --- 📊 AUTOMATED GOOGLE ANALYTICS 4 TELEMETRY DISPATCHER ---
+    const pageServiceTitle = h1Element ? h1Element.textContent.trim().replace(/\s+/g, ' ') : 'Unknown Service';
+    
+    // Safety check: verify if the standard GA4 dataLayer initialization loop is running active
+    window.dataLayer = window.dataLayer || [];
+    
+    // Automatically transmit a localized page-view engagement log to your console pipelines
+    window.dataLayer.push({
+        'event': 'f4u_dynamic_page_load',
+        'service_profile_title': pageServiceTitle,
+        'discovered_social_image': dynamicShareImage,
+        'f4u_system_timestamp': new Date().toISOString()
+    });
+
+    return { pageServiceTitle, dynamicShareImage };
+}
+
+/**
+ * Filings4U Platform Architecture
+ * Target Module: assets/js/app-orchestrator.js (Block 2 of 2)
+ * Dynamic Input Listeners, Select Tracking, & Error Trapping Loops
+ */
+
+function initializeAutomatedGA4InteractionTrackers(scannedMetadata) {
+    window.dataLayer = window.dataLayer || [];
+    const activeService = scannedMetadata.pageServiceTitle || 'Unknown Service';
+
+    // --- TRACKING LOOP 1: AUTOMATED SELECT DROPDOWN TRACKING ---
+    // Listens to change anomalies on any long option choice fields on the fly
+    document.querySelectorAll('select').forEach(dropdown => {
+        dropdown.addEventListener('change', (e) => {
+            window.dataLayer.push({
+                'event': 'f4u_marketing_dropdown_selection',
+                'service_profile': activeService,
+                'element_id': dropdown.id || 'unnamed_dropdown',
+                'selected_value': e.target.value,
+                'f4u_telemetry_timestamp': new Date().toISOString()
+            });
+        });
+    });
+
+    // --- TRACKING LOOP 2: STRUCTURAL WIZARD CTA CLICKS ---
+    // Tracks when users launch a wizard link from the marketing features
+    document.querySelectorAll('a[href*="wizard"]').forEach(buttonLink => {
+        buttonButton.addEventListener('click', () => {
+            window.dataLayer.push({
+                'event': 'f4u_wizard_conversion_initiated',
+                'service_profile': activeService,
+                'destination_url': buttonLink.getAttribute('href'),
+                'f4u_telemetry_timestamp': new Date().toISOString()
+            });
+        });
+    });
+
+    // --- TRACKING LOOP 3: REAL-TIME VALIDATION ERROR TRAPPING ---
+    // Connects to input field validation mechanisms to monitor system error cues
+    const globalInputMatrix = document.querySelectorAll('input, select, textarea');
+    
+    // Setup an observer to watch for dynamic error text node generation on the page
+    const errorNodeObserver = new MutationObserver((mutationsList) => {
+        mutationsList.forEach(mutation => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                const targetNode = mutation.target;
+                
+                // Trap the event immediately when an error wrapper changes visibility to block display
+                if (targetNode.classList.contains('wizard-error-message') && targetNode.style.display === 'block') {
+                    window.dataLayer.push({
+                        'event': 'f4u_field_validation_failure',
+                        'service_profile': activeService,
+                        'error_container_id': targetNode.id,
+                        'error_message_text': targetNode.textContent.trim(),
+                        'f4u_telemetry_timestamp': new Date().toISOString()
+                    });
+                }
+            }
+        });
+    });
+
+    // Wire up individual tracking loops to validation nodes across your layout forms
+    document.querySelectorAll('.wizard-error-message').forEach(errorElement => {
+        errorNodeObserver.observe(errorElement, { attributes: true, attributeFilter: ['style'] });
+    });
+}
+
+// --- SECURE LIFECYCLE IGNITION TRIGGER ---
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const currentMetadata = runRefinedAssetScraperRegistry();
+            initializeAutomatedGA4InteractionTrackers(currentMetadata);
+        }, 350); // Safe margin to clear asynchronous script injections and style sheets
+    });
+} else {
+    setTimeout(() => {
+        const currentMetadata = runRefinedAssetScraperRegistry();
+        initializeAutomatedGA4InteractionTrackers(currentMetadata);
+    }, 350);
+}
+
     };
 
     // 1. Core Engine Web and Document Tab Upgrades
