@@ -62,9 +62,11 @@
         <!-- LIVE CURSIVE FONT GENERATOR PREVIEW SCREEN PANEL -->
         <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; width: 100% !important;">
           <small style="font-weight: 700 !important; font-size: 0.7rem !important; text-transform: uppercase !important; color: #64748b !important; letter-spacing: 0.5px !important;">Generated E-Signature Preview:</small>
-          <div id="sig_cursive_preview" style="width: 100% !important; height: 90px !important; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-radius: 6px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 2.15rem !important; font-family: 'Brush Script MT', cursive, 'Gabriola', 'Edwardian Script ITC', sans-serif !important; font-style: italic !important; color: #0a1f44 !important; padding: 14px !important; box-sizing: border-box !important; overflow: hidden !important; user-select: none !important; border-left: 4px solid #10b981 !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01) !important;">
-            Fulfillment Pending Signature Entry
+          <!-- RECONSTRUCTED OVERVIEW BOX CONTAINER WITH COMPONENT CLASS INJECTED -->
+          <div id="sig_cursive_preview" class="f4u-cursive-preview-node" style="width: 100% !important; height: 90px !important; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-radius: 6px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 2.15rem !important; font-family: 'Brush Script MT', cursive, 'Gabriola', 'Edwardian Script ITC', sans-serif !important; font-style: italic !important; color: #0a1f44 !important; padding: 14px !important; box-sizing: border-box !important; overflow: hidden !important; user-select: none !important; border-left: 4px solid #10b981 !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01) !important;">
+          Pending Signature Entry
           </div>
+
         </div>
       </div>
 
@@ -81,6 +83,10 @@
     
     window.updateCursiveFontSignatureLivePreview();
   };
+
+
+
+  
   // --- REAL-TIME LIVE CURSIVE FONT GENERATOR REPAINTER ---
   window.updateCursiveFontSignatureLivePreview = function() {
     const rawInputText = document.getElementById("sig_typed_input")?.value.trim() || "";
@@ -92,7 +98,7 @@
         previewContainerNode.style.setProperty("color", "#0a1f44", "important");
         previewContainerNode.style.setProperty("opacity", "1", "important");
       } else {
-        previewContainerNode.innerText = "Fulfillment Pending Signature Entry";
+        previewContainerNode.innerText = "Pending Signature Entry";
         previewContainerNode.style.setProperty("color", "#94a3b8", "important");
       }
     }

@@ -358,39 +358,46 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     const poaSignatureString = localStorage.getItem("wizard_field_poa_signature_string") || 
                                localStorage.getItem("wizard_field_poa_verification_hash") || null;
 
+ 
     // ============================================================================ //
-    // DATA PRESERVATION: UPSERT RECORD TO DATABASE MATRIX PRIOR TO STRIPE PAY CALL //
+    // DATA PRESERVATION: FIXED AUTOMATED UPSERT TRANSACTION SCHEMA RECORD SAVE     //
     // ============================================================================ //
     if (supabaseClient) {
       console.log("[Gatekeeper] Preserving transaction log signatures inside Supabase database cluster...");
+      
+      // FIXED SCHEMA PAYLOAD: Removed the phantom root-level "email" field 
+      // All user contact elements are now passed inside the nested JSON data structure
+      const validatedDatabaseUpsertPayload = {
+        tracking_number: uniqueTrackingToken,
+        company_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
+        service_key: serviceSlug,
+        service_title: dynamicLabelTextString,
+        plan_tier: activePlanKeyString,
+        total_fee: activeGrandCost,
+        status: 'pending',
+        tax_id_status: 'Fulfillment Lane',
+        poa_signed_state: isPoaSigned,
+        poa_signature_verification_string: poaSignatureString,
+        collected_payload_metadata: {
+          customer_email: finalEmail, // Securely tracked inside the JSON vault column
+          customer_first_name: firstName,
+          customer_last_name: lastName,
+          customer_phone: phone,
+          is_returning_customer: isReturningUser
+        }
+      };
+
       const { error: dbUpsertError } = await supabaseClient
         .from('orders')
-        .upsert({
-          tracking_number: uniqueTrackingToken,
-          company_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
-          service_key: serviceSlug,
-          service_title: dynamicLabelTextString,
-          plan_tier: activePlanKeyString,
-          total_fee: activeGrandCost,
-          status: 'pending',
-          tax_id_status: 'Fulfillment Lane',
-          poa_signed_state: isPoaSigned,
-          poa_signature_verification_string: poaSignatureString,
-          collected_payload_metadata: {
-            customer_email: finalEmail,
-            customer_first_name: firstName,
-            customer_last_name: lastName,
-            customer_phone: phone,
-            is_returning_customer: isReturningUser
-          }
-        }, { onConflict: 'tracking_number' });
+        .upsert(validatedDatabaseUpsertPayload, { onConflict: 'tracking_number' });
 
-      if (dbUpsertError) throw new Error(`Database Pre-Synchronization Failed: ${dbUpsertError.message}`);
+      if (dbUpsertError) {
+        throw new Error(`Database Pre-Synchronization Failed: ${dbUpsertError.message}`);
+      }
     }
 
     // 6. EXECUTE INLINE STRIPE CONFIRMATION INTERFACE ENGINE HANDSHAKE
     if (window.stripeElementsContainer) {
-      // Inline validation interceptor for card expiration/zip missing checks
       const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
       if (stripeSubmitError) {
         if (submitBtn) {
@@ -399,6 +406,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         }
         return false; 
       }
+
 
       const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
 

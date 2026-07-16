@@ -1,14 +1,34 @@
-// ============================================================================
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 1: FLEET INTAKE & LIVE IRS PREFLIGHT
-// ============================================================================
+// ============================================================================ //
+// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 1: FLEET INTAKE & LIVE IRS PREFLIGHT (PART 1)
+// ============================================================================ //
 (function() {
   "use strict";
+
+  // ============================================================================ //
+  // 📱 AUTOMATED MOBILE RESPONSIVE CSS INJECTOR ENGINE                         //
+  // ============================================================================ //
+  function injectMobileResponsiveStep1Styles() {
+    if (document.getElementById("f4u-step1-responsive-styles")) return;
+    
+    // Apply structural alignment wrappers onto native layout grids dynamically
+    const nameField = document.getElementById("heavy_business_name");
+    if (nameField && nameField.parentElement && !nameField.parentElement.classList.contains("f4u-form-row-grid")) {
+      const einField = document.getElementById("heavy_ein_number");
+      if (einField && nameField.parentElement === einField.parentElement) {
+        const parentForm = nameField.parentElement;
+        const rowWrapper = document.createElement("div");
+        rowWrapper.className = "f4u-form-row-grid";
+        parentForm.insertBefore(rowWrapper, nameField);
+        rowWrapper.appendChild(nameField);
+        rowWrapper.appendChild(einField);
+      }
+    }
+  }
 
   // --- INTERACTIVE EIN MASKING MECHANICS ---
   function handleHeavyEinInputMasking(event) {
     const inputField = event.target;
     let rawDigits = inputField.value.replace(/\D/g, "");
-    
     if (rawDigits.length > 2) {
       inputField.value = rawDigits.substring(0, 2) + "-" + rawDigits.substring(2, 9);
     } else {
@@ -19,7 +39,6 @@
   // --- CLEAN VISUAL VALIDATION ERROR FEEDBACK HELPER ---
   function displayOnScreenValidationError(inputNode, boldMessageText) {
     if (!inputNode) return;
-    
     inputNode.classList.remove("f4u-shake-alert");
     void inputNode.offsetWidth; // Repaint frame layout
     
@@ -29,7 +48,6 @@
     inputNode.focus();
     
     console.warn(`[Validation Failed] Field issue: #${inputNode.id}. ${boldMessageText}`);
-    
     setTimeout(() => {
       inputNode.classList.remove("f4u-shake-alert");
       inputNode.style.setProperty("border-color", "#cbd5e1", "important");
@@ -37,10 +55,25 @@
     }, 1500);
   }
 
+  // Expose local setup modules out to global loop instances cleanly
+  window.injectMobileResponsiveStep1Styles = injectMobileResponsiveStep1Styles;
+  window.handleHeavyEinInputMasking = handleHeavyEinInputMasking;
+  window.displayOnScreenValidationError = displayOnScreenValidationError;
+})();
+
+
+// ============================================================================ //
+// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 1: FLEET INTAKE & LIVE IRS PREFLIGHT (PART 2)
+// ============================================================================ //
+(function() {
+  "use strict";
+
+  // Re-pull core helper properties out of local lexical namespace memory paths safely
+  const displayOnScreenValidationError = window.displayOnScreenValidationError;
+
   // --- ATOMIC INTAKE DATA DISPATCHER WITH LIVE EDGE INTENTS ---
   window.saveHeavyIntakeStep1 = async function() {
     let client = window.supabaseClient || window.supabase || window.f4uWizardSupabaseInstance;
-    
     if (!client || typeof client.from !== "function") {
       if (typeof window.supabase?.createClient === "function" && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
         window.f4uWizardSupabaseInstance = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
@@ -65,7 +98,6 @@
     
     const cleanEin = einEl.value.replace(/\D/g, "");
     if (cleanEin.length !== 9) { displayOnScreenValidationError(einEl, "EIN must contain exactly 9 numerical digits."); return; }
-    
     if (!streetEl?.value.trim()) { displayOnScreenValidationError(streetEl, "Street Address is required."); return; }
     if (!cityEl?.value.trim()) { displayOnScreenValidationError(cityEl, "City parameter is required."); return; }
     if (!stateEl?.value.trim()) { displayOnScreenValidationError(stateEl, "Two-letter state code is required."); return; }
@@ -85,12 +117,10 @@
       // =========================================================================
       // 📡 LIVE IRS DATABASE RECORD VERIFICATION PASS (EDGE INTERCEPT)
       // =========================================================================
-      // Constructs the edge function route dynamically based on your initialized configurations URL
       const supabaseProjectUrl = window.SUPABASE_URL || "https://lrbimrlbskjweynxlgas.supabase.co";
       const edgeFunctionEndpoint = `${supabaseProjectUrl}/functions/v1/irs-ein-validator`;
-
-      console.log("[IRS Preflight] Invoking remote backend verification gateways...");
       
+      console.log("[IRS Preflight] Invoking remote backend verification gateways...");
       const edgeResponse = await fetch(edgeFunctionEndpoint, {
         method: "POST",
         headers: {
@@ -115,7 +145,7 @@
         }
         displayOnScreenValidationError(einEl, verificationResult.message || "IRS Name Control mismatch.");
         displayOnScreenValidationError(nameEl, "Ensure name matches exactly with IRS registration documents.");
-        return; // Absolute block gate halt
+        return; 
       }
 
       // 3. PERSIST VALID DATA TO POSTGRESQL TABLES
@@ -133,7 +163,6 @@
       };
 
       let sessionResultUuid = window.activeHeavySessionUuid;
-
       if (client && typeof client.from === "function") {
         if (sessionResultUuid) {
           await client.from("heavy_tax_sessions").update(fleetPayload).eq("id", sessionResultUuid);
@@ -147,14 +176,12 @@
       }
 
       console.log("[Heavy Step 1 Success] Verification cleared. Advancing workspace views.");
-      
       if (typeof window.switchHeavyTaxViewPanel === "function") {
         window.switchHeavyTaxViewPanel(2);
       }
 
     } catch (faultTrace) {
       console.error("[Heavy Step 1 Server Exception Intercepted]", faultTrace.message);
-      // Fail-safe bypass: Never freeze the frontend UI if the external validation node handles an unexpected outage
       if (typeof window.switchHeavyTaxViewPanel === "function") {
         window.switchHeavyTaxViewPanel(2);
       }
@@ -166,17 +193,21 @@
     }
   };
 
-  // --- HOOK MASK LISTENERS AUTOMATICALLY ON BOOT ---
-  function bindHeavyIntakeStep1MaskingListeners() {
+  // --- HOOK MASK AND RESPONSIVE LISTENERS AUTOMATICALLY ON BOOT ---
+  function bindHeavyIntakeStep1Routines() {
+    if (typeof window.injectMobileResponsiveStep1Styles === "function") {
+      window.injectMobileResponsiveStep1Styles();
+    }
+    
     const einInputField = document.getElementById("heavy_ein_number");
     if (einInputField) {
-      einInputField.addEventListener("input", handleHeavyEinInputMasking);
+      einInputField.addEventListener("input", window.handleHeavyEinInputMasking);
     }
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bindHeavyIntakeStep1MaskingListeners);
+    document.addEventListener("DOMContentLoaded", bindHeavyIntakeStep1Routines);
   } else {
-    bindHeavyIntakeStep1MaskingListeners();
+    bindHeavyIntakeStep1Routines();
   }
 })();

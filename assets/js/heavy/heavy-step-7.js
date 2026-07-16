@@ -41,7 +41,7 @@
 
       baseContainer.innerHTML = `
         <div style="border-bottom: 2px solid #0a1f44 !important; padding-bottom: 12px !important; margin-bottom: 24px !important; box-sizing: border-box !important; width: 100% !important;">
-          <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">💳 Secure Checkout & Account Provisioning</h3>
+          <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">💳 Secure Checkout & Account Creation</h3>
           <p style="margin: 6px 0 0 0 !important; color: #64748b !important; font-size: 0.85rem !important; font-weight: 500 !important;">Authorize your payment below. An encrypted client account profile will be built for you instantly.</p>
         </div>
 
@@ -50,29 +50,32 @@
           <strong id="payment-gateway-total-display" style="font-family: monospace !important; color: #10b981 !important; font-size: 1.45rem !important;">$${currentGrandTotal.toFixed(2)}</strong>
         </div>
 
-        <div class="integrated-profile-matrix" style="margin-bottom: 20px !important; box-sizing: border-box !important; text-align: left !important; width: 100% !important; display: flex !important; flex-direction: column !important; gap: 16px !important; clear: both !important;">
-          <div style="display: flex !important; gap: 16px !important; width: 100% !important; box-sizing: border-box !important; flex-wrap: wrap !important;">
-            <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important; min-width: 250px !important;">
-              <label for="portal_user_first_name" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">First Name</label>
-              <input type="text" id="portal_user_first_name" required placeholder="John" style="width: 100% !important; padding: 12px !important; font-size: 0.9rem !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0a1f44 !important; outline: none !important; box-sizing: border-box !important;">
-            </div>
-            <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important; min-width: 250px !important;">
-              <label for="portal_user_last_name" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">Last Name</label>
-              <input type="text" id="portal_user_last_name" required placeholder="Doe" style="width: 100% !important; padding: 12px !important; font-size: 0.9rem !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0a1f44 !important; outline: none !important; box-sizing: border-box !important;">
-            </div>
-          </div>
+  <div class="integrated-profile-matrix" style="margin-bottom: 20px !important; box-sizing: border-box !important; text-align: left !important; width: 100% !important; display: flex !important; flex-direction: column !important; gap: 16px !important; clear: both !important;">
+  
+  <!-- FIRST & LAST NAME INPUT ROW (WITH FLEX TARGET CLASS ADDED) -->
+  <div class="f4u-checkout-input-row" style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
+    <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important;">
+      <label for="portal_user_first_name" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">First Name</label>
+      <input type="text" id="portal_user_first_name" required placeholder="John" style="width: 100% !important; padding: 12px !important; font-size: 0.9rem !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0a1f44 !important; outline: none !important; box-sizing: border-box !important;">
+    </div>
+    <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important;">
+      <label for="portal_user_last_name" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">Last Name</label>
+      <input type="text" id="portal_user_last_name" required placeholder="Doe" style="width: 100% !important; padding: 12px !important; font-size: 0.9rem !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0a1f44 !important; outline: none !important; box-sizing: border-box !important;">
+    </div>
+  </div>
 
-          <div style="display: flex !important; gap: 16px !important; width: 100% !important; box-sizing: border-box !important; flex-wrap: wrap !important;">
-            <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important; min-width: 250px !important;">
-              <label for="portal_user_email_input" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">Account Email Address</label>
-              <input type="email" id="portal_user_email_input" required placeholder="you@example.com" style="width: 100% !important; padding: 12px !important; font-size: 0.9rem !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0a1f44 !important; outline: none !important; box-sizing: border-box !important;">
-            </div>
-            <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important; min-width: 250px !important;">
-              <label for="portal_user_phone" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">Contact Phone Number</label>
-              <input type="tel" id="portal_user_phone" required placeholder="(555) 000-0000" style="width: 100% !important; padding: 12px !important; font-size: 0.9rem !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0a1f44 !important; outline: none !important; box-sizing: border-box !important;">
-            </div>
-          </div>
-        </div>
+  <!-- EMAIL & PHONE NUMBER INPUT ROW (WITH FLEX TARGET CLASS ADDED) -->
+  <div class="f4u-checkout-input-row" style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
+    <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important;">
+      <label for="portal_user_email_input" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">Account Email Address</label>
+      <input type="email" id="portal_user_email_input" required placeholder="you@example.com" style="width: 100% !important; padding: 12px !important; font-size: 0.9rem !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0a1f44 !important; outline: none !important; box-sizing: border-box !important;">
+    </div>
+    <div style="display: flex !important; flex-direction: column !important; gap: 6px !important; flex: 1 !important;">
+      <label for="portal_user_phone" style="font-weight: 800 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; color: #0a1f44 !important;">Contact Phone Number</label>
+      <input type="tel" id="portal_user_phone" required placeholder="(555) 000-0000" style="width: 100% !important; padding: 12px !important; font-size: 0.9rem !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important; background: #ffffff !important; color: #0a1f44 !important; outline: none !important; box-sizing: border-box !important;">
+    </div>
+  </div>
+</div>
       `;
         // INLINE CSS RULES: Handles alert-free input shakers on mobile devices
         const styleSheetNode = document.createElement("style");
@@ -118,7 +121,7 @@
               <i class="fa-solid fa-arrow-left"></i> Back to Ledger
             </button>
             <button id="f4uHeavySubmitPaymentBtn" type="button" onclick="window.executeHeavySecureCheckoutTransaction(event)" style="background: #10b981 !important; border: none !important; color: #ffffff !important; padding: 14px 40px !important; border-radius: 6px !important; font-size: 0.95rem !important; font-weight: 800 !important; cursor: pointer !important; transition: all 0.2s ease !important; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2) !important; display: inline-flex !important; align-items: center !important; gap: 8px !important;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
-              Authorize Secure Payment & Create Account <i class="fa-solid fa-lock"></i>
+              Purchase & Create Account <i class="fa-solid fa-lock"></i>
             </button>
           </div>
         `;
