@@ -222,6 +222,17 @@ const regulatoryPackagePayload = {
     enterprise: ["Everything in Compliance (Plus)", "Plus Same-Day Federal Push", "Priority queue submission override routing"]
   }
 },
+"trademark-filing": {
+  name: "Trademark Filing",
+  starter: 299.00,
+  compliance: 399.00,
+  enterprise: 499.00,
+  bullets: {
+    starter: ["Servicemark search", "Application filing"],
+    compliance: ["Everything in Starter (Plus)", "Status tracking for 1 year", "Common Law Usage Evaluation"],
+    enterprise: ["Everything in Compliance (Plus)", "Legal consultation on infringement issues", "Continuous Brand Watch Monitoring"]
+  }
+},
 
 "apostille-services": {
   name: "Apostille Services",
@@ -318,6 +329,7 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
     time: "1-2 Business Days", 
     "filing-fee": 0.00
   }, 
+ 
   "driver-file": { 
     name: "Driver Qualification File Maintenance", 
     time: "1-2 Business Days", 
@@ -381,7 +393,7 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
   "trademark-filing": { 
     name: "USPTO Federal Trademark Filing", 
     time: "5-7 Business Days", 
-    "filing-fee": 250.00
+    "filing-fee": 500.00
   }, 
   "federal-income-tax": { 
     name: "Corporate Federal Income Tax Filing", 
