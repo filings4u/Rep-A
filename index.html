@@ -75,5 +75,12 @@
     <script src="assets/js/proof-widget.js" defer></script>
 
 
+
+    <script>
+  // Cleanly route explicit index URLs straight back to the canonical homepage
+  if (window.location.pathname.endsWith('/')) {
+    window.location.replace(window.location.origin + '/index.html');
+  }
+</script>
 </body>
 </html>
