@@ -118,3 +118,184 @@ async function renderMasterSystem() {
 document.addEventListener("DOMContentLoaded", renderMasterSystem); 
 window.compileDynamicLayoutProperties = compileDynamicLayoutProperties; 
 window.renderMasterSystem = renderMasterSystem;
+
+
+/**
+ * Filings4U Platform Architecture
+ * Target Module: assets/js/app-orchestrator.js
+ * Dynamic Reflective SEO Extraction Engine (No Hardcoding)
+ */
+function runDynamicGlobalSEOEngine() {
+    // 1. Establish an observer to wait until the dynamic JS scripts insert HTML content
+    const headingNode = document.querySelector('h1');
+    const paragraphNode = document.querySelector('#filings4u-global-hero-root p') || document.querySelector('p');
+    
+    // 2. Fallback base metrics to preserve brand guidelines
+    let optimizedTitle = "Professional Compliance Dashboard | filings4u";
+    let optimizedDesc = "Authorized DOT compliance clearinghouse and carrier registration platform.";
+
+    // 3. Reflective Processing: Parse the active heading text injected by your script file
+    if (headingNode && headingNode.textContent.trim()) {
+        const cleanHeading = headingNode.textContent.trim().replace(/\s+/g, ' ');
+        // Formats title format on the fly (e.g., "File Your IRS Form 2290 Heavy Use Tax Instantly | filings4u")
+        optimizedTitle = `${cleanHeading} | filings4u`;
+    }
+
+    // 4. Reflective Processing: Parse the descriptive subtext paragraph on the fly
+    if (paragraphNode && paragraphNode.textContent.trim()) {
+        const cleanParagraph = paragraphNode.textContent.trim().replace(/\s+/g, ' ');
+        // Caps the description block at standard search engine limits (160 characters)
+        optimizedDesc = cleanParagraph.length > 157 ? cleanParagraph.substring(0, 157) + "..." : cleanParagraph;
+    }
+
+    // 5. Instantly assign title variables straight to the active browser tab window
+    document.title = optimizedTitle;
+
+        // --- STANDALONE METATAG GENERATION RUNTIME LOOPS ---
+    const updateOrCreateMetaTag = (attributeName, attributeValue, contentString) => {
+        let metaNode = document.querySelector(`meta[${attributeName}="${attributeValue}"]`);
+        if (!metaNode) {
+            metaNode = document.createElement('meta');
+            metaNode.setAttribute(attributeName, attributeValue);
+            document.head.appendChild(metaNode);
+        }
+        metaNode.setAttribute('content', contentString);
+    };
+
+    // 1. Inject Standard Search Engine Meta Descriptions
+    updateOrCreateMetaTag('name', 'description', optimizedDesc);
+
+    // 2. Inject Social Media Optimization Layer Cards (OpenGraph / Facebook)
+    updateOrCreateMetaTag('property', 'og:title', optimizedTitle);
+    updateOrCreateMetaTag('property', 'og:description', optimizedDesc);
+    updateOrCreateMetaTag('property', 'og:url', window.location.href);
+    updateOrCreateMetaTag('property', 'og:type', 'website');
+
+    // 3. Inject Microblog Optimization Layer Cards (Twitter / X metrics)
+    updateOrCreateMetaTag('name', 'twitter:card', 'summary_large_image');
+    updateOrCreateMetaTag('name', 'twitter:title', optimizedTitle);
+    updateOrCreateMetaTag('name', 'twitter:description', optimizedDesc);
+}
+
+// --- GLOBAL DOM INTERCEPT COMPILER HOOKS ---
+// Fires the calculation scan loops immediately after your template modules finish rendering
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(runDynamicGlobalSEOEngine, 250); // Small margin to clear template engine injection paths
+    });
+} else {
+    setTimeout(runDynamicGlobalSEOEngine, 250);
+}
+
+
+/**
+ * Filings4U Platform Architecture
+ * Target Module: assets/js/app-orchestrator.js
+ * Comprehensive Dynamic Reflective SEO & Asset Scraper Engine (Zero Hardcoding)
+ */
+function executeFullGlobalSEOEngine() {
+    // 1. Core Node Targeted Selections
+    const h1Node = document.querySelector('h1');
+    const heroPanel = document.getElementById("filings4u-global-hero-root");
+    const pNode = heroPanel ? heroPanel.querySelector('p') : document.querySelector('p');
+    
+    // 2. Fallback Base Metrics Default Configurations
+    let finalTitle = "Professional Motor Carrier Compliance Dashboard | filings4u";
+    let finalDesc = "Authorized DOT compliance clearinghouse. Manage USDOT applications, Trucker Authority, BOC-3 Process Agents, and filings safely.";
+    let finalImage = "https://filings4u.com"; // Default absolute fallback path
+    let generatedKeywords = ["fmcsa compliance", "dot filing", "motor carrier registry", "trucking credentials"];
+
+    // 3. Reflective Page Title Extraction
+    if (h1Node && h1Node.textContent.trim()) {
+        const cleanHeading = h1Node.textContent.trim().replace(/\s+/g, ' ');
+        finalTitle = `${cleanHeading} | filings4u`;
+        
+        // Dynamically split title words to generate context-relevant organic search keywords
+        const terms = cleanHeading.toLowerCase().split(/[\s,.\-\/]+/);
+        terms.forEach(term => {
+            if (term.length > 3 && !generatedKeywords.includes(term) && !['your', 'with', 'from', 'this', 'form'].includes(term)) {
+                generatedKeywords.push(term);
+            }
+        });
+    }
+
+    // 4. Reflective Meta Description Scraping (Capped at standard 155 characters)
+    if (pNode && pNode.textContent.trim()) {
+        const cleanParagraph = pNode.textContent.trim().replace(/\s+/g, ' ');
+        finalDesc = cleanParagraph.length > 152 ? cleanParagraph.substring(0, 152) + "..." : cleanParagraph;
+    }
+
+    // 5. Reflective Social Share Image Discovery Engine
+    // Automatically loops through structural images inside the dynamic layout to find the best share graphic
+    const pageImages = Array.from(document.querySelectorAll('img, [style*="background-image"]'));
+    let foundGraphic = null;
+
+    for (let img of pageImages) {
+        let src = "";
+        if (img.tagName === 'IMG') {
+            src = img.getAttribute('src');
+        } else {
+            const bg = img.style.backgroundImage;
+            const match = bg.match(/url\(['"]?([^'"]+)['"]?\)/);
+            if (match) src = match[1];
+        }
+        
+        // Skip tiny icons, stars, or system clip-art shapes to ensure high-quality social shares
+        if (src && !src.includes('fav') && !src.includes('star') && !src.includes('icon') && !src.includes('shield')) {
+            foundGraphic = src;
+            break;
+        }
+    }
+
+    // Standardize structural asset link formatting to absolute paths for OpenGraph compliance
+    if (foundGraphic) {
+        if (foundGraphic.startsWith('http')) {
+            finalImage = foundGraphic;
+        } else {
+            const cleanSrc = foundGraphic.startsWith('/') ? foundGraphic : '/' + foundGraphic;
+            finalImage = window.location.origin + cleanSrc;
+        }
+    }
+    // --- DYNAMIC HEAD DOM INJECTION LOOPS ---
+    const injectMetaNode = (attrName, attrValue, contentValue) => {
+        let metaNode = document.querySelector(`meta[${attrName}="${attrValue}"]`);
+        if (!metaNode) {
+            metaNode = document.createElement('meta');
+            metaNode.setAttribute(attrName, attrValue);
+            document.head.appendChild(metaNode);
+        }
+        metaNode.setAttribute('content', contentValue);
+    };
+
+    // 1. Core Engine Web and Document Tab Upgrades
+    document.title = finalTitle;
+
+    // 2. Direct Organic Search Metadata Injections
+    injectMetaNode('name', 'description', finalDesc);
+    injectMetaNode('name', 'keywords', generatedKeywords.join(', '));
+    injectMetaNode('name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+
+    // 3. OpenGraph / Social Injections (Discovered Image Linked Natively)
+    injectMetaNode('property', 'og:title', finalTitle);
+    injectMetaNode('property', 'og:description', finalDesc);
+    injectMetaNode('property', 'og:image', finalImage);
+    injectMetaNode('property', 'og:image:alt', finalTitle);
+    injectMetaNode('property', 'og:url', window.location.href);
+    injectMetaNode('property', 'og:type', 'website');
+    injectMetaNode('property', 'og:site_name', 'filings4u');
+
+    // 4. Twitter / X Metric Card Injections
+    injectMetaNode('name', 'twitter:card', 'summary_large_image');
+    injectMetaNode('name', 'twitter:title', finalTitle);
+    injectMetaNode('name', 'twitter:description', finalDesc);
+    injectMetaNode('name', 'twitter:image', finalImage);
+}
+
+// --- SECURE LIFECYCLE EVENT HANDLER TRIGGER ---
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(executeFullGlobalSEOEngine, 300); // Margin clears asynchronous dynamic module outputs
+    });
+} else {
+    setTimeout(executeFullGlobalSEOEngine, 300);
+}

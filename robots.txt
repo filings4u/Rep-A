@@ -1,0 +1,12 @@
+# ====================================================================
+# 🚀 Filings4U Platform Architecture - Central Robots Control Engine
+# ====================================================================
+
+User-agent: *
+Allow: /
+Disallow: /assets/css/
+Disallow: /assets/js/vendor/
+
+# Target maps for automated search engines crawl processing loops
+Sitemap: https://filings4u.com/simple-sitemap.xml
+Sitemap: https://filings4u.com/sitemap.xml
