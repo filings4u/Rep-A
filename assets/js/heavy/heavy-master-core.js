@@ -30,44 +30,48 @@
     }
   };
 
-  // --- EXCLUSIVE VISIBILITY REPAINT LOGIC LOOP ---
-  function executeRawPanelVisibilityToggle(cleanIndex) {
-    window.currentHeavyTaxActiveStep = cleanIndex;
-    console.log(`[Heavy Tax core] Operational canvas swapped to Step Index: ${cleanIndex}`);
+// --- EXCLUSIVE VISIBILITY REPAINT LOGIC LOOP (LINKED TO TIMELINE) ---
+function executeRawPanelVisibilityToggle(cleanIndex) {
+  window.currentHeavyTaxActiveStep = cleanIndex;
+  console.log(`[Heavy Tax core] Operational canvas swapped to Step Index: ${cleanIndex}`);
 
-    // 1. Manage layout panel visibilities flat inside the DOM flow
-    const allTaxPanels = document.querySelectorAll(".heavy-tax-panel");
-    allTaxPanels.forEach(panel => {
-      if (panel) {
-        panel.style.setProperty("display", "none", "important");
-      }
-    });
-
-    const activeTargetPanel = document.getElementById(`heavy-panel-${cleanIndex}`);
-    if (activeTargetPanel) {
-      activeTargetPanel.style.setProperty("display", "block", "important");
+  // 1. Manage layout panel visibilities flat inside the DOM flow
+  const allTaxPanels = document.querySelectorAll(".heavy-tax-panel");
+  allTaxPanels.forEach(panel => {
+    if (panel) {
+      panel.style.setProperty("display", "none", "important");
     }
+  });
 
-    // 2. Synchronize sidebar timeline highlights matching your left layout nodes
-    const timelineItemsList = document.querySelectorAll(".wizard-sidebar-timeline-item") || document.querySelectorAll("li");
-    
-    timelineItemsList.forEach((listItemNode, nodeIndex) => {
-      const naturalStepCounter = nodeIndex + 1;
-      
-      if (naturalStepCounter === cleanIndex) {
-        listItemNode.style.setProperty("color", "#10b981", "important"); // Emerald active
-        listItemNode.style.setProperty("font-weight", "800", "important");
-      } else if (naturalStepCounter < cleanIndex) {
-        listItemNode.style.setProperty("color", "#0a1f44", "important"); // Completed past steps
-        listItemNode.style.setProperty("font-weight", "600", "important");
-      } else {
-        listItemNode.style.setProperty("color", "#94a3b8", "important"); // Muted upcoming steps
-        listItemNode.style.setProperty("font-weight", "500", "important");
-      }
-    });
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const activeTargetPanel = document.getElementById(`heavy-panel-${cleanIndex}`);
+  if (activeTargetPanel) {
+    activeTargetPanel.style.setProperty("display", "block", "important");
   }
+
+  // 2. Synchronize sidebar timeline highlights matching your left layout nodes
+  const timelineItemsList = document.querySelectorAll(".wizard-sidebar-timeline-item") || document.querySelectorAll("li");
+  timelineItemsList.forEach((listItemNode, nodeIndex) => {
+    const naturalStepCounter = nodeIndex + 1;
+    if (naturalStepCounter === cleanIndex) {
+      listItemNode.style.setProperty("color", "#10b981", "important"); 
+      listItemNode.style.setProperty("font-weight", "800", "important");
+    } else if (naturalStepCounter < cleanIndex) {
+      listItemNode.style.setProperty("color", "#0a1f44", "important"); 
+      listItemNode.style.setProperty("font-weight", "600", "important");
+    } else {
+      listItemNode.style.setProperty("color", "#94a3b8", "important"); 
+      listItemNode.style.setProperty("font-weight", "500", "important");
+    }
+  });
+
+  // 🟢 3. NEW: AUTOMATED SYNCHRONIZATION WITH YOUR HEAVY USE TAX MAP TIMELINE
+  if (typeof window.updateApplicationMapTimelineBubbles === "function") {
+    window.updateApplicationMapTimelineBubbles(cleanIndex);
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 
   // --- AUTOMATED SESSION BACKGROUND PROGRESS RECOVERY HYDRATOR ---
   async function autoDiscoverAndHydrateHeavyTaxSessionProgress() {
@@ -231,4 +235,67 @@
     } 
     
     window.triggerWorkspaceTransitionSpinner = triggerWorkspaceTransitionSpinner; 
+})();
+
+// ============================================================================ //
+// 🗺️ WIZARD STATE MANAGER & INTERCEPTOR FOR APPLICATION MAP                    //
+// ============================================================================ //
+(function() {
+  "use strict";
+
+  /**
+   * Core function to update the timeline active state.
+   * Invoked programmatically by button clicks or state machines.
+   */
+  window.syncWizardStepWithTimelineMap = function(currentStepIndex) {
+    const stepNum = parseInt(currentStepIndex, 10);
+    const validatedStep = isNaN(stepNum) ? 0 : stepNum;
+
+    // 1. Maintain global synchronization state for the rendering engine
+    window.currentWizardActiveStep = validatedStep;
+
+    // 2. Safely trigger the bubble illumination engine if it has finished loading
+    if (typeof window.updateApplicationMapTimelineBubbles === "function") {
+      window.updateApplicationMapTimelineBubbles(validatedStep);
+      console.log(`[Map Sync] Successfully lit up Step Index: ${validatedStep}`);
+    } else {
+      console.warn("[Map Sync] Warning: Bubble engine not found in DOM yet. Retrying...");
+      setTimeout(function() {
+        if (typeof window.updateApplicationMapTimelineBubbles === "function") {
+          window.updateApplicationMapTimelineBubbles(validatedStep);
+        }
+      }, 100);
+    }
+  };
+
+  /**
+   * AUTOMATED INTERCEPTION UTILITY
+   * Hooks into common event emitters or your Next/Back button classes.
+   */
+  document.addEventListener("DOMContentLoaded", function() {
+    // Select your Next, Back, and Edit navigation controllers
+    const navButtons = document.querySelectorAll(
+      ".wizard-next-btn, .wizard-back-btn, .step-toggle-trigger, [data-wizard-target]"
+    );
+
+    navButtons.forEach(function(button) {
+      button.addEventListener("click", function() {
+        // Wrap in a tiny timeout to ensure the core engine finishes altering the DOM state first
+        setTimeout(function() {
+          // Read from your master global variable or standard UI data-attribute
+          let discoveredStep = window.currentWizardActiveStep;
+
+          if (button.hasAttribute("data-step-index")) {
+            discoveredStep = button.getAttribute("data-step-index");
+          }
+
+          // Force-sync the visual state mapping
+          if (discoveredStep !== undefined) {
+            window.syncWizardStepWithTimelineMap(discoveredStep);
+          }
+          
+        }, 30);
+      });
+    });
+  });
 })();
