@@ -656,7 +656,7 @@ const SERVICE_URL_REGISTRY = {
     "duns-number": "duns-number", 
     "minority-certificate": "minority-certificate", 
     "ifta-registration": "ifta-registration", 
-    "licenses-permits": "licenses-permits", 
+    "dot-permits": "dot-permits", 
     "ifta-quarterly-returns": "ifta-quarterly-returns", 
     "federal-tax": "federal-tax", 
     "employer-id-ein": "employer-id-ein", 

@@ -110,18 +110,7 @@ const regulatoryPackagePayload = {
         } 
     },
 
-    
-"hazmat-registration": {
-  name: "DOT HAZMAT Registration",
-  starter: 199.00,
-  compliance: 349.00,
-  enterprise: 449.00,
-  bullets: {
-    starter: ["Basic registration", "PHMSA documentation format checks"],
-    compliance: ["Everything in Starter (Plus)", "Plus PHMSA Validation", "Safety tier calculation adjustments"],
-    enterprise: ["Everything in Compliance (Plus)", "Plus Security Framework", "Expedited dangerous goods compliance clearance"]
-  }
-},
+  
 "trucker-insurance-quote": {
   name: "Trucker Insurance",
   starter: 99.00,
@@ -210,6 +199,17 @@ const regulatoryPackagePayload = {
     starter: ["Amendment Form Prep", "Existing file designation evaluations"],
     compliance: ["Everything in Starter (Plus)", "Plus 48-State Network Setup", "Automated designation synchronization across portals"],
     enterprise: ["Everything in Compliance (Plus)", "Plus Same-Day Federal Push", "Priority queue submission override routing"]
+  }
+},
+"dot-permits": {
+  name: "DOT Permits",
+  starter: 79.00,
+  compliance: 149.00,
+  enterprise: 299.00,
+  bullets: {
+    starter: ["Basic license research", "Local regulatory directory tracking"],
+    compliance: ["Everything in Starter (Plus)", "Complete application assistance", "Municipal Zoning Board Verification Check"],
+    enterprise: ["Everything in Compliance (Plus)", "Ongoing compliance support", "Annual Local Permit Renewal Auto-Tracking Subscription"]
   }
 },
 

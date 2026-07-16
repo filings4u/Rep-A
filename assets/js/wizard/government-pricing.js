@@ -109,7 +109,17 @@ const regulatoryPackagePayload = {
             enterprise: ["Everything in Compliance (Plus)", "Plus Legal Courier Scan", "Same-day digital document upload routing"] 
         } 
     },
-
+"dot-permits": {
+  name: "DOT Permits",
+  starter: 79.00,
+  compliance: 149.00,
+  enterprise: 299.00,
+  bullets: {
+    starter: ["Basic license research", "Local regulatory directory tracking"],
+    compliance: ["Everything in Starter (Plus)", "Complete application assistance", "Municipal Zoning Board Verification Check"],
+    enterprise: ["Everything in Compliance (Plus)", "Ongoing compliance support", "Annual Local Permit Renewal Auto-Tracking Subscription"]
+  }
+},
     
 "hazmat-registration": {
   name: "DOT HAZMAT Registration",
@@ -297,6 +307,11 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
     name: "Broker Authority", 
     time: "25-30 Business Days", 
     "filing-fee": 300.00
+  }, 
+    "dot-permits": { 
+    name: "DOT Permits", 
+    time: "Same Day-2 Business Days", 
+    "filing-fee": 0.00
   }, 
   "dot-consortium": { 
     name: "DOT Drug & Alcohol Consortium Enrollment", 

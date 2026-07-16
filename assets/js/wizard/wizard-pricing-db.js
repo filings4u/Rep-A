@@ -351,15 +351,15 @@ const CENTRAL_SERVICE_PLAN_DB = {
     enterprise: ["Everything in Compliance (Plus)", "Annual compliance support", "Direct Corporate Officer Privacy Shield Protection"]
   }
 },
-"business-licenses": {
-  name: "Business Licenses",
+"dot-permits": {
+  name: "DOT Permits",
   starter: 79.00,
   compliance: 149.00,
   enterprise: 299.00,
   bullets: {
-    starter: ["Basic license research", "County permit indexing requirements"],
-    compliance: ["Everything in Starter (Plus)", "License application assistance", "City Municipal Zoning Filings Support"],
-    enterprise: ["Everything in Compliance (Plus)", "Complete compliance package and ongoing support", "Annual Permit Renewal Tracking Subscription"]
+    starter: ["Basic license research", "Local regulatory directory tracking"],
+    compliance: ["Everything in Starter (Plus)", "Complete application assistance", "Municipal Zoning Board Verification Check"],
+    enterprise: ["Everything in Compliance (Plus)", "Ongoing compliance support", "Annual Local Permit Renewal Auto-Tracking Subscription"]
   }
 },
 "dissolution": {
