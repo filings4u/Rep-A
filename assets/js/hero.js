@@ -86,7 +86,7 @@ function executePreservedHeroCompiler(zone, displayPillText, displayHeroTitle, d
                     <a href="${computedActionLinkDestination}" class="f4u-hero-action-anchor" style="color: #10b981; font-weight: 700; text-decoration: none; font-size: 1rem; display: inline-block; align-self: flex-start;">Initialize Application &rarr;</a> 
                 </div> 
                 <div style="display: flex; justify-content: center; width: 100%; height: 100%;"> 
-                    <img src="" class="hero-display-img" alt="Service Preview" style="width: 100%; max-width: 620px; height: auto; aspect-ratio: 16 / 10; object-fit: cover; display: block; border-radius: 16px; border: 1px solid rgba(10, 31, 68, 0.12); box-shadow: 0 24px 48px rgba(10, 31, 68, 0.16), 0 6px 16px rgba(10, 31, 68, 0.06);"> 
+                    <img src=" " class="hero-display-img" alt="Service Preview" style="width: 100%; max-width: 620px; height: auto; aspect-ratio: 16 / 10; object-fit: cover; display: block; border-radius: 16px; border: 1px solid rgba(10, 31, 68, 0.12); box-shadow: 0 24px 48px rgba(10, 31, 68, 0.16), 0 6px 16px rgba(10, 31, 68, 0.06);"> 
                 </div> 
             </div> 
         </div> 
