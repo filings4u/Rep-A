@@ -1,7 +1,7 @@
 /**
  * filings4u Platform Architecture
  * Module: section1.js (Part 1 of 2)
- * Harmonized Metrics Dashboard Engine & Styles
+ * Harmonized Metrics Dashboard Engine & Home Name Interceptor Fix
  */
 (function() {
     const targetConfig = {
@@ -59,27 +59,36 @@ function renderMasterMetricsEngine(overrideTargetId, metaDataRecord) {
         const zone = document.getElementById(targetId);
         if (!zone) return;
 
-        let slug = "index";
+        let slug = "compliance"; // Changed default fallback from "index" to "compliance"
         const rawPathname = window.location.pathname.split("/").pop().toLowerCase().trim();
+        
+        // --- 🚨 CRITICAL INTERCEPTOR FIX: STOP SEARCHING FOR THE WORD "INDEX" ---
         if (rawPathname !== "" && !rawPathname.includes("index") && !rawPathname.includes("home")) {
             slug = rawPathname.replace(".html", "");
+        } else {
+            slug = "compliance"; // Forces any home landing route to evaluate as compliance data
         }
 
         const contextSource = metaDataRecord || (window.PLATFORM_METRICS_CATALOG && window.PLATFORM_METRICS_CATALOG[slug]) || {};
-        const displayTitle = contextSource.title || contextSource.hero_title || contextSource.service_title || "Compliance";
         
+        // Final fallback safeguard check to guarantee the string "index" is never used
+        let displayTitle = contextSource.title || contextSource.service_title || "Compliance";
+        if (displayTitle.toLowerCase() === "index") {
+            displayTitle = "Compliance";
+        }
+
         executeMetricsCompiler(zone, displayTitle);
     } catch (err) {
         console.error("Metrics engine critical routing failure:", err);
     }
 }
 window.renderMasterMetricsEngine = renderMasterMetricsEngine;
+
 /**
  * filings4u Platform Architecture
  * Module: section1.js (Part 2 of 2)
  * Normalized Metrics Layout Compiler & Component Guards
  */
-
 function executeMetricsCompiler(zone, displayTitle) {
     // Normalize and capitalize title text cleanly matching your uppercase patterns
     const titleUpperCaseFormatted = displayTitle.replace(/-/g, ' ').split(" ").map(function(w) {
@@ -140,7 +149,7 @@ function executeMetricsCompiler(zone, displayTitle) {
                         <span style="font-size: 1.5rem; display: block; margin-bottom: 2px;">🔒</span>
                         <div style="font-size: 2.1rem; font-weight: 900; color: #ffffff; font-family: monospace; line-height: 1;">99.98%</div>
                         <div style="font-size: 0.95rem; font-weight: 800; color: #cbd5e1; margin-top: 2px;">Filing Accuracy Quotient</div>
-                        <p style="margin: 0; font-size: 0.825rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Sophisticated layout routing eliminates syntax rejection errors from state systems.</p>
+                        <p style="margin: 0; font-size: 0.825rem; color: #94a3b8; line-height: 1.5; font-weight: 500;">Sophisticated automated filter protocols eliminate syntax and formatting rejection errors.</p>
                     </div>
 
                 </div>
