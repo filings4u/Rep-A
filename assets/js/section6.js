@@ -151,7 +151,7 @@ function executeSubscribeCompiler(zone, displayTitle) {
             sMsg.style.display = "none";
 
             try {
-                const url = 'https://supabase.co';
+                const url = 'https://lrbimrlbskjweynxlgas.supabase.co';
                 const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU';
                 
                 const res = await fetch(`${url}/rest/v1/subscribers`, {

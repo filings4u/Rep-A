@@ -1,3 +1,67 @@
+/**
+ * Filings4U Platform Architecture
+ * Target Module: assets/js/app-orchestrator.js (Block 3 of 4)
+ * Client-Side Payload Sanitization & Anti-Fraud Interceptor Loop
+ */
+(function() {
+    // 1. Central Alphanumeric Input Sanitization Rule
+    window.cleansePayloadInput = function(rawString) {
+        if (typeof rawString !== 'string') return '';
+        // Strip out dangerous HTML tags, script elements, and SQL punctuation symbols
+        return rawString
+            .replace(/<[^>]*>/g, '')
+            .replace(/['"`;\\()]/g, '')
+            .trim();
+    };
+
+    // 2. High-Frequency Submission Tracker (Form Spam Prevention)
+    const SUBMISSION_COOLDOWN_MS = 3000; // 3-second throttle margin
+    const submissionRegistry = new Map();
+
+    window.verifySubmissionFrequency = function(formId) {
+        const currentTime = Date.now();
+        if (submissionRegistry.has(formId)) {
+            const lastSubmissionTime = submissionRegistry.get(formId);
+            if (currentTime - lastSubmissionTime < SUBMISSION_COOLDOWN_MS) {
+                console.warn(`[Anti-Fraud System] High-frequency submission blocked on form: ${formId}`);
+                return false; // Submission throttled
+            }
+        }
+        submissionRegistry.set(formId, currentTime);
+        return true; // Submission allowed
+    };
+
+    // 3. Automated Form Listener Injection
+    document.addEventListener('submit', function(event) {
+        const targetForm = event.target;
+        if (!targetForm) return;
+
+        const formId = targetForm.id || 'unnamed-form';
+
+        // Enforce anti-spam frequency thresholds before allowing payload submission
+        if (!window.verifySubmissionFrequency(formId)) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            
+            let statusContainer = targetForm.querySelector('#form-status-message');
+            if (statusContainer) {
+                statusContainer.textContent = "⚠️ Submission throttled. Please wait a moment before trying again.";
+                statusContainer.style.cssText = "display: block; background: rgba(239,68,68,0.1); color: #ef4444; padding: 12px; border-radius: 8px; margin-top: 14px; font-weight: 600;";
+            }
+            return;
+        }
+
+        // Cleanse and sanitize all input field string parameters on the fly
+        const targetInputs = targetForm.querySelectorAll('input[type="text"], textarea');
+        targetInputs.forEach(inputNode => {
+            if (inputNode.value) {
+                inputNode.value = window.cleansePayloadInput(inputNode.value);
+            }
+        });
+    }, true);
+})();
+
+
 /** * filings4u Platform Architecture * Module: app-orchestrator.js (High-Speed Asynchronous Sheet Synchronizer) */ 
 function compileDynamicLayoutProperties(targetElementId, suffixPatternString) { 
   var calculatedSlugValue = targetElementId.replace(suffixPatternString, "").trim().toLowerCase(); 
