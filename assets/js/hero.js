@@ -25,7 +25,7 @@
             /* MOBILE SCREEN RESPONSIVE RE-ALIGNMENTS WITH EXTRA TOP VIEW PORT SLOTS */
             @media (max-width: 991px) {
                 #${targetConfig.elementId} main {
-                    padding: 60px 0 40px 0 !important; /* Increased padding top spacing safety bounds */
+                    padding: 120px 0 40px 0 !important; /* Increased padding top spacing safety bounds */
                     margin-top: 80px !important;        /* Increased gap from navigation bar elements */
                 }
                 #${targetConfig.elementId} .site-width-alignment-guard {
