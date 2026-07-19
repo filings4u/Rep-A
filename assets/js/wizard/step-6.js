@@ -398,7 +398,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
     try {
         // 🚀 FIXED: Swapped out the local browser route ('/api/create-payment-intent') for your live cloud endpoint
-        const pipelineEndpointResponse = await fetch('https://supabase.co', {
+        const pipelineEndpointResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

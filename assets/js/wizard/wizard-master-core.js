@@ -647,7 +647,7 @@ if (currentStep === 5) {
         console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
 
         // 🚀 THE PERMANENT FIX: Forward variables directly over HTTPS to your live Supabase Edge Function
-        const responseStream = await fetch('https://supabase.co', { 
+        const responseStream = await fetch('https://lrbimrlbskjweynxlgas.supabase.co', { 
             method: "POST", 
             headers: { 
                 "Content-Type": "application/json" 
