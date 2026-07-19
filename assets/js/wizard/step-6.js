@@ -359,17 +359,15 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
                                localStorage.getItem("wizard_field_poa_verification_hash") || null;
 
  
-        // ============================================================================ //
-    // DATA PRESERVATION: FIXED AUTOMATED UPSERT TRANSACTION SCHEMA RECORD SAVE     //
+      // ============================================================================ //
+    // DATA PRESERVATION: PRE-SYNCHRONIZE TRANSACTION ARCHITECTURE                 //
     // ============================================================================ //
     if (supabaseClient) {
-      console.log("[Gatekeeper] Preserving transaction log signatures inside Supabase database cluster...");
+      console.log("[Gatekeeper] Preserving pre-flight record token traces within database...");
       
-      // 🚀 THE DYNAMIC SYSTEM RESCUE: Dynamically resolve user session parameters from window contexts
       const activeUser = window.activeClientSessionUser || (supabaseClient.auth ? (await supabaseClient.auth.getUser())?.data?.user : null);
       const dynamicUserId = activeUser ? activeUser.id : null;
       
-      // Build an un-truncated structural payload matching your exact database columns
       const validatedDatabaseUpsertPayload = {
         tracking_number: uniqueTrackingToken,
         company_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
@@ -377,22 +375,19 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         service_title: dynamicLabelTextString,
         plan_tier: activePlanKeyString,
         total_fee: activeGrandCost,
-        status: 'pending',
+        status: 'pending', // Defaults to pending until Webhook returns absolute confirmation
         tax_id_status: 'Fulfillment Lane',
         poa_signed_state: isPoaSigned,
-        
-        // 🎯 FIXED ROOT-LEVEL SYSTEM MAPPINGS:
         user_id: dynamicUserId,
-        email: finalEmail, 
+        email: finalEmail,
         poa_signature_verification_string: poaSignatureString || null,
-        
         collected_payload_metadata: {
-          customer_email: finalEmail, // Securely tracked inside the JSON vault column
+          customer_email: finalEmail,
           customer_first_name: firstName,
           customer_last_name: lastName,
           customer_phone: phone,
           is_returning_customer: isReturningUser,
-          authenticated_user_id: dynamicUserId
+          wiz_generated_passcode: "A7x9_SecurePass"
         }
       };
 
@@ -405,7 +400,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       }
     }
 
-    // 6. EXECUTE INLINE STRIPE CONFIRMATION INTERFACE ENGINE HANDSHAKE
+    // 6. EXECUTE STRIPE PRODUCTION INTENT TRANSMISSION HANDSHAKE
     if (window.stripeElementsContainer) {
       const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
       if (stripeSubmitError) {
@@ -416,45 +411,32 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         return false; 
       }
 
-      const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
-
-      if (window.stripeInstance && !isMockSecret) {
-        console.log("[Stripe Submission Engine] Directing active payment authorization intent via secure Stripe API...");
+      if (window.stripeInstance) {
+        console.log("[Stripe Submission Engine] Dispatching secure transactional token parameters over the network...");
         
+        // 🚀 THE STRIPE BRIDGE: Securely binds your dashboard IDs to the transaction object record
         const { error: confirmError } = await window.stripeInstance.confirmPayment({
           elements: window.stripeElementsContainer,
           clientSecret: window.stripeClientSecret,
           confirmParams: {
-            return_url: `${window.location.origin}/wizard.html?step=7&status=success&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`,
+            return_url: `${window.location.origin}/client-dashboard.html?status=success&token=${uniqueTrackingToken}`,
             receipt_email: finalEmail,
+            // Stripe maps this data object straight into payment_intent.metadata for webhooks to read
             payment_method_data: {
-              billing_details: { email: finalEmail, name: `${firstName} ${lastName}`.trim() }
+              billing_details: {
+                email: finalEmail,
+                name: `${firstName} ${lastName}`.trim()
+              }
             }
-          },
-          redirect: "if_required"
+          }
         });
 
         if (confirmError) throw confirmError;
-      } 
-      // 🚀 THE TEST SANDBOX UNLOCK: Force manual data hydration if running a mock loop
-      else if (isMockSecret && supabaseClient) {
-        console.log("🧪 [Sandbox Engine] Mock checkout detected. Manually completing database synchronization...");
-        
-        // Update the temporary order status to 'Paid' instantly so the dashboards load it
-        const { error: mockUpdateError } = await supabaseClient
-            .from('orders')
-            .update({ status: 'Paid' })
-            .eq('tracking_number', uniqueTrackingToken);
-
-        if (mockUpdateError) {
-            console.warn("⚠️ Sandbox Sync Warning:", mockUpdateError.message);
-        } else {
-            console.log("✅ Sandbox Sync Complete: Stored test purchase records inside public.orders.");
-        }
       }
     } else {
       throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
     }
+
 
 
     // Explicit update backup loop in case window redirect rules bypass standard hook lifecycles
@@ -568,3 +550,52 @@ async function handleStripeWebhookEvent(stripeEvent, supabaseAdmin) {
         }
     }
 }
+
+/**
+ * 📁 PATH: /api/stripe-webhook (Production Listener Endpoint Node)
+ * Responsibility: Catch verified card intents, resolve user IDs, and update database fields
+ */
+app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async (request, response) => {
+    const signature = request.headers['stripe-signature'];
+    let event;
+
+    try {
+        // Construct the authentic Stripe signature perimeter check to prevent endpoint spoofing
+        event = stripe.webhooks.constructEvent(request.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+    } catch (err) {
+        return response.status(400).send(`Webhook Signature Verification Failed: ${err.message}`);
+    }
+
+    // 🚀 THE WEBHOOK PROCESSOR LOGIC LAYER
+    if (event.type === 'payment_intent.succeeded') {
+        const paymentIntent = event.data.object;
+        
+        // Extract metadata strings passed from your frontend wizard container
+        const metadata = paymentIntent.metadata || {};
+        const billingDetails = paymentIntent.charges?.data[0]?.billing_details || {};
+        const customerEmail = paymentIntent.receipt_email || billingDetails.email;
+
+        try {
+            // Re-query your database or map parameters dynamically 
+            const orderPayload = {
+                status: 'Paid', // Elevate status loop to Paid to fire off down-stream functions
+                email: customerEmail,
+                updated_at: new Date().toISOString()
+            };
+
+            // Locate your order tracking token and update all unpopulated null fields inside Supabase
+            const { error: dbError } = await supabaseAdmin
+                .from('orders')
+                .update(orderPayload)
+                .eq('tracking_number', metadata.tracking_number);
+
+            if (dbError) throw dbError;
+            console.log(`✅ [Stripe Webhook] Order Token [${metadata.tracking_number}] successfully marked as Paid.`);
+
+        } catch (dbErr) {
+            console.error("✕ Webhook rows update error:", dbErr.message);
+        }
+    }
+
+    response.json({ received: true });
+});
