@@ -100,9 +100,9 @@
                 </div> 
             `;
 
-            // ============================================================================
-            // step-6.js - PART 2: STRIPE STYLE RULES, MOUNT, & FORM INTERCEPTS
-            // ============================================================================
+// ============================================================================
+// step-6.js - PART 2: STRIPE STYLE RULES & FRAMEWORK MOUNT
+// ============================================================================
 
             if (window.stripePaymentElementInstance) { 
                 window.stripePaymentElementInstance.destroy(); 
@@ -110,13 +110,13 @@
             } 
 
             // Initialize configuration via optimized Payment Mode execution flow
+            // FIXED: Removed invalid root-level 'layout' parameter to clear Stripe console warnings
             window.stripeElementsContainer = window.stripeInstance.elements({ 
                 mode: 'payment', 
                 currency: 'usd', 
                 amount: Math.round(currentGrandTotal * 100), 
                 appearance: { 
                     theme: 'flat', 
-                    layout: 'accordion',
                     variables: { 
                         colorPrimary: '#0a1f44', 
                         colorBackground: '#ffffff', 
@@ -156,6 +156,7 @@
             console.log("[Stripe Loader] Generating instance and attaching to DOM view node..."); 
 
             // Generate the specialized uniform checkout component block 
+            // VALIDATED: Layout properties are correctly isolated within component configuration layers
             window.stripePaymentElementInstance = window.stripeElementsContainer.create('payment', {
                 layout: {
                     type: 'accordion',
@@ -191,6 +192,7 @@
             } 
         } 
     } 
+
 
     // Globally export the initialization controller function to window memory
     window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement; 
