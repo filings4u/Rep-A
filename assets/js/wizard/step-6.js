@@ -611,3 +611,175 @@ app.post('/api/create-payment-intent', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+/**
+ * 📁 FILE PATH: assets/js/step-6.js
+ * Responsibility: Secure production-grade payment submission pipeline management
+ */
+
+// 📡 1. SECURE PRODUCTION TOKEN RESOLUTION (SUPABASE EDGE FUNCTION GATEWAY)
+async function resolveStripeClientAuthorizationSecret(grandTotalAmount, trackingNumberToken) {
+    "use strict";
+    try {
+        console.log("📡 [Stripe Loader] Requesting secure Payment Intent token from live production Edge Function...");
+        
+        // ✅ PRODUCTION ROUTING: Call your live Supabase Edge Function directly over HTTPS
+        const response = await fetch('https://lrbimrlbskjweynxlgas.supabase.co', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amountValue: grandTotalAmount,
+                trackingNumber: trackingNumberToken
+            })
+        });
+
+        if (!response.ok) {
+            const errorPayload = await response.json();
+            throw new Error(errorPayload.error || "Edge Function rejected credentials generation lookups.");
+        }
+
+        const data = await response.json();
+        window.stripeClientSecret = data.clientSecret;
+        return window.stripeClientSecret;
+
+    } catch (err) {
+        console.error("✕ [Stripe Loader Critical Endpoint Failure]:", err.message || err);
+        const errorBanner = document.getElementById("step6-error-banner-target");
+        if (errorBanner) {
+            errorBanner.style.display = "block";
+            errorBanner.innerHTML = `<strong>Payment Gateway Offline:</strong> Verification tokens could not be generated. ${err.message}`;
+        }
+        return null;
+    }
+}
+
+// 💳 2. UNIFIED TRANSMISSION PIPELINE SUBMISSION ENGINE
+window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) {
+  "use strict";
+  if (event && typeof event.preventDefault === "function") event.preventDefault();
+  
+  const submitBtn = document.getElementById("wizardSubmitBtnElement");
+  const errorBanner = document.getElementById("step6-error-banner-target");
+  
+  const emailInput = document.getElementById("portal_user_email_input");
+  const firstNameInput = document.getElementById("portal_user_first_name");
+  const lastNameInput = document.getElementById("portal_user_last_name");
+  const phoneInput = document.getElementById("portal_user_phone");
+
+  const fieldsArray = [emailInput, firstNameInput, lastNameInput, phoneInput];
+  let validationHasFailed = false;
+
+  // Clear previous error styles
+  fieldsArray.forEach(input => { if (input) input.classList.remove("field-error-shake"); });
+
+  // Run empty validation checks
+  fieldsArray.forEach(input => {
+    if (input && input.value.trim() === "") {
+      validationHasFailed = true;
+      input.classList.add("field-error-shake");
+    }
+  });
+
+  if (validationHasFailed) {
+    const firstEmpty = fieldsArray.find(i => i && i.value.trim() === "");
+    if (firstEmpty) firstEmpty.focus();
+    return false;
+  }
+
+  try {
+    const finalEmail = emailInput.value.trim().toLowerCase();
+    const firstName = firstNameInput.value.trim();
+    const lastName = lastNameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    
+    const activeGrandCost = parseFloat(document.getElementById("payment-gateway-total-display")?.textContent.replace(/[^0-9.]/g, "")) || 249.00;
+    let uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...';
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "llc-formation").toLowerCase().trim();
+    const activePlanKeyString = String(urlParams.get('plan') || window.routeActivePlanKey || "enterprise").toLowerCase().trim();
+    const dynamicLabelTextString = `filings4u Processing Fee (${activePlanKeyString.toUpperCase()})`;
+
+    const supabaseClient = window.supabaseInstance || window.supabaseClient;
+    let dynamicUserId = null;
+
+    if (supabaseClient && supabaseClient.auth) {
+        const activeUser = (await supabaseClient.auth.getUser())?.data?.user;
+        if (activeUser) dynamicUserId = activeUser.id;
+    }
+
+    // A. DATA PRESERVATION: Pre-save your required columns into your database as 'pending'
+    if (supabaseClient) {
+      const validatedDatabaseUpsertPayload = {
+        tracking_number: uniqueTrackingToken,
+        company_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
+        service_key: serviceSlug,
+        service_title: dynamicLabelTextString,
+        plan_tier: activePlanKeyString,
+        total_fee: activeGrandCost,
+        status: 'pending', 
+        tax_id_status: 'Fulfillment Lane',
+        poa_signed_state: localStorage.getItem("wizard_field_poa_accepted") === "true",
+        user_id: dynamicUserId,
+        email: finalEmail,
+        poa_signature_verification_string: localStorage.getItem("wizard_field_poa_signature_string") || null,
+        collected_payload_metadata: {
+          customer_email: finalEmail,
+          customer_first_name: firstName,
+          customer_last_name: lastName,
+          customer_phone: phone,
+          wiz_generated_passcode: "A7x9_SecurePass"
+        }
+      };
+
+      const { error: dbUpsertError } = await supabaseClient
+        .from('orders')
+        .upsert(validatedDatabaseUpsertPayload, { onConflict: 'tracking_number' });
+
+      if (dbUpsertError) throw new Error(`Pre-Sync Failed: ${dbUpsertError.message}`);
+    }
+
+    // B. STRIPE PAYMENT INTENT CONFIRMATION PASS
+    if (window.stripeElementsContainer && window.stripeInstance && window.stripeClientSecret) {
+      const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
+      if (stripeSubmitError) throw stripeSubmitError;
+
+      // Executing official confirmPayment method (Handles both live and test cards automatically)
+      const { error: confirmError } = await window.stripeInstance.confirmPayment({
+        elements: window.stripeElementsContainer,
+        clientSecret: window.stripeClientSecret,
+        confirmParams: {
+          return_url: `${window.location.origin}/client-dashboard.html?status=success&token=${uniqueTrackingToken}`,
+          receipt_email: finalEmail,
+          payment_method_data: {
+            billing_details: {
+              email: finalEmail,
+              name: `${firstName} ${lastName}`.trim(),
+              phone: phone
+            }
+          }
+        }
+      });
+
+      if (confirmError) throw confirmError;
+    } else {
+      throw new Error("Stripe components uninitialized: Gateway configuration tokens missing from memory context.");
+    }
+
+  } catch (checkoutError) {
+    console.error("[Fatal Payment Intercept Catch]", checkoutError);
+    if (errorBanner) {
+      errorBanner.style.display = "block";
+      errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError}`;
+    }
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
+    }
+  }
+};
