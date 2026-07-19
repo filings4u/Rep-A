@@ -375,173 +375,95 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 };
 
 // ============================================================================
-// step-6.js - PART 4: INTAKE MATRIX PARSER & TRANSACTION PIPELINE TRIGGER
+// step-6.js - PART 4: PRODUCTION EDGE FUNCTION HANDSHAKE (REPLACE PREVIOUS PART 4)
 // ============================================================================
 
-/**
- * Handles the absolute final validation, data compilation, and transaction launch.
- * Hooked directly to your primary checkout submission trigger button.
- * @param {Event} event - The native browser click event.
- */
-window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) { 
-    if (event && typeof event.preventDefault === "function") event.preventDefault(); 
+window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue, submitButtonNode) {
+    const errorBanner = document.getElementById("step6-error-banner-target");
+    const uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
 
-    // Safely resolves the correct HTML element ID from your markup
-    const submitBtn = document.getElementById("wizardSubmitBtnElement") || document.getElementById("wizard-next-trigger-btn"); 
-    const errorBanner = document.getElementById("step6-error-banner-target"); 
-    const emailInput = document.getElementById("portal_user_email_input"); 
-    const firstNameInput = document.getElementById("portal_user_first_name"); 
-    const lastNameInput = document.getElementById("portal_user_last_name"); 
-    const phoneInput = document.getElementById("portal_user_phone"); 
+    // 1. Compile profile attribute dictionaries to deliver down to your Edge Function logs
+    const profileTransactionPayload = {
+        firstName: document.getElementById("portal_user_first_name")?.value.trim(),
+        lastName: document.getElementById("portal_user_last_name")?.value.trim(),
+        email: document.getElementById("portal_user_email_input")?.value.trim(),
+        phone: document.getElementById("portal_user_phone")?.value.trim(),
+        amountValue: finalAmountDue,
+        amountInCents: Math.round(finalAmountDue * 100), // Standardizes integer calculations for Stripe
+        trackingNumber: uniqueTrackingToken,
+        currency: "usd"
+    };
 
-    // Safeguard check: Warn if elements are completely missing from the HTML DOM
-    if (!emailInput || !firstNameInput || !lastNameInput || !phoneInput) { 
-        console.warn("⚠️ Checkout Intercept: Some input profile element nodes are missing from the current view layout."); 
-    } 
+    console.log("📡 [Supabase Production Gateway] Dispatching secure transactional payload to live Edge Function...");
 
-    const fieldsArray = [emailInput, firstNameInput, lastNameInput, phoneInput].filter(Boolean); 
-    let validationHasFailed = false; 
+    try {
+        // 🚀 FIXED: Swapped out the local browser route ('/api/create-payment-intent') for your live cloud endpoint
+        const pipelineEndpointResponse = await fetch('https://supabase.co', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(profileTransactionPayload)
+        });
 
-    if (errorBanner) { 
-        errorBanner.style.display = "none"; 
-        errorBanner.innerHTML = ""; 
-    } 
-
-    // Clear previous error styles and bind real-time emerald transition checks
-    fieldsArray.forEach(input => { 
-        if (input) { 
-            input.classList.remove("field-error-shake"); 
-            if (!input.dataset.listenerBound) { 
-                input.dataset.listenerBound = "true"; 
-                input.addEventListener("input", () => { 
-                    if (input.value.trim() !== "") { 
-                        input.classList.remove("field-error-shake"); 
-                        input.classList.add("field-validated-emerald"); 
-                    } else { 
-                        input.classList.remove("field-validated-emerald"); 
-                    } 
-                }); 
-            } 
-        } 
-    }); 
-
-    // RUN VALIDATION LAYER: Shake empty fields without generic browser alert boxes
-    fieldsArray.forEach(input => { 
-        if (input && input.value.trim() === "") { 
-            validationHasFailed = true; 
-            input.classList.add("field-error-shake"); 
-        } 
-    }); 
-
-    if (validationHasFailed) { 
-        const firstEmpty = fieldsArray.find(i => i && i.value.trim() === ""); 
-        if (firstEmpty) firstEmpty.focus(); 
-        if (errorBanner) { 
-            errorBanner.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="margin-right:6px;"></i> Please fill out all missing profile parameters.`; 
-            errorBanner.style.display = "block"; 
-        } 
-        return false; 
-    } 
-
-    try { 
-        const finalEmail = emailInput.value.trim().toLowerCase(); 
-        const firstName = firstNameInput.value.trim(); 
-        const lastName = lastNameInput.value.trim(); 
-        const phone = phoneInput.value.trim(); 
-        
-        // Parse the dynamic visual counter text, fallback cleanly to a base tier if missing
-        const rawTotalText = document.getElementById("payment-gateway-total-display")?.textContent || ""; 
-        const activeGrandCost = parseFloat(rawTotalText.replace(/[^0-9.]/g, "")) || 249.00; 
-
-        // ACCOUNT GENERATOR: Pull tracking token from state parameters or generate new
-        let uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token"); 
-        if (!uniqueTrackingToken) { 
-            uniqueTrackingToken = "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase(); 
-            localStorage.setItem("f4u_active_tracking_token", uniqueTrackingToken); 
-        } 
-
-        if (submitBtn) { 
-            submitBtn.disabled = true; 
-            submitBtn.style.opacity = "0.6"; 
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...'; 
-        } 
-
-        // RESOLVE URL METRICS IN LINE WITH YOUR LIVE SCHEMAS
-        const urlParams = new URLSearchParams(window.location.search); 
-        const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "llc-formation").toLowerCase().trim(); 
-        const activePlanKeyString = String(urlParams.get('plan') || window.routeActivePlanKey || window.currentPlanKey || "enterprise").toLowerCase().trim(); 
-        
-        let foundationFilingCost = 0; 
-        if (window._tempCalcContext && window._tempCalcContext.baseTierPrice !== undefined) { 
-            foundationFilingCost = parseFloat(window._tempCalcContext.baseTierPrice) || 0; 
-        } 
-        
-        let extractedTierTokenName = activePlanKeyString.toUpperCase(); 
-        const dynamicLabelTextString = `filings4u Processing Fee (${extractedTierTokenName})`; 
-
-        // Compile receipt payload for session context
-        const checkoutManifestPayload = { 
-            transaction_hash_id: uniqueTrackingToken, 
-            communications_email: finalEmail, 
-            is_returning: false, 
-            financials_grand_total_charge: activeGrandCost, 
-            legal_entity_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile", 
-            taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...", 
-            office_address_street: localStorage.getItem("wizard_field_principal_address") || "Form Submission Record Entry", 
-            selected_package_title: dynamicLabelTextString, 
-            financials_subtotal_amount: foundationFilingCost 
-        }; 
-
-        // Fallback to the initialized production client instead of a broken local page lookup function
-        const supabaseClient = window.supabaseInstance || window.supabaseClient || (typeof window.getSuccessPageSupabaseClient === 'function' ? window.getSuccessPageSupabaseClient() : null); 
-        let isReturningUser = false; 
-
-        // EXTRACT INTERLOCK DISCOVERY PARAMS FROM ABANDONED LIFECYCLE REGISTERS
-        if (supabaseClient) { 
-            console.log("[Gatekeeper] Interrogating wizard_abandoned_leads registry context..."); 
-            const { data: leadCheck, error: leadCheckError } = await supabaseClient 
-                .from('wizard_abandoned_leads') 
-                .select('id') 
-                .eq('email', finalEmail) 
-                .maybeSingle(); 
-
-            if (!leadCheckError && leadCheck) { 
-                isReturningUser = true; 
-                checkoutManifestPayload.is_returning = true; 
-                localStorage.setItem("f4u_is_returning_customer", "true"); 
-            } else { 
-                localStorage.setItem("f4u_is_returning_customer", "false"); 
-            } 
-        } 
-
-        sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload)); 
-        localStorage.setItem("f4u_checkout_email", finalEmail); 
-
-        // EXTRACT POA STEP DATA DIRECTLY FROM WIZARD PROGRESS INTAKE MEMORY
-        const isPoaSigned = localStorage.getItem("wizard_field_poa_accepted") === "true" || localStorage.getItem("wizard_field_poa_signed") === "true"; 
-        const poaSignatureString = localStorage.getItem("wizard_field_poa_signature_string") || localStorage.getItem("wizard_field_poa_verification_hash") || null;
-
-        // 🚀 BRIDGING PIPELINES: Automatically hand runtime control over to the confirmation token processor
-        if (typeof window.executeSecurePaymentConfirmationPipeline === "function") {
-            // Forward everything parsed from this intake matrix down to your database upsert and Stripe mount loop
-            await window.executeSecurePaymentConfirmationPipeline(activeGrandCost, submitBtn);
-        } else {
-            throw new Error("Target secure payment confirmation pipeline is uninitialized in window space.");
+        if (!pipelineEndpointResponse.ok) {
+            const serverFailureMessage = await pipelineEndpointResponse.text();
+            throw new Error(`Supabase Edge Function Rejected Request (${pipelineEndpointResponse.status}): ${serverFailureMessage}`);
         }
 
-    } catch (e) { 
-        console.error("Submission engine critical error:", e); 
+        const completedTransactionIntentJSON = await pipelineEndpointResponse.json();
+
+        // Save the dynamic secret string returned from your Edge Function into memory
+        window.stripeClientSecret = completedTransactionIntentJSON.clientSecret;
+
+        if (!window.stripeClientSecret) {
+            throw new Error("Critical structural mismatch. Transaction token identifier was omitted by the Supabase Edge Function.");
+        }
+
+        console.log("[Supabase Production Gateway] Handshake complete. Launching standard Stripe confirmation router...");
+
+        // 2. Trigger standard Stripe UI framework challenge checks using native internal routing processes
+        const StripeConfirmationResult = await window.stripeInstance.confirmPayment({
+            elements: window.stripeElementsContainer,
+            clientSecret: window.stripeClientSecret,
+            confirmParams: {
+                return_url: `${window.location.origin}/client-dashboard.html?status=success&token=${uniqueTrackingToken}`,
+                receipt_email: profileTransactionPayload.email,
+                billing_details: {
+                    name: `${profileTransactionPayload.firstName} ${profileTransactionPayload.lastName}`.trim(),
+                    email: profileTransactionPayload.email,
+                    phone: profileTransactionPayload.phone
+                }
+            }
+        });
+
+        // 3. Handle visual error scenarios returned instantly by the Stripe framework
+        if (StripeConfirmationResult.error) {
+            console.warn("[Stripe Core API] Authentication flow halted or failed.", StripeConfirmationResult.error.message);
+            if (errorBanner) {
+                errorBanner.innerText = StripeConfirmationResult.error.message;
+                errorBanner.style.display = "block";
+            }
+            // Reset button to functional state for corrections
+            submitButtonNode.disabled = false;
+            submitButtonNode.style.opacity = "1";
+            submitButtonNode.innerHTML = `Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>`;
+        }
+
+    } catch (pipelineError) {
+        console.error("[Gateway Connection Failure]", pipelineError);
         if (errorBanner) {
-            errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Submission Failed:</strong> ${e.message}`;
+            errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Gateway Connection Failure:</strong> ${pipelineError.message}`;
             errorBanner.style.display = "block";
         }
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.style.opacity = "1";
-            submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
+        if (submitButtonNode) {
+            submitButtonNode.disabled = false;
+            submitButtonNode.style.opacity = "1";
+            submitButtonNode.innerHTML = `Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>`;
         }
-    } 
+    }
 };
+
 
 // ============================================================================
 // step-6.js - SECTION 5: DATA PRESERVATION & STRIPE INTENT TRANSMISSION
