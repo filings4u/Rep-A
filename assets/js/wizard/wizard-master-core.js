@@ -644,10 +644,14 @@ if (currentStep === 5) {
             currency: "usd"
         };
 
+  // =========================================================================
+// LOCATION: assets/js/wizard-master-core.js
+// =========================================================================
+
         console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
 
-        // 🚀 THE PERMANENT FIX: Forward variables directly over HTTPS to your live Supabase Edge Function
-        const responseStream = await fetch('https://lrbimrlbskjweynxlgas.supabase.co', { 
+        // 🚀 THE PERMANENT FIX: Spaces added below to ensure you receive the full string literal cleanly
+        const responseStream = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/create-payment-intent', { 
             method: "POST", 
             headers: { 
                 "Content-Type": "application/json" 
@@ -655,7 +659,8 @@ if (currentStep === 5) {
             body: JSON.stringify(profileTransactionPayload) 
         }); 
 
-        if (!responseStream.ok) throw new Error(`Remote Edge Function rejected request with status (${responseStream.status}).`); 
+        if (!responseStream.ok) throw new Error(`Remote Edge Function rejected request with status (${responseStream.status}).`);
+
         
         const transactionTokenPayload = await responseStream.json(); 
         

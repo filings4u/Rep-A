@@ -394,11 +394,15 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         currency: "usd"
     };
 
+// =========================================================================
+// LOCATION: assets/js/step-6.js
+// =========================================================================
+
     console.log("📡 [Supabase Production Gateway] Dispatching secure transactional payload to live Edge Function...");
 
     try {
-        // 🚀 FIXED: Swapped out the local browser route ('/api/create-payment-intent') for your live cloud endpoint
-        const pipelineEndpointResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co', {
+        // 🚀 THE PERMANENT FIX: Spaces added below to ensure you receive the full string literal cleanly
+        const pipelineEndpointResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/create-payment-intent', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -410,6 +414,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             const serverFailureMessage = await pipelineEndpointResponse.text();
             throw new Error(`Supabase Edge Function Rejected Request (${pipelineEndpointResponse.status}): ${serverFailureMessage}`);
         }
+
 
         const completedTransactionIntentJSON = await pipelineEndpointResponse.json();
 
