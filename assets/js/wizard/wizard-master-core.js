@@ -602,7 +602,7 @@ async function runMasterActiveStepFormValidation() {
     } 
 
 // =========================================================================
-// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: PRODUCTION EDGE FUNCTION LAYERS
+// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: PART 1 (TOKEN PURIFICATION LAYER)
 // =========================================================================
 if (currentStep === 5) { 
     console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks..."); 
@@ -617,89 +617,83 @@ if (currentStep === 5) {
     } 
 
     try { 
-        // Dynamically parse live grand total figures without hardcoded fallbacks
-        const rawTotalText = document.getElementById("payment-gateway-total-display")?.textContent || "";
+        // Dynamically parse live grand total figures without hardcoded fallbacks 
+        const rawTotalText = document.getElementById("payment-gateway-total-display")?.textContent || ""; 
         const targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || parseFloat(rawTotalText.replace(/[^0-9.]/g, "")); 
         
-        if (isNaN(targetAmount) || targetAmount <= 0) {
-            throw new Error("Validation aborted: Payment calculation total balance is uninitialized.");
-        }
+        if (isNaN(targetAmount) || targetAmount <= 0) { 
+            throw new Error("Validation aborted: Payment calculation total balance is uninitialized."); 
+        } 
 
-        const uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase();
-        localStorage.setItem("f4u_active_tracking_token", uniqueTrackingToken);
+        const uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase(); 
+        localStorage.setItem("f4u_active_tracking_token", uniqueTrackingToken); 
 
-        const activeServiceKey = window.routeActiveServiceKey || window.currentServiceKey || "";
-        const activePlanKeyString = window.routeActivePlanKey || window.currentPlanKey || "";
+        const activeServiceKey = window.routeActiveServiceKey || window.currentServiceKey || ""; 
+        const activePlanKeyString = window.routeActivePlanKey || window.currentPlanKey || ""; 
 
-        const profileTransactionPayload = {
-            firstName: document.getElementById("portal_user_first_name")?.value.trim() || null,
-            lastName: document.getElementById("portal_user_last_name")?.value.trim() || null,
-            email: document.getElementById("portal_user_email_input")?.value.trim() || localStorage.getItem("f4u_checkout_email") || null,
-            phone: document.getElementById("portal_user_phone")?.value.trim() || null,
-            amountValue: targetAmount,
+        const profileTransactionPayload = { 
+            firstName: document.getElementById("portal_user_first_name")?.value.trim() || null, 
+            lastName: document.getElementById("portal_user_last_name")?.value.trim() || null, 
+            email: document.getElementById("portal_user_email_input")?.value.trim() || localStorage.getItem("f4u_checkout_email") || null, 
+            phone: document.getElementById("portal_user_phone")?.value.trim() || null, 
+            amountValue: targetAmount, 
             amountInCents: Math.round(targetAmount * 100), 
-            trackingNumber: uniqueTrackingToken,
-            serviceKey: activeServiceKey || null,
-            planTier: activePlanKeyString || null,
-            currency: "usd"
-        };
+            trackingNumber: uniqueTrackingToken, 
+            serviceKey: activeServiceKey || null, 
+            planTier: activePlanKeyString || null, 
+            currency: "usd" 
+        }; 
 
-  // =========================================================================
-// LOCATION: assets/js/wizard-master-core.js
-// =========================================================================
-// =========================================================================
-// LOCATION: assets/js/wizard-master-core.js (AUTH HEADERS FIX)
-// =========================================================================
+        console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function..."); 
 
-// =========================================================================
-// LOCATION: assets/js/wizard-master-core.js (AUTH HEADERS FIX)
-// =========================================================================
+        // Extract raw client instance configuration states
+        const sdkInstance = window.supabaseInstance || window.supabaseClient || {}; 
+        let verifiedAnonKey = sdkInstance.supabaseKey || sdkInstance._supabaseKey || (sdkInstance.rest && sdkInstance.rest.headers ? sdkInstance.rest.headers.apikey : "");
 
+        // 🔍 FIX: If instance lookups evaluate blank, unpack the local storage JSON envelope safely
+        if (!verifiedAnonKey) {
+            const rawStoredToken = localStorage.getItem("supabase.auth.token");
+            if (rawStoredToken) {
+                try {
+                    const parsedTokenObject = JSON.parse(rawStoredToken);
+                    verifiedAnonKey = parsedTokenObject.currentSession?.access_token || parsedTokenObject.access_token || "";
+                } catch (jsonErr) {
+                    console.warn("[Token Extraction Check] Unable to parse token block layout format:", jsonErr);
+                }
+            }
+        }
 // =========================================================================
-// LOCATION: assets/js/wizard-master-core.js (ROBUST AUTH HEADERS)
+// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: PART 2 (FETCH EXECUTION & CLOSURE)
 // =========================================================================
-
-        console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
-
-        // Robust automated extraction loop matrix to pull keys directly from your active SDK instance
-        const sdkInstance = window.supabaseInstance || window.supabaseClient || {};
-        const verifiedAnonKey = sdkInstance.supabaseKey || 
-                                sdkInstance._supabaseKey || 
-                                (sdkInstance.rest && sdkInstance.rest.headers ? sdkInstance.rest.headers.apikey : "") || 
-                                localStorage.getItem("supabase.auth.token") || "";
 
         // Formatted with clean space segments to guarantee full character string transmission
-        const cloudGatewayUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/create-payment-intent';
+        const cloudGatewayUrl = 'https' + '://' + 'lrbimrlbskjweynxlgas' + '.supabase' + '.co' + '/functions' + '/v1' + '/create-payment-intent'; 
 
         const responseStream = await fetch(cloudGatewayUrl, { 
             method: "POST", 
             headers: { 
-                "Content-Type": "application/json",
-                "apikey": verifiedAnonKey,
-                "Authorization": "Bearer " + verifiedAnonKey
+                "Content-Type": "application/json", 
+                "apikey": verifiedAnonKey, 
+                "Authorization": "Bearer " + verifiedAnonKey 
             }, 
             body: JSON.stringify(profileTransactionPayload) 
         }); 
 
-        if (!responseStream.ok) throw new Error(`Remote Edge Function rejected request with status (${responseStream.status}).`);
+        if (!responseStream.ok) throw new Error("Remote Edge Function rejected request with status (" + responseStream.status + ")."); 
 
-
-
-
-        
         const transactionTokenPayload = await responseStream.json(); 
         
         if (!transactionTokenPayload.clientSecret) { 
             throw new Error("Payload mapping error: clientSecret token string was omitted by the gateway server."); 
         } 
 
-        // Cache the verified authorization token into window and local states cleanly
+        // Cache the verified authorization token into window and local states cleanly 
         window.stripeClientSecret = transactionTokenPayload.clientSecret; 
         
         const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}"); 
         activeOnboardingState.stripeClientSecret = transactionTokenPayload.clientSecret; 
         localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState)); 
-        console.log("✅ [Supabase Gateway] ClientSecret token registered and verified successfully.");
+        console.log("✅ [Supabase Gateway] ClientSecret token registered and verified successfully."); 
 
     } catch (apiNetworkException) { 
         console.error("✕ [Gateway Configuration Failure] Handshake aborted:", apiNetworkException.message); 
@@ -716,72 +710,73 @@ if (currentStep === 5) {
         if (errorNodeTarget) { 
             errorNodeTarget.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> <strong>Payment Gateway Connection Failure:</strong> Remote authorization tokens could not be fetched (${apiNetworkException.message}). Please check server configurations.`; 
         } 
-        return false; // Prevent navigation transition if the cloud function can't generate secrets
+        return false; 
     } finally { 
         if (nextButton) { 
             nextButton.disabled = false; 
             nextButton.innerHTML = fallbackText; 
         } 
     } 
-}
+} 
 
-
-    if (currentStep >= 5) { 
-        console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`); 
-        return true; 
-    } 
-
-    const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || ""; 
-    const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
-    if (!cleanKey) { 
-        console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status."); 
-        return true; 
-    } 
-
-    const primaryKeyWords = cleanKey.split('-'); 
-    const globalContextKeys = Object.keys(window); 
-    const targetValidationMethodKey = globalContextKeys.find(key => { 
-        const kLower = key.toLowerCase(); 
-        if (["validatestepinputparametersvanilla", "runmasteractivestepformvalidation", "validatestepinputparameters"].includes(kLower)) { 
-            return false; 
-        } 
-        const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate"); 
-        const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word)); 
-        return isValidationFunction && matchesServiceKeyword; 
-    }); 
-
-    if (targetValidationMethodKey) { 
-        console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`); 
-        try { 
-            // FIX: Remapped canvas search identifiers to pinpoint your strict Step 2 grid container tracks explicitly
-            let validationTargetCanvas = null;
-            if (currentStep === 2) {
-                validationTargetCanvas = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder");
-            } else {
-                validationTargetCanvas = document.getElementById(`step-${currentStep}-onboarding-fields-canvas`) || document.getElementById(`step-panel-${currentStep}`) || document.body; 
-            }
-            
-            const targetFunction = window[targetValidationMethodKey]; 
-            let advancedValidationResult; 
-            if (targetFunction.length >= 2) { 
-                advancedValidationResult = targetFunction(validationTargetCanvas, currentStep); 
-            } else { 
-                advancedValidationResult = targetFunction(currentStep); 
-            } 
-            return advancedValidationResult !== false; 
-        } catch (err) { 
-            console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err); 
-            return false; 
-        } 
-    } 
-
-    if (typeof window.validateAlgorithmicFallbackFields === "function") { 
-        return !!window.validateAlgorithmicFallbackFields(currentStep); 
-    } 
+if (currentStep >= 5) { 
+    console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`); 
     return true; 
 } 
 
+const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || ""; 
+const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
+
+if (!cleanKey) { 
+    console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status."); 
+    return true; 
+} 
+
+const primaryKeyWords = cleanKey.split('-'); 
+const globalContextKeys = Object.keys(window); 
+
+const targetValidationMethodKey = globalContextKeys.find(key => { 
+    const kLower = key.toLowerCase(); 
+    if (["validatestepinputparametersvanilla", "runmasteractivestepformvalidation", "validatestepinputparameters"].includes(kLower)) { 
+        return false; 
+    } 
+    const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate"); 
+    const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word)); 
+    return isValidationFunction && matchesServiceKeyword; 
+}); 
+
+if (targetValidationMethodKey) { 
+    console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`); 
+    try { 
+        let validationTargetCanvas = null; 
+        if (currentStep === 2) { 
+            validationTargetCanvas = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder"); 
+        } else { 
+            validationTargetCanvas = document.getElementById(`step-${currentStep}-onboarding-fields-canvas`) || document.getElementById(`step-panel-${currentStep}`) || document.body; 
+        } 
+        const targetFunction = window[targetValidationMethodKey]; 
+        let advancedValidationResult; 
+        if (targetFunction.length >= 2) { 
+            advancedValidationResult = targetFunction(validationTargetCanvas, currentStep); 
+        } else { 
+            advancedValidationResult = targetFunction(currentStep); 
+        } 
+        return advancedValidationResult !== false; 
+    } catch (err) { 
+        console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err); 
+        return false; 
+    } 
+} 
+
+if (typeof window.validateAlgorithmicFallbackFields === "function") { 
+    return !!window.validateAlgorithmicFallbackFields(currentStep); 
+} 
+
+return true; 
+} 
+
 window.runMasterActiveStepFormValidation = runMasterActiveStepFormValidation;
+
 
 // ============================================================================ // 
 // 🧠 MODULAR ATTACHMENT: VANILLA STATE SCRAPER FOR STEP HYDRATION              // 
