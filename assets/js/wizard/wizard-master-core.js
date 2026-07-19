@@ -602,7 +602,7 @@ async function runMasterActiveStepFormValidation() {
     } 
 
 // =========================================================================
-// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: PART 1 (TOKEN PURIFICATION LAYER)
+// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: SECURE INTENT EXTRACTION (FRAGMENT A)
 // =========================================================================
 if (currentStep === 5) { 
     console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks..."); 
@@ -617,7 +617,7 @@ if (currentStep === 5) {
     } 
 
     try { 
-        // Dynamically parse live grand total figures without hardcoded fallbacks 
+        // Dynamically parse live grand total figures without hardcoded fallbacks
         const rawTotalText = document.getElementById("payment-gateway-total-display")?.textContent || ""; 
         const targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || parseFloat(rawTotalText.replace(/[^0-9.]/g, "")); 
         
@@ -646,35 +646,13 @@ if (currentStep === 5) {
 
         console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function..."); 
 
-        // Extract raw client instance configuration states
-        const sdkInstance = window.supabaseInstance || window.supabaseClient || {}; 
-        let verifiedAnonKey = sdkInstance.supabaseKey || sdkInstance._supabaseKey || (sdkInstance.rest && sdkInstance.rest.headers ? sdkInstance.rest.headers.apikey : "");
+        // Split string construction guarantees full URL literal pass-through
+        const productionCloudUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout'; 
 
-        // 🔍 FIX: If instance lookups evaluate blank, unpack the local storage JSON envelope safely
-        if (!verifiedAnonKey) {
-            const rawStoredToken = localStorage.getItem("supabase.auth.token");
-            if (rawStoredToken) {
-                try {
-                    const parsedTokenObject = JSON.parse(rawStoredToken);
-                    verifiedAnonKey = parsedTokenObject.currentSession?.access_token || parsedTokenObject.access_token || "";
-                } catch (jsonErr) {
-                    console.warn("[Token Extraction Check] Unable to parse token block layout format:", jsonErr);
-                }
-            }
-        }
-// =========================================================================
-// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: PART 2 (FETCH EXECUTION & CLOSURE)
-// =========================================================================
-
-        // Formatted with clean space segments to guarantee full character string transmission
-        const cloudGatewayUrl = 'https' + '://' + 'lrbimrlbskjweynxlgas' + '.supabase' + '.co' + '/functions' + '/v1' + '/create-payment-intent'; 
-
-        const responseStream = await fetch(cloudGatewayUrl, { 
+        const responseStream = await fetch(productionCloudUrl, { 
             method: "POST", 
             headers: { 
-                "Content-Type": "application/json", 
-                "apikey": verifiedAnonKey, 
-                "Authorization": "Bearer " + verifiedAnonKey 
+                "Content-Type": "application/json"
             }, 
             body: JSON.stringify(profileTransactionPayload) 
         }); 
@@ -693,6 +671,7 @@ if (currentStep === 5) {
         const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}"); 
         activeOnboardingState.stripeClientSecret = transactionTokenPayload.clientSecret; 
         localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState)); 
+        
         console.log("✅ [Supabase Gateway] ClientSecret token registered and verified successfully."); 
 
     } catch (apiNetworkException) { 
@@ -717,65 +696,70 @@ if (currentStep === 5) {
             nextButton.innerHTML = fallbackText; 
         } 
     } 
-} 
+}
+// =========================================================================
+// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: PART 2 (VALIDATION ROUTING)
+// =========================================================================
 
-if (currentStep >= 5) { 
-    console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`); 
-    return true; 
-} 
-
-const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || ""; 
-const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
-
-if (!cleanKey) { 
-    console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status."); 
-    return true; 
-} 
-
-const primaryKeyWords = cleanKey.split('-'); 
-const globalContextKeys = Object.keys(window); 
-
-const targetValidationMethodKey = globalContextKeys.find(key => { 
-    const kLower = key.toLowerCase(); 
-    if (["validatestepinputparametersvanilla", "runmasteractivestepformvalidation", "validatestepinputparameters"].includes(kLower)) { 
-        return false; 
+    if (currentStep >= 5) { 
+        console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`); 
+        return true; 
     } 
-    const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate"); 
-    const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word)); 
-    return isValidationFunction && matchesServiceKeyword; 
-}); 
 
-if (targetValidationMethodKey) { 
-    console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`); 
-    try { 
-        let validationTargetCanvas = null; 
-        if (currentStep === 2) { 
-            validationTargetCanvas = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder"); 
-        } else { 
-            validationTargetCanvas = document.getElementById(`step-${currentStep}-onboarding-fields-canvas`) || document.getElementById(`step-panel-${currentStep}`) || document.body; 
-        } 
-        const targetFunction = window[targetValidationMethodKey]; 
-        let advancedValidationResult; 
-        if (targetFunction.length >= 2) { 
-            advancedValidationResult = targetFunction(validationTargetCanvas, currentStep); 
-        } else { 
-            advancedValidationResult = targetFunction(currentStep); 
-        } 
-        return advancedValidationResult !== false; 
-    } catch (err) { 
-        console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err); 
-        return false; 
+    const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || ""; 
+    const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
+
+    if (!cleanKey) { 
+        console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status."); 
+        return true; 
     } 
-} 
 
-if (typeof window.validateAlgorithmicFallbackFields === "function") { 
-    return !!window.validateAlgorithmicFallbackFields(currentStep); 
-} 
+    const primaryKeyWords = cleanKey.split('-'); 
+    const globalContextKeys = Object.keys(window); 
 
-return true; 
+    const targetValidationMethodKey = globalContextKeys.find(key => { 
+        const kLower = key.toLowerCase(); 
+        if (["validatestepinputparametersvanilla", "runmasteractivestepformvalidation", "validatestepinputparameters"].includes(kLower)) { 
+            return false; 
+        } 
+        const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate"); 
+        const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word)); 
+        return isValidationFunction && matchesServiceKeyword; 
+    }); 
+
+    if (targetValidationMethodKey) { 
+        console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`); 
+        try { 
+            let validationTargetCanvas = null; 
+            if (currentStep === 2) { 
+                validationTargetCanvas = document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder"); 
+            } else { 
+                validationTargetCanvas = document.getElementById(`step-${currentStep}-onboarding-fields-canvas`) || document.getElementById(`step-panel-${currentStep}`) || document.body; 
+            } 
+            const targetFunction = window[targetValidationMethodKey]; 
+            let advancedValidationResult; 
+            if (targetFunction.length >= 2) { 
+                advancedValidationResult = targetFunction(validationTargetCanvas, currentStep); 
+            } else { 
+                advancedValidationResult = targetFunction(currentStep); 
+            } 
+            return advancedValidationResult !== false; 
+        } catch (err) { 
+            console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err); 
+            return false; 
+        } 
+    } 
+
+    if (typeof window.validateAlgorithmicFallbackFields === "function") { 
+        return !!window.validateAlgorithmicFallbackFields(currentStep); 
+    } 
+
+    return true; 
 } 
 
 window.runMasterActiveStepFormValidation = runMasterActiveStepFormValidation;
+
+
 
 
 // ============================================================================ // 
