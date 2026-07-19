@@ -359,14 +359,17 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
                                localStorage.getItem("wizard_field_poa_verification_hash") || null;
 
  
-    // ============================================================================ //
+        // ============================================================================ //
     // DATA PRESERVATION: FIXED AUTOMATED UPSERT TRANSACTION SCHEMA RECORD SAVE     //
     // ============================================================================ //
     if (supabaseClient) {
       console.log("[Gatekeeper] Preserving transaction log signatures inside Supabase database cluster...");
       
-      // FIXED SCHEMA PAYLOAD: Removed the phantom root-level "email" field 
-      // All user contact elements are now passed inside the nested JSON data structure
+      // 🚀 THE DYNAMIC SYSTEM RESCUE: Dynamically resolve user session parameters from window contexts
+      const activeUser = window.activeClientSessionUser || (supabaseClient.auth ? (await supabaseClient.auth.getUser())?.data?.user : null);
+      const dynamicUserId = activeUser ? activeUser.id : null;
+      
+      // Build an un-truncated structural payload matching your exact database columns
       const validatedDatabaseUpsertPayload = {
         tracking_number: uniqueTrackingToken,
         company_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
@@ -377,13 +380,19 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         status: 'pending',
         tax_id_status: 'Fulfillment Lane',
         poa_signed_state: isPoaSigned,
-        poa_signature_verification_string: poaSignatureString,
+        
+        // 🎯 FIXED ROOT-LEVEL SYSTEM MAPPINGS:
+        user_id: dynamicUserId,
+        email: finalEmail, 
+        poa_signature_verification_string: poaSignatureString || null,
+        
         collected_payload_metadata: {
           customer_email: finalEmail, // Securely tracked inside the JSON vault column
           customer_first_name: firstName,
           customer_last_name: lastName,
           customer_phone: phone,
-          is_returning_customer: isReturningUser
+          is_returning_customer: isReturningUser,
+          authenticated_user_id: dynamicUserId
         }
       };
 
@@ -407,7 +416,6 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         return false; 
       }
 
-
       const isMockSecret = String(window.stripeClientSecret).startsWith("pi_mock_intent_");
 
       if (window.stripeInstance && !isMockSecret) {
@@ -418,16 +426,36 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
           clientSecret: window.stripeClientSecret,
           confirmParams: {
             return_url: `${window.location.origin}/wizard.html?step=7&status=success&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`,
-            receipt_email: finalEmail
+            receipt_email: finalEmail,
+            payment_method_data: {
+              billing_details: { email: finalEmail, name: `${firstName} ${lastName}`.trim() }
+            }
           },
           redirect: "if_required"
         });
 
         if (confirmError) throw confirmError;
+      } 
+      // 🚀 THE TEST SANDBOX UNLOCK: Force manual data hydration if running a mock loop
+      else if (isMockSecret && supabaseClient) {
+        console.log("🧪 [Sandbox Engine] Mock checkout detected. Manually completing database synchronization...");
+        
+        // Update the temporary order status to 'Paid' instantly so the dashboards load it
+        const { error: mockUpdateError } = await supabaseClient
+            .from('orders')
+            .update({ status: 'Paid' })
+            .eq('tracking_number', uniqueTrackingToken);
+
+        if (mockUpdateError) {
+            console.warn("⚠️ Sandbox Sync Warning:", mockUpdateError.message);
+        } else {
+            console.log("✅ Sandbox Sync Complete: Stored test purchase records inside public.orders.");
+        }
       }
     } else {
       throw new Error("Checkout components missing: The payment gateway elements were not mounted correctly.");
     }
+
 
     // Explicit update backup loop in case window redirect rules bypass standard hook lifecycles
     if (supabaseClient) {
@@ -453,4 +481,90 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       `;
     }
     if (submitBtn) {
-submitBtn.disabled = false;submitBtn.innerHTML = 'Secure Payment ';}}};
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Secure Payment ';
+    }
+  }
+};
+
+/**
+ * 📁 STRIPE WEBHOOK CONTROLLER CHANNEL
+ * Responsibility: Listens for successful checkouts, populates all required fields,
+ * and creates down-stream portal notifications dynamically.
+ */
+async function handleStripeWebhookEvent(stripeEvent, supabaseAdmin) {
+    "use strict";
+
+    // 1. Target successful checkout session completions specifically
+    if (stripeEvent.type === 'checkout.session.completed') {
+        const session = stripeEvent.data.object;
+        
+        // Recover our dynamic data parameters bag
+        const metadata = session.metadata || {};
+        
+        console.log(`📡 [Webhook] Unpacking checkout data for Token: ${metadata.tracking_number}`);
+
+        try {
+            // 2. Build the exact row dictionary to fill your required root-level columns
+            const orderPayload = {
+                tracking_number: metadata.tracking_number,
+                company_name: metadata.company_name,
+                service_key: metadata.service_key,
+                service_title: metadata.service_title,
+                plan_tier: metadata.plan_tier,
+                total_fee: parseFloat(metadata.total_fee || 0),
+                status: 'paid', // Mark as paid immediately upon webhook receipt validation
+                tax_id_status: 'Fulfillment Lane',
+                poa_signed_state: metadata.poa_signed_state === 'true' || true,
+                
+                // ✅ CRITICAL ROOT FIELDS SOLVED:
+                user_id: metadata.user_id || null,
+                email: metadata.email || session.customer_details?.email || null,
+                poa_signature_verification_string: metadata.poa_signature_verification_string || null,
+                
+                collected_payload_metadata: {
+                    stripe_checkout_id: session.id,
+                    stripe_payment_intent: session.payment_intent,
+                    customer_email: metadata.email,
+                    processed_at: new Date().toISOString()
+                }
+            };
+
+            // 3. Commit the fully-populated row directly into public.orders
+            const { data: orderData, error: orderError } = await supabaseAdmin
+                .from('orders')
+                .upsert(orderPayload, { onConflict: 'tracking_number' })
+                .select()
+                .single();
+
+            if (orderError) throw orderError;
+            console.log("✅ [Webhook] Order table successfully synchronized with all structural keys.");
+
+            // 4. AUTOMATIC NOTIFICATION GENERATOR ALIGNED WITH YOUR PORTAL SCHEMAS
+            if (metadata.user_id) {
+                const alertPayload = {
+                    user_id: metadata.user_id,
+                    title: "New Purchase Authenticated",
+                    message: `Your workspace filing order for ${metadata.company_name} has been processed into our administrative fulfillment lane. Check your timeline for live trace metrics updates.`,
+                    is_read: false,
+                    is_archived: false,
+                    recipient_email: metadata.email || null,
+                    created_at: new Date().toISOString()
+                };
+
+                const { error: notificationError } = await supabaseAdmin
+                    .from('portal_notifications')
+                    .insert([alertPayload]);
+
+                if (notificationError) {
+                    console.warn("⚠️ [Webhook] Could not push notification log row:", notificationError.message);
+                } else {
+                    console.log("🔔 [Webhook] Automated client dashboard notification logged successfully.");
+                }
+            }
+
+        } catch (err) {
+            console.error("✕ [Webhook Execution Exception Caught]:", err.message || err);
+        }
+    }
+}
