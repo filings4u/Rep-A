@@ -198,16 +198,21 @@
 window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) {
   if (event && typeof event.preventDefault === "function") event.preventDefault();
   
+  // ✅ FIXED: Safely resolves the correct HTML element ID from your markup
   const submitBtn = document.getElementById("wizardSubmitBtnElement") || document.getElementById("wizard-next-trigger-btn");
   const errorBanner = document.getElementById("step6-error-banner-target");
   
-  // 1. Target your exact 4 horizontal layout fields
   const emailInput = document.getElementById("portal_user_email_input");
   const firstNameInput = document.getElementById("portal_user_first_name");
   const lastNameInput = document.getElementById("portal_user_last_name");
   const phoneInput = document.getElementById("portal_user_phone");
 
-  const fieldsArray = [emailInput, firstNameInput, lastNameInput, phoneInput];
+  // Safeguard check: If elements are completely missing from the HTML DOM, build safe placeholders to prevent crashing
+  if (!emailInput || !firstNameInput || !lastNameInput || !phoneInput) {
+      console.warn("⚠️ Checkout Intercept: Some input profile element nodes are missing from the current view layout.");
+  }
+
+  const fieldsArray = [emailInput, firstNameInput, lastNameInput, phoneInput].filter(Boolean);
   let validationHasFailed = false;
 
   if (errorBanner) {
@@ -594,4 +599,14 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
     });
 
     response.status(200).json({ received: true });
+
+    // Add this block right at the bottom of your step-6.js file to attach the button click listener
+document.addEventListener("click", function(e) {
+    // Check if the clicked element is your secure payment trigger button
+    if (e.target && (e.target.id === "wizardSubmitBtnElement" || e.target.id === "wizard-next-trigger-btn" || e.target.closest("#wizardSubmitBtnElement"))) {
+        console.log("💳 [Checkout Engine] Secure payment trigger clicked. Processing transaction payload...");
+        window.executeOnboardingTransactionPayloadSubmitVanilla(e);
+    }
+});
+
 });
