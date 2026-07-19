@@ -601,65 +601,100 @@ async function runMasterActiveStepFormValidation() {
         } 
     } 
 
-    // ========================================================================= 
-    // 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: SECURE INTENT EXTRACTION LAYER 
-    // ========================================================================= 
-    if (currentStep === 5) { 
-        console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks..."); 
-        const nextButton = document.getElementById("summary-submit-payment-intent-btn") || document.querySelector(".btn-wizard-nav-next"); 
-        let fallbackText = "Secure Payment"; 
-        
-        if (nextButton) { 
-            fallbackText = nextButton.innerHTML; 
-            nextButton.disabled = true; 
-            nextButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Securing Authorization...'; 
-        } 
-        try { 
-            const targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 249.00; 
-            const responseStream = await fetch("/api/create-payment-intent", { 
-                method: "POST", 
-                headers: { "Content-Type": "application/json" }, 
-                body: JSON.stringify({ 
-                    amountCents: Math.round(targetAmount * 100), 
-                    currency: "usd", 
-                    serviceKey: window.routeActiveServiceKey || window.currentServiceKey || "llc-formation" 
-                }) 
-            }); 
-            if (!responseStream.ok) throw new Error("HTTP connection path rejected tokens request."); 
-            const transactionTokenPayload = await responseStream.json(); 
-            if (!transactionTokenPayload.clientSecret) { 
-                throw new Error("Payload mapping error: clientSecret key is missing."); 
-            } 
-            window.stripeClientSecret = transactionTokenPayload.clientSecret; 
-            const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}"); 
-            activeOnboardingState.stripeClientSecret = transactionTokenPayload.clientSecret; 
-            localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState)); 
-        } catch (apiNetworkException) { 
-            console.warn("[Validation Intent Warning] Real-time token endpoint offline. Engaging local sandbox fallback:", apiNetworkException.message); 
-            const mockSecret = "pi_mock_intent_" + Math.random().toString(36).substring(2, 12) + "_secret_" + Math.random().toString(36).substring(2, 8); 
-            window.stripeClientSecret = mockSecret; 
-            const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}"); 
-            activeOnboardingState.stripeClientSecret = mockSecret; 
-            localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState)); 
+// =========================================================================
+// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: PRODUCTION EDGE FUNCTION LAYERS
+// =========================================================================
+if (currentStep === 5) { 
+    console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks..."); 
+    
+    const nextButton = document.getElementById("summary-submit-payment-intent-btn") || document.querySelector(".btn-wizard-nav-next"); 
+    let fallbackText = "Secure Payment"; 
+    
+    if (nextButton) { 
+        fallbackText = nextButton.innerHTML; 
+        nextButton.disabled = true; 
+        nextButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Securing Authorization...'; 
+    } 
 
-            const step5Panel = document.getElementById("step-panel-5"); 
-            let errorNodeTarget = document.getElementById("step5-matrix-error-banner"); 
-            if (step5Panel && !errorNodeTarget) { 
-                errorNodeTarget = document.createElement("div"); 
-                errorNodeTarget.id = "step5-matrix-error-banner"; 
-                errorNodeTarget.style.cssText = "margin: 15px 0; padding: 12px; border: 1px solid #fee2e2; background: #fef2f2; color: #b91c1c; border-radius: 6px; font-size: 0.85rem; font-weight: 500; font-family: sans-serif; text-align: left;"; 
-                step5Panel.insertBefore(errorNodeTarget, step5Panel.lastChild); 
-            } 
-            if (errorNodeTarget) { 
-                errorNodeTarget.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> <strong>Developer Warning:</strong> Remote authorization endpoint returned an error status (${apiNetworkException.message}). Falling back to a local sandbox token to continue checkout preview.`; 
-            } 
-        } finally { 
-            if (nextButton) { 
-                nextButton.disabled = false; 
-                nextButton.innerHTML = fallbackText; 
-            } 
+    try { 
+        // Dynamically parse live grand total figures without hardcoded fallbacks
+        const rawTotalText = document.getElementById("payment-gateway-total-display")?.textContent || "";
+        const targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || parseFloat(rawTotalText.replace(/[^0-9.]/g, "")); 
+        
+        if (isNaN(targetAmount) || targetAmount <= 0) {
+            throw new Error("Validation aborted: Payment calculation total balance is uninitialized.");
+        }
+
+        const uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+        localStorage.setItem("f4u_active_tracking_token", uniqueTrackingToken);
+
+        const activeServiceKey = window.routeActiveServiceKey || window.currentServiceKey || "";
+        const activePlanKeyString = window.routeActivePlanKey || window.currentPlanKey || "";
+
+        const profileTransactionPayload = {
+            firstName: document.getElementById("portal_user_first_name")?.value.trim() || null,
+            lastName: document.getElementById("portal_user_last_name")?.value.trim() || null,
+            email: document.getElementById("portal_user_email_input")?.value.trim() || localStorage.getItem("f4u_checkout_email") || null,
+            phone: document.getElementById("portal_user_phone")?.value.trim() || null,
+            amountValue: targetAmount,
+            amountInCents: Math.round(targetAmount * 100), 
+            trackingNumber: uniqueTrackingToken,
+            serviceKey: activeServiceKey || null,
+            planTier: activePlanKeyString || null,
+            currency: "usd"
+        };
+
+        console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
+
+        // 🚀 THE PERMANENT FIX: Forward variables directly over HTTPS to your live Supabase Edge Function
+        const responseStream = await fetch('https://supabase.co', { 
+            method: "POST", 
+            headers: { 
+                "Content-Type": "application/json" 
+            }, 
+            body: JSON.stringify(profileTransactionPayload) 
+        }); 
+
+        if (!responseStream.ok) throw new Error(`Remote Edge Function rejected request with status (${responseStream.status}).`); 
+        
+        const transactionTokenPayload = await responseStream.json(); 
+        
+        if (!transactionTokenPayload.clientSecret) { 
+            throw new Error("Payload mapping error: clientSecret token string was omitted by the gateway server."); 
+        } 
+
+        // Cache the verified authorization token into window and local states cleanly
+        window.stripeClientSecret = transactionTokenPayload.clientSecret; 
+        
+        const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}"); 
+        activeOnboardingState.stripeClientSecret = transactionTokenPayload.clientSecret; 
+        localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState)); 
+        console.log("✅ [Supabase Gateway] ClientSecret token registered and verified successfully.");
+
+    } catch (apiNetworkException) { 
+        console.error("✕ [Gateway Configuration Failure] Handshake aborted:", apiNetworkException.message); 
+        
+        const step5Panel = document.getElementById("step-panel-5"); 
+        let errorNodeTarget = document.getElementById("step5-matrix-error-banner"); 
+        
+        if (step5Panel && !errorNodeTarget) { 
+            errorNodeTarget = document.createElement("div"); 
+            errorNodeTarget.id = "step5-matrix-error-banner"; 
+            errorNodeTarget.style.cssText = "margin: 15px 0; padding: 12px; border: 1px solid #fee2e2; background: #fef2f2; color: #b91c1c; border-radius: 6px; font-size: 0.85rem; font-weight: 500; font-family: sans-serif; text-align: left;"; 
+            step5Panel.insertBefore(errorNodeTarget, step5Panel.lastChild); 
+        } 
+        if (errorNodeTarget) { 
+            errorNodeTarget.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> <strong>Payment Gateway Connection Failure:</strong> Remote authorization tokens could not be fetched (${apiNetworkException.message}). Please check server configurations.`; 
+        } 
+        return false; // Prevent navigation transition if the cloud function can't generate secrets
+    } finally { 
+        if (nextButton) { 
+            nextButton.disabled = false; 
+            nextButton.innerHTML = fallbackText; 
         } 
     } 
+}
+
 
     if (currentStep >= 5) { 
         console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`); 
