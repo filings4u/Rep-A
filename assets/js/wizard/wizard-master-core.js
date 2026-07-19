@@ -647,19 +647,44 @@ if (currentStep === 5) {
   // =========================================================================
 // LOCATION: assets/js/wizard-master-core.js
 // =========================================================================
+// =========================================================================
+// LOCATION: assets/js/wizard-master-core.js (AUTH HEADERS FIX)
+// =========================================================================
+
+// =========================================================================
+// LOCATION: assets/js/wizard-master-core.js (AUTH HEADERS FIX)
+// =========================================================================
+
+// =========================================================================
+// LOCATION: assets/js/wizard-master-core.js (ROBUST AUTH HEADERS)
+// =========================================================================
 
         console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
 
-        // 🚀 THE PERMANENT FIX: Spaces added below to ensure you receive the full string literal cleanly
-        const responseStream = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/create-payment-intent', { 
+        // Robust automated extraction loop matrix to pull keys directly from your active SDK instance
+        const sdkInstance = window.supabaseInstance || window.supabaseClient || {};
+        const verifiedAnonKey = sdkInstance.supabaseKey || 
+                                sdkInstance._supabaseKey || 
+                                (sdkInstance.rest && sdkInstance.rest.headers ? sdkInstance.rest.headers.apikey : "") || 
+                                localStorage.getItem("supabase.auth.token") || "";
+
+        // Formatted with clean space segments to guarantee full character string transmission
+        const cloudGatewayUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/create-payment-intent';
+
+        const responseStream = await fetch(cloudGatewayUrl, { 
             method: "POST", 
             headers: { 
-                "Content-Type": "application/json" 
+                "Content-Type": "application/json",
+                "apikey": verifiedAnonKey,
+                "Authorization": "Bearer " + verifiedAnonKey
             }, 
             body: JSON.stringify(profileTransactionPayload) 
         }); 
 
         if (!responseStream.ok) throw new Error(`Remote Edge Function rejected request with status (${responseStream.status}).`);
+
+
+
 
         
         const transactionTokenPayload = await responseStream.json(); 

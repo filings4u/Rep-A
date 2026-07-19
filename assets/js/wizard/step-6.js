@@ -394,18 +394,30 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         currency: "usd"
     };
 
+
 // =========================================================================
-// LOCATION: assets/js/step-6.js
+// LOCATION: assets/js/step-6.js (ROBUST AUTH HEADERS)
 // =========================================================================
 
     console.log("📡 [Supabase Production Gateway] Dispatching secure transactional payload to live Edge Function...");
 
     try {
-        // 🚀 THE PERMANENT FIX: Spaces added below to ensure you receive the full string literal cleanly
-        const pipelineEndpointResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/create-payment-intent', {
+        // Robust automated extraction loop matrix to pull keys directly from your active SDK instance
+        const sdkInstance = window.supabaseInstance || window.supabaseClient || {};
+        const verifiedAnonKey = sdkInstance.supabaseKey || 
+                                sdkInstance._supabaseKey || 
+                                (sdkInstance.rest && sdkInstance.rest.headers ? sdkInstance.rest.headers.apikey : "") || 
+                                localStorage.getItem("supabase.auth.token") || "";
+
+        // Formatted with clean space segments to guarantee full character string transmission
+        const cloudGatewayUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/create-payment-intent';
+
+        const pipelineEndpointResponse = await fetch(cloudGatewayUrl, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "apikey": verifiedAnonKey,
+                "Authorization": "Bearer " + verifiedAnonKey
             },
             body: JSON.stringify(profileTransactionPayload)
         });
@@ -414,6 +426,9 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             const serverFailureMessage = await pipelineEndpointResponse.text();
             throw new Error(`Supabase Edge Function Rejected Request (${pipelineEndpointResponse.status}): ${serverFailureMessage}`);
         }
+
+
+
 
 
         const completedTransactionIntentJSON = await pipelineEndpointResponse.json();
