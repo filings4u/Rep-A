@@ -215,9 +215,32 @@
         }
     };
 
+      // ==========================================
+    // BLOCK 7: DYNAMIC DOM MOUNT WATCHER LOOP (FIXED)
+    // ==========================================
     window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
 
-    if (parseInt(window.currentWizardActiveStep, 10) === 6) {
+    function bootStripeWhenElementIsReady() {
+        const placeholderElement = document.getElementById("step-6-injection-placeholder");
+        
+        // If the wizard hasn't rendered the container yet, wait 50ms and try again
+        if (!placeholderElement) {
+            setTimeout(bootStripeWhenElementIsReady, 50);
+            return;
+        }
+
+        console.log("[Stripe Lifecycle] Target container found in DOM layout tree. Initializing element fields...");
         initializeFlatStripeCheckoutElement();
     }
+
+    // Initialize watcher execution context based on active layout visibility
+    if (parseInt(window.currentWizardActiveStep, 10) === 6) {
+        bootStripeWhenElementIsReady();
+    }
+
+    // Expose structural observer hook so your main layout router can force a remount on click
+    window.forceStripeCheckoutUIRefresh = function() {
+        bootStripeWhenElementIsReady();
+    };
+
 })();
