@@ -397,115 +397,119 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
 
 // =========================================================================
-// LOCATION: assets/js/step-6.js
+// LOCATION: assets/js/step-6.js (FRAGMENT A)
 // =========================================================================
+console.log("📡 [Supabase Production Gateway] Dispatching secure transactional payload to live Edge Function...");
 
-    console.log("📡 [Supabase Production Gateway] Dispatching secure transactional payload to live Edge Function...");
+try {
+    // Formatted cleanly with split strings to ensure full delivery
+    const productionCloudUrl = 'https' + '://' + 'lrbimrlbskjweynxlgas' + '.supabase' + '.co' + '/functions' + '/v1' + '/stripe-checkout';
 
-    try {
-        // Formatted cleanly with split strings to ensure full delivery
-        const productionCloudUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout';
+    const pipelineEndpointResponse = await fetch(productionCloudUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(profileTransactionPayload)
+    });
 
-        const pipelineEndpointResponse = await fetch(productionCloudUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(profileTransactionPayload)
-        });
+    if (!pipelineEndpointResponse.ok) {
+        const serverFailureMessage = await pipelineEndpointResponse.text();
+        throw new Error(`Supabase Edge Function Rejected Request (${pipelineEndpointResponse.status}): ${serverFailureMessage}`);
+    }
 
-        if (!pipelineEndpointResponse.ok) {
-            const serverFailureMessage = await pipelineEndpointResponse.text();
-            throw new Error(`Supabase Edge Function Rejected Request (${pipelineEndpointResponse.status}): ${serverFailureMessage}`);
-        }
+    // 🚀 FIXED: Securely extract the token payload and save it where Stripe expects it
+    const transactionTokenPayload = await pipelineEndpointResponse.json();
+    window.stripeClientSecret = transactionTokenPayload.clientSecret;
 
+    if (!window.stripeClientSecret) {
+        throw new Error("Handshake structural failure: Secret authorization token omitted by cloud gateway.");
+    }
+
+    // ============================================================================
+    // step-6.js - PART 5: DATA PRESERVATION & STRIPE INTENT TRANSMISSION (FIXED)
+    // ============================================================================
+    // 6. EXECUTE STRIPE INTENT TRANSMISSION HANDSHAKE 
+    if (window.stripeElementsContainer) { 
+        console.log("[Stripe Controller] Submitting payment components context...");
 // ============================================================================
-// step-6.js - PART 5: DATA PRESERVATION & STRIPE INTENT TRANSMISSION (FIXED)
+// step-6.js - PART 5: FRAGMENT B (STRIPE TRANSMISSION & VIEW SWAP)
 // ============================================================================
-
-            // 6. EXECUTE STRIPE INTENT TRANSMISSION HANDSHAKE 
-            if (window.stripeElementsContainer) { 
-                console.log("[Stripe Controller] Submitting payment components context...");
-                const { error: stripeSubmitError } = await window.stripeElementsContainer.submit(); 
-                
-                if (stripeSubmitError) { 
-                    // FIXED: Re-mapped submitButtonNode to use your true variable token name: submitBtn
-                    if (submitBtn) { 
-                        submitBtn.disabled = false; 
-                        submitBtn.style.opacity = "1"; 
-                        submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>'; 
-                    } 
-                    if (errorBanner) { 
-                        errorBanner.style.display = "block"; 
-                        errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> ${stripeSubmitError.message}`; 
-                    } 
-                    return false; 
-                } 
-
-                const isMockSecret = String(window.stripeClientSecret || "").startsWith("pi_mock_intent_"); 
-                
-                if (window.stripeInstance && !isMockSecret) { 
-                    console.log("[Stripe Submission Engine] Dispatching secure transactional parameters over network..."); 
-                    
-                    // PRODUCTION PATH: Secures and routes payment data to Stripe's servers automatically
-                    const { error: confirmError } = await window.stripeInstance.confirmPayment({ 
-                        elements: window.stripeElementsContainer, 
-                        clientSecret: window.stripeClientSecret, 
-                        confirmParams: { 
-                            return_url: `${window.location.origin}/client-dashboard.html?status=success&token=${uniqueTrackingToken}`, 
-                            receipt_email: finalEmail, 
-                            billing_details: { 
-                                email: finalEmail, 
-                                name: `${firstName} ${lastName}`.trim(), 
-                                phone: phone 
-                            } 
-                        } 
-                    }); 
-                    
-                    if (confirmError) throw confirmError; 
-                    
-                } else if (isMockSecret && supabaseClient) { 
-                    console.log("🧪 [Sandbox Engine] Mock intent matched. Forcing manual database synchronization..."); 
-                    const { error: mockUpdateError } = await supabaseClient 
-                        .from('orders') 
-                        .update({ status: 'Paid' }) 
-                        .eq('tracking_number', uniqueTrackingToken); 
-                        
-                    if (mockUpdateError) { 
-                        console.warn("⚠️ Sandbox Sync Warning:", mockUpdateError.message); 
-                    } else { 
-                        console.log("✅ Sandbox Sync Complete: Test transaction record marked as Paid."); 
-                    } 
-                } 
-            } else { 
-                throw new Error("Checkout components missing: The payment elements were not mounted correctly."); 
-            } 
-
-            // 7. SWAP OVER IN-WIZARD PANEL TO STEP 7 RECEIPT DISPLAY 
-            if (typeof window.switchWizardActiveViewLayout === "function") { 
-                console.log("[Stripe Submission Engine] Checkout complete. Transitioning control to step-7.js..."); 
-                window.switchWizardActiveViewLayout(7); 
-            } else if (typeof window.goToNextWizardStep === "function") { 
-                window.goToNextWizardStep(); 
-            } 
-
-        } catch (checkoutError) { 
-            console.error("[Fatal Payment Intercept Catch]", checkoutError); 
-            if (errorBanner) { 
-                errorBanner.style.display = "block"; 
-                errorBanner.innerHTML = ` 
-                    <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> 
-                    <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError} 
-                `; 
-            } 
-            // FIXED: Re-mapped submitButtonNode to use your true variable token name: submitBtn
+        const { error: stripeSubmitError } = await window.stripeElementsContainer.submit(); 
+        if (stripeSubmitError) { 
             if (submitBtn) { 
                 submitBtn.disabled = false; 
                 submitBtn.style.opacity = "1"; 
                 submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>'; 
             } 
+            if (errorBanner) { 
+                errorBanner.style.display = "block"; 
+                errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> ${stripeSubmitError.message}`; 
+            } 
+            return false; 
         } 
-    };
+
+        const isMockSecret = String(window.stripeClientSecret || "").startsWith("pi_mock_intent_"); 
+        
+        if (window.stripeInstance && !isMockSecret) { 
+            console.log("[Stripe Submission Engine] Dispatching secure transactional parameters over network..."); 
+            
+            const { error: confirmError } = await window.stripeInstance.confirmPayment({ 
+                elements: window.stripeElementsContainer, 
+                clientSecret: window.stripeClientSecret, 
+                confirmParams: { 
+                    return_url: `${window.location.origin}/client-dashboard.html?status=success&token=${uniqueTrackingToken}`, 
+                    receipt_email: finalEmail, 
+                    billing_details: { 
+                        email: finalEmail, 
+                        name: `${firstName} ${lastName}`.trim(), 
+                        phone: phone 
+                    } 
+                } 
+            }); 
+            
+            if (confirmError) throw confirmError; 
+            
+        } else if (isMockSecret && supabaseClient) { 
+            console.log("🧪 [Sandbox Engine] Mock intent matched. Forcing manual database synchronization..."); 
+            const { error: mockUpdateError } = await supabaseClient 
+                .from('orders') 
+                .update({ status: 'Paid' }) 
+                .eq('tracking_number', uniqueTrackingToken); 
+                
+            if (mockUpdateError) { 
+                console.warn("⚠️ Sandbox Sync Warning:", mockUpdateError.message); 
+            } else { 
+                console.log("✅ Sandbox Sync Complete: Test transaction record marked as Paid."); 
+            } 
+        } 
+    } else { 
+        throw new Error("Checkout components missing: The payment elements were not mounted correctly."); 
+    } 
+
+    if (typeof window.switchWizardActiveViewLayout === "function") { 
+        console.log("[Stripe Submission Engine] Checkout complete. Transitioning control to step-7.js..."); 
+        window.switchWizardActiveViewLayout(7); 
+    } else if (typeof window.goToNextWizardStep === "function") { 
+        window.goToNextWizardStep(); 
+    } 
+
+} catch (checkoutError) { 
+    console.error("[Fatal Payment Intercept Catch]", checkoutError); 
+    if (errorBanner) { 
+        errorBanner.style.display = "block"; 
+        errorBanner.innerHTML = ` 
+            <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> 
+            <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError} 
+        `; 
+    } 
+    if (submitBtn) { 
+        submitBtn.disabled = false; 
+        submitBtn.style.opacity = "1"; 
+        submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>'; 
+    } 
+} 
+};
 
 
 // ============================================================================
