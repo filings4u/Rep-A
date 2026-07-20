@@ -2,7 +2,7 @@
     // ==========================================
     // BLOCK 1: INITIAL VARIABLE SET & GLOBAL MEMORY
     // ==========================================
-    const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE';
+    const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4i0dNjSlvyScX676lZwB34Lby8nEuv0sRorwo6kGYKkTJYiTyPQA6PVjzwUSjB9Kz90LdHtCh2E1BTMMEkTX00HCLPKUkf';
     window.stripeInstance = window.stripeInstance || null;
     window.stripeElementsContainer = window.stripeElementsContainer || null;
     window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
