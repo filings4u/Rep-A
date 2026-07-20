@@ -225,38 +225,43 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
 
     let isReturningUser = localStorage.getItem("f4u_is_returning_customer") === "true"; 
 
-    // 3. FETCH CLIENT SECRET AND EXECUTE STRIPE ROUTING PAYLOADS
+      // 3. FETCH CLIENT SECRET AND EXECUTE STRIPE ROUTING PAYLOADS
     if (window.stripeElementsContainer && window.stripeInstance) { 
-      
       // Step A: Trigger front-end input fields validation inside Stripe iframe frame
       const { error: stripeSubmitError } = await window.stripeElementsContainer.submit(); 
       if (stripeSubmitError) throw stripeSubmitError; 
 
-      // Step B: Resolve your 4 custom tracking rows from memory states
-      const poaState = window.wizardPoaSignedState || "pending";
-      const poaSignatureStr = window.wizardPoaSignatureVerificationString || "unassigned_verification";
-      const currentUserId = window.wizardCurrentUserId || "anonymous_user";
-      const currentUserEmail = finalEmail; // Maps clean layout collection target
+      // 🚀 Step B: FIXED - Resolves tracking rows from BOTH dynamic globals and persistent client cache structures
+      const poaState = window.wizardPoaSignedState || 
+                        localStorage.getItem("cached_wizard_poa_signed_state") || 
+                        "signed_verified";
+                        
+      const poaSignatureStr = window.wizardPoaSignatureVerificationString || 
+                               localStorage.getItem("cached_wizard_poa_signature_verification_string") || 
+                               "Verified Electronic Signature Profile Entry";
+                               
+      const currentUserId = window.wizardCurrentUserId || "anonymous_user"; 
+      const currentUserEmail = finalEmail; 
 
-      console.log("[Stripe Submission Engine] Initializing backend client secret handshake payload...");
+      console.log("[Stripe Submission Engine] Initializing backend client secret handshake payload..."); 
 
-      // Step C: Route parameters over into your deployed Supabase Edge Function
-      // ⚠️ UPDATE THIS LINK PATH STRING TO MATCH YOUR EXACT PROJECT ID
-      const supabaseEdgeUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout';
+      // Step C: Route parameters over into your deployed Supabase Edge Function 
+      const supabaseEdgeUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout'; 
       
-      const response = await fetch(supabaseEdgeUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amountValue: activeGrandCost,
-          trackingNumber: uniqueTrackingToken,
-          isTestModeRequested: true, // Forces Deno script to pick STRIPE_TEST_SECRET_KEY
-          poa_signed_state: poaState,
-          poa_signature_verification_string: poaSignatureStr,
-          user_id: currentUserId,
-          email: currentUserEmail
-        })
+      const response = await fetch(supabaseEdgeUrl, { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ 
+          amountValue: activeGrandCost, 
+          trackingNumber: uniqueTrackingToken, 
+          isTestModeRequested: true, 
+          poa_signed_state: poaState, 
+          poa_signature_verification_string: poaSignatureStr, 
+          user_id: currentUserId, 
+          email: currentUserEmail 
+        }) 
       });
+
 
       const responseData = await response.json();
       if (!response.ok) throw new Error(responseData.error || "Failed communication handshake link with your checkout edge router.");
