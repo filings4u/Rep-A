@@ -96,7 +96,7 @@ async function initializeFlatStripeCheckoutElement() {
 
 
 
-             // ==========================================
+            // ==========================================
             // BLOCK 4: SERVER API HANDSHAKE & DIRECT DATABASE INJECTION (FIXED)
             // ==========================================
             console.log("[Stripe Loader] Handshaking with checkout edge router...");
@@ -126,7 +126,6 @@ async function initializeFlatStripeCheckoutElement() {
 
             console.log("[Database Engine] Compiling dynamic transaction record object payload...");
             
-            // 1. Build the base insertion object with no user_id property included by default
             const ordersRecordPayload = {
                 company_name: localStorage.getItem("wizard_field_company_name") || "",
                 service_key: window.wizardActiveServiceKeyIdentifier || "",
@@ -141,7 +140,6 @@ async function initializeFlatStripeCheckoutElement() {
                 poa_signature_verification_string: poaSignatureStr || null
             };
 
-            // 2. Only inject the user_id column if a valid, non-blank UUID string actually exists
             if (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") {
                 ordersRecordPayload.user_id = currentUserId;
             }
@@ -149,34 +147,26 @@ async function initializeFlatStripeCheckoutElement() {
             console.log("[Database Engine] Inserting dynamic transaction record into your orders table...");
             const { error: dbInsertError } = await supabaseClientInstance
                 .from('orders')
-                .insert([ordersRecordPayload]); // Pass the dynamic payload object safely
+                .insert([ordersRecordPayload]);
 
             if (dbInsertError) throw dbInsertError;
 
-            // 3. Handshake with your edge router endpoint to generate the Stripe client token
-            console.log("[Stripe Loader] Handshaking with checkout edge router...");
-            const response = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    amountValue: currentGrandTotal,
-                    trackingNumber: uniqueTrackingToken,
-                    isTestModeRequested: true,
-                    email: finalEmail
-                })
-            });
+            // SAFETY GAP FORCE INITIALIZATION: Double-checks Stripe core wrapper isn't missing
+            if (!window.stripeInstance && typeof Stripe !== "undefined") {
+                console.log("[Stripe Loader] Re-instantiating missing Stripe wrapper safely...");
+                window.stripeInstance = Stripe(ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
+            }
 
-            const responseData = await response.json();
-            if (!response.ok) throw new Error(responseData.error || "Failed communication handshake link with checkout edge router.");
-
-            const clientSecret = responseData.clientSecret;
+            if (!window.stripeInstance) {
+                throw new Error("Stripe engine library failed to initialize globally. Verify your index script tags.");
+            }
 
             if (window.stripePaymentElementInstance) {
                 window.stripePaymentElementInstance.destroy();
                 window.stripePaymentElementInstance = null;
             }
 
-            // 4. Mount the secure checkout fields using the generated token parameters
+            // Mount the elements container using the now verified stripeInstance
             window.stripeElementsContainer = window.stripeInstance.elements({
                 clientSecret: clientSecret,
                 appearance: {
@@ -197,6 +187,7 @@ async function initializeFlatStripeCheckoutElement() {
                     window.executeOnboardingTransactionPayloadSubmitVanilla(e, clientSecret, uniqueTrackingToken, finalEmail, currentGrandTotal);
                 };
             }
+
 
         } catch (err) {
             console.error("[Checkout Pipeline Failed]", err);
