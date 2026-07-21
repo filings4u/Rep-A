@@ -7,59 +7,60 @@
     window.stripeElementsContainer = window.stripeElementsContainer || null;
     window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
 
-// ==========================================
-// BLOCK 2: INPUT VALIDATION & SHAKE INTERCEPT (FIXED SYNTAX)
-// ==========================================
-async function initializeFlatStripeCheckoutElement() {
-    console.log("[Stripe Loader] Initiating payment elements accordion layout...");
-    const baseContainer = document.getElementById("step-6-injection-placeholder");
-    if (!baseContainer) return;
+    // ==========================================
+    // BLOCK 2: INPUT VALIDATION & SHAKE INTERCEPT (FIXED SCOPE)
+    // ==========================================
+    // Explicitly bind the function to the window object so wizard-master-core.js can run it
+    window.initializeFlatStripeCheckoutElement = async function() {
+        console.log("[Stripe Loader] Initiating payment elements accordion layout...");
+        const baseContainer = document.getElementById("step-6-injection-placeholder");
+        if (!baseContainer) return;
 
-    if (typeof Stripe === "undefined") {
-        baseContainer.innerHTML = "<p style='color: red; font-size: 0.85rem; font-weight: 600;'>Payment system offline. Please refresh.</p>";
-        return;
-    }
-
-    // Read active input targets across your layout form elements
-    const emailInput = document.getElementById("lead_email") || document.getElementById("portal_user_email") || document.querySelector(".master-onboarding-form input[type='email']");
-    const finalEmail = emailInput?.value.trim().toLowerCase() || "";
-
-    // STRICT INTERCEPT: If email is missing, trigger shake animation and halt execution
-    if (!finalEmail && emailInput) {
-        console.warn("[Validation Engine] Email empty. Aborting payment mount and triggering shake alert.");
-        
-        emailInput.style.transition = "all 0.1s ease";
-        emailInput.style.borderColor = "#ef4444";
-        emailInput.style.boxShadow = "0 0 0 3px rgba(239, 68, 68, 0.2)";
-        
-        let shakeSequence = [10, -10, 10, -10, 5, -5, 0];
-        let step = 0;
-        let shakeInterval = setInterval(() => {
-            if (step < shakeSequence.length) {
-                emailInput.style.transform = `translateX(${shakeSequence[step]}px)`;
-                step++;
-            } else {
-                clearInterval(shakeInterval);
-                emailInput.style.transform = "none";
-            }
-        }, 50);
-
-        emailInput.focus();
-        
-        const errorBanner = document.getElementById("step6-error-banner-target");
-        if (errorBanner) {
-            errorBanner.style.display = "block";
-            errorBanner.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> <strong>Information Required:</strong> Please provide a valid email address to complete secure checkout initialization.`;
+        if (typeof Stripe === "undefined") {
+            baseContainer.innerHTML = "<p style='color: red; font-size: 0.85rem; font-weight: 600;'>Payment system offline. Please refresh.</p>";
+            return;
         }
-        return; 
-    }
 
-    try {
-        const currentGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0.00;
-        const uniqueTrackingToken = window.wizardTrackingNumber || localStorage.getItem("cached_wizard_tracking_number") || "";
-        const poaState = window.wizardPoaSignedState || localStorage.getItem("cached_wizard_poa_signed_state") || "";
-        const poaSignatureStr = window.wizardPoaSignatureVerificationString || localStorage.getItem("cached_wizard_poa_signature_verification_string") || "";
-        const currentUserId = window.wizardCurrentUserId || "";
+        // Read active input targets across your layout form elements
+        const emailInput = document.getElementById("lead_email") || document.getElementById("portal_user_email") || document.querySelector(".master-onboarding-form input[type='email']");
+        const finalEmail = emailInput?.value.trim().toLowerCase() || "";
+
+        // STRICT INTERCEPT: If email is missing, trigger shake animation and halt execution
+        if (!finalEmail && emailInput) {
+            console.warn("[Validation Engine] Email empty. Aborting payment mount and triggering shake alert.");
+            
+            emailInput.style.transition = "all 0.1s ease";
+            emailInput.style.borderColor = "#ef4444";
+            emailInput.style.boxShadow = "0 0 0 3px rgba(239, 68, 68, 0.2)";
+            
+            let shakeSequence = [10, -10, 10, -10, 5, -5, 0];
+            let step = 0;
+            let shakeInterval = setInterval(() => {
+                if (step < shakeSequence.length) {
+                    emailInput.style.transform = `translateX(${shakeSequence[step]}px)`;
+                    step++;
+                } else {
+                    clearInterval(shakeInterval);
+                    emailInput.style.transform = "none";
+                }
+            }, 50);
+
+            emailInput.focus();
+            
+            const errorBanner = document.getElementById("step6-error-banner-target");
+            if (errorBanner) {
+                errorBanner.style.display = "block";
+                errorBanner.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> <strong>Information Required:</strong> Please provide a valid email address to complete secure checkout initialization.`;
+            }
+            return; 
+        }
+
+        try {
+            const currentGrandTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0.00;
+            const uniqueTrackingToken = window.wizardTrackingNumber || localStorage.getItem("cached_wizard_tracking_number") || "";
+            const poaState = window.wizardPoaSignedState || localStorage.getItem("cached_wizard_poa_signed_state") || "";
+            const poaSignatureStr = window.wizardPoaSignatureVerificationString || localStorage.getItem("cached_wizard_poa_signature_verification_string") || "";
+            const currentUserId = window.wizardCurrentUserId || "";
 
 
             // ==========================================
