@@ -93,6 +93,9 @@ async function initializeFlatStripeCheckoutElement() {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Initializing Checkout...';
             }
+
+
+
             // ==========================================
             // BLOCK 4: SUPABASE INJECTION & SERVER API HANDSHAKE
             // ==========================================
@@ -106,20 +109,24 @@ async function initializeFlatStripeCheckoutElement() {
 
             // 2. Direct script execution: Call your orders table to log the client data right now
             console.log("[Database Engine] Inserting dynamic transaction record into your orders table...");
-            const { error: dbInsertError } = await supabaseClientInstance
-                .from('orders')
-                .insert([{
-                    company_name: localStorage.getItem("wizard_field_company_name") || "",
-                    service_key: window.wizardActiveServiceKeyIdentifier || "",
-                    service_title: window.wizardActiveServiceTitleString || "",
-                    plan_tier: window.routeActivePlanTierName || "",
-                    total_fee: currentGrandTotal,
-                    tracking_number: uniqueTrackingToken,
-                    user_id: currentUserId === "anonymous_user" ? null : currentUserId,
-                    email: finalEmail,
-                    poa_signed_state: poaState === "signed_verified" || poaState === true,
-                    poa_signature_verification_string: poaSignatureStr || null
-                }]);
+const { error: dbInsertError } = await supabaseClientInstance
+    .from('orders')
+    .insert([{
+        company_name: localStorage.getItem("wizard_field_company_name") || "",
+        service_key: window.wizardActiveServiceKeyIdentifier || "",
+        service_title: window.wizardActiveServiceTitleString || "",
+        plan_tier: window.routeActivePlanTierName || "",
+        total_fee: currentGrandTotal,
+        tracking_number: uniqueTrackingToken,
+        
+        // FIXED: Converts empty text strings cleanly to database NULL values for guests
+        user_id: (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") ? currentUserId : null,
+        
+        email: finalEmail,
+        poa_signed_state: poaState === "signed_verified" || poaState === true,
+        poa_signature_verification_string: poaSignatureStr || null
+    }]);
+
 
             if (dbInsertError) throw dbInsertError;
 
