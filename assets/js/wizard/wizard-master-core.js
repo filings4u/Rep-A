@@ -102,102 +102,80 @@
 
 
 
-// ============================================================================ 
-// // 🧼 REFACTORED RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER 
-// ============================================================================ 
-(function() { 
-  "use strict";
+// ============================================================================ //
+// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (TIMING SYNCHRONIZED) //
+// ============================================================================ //
+(function() {
+    "use strict";
 
-  const NAMESPACE_PREFIX = "wizard_";
-  const ALLOWED_STATE_CODES = /^[A-Z]{2}$/;
+    const cacheKeyNamespace = "f4u_wizard_onboarding_state";
+    const urlParams = new URLSearchParams(window.location.search);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const activeStep = parseInt(window.currentWizardActiveStep, 10);
-  const isProcessingFunnel = !isNaN(activeStep) && activeStep > 0;
+    // 🛡️ STEP 1: INSTANT SYNCHRONOUS MEMORY HYDRATION
+    // Populate layout variables instantly on execution pass so Step 6 Stripe configurations
+    // are never left with null parameters while the thread evaluates database tokens.
+    const activeStepTracker = parseInt(window.currentWizardActiveStep, 10);
+    const isActivelyProgressingInWizard = !isNaN(activeStepTracker) && activeStepTracker > 0;
 
-  // Resolve and clean the jurisdiction code
-  const rawJurisdiction = localStorage.getItem(`${NAMESPACE_PREFIX}selected_state`) || 
-                          urlParams.get('state') || 
-                          urlParams.get('stateCode');
-  
-  let cleanJurisdiction = rawJurisdiction ? String(rawJurisdiction).toUpperCase().trim() : null;
-  if (cleanJurisdiction && !ALLOWED_STATE_CODES.test(cleanJurisdiction)) {
-    cleanJurisdiction = null; 
-  }
-
-  if (isProcessingFunnel || cleanJurisdiction) {
-    window.selectedJurisdiction = window.selectedJurisdiction || cleanJurisdiction;
-  }
-
-  // Target specific keys for deletion instead of clearing all storage
-  function purgeAppSpecificStorage() {
-    const keysToKeep = ['supabase.auth.token', 'sb-']; 
+    // Grab cached data keys instantly before running background network promises
+    const cachedStateJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || urlParams.get('stateCode') || null;
     
-    for (let i = localStorage.length - 1; i >= 0; i--) {
-      const key = localStorage.key(i);
-      if (key && !keysToKeep.some(keep => key.includes(keep))) {
-        localStorage.removeItem(key);
-      }
-    }
-    sessionStorage.clear();
-    
-    if (window.collectedFormMetadata) window.collectedFormMetadata = {};
-    window.selectedJurisdiction = null;
-  }
-
-  async function evaluateSessionAuthorization() {
-    // Rely on the single centralized client instance to fix multi-instance bugs
-    const supabase = window.AppDatabaseClientInstance || window.supabaseClientInstance || window.supabase;
-    let isUserLoggedIn = false;
-
-    if (supabase?.auth) {
-      try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (user && !error) isUserLoggedIn = true;
-      } catch (e) {
-        console.warn("[Session Engine] Auth verification deferred.");
-      }
+    if (isActivelyProgressingInWizard || cachedStateJurisdiction) {
+        window.selectedJurisdiction = window.selectedJurisdiction || cachedStateJurisdiction;
     }
 
-    if (!isUserLoggedIn) {
-      if (!isProcessingFunnel) {
-        console.log("[Session Engine] Public Guest Session Landing: Purging application caching allocations safely.");
-        purgeAppSpecificStorage();
+    // 🛡️ STEP 2: ASYNC DATABASE AUTHENTICATION RUNNER
+    // Evaluates security permissions safely without pausing the global window variables
+    async function evaluateSupabaseAuthorizationGateway() {
+        const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null);
+        let isAuthenticatedUserSession = false;
 
-        if (urlParams.has('state')) {
-          urlParams.delete('state');
-          const cleanPath = `${window.location.pathname}?${urlParams.toString()}`;
-          window.history.replaceState({ path: cleanPath }, '', cleanPath);
+        if (supabase && typeof supabase.auth === "object") {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) isAuthenticatedUserSession = true;
+            } catch(e) {
+                isAuthenticatedUserSession = false;
+            }
         }
-      } else {
-        console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStep}). Retaining keys.`);
-        window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem(`${NAMESPACE_PREFIX}selected_state`);
-      }
-    } else {
-      console.log("[Session Engine] Persistent Authenticated Dashboard Connection Active.");
-      window.selectedJurisdiction = localStorage.getItem(`${NAMESPACE_PREFIX}selected_state`) || cleanJurisdiction;
 
-      // Handle Step 6 Stripe mounting safely
-      if (activeStep === 6) {
-        if (typeof window.forceStep6StripePaymentGatewayRefreshPass === "function") {
-          window.forceStep6StripePaymentGatewayRefreshPass();
+        if (!isAuthenticatedUserSession) {
+            if (!isActivelyProgressingInWizard) {
+                console.log("[Session Engine] Public Guest Session Landing: Purging residual caching allocations.");
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                if (window.collectedFormMetadata) {
+                    window.collectedFormMetadata = {};
+                }
+                
+                window.selectedJurisdiction = null;
+                localStorage.removeItem('wizard_selected_state');
+
+                if (urlParams.has('state')) {
+                    urlParams.delete('state');
+                    const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`;
+                    window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath);
+                }
+            } else {
+                console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStepTracker}). Retaining data keys.`);
+                window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
+            }
         } else {
-          console.warn("[Session Engine Interlock] Step 6 Stripe refresh handler is not initialized yet.");
+            console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active.");
+            window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
+            
+            // 💳 STRIPE RECOVERY INTERLOCK
+            // If the user is logged in, verify if a Stripe client token is waiting inside their backend account record
+            if (activeStepTracker === 6 && typeof window.forceStep6StripePaymentGatewayRefreshPass === "function") {
+                console.log("[Session Engine] Synchronizing active dashboard session back to Step 6 payment gateway viewports.");
+                window.forceStep6StripePaymentGatewayRefreshPass();
+            }
         }
-      }
     }
 
-    // Resolve an initialization promise to inform Step 6 that variables are ready
-    window.isWizardSessionEngineReady = true;
-    document.dispatchEvent(new CustomEvent("wizardSessionEngineReady", { detail: { loggedIn: isUserLoggedIn } }));
-  }
-
-  // Initialize background thread
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", evaluateSessionAuthorization);
-  } else {
-    evaluateSessionAuthorization();
-  }
+    // Execute background validation non-destructively
+    evaluateSupabaseAuthorizationGateway();
 })();
 
 
