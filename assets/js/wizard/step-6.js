@@ -64,8 +64,36 @@
                 submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Initializing Checkout...';
             }
             // ==========================================
-            // BLOCK 4: SERVER API HANDSHAKE & INITIALIZATION
+            // BLOCK 4: SUPABASE INJECTION & SERVER API HANDSHAKE
             // ==========================================
+            // 1. Dynamically import the Supabase Client using the standard ESM URL
+            const { createClient } = await import('https://esm.sh/@supabase/supabase-js');
+
+            const supabaseClientInstance = createClient(
+                'https://lrbimrlbskjweynxlgas.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
+            );
+
+            // 2. Direct script execution: Call your orders table to log the client data right now
+            console.log("[Database Engine] Inserting dynamic transaction record into your orders table...");
+            const { error: dbInsertError } = await supabaseClientInstance
+                .from('orders')
+                .insert([{
+                    company_name: localStorage.getItem("wizard_field_company_name") || "",
+                    service_key: window.wizardActiveServiceKeyIdentifier || "",
+                    service_title: window.wizardActiveServiceTitleString || "",
+                    plan_tier: window.routeActivePlanTierName || "",
+                    total_fee: currentGrandTotal,
+                    tracking_number: uniqueTrackingToken,
+                    user_id: currentUserId === "anonymous_user" ? null : currentUserId,
+                    email: finalEmail,
+                    poa_signed_state: poaState === "signed_verified" || poaState === true,
+                    poa_signature_verification_string: poaSignatureStr || null
+                }]);
+
+            if (dbInsertError) throw dbInsertError;
+
+            // 3. Handshake with your edge router endpoint to generate the Stripe client token
             console.log("[Stripe Loader] Handshaking with checkout edge router...");
             const response = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout', {
                 method: 'POST',
@@ -74,14 +102,7 @@
                     amountValue: currentGrandTotal,
                     trackingNumber: uniqueTrackingToken,
                     isTestModeRequested: true,
-                    poa_signed_state: poaState,
-                    poa_signature_verification_string: poaSignatureStr,
-                    user_id: currentUserId,
-                    email: finalEmail,
-                    company_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
-                    service_key: window.wizardActiveServiceKeyIdentifier || "llc-formation",
-                    service_title: window.wizardActiveServiceTitleString || "LLC Formation Service",
-                    plan_tier: window.routeActivePlanTierName || "Compliance Update Filing Package"
+                    email: finalEmail
                 })
             });
 
@@ -95,7 +116,7 @@
                 window.stripePaymentElementInstance = null;
             }
 
-            // Initialize container layout using the server-side clientSecret
+            // 4. Mount the secure checkout fields using the generated token parameters
             window.stripeElementsContainer = window.stripeInstance.elements({
                 clientSecret: clientSecret,
                 appearance: {
@@ -104,7 +125,6 @@
                 }
             });
 
-            // Mount Element onto your injection mount point
             window.stripePaymentElementInstance = window.stripeElementsContainer.create('payment', {
                 layout: { type: 'accordion', defaultCollapsed: false }
             });
@@ -119,128 +139,146 @@
             }
 
         } catch (err) {
-            console.error("[Stripe Loading Error]", err);
+            console.error("[Checkout Pipeline Failed]", err);
             const errorBanner = document.getElementById("step6-error-banner-target");
             if (errorBanner) {
-                errorBanner.innerText = `Checkout Element Offline: ${err.message}`;
+                errorBanner.innerText = `Portal Configuration Failure: ${err.message}`;
                 errorBanner.style.display = "block";
             }
         }
     }
-    // ==========================================
-    // BLOCK 5 & 6: SECURE CHECKOUT SUBMISSION AND REDIRECT
-    // ==========================================
-    window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event, clientSecret, uniqueTrackingToken, finalEmail, activeGrandCost) {
-        if (event && typeof event.preventDefault === "function") event.preventDefault();
 
-        const submitBtn = document.getElementById("wizard-next-trigger-btn");
-        const errorBanner = document.getElementById("step6-error-banner-target");
-        const step6Panel = document.getElementById("step-panel-6");
+ // ==========================================
+// BLOCK 5 & 6: SECURE CHECKOUT SUBMISSION, DATABASE STATUS UPGRADE, AND REDIRECT (FIXED)
+// ==========================================
+window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event, clientSecret, uniqueTrackingToken, finalEmail, activeGrandCost) {
+    if (event && typeof event.preventDefault === "function") event.preventDefault();
 
-        if (errorBanner) {
-            errorBanner.style.display = "none";
-            errorBanner.innerHTML = "";
-        }
+    const submitBtn = document.getElementById("wizard-next-trigger-btn");
+    const errorBanner = document.getElementById("step6-error-banner-target");
+    const step6Panel = document.getElementById("step-panel-6");
 
-        // Inline input validator scan logic
-        let emptyFieldFound = null;
-        if (step6Panel) {
-            const inlineInputs = step6Panel.querySelectorAll("input:not([type='hidden']), select, textarea");
-            inlineInputs.forEach(field => {
-                if (field.closest('.StripeElement') || field.closest("[id*='stripe']") || field.closest("[id*='payment-element']")) return;
-                if (field.hasAttribute("required") && field.value.trim() === "") {
-                    if (!emptyFieldFound) emptyFieldFound = field;
-                }
-            });
-        }
+    if (errorBanner) {
+        errorBanner.style.display = "none";
+        errorBanner.innerHTML = "";
+    }
 
-        if (emptyFieldFound) {
-            emptyFieldFound.focus();
-            emptyFieldFound.style.borderColor = "#b91c1c";
-            return false;
-        }
-
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...';
-        }
-
-        try {
-            // Trigger front-end formatting validation checks inside Stripe iframe
-            const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
-            if (stripeSubmitError) throw stripeSubmitError;
-
-            console.log("[Stripe Submission Engine] Directing active payment authorization intent via secure Stripe API...");
-            
-            // Confirm transaction using pre-fetched secret token properties
-            const { error: confirmError } = await window.stripeInstance.confirmPayment({
-                elements: window.stripeElementsContainer,
-                clientSecret: clientSecret,
-                confirmParams: {
-                    return_url: `${window.location.origin}/wizard.html?step=7&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`,
-                    receipt_email: finalEmail
-                },
-                redirect: "if_required"
-            });
-
-            if (confirmError) throw confirmError;
-
-            // Pack manifestation receipt arrays
-            const checkoutManifestPayload = {
-                transaction_hash_id: uniqueTrackingToken,
-                communications_email: finalEmail,
-                financials_grand_total_charge: activeGrandCost,
-                legal_entity_name: localStorage.getItem("wizard_field_company_name") || "Your Corporate Entity Profile",
-                taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...",
-                selected_package_title: window.routeActivePlanTierName || "Compliance Update Filing Package"
-            };
-            sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload));
-
-            // Shift step active view layouts natively
-            if (typeof window.switchWizardActiveViewLayout === "function") {
-                console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js...");
-                window.switchWizardActiveViewLayout(7);
+    // Inline input validator scan logic
+    let emptyFieldFound = null;
+    if (step6Panel) {
+        const inlineInputs = step6Panel.querySelectorAll("input:not([type='hidden']), select, textarea");
+        inlineInputs.forEach(field => {
+            if (field.closest('.StripeElement') || field.closest("[id*='stripe']") || field.closest("[id*='payment-element']")) return;
+            if (field.hasAttribute("required") && field.value.trim() === "") {
+                if (!emptyFieldFound) emptyFieldFound = field;
             }
+        });
+    }
 
-        } catch (checkoutError) {
-            console.error("[Fatal Payment Intercept Catch]", checkoutError);
-            if (errorBanner) {
-                errorBanner.style.display = "block";
-                errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError}`;
-            }
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
-            }
-        }
-    };
+    if (emptyFieldFound) {
+        emptyFieldFound.focus();
+        emptyFieldFound.style.borderColor = "#b91c1c";
+        return false;
+    }
 
-      // ==========================================
-    // BLOCK 7: DYNAMIC DOM MOUNT WATCHER LOOP (FIXED)
-    // ==========================================
-    window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...';
+    }
 
-    function bootStripeWhenElementIsReady() {
-        const placeholderElement = document.getElementById("step-6-injection-placeholder");
+    try {
+        // 1. Trigger front-end formatting validation checks inside Stripe iframe
+        const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
+        if (stripeSubmitError) throw stripeSubmitError;
+
+        console.log("[Stripe Submission Engine] Directing active payment authorization intent via secure Stripe API...");
         
-        // If the wizard hasn't rendered the container yet, wait 50ms and try again
-        if (!placeholderElement) {
-            setTimeout(bootStripeWhenElementIsReady, 50);
-            return;
+        // 2. Confirm transaction using pre-fetched secret token properties
+        const { error: confirmError } = await window.stripeInstance.confirmPayment({
+            elements: window.stripeElementsContainer,
+            clientSecret: clientSecret,
+            confirmParams: {
+                return_url: `${window.location.origin}/wizard.html?step=7&token=${uniqueTrackingToken}&email=${encodeURIComponent(finalEmail)}`,
+                receipt_email: finalEmail
+            },
+            redirect: "if_required"
+        });
+
+        if (confirmError) throw confirmError;
+
+        // 3. DIRECT SUPABASE CALL: Update table status to 'Paid' instantly upon successful execution
+        console.log("[Database Integration] Updating order payment status to power dashboards...");
+        const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+        
+        const clientInstance = createClient(
+            'https://lrbimrlbskjweynxlgas.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
+        );
+
+        const { error: dbUpdateError } = await clientInstance
+            .from('orders')
+            .update({ 
+                status: 'Paid',
+                updated_at: new Date().toISOString()
+            })
+            .eq('tracking_number', uniqueTrackingToken);
+
+        if (dbUpdateError) throw dbUpdateError;
+
+        // Pack manifestation receipt arrays
+        const checkoutManifestPayload = {
+            transaction_hash_id: uniqueTrackingToken,
+            communications_email: finalEmail,
+            financials_grand_total_charge: activeGrandCost,
+            legal_entity_name: localStorage.getItem("wizard_field_company_name") || "",
+            taxpayer_ein: localStorage.getItem("wizard_field_ein") || "",
+            selected_package_title: window.routeActivePlanTierName || ""
+        };
+        sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(checkoutManifestPayload));
+
+        // Shift step active view layouts natively
+        if (typeof window.switchWizardActiveViewLayout === "function") {
+            console.log("[Stripe Submission Engine] Payment complete. Transitioning control to step-7.js...");
+            window.switchWizardActiveViewLayout(7);
         }
 
-        console.log("[Stripe Lifecycle] Target container found in DOM layout tree. Initializing element fields...");
-        initializeFlatStripeCheckoutElement();
+    } catch (checkoutError) {
+        console.error("[Fatal Payment Intercept Catch]", checkoutError);
+        if (errorBanner) {
+            errorBanner.style.display = "block";
+            errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError}`;
+        }
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
+        }
+    }
+};
+// ==========================================
+// BLOCK 7: DYNAMIC DOM MOUNT WATCHER LOOP
+// ==========================================
+window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
+
+function bootStripeWhenElementIsReady() {
+    const placeholderElement = document.getElementById("step-6-injection-placeholder");
+    
+    // If the wizard has not physically rendered the container layout yet, wait 50ms and check again
+    if (!placeholderElement) {
+        setTimeout(bootStripeWhenElementIsReady, 50);
+        return;
     }
 
-    // Initialize watcher execution context based on active layout visibility
-    if (parseInt(window.currentWizardActiveStep, 10) === 6) {
-        bootStripeWhenElementIsReady();
-    }
+    console.log("[Stripe Lifecycle] Target container found in DOM layout tree. Initializing element fields...");
+    initializeFlatStripeCheckoutElement();
+}
 
-    // Expose structural observer hook so your main layout router can force a remount on click
-    window.forceStripeCheckoutUIRefresh = function() {
-        bootStripeWhenElementIsReady();
-    };
+// Initialize watcher execution context based on active layout visibility
+if (parseInt(window.currentWizardActiveStep, 10) === 6) {
+    bootStripeWhenElementIsReady();
+}
 
+// Expose structural observer hook so your main layout router can force a remount on click
+window.forceStripeCheckoutUIRefresh = function() {
+    bootStripeWhenElementIsReady();
+};
 })();
