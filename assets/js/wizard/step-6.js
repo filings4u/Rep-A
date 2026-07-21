@@ -97,108 +97,108 @@
 
 
 
-            // ==========================================
+             // ==========================================
             // BLOCK 4: SERVER API HANDSHAKE & DIRECT DATABASE INJECTION (FIXED)
             // ==========================================
             console.log("[Stripe Loader] Handshaking with checkout edge router...");
-            const response = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    amountValue: currentGrandTotal,
-                    trackingNumber: uniqueTrackingToken,
-                    isTestModeRequested: true,
-                    poa_signed_state: poaState,
-                    poa_signature_verification_string: poaSignatureStr,
-                    user_id: (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") ? currentUserId : "",
-                    email: finalEmail,
-                    company_name: localStorage.getItem("wizard_field_company_name") || "",
-                    service_key: window.wizardActiveServiceKeyIdentifier || "",
-                    service_title: window.wizardActiveServiceTitleString || "",
-                    plan_tier: window.routeActivePlanTierName || ""
-                })
-            });
-
-            const responseData = await response.json();
-            if (!response.ok) throw new Error(responseData.error || "Failed communication handshake link with checkout edge router.");
-
-            const clientSecret = responseData.clientSecret;
-            const extractedStripePaymentId = clientSecret && clientSecret.includes('_secret') ? clientSecret.split('_secret')[0] : "";
-
-            console.log("[Database Engine] Compiling dynamic transaction record object payload...");
             
-            const ordersRecordPayload = {
-                company_name: localStorage.getItem("wizard_field_company_name") || "",
-                service_key: window.wizardActiveServiceKeyIdentifier || "",
-                service_title: window.wizardActiveServiceTitleString || "",
-                plan_tier: window.routeActivePlanTierName || "",
-                total_fee: currentGrandTotal,
-                tracking_number: uniqueTrackingToken,
-                email: finalEmail,
-                stripe_payment_id: extractedStripePaymentId,
-                status: 'Fulfillment Lane',
-                poa_signed_state: poaState === "signed_verified" || poaState === true,
-                poa_signature_verification_string: poaSignatureStr || null
-            };
-
-            if (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") {
-                ordersRecordPayload.user_id = currentUserId;
-            }
-
-            console.log("[Database Engine] Inserting dynamic transaction record into your orders table...");
-            const { error: dbInsertError } = await supabaseClientInstance
-                .from('orders')
-                .insert([ordersRecordPayload]);
-
-            if (dbInsertError) throw dbInsertError;
-
-            // SAFETY GAP FORCE INITIALIZATION: Double-checks Stripe core wrapper isn't missing
-            if (!window.stripeInstance && typeof Stripe !== "undefined") {
-                console.log("[Stripe Loader] Re-instantiating missing Stripe wrapper safely...");
-                window.stripeInstance = Stripe(ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY);
-            }
-
-            if (!window.stripeInstance) {
-                throw new Error("Stripe engine library failed to initialize globally. Verify your index script tags.");
-            }
-
-            if (window.stripePaymentElementInstance) {
-                window.stripePaymentElementInstance.destroy();
-                window.stripePaymentElementInstance = null;
-            }
-
-            // Mount the elements container using the now verified stripeInstance
-            window.stripeElementsContainer = window.stripeInstance.elements({
-                clientSecret: clientSecret,
-                appearance: {
-                    theme: 'stripe',
-                    variables: { colorPrimary: '#0a1f44', colorBackground: '#ffffff', colorText: '#0a1f44', borderRadius: '6px', spacingGridRow: '16px' }
-                }
+            // Renamed to stripeResponse to prevent block-scope duplicate errors
+            const stripeResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ 
+                    amountValue: currentGrandTotal, 
+                    trackingNumber: uniqueTrackingToken, 
+                    isTestModeRequested: true, 
+                    poa_signed_state: poaState, 
+                    poa_signature_verification_string: poaSignatureStr, 
+                    user_id: (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") ? currentUserId : "", 
+                    email: finalEmail, 
+                    company_name: localStorage.getItem("wizard_field_company_name") || "", 
+                    service_key: window.wizardActiveServiceKeyIdentifier || "", 
+                    service_title: window.wizardActiveServiceTitleString || "", 
+                    plan_tier: window.routeActivePlanTierName || "" 
+                }) 
             });
 
-            window.stripePaymentElementInstance = window.stripeElementsContainer.create('payment', {
-                layout: { type: 'accordion', defaultCollapsed: false }
-            });
-            window.stripePaymentElementInstance.mount('#stripe-payment-element-mount-point');
+            const responseData = await stripeResponse.json(); 
+            if (!stripeResponse.ok) throw new Error(responseData.error || "Failed communication handshake link with checkout edge router.");
 
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
-                submitBtn.onclick = function(e) {
-                    window.executeOnboardingTransactionPayloadSubmitVanilla(e, clientSecret, uniqueTrackingToken, finalEmail, currentGrandTotal);
-                };
-            }
+            const clientSecret = responseData.clientSecret; 
+            const extractedStripePaymentId = clientSecret && clientSecret.includes('_secret') ? clientSecret.split('_secret')[0] : ""; 
 
+            console.log("[Database Engine] Compiling dynamic transaction record object payload..."); 
+            const ordersRecordPayload = { 
+                company_name: localStorage.getItem("wizard_field_company_name") || "", 
+                service_key: window.wizardActiveServiceKeyIdentifier || "", 
+                service_title: window.wizardActiveServiceTitleString || "", 
+                plan_tier: window.routeActivePlanTierName || "", 
+                total_fee: currentGrandTotal, 
+                tracking_number: uniqueTrackingToken, 
+                email: finalEmail, 
+                stripe_payment_id: extractedStripePaymentId, 
+                status: 'Fulfillment Lane', 
+                poa_signed_state: poaState === "signed_verified" || poaState === true, 
+                poa_signature_verification_string: poaSignatureStr || null 
+            }; 
 
-        } catch (err) {
-            console.error("[Checkout Pipeline Failed]", err);
-            const errorBanner = document.getElementById("step6-error-banner-target");
-            if (errorBanner) {
-                errorBanner.innerText = `Portal Configuration Failure: ${err.message}`;
-                errorBanner.style.display = "block";
-            }
-        }
-    }
+            if (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") { 
+                ordersRecordPayload.user_id = currentUserId; 
+            } 
+
+            console.log("[Database Engine] Inserting dynamic transaction record into your orders table..."); 
+            const { error: dbInsertError } = await supabaseClientInstance 
+                .from('orders') 
+                .insert([ordersRecordPayload]); 
+
+            if (dbInsertError) throw dbInsertError; 
+
+            // SAFETY GAP FORCE INITIALIZATION: Double-checks Stripe core wrapper isn't missing 
+            if (!window.stripeInstance && typeof Stripe !== "undefined") { 
+                console.log("[Stripe Loader] Re-instantiating missing Stripe wrapper safely..."); 
+                window.stripeInstance = Stripe(ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY); 
+            } 
+
+            if (!window.stripeInstance) { 
+                throw new Error("Stripe engine library failed to initialize globally. Verify your index script tags."); 
+            } 
+
+            if (window.stripePaymentElementInstance) { 
+                window.stripePaymentElementInstance.destroy(); 
+                window.stripePaymentElementInstance = null; 
+            } 
+
+            // Mount the elements container using the now verified stripeInstance 
+            window.stripeElementsContainer = window.stripeInstance.elements({ 
+                clientSecret: clientSecret, 
+                appearance: { 
+                    theme: 'stripe', 
+                    variables: { colorPrimary: '#0a1f44', colorBackground: '#ffffff', colorText: '#0a1f44', borderRadius: '6px', spacingGridRow: '16px' } 
+                } 
+            }); 
+
+            window.stripePaymentElementInstance = window.stripeElementsContainer.create('payment', { 
+                layout: { type: 'accordion', defaultCollapsed: false } 
+            }); 
+            window.stripePaymentElementInstance.mount('#stripe-payment-element-mount-point'); 
+
+            if (submitBtn) { 
+                submitBtn.disabled = false; 
+                submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>'; 
+                submitBtn.onclick = function(e) { 
+                    window.executeOnboardingTransactionPayloadSubmitVanilla(e, clientSecret, uniqueTrackingToken, finalEmail, currentGrandTotal); 
+                }; 
+            } 
+        } catch (err) { 
+            console.error("[Checkout Pipeline Failed]", err); 
+            const errorBanner = document.getElementById("step6-error-banner-target"); 
+            if (errorBanner) { 
+                errorBanner.innerText = `Portal Configuration Failure: ${err.message}`; 
+                errorBanner.style.display = "block"; 
+            } 
+        } 
+    }; // Closes the window.initializeFlatStripeCheckoutElement function scope cleanly
+
 
  // ==========================================
 // BLOCK 5 & 6: SECURE CHECKOUT SUBMISSION, DATABASE STATUS UPGRADE, AND REDIRECT (FIXED)
