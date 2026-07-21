@@ -96,37 +96,60 @@ async function initializeFlatStripeCheckoutElement() {
 
 
 
+             // ==========================================
+            // BLOCK 4: SERVER API HANDSHAKE & DIRECT DATABASE INJECTION (FIXED)
             // ==========================================
-            // BLOCK 4: SUPABASE INJECTION & SERVER API HANDSHAKE
-            // ==========================================
-            // 1. Dynamically import the Supabase Client using the standard ESM URL
-            const { createClient } = await import('https://esm.sh/@supabase/supabase-js');
+            console.log("[Stripe Loader] Handshaking with checkout edge router...");
+            const response = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amountValue: currentGrandTotal,
+                    trackingNumber: uniqueTrackingToken,
+                    isTestModeRequested: true,
+                    poa_signed_state: poaState,
+                    poa_signature_verification_string: poaSignatureStr,
+                    user_id: (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") ? currentUserId : "",
+                    email: finalEmail,
+                    company_name: localStorage.getItem("wizard_field_company_name") || "",
+                    service_key: window.wizardActiveServiceKeyIdentifier || "",
+                    service_title: window.wizardActiveServiceTitleString || "",
+                    plan_tier: window.routeActivePlanTierName || ""
+                })
+            });
 
-            const supabaseClientInstance = createClient(
-                'https://lrbimrlbskjweynxlgas.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU'
-            );
+            const responseData = await response.json();
+            if (!response.ok) throw new Error(responseData.error || "Failed communication handshake link with checkout edge router.");
 
-            // 2. Direct script execution: Call your orders table to log the client data right now
+            const clientSecret = responseData.clientSecret;
+            const extractedStripePaymentId = clientSecret && clientSecret.includes('_secret') ? clientSecret.split('_secret')[0] : "";
+
+            console.log("[Database Engine] Compiling dynamic transaction record object payload...");
+            
+            // 1. Build the base insertion object with no user_id property included by default
+            const ordersRecordPayload = {
+                company_name: localStorage.getItem("wizard_field_company_name") || "",
+                service_key: window.wizardActiveServiceKeyIdentifier || "",
+                service_title: window.wizardActiveServiceTitleString || "",
+                plan_tier: window.routeActivePlanTierName || "",
+                total_fee: currentGrandTotal,
+                tracking_number: uniqueTrackingToken,
+                email: finalEmail,
+                stripe_payment_id: extractedStripePaymentId,
+                status: 'Fulfillment Lane',
+                poa_signed_state: poaState === "signed_verified" || poaState === true,
+                poa_signature_verification_string: poaSignatureStr || null
+            };
+
+            // 2. Only inject the user_id column if a valid, non-blank UUID string actually exists
+            if (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") {
+                ordersRecordPayload.user_id = currentUserId;
+            }
+
             console.log("[Database Engine] Inserting dynamic transaction record into your orders table...");
-const { error: dbInsertError } = await supabaseClientInstance
-    .from('orders')
-    .insert([{
-        company_name: localStorage.getItem("wizard_field_company_name") || "",
-        service_key: window.wizardActiveServiceKeyIdentifier || "",
-        service_title: window.wizardActiveServiceTitleString || "",
-        plan_tier: window.routeActivePlanTierName || "",
-        total_fee: currentGrandTotal,
-        tracking_number: uniqueTrackingToken,
-        
-        // FIXED: Converts empty text strings cleanly to database NULL values for guests
-        user_id: (currentUserId && currentUserId !== "anonymous_user" && currentUserId.trim() !== "") ? currentUserId : null,
-        
-        email: finalEmail,
-        poa_signed_state: poaState === "signed_verified" || poaState === true,
-        poa_signature_verification_string: poaSignatureStr || null
-    }]);
-
+            const { error: dbInsertError } = await supabaseClientInstance
+                .from('orders')
+                .insert([ordersRecordPayload]); // Pass the dynamic payload object safely
 
             if (dbInsertError) throw dbInsertError;
 
