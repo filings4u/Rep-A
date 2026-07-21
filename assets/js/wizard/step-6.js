@@ -334,3 +334,40 @@ window.forceStripeCheckoutUIRefresh = function() {
     bootStripeWhenElementIsReady();
 };
 })();
+
+
+// Ensure triggerWorkspaceTransitionSpinner is called to wrap the mounting routine
+window.triggerWorkspaceTransitionSpinner(async function mountStripePortalRoutine() {
+  try {
+    // 1. Resolve the Supabase Client Instance (Fixes: supabaseClientInstance is not defined)
+    const supabaseClient = 
+      typeof supabaseClientInstance !== "undefined" ? supabaseClientInstance :
+      typeof supabase !== "undefined" ? supabase :
+      window.supabase;
+
+    if (!supabaseClient) {
+      throw new Error("Supabase client could not be resolved from scope or window.");
+    }
+
+    console.log("[Portal Setup] Supabase client verified. Fetching configuration...");
+
+    // 2. Mocking your Stripe session retrieval (Adjust with your actual table/edge function)
+    const { data: portalSession, error } = await supabaseClient
+      .functions.invoke('create-stripe-portal-session', {
+        body: { return_url: window.location.href }
+      });
+
+    if (error) throw error;
+
+    // 3. Mount Stripe Portal / Redirect right before the spinner clears
+    if (portalSession?.url) {
+      window.location.href = portalSession.url;
+    } else {
+      throw new Error("No redirect URL returned from billing configuration.");
+    }
+
+  } catch (error) {
+    console.error("[Portal Configuration Failure]:", error.message);
+    alert("Could not load billing portal. Please contact support.");
+  }
+});
