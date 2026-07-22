@@ -491,9 +491,11 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     const transactionTokenPayload = await pipelineEndpointResponse.json();
     window.stripeClientSecret = transactionTokenPayload.clientSecret;
 
-    if (transactionTokenPayload.paymentIntentId) {
-      window.currentOrderCorePayload.stripe_payment_id = transactionTokenPayload.paymentIntentId;
-    }
+   if (transactionTokenPayload.paymentIntentId) {
+  window.currentOrderCorePayload = window.currentOrderCorePayload || {}; // Ensures the object exists
+  window.currentOrderCorePayload.stripe_payment_id = transactionTokenPayload.paymentIntentId;
+}
+
 
     if (!window.stripeClientSecret) {
       throw new Error("Handshake structural failure: Secret authorization token omitted by cloud gateway.");
