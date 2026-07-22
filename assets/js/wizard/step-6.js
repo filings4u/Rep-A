@@ -915,7 +915,7 @@ if (eventType === 'checkout.session.completed' || eventType === 'payment_intent.
             throw new Error(`Order record with tracking number ${metadata.tracking_number} not found inside public.orders.`); 
         } 
         
-        // Resolve user's actual communication email dynamically from payload channels safely
+        // Resolve user's actual communication email dynamically from payload channels safely 
         let customerEmail = metadata.email || sessionObj.receipt_email || existingOrder.email || ""; 
         if (!customerEmail && sessionObj.customer_details?.email) { 
             customerEmail = sessionObj.customer_details.email; 
@@ -927,19 +927,31 @@ if (eventType === 'checkout.session.completed' || eventType === 'payment_intent.
         // Extract unique programmatic hash identifiers to fulfill your schema fields 
         const liveStripePaymentId = sessionObj.payment_intent || sessionObj.id; 
         if (!liveStripePaymentId) throw new Error("Stripe transaction object lacks a valid payment intent identification string."); 
+
+        // FIXED: Generate USA Standard 12-Hour formatted string payload for metadata tracking arrays
+        const dateOptionsMatrix = {
+            hour12: true,
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        };
+        const localUsaStandardTimeString = new Intl.DateTimeFormat('en-US', dateOptionsMatrix).format(new Date());
         
         // 2. Build the optimized update payload matching only your specified database table columns 
         const updatePayload = { 
             status: 'Paid', 
-            // FIXED: Protect the application schema state by falling back securely to the valid existing record email
             email: customerEmail ? customerEmail.trim() : existingOrder.email, 
             stripe_payment_id: liveStripePaymentId, 
             collected_payload_metadata: { 
-                ...(existingOrder.collected_payload_metadata || {}), // Safely preserves the user's custom form inputs 
+                ...(existingOrder.collected_payload_metadata || {}), 
                 stripe_event_id: stripeEvent.id, 
                 stripe_object_id: sessionObj.id, 
                 stripe_payment_intent: liveStripePaymentId, 
-                processed_at: new Date().toISOString() 
+                // FIXED: Replace ISO string values with human-readable 12-Hour timestamp
+                processed_at: localUsaStandardTimeString 
             }, 
             updated_at: new Date().toISOString() 
         }; 
@@ -952,11 +964,55 @@ if (eventType === 'checkout.session.completed' || eventType === 'payment_intent.
             
         if (orderError) throw orderError; 
         console.log(`✅ [Stripe Webhook] Order [${metadata.tracking_number}] successfully updated to Paid.`); 
+
+        // ============================================================================
+        // 🚀 AUTOMATED ACCOUNT PROVISIONING & USER RE-LINKING LANE
+        // ============================================================================
+        let resolvedActiveUserId = existingOrder.user_id;
+
+        // Inspect row data structure to trap unregistered guest checkout transactions cleanly
+        if (!resolvedActiveUserId || resolvedActiveUserId === "00000000-0000-0000-0000-000000000000") {
+            console.log(`📡 [Auth Automation] Guest transaction detected for: ${customerEmail}. Provisioning account structures...`);
+            
+            try {
+                // Programmatically invite user to generate account record and dispatch setup instructions link
+                const { data: authInviteResult, error: inviteAdminError } = await supabaseAdmin.auth.admin.inviteUserByEmail(
+                    customerEmail.trim(),
+                    {
+                        data: {
+                            first_name: existingOrder.collected_payload_metadata?.customer_first_name || "",
+                            last_name: existingOrder.collected_payload_metadata?.customer_last_name || ""
+                        }
+                    }
+                );
+
+                if (inviteAdminError) throw inviteAdminError;
+
+                if (authInviteResult?.user?.id) {
+                    resolvedActiveUserId = authInviteResult.user.id;
+                    console.log(`✅ [Auth Automation] Account provisioned with real structural UUID: ${resolvedActiveUserId}`);
+
+                    // Commit the live account UUID back onto the order record column to replace zeros frame
+                    const { error: uuidRelinkError } = await supabaseAdmin
+                        .from('orders')
+                        .update({ 
+                            user_id: resolvedActiveUserId,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('tracking_number', metadata.tracking_number);
+
+                    if (uuidRelinkError) throw uuidRelinkError;
+                    console.log("🔗 [Auth Automation] Order record row linked to real authenticated identity profile successfully.");
+                }
+            } catch (authException) {
+                console.error("✕ [Auth Automation Exception Intercepted]:", authException.message || authException);
+            }
+        }
         
         // 4. AUTOMATIC NOTIFICATION GENERATOR ALIGNED WITH YOUR PORTAL SCHEMAS 
-        if (existingOrder.user_id) { 
+        if (resolvedActiveUserId && resolvedActiveUserId !== "00000000-0000-0000-0000-000000000000") { 
             const alertPayload = { 
-                user_id: existingOrder.user_id, 
+                user_id: resolvedActiveUserId, // Map to live UUID string securely
                 title: "New Purchase Authenticated", 
                 message: `Your tracking order ${metadata.tracking_number} has been processed into our administrative fulfillment lane. Check your timeline for live trace metrics updates.`, 
                 is_read: false, 
@@ -1166,26 +1222,123 @@ if (supabaseClient) {
     if (dbUpsertError) throw new Error(`Pre-Sync Failed: ${dbUpsertError.message}`); 
 } 
 
-// ============================================================================
-// 🚀 ACCURATE MANIFEST DATA COMPILER (PATCH FOR step-6.js BEFORE STEP 7)
-// ============================================================================
-const resolvedAmountTotal = parseFloat(window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0);
+// ============================================================================ // 
+// 🚀 PRODUCTION-READY SECURE DATA PRESERVATION & TRANSITION PIPELINE           // 
+// ============================================================================ // 
+try {
+    const resolvedAmountTotal = parseFloat(window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0); 
+    const basePackageCostOnly = parseFloat(window.wizardCentralState?.getStepData(3, "package_price") || localStorage.getItem("wizard_field_base_package_price") || 99.00); 
 
-// SAFE LOOKUP: Extract the pure baseline price token directly from your central vault architecture
-const basePackageCostOnly = parseFloat(window.wizardCentralState?.getStepData(3, "package_price") || localStorage.getItem("wizard_field_base_package_price") || 99.00);
+    const successReceiptManifestPayload = { 
+        financials_subtotal_amount: basePackageCostOnly, 
+        financials_grand_total_charge: resolvedAmountTotal, 
+        selected_package_title: `filings4u Processing Fee (${(localStorage.getItem("wizard_plan_tier_key") || "STARTER").toUpperCase()})`, 
+        legal_entity_name: document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "Your Enterprise Inc.", 
+        taxpayer_ein: localStorage.getItem("wizard_field_ein_number") || "Processing Terminal Lane", 
+        office_address_street: localStorage.getItem("wizard_field_business_address") || "Fulfillment Lane Registry", 
+        transaction_hash_id: uniqueTrackingToken 
+    }; 
 
-const successReceiptManifestPayload = {
-    // FIXED: Deliver the pure un-mutated base price token directly to Step 7
-    financials_subtotal_amount: basePackageCostOnly,
-    financials_grand_total_charge: resolvedAmountTotal,
-    selected_package_title: `filings4u Processing Fee (${(localStorage.getItem("wizard_plan_tier_key") || "STARTER").toUpperCase()})`,
-    legal_entity_name: document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "Your Enterprise Inc.",
-    taxpayer_ein: localStorage.getItem("wizard_field_ein_number") || "Processing Terminal Lane",
-    office_address_street: localStorage.getItem("wizard_field_business_address") || "Fulfillment Lane Registry",
-    transaction_hash_id: uniqueTrackingToken
-};
+    // Resolve true signature string from all potential multi-step wizard keys safely 
+    const finalizedPoaSignatureHash = localStorage.getItem("wizard_field_poa_signature_string") || 
+                                       localStorage.getItem("wizard_field_poa_verification_hash") || 
+                                       localStorage.getItem("f4u_poa_signature") || 
+                                       "Signed Natively"; 
 
-sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(successReceiptManifestPayload));
+    // Compute true USA Standard 12-Hour formatted timestamp using local system parameters 
+    const systemDateOptions = { 
+        hour12: true, 
+        year: 'numeric', 
+        month: 'numeric', 
+        day: 'numeric', 
+        hour: 'numeric', 
+        minute: 'numeric', 
+        second: 'numeric' 
+    }; 
+    const localUsaStandardTimestamp = new Intl.DateTimeFormat('en-US', systemDateOptions).format(new Date()); 
+
+    // Build the finalized, hardened payload context dictionary object
+    const validatedDatabaseUpsertPayload = { 
+        tracking_number: uniqueTrackingToken.trim(), 
+        company_name: companyNameParameter.trim(), 
+        service_title: dynamicLabelTextString.trim(), 
+        plan_tier: activePlanKeyString.trim().toLowerCase(), 
+        total_fee: parseFloat(activeGrandCost.toFixed(2)), 
+        status: 'pending', 
+        tax_id_status: 'Fulfillment Lane', 
+        poa_signed_state: true, 
+        user_id: dynamicUserId, 
+        email: finalEmail, 
+        poa_signature_verification_string: finalizedPoaSignatureHash.trim(), 
+        stripe_payment_id: window.currentOrderCorePayload?.stripe_payment_id || window.stripePaymentIntentId || "intent_token_pending", 
+        collected_payload_metadata: { 
+            customer_email: finalEmail, 
+            customer_first_name: firstName, 
+            customer_last_name: lastName, 
+            customer_phone: phone, 
+            timestamp_capture: localUsaStandardTimestamp 
+        } 
+    }; 
+
+    // ============================================================================
+    // 🗄️ CRITICAL DATABASE EXECUTION PASS: FORCES THE DATA UPDATES TO HIT SUPABASE
+    // ============================================================================
+    if (supabaseClient) {
+        console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live table context...");
+        const { error: dbUpsertError } = await supabaseClient
+            .from('orders')
+            .upsert(validatedDatabaseUpsertPayload, { onConflict: 'tracking_number' });
+
+        if (dbUpsertError) {
+            throw new Error(`Pre-Sync Transaction Failed: ${dbUpsertError.message}`);
+        }
+        console.log("✅ [Supabase Gateway] Records successfully written to server database.");
+    }
+
+    // Cache the session layout manifest securely for Step 7 receipt loops
+    sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(successReceiptManifestPayload));
+
+    // B. SECURE STRIPE PROCESSING 
+    if (window.stripeElementsContainer && window.stripeInstance && window.stripeClientSecret) { 
+        console.log("[Stripe Controller] Submitting payment components schema context..."); 
+        const { error: stripeSubmitError } = await window.stripeElementsContainer.submit(); 
+        if (stripeSubmitError) throw stripeSubmitError; 
+        
+        console.log("[Stripe Controller] Launching native billing confirmation challenge over network..."); 
+        const { error: confirmError } = await window.stripeInstance.confirmPayment({ 
+            elements: window.stripeElementsContainer, 
+            redirect: "if_required",
+            confirmParams: { 
+                return_url: `${window.location.origin}${window.location.pathname}?step=7&status=success&token=${uniqueTrackingToken}`, 
+                receipt_email: finalEmail
+            } 
+        }); 
+        if (confirmError) throw confirmError; 
+        
+        // Immediate local panel view transition to Step 7 upon successful confirmation
+        console.log("✅ [Transaction Complete] Stripe processing approved. Progressing instantly to Step 7 layout canvas...");
+        localStorage.setItem("f4u_payment_status_complete", "true");
+
+        if (typeof window.switchWizardActiveViewLayout === "function") { 
+            window.switchWizardActiveViewLayout(7); 
+        } else if (typeof window.executeStepLifecyclePipeline === "function") {
+            window.executeStepLifecyclePipeline(7);
+        }
+    } else { 
+        throw new Error("Stripe components uninitialized: Gateway configuration tokens missing from memory context."); 
+    } 
+
+} catch (checkoutError) { 
+    console.error("[Fatal Payment Intercept Catch]", checkoutError); 
+    if (errorBanner) { 
+        errorBanner.style.display = "block"; 
+        errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError}`; 
+    } 
+    if (submitBtn) submitBtn.disabled = false; 
+    if (btnDefaultState) btnDefaultState.style.display = "inline-block"; 
+    if (btnLoadingState) btnLoadingState.style.display = "none"; 
+}
+
 
 
 // B. SECURE STRIPE PROCESSING 
