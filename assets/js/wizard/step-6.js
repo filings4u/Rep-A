@@ -391,8 +391,9 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const completedTransactionIntentJSON = await pipelineEndpointResponse.json(); 
   
   // Safe validation check matching both standard payment intent layouts and custom nested properties
-  window.stripeClientSecret = completedTransactionIntentJSON.clientSecret || completedTransactionIntentJSON.client_secret; 
-  const verifiedPaymentIntentId = completedTransactionIntentJSON.paymentIntentId || completedTransactionIntentJSON.payment_intent_id;
+window.stripeClientSecret = completedTransactionIntentJSON.clientSecret || completedTransactionIntentJSON.client_secret;
+const verifiedPaymentIntentId = completedTransactionIntentJSON.paymentIntentId || completedTransactionIntentJSON.payment_intent_id || completedTransactionIntentJSON.id;
+
 
   if (verifiedPaymentIntentId) { 
     window.currentOrderCorePayload = window.currentOrderCorePayload || {}; 
