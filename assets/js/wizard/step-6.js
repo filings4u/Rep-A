@@ -1233,7 +1233,7 @@ if (supabaseClient) {
     service_title: dynamicLabelTextString.trim(),
     plan_tier: activePlanKeyString.trim().toLowerCase(),
     total_fee: parseFloat(activeGrandCost.toFixed(2)),
-    status: 'pending',
+    status: 'paid',
     tax_id_status: 'Fulfillment Lane',
     poa_signed_state: true,
     user_id: dynamicUserId, // ✅ This now holds the real generated account UUID instead of zeroes
