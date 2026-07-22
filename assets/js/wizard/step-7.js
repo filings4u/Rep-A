@@ -474,45 +474,39 @@ const executeInjectionPipeline = function() {
             }
         }
 
+step7Frame.innerHTML = itemsHtml; 
 
-    step7Frame.innerHTML = itemsHtml;
+const finalGovFee = parseFloat(window.computedWizardStateGovernmentFee) || 0; 
+if (finalGovFee > 0) { 
+    let stateDropdown = document.getElementById("wizard_state_select") || document.getElementById("state_select"); 
+    let selectedStateCode = window.currentCartState?.selectedState || (stateDropdown ? stateDropdown.value : window.selectedJurisdiction || "State"); 
+    let stateFriendlyName = selectedStateCode; 
+    
+    if (selectedStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[selectedStateCode]) { 
+        stateFriendlyName = window.STATE_FILING_FEES[selectedStateCode].name || selectedStateCode; 
+    } 
+    
+    const stateFilingFeeRowHtml = ` 
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44; border-top: 1px dashed #f1f5f9;"> 
+            <span style="font-weight: 500;">+ Mandatory ${stateFriendlyName} Filing Fee</span> 
+            <strong style="font-weight: 700;">$${finalGovFee.toFixed(2)}</strong> 
+        </div> 
+    `; 
+    step7Frame.insertAdjacentHTML('beforeend', stateFilingFeeRowHtml); 
+} 
 
-        // 🟢 INJECT CORRECT STEP 3 STATE GOVERNMENT FEE
-        const finalGovFee = parseFloat(window.computedWizardStateGovernmentFee) || 0;
-        if (finalGovFee > 0) {
-            let stateDropdown = document.getElementById("wizard_state_select") || document.getElementById("state_select");
-            let selectedStateCode = window.currentCartState?.selectedState || (stateDropdown ? stateDropdown.value : window.selectedJurisdiction || "State");
-            let stateFriendlyName = selectedStateCode;
+// FIXED: Forces the visual total paid UI node field to look up the immutable transaction grand total value precisely 
+if (grandTotalField) { 
+    grandTotalField.textContent = billingTotal; 
+} 
 
-            if (selectedStateCode && window.STATE_FILING_FEES && window.STATE_FILING_FEES[selectedStateCode]) {
-                stateFriendlyName = window.STATE_FILING_FEES[selectedStateCode].name || selectedStateCode;
-            }
+window._step7RetryCounter = 0; 
+return true; 
+}; 
 
-            // Renders on a single line, bold, matching the native line items precisely
-            const stateFilingFeeRowHtml = `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44; border-top: 1px dashed #f1f5f9;">
-                <span style="font-weight: 700;">+ Mandatory ${stateFriendlyName} Filing Fee</span>
-                <strong style="font-weight: 700;">$${finalGovFee.toFixed(2)}</strong>
-            </div>
-            `;
-            step7Frame.insertAdjacentHTML('beforeend', stateFilingFeeRowHtml);
-        }
-
-        if (grandTotalField) {
-            grandTotalField.textContent = billingTotal;
-        }
-        
-    // Clear retry flag for subsequent runs
-    window._step7RetryCounter = 0;
-    return true;
-};
-
-// Delay implementation execution slightly to defend against framework redraw race-conditions
+// FIXED: Delays implementation execution slightly with single correct clean function wrap call
 setTimeout(executeInjectionPipeline, 50);
-
-return true;
-};
-
+}
 
 
 // ============================================================================ // 

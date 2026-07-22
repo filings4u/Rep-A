@@ -1167,22 +1167,26 @@ if (supabaseClient) {
 } 
 
 // ============================================================================
-// 🚀 RECEIPT MANIFEST DATA COMPILER (PATCH FOR step-6.js RIGHT BEFORE STEP 7 TRANSITION)
+// 🚀 ACCURATE MANIFEST DATA COMPILER (PATCH FOR step-6.js BEFORE STEP 7)
 // ============================================================================
 const resolvedAmountTotal = parseFloat(window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0);
 
+// SAFE LOOKUP: Extract the pure baseline price token directly from your central vault architecture
+const basePackageCostOnly = parseFloat(window.wizardCentralState?.getStepData(3, "package_price") || localStorage.getItem("wizard_field_base_package_price") || 99.00);
+
 const successReceiptManifestPayload = {
-    financials_subtotal_amount: resolvedAmountTotal - (parseFloat(window.computedWizardStateGovernmentFee) || 0),
+    // FIXED: Deliver the pure un-mutated base price token directly to Step 7
+    financials_subtotal_amount: basePackageCostOnly,
     financials_grand_total_charge: resolvedAmountTotal,
-    selected_package_title: document.getElementById("schema_orders_service_title")?.value || localStorage.getItem("f4u_service_title") || "Filing & Processing Fee (COMPLIANCE)",
+    selected_package_title: `filings4u Processing Fee (${(localStorage.getItem("wizard_plan_tier_key") || "STARTER").toUpperCase()})`,
     legal_entity_name: document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "Your Enterprise Inc.",
     taxpayer_ein: localStorage.getItem("wizard_field_ein_number") || "Processing Terminal Lane",
     office_address_street: localStorage.getItem("wizard_field_business_address") || "Fulfillment Lane Registry",
     transaction_hash_id: uniqueTrackingToken
 };
 
-// Pack variables into session memory matching exactly what your step-7 script pulls from
 sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(successReceiptManifestPayload));
+
 
 // B. SECURE STRIPE PROCESSING 
 if (window.stripeElementsContainer && window.stripeInstance && window.stripeClientSecret) { 
