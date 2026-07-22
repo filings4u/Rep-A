@@ -143,3 +143,93 @@ if (document.readyState === "loading") {
     bootloaderRuntimeGate(); 
 } 
 })();
+
+
+// ============================================================================ //
+// ASSETS/JS/INTERACTION-CONTROLLER.JS (FIXED DATA PASS STATE SYNCHRONIZER)      //
+// ============================================================================ //
+(function() { 
+"use strict";
+
+function attachSubmitButtonController() { 
+    const cleanBtn = document.getElementById("wizardSubmitBtnElement"); 
+    if (!cleanBtn) return; 
+    
+    if (window.f4u_active_submit_handler) { 
+        cleanBtn.removeEventListener("click", window.f4u_active_submit_handler); 
+    } 
+    
+    window.f4u_active_submit_handler = async (clickEvent) => { 
+        clickEvent.preventDefault(); 
+        const errorBanner = document.getElementById("step6-error-banner-target"); 
+        if (errorBanner) errorBanner.style.display = "none"; 
+        
+        if (typeof window.validateBaseProfileMatrix === "function" && !window.validateBaseProfileMatrix()) { 
+            console.warn("[Submit Validation] Aborting pipeline submission. Fields missing."); 
+            if (errorBanner) { 
+                errorBanner.innerText = "Please complete all required contact fields before processing payment."; 
+                errorBanner.style.display = "block"; 
+            } 
+            return; 
+        } 
+        
+        cleanBtn.disabled = true; 
+        cleanBtn.style.opacity = "0.6"; 
+        cleanBtn.innerHTML = `Processing Transaction <i class="fa-solid fa-spinner fa-spin" style="margin-left: 6px;"></i>`; 
+        
+        try { 
+            // ============================================================================
+            // 🚀 THE FIX: LOCK DOWN ACCURATE PRICE RECORDS BEFORE ANY DOM REWRITES
+            // ============================================================================
+            // Captures total from memory layers first before reading volatile text nodes
+            const resolvedFinalTotal = parseFloat(
+                window.computedWizardGrandTotalAmount || 
+                window.wizardCalculatedFinalTotalAmount || 
+                localStorage.getItem("f4u_running_total") || 
+                0
+            );
+
+            // Back up your current itemized cart metadata array cleanly to local storage 
+            // so your step-7 receipt engine can read and loop over the rows instantly
+            const activeCartMetadata = localStorage.getItem("f4u_active_cart_itemized_rows") || "[]";
+            
+            if (window.currentOrderCorePayload) { 
+                window.currentOrderCorePayload.email = document.getElementById("portal_user_email_input")?.value.trim() || ""; 
+                window.currentOrderCorePayload.total_fee = resolvedFinalTotal;
+                window.currentOrderCorePayload.collected_payload_metadata = { 
+                    first_name: document.getElementById("portal_user_first_name")?.value.trim() || "", 
+                    last_name: document.getElementById("portal_user_last_name")?.value.trim() || "", 
+                    phone: document.getElementById("portal_user_phone")?.value.trim() || "", 
+                    wizard_step_checkpoint: 6, 
+                    itemized_receipt_rows: JSON.parse(activeCartMetadata), // Preserves items state data
+                    timestamp_capture: new Date().toISOString() 
+                }; 
+            } 
+            
+            if (typeof window.executeOnboardingTransactionPayloadSubmitVanilla === 'function') { 
+                console.log("[Stripe Pipeline] Running vanilla payload submit..."); 
+                await window.executeOnboardingTransactionPayloadSubmitVanilla(clickEvent); 
+            } else if (typeof window.executeSecurePaymentConfirmationPipeline === "function") { 
+                console.log("[Stripe Pipeline] Running secure confirmation pipeline..."); 
+                await window.executeSecurePaymentConfirmationPipeline(resolvedFinalTotal, cleanBtn); 
+            } else { 
+                throw new Error("Stripe transaction pipelines are uninitialized."); 
+            } 
+        } catch (pipelineException) { 
+            console.error("[Stripe Runtime Pipeline Error]", pipelineException); 
+            if (errorBanner) { 
+                errorBanner.innerText = pipelineException.message || "An unexpected processing error occurred."; 
+                errorBanner.style.display = "block"; 
+            } 
+            cleanBtn.disabled = false; 
+            cleanBtn.style.opacity = "1"; 
+            cleanBtn.innerHTML = `Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>`; 
+        } 
+    }; 
+    
+    cleanBtn.addEventListener("click", window.f4u_active_submit_handler); 
+    console.log("✅ [Stripe Controller] Secure Payment button event listener successfully attached."); 
+} 
+
+window.attachSubmitButtonController = attachSubmitButtonController; 
+})();

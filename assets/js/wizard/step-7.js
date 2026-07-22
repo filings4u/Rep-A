@@ -501,7 +501,7 @@ const executeInjectionPipeline = function() {
         if (grandTotalField) {
             grandTotalField.textContent = billingTotal;
         }
-    s
+        
     // Clear retry flag for subsequent runs
     window._step7RetryCounter = 0;
     return true;
