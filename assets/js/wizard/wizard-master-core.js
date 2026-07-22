@@ -607,79 +607,156 @@ async function runMasterActiveStepFormValidation() {
         }
     }
 
-    // =========================================================================
-    // 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: SECURE INTENT EXTRACTION LAYER
-    // =========================================================================
-    if (currentStep === 5) {
-        console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks...");
-        
-        const nextButton = document.getElementById("summary-submit-payment-intent-btn") || document.querySelector(".btn-wizard-nav-next");
-        let fallbackText = "Secure Payment";
-        if (nextButton) {
-            fallbackText = nextButton.innerHTML;
-            nextButton.disabled = true;
-            nextButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Securing Authorization...';
-        }
+// ========================================================================= //
+// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: SECURE INTENT EXTRACTION LAYER    //
+// ========================================================================= //
+if (currentStep === 5) {
+  console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks...");
+  
+  var nextButton = document.getElementById("summary-submit-payment-intent-btn") || document.querySelector(".btn-wizard-nav-next");
+  var fallbackText = "Secure Payment";
+  
+  if (nextButton) {
+    fallbackText = nextButton.innerHTML;
+    nextButton.disabled = true;
+    nextButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Securing Authorization...';
+  }
+  
+  try {
+    var targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 194.00;
+    var uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
+    
+    var dynamicCompanySelector = [
+      "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", 
+      "#bl_applicant_name", "#cage_legal_name", "#cgs_company_name", "#clia_lab_name", 
+      "#corp_proposed_name", "#dba_proposed_name", "#dbe_legal_name", "#dot_con_legal_name", 
+      "#prm_legal_name", "#dqf_carrier_name", "#duns_legal_name", "#ein_applicant_name", 
+      "#fed_tax_legal_name", "#fq_proposed_name", "#fran_tax_legal_name", "#haz_legal_name", 
+      "#hut_legal_name", "#ifta_legal_name", "#ifta_rep_legal_name", "#llc_desired_name", 
+      "#rein_original_name", "#mcs_legal_name", "#mbe_legal_name", "#nea_legal_name", 
+      "#np_proposed_name", "#oa_company_name", "#pr_legal_name", "#ra_client_name", 
+      "#st_legal_name", "#scac_legal_name", "#sllc_proposed_name", "#sm_proposed_name", 
+      "#sp_proposed_name", "#ta_legal_name", "#ins_legal_name", "#wbe_legal_name"
+    ].join(",");
 
-        try {
-            const targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 249.00;
-            
-            // Execute network pass cleanly to your database authorization layer
-            const responseStream = await fetch("/api/create-payment-intent", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    amountCents: Math.round(targetAmount * 100),
-                    currency: "usd",
-                    serviceKey: window.routeActiveServiceKey || window.currentServiceKey || "llc-formation"
-                })
-            });
+    var companyNameInput = document.querySelector(dynamicCompanySelector);
+    
+    var companyName = (window.currentOrderCorePayload && window.currentOrderCorePayload.company_name) || 
+                      localStorage.getItem("f4u_company_name") || 
+                      (companyNameInput ? companyNameInput.value.trim() : "");
 
-            if (!responseStream.ok) throw new Error("HTTP connection path rejected tokens request.");
-            const transactionTokenPayload = await responseStream.json();
+    var serviceTitle = (window.currentOrderCorePayload && window.currentOrderCorePayload.service_title) || 
+                        localStorage.getItem("f4u_service_title") || 
+                        window.currentSelectedServiceTitle || "llc-formation";
 
-            if (!transactionTokenPayload.clientSecret) {
-                throw new Error("Payload mapping error: clientSecret key is missing.");
-            }
+    var planTier = (window.currentOrderCorePayload && window.currentOrderCorePayload.plan_tier) || 
+                    localStorage.getItem("f4u_plan_tier") || "starter";
 
-            // Bind resolved token securely to window paths
-            window.stripeClientSecret = transactionTokenPayload.clientSecret;
+    var signatureString = (window.currentOrderCorePayload && window.currentOrderCorePayload.poa_signature_verification_string) || 
+                          localStorage.getItem("f4u_poa_signature") || "pending";
 
-            const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
-            activeOnboardingState.stripeClientSecret = transactionTokenPayload.clientSecret;
-            localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
+    var activeUserId = (window.currentOrderCorePayload && window.currentOrderCorePayload.user_id) || 
+                       localStorage.getItem("supabase.auth.token") || "00000000-0000-0000-0000-000000000000";
 
-        } catch (apiNetworkException) {
-            // 🛡️ RECOVERY BYPASS LOOP: Replaces alerts and crashes with self-healing local testing mocks
-            console.warn("[Validation Intent Warning] Real-time token endpoint offline or unreachable. Engaging structural local mock bypass:", apiNetworkException.message);
-            
-            // Generate a secure local mock token so step-6.js does not crash or loop during development
-            const mockSecret = "pi_mock_intent_" + Math.random().toString(36).substring(2, 12) + "_secret_" + Math.random().toString(36).substring(2, 8);
-            window.stripeClientSecret = mockSecret;
-
-            const activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
-            activeOnboardingState.stripeClientSecret = mockSecret;
-            localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
-            
-            // Dynamically log details to your layout container context without throwing raw alerts
-            const step5Panel = document.getElementById("step-panel-5");
-            let errorNodeTarget = document.getElementById("step5-matrix-error-banner");
-            if (step5Panel && !errorNodeTarget) {
-                errorNodeTarget = document.createElement("div");
-                errorNodeTarget.id = "step5-matrix-error-banner";
-                errorNodeTarget.style.cssText = "margin: 15px 0; padding: 12px; border: 1px solid #fee2e2; background: #fef2f2; color: #b91c1c; border-radius: 6px; font-size: 0.85rem; font-weight: 500; font-family: sans-serif; text-align: left;";
-                step5Panel.insertBefore(errorNodeTarget, step5Panel.lastChild);
-            }
-            if (errorNodeTarget) {
-                errorNodeTarget.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> <strong>Developer Warning:</strong> Remote authorization endpoint returned an error status (${apiNetworkException.message}). Falling back to a local sandbox token to continue checkout preview.`;
-            }
-        } finally {
-            if (nextButton) {
-                nextButton.disabled = false;
-                nextButton.innerHTML = fallbackText;
-            }
-        }
+    var emailInput = document.querySelector('input[type="email"]') || 
+                     document.getElementById("portal_user_email_input") || 
+                     document.getElementById("customer_email");
+                     
+    var clientEmail = emailInput ? emailInput.value.trim() : "";
+    if (!clientEmail) {
+      clientEmail = localStorage.getItem("f4u_customer_email") || "guest-checkout@fulfillment-lane.com";
     }
+
+    if (!companyName || companyName.trim() === "") {
+      throw new Error("Required field 'company_name' is missing. Please review Step 2 form entries.");
+    }
+
+    localStorage.setItem("f4u_company_name", companyName.trim());
+
+    var schemaDatabasePayload = {
+      company_name: companyName.trim(),
+      service_title: serviceTitle.trim(),
+      plan_tier: planTier.trim(),
+      total_fee: targetAmount,
+      status: "payment_pending",
+      poa_signed_state: true,
+      poa_signature_verification_string: signatureString.trim(),
+      tracking_number: uniqueTrackingToken.trim(),
+      user_id: activeUserId.trim(),
+      email: clientEmail.trim(),
+      collected_payload_metadata: {
+        wizard_step_checkpoint: 6,
+        timestamp_capture: new Date().toISOString()
+      }
+    };
+    
+    console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
+    
+    var responseStream = await fetch("https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(schemaDatabasePayload)
+    });
+    
+    if (!responseStream.ok) {
+      var serverFailureMessage = await responseStream.text();
+      throw new Error("Supabase Edge Function Rejected Request: " + serverFailureMessage);
+    }
+    
+    var transactionTokenPayload = await responseStream.json();
+    
+    if (!transactionTokenPayload || !transactionTokenPayload.clientSecret) {
+      throw new Error("Payload mapping error: clientSecret key is missing from Supabase response.");
+    }
+    
+    // ✅ GLOBAL ASSIGNMENT FIX: Save variables into window object globally
+    window.stripeClientSecret = transactionTokenPayload.clientSecret;
+    window.stripePaymentIntentId = transactionTokenPayload.paymentIntentId;
+    
+    if (!window.currentOrderCorePayload) {
+      window.currentOrderCorePayload = {};
+    }
+    window.currentOrderCorePayload.stripe_payment_id = transactionTokenPayload.paymentIntentId;
+    
+    var activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
+    activeOnboardingState.stripeClientSecret = transactionTokenPayload.clientSecret;
+    localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
+    
+    var oldErrorBanner = document.getElementById("step5-matrix-error-banner");
+    if (oldErrorBanner && oldErrorBanner.parentNode) {
+      oldErrorBanner.parentNode.removeChild(oldErrorBanner);
+    }
+    
+  } catch (apiNetworkException) {
+    console.error("🚨 [Gateway Execution Failure]:", apiNetworkException.message);
+    
+    var step5Panel = document.getElementById("step-panel-5");
+    var errorNodeTarget = document.getElementById("step5-matrix-error-banner");
+    
+    if (step5Panel && !errorNodeTarget) {
+      errorNodeTarget = document.createElement("div");
+      errorNodeTarget.id = "step5-matrix-error-banner";
+      errorNodeTarget.style.cssText = "margin: 15px 0; padding: 12px; border: 1px solid #fee2e2; background: #fef2f2; color: #b91c1c; border-radius: 6px; font-size: 0.85rem; font-weight: 500; font-family: sans-serif; text-align: left;";
+      step5Panel.appendChild(errorNodeTarget);
+    }
+    
+    if (errorNodeTarget) {
+      errorNodeTarget.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> <strong>Critical Error:</strong> ' + apiNetworkException.message;
+    }
+    
+    if (nextButton) {
+      nextButton.disabled = false;
+      nextButton.innerHTML = fallbackText;
+    }
+    return false;
+  } finally {
+    if (nextButton) {
+      nextButton.disabled = false;
+      nextButton.innerHTML = fallbackText;
+    }
+  }
+}
+
 
     if (currentStep >= 5) {
         console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`);
