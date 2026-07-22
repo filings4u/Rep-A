@@ -291,8 +291,6 @@ if (typeof window.evaluatePoaInputStateMatrix === "function") {
   window.evaluatePoaInputStateMatrix();
 }
 
-
-
   // ============================================================================ //
 // 🖋️ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 1                    //
 // ============================================================================ //

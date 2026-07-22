@@ -1,318 +1,284 @@
-// ============================================================================ //
-// 📊 1. GLOBAL RUNTIME INITIALIZATION MATRIX (PAYMENT ENGINE STABILIZED)       //
-// ============================================================================ //
-(function() {
-    "use strict";
+// ============================================================================ // 
+// 📊 1. GLOBAL RUNTIME INITIALIZATION MATRIX (ISOLATED ORCHESTRATOR)           // 
+// ============================================================================ // 
+(function() { 
+"use strict"; 
 
-    const urlParamsMatrix = new URLSearchParams(window.location.search);
+const urlParamsMatrix = new URLSearchParams(window.location.search); 
 
-    // Ingest core route targets from address parameters cleanly
-    window.currentServiceKey = urlParamsMatrix.get('service') || null;
-    window.currentServicePathKey = window.currentServiceKey;
-    window.currentPlanKey = urlParamsMatrix.get('plan') || null;
-    window.currentServiceTier = window.currentPlanKey;
+// Ingest core route targets from address parameters cleanly 
+window.currentServiceKey = urlParamsMatrix.get('service') || null; 
+window.currentServicePathKey = window.currentServiceKey; 
+window.currentPlanKey = urlParamsMatrix.get('plan') || null; 
+window.currentServiceTier = window.currentPlanKey; 
 
-    // Extract jurisdiction code directly from parameters or state selectors
-    let resolvedJurisdictionValue = urlParamsMatrix.get('state') || urlParamsMatrix.get('stateCode') || null;
-    
-    if (!resolvedJurisdictionValue) {
-        let stateDropdown = document.getElementById("wizard_gate_state_select") || document.getElementById("wizard_state_select") || document.getElementById("state_select");
-        if (stateDropdown && stateDropdown.value && stateDropdown.value !== "") {
-            resolvedJurisdictionValue = stateDropdown.value;
-        }
-    }
+// Extract jurisdiction code directly from parameters or state selectors 
+let resolvedJurisdictionValue = urlParamsMatrix.get('state') || urlParamsMatrix.get('stateCode') || null; 
+if (!resolvedJurisdictionValue) { 
+    let stateDropdown = document.getElementById("wizard_gate_state_select") || document.getElementById("wizard_state_select") || document.getElementById("state_select"); 
+    if (stateDropdown && stateDropdown.value && stateDropdown.value !== "") { 
+        resolvedJurisdictionValue = stateDropdown.value; 
+    } 
+} 
 
-    // 🟢 UNIVERSAL RUNTIME INTERLOCK FUNCTIONS
-    window.checkIsFederalRouteTrackProgrammatic = function() {
-        const serviceKeyCheck = String(window.currentServiceKey || "").toLowerCase().trim();
-        const federalPricingMatrixRegistry = window.FILINGS4U_GOVERNMENT_PRICING || {};
-        return Object.prototype.hasOwnProperty.call(federalPricingMatrixRegistry, serviceKeyCheck) && serviceKeyCheck !== "llc-formation" && serviceKeyCheck !== "corporations";
-    };
+// UNIVERSAL RUNTIME INTERLOCK FUNCTIONS 
+window.checkIsFederalRouteTrackProgrammatic = function() { 
+    const serviceKeyCheck = String(window.currentServiceKey || "").toLowerCase().trim(); 
+    const federalPricingMatrixRegistry = window.FILINGS4U_GOVERNMENT_PRICING || {}; 
+    return Object.prototype.hasOwnProperty.call(federalPricingMatrixRegistry, serviceKeyCheck) && serviceKeyCheck !== "llc-formation" && serviceKeyCheck !== "corporations"; 
+}; 
 
-    if (window.checkIsFederalRouteTrackProgrammatic()) {
-        resolvedJurisdictionValue = null;
-    }
+if (window.checkIsFederalRouteTrackProgrammatic()) { 
+    resolvedJurisdictionValue = null; 
+} 
 
-    window.selectedJurisdiction = resolvedJurisdictionValue;
-    window.dynamicAssetUrlPath = "";
-    window.collectedFormMetadata = {};
+window.selectedJurisdiction = resolvedJurisdictionValue; 
+window.dynamicAssetUrlPath = ""; 
+window.collectedFormMetadata = {}; 
+window.wizardCalculatedFinalTotalAmount = window.wizardCalculatedFinalTotalAmount || 0; 
 
-    // ===================================================================== //
-    // 💳 STRIPE GATEWAY LIFECYCLE RECOVERY REGISTRY                         //
-    // ===================================================================== //
-    // Instantly constructs non-destructive global descriptors that protect
-    // Step 6 mounting handlers from crashing if evaluated early.
-    window.stripePublicKey = window.stripePublicKey || urlParamsMatrix.get('pk') || null;
-    window.stripeClientSecret = window.stripeClientSecret || null;
-    window.stripeElementsInstance = window.stripeElementsInstance || null;
-    window.stripeCardComponentInstance = window.stripeCardComponentInstance || null;
-    window.wizardCalculatedFinalTotalAmount = window.wizardCalculatedFinalTotalAmount || 0;
+// ===================================================================== // 
+// 🧬 CENTRAL ADDON DB INTERCEPTOR ENGINE                                 // 
+// ===================================================================== // 
+let internalCatalogReference = null; 
+Object.defineProperty(window, 'CENTRAL_ADDON_DB', { 
+    get() { return internalCatalogReference; }, 
+    set(newDatabasePayload) { 
+        // Guard loop check to prevent deep recursive execution freezes 
+        if (internalCatalogReference === newDatabasePayload) return; 
+        internalCatalogReference = newDatabasePayload; 
+        
+        // Regenerate auxiliary array keys dynamically upon database updates 
+        if (newDatabasePayload && typeof newDatabasePayload === 'object') { 
+            window.auxiliaryAddonsArray = Object.keys(newDatabasePayload); 
+        } else { 
+            window.auxiliaryAddonsArray = []; 
+        } 
+        
+        // Route template processing safely downstream 
+        if (typeof window.executeStepThreeUpsellStreaming === "function") { 
+            console.log("[Master Core] Asynchronous addon database arrived. Executing targeted marketplace stream pass..."); 
+            window.executeStepThreeUpsellStreaming(); 
+        } else if (typeof window.renderTargetUpsellsListPanel === "function") { 
+            const marketplaceTarget = document.getElementById('wizard-dynamic-upsells-render-target') || document.getElementById('marketplace-upsells-target') || document.querySelector('.marketplace-panel-wrapper'); 
+            if (marketplaceTarget && newDatabasePayload) { 
+                window.renderTargetUpsellsListPanel(newDatabasePayload, marketplaceTarget); 
+            } 
+        } else { 
+            console.log("[Data Matrix Delay] Addon payload cached. Standing by for step view layout activation."); 
+        } 
+    }, 
+    configurable: true, 
+    enumerable: true 
+}); 
 
-    // Safe session storage tracking framework for Stripe metadata parsing
-    try {
-        const storedState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
-        if (storedState.stripeClientSecret) {
-            window.stripeClientSecret = storedState.stripeClientSecret;
-        }
-    } catch (paymentCacheErr) {
-        console.warn("[Payment Matrix Core] Local storage state reading restricted:", paymentCacheErr);
-    }
-
-    // ===================================================================== //
-    // 🧬 CENTRAL ADDON DB INTERCEPTOR ENGINE                                //
-    // ===================================================================== //
-    let internalCatalogReference = null;
-    
-    Object.defineProperty(window, 'CENTRAL_ADDON_DB', {
-        get() {
-            return internalCatalogReference;
-        },
-        set(newDatabasePayload) {
-            // Guard loop check to prevent deep recursive execution freezes
-            if (internalCatalogReference === newDatabasePayload) return;
-            internalCatalogReference = newDatabasePayload;
-
-            // Regenerate auxiliary array keys dynamically upon database updates
-            if (newDatabasePayload && typeof newDatabasePayload === 'object') {
-                window.auxiliaryAddonsArray = Object.keys(newDatabasePayload);
-            } else {
-                window.auxiliaryAddonsArray = [];
-            }
-
-            // Route template processing safely downstream
-            if (typeof window.executeStepThreeUpsellStreaming === "function") {
-                console.log("[Master Core] Asynchronous addon database arrived. Executing targeted marketplace stream pass...");
-                window.executeStepThreeUpsellStreaming();
-            } else if (typeof window.renderTargetUpsellsListPanel === "function") {
-                const marketplaceTarget = document.getElementById('wizard-dynamic-upsells-render-target') || document.getElementById('marketplace-upsells-target') || document.querySelector('.marketplace-panel-wrapper');
-                if (marketplaceTarget && newDatabasePayload) {
-                    window.renderTargetUpsellsListPanel(newDatabasePayload, marketplaceTarget);
-                }
-            } else {
-                console.log("[Data Matrix Delay] Addon payload cached. Standing by for step view layout activation.");
-            }
-        },
-        configurable: true,
-        enumerable: true
-    });
-
-    // Fallback initial evaluation check
-    window.auxiliaryAddonsArray = window.CENTRAL_ADDON_DB && typeof window.CENTRAL_ADDON_DB === 'object' ? Object.keys(window.CENTRAL_ADDON_DB) : [];
+// Fallback initial evaluation check 
+window.auxiliaryAddonsArray = window.CENTRAL_ADDON_DB && typeof window.CENTRAL_ADDON_DB === 'object' ? Object.keys(window.CENTRAL_ADDON_DB) : []; 
 })();
 
-
-
-// ============================================================================ //
-// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (TIMING SYNCHRONIZED) //
-// ============================================================================ //
-(function() {
-    "use strict";
-
-    const cacheKeyNamespace = "f4u_wizard_onboarding_state";
-    const urlParams = new URLSearchParams(window.location.search);
-
-    // 🛡️ STEP 1: INSTANT SYNCHRONOUS MEMORY HYDRATION
-    // Populate layout variables instantly on execution pass so Step 6 Stripe configurations
-    // are never left with null parameters while the thread evaluates database tokens.
-    const activeStepTracker = parseInt(window.currentWizardActiveStep, 10);
-    const isActivelyProgressingInWizard = !isNaN(activeStepTracker) && activeStepTracker > 0;
-
-    // Grab cached data keys instantly before running background network promises
-    const cachedStateJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || urlParams.get('stateCode') || null;
-    
-    if (isActivelyProgressingInWizard || cachedStateJurisdiction) {
-        window.selectedJurisdiction = window.selectedJurisdiction || cachedStateJurisdiction;
-    }
-
-    // 🛡️ STEP 2: ASYNC DATABASE AUTHENTICATION RUNNER
-    // Evaluates security permissions safely without pausing the global window variables
-    async function evaluateSupabaseAuthorizationGateway() {
-        const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null);
-        let isAuthenticatedUserSession = false;
-
-        if (supabase && typeof supabase.auth === "object") {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) isAuthenticatedUserSession = true;
-            } catch(e) {
-                isAuthenticatedUserSession = false;
-            }
-        }
-
-        if (!isAuthenticatedUserSession) {
-            if (!isActivelyProgressingInWizard) {
-                console.log("[Session Engine] Public Guest Session Landing: Purging residual caching allocations.");
-                localStorage.clear();
-                sessionStorage.clear();
-                
-                if (window.collectedFormMetadata) {
-                    window.collectedFormMetadata = {};
-                }
-                
-                window.selectedJurisdiction = null;
-                localStorage.removeItem('wizard_selected_state');
-
-                if (urlParams.has('state')) {
-                    urlParams.delete('state');
-                    const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`;
-                    window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath);
-                }
-            } else {
-                console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStepTracker}). Retaining data keys.`);
-                window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
-            }
-        } else {
-            console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active.");
-            window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null;
-            
-            // 💳 STRIPE RECOVERY INTERLOCK
-            // If the user is logged in, verify if a Stripe client token is waiting inside their backend account record
-            if (activeStepTracker === 6 && typeof window.forceStep6StripePaymentGatewayRefreshPass === "function") {
-                console.log("[Session Engine] Synchronizing active dashboard session back to Step 6 payment gateway viewports.");
-                window.forceStep6StripePaymentGatewayRefreshPass();
-            }
-        }
-    }
-
-    // Execute background validation non-destructively
-    evaluateSupabaseAuthorizationGateway();
-})();
-
-
-// ============================================================================ //
-// ⚙️ SYSTEM STATE FLOW & NAVIGATION TRACKING REGISTRY                         //
-// ============================================================================ //
-(function initializeActiveStepState() {
-    const urlParamsMatrix = new URLSearchParams(window.location.search);
-    const activeStepParam = parseInt(urlParamsMatrix.get('step'), 10);
-    let resolvedStepValue = parseInt(window.currentWizardActiveStep, 10);
-
-    if (isNaN(resolvedStepValue)) {
-        resolvedStepValue = !isNaN(activeStepParam) ? activeStepParam : 0;
-    }
-    window.currentWizardActiveStep = resolvedStepValue;
-    window.totalWizardExpectedSteps = 7;
-    window.totalWizardSteps = 7;
-})();
 
 // ============================================================================ // 
-// 🔌 ACTIVE ADD-ON SERVICE STATE FLAGS (STRIPE OVERWRITE SANITIZED)           // 
+// 🧼 2. RUNTIME SESSION ISOLATION ENGINE & URL SANITIZER (TIMING SYNCHRONIZED) // 
 // ============================================================================ // 
-(function initializeDynamicStateFlags() { 
-    "use strict"; 
+(function() { 
+"use strict"; 
+
+const cacheKeyNamespace = "f4u_wizard_onboarding_state"; 
+const urlParams = new URLSearchParams(window.location.search); 
+
+// STEP 1: INSTANT SYNCHRONOUS MEMORY HYDRATION 
+// Populate layout variables instantly on execution pass so subsequent panel configurations 
+// are never left with null parameters while the thread evaluates database tokens. 
+const activeStepTracker = parseInt(window.currentWizardActiveStep, 10); 
+const isActivelyProgressingInWizard = !isNaN(activeStepTracker) && activeStepTracker > 0; 
+
+// Grab cached data keys instantly before running background network promises 
+const cachedStateJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || urlParams.get('stateCode') || null; 
+if (isActivelyProgressingInWizard || cachedStateJurisdiction) { 
+    window.selectedJurisdiction = window.selectedJurisdiction || cachedStateJurisdiction; 
+} 
+
+// STEP 2: ASYNC DATABASE AUTHENTICATION RUNNER 
+// Evaluates security permissions safely without pausing the global window variables 
+async function evaluateSupabaseAuthorizationGateway() { 
+    const supabase = window.supabaseClientInstance || (window.supabase ? window.supabase : null); 
+    let isAuthenticatedUserSession = false; 
     
-    // Safeguard flag to prevent infinite loops inside your pricing compilation matrix 
-    let isProcessingCompilationLoop = false; 
-    
-    // Helper to bind reactive property tracks to window keys dynamically 
-    function createReactiveFlag(flagKey) { 
-        // Prevent attempting to redefine existing properties on the window scope 
-        if (Object.getOwnPropertyDescriptor(window, flagKey)) return; 
-        
-        // 🔥 FIX: Declared INSIDE the function scope so every flag has its own unique, isolated memory track
-        let internalStateValue = false; 
-        
-        Object.defineProperty(window, flagKey, { 
-            get() { 
-                const storageVal = localStorage.getItem(`wizard_field_${flagKey}`); 
-                if (storageVal !== null) { 
-                    return storageVal === "true" || storageVal === "yes" || storageVal === true; 
-                } 
-                return internalStateValue; 
-            }, 
-            set(newBooleanState) { 
-                const normalizedState = newBooleanState === true || newBooleanState === "yes" || String(newBooleanState) === "true"; 
-                
-                // Guard block: Only update and trigger calculator loops if the status is actually shifting 
-                if (internalStateValue === normalizedState && localStorage.getItem(`wizard_field_${flagKey}`) === (normalizedState ? "true" : "false")) { 
-                    return; 
-                } 
-                
-                internalStateValue = normalizedState; 
-                localStorage.setItem(`wizard_field_${flagKey}`, normalizedState ? "true" : "false"); 
-                
-                // 🛡️ CRITICAL PAYMENT OVERWRITE FIX: 
-                // Block compilation cascades if the user is on Step 6. Running DOM rewrites 
-                // while Stripe is mounting its secure iframe elements completely destroys the input views. 
-                const currentActiveWizardStep = parseInt(window.currentWizardActiveStep, 10) || 0; 
-                if (currentActiveWizardStep === 6) { 
-                    console.log(`[State Guard] Suppressed compilation DOM rewrite for flag "${flagKey}" on payment canvas to protect Stripe Elements.`); 
-                    return; 
-                } 
-                
-                // Auto-trigger your calculator loop safely while blocking recursion loops for standard steps 
-                if (typeof window.executeDynamicAddonCompilation === "function" && !isProcessingCompilationLoop) { 
-                    try { 
-                        isProcessingCompilationLoop = true; 
-                        window.executeDynamicAddonCompilation(); 
-                    } catch (err) { 
-                        console.error("[Compilation Lock Failure] Failed to compile totals safely:", err); 
-                    } { 
-                        isProcessingCompilationLoop = false; 
-                    } 
-                } 
-            }, 
-            configurable: true, 
-            enumerable: true 
-        }); 
+    if (supabase && typeof supabase.auth === "object") { 
+        try { 
+            const { data: { user } } = await supabase.auth.getUser(); 
+            if (user) isAuthenticatedUserSession = true; 
+        } catch(e) { 
+            isAuthenticatedUserSession = false; 
+        } 
     } 
     
-    /** 
-     * ENTERPRISE INTERCEPT FIX: Define the map property with an active setter descriptor. 
-     */ 
-    let internalPropertyMapPayload = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}; 
+    if (!isAuthenticatedUserSession) { 
+        if (!isActivelyProgressingInWizard) { 
+            console.log("[Session Engine] Public Guest Session Landing: Purging residual caching allocations."); 
+            localStorage.clear(); 
+            sessionStorage.clear(); 
+            if (window.collectedFormMetadata) { 
+                window.collectedFormMetadata = {}; 
+            } 
+            window.selectedJurisdiction = null; 
+            localStorage.removeItem('wizard_selected_state'); 
+            if (urlParams.has('state')) { 
+                urlParams.delete('state'); 
+                const cleanUrlPath = `${window.location.pathname}?${urlParams.toString()}`; 
+                window.history.replaceState({ path: cleanUrlPath }, '', cleanUrlPath); 
+            } 
+        } else { 
+            console.log(`[Session Engine Guard] Active guest step context detected (Step ${activeStepTracker}). Retaining data keys.`); 
+            window.selectedJurisdiction = window.selectedJurisdiction || localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null; 
+        } 
+    } else { 
+        console.log("[Session Engine] Persistent Authenticated Dashboard Vault Connection Active."); 
+        window.selectedJurisdiction = localStorage.getItem('wizard_selected_state') || urlParams.get('state') || null; 
+        
+        // =====================================================================
+        // DECOUPLED STRIPE RECOVERY HOOK INTERLOCK
+        // =====================================================================
+        // Replaced hardcoded refresh call with a clean cross-file execution bridge
+        if (activeStepTracker === 6 && typeof window.onStripeSessionRecoveryTrigger === "function") { 
+            console.log("[Session Engine] Forwarding authenticated state data parameters to Stripe Core router..."); 
+            window.onStripeSessionRecoveryTrigger(); 
+        } 
+    } 
+} 
+
+// Execute background validation non-destructively 
+evaluateSupabaseAuthorizationGateway(); 
+})();
+
+
+// ============================================================================ // 
+// ⚙️ SYSTEM STATE FLOW & NAVIGATION TRACKING REGISTRY                           // 
+// ============================================================================ // 
+(function initializeActiveStepState() { 
+    const urlParamsMatrix = new URLSearchParams(window.location.search); 
+    const activeStepParam = parseInt(urlParamsMatrix.get('step'), 10); 
+    let resolvedStepValue = parseInt(window.currentWizardActiveStep, 10); 
+    if (isNaN(resolvedStepValue)) { 
+        resolvedStepValue = !isNaN(activeStepParam) ? activeStepParam : 0; 
+    } 
+    window.currentWizardActiveStep = resolvedStepValue; 
+    window.totalWizardExpectedSteps = 7; 
+    window.totalWizardSteps = 7; 
+})(); 
+
+// ============================================================================ // 
+// 🔌 ACTIVE ADD-ON SERVICE STATE FLAGS (DECOUPLED AND SANITIZED)               // 
+// ============================================================================ // 
+(function initializeDynamicStateFlags() { 
+"use strict"; 
+
+// Safeguard flag to prevent infinite loops inside your pricing compilation matrix 
+let isProcessingCompilationLoop = false; 
+
+// Helper to bind reactive property tracks to window keys dynamically 
+function createReactiveFlag(flagKey) { 
+    if (Object.getOwnPropertyDescriptor(window, flagKey)) return; 
     
-    Object.defineProperty(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP', { 
+    let internalStateValue = false; 
+    Object.defineProperty(window, flagKey, { 
         get() { 
-            return internalPropertyMapPayload; 
+            const storageVal = localStorage.getItem(`wizard_field_${flagKey}`); 
+            if (storageVal !== null) { 
+                return storageVal === "true" || storageVal === "yes" || storageVal === true; 
+            } 
+            return internalStateValue; 
         }, 
-        set(newMapData) { 
-            if (newMapData && typeof newMapData === 'object') { 
-                // Merge the configurations safely into our active instance tracker 
-                Object.assign(internalPropertyMapPayload, newMapData); 
-                
-                // Loop and register all unique keys instantly upon asset file arrival 
-                Object.values(newMapData).forEach(stateFlagKey => { 
-                    createReactiveFlag(stateFlagKey); 
-                }); 
-                console.log("[State Registry Success] Late-binding enterprise tracking tokens initialized successfully."); 
+        set(newBooleanState) { 
+            const normalizedState = newBooleanState === true || newBooleanState === "yes" || String(newBooleanState) === "true"; 
+            
+            // Guard block: Only update and trigger calculator loops if the status is actually shifting 
+            if (internalStateValue === normalizedState && localStorage.getItem(`wizard_field_${flagKey}`) === (normalizedState ? "true" : "false")) { 
+                return; 
+            } 
+            internalStateValue = normalizedState; 
+            localStorage.setItem(`wizard_field_${flagKey}`, normalizedState ? "true" : "false"); 
+            
+            // =====================================================================
+            // DECOUPLED MOUNTING CONSTRAINTS PASS
+            // =====================================================================
+            // Checks external bridge function rules to ensure flag updates do not run 
+            // layout alterations while sensitive canvases are mounting.
+            if (typeof window.shouldSuppressCompilationLayoutRewrites === "function" && 
+                window.shouldSuppressCompilationLayoutRewrites(flagKey)) { 
+                return; 
+            } 
+            
+            // Auto-trigger your calculator loop safely while blocking recursion loops for standard steps 
+            if (typeof window.executeDynamicAddonCompilation === "function" && !isProcessingCompilationLoop) { 
+                try { 
+                    isProcessingCompilationLoop = true; 
+                    window.executeDynamicAddonCompilation(); 
+                } catch (err) { 
+                    console.error("[Compilation Lock Failure] Failed to compile totals safely:", err); 
+                } finally { 
+                    isProcessingCompilationLoop = false; 
+                } 
             } 
         }, 
         configurable: true, 
         enumerable: true 
     }); 
-    
-    // Automatically process baseline values in case object data mounted prematurely 
-    if (window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP) { 
-        Object.values(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP).forEach(stateFlagKey => { 
-            createReactiveFlag(stateFlagKey); 
-        }); 
-    } 
-    
-    // Secondary specialized fallbacks 
-    const additionalCoreFlags = [ 
-        "customSelectedRegisteredAgentServiceActive", 
-        "customSelectedEinProcurementServiceActive", 
-        "customSelectedScorpElectionServiceActive", 
-        "customSelectedSolePropLicenseAuditServiceActive", 
-        "customSelectedDbaLicenseAuditServiceActive", 
-        "customSelectedNonprofitLicenseCheckActive", 
-        "customSelectedDbaSearchServiceActive", 
-        "customSelectedForeignQualLicenseSuiteActive", 
-        "customSelectedExpeditedFilingServiceActive", 
-        "customSelectedApostilleAuthenticationServiceActive", 
-        "customSelectedGoodStandingCertificateServiceActive" 
-    ]; 
-    
-    additionalCoreFlags.forEach(fallbackFlagKey => { 
-        createReactiveFlag(fallbackFlagKey); 
+} 
+
+/** 
+ * ENTERPRISE INTERCEPT FIX: Define the map property with an active setter descriptor. 
+ */ 
+let internalPropertyMapPayload = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}; 
+Object.defineProperty(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP', { 
+    get() { return internalPropertyMapPayload; }, 
+    set(newMapData) { 
+        if (newMapData && typeof newMapData === 'object') { 
+            // Merge the configurations safely into our active instance tracker 
+            Object.assign(internalPropertyMapPayload, newMapData); 
+            // Loop and register all unique keys instantly upon asset file arrival 
+            Object.values(newMapData).forEach(stateFlagKey => { 
+                createReactiveFlag(stateFlagKey); 
+            }); 
+            console.log("[State Registry Success] Late-binding enterprise tracking tokens initialized successfully."); 
+        } 
+    }, 
+    configurable: true, 
+    enumerable: true 
+}); 
+
+// Automatically process baseline values in case object data mounted prematurely 
+if (window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP) { 
+    Object.values(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP).forEach(stateFlagKey => { 
+        createReactiveFlag(stateFlagKey); 
     }); 
-    
-    console.log("[State Registry] Global compliance tracking tokens dynamically initialized successfully via loop iteration."); 
+} 
+
+// Secondary specialized fallbacks 
+const additionalCoreFlags = [ 
+    "customSelectedRegisteredAgentServiceActive", 
+    "customSelectedEinProcurementServiceActive", 
+    "customSelectedScorpElectionServiceActive", 
+    "customSelectedSolePropLicenseAuditServiceActive", 
+    "customSelectedDbaLicenseAuditServiceActive", 
+    "customSelectedNonprofitLicenseCheckActive", 
+    "customSelectedDbaSearchServiceActive", 
+    "customSelectedForeignQualLicenseSuiteActive", 
+    "customSelectedExpeditedFilingServiceActive", 
+    "customSelectedApostilleAuthenticationServiceActive", 
+    "customSelectedGoodStandingCertificateServiceActive" 
+]; 
+
+additionalCoreFlags.forEach(fallbackFlagKey => { 
+    createReactiveFlag(fallbackFlagKey); 
+}); 
+
+console.log("[State Registry] Global compliance tracking tokens dynamically initialized successfully via loop iteration."); 
 })();
 
+
 // ============================================================================ // 
-// 🗃️ MASTER STATE PROPERTY MAPPING & LEGACY REFERENCE DICTIONARIES             // 
+// 🗃️ MASTER STATE PROPERTY MAPPING & LEGACY REFERENCE DICTIONARIES            // 
 // ============================================================================ // 
 
 // --- BACKWARDS COMPATIBLE STEP 2 HARDCODED UPSELL RECORDS --- 
@@ -357,706 +323,584 @@ const baselinePropertyMapPayload = {
     "trademark-name-lock": "customSelectedTrademarkActive" 
 }; 
 
-// 🟢 SAFE ASYNC ASSIGNMENT INTERLOCK:
-function processPayloadBinding() {
-    const descriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP');
-    
+// SAFE ASYNC ASSIGNMENT INTERLOCK: 
+function processPayloadBinding() { 
+    const descriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP'); 
     if (descriptor && typeof descriptor.set === 'function') { 
-        console.log("[Data Map Asset] Core interceptor ready. Binding payload mapping properties to setup macros.");
+        console.log("[Data Map Asset] Core interceptor ready. Binding payload mapping properties to setup macros."); 
         window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload; 
     } else { 
-        console.log("[Data Map Asset] Core interceptor uninstantiated. Delaying loop evaluation binding pass...");
+        console.log("[Data Map Asset] Core interceptor uninstantiated. Delaying loop evaluation binding pass..."); 
         window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = Object.assign(window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}, baselinePropertyMapPayload); 
         
-        // Polling retry check: If Block 4 comes in late, catch it when it attaches to the window scope
-        let retryCounter = 0;
-        const fallbackTrackingInterval = setInterval(() => {
-            retryCounter++;
-            const postDescriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP');
-            if (postDescriptor && typeof postDescriptor.set === 'function') {
-                window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload;
-                clearInterval(fallbackTrackingInterval);
-            }
-            if (retryCounter >= 20) clearInterval(fallbackTrackingInterval); // Cap search cycle at 1 second
-        }, 50);
+        // Polling retry check: If Block 4 comes in late, catch it when it attaches to the window scope 
+        let retryCounter = 0; 
+        const fallbackTrackingInterval = setInterval(() => { 
+            retryCounter++; 
+            const postDescriptor = Object.getOwnPropertyDescriptor(window, 'UPSELLS_GLOBAL_STATE_PROPERTY_MAP'); 
+            if (postDescriptor && typeof postDescriptor.set === 'function') { 
+                window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP = baselinePropertyMapPayload; 
+                clearInterval(fallbackTrackingInterval); 
+            } 
+            if (retryCounter >= 20) clearInterval(fallbackTrackingInterval); // Cap search cycle at 1 second 
+        }, 50); 
     } 
-}
-
-processPayloadBinding();
+} 
+processPayloadBinding(); 
 
 // ============================================================================ // 
-// 🗃️ USA STATES DICTIONARY CONFIGURATION ARRAY MATRIX                         // 
+// 🗃️ USA STATES DICTIONARY CONFIGURATION ARRAY MATRIX                          // 
 // ============================================================================ // 
 window.USA_STATES_DICTIONARY = [ 
-    { code: "AL", name: "Alabama" }, { code: "AK", name: "Alaska" }, 
-    { code: "AZ", name: "Arizona" }, { code: "AR", name: "Arkansas" }, 
-    { code: "CA", name: "California" }, { code: "CO", name: "Colorado" }, 
-    { code: "CT", name: "Connecticut" }, { code: "DE", name: "Delaware" }, 
-    { code: "FL", name: "Florida" }, { code: "GA", name: "Georgia" }, 
-    { code: "HI", name: "Hawaii" }, { code: "ID", name: "Idaho" }, 
-    { code: "IL", name: "Illinois" }, { code: "IN", name: "Indiana" }, 
-    { code: "IA", name: "Iowa" }, { code: "KS", name: "Kansas" }, 
-    { code: "KY", name: "Kentucky" }, { code: "LA", name: "Louisiana" }, 
-    { code: "ME", name: "Maine" }, { code: "MD", name: "Maryland" }, 
-    { code: "MA", name: "Massachusetts" }, { code: "MI", name: "Michigan" }, 
-    { code: "MN", name: "Minnesota" }, { code: "MS", name: "Mississippi" }, 
-    { code: "MO", name: "Missouri" }, { code: "MT", name: "Montana" }, 
-    { code: "NE", name: "Nebraska" }, { code: "NV", name: "Nevada" }, 
-    { code: "NH", name: "New Hampshire" }, { code: "NJ", name: "New Jersey" }, 
-    { code: "NM", name: "New Mexico" }, { code: "NY", name: "New York" }, 
-    { code: "NC", name: "North Carolina" }, { code: "ND", name: "North Dakota" }, 
-    { code: "OH", name: "Ohio" }, { code: "OK", name: "Oklahoma" }, 
-    { code: "OR", name: "Oregon" }, { code: "PA", name: "Pennsylvania" }, 
-    { code: "RI", name: "Rhode Island" }, { code: "SC", name: "South Carolina" }, 
-    { code: "SD", name: "South Dakota" }, { code: "TN", name: "Tennessee" }, 
-    { code: "TX", name: "Texas" }, { code: "UT", name: "Utah" }, 
-    { code: "VT", name: "Vermont" }, { code: "VA", name: "Virginia" }, 
-    { code: "WA", name: "Washington" }, { code: "WV", name: "West Virginia" }, 
+    { code: "AL", name: "Alabama" }, { code: "AK", name: "Alaska" }, { code: "AZ", name: "Arizona" }, 
+    { code: "AR", name: "Arkansas" }, { code: "CA", name: "California" }, { code: "CO", name: "Colorado" }, 
+    { code: "CT", name: "Connecticut" }, { code: "DE", name: "Delaware" }, { code: "FL", name: "Florida" }, 
+    { code: "GA", name: "Georgia" }, { code: "HI", name: "Hawaii" }, { code: "ID", name: "Idaho" }, 
+    { code: "IL", name: "Illinois" }, { code: "IN", name: "Indiana" }, { code: "IA", name: "Iowa" }, 
+    { code: "KS", name: "Kansas" }, { code: "KY", name: "Kentucky" }, { code: "LA", name: "Louisiana" }, 
+    { code: "ME", name: "Maine" }, { code: "MD", name: "Maryland" }, { code: "MA", name: "Massachusetts" }, 
+    { code: "MI", name: "Michigan" }, { code: "MN", name: "Minnesota" }, { code: "MS", name: "Mississippi" }, 
+    { code: "MO", name: "Missouri" }, { code: "MT", name: "Montana" }, { code: "NE", name: "Nebraska" }, 
+    { code: "NV", name: "Nevada" }, { code: "NH", name: "New Hampshire" }, { code: "NJ", name: "New Jersey" }, 
+    { code: "NM", name: "New Mexico" }, { code: "NY", name: "New York" }, { code: "NC", name: "North Carolina" }, 
+    { code: "ND", name: "North Dakota" }, { code: "OH", name: "Ohio" }, { code: "OK", name: "Oklahoma" }, 
+    { code: "OR", name: "Oregon" }, { code: "PA", name: "Pennsylvania" }, { code: "RI", name: "Rhode Island" }, 
+    { code: "SC", name: "South Carolina" }, { code: "SD", name: "South Dakota" }, { code: "TN", name: "Tennessee" }, 
+    { code: "TX", name: "Texas" }, { code: "UT", name: "Utah" }, { code: "VT", name: "Vermont" }, 
+    { code: "VA", name: "Virginia" }, { code: "WA", name: "Washington" }, { code: "WV", name: "West Virginia" }, 
     { code: "WI", name: "Wisconsin" }, { code: "WY", name: "Wyoming" } 
 ];
 
-// ============================================================================ //
-// 🛠️ DYNAMIC MARKUP TEMPLATE UTILITIES (ZERO-HARDCODE SELECTION BUILDER)      //
-// ============================================================================ //
+// ============================================================================ // 
+// 🛠️ DYNAMIC MARKUP TEMPLATE UTILITIES (ZERO-HARDCODE SELECTION BUILDER)       // 
+// ============================================================================ // 
+/** 
+ * Programmatically compiles drop-down list option rows from your dictionary arrays matrix. 
+ * @param {string} selectedCode - Two-character state value parameter to mark as selected. 
+ * @returns {string} Fully compiled inner HTML option block row text strings. 
+ */ 
+window.buildGlobalUsaStateDropdownOptionsHtml = function(selectedCode) { 
+    let optionsHtml = '<option value="">-- Choose Option State --</option>'; 
+    const activeMatchCode = String(selectedCode || "").toUpperCase().trim(); 
+    window.USA_STATES_DICTIONARY.forEach(state => { 
+        const isMatched = (state.code === activeMatchCode); 
+        optionsHtml += `<option value="${state.code}" ${isMatched ? 'selected' : ''}>${state.name}</option>`; 
+    }); 
+    return optionsHtml; 
+}; 
 
-/**
- * Programmatically compiles drop-down list option rows from your dictionary arrays matrix.
- * @param {string} selectedCode - Two-character state value parameter to mark as selected.
- * @returns {string} Fully compiled inner HTML option block row text strings.
- */
-window.buildGlobalUsaStateDropdownOptionsHtml = function(selectedCode) {
-    let optionsHtml = '<option value="">-- Choose Option State --</option>';
-    const activeMatchCode = String(selectedCode || "").toUpperCase().trim();
+// Re-expose standard alias mapping keys to maximize cross-file layout compilation checks 
+window.getUsaStatesHtml = window.buildGlobalUsaStateDropdownOptionsHtml; 
+window.globalStateDropdownOptionsHtml = window.buildGlobalUsaStateDropdownOptionsHtml(""); 
+
+// ============================================================================ // 
+// 📊 PART 1 OF 2: UNIVERSAL STEP VALIDATION MATRIX ENGINE                      // 
+// ============================================================================ // 
+/** 
+ * Universal dynamic validation engine (Decoupled & Protected). 
+ * Validates formatting parameters per step and manages browser native validation messages. 
+ */ 
+function validateStepInputParametersVanilla(activeStep) { 
+    console.log(`[Validator Engine] Scanning inputs inside step panel ${activeStep}...`); 
     
-    window.USA_STATES_DICTIONARY.forEach(state => {
-        const isMatched = (state.code === activeMatchCode);
-        optionsHtml += `<option value="${state.code}" ${isMatched ? 'selected' : ''}>${state.name}</option>`;
-    });
-    return optionsHtml;
-};
-
-// Re-expose standard alias mapping keys to maximize cross-file layout compilation checks
-window.getUsaStatesHtml = window.buildGlobalUsaStateDropdownOptionsHtml;
-window.globalStateDropdownOptionsHtml = window.buildGlobalUsaStateDropdownOptionsHtml("");
-
-// ============================================================================ //
-// 📊 PART 1 OF 2: UNIVERSAL STEP VALIDATION MATRIX ENGINE                      //
-// ============================================================================ //
-
-/**
- * Universal dynamic validation engine (Stripe-Exclusion Protected).
- * Validates formatting parameters per step and manages browser native validation messages.
- */
-function validateStepInputParametersVanilla(activeStep) {
-    console.log(`[Validator Engine] Scanning inputs inside step panel ${activeStep}...`);
-
-    // Hard bypass: Let the dedicated POA matrix handle Step 4 evaluation completely
-    if (parseInt(activeStep, 10) === 4) {
-        if (typeof window.evaluatePoaInputStateMatrix === "function") {
-            return window.evaluatePoaInputStateMatrix();
-        }
-        return true;
-    }
-
-    const stepIdx = parseInt(activeStep, 10);
+    // Hard bypass: Let the dedicated POA matrix handle Step 4 evaluation completely 
+    if (parseInt(activeStep, 10) === 4) { 
+        if (typeof window.evaluatePoaInputStateMatrix === "function") { 
+            return window.evaluatePoaInputStateMatrix(); 
+        } 
+        return true; 
+    } 
+    
+    const stepIdx = parseInt(activeStep, 10); 
     var activePanel = document.getElementById("step-panel-" + stepIdx) || 
                        document.getElementById("step-" + stepIdx) || 
                        document.getElementById(`step-${stepIdx}-injection-placeholder`) || 
-                       (stepIdx === 0 ? document.getElementById("step-0-injection-placeholder") : null);
-
-    if (!activePanel) {
-        console.log(`[Validator Engine Warning] View container for step ${activeStep} not mounted. Bypassing check.`);
-        return true;
-    }
-
-    // Clear all previous in-line error notifications before running a new sweep
-    activePanel.querySelectorAll(".inline-error-message-node").forEach(node => node.remove());
-    activePanel.querySelectorAll(".wizard-input-field-error-state").forEach(el => {
-        el.classList.remove("wizard-input-field-error-state");
+                       (stepIdx === 0 ? document.getElementById("step-0-injection-placeholder") : null); 
+                       
+    if (!activePanel) { 
+        console.log(`[Validator Engine Warning] View container for step ${activeStep} not mounted. Bypassing check.`); 
+        return true; 
+    } 
+    
+    // Clear all previous in-line error notifications before running a new sweep 
+    activePanel.querySelectorAll(".inline-error-message-node").forEach(node => node.remove()); 
+    activePanel.querySelectorAll(".wizard-input-field-error-state").forEach(el => { 
+        el.classList.remove("wizard-input-field-error-state"); 
         el.style.borderColor = ""; 
-    });
-
-    var inputs = activePanel.querySelectorAll("input, select, textarea");
-    var stepIsValid = true;
-    var firstInvalidElement = null;
-
-    var regexLetters = /^[\p{L}\s.'\-]+$/u;
-    var regexNumbers = /^\d+$/;
-    var regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    inputs.forEach(function(el) {
-        if (el.type === "hidden" || el.disabled) return;
-
-        // 🛡️ CRITICAL PAYMENT EXCLUSION GATEWAY
-        // Completely skip validation tracking if the target field is controlled by Stripe.
-        // Reading, trimming, or mutating Stripe's native elements breaks cross-origin execution rules.
-        const isStripeControlled = el.closest('.StripeElement') || 
-                                   el.closest('[id*="stripe"]') || 
-                                   el.closest('[id*="card-element"]') || 
-                                   el.closest('[id*="payment-element"]') ||
-                                   el.classList.contains('StripeElement');
-                                   
-        if (isStripeControlled) {
-            return; // Exit out of evaluation loop safely for this item
-        }
-
-        // Skip element if it is nested inside a hidden step placeholder
-        const isHiddenContainer = el.closest('[style*="display: none"]') || el.closest('.wizard-panel:not(.active)');
-        var bounds = el.getBoundingClientRect();
+    }); 
+    
+    var inputs = activePanel.querySelectorAll("input, select, textarea"); 
+    var stepIsValid = true; 
+    var firstInvalidElement = null; 
+    var regexLetters = /^[\p{L}\s.'\-]+$/u; 
+    var regexNumbers = /^\d+$/; 
+    var regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 
+    
+    inputs.forEach(function(el) { 
+        if (el.type === "hidden" || el.disabled) return; 
         
-        if (isHiddenContainer || (bounds.width === 0 && bounds.height === 0)) {
-            return;
-        }
-
-        // If we are validating Step 1, ignore inputs sitting inside future step placeholders
-        if (stepIdx === 1) {
-            if (el.closest('#step-2-injection-placeholder') || el.closest('#step-3-injection-placeholder')) {
-                return;
-            }
-        }
-
-        var val = el.value.trim();
-        let isFieldInvalid = false;
-        let validationErrorMessage = "";
-
-        // 1. CHECK REQUIRED INPUT STATES
-        if (el.hasAttribute("required") && val === "") {
-            validationErrorMessage = "This field is required.";
-            isFieldInvalid = true;
-        }
-        // 2. CHECK FORMAT STRINGS IF FIELD IS POPULATED
-        else if (val !== "") {
-            const lowerName = (el.name || "").toLowerCase();
-            const lowerId = (el.id || "").toLowerCase();
-
-            // Email Input Patterns
-            if (el.type === "email" || el.classList.contains("validate-email") || lowerName.includes("email") || lowerId.includes("email")) {
-                if (!regexEmail.test(val)) {
-                    validationErrorMessage = "Please enter a valid email address.";
-                    isFieldInvalid = true;
-                }
-            }
-            // Person/City Name Patterns
-            else if (el.classList.contains("validate-letters") || lowerName.includes("first_name") || lowerName.includes("last_name") || lowerName.includes("city")) {
-                if (!regexLetters.test(val)) {
-                    validationErrorMessage = "This field can only contain letters, spaces, hyphens, or periods.";
-                    isFieldInvalid = true;
-                }
-            }
-            // Numeric Input Patterns (ZIP, EIN, Phone, Numbers)
-            else if (el.type === "number" || el.classList.contains("validate-numbers") || lowerName.includes("zip") || lowerName.includes("ein") || lowerName.includes("phone") || lowerName.includes("tel")) {
-                const cleanNumericValue = val.replace(/[\s\-()]/g, "");
-                if (!regexNumbers.test(cleanNumericValue)) {
-                    validationErrorMessage = "This field can only contain numeric digits.";
-                    isFieldInvalid = true;
-                }
-            }
-        }
-
-        // Dynamic In-Line Error Placement
-        if (isFieldInvalid) {
-            stepIsValid = false;
-            if (!firstInvalidElement) firstInvalidElement = el;
-            el.classList.add("wizard-input-field-error-state");
+        // =====================================================================
+        // DECOUPLED EXTERNAL FIELDS BYPASS INTEGRATION
+        // =====================================================================
+        // Ask the isolated external validator rule function if this specific element node
+        // is protected (e.g. controlled by Stripe's security frames) to avoid scraping issues.
+        if (typeof window.checkIsProtectedExternalField === "function" && 
+            window.checkIsProtectedExternalField(el)) { 
+            return; 
+        } 
+        
+        // Skip element if it is nested inside a hidden step placeholder 
+        const isHiddenContainer = el.closest('[style*="display: none"]') || el.closest('.wizard-panel:not(.active)'); 
+        var bounds = el.getBoundingClientRect(); 
+        if (isHiddenContainer || (bounds.width === 0 && bounds.height === 0)) { 
+            return; 
+        } 
+        
+        // If we are validating Step 1, ignore inputs sitting inside future step placeholders 
+        if (stepIdx === 1) { 
+            if (el.closest('#step-2-injection-placeholder') || el.closest('#step-3-injection-placeholder')) { 
+                return; 
+            } 
+        } 
+        
+        var val = el.value.trim(); 
+        let isFieldInvalid = false; 
+        let validationErrorMessage = ""; 
+        
+        // 1. CHECK REQUIRED INPUT STATES 
+        if (el.hasAttribute("required") && val === "") { 
+            validationErrorMessage = "This field is required."; 
+            isFieldInvalid = true; 
+        } 
+        // 2. CHECK FORMAT STRINGS IF FIELD IS POPULATED 
+        else if (val !== "") { 
+            const lowerName = (el.name || "").toLowerCase(); 
+            const lowerId = (el.id || "").toLowerCase(); 
+            
+            // Email Input Patterns 
+            if (el.type === "email" || el.classList.contains("validate-email") || lowerName.includes("email") || lowerId.includes("email")) { 
+                if (!regexEmail.test(val)) { 
+                    validationErrorMessage = "Please enter a valid email address."; 
+                    isFieldInvalid = true; 
+                } 
+            } 
+            // Person/City Name Patterns 
+            else if (el.classList.contains("validate-letters") || lowerName.includes("first_name") || lowerName.includes("last_name") || lowerName.includes("city")) { 
+                if (!regexLetters.test(val)) { 
+                    validationErrorMessage = "This field can only contain letters, spaces, hyphens, or periods."; 
+                    isFieldInvalid = true; 
+                } 
+            } 
+            // Numeric Input Patterns (ZIP, EIN, Phone, Numbers) 
+            else if (el.type === "number" || el.classList.contains("validate-numbers") || lowerName.includes("zip") || lowerName.includes("ein") || lowerName.includes("phone") || lowerName.includes("tel")) { 
+                const cleanNumericValue = val.replace(/[\s\-()]/g, ""); 
+                if (!regexNumbers.test(cleanNumericValue)) { 
+                    validationErrorMessage = "This field can only contain numeric digits."; 
+                    isFieldInvalid = true; 
+                } 
+            } 
+        } 
+        
+        // Dynamic In-Line Error Placement 
+        if (isFieldInvalid) { 
+            stepIsValid = false; 
+            if (!firstInvalidElement) firstInvalidElement = el; 
+            el.classList.add("wizard-input-field-error-state"); 
             el.style.borderColor = "#b91c1c"; 
+            
+            const inputParentWrapper = el.closest(".wizard-input-group") || el.closest(".form-group-wrapper") || el.parentElement; 
+            if (inputParentWrapper) { 
+                if (!inputParentWrapper.querySelector(".inline-error-message-node")) { 
+                    const errorLabel = document.createElement("span"); 
+                    errorLabel.className = "inline-error-message-node"; 
+                    errorLabel.style.cssText = "color: #b91c1c; font-size: 0.78rem; font-weight: 600; display: block; margin-top: 4px; text-align: left; clear: both; width: 100%; animation: fadeIn 0.15s ease;"; 
+                    errorLabel.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="margin-right: 4px;"></i> ${validationErrorMessage}`; 
+                    inputParentWrapper.appendChild(errorLabel); 
+                } 
+            } 
+        } 
+    }); 
+    
+    // Focus and scroll smoothly to the first field failure item 
+    if (!stepIsValid && firstInvalidElement) { 
+        try { 
+            firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+            firstInvalidElement.focus(); 
+        } catch (err) { 
+            console.warn("[Validator Engine] Prevented crash during focus shift:", err); 
+        } 
+    } 
+    return stepIsValid; 
+} 
 
-            const inputParentWrapper = el.closest(".wizard-input-group") || el.closest(".form-group-wrapper") || el.parentElement;
-            if (inputParentWrapper) {
-                if (!inputParentWrapper.querySelector(".inline-error-message-node")) {
-                    const errorLabel = document.createElement("span");
-                    errorLabel.className = "inline-error-message-node";
-                    errorLabel.style.cssText = "color: #b91c1c; font-size: 0.78rem; font-weight: 600; display: block; margin-top: 4px; text-align: left; clear: both; width: 100%; animation: fadeIn 0.15s ease;";
-                    errorLabel.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="margin-right: 4px;"></i> ${validationErrorMessage}`;
-                    inputParentWrapper.appendChild(errorLabel);
-                }
-            }
-        }
-    });
-
-    // Focus and scroll smoothly to the first field failure item
-    if (!stepIsValid && firstInvalidElement) {
-        try {
-            firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            firstInvalidElement.focus();
-        } catch (err) {
-            console.warn("[Validator Engine] Prevented crash during focus shift:", err);
-        }
-    }
-
-    return stepIsValid;
-}
-
-// Expose verification layers back to global tracking objects securely
+// Expose verification layers back to global tracking objects securely 
 window.validateStepInputParametersVanilla = validateStepInputParametersVanilla;
 
 
-/**
- * Global dynamic form dispatcher checking tool.
- * Identifies the on-screen active step framework form state and triggers its matching validation sequence.
- */
-async function runMasterActiveStepFormValidation() {
-    const currentStep = (typeof window.currentWizardActiveStep === "number") ? window.currentWizardActiveStep : 0;
-    console.log(`[Validation Dispatch] Intercepting form status check for step: ${currentStep}`);
-
-    // Force evaluate basic required markup fields on the current step container FIRST
-    if (typeof window.validateStepInputParametersVanilla === "function") {
-        const isBaseStepValid = window.validateStepInputParametersVanilla(currentStep);
-        if (!isBaseStepValid) {
-            console.warn(`[Validation Dispatch Block] Step ${currentStep} failed primary field constraint validation.`);
+/** 
+ * Global dynamic form dispatcher checking tool. 
+ * Identifies the on-screen active step framework form state and triggers its matching validation sequence. 
+ */ 
+async function runMasterActiveStepFormValidation() { 
+    const currentStep = (typeof window.currentWizardActiveStep === "number") ? window.currentWizardActiveStep : 0; 
+    console.log(`[Validation Dispatch] Intercepting form status check for step: ${currentStep}`); 
+    
+    // Force evaluate basic required markup fields on the current step container FIRST 
+    if (typeof window.validateStepInputParametersVanilla === "function") { 
+        const isBaseStepValid = window.validateStepInputParametersVanilla(currentStep); 
+        if (!isBaseStepValid) { 
+            console.warn(`[Validation Dispatch Block] Step ${currentStep} failed primary field constraint validation.`); 
             return false; 
-        }
-    }
-
-// ========================================================================= //
-// 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: SECURE INTENT EXTRACTION LAYER    //
-// ========================================================================= //
-if (currentStep === 5) {
-  console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks...");
-  
-  var nextButton = document.getElementById("summary-submit-payment-intent-btn") || document.querySelector(".btn-wizard-nav-next");
-  var fallbackText = "Secure Payment";
-  
-  if (nextButton) {
-    fallbackText = nextButton.innerHTML;
-    nextButton.disabled = true;
-    nextButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Securing Authorization...';
-  }
-  
-  try {
-    var targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 194.00;
-    var uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
+        } 
+    } 
     
-    var dynamicCompanySelector = [
-      "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", 
-      "#bl_applicant_name", "#cage_legal_name", "#cgs_company_name", "#clia_lab_name", 
-      "#corp_proposed_name", "#dba_proposed_name", "#dbe_legal_name", "#dot_con_legal_name", 
-      "#prm_legal_name", "#dqf_carrier_name", "#duns_legal_name", "#ein_applicant_name", 
-      "#fed_tax_legal_name", "#fq_proposed_name", "#fran_tax_legal_name", "#haz_legal_name", 
-      "#hut_legal_name", "#ifta_legal_name", "#ifta_rep_legal_name", "#llc_desired_name", 
-      "#rein_original_name", "#mcs_legal_name", "#mbe_legal_name", "#nea_legal_name", 
-      "#np_proposed_name", "#oa_company_name", "#pr_legal_name", "#ra_client_name", 
-      "#st_legal_name", "#scac_legal_name", "#sllc_proposed_name", "#sm_proposed_name", 
-      "#sp_proposed_name", "#ta_legal_name", "#ins_legal_name", "#wbe_legal_name"
-    ].join(",");
-
-    var companyNameInput = document.querySelector(dynamicCompanySelector);
-    
-    var companyName = (window.currentOrderCorePayload && window.currentOrderCorePayload.company_name) || 
-                      localStorage.getItem("f4u_company_name") || 
-                      (companyNameInput ? companyNameInput.value.trim() : "");
-
-    var serviceTitle = (window.currentOrderCorePayload && window.currentOrderCorePayload.service_title) || 
-                        localStorage.getItem("f4u_service_title") || 
-                        window.currentSelectedServiceTitle || "llc-formation";
-
-    var planTier = (window.currentOrderCorePayload && window.currentOrderCorePayload.plan_tier) || 
-                    localStorage.getItem("f4u_plan_tier") || "starter";
-
-    var signatureString = (window.currentOrderCorePayload && window.currentOrderCorePayload.poa_signature_verification_string) || 
-                          localStorage.getItem("f4u_poa_signature") || "pending";
-
-    var activeUserId = (window.currentOrderCorePayload && window.currentOrderCorePayload.user_id) || 
-                       localStorage.getItem("supabase.auth.token") || "00000000-0000-0000-0000-000000000000";
-
-    var emailInput = document.querySelector('input[type="email"]') || 
-                     document.getElementById("portal_user_email_input") || 
-                     document.getElementById("customer_email");
-                     
-    var clientEmail = emailInput ? emailInput.value.trim() : "";
-    if (!clientEmail) {
-      clientEmail = localStorage.getItem("f4u_customer_email") || "guest-checkout@fulfillment-lane.com";
-    }
-
-    if (!companyName || companyName.trim() === "") {
-      throw new Error("Required field 'company_name' is missing. Please review Step 2 form entries.");
-    }
-
-    localStorage.setItem("f4u_company_name", companyName.trim());
-
-    var schemaDatabasePayload = {
-      company_name: companyName.trim(),
-      service_title: serviceTitle.trim(),
-      plan_tier: planTier.trim(),
-      total_fee: targetAmount,
-      status: "payment_pending",
-      poa_signed_state: true,
-      poa_signature_verification_string: signatureString.trim(),
-      tracking_number: uniqueTrackingToken.trim(),
-      user_id: activeUserId.trim(),
-      email: clientEmail.trim(),
-      collected_payload_metadata: {
-        wizard_step_checkpoint: 6,
-        timestamp_capture: new Date().toISOString()
-      }
-    };
-    
-    console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
-    
-    var responseStream = await fetch("https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(schemaDatabasePayload)
-    });
-    
-    if (!responseStream.ok) {
-      var serverFailureMessage = await responseStream.text();
-      throw new Error("Supabase Edge Function Rejected Request: " + serverFailureMessage);
-    }
-    
-    var transactionTokenPayload = await responseStream.json();
-    
-    if (!transactionTokenPayload || !transactionTokenPayload.clientSecret) {
-      throw new Error("Payload mapping error: clientSecret key is missing from Supabase response.");
-    }
-    
-    // ✅ GLOBAL ASSIGNMENT FIX: Save variables into window object globally
-    window.stripeClientSecret = transactionTokenPayload.clientSecret;
-    window.stripePaymentIntentId = transactionTokenPayload.paymentIntentId;
-    
-    if (!window.currentOrderCorePayload) {
-      window.currentOrderCorePayload = {};
-    }
-    window.currentOrderCorePayload.stripe_payment_id = transactionTokenPayload.paymentIntentId;
-    
-    var activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
-    activeOnboardingState.stripeClientSecret = transactionTokenPayload.clientSecret;
-    localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
-    
-    var oldErrorBanner = document.getElementById("step5-matrix-error-banner");
-    if (oldErrorBanner && oldErrorBanner.parentNode) {
-      oldErrorBanner.parentNode.removeChild(oldErrorBanner);
-    }
-    
-  } catch (apiNetworkException) {
-    console.error("🚨 [Gateway Execution Failure]:", apiNetworkException.message);
-    
-    var step5Panel = document.getElementById("step-panel-5");
-    var errorNodeTarget = document.getElementById("step5-matrix-error-banner");
-    
-    if (step5Panel && !errorNodeTarget) {
-      errorNodeTarget = document.createElement("div");
-      errorNodeTarget.id = "step5-matrix-error-banner";
-      errorNodeTarget.style.cssText = "margin: 15px 0; padding: 12px; border: 1px solid #fee2e2; background: #fef2f2; color: #b91c1c; border-radius: 6px; font-size: 0.85rem; font-weight: 500; font-family: sans-serif; text-align: left;";
-      step5Panel.appendChild(errorNodeTarget);
-    }
-    
-    if (errorNodeTarget) {
-      errorNodeTarget.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> <strong>Critical Error:</strong> ' + apiNetworkException.message;
-    }
-    
-    if (nextButton) {
-      nextButton.disabled = false;
-      nextButton.innerHTML = fallbackText;
-    }
-    return false;
-  } finally {
-    if (nextButton) {
-      nextButton.disabled = false;
-      nextButton.innerHTML = fallbackText;
-    }
-  }
-}
-
-
-    if (currentStep >= 5) {
-        console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`);
-        return true;
-    }
-
-    const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || "";
-    const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-");
-
-    if (!cleanKey) {
-        console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status.");
-        return true;
-    }
-
-    const primaryKeyWords = cleanKey.split('-');
-    const globalContextKeys = Object.keys(window);
-    const targetValidationMethodKey = globalContextKeys.find(key => {
-        const kLower = key.toLowerCase();
-        if (["validatestepinputparametersvanilla", "runmasteractivestepformvalidation", "validatestepinputparameters"].includes(kLower)) {
-            return false;
-        }
-        const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate");
-        const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word));
-        return isValidationFunction && matchesServiceKeyword;
-    });
-
-    if (targetValidationMethodKey) {
-        console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`);
-        try {
-            const validationTargetCanvas = document.getElementById(`step-${currentStep}-onboarding-fields-canvas`) || document.getElementById(`step-panel-${currentStep}`) || document.body;
-            const targetFunction = window[targetValidationMethodKey];
-            let advancedValidationResult;
-            if (targetFunction.length >= 2) {
-                advancedValidationResult = targetFunction(validationTargetCanvas, currentStep);
+    // ========================================================================= // 
+    // 🌐 STEP 5 TO STEP 6 TRANSITION GATEWAY: SECURE INTENT EXTRACTION LAYER    // 
+    // ========================================================================= // 
+    if (currentStep === 5) { 
+        console.log("[Validation Dispatch] Step 5 baseline clear. Securing authorization token tracks..."); 
+        var nextButton = document.getElementById("summary-submit-payment-intent-btn") || document.querySelector(".btn-wizard-nav-next"); 
+        var fallbackText = "Secure Payment"; 
+        
+        if (nextButton) { 
+            fallbackText = nextButton.innerHTML; 
+            nextButton.disabled = true; 
+            nextButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Securing Authorization...'; 
+        } 
+        
+        try { 
+            // =====================================================================
+            // DECOUPLED STRIPE CORE ROUTER DELEGATE
+            // =====================================================================
+            // We pass control to the new stripe-core.js file to handle the fetch endpoint.
+            if (typeof window.executeStabaseCheckoutTransactionHandshake === "function") {
+                await window.executeStabaseCheckoutTransactionHandshake();
             } else {
-                advancedValidationResult = targetFunction(currentStep);
+                throw new Error("Stripe checkout initialization framework modules are unpopulated.");
             }
-            return advancedValidationResult !== false;
-        } catch (err) {
-            console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err);
+            
+            var oldErrorBanner = document.getElementById("step5-matrix-error-banner"); 
+            if (oldErrorBanner && oldErrorBanner.parentNode) { 
+                oldErrorBanner.parentNode.removeChild(oldErrorBanner); 
+            } 
+        } catch (apiNetworkException) { 
+            console.error("🚨 [Gateway Execution Failure]:", apiNetworkException.message); 
+            var step5Panel = document.getElementById("step-panel-5"); 
+            var errorNodeTarget = document.getElementById("step5-matrix-error-banner"); 
+            
+            if (step5Panel && !errorNodeTarget) { 
+                errorNodeTarget = document.createElement("div"); 
+                errorNodeTarget.id = "step5-matrix-error-banner"; 
+                errorNodeTarget.style.cssText = "margin: 15px 0; padding: 12px; border: 1px solid #fee2e2; background: #fef2f2; color: #b91c1c; border-radius: 6px; font-size: 0.85rem; font-weight: 500; font-family: sans-serif; text-align: left;"; 
+                step5Panel.appendChild(errorNodeTarget); 
+            } 
+            if (errorNodeTarget) { 
+                errorNodeTarget.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> <strong>Critical Error:</strong> ' + apiNetworkException.message; 
+            } 
+            if (nextButton) { 
+                nextButton.disabled = false; 
+                nextButton.innerHTML = fallbackText; 
+            } 
             return false; 
-        }
-    }
-
-    if (typeof window.validateAlgorithmicFallbackFields === "function") {
-        return !!window.validateAlgorithmicFallbackFields(currentStep);
-    }
-    return true;
-}
+        } finally { 
+            if (nextButton) { 
+                nextButton.disabled = false; 
+                nextButton.innerHTML = fallbackText; 
+            } 
+        } 
+    } 
+    
+    if (currentStep >= 5) { 
+        console.log(`[Validation Dispatch] Step ${currentStep} is a checkout review/payment view layer. Bypassing fuzzy reflection validation.`); 
+        return true; 
+    } 
+    
+    const currentServiceKey = window.routeActiveServiceKey || window.currentServiceKey || ""; 
+    const cleanKey = String(currentServiceKey).toLowerCase().trim().replace(/[\s_]+/g, "-"); 
+    if (!cleanKey) { 
+        console.log("[Validation Dispatch] No active service key registered. Proceeding with baseline status."); 
+        return true; 
+    } 
+    
+    const primaryKeyWords = cleanKey.split('-'); 
+    const globalContextKeys = Object.keys(window); 
+    const targetValidationMethodKey = globalContextKeys.find(key => { 
+        const kLower = key.toLowerCase(); 
+        if (["validatestepinputparametersvanilla", "runmasteractivestepformvalidation", "validatestepinputparameters"].includes(kLower)) { 
+            return false; 
+        } 
+        const isValidationFunction = typeof window[key] === "function" && kLower.startsWith("validate"); 
+        const matchesServiceKeyword = primaryKeyWords.some(word => word.length > 2 && kLower.includes(word)); 
+        return isValidationFunction && matchesServiceKeyword; 
+    }); 
+    
+    if (targetValidationMethodKey) { 
+        console.log(`[Validation Dispatch Success] Auto-discovered supplementary validation logic: window.${targetValidationMethodKey}()`); 
+        try { 
+            const validationTargetCanvas = document.getElementById(`step-${currentStep}-onboarding-fields-canvas`) || document.getElementById(`step-panel-${currentStep}`) || document.body; 
+            const targetFunction = window[targetValidationMethodKey]; 
+            let advancedValidationResult; 
+            if (targetFunction.length >= 2) { 
+                advancedValidationResult = targetFunction(validationTargetCanvas, currentStep); 
+            } else { 
+                advancedValidationResult = targetFunction(currentStep); 
+            } 
+            return advancedValidationResult !== false; 
+        } catch (err) { 
+            console.error(`[Validation Dispatch Failure] Runtime error executing window.${targetValidationMethodKey}:`, err); 
+            return false; 
+        } 
+    } 
+    
+    if (typeof window.validateAlgorithmicFallbackFields === "function") { 
+        return !!window.validateAlgorithmicFallbackFields(currentStep); 
+    } 
+    return true; 
+} 
 
 window.runMasterActiveStepFormValidation = runMasterActiveStepFormValidation;
 
 
-
-// ============================================================================ //
-// 🧠 MODULAR ATTACHMENT: VANILLA STATE SCRAPER FOR STEP HYDRATION              //
-// ============================================================================ //
-window.saveWizardFormStatesVanilla = function() {
-  console.log("[State Engine] Triggering global form parameter data collection pass...");
-  try {
-    // Enforce strict type evaluation check
-    const currentStepNum = (typeof window.currentWizardActiveStep === "number") ? window.currentWizardActiveStep : 0;
-
-    // Summary Review and Secure Checkout are confirmation views.
-    // We bypass input scraping on these layers to protect early-step cache records from destruction.
-    if (currentStepNum >= 5) {
-      console.log(`[State Engine Log] Step ${currentStepNum} is a confirmation layout views context. Skipping serialization pass.`);
-      return;
-    }
-
-    // Clean target containment boundary without hardcoded step fallbacks
-    const currentActivePanel = document.getElementById(`step-panel-${currentStepNum}`) || 
-                               document.getElementById(`step-${currentStepNum}-injection-placeholder`) ||
-                               document.getElementById(`step-0-injection-placeholder`);
-
-    if (!currentActivePanel) {
-      console.warn(`[State Engine Abort] Canceled scraping pass: Panel context for step ${currentStepNum} not mounted in DOM tree yet.`);
-      return;
-    }
-
-    console.log(`[State Engine] Actively serializing elements for Step Panel ID: "${currentActivePanel.id || 'Dynamic Slot'}"`);
-
-    // 1. Collect all standard alphanumeric fields, textareas, hidden items, and selectors
-    const formFields = currentActivePanel.querySelectorAll("input:not([type='checkbox']):not([type='radio']), select, textarea");
-    formFields.forEach(fieldItem => {
-      const fieldIdentifier = fieldItem.id || fieldItem.name;
-      if (fieldIdentifier) {
-        const structuralValue = fieldItem.value ? fieldItem.value.trim() : "";
+// ============================================================================ // 
+// 🧠 MODULAR ATTACHMENT: VANILLA STATE SCRAPER FOR STEP HYDRATION              // 
+// ============================================================================ // 
+window.saveWizardFormStatesVanilla = function() { 
+    console.log("[State Engine] Triggering global form parameter data collection pass..."); 
+    try { 
+        // Enforce strict type evaluation check 
+        const currentStepNum = (typeof window.currentWizardActiveStep === "number") ? window.currentWizardActiveStep : 0; 
         
-        // Saves the clean extracted variable string securely
-        localStorage.setItem(`wizard_field_${fieldIdentifier}`, structuralValue);
-
-        // STATE RETENTION GUARD: Match specific distinct structural identity keys cleanly
-        const cleanId = fieldIdentifier.toLowerCase();
-        if ((cleanId === "state" || cleanId === "formation" || cleanId.includes("_state") || cleanId.includes("formation_")) && structuralValue !== "") {
-          localStorage.setItem('wizard_selected_state', structuralValue.toUpperCase());
-          window.selectedJurisdiction = structuralValue.toUpperCase();
-        }
-      }
-    });
-
-    // 2. Process all checkbox components cleanly using decoupled attribute classes
-    const checkboxes = currentActivePanel.querySelectorAll("input[type='checkbox']");
-    checkboxes.forEach(function(boxItem) {
-      const boxIdentifier = boxItem.id || boxItem.name;
-      if (boxIdentifier) {
-        // True Dynamic Architecture: Use classes or attributes instead of hardcoding 'currentStepNum === 2'
-        if (boxItem.classList.contains("upsell-checkbox") || boxItem.closest(".upsell-market-card") || boxItem.hasAttribute("data-skip-serialize")) {
-          return;
-        }
-        localStorage.setItem(`wizard_field_${boxIdentifier}`, boxItem.checked ? "true" : "false");
-      }
-    });
-
-  // 3. Process radio inputs safely by only capturing the actively selected element in each group 
-const radioButtons = currentActivePanel.querySelectorAll("input[type='radio']"); 
-const processedRadioNames = new Set(); 
-
-radioButtons.forEach(function(radioItem) { 
-  const radioIdentifier = radioItem.name || radioItem.id; 
-  if (!radioIdentifier || processedRadioNames.has(radioIdentifier)) { 
-    return; 
-  } 
-
-  // Query the specific checked element belonging to this radio group name context 
-  const selectedRadioInGroup = currentActivePanel.querySelector(`input[type='radio'][name='${radioItem.name}']:checked`) || (radioItem.checked ? radioItem : null); 
-  
-  if (selectedRadioInGroup) { 
-    const radioCleanValue = selectedRadioInGroup.value ? selectedRadioInGroup.value.trim() : ""; 
-    localStorage.setItem(`wizard_field_${radioIdentifier}`, radioCleanValue); 
-
-    // Explicit structural word matching instead of substring collision loops 
-    const cleanRadioId = radioIdentifier.toLowerCase(); 
-    
-    // 🟢 FIXED SYNTAX & LOGIC ANTI-COLLISION CORES:
-    const isPackageTierKey = cleanRadioId === "plan" || cleanRadioId === "tier" || cleanRadioId.endsWith("_plan") || cleanRadioId.endsWith("_tier");
-    const isStateSelectionKey = cleanRadioId.includes("state") || cleanRadioId.includes("geo") || cleanRadioId.includes("jurisdiction") || cleanRadioId.includes("location");
-
-    if (isPackageTierKey && !isStateSelectionKey) { 
-      window.currentPlanKey = radioCleanValue; 
-      window.currentServiceTier = radioCleanValue; 
+        // Summary Review and Secure Checkout are confirmation views. 
+        // We bypass input scraping on these layers to protect early-step cache records from destruction. 
+        if (currentStepNum >= 5) { 
+            console.log(`[State Engine Log] Step ${currentStepNum} is a confirmation layout views context. Skipping serialization pass.`); 
+            return; 
+        } 
+        
+        // Clean target containment boundary without hardcoded step fallbacks 
+        const currentActivePanel = document.getElementById(`step-panel-${currentStepNum}`) || 
+                                   document.getElementById(`step-${currentStepNum}-injection-placeholder`) || 
+                                   document.getElementById(`step-0-injection-placeholder`); 
+                                   
+        if (!currentActivePanel) { 
+            console.warn(`[State Engine Abort] Canceled scraping pass: Panel context for step ${currentStepNum} not mounted in DOM tree yet.`); 
+            return; 
+        } 
+        
+        console.log(`[State Engine] Actively serializing elements for Step Panel ID: "${currentActivePanel.id || 'Dynamic Slot'}"`); 
+        
+        // 1. Collect all standard alphanumeric fields, textareas, hidden items, and selectors 
+        const formFields = currentActivePanel.querySelectorAll("input:not([type='checkbox']):not([type='radio']), select, textarea"); 
+        formFields.forEach(fieldItem => { 
+            const fieldIdentifier = fieldItem.id || fieldItem.name; 
+            if (fieldIdentifier) { 
+                const structuralValue = fieldItem.value ? fieldItem.value.trim() : ""; 
+                // Saves the clean extracted variable string securely 
+                localStorage.setItem(`wizard_field_${fieldIdentifier}`, structuralValue); 
+                
+                // STATE RETENTION GUARD: Match specific distinct structural identity keys cleanly 
+                const cleanId = fieldIdentifier.toLowerCase(); 
+                if ((cleanId === "state" || cleanId === "formation" || cleanId.includes("_state") || cleanId.includes("formation_")) && structuralValue !== "") { 
+                    localStorage.setItem('wizard_selected_state', structuralValue.toUpperCase()); 
+                    window.selectedJurisdiction = structuralValue.toUpperCase(); 
+                } 
+            } 
+        }); 
+        
+        // 2. Process all checkbox components cleanly using decoupled attribute classes 
+        const checkboxes = currentActivePanel.querySelectorAll("input[type='checkbox']"); 
+        checkboxes.forEach(function(boxItem) { 
+            const boxIdentifier = boxItem.id || boxItem.name; 
+            if (boxIdentifier) { 
+                // True Dynamic Architecture: Use classes or attributes instead of hardcoding 'currentStepNum === 2' 
+                if (boxItem.classList.contains("upsell-checkbox") || boxItem.closest(".upsell-market-card") || boxItem.hasAttribute("data-skip-serialize")) { 
+                    return; 
+                } 
+                localStorage.setItem(`wizard_field_${boxIdentifier}`, boxItem.checked ? "true" : "false"); 
+            } 
+        }); 
+        
+        // 3. Process radio inputs safely by only capturing the actively selected element in each group 
+        const radioButtons = currentActivePanel.querySelectorAll("input[type='radio']"); 
+        const processedRadioNames = new Set(); 
+        
+        radioButtons.forEach(function(radioItem) { 
+            const radioIdentifier = radioItem.name || radioItem.id; 
+            if (!radioIdentifier || processedRadioNames.has(radioIdentifier)) { 
+                return; 
+            } 
+            
+            // Query the specific checked element belonging to this radio group name context 
+            const selectedRadioInGroup = currentActivePanel.querySelector(`input[type='radio'][name='${radioItem.name}']:checked`) || (radioItem.checked ? radioItem : null); 
+            if (selectedRadioInGroup) { 
+                const radioCleanValue = selectedRadioInGroup.value ? selectedRadioInGroup.value.trim() : ""; 
+                localStorage.setItem(`wizard_field_${radioIdentifier}`, radioCleanValue); 
+                
+                // Explicit structural word matching instead of substring collision loops 
+                const cleanRadioId = radioIdentifier.toLowerCase(); 
+                const isPackageTierKey = cleanRadioId === "plan" || cleanRadioId === "tier" || cleanRadioId.endsWith("_plan") || cleanRadioId.endsWith("_tier"); 
+                const isStateSelectionKey = cleanRadioId.includes("state") || cleanRadioId.includes("geo") || cleanRadioId.includes("jurisdiction") || cleanRadioId.includes("location"); 
+                
+                if (isPackageTierKey && !isStateSelectionKey) { 
+                    window.currentPlanKey = radioCleanValue; 
+                    window.currentServiceTier = radioCleanValue; 
+                } 
+            } else { 
+                // Safe Fallback: If nothing is checked in the radio group yet, clear or default the storage key 
+                localStorage.setItem(`wizard_field_${radioIdentifier}`, ""); 
+            } 
+            
+            // Mark group as processed to avoid redundant overhead iterations 
+            if (radioItem.name) { 
+                processedRadioNames.add(radioItem.name); 
+            } 
+        }); 
+        
+        console.log("[State Engine] Active layout fields successfully serialized."); 
+    } catch (scrapingException) { 
+        console.warn("[State Engine Error] Failed to safely cache form elements:", scrapingException); 
     } 
-  } else { 
-    // Safe Fallback: If nothing is checked in the radio group yet, clear or default the storage key 
-    localStorage.setItem(`wizard_field_${radioIdentifier}`, ""); 
-  } 
-
-  // Mark group as processed to avoid redundant overhead iterations 
-  if (radioItem.name) { 
-    processedRadioNames.add(radioItem.name); 
-  } 
-}); 
-
-console.log("[State Engine Success] Active layout fields successfully serialized."); 
-} catch (scrapingException) { 
-  console.warn("[State Engine Error] Failed to safely cache form elements:", scrapingException); 
-} 
 };
 
 
-
-// ============================================================================ //
-// 🧭 WIZARD NAVIGATION & APPLICATION TIMELINE PROGRESS LIGHTS (DYNAMIC)       //
-// ============================================================================ //
-
-/**
- * Navigates to the next wizard step or a targeted step context securely.
- * Supports explicit parameters, click triggers, and standard form submissions safely.
- */
-function goToNextWizardStep(targetStep, eventClickRef) {
-  // Capture the true event reference regardless of parameter order positions
-  let explicitEvent = null;
-  let resolvedTarget = undefined;
-
-  if (targetStep && typeof targetStep === 'object' && typeof targetStep.preventDefault === 'function') {
-    explicitEvent = targetStep;
-  } else if (eventClickRef && typeof eventClickRef === 'object' && typeof eventClickRef.preventDefault === 'function') {
-    explicitEvent = eventClickRef;
-  } else if (window.event) {
-    explicitEvent = window.event;
-  }
-
-  // Safely capture mouse click triggers and defuse native HTML form submission events instantly
-  if (explicitEvent) {
-    explicitEvent.preventDefault();
-    explicitEvent.stopPropagation();
-  }
-
-  // Handle target validation strings or integers
-  if (typeof targetStep === 'number' || (typeof targetStep === 'string' && !isNaN(parseInt(targetStep, 10)))) {
-    resolvedTarget = parseInt(targetStep, 10);
-  }
-
-  // Ensure current wizard active step index is a safe integer fallback base
-  let currentStep = typeof window.currentWizardActiveStep !== 'undefined' ? parseInt(window.currentWizardActiveStep, 10) : 0;
-  if (isNaN(currentStep)) currentStep = 0;
-  window.currentWizardActiveStep = currentStep;
-
-  // ROUTE VALIDATION DIRECTLY THROUGH MASTER DISPATCHER
-  if (typeof window.runMasterActiveStepFormValidation === "function") {
-    if (!window.runMasterActiveStepFormValidation()) {
-      console.warn(`[Navigation Gate] Validation failed for Step ${currentStep} via Master Dispatcher. Halt pipeline.`);
-      return false;
-    }
-  } else if (typeof window.validateStepInputParametersVanilla === "function") {
-    if (!window.validateStepInputParametersVanilla(currentStep)) {
-      console.warn(`[Navigation Gate] Validation failed for Step ${currentStep}. Halt pipeline.`);
-      return false;
-    }
-  }
-
-  // CALLS THE ATTACHED DATA SCRAPER BEFORE PANEL ROTATION
-  if (typeof window.saveWizardFormStatesVanilla === "function") {
-    window.saveWizardFormStatesVanilla();
-  }
-
-  // Compute calculated target layout boundary index
-  let nextStepIndex = currentStep + 1;
-  if (typeof resolvedTarget === 'number') {
-    nextStepIndex = resolvedTarget;
-  }
-
-  if (nextStepIndex > 7) {
-    console.log("[Navigation] End of onboarding funnel reached. Submitting master form payload...");
-    return true;
-  }
-
-  switchWizardActiveViewLayout(nextStepIndex);
-  return false;
-}
-
-function goToPreviousWizardStep() {
-  let currentStep = typeof window.currentWizardActiveStep !== 'undefined' ? parseInt(window.currentWizardActiveStep, 10) : 0;
-  if (isNaN(currentStep)) currentStep = 0;
-  
-  let previousStepIndex = currentStep - 1;
-  if (previousStepIndex < 0) {
-    console.log("[Navigation] Already at Step 0 entry frame.");
-    return false;
-  }
-
-  switchWizardActiveViewLayout(previousStepIndex);
-  return false;
-}
-
-function switchWizardActiveViewLayout(activeStepTarget) {
-  const targetStepInt = parseInt(activeStepTarget, 10) || 0;
-  console.log(`[Navigation Engine] Performing active step transition block to: Step ${targetStepInt}`);
-
-  // Synchronously update step tracker to prevent race conditions
-  window.currentWizardActiveStep = targetStepInt;
-
-  // Track transition target step locally to block old async timers from execution overrides
-  window.lastInitiatedTargetStep = targetStepInt;
-
-  const storedStateString = localStorage.getItem("f4u_wizard_onboarding_state") || "{}";
-  try {
-    const parsedState = JSON.parse(storedStateString);
-    parsedState.currentWizardActiveStep = targetStepInt;
-    localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(parsedState));
-  } catch (e) {
-    console.warn("[Navigation Engine] State sync to localStorage restricted:", e);
-  }
-
-  const transitionRunner = typeof window.triggerWorkspaceTransitionSpinner === "function" ? window.triggerWorkspaceTransitionSpinner : function(callback) { callback(); };
-
-  transitionRunner(() => {
-    // Uniform panel visibility display alignments
-    for (let i = 0; i <= 7; i++) {
-      const panelNode = document.getElementById(`step-panel-${i}`);
-      if (panelNode) {
-        if (i === targetStepInt) {
-          panelNode.classList.add("active");
-          panelNode.style.setProperty("display", "block", "important");
-          
-          // CRITICAL STRIPE FIX: Force calculation adjustments instantly for Step 6 layout boxes
-          if (targetStepInt === 6) {
-            panelNode.style.setProperty("opacity", "1", "important");
-            panelNode.style.setProperty("visibility", "visible", "important");
-            // Reading physical offsets forces the browser to flush style queues synchronously
-            const forcedReflow = panelNode.offsetHeight;
-          }
-          
-          panelNode.setAttribute("tabindex", "-1");
-          try {
-            panelNode.focus();
-          } catch(e) {}
-        } else {
-          panelNode.classList.remove("active");
-          panelNode.style.setProperty("display", "none", "important");
-        }
-      }
-    }
+// ============================================================================ // 
+// 🧭 WIZARD NAVIGATION & APPLICATION TIMELINE PROGRESS LIGHTS (DYNAMIC)         // 
+// ============================================================================ // 
+/** 
+ * Navigates to the next wizard step or a targeted step context securely. 
+ * Supports explicit parameters, click triggers, and standard form submissions safely. 
+ */ 
+function goToNextWizardStep(targetStep, eventClickRef) { 
+    // Capture the true event reference regardless of parameter order positions 
+    let explicitEvent = null; 
+    let resolvedTarget = undefined; 
     
-    // Fallthrough hook for Step Injection Pipeline (which you will provide in your next blocks)
-    if (typeof window.executeStepLifecyclePipeline === "function") {
-      window.executeStepLifecyclePipeline(targetStepInt);
-    }
-  });
+    if (targetStep && typeof targetStep === 'object' && typeof targetStep.preventDefault === 'function') { 
+        explicitEvent = targetStep; 
+    } else if (eventClickRef && typeof eventClickRef === 'object' && typeof eventClickRef.preventDefault === 'function') { 
+        explicitEvent = eventClickRef; 
+    } else if (window.event) { 
+        explicitEvent = window.event; 
+    } 
+    
+    // Safely capture mouse click triggers and defuse native HTML form submission events instantly 
+    if (explicitEvent) { 
+        explicitEvent.preventDefault(); 
+        explicitEvent.stopPropagation(); 
+    } 
+    
+    // Handle target validation strings or integers 
+    if (typeof targetStep === 'number' || (typeof targetStep === 'string' && !isNaN(parseInt(targetStep, 10)))) { 
+        resolvedTarget = parseInt(targetStep, 10); 
+    } 
+    
+    // Ensure current wizard active step index is a safe integer fallback base 
+    let currentStep = typeof window.currentWizardActiveStep !== 'undefined' ? parseInt(window.currentWizardActiveStep, 10) : 0; 
+    if (isNaN(currentStep)) currentStep = 0; 
+    window.currentWizardActiveStep = currentStep; 
+    
+    // ROUTE VALIDATION DIRECTLY THROUGH MASTER DISPATCHER 
+    if (typeof window.runMasterActiveStepFormValidation === "function") { 
+        if (!window.runMasterActiveStepFormValidation()) { 
+            console.warn(`[Navigation Gate] Validation failed for Step ${currentStep} via Master Dispatcher. Halt pipeline.`); 
+            return false; 
+        } 
+    } else if (typeof window.validateStepInputParametersVanilla === "function") { 
+        if (!window.validateStepInputParametersVanilla(currentStep)) { 
+            console.warn(`[Navigation Gate] Validation failed for Step ${currentStep}. Halt pipeline.`); 
+            return false; 
+        } 
+    } 
+    
+    // CALLS THE ATTACHED DATA SCRAPER BEFORE PANEL ROTATION 
+    if (typeof window.saveWizardFormStatesVanilla === "function") { 
+        window.saveWizardFormStatesVanilla(); 
+    } 
+    
+    // Compute calculated target layout boundary index 
+    let nextStepIndex = currentStep + 1; 
+    if (typeof resolvedTarget === 'number') { 
+        nextStepIndex = resolvedTarget; 
+    } 
+    if (nextStepIndex > 7) { 
+        console.log("[Navigation] End of onboarding funnel reached. Submitting master form payload..."); 
+        return true; 
+    } 
+    
+    switchWizardActiveViewLayout(nextStepIndex); 
+    return false; 
+} 
+
+function goToPreviousWizardStep() { 
+    let currentStep = typeof window.currentWizardActiveStep !== 'undefined' ? parseInt(window.currentWizardActiveStep, 10) : 0; 
+    if (isNaN(currentStep)) currentStep = 0; 
+    let previousStepIndex = currentStep - 1; 
+    if (previousStepIndex < 0) { 
+        console.log("[Navigation] Already at Step 0 entry frame."); 
+        return false; 
+    } 
+    switchWizardActiveViewLayout(previousStepIndex); 
+    return false; 
+} 
+
+function switchWizardActiveViewLayout(activeStepTarget) { 
+    const targetStepInt = parseInt(activeStepTarget, 10) || 0; 
+    console.log(`[Navigation Engine] Performing active step transition block to: Step ${targetStepInt}`); 
+    
+    // Synchronously update step tracker to prevent race conditions 
+    window.currentWizardActiveStep = targetStepInt; 
+    window.lastInitiatedTargetStep = targetStepInt; 
+    const storedStateString = localStorage.getItem("f4u_wizard_onboarding_state") || "{}"; 
+    
+    try { 
+        const parsedState = JSON.parse(storedStateString); 
+        parsedState.currentWizardActiveStep = targetStepInt; 
+        localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(parsedState)); 
+    } catch (e) { 
+        console.warn("[Navigation Engine] State sync to localStorage restricted:", e); 
+    } 
+    
+    const transitionRunner = typeof window.triggerWorkspaceTransitionSpinner === "function" ? window.triggerWorkspaceTransitionSpinner : function(callback) { callback(); }; 
+    transitionRunner(() => { 
+        // Uniform panel visibility display alignments 
+        for (let i = 0; i <= 7; i++) { 
+            const panelNode = document.getElementById(`step-panel-${i}`); 
+            if (panelNode) { 
+                if (i === targetStepInt) { 
+                    panelNode.classList.add("active"); 
+                    panelNode.style.setProperty("display", "block", "important"); 
+                    
+                    // =====================================================================
+                    // DECOUPLED STYLING OVERRIDE INJECTION HOOK
+                    // =====================================================================
+                    // Calls the external framework script to run styles computations on step-6
+                    if (typeof window.executeExternalVisibilityAdjustments === "function") {
+                        window.executeExternalVisibilityAdjustments(panelNode, targetStepInt);
+                    }
+                    
+                    panelNode.setAttribute("tabindex", "-1"); 
+                    try { 
+                        panelNode.focus(); 
+                    } catch(e) {} 
+                } else { 
+                    panelNode.classList.remove("active"); 
+                    panelNode.style.setProperty("display", "none", "important"); 
+                } 
+            } 
+        } 
+        
+        // Fallthrough hook for Step Injection Pipeline
+        if (typeof window.executeStepLifecyclePipeline === "function") { 
+            window.executeStepLifecyclePipeline(targetStepInt); 
+        } 
+    }); 
 }
+
+// Expose navigation hooks back to global layers securely
+window.goToNextWizardStep = goToNextWizardStep;
+window.goToPreviousWizardStep = goToPreviousWizardStep;
+window.switchWizardActiveViewLayout = switchWizardActiveViewLayout;
+
 
 /** 
  * Core Step Lifecycle Router and Pipeline Execution Engine. 
@@ -1066,7 +910,7 @@ function switchWizardActiveViewLayout(activeStepTarget) {
  */ 
 function executeStepLifecyclePipeline(targetStepInt) { 
     targetStepInt = parseInt(targetStepInt, 10) || 0; 
-
+    
     // ===================================================================== // 
     // STEP 2 DYNAMIC INJECTION CORRECTION                                   // 
     // ===================================================================== // 
@@ -1074,6 +918,7 @@ function executeStepLifecyclePipeline(targetStepInt) {
         const targetUrlParams = new URLSearchParams(window.location.search); 
         const activeServiceKey = window.routeActiveServiceKey || String(targetUrlParams.get('service') || "").toLowerCase().trim(); 
         const innerPlaceholderCanvas = document.getElementById("step-2-injection-placeholder"); 
+        
         if (innerPlaceholderCanvas) { 
             innerPlaceholderCanvas.style.setProperty("display", "block", "important"); 
             innerPlaceholderCanvas.style.setProperty("opacity", "1", "important"); 
@@ -1087,7 +932,7 @@ function executeStepLifecyclePipeline(targetStepInt) {
             } 
         } 
     } 
-
+    
     // ===================================================================== // 
     // STEP 3 DYNAMIC MARKETPLACE PACKAGES INJECTION BRIDGE                  // 
     // ===================================================================== // 
@@ -1102,7 +947,7 @@ function executeStepLifecyclePipeline(targetStepInt) {
         } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") { 
             window.autoInitializeStep3MarketplaceCatalog(); 
         } 
-
+        
         requestAnimationFrame(() => { 
             requestAnimationFrame(() => { 
                 if (window.currentWizardActiveStep !== 3) return; 
@@ -1125,6 +970,7 @@ function executeStepLifecyclePipeline(targetStepInt) {
             }); 
         }); 
     } 
+    
     // ===================================================================== // 
     // LIFECYCLE REBOOT COOLDOWN PRESERVING STEP 0 & OTHER VIEWS             // 
     // ===================================================================== // 
@@ -1135,56 +981,42 @@ function executeStepLifecyclePipeline(targetStepInt) {
             console.warn("[Navigation Engine] Unified boot engine fallback caught:", bootErr); 
         } 
     } 
-
+    
     // ===================================================================== // 
-    // DETACHED LIFECYCLE FOR STEPS 4, 5, 6, 7 (STRIPE ISOLATION LAYER)      // 
+    // DETACHED LIFECYCLE FOR STEPS 4, 5, 6, 7 (DECOUPLED HANDOFF CORES)     // 
     // ===================================================================== // 
     if (targetStepInt !== 3) { 
-        if (targetStepInt === 6) { 
-            const stripePanelContainer = document.getElementById("step-panel-6"); 
-            if (stripePanelContainer) { 
-                stripePanelContainer.style.setProperty("display", "block", "important"); 
-                stripePanelContainer.style.setProperty("opacity", "1", "important"); 
-                stripePanelContainer.style.setProperty("visibility", "visible", "important"); 
-                stripePanelContainer.classList.add("active"); 
-                stripePanelContainer.offsetHeight; // Force layout sync reflow 
-                
-                // 💳 VALIDATION HANDOFF INTERLOCK: 
-                if (typeof window.initializeFlatStripeCheckoutElement === "function") { 
-                    console.log("[Validation Pipeline Interlock] Transferring control to step-6.js setup function..."); 
-                    window.initializeFlatStripeCheckoutElement(); 
-                } else { 
-                    console.warn("[Validation Pipeline Error] initializeFlatStripeCheckoutElement function from step-6.js is not loaded."); 
-                } 
+        
+        // =====================================================================
+        // DECOUPLED STRIPE LIFE-CYCLE TRIGGER INTERLOCK
+        // =====================================================================
+        // Instead of hardcoding layout styles and setup executions, we forward
+        // the active index into the custom payment core router method layer.
+        if (targetStepInt === 6 && typeof window.executeStripeLifecycleHandoffGate === "function") {
+            window.executeStripeLifecycleHandoffGate();
+        }
+        
+        // SECURE STEP 7 DECOUPLING HANDOFF GATE (VISIBILITY OVERRIDE ADDED) 
+        if (targetStepInt === 7) { 
+            console.log("[Core Lifecycle] Step 7 panel activated. Awakening step-7.js layout engine..."); 
+            const successPanelContainer = document.getElementById("step-panel-7"); 
+            if (successPanelContainer) { 
+                successPanelContainer.style.setProperty("display", "block", "important"); 
+                successPanelContainer.style.setProperty("opacity", "1", "important"); 
+                successPanelContainer.style.setProperty("visibility", "visible", "important"); 
+                successPanelContainer.classList.add("active"); 
+                successPanelContainer.offsetHeight; 
             } 
-        } 
-
-        // 🟢 SECURE STEP 7 DECOUPLING HANDOFF GATE (VISIBILITY OVERRIDE ADDED)
-        if (targetStepInt === 7) {
-            console.log("[Core Lifecycle] Step 7 panel activated. Awakening step-7.js layout engine...");
-            
-            // Force your specific HTML step-7 target panel wrapper container to show up on screen
-            const successPanelContainer = document.getElementById("step-panel-7");
-            if (successPanelContainer) {
-                successPanelContainer.style.setProperty("display", "block", "important");
-                successPanelContainer.style.setProperty("opacity", "1", "important");
-                successPanelContainer.style.setProperty("visibility", "visible", "important");
-                successPanelContainer.classList.add("active");
-                successPanelContainer.offsetHeight; // Force instant synchronous browser reflow pass
-            }
-
-            // Wake up your step-7.js file instantly upon step navigation 
             if (typeof window.initializeSecureStep7AccountHydration === "function") { 
                 window.initializeSecureStep7AccountHydration(); 
             } else { 
                 console.error("[Core Lifecycle Error] initializeSecureStep7AccountHydration from step-7.js is unmapped."); 
             } 
         } 
-
+        
         requestAnimationFrame(() => { 
             requestAnimationFrame(() => { 
                 if (window.currentWizardActiveStep !== targetStepInt) return; 
-                
                 if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
                     window.updateDynamicPricingMatrixVanilla(); 
                 } 
@@ -1209,207 +1041,196 @@ window.executeStepLifecyclePipeline = executeStepLifecyclePipeline;
 
 
 
+// ============================================================================ // 
+// 🛡️ REFACTORED REFLECTIVE INFRASTRUCTURE HYDRATION LAYER & ANTI-CRASH SHIELD // 
+// ============================================================================ // 
+(function() { 
+"use strict"; 
 
-// ============================================================================ //
-// 🛡️ REFACTORED REFLECTIVE INFRASTRUCTURE HYDRATION LAYER & ANTI-CRASH SHIELD //
-// ============================================================================ //
-(function() {
-  "use strict";
+// Safeguard root objects, avoiding hardcoded default template assignments 
+window.CENTRAL_SERVICE_PLAN_DB = window.CENTRAL_SERVICE_PLAN_DB || {}; 
+window.GLOBAL_COMPANY_PRICING = window.GLOBAL_COMPANY_PRICING || {}; 
+window.GLOBAL_COMPANY_PRICING.packages = window.GLOBAL_COMPANY_PRICING.packages || window.CENTRAL_SERVICE_PLAN_DB; 
 
-  // Safeguard root objects, avoiding hardcoded default template assignments
-  window.CENTRAL_SERVICE_PLAN_DB = window.CENTRAL_SERVICE_PLAN_DB || {};
-  window.GLOBAL_COMPANY_PRICING = window.GLOBAL_COMPANY_PRICING || {};
-  window.GLOBAL_COMPANY_PRICING.packages = window.GLOBAL_COMPANY_PRICING.packages || window.CENTRAL_SERVICE_PLAN_DB;
-  
-  if (!window.GLOBAL_COMPANY_PRICING.addons) {
-    window.GLOBAL_COMPANY_PRICING.addons = {};
-  }
+if (!window.GLOBAL_COMPANY_PRICING.addons) { 
+    window.GLOBAL_COMPANY_PRICING.addons = {}; 
+} 
 
-  let internalServiceKey = null;
-  let internalPlanKey = null;
+let internalServiceKey = null; 
+let internalPlanKey = null; 
 
-  // REACTIVE SERVICE KEY TRACKER
-  Object.defineProperty(window, 'routeActiveServiceKey', {
-    get() {
-      if (internalServiceKey) return internalServiceKey;
-      
-      const urlScanner = new URLSearchParams(window.location.search);
-      // Expand search matrix to crawl all active routing identifiers across the window scope
-      const rawUrlService = urlScanner.get('service') || window.currentServiceKey || window.currentServicePathKey;
-      
-      let fallbackInitialKey = Object.keys(window.CENTRAL_SERVICE_PLAN_DB)[0] || "";
-      let activeKeyToCommit = rawUrlService ? rawUrlService : fallbackInitialKey;
+// REACTIVE SERVICE KEY TRACKER 
+Object.defineProperty(window, 'routeActiveServiceKey', { 
+    get() { 
+        if (internalServiceKey) return internalServiceKey; 
+        const urlScanner = new URLSearchParams(window.location.search); 
+        // Expand search matrix to crawl all active routing identifiers across the window scope 
+        const rawUrlService = urlScanner.get('service') || window.currentServiceKey || window.currentServicePathKey; 
+        let fallbackInitialKey = Object.keys(window.CENTRAL_SERVICE_PLAN_DB)[0] || ""; 
+        let activeKeyToCommit = rawUrlService ? rawUrlService : fallbackInitialKey; 
+        
+        if (typeof window.resolvePricingConfigurationDynamically === "function" && activeKeyToCommit) { 
+            const dynamicMatch = window.resolvePricingConfigurationDynamically(activeKeyToCommit); 
+            if (dynamicMatch && dynamicMatch.matchedKey) { 
+                activeKeyToCommit = dynamicMatch.matchedKey; 
+            } 
+        } 
+        // Ultimate fallback safety: map directly to your screen context token if variables are empty 
+        if (!activeKeyToCommit) { 
+            activeKeyToCommit = "llc-formation"; 
+        } 
+        return String(activeKeyToCommit).toLowerCase().trim(); 
+    }, 
+    set(newKey) { 
+        if (!newKey) return; 
+        const cleanKey = String(newKey).toLowerCase().trim(); 
+        internalServiceKey = cleanKey; 
+        
+        // Safe Parallel Synchronization: Only write if the target value differs to prevent recursion loops 
+        if (window.currentServiceKey !== cleanKey) window.currentServiceKey = cleanKey; 
+        if (window.currentServicePathKey !== cleanKey) window.currentServicePathKey = cleanKey; 
+    }, 
+    configurable: true, 
+    enumerable: true 
+}); 
 
-      if (typeof window.resolvePricingConfigurationDynamically === "function" && activeKeyToCommit) {
-        const dynamicMatch = window.resolvePricingConfigurationDynamically(activeKeyToCommit);
-        if (dynamicMatch && dynamicMatch.matchedKey) {
-          activeKeyToCommit = dynamicMatch.matchedKey;
-        }
-      }
+// REACTIVE PLAN KEY TRACKER (Fixed to dynamically sync with history alterations) 
+Object.defineProperty(window, 'routeActivePlanKey', { 
+    get() { 
+        if (internalPlanKey) return internalPlanKey; 
+        const urlScanner = new URLSearchParams(window.location.search); 
+        return (urlScanner.get('plan') || 'compliance').toLowerCase().trim(); 
+    }, 
+    set(newPlan) { 
+        if (newPlan) { 
+            internalPlanKey = String(newPlan).toLowerCase().trim(); 
+        } 
+    }, 
+    configurable: true, 
+    enumerable: true 
+}); 
 
-      // Ultimate fallback safety: map directly to your screen context token if variables are empty
-      if (!activeKeyToCommit) {
-        activeKeyToCommit = "llc-formation";
-      }
+// Safe deferred notification string 
+setTimeout(() => { 
+    console.log(`[Dynamic Boot] Active system paths verified. Selected node target: "${window.routeActiveServiceKey}"`); 
+}, 1); 
 
-      return String(activeKeyToCommit).toLowerCase().trim();
-    },
-    set(newKey) {
-      if (!newKey) return;
-      
-      const cleanKey = String(newKey).toLowerCase().trim();
-      internalServiceKey = cleanKey;
-
-      // Safe Parallel Synchronization: Only write if the target value differs to prevent recursion loops
-      if (window.currentServiceKey !== cleanKey) window.currentServiceKey = cleanKey;
-      if (window.currentServicePathKey !== cleanKey) window.currentServicePathKey = cleanKey;
-    },
-    configurable: true,
-    enumerable: true
-  });
-
-  // REACTIVE PLAN KEY TRACKER (Fixed to dynamically sync with history alterations)
-  Object.defineProperty(window, 'routeActivePlanKey', {
-    get() {
-      if (internalPlanKey) return internalPlanKey;
-      const urlScanner = new URLSearchParams(window.location.search);
-      return (urlScanner.get('plan') || 'compliance').toLowerCase().trim();
-    },
-    set(newPlan) {
-      if (newPlan) {
-        internalPlanKey = String(newPlan).toLowerCase().trim();
-      }
-    },
-    configurable: true,
-    enumerable: true
-  });
-
-  // Safe deferred notification string
-  setTimeout(() => {
-    console.log(`[Dynamic Boot] Active system paths verified. Selected node target: "${window.routeActiveServiceKey}"`);
-  }, 1);
 })();
 
-// ============================================================================ //
-// 🔗 MODULAR HOOK: URL PARAMETER EXTRACTOR & DEFENSIVE BOOTSTRAPPER 
-// ============================================================================ //
-/**
- * URL Parameter Extractor Hook
- * Automatically populates routing states from URL tracking if left unassigned
- */
-function syncUrlStateToWizardEngine() {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  if (urlParams.has('service')) {
-    const val = urlParams.get('service');
-    if (val && window.routeActiveServiceKey !== val) {
-      window.routeActiveServiceKey = val;
-    }
-  }
-  
-  if (urlParams.has('plan')) {
-    const pVal = urlParams.get('plan');
-    if (pVal && window.routeActivePlanKey !== pVal) {
-      window.routeActivePlanKey = pVal;
-    }
-  }
 
-  // 🟢 FIXED: Detect Stripe landing redirection parameters 
-  if (urlParams.get('step') === '7') {
-    console.log("[State Registry] Stripe payment return detected. Enforcing manual view override to Step 7.");
+// ============================================================================ // 
+// 🔗 MODULAR HOOK: URL PARAMETER EXTRACTOR & DEFENSIVE BOOTSTRAPPER            // 
+// ============================================================================ // 
+/** 
+ * URL Parameter Extractor Hook 
+ * Automatically populates routing states from URL tracking if left unassigned 
+ */ 
+function syncUrlStateToWizardEngine() { 
+    const urlParams = new URLSearchParams(window.location.search); 
+    if (urlParams.has('service')) { 
+        const val = urlParams.get('service'); 
+        if (val && window.routeActiveServiceKey !== val) { 
+            window.routeActiveServiceKey = val; 
+        } 
+    } 
+    if (urlParams.has('plan')) { 
+        const pVal = urlParams.get('plan'); 
+        if (pVal && window.routeActivePlanKey !== pVal) { 
+            window.routeActivePlanKey = pVal; 
+        } 
+    } 
     
-    // Explicitly update your active tracking variable
-    window.currentWizardActiveStep = 7;
-    
-    // Switch the visual layout panel immediately 
-    if (typeof window.switchWizardActiveViewLayout === "function") {
-      window.switchWizardActiveViewLayout(7);
-    } else {
-      // If layout router isn't parsed yet, wait a tiny bit for wizard-core.js to bind
-      setTimeout(() => {
-        if (typeof window.switchWizardActiveViewLayout === "function") {
-          window.switchWizardActiveViewLayout(7);
-        }
-      }, 50);
-    }
-  }
-}
-
-
+    // Detect Stripe landing redirection parameters 
+    if (urlParams.get('step') === '7') { 
+        console.log("[State Registry] Stripe payment return detected. Enforcing manual view override to Step 7."); 
+        // Explicitly update your active tracking variable 
+        window.currentWizardActiveStep = 7; 
+        
+        // Switch the visual layout panel immediately 
+        if (typeof window.switchWizardActiveViewLayout === "function") { 
+            window.switchWizardActiveViewLayout(7); 
+        } else { 
+            // If layout router isn't parsed yet, wait a tiny bit for wizard-master-core.js to bind 
+            setTimeout(() => { 
+                if (typeof window.switchWizardActiveViewLayout === "function") { 
+                    window.switchWizardActiveViewLayout(7); 
+                } 
+            }, 50); 
+        } 
+    } 
+} 
 
 // ============================================================================ // 
 // 🚀 UNIFIED SMOOTH-SCROLL VIEWPORT TRACKING ENGINE                            // 
 // ============================================================================ // 
 (function() { 
-    "use strict"; 
-    
-    const masterLayoutPanels = document.querySelectorAll(".wizard-panel, [id^='step-panel-'], [id^='step-']"); 
-    window.activePanelVisibilityObserversArray = []; 
-    window.lastConfirmedActiveStepId = null; 
-    
-    // Guard flag to prevent infinite streaming execution loops on Step 3 
-    let isStep3CatalogInitialized = false; 
-    
-    masterLayoutPanels.forEach(function(panel) { 
-        const panelObserver = new MutationObserver(function(mutations) { 
-            const panelStepIdMatch = panel.id ? panel.id.match(/\d+$/) : null; 
-            const panelStepIndex = panelStepIdMatch ? parseInt(panelStepIdMatch[0], 10) : null; 
-            
-            if (panelStepIndex === null) return; 
-            
-            // Ensure panel display state matches the global active wizard step index exactly 
-            const isVisible = (panel.style.display === "block" || panel.classList.contains("active")) && 
-                              panelStepIndex === window.currentWizardActiveStep; 
-                              
-            if (isVisible && window.lastConfirmedActiveStepId !== panel.id) { 
-                window.lastConfirmedActiveStepId = panel.id; 
-                console.log(`[Scroll Manager] Panel #${panel.id || 'wizard-step'} mounted active. Adjusting viewport anchors...`); 
-                
-                // 💳 FIXED MOUNT STABILITY GATEWAY (UPDATED FOR STEPS 6 & 7) 
-                // Use a hardware-safe double animation frame pass for checkout and receipt layers 
-                if (panelStepIndex === 6 || panelStepIndex === 7) { 
-                    requestAnimationFrame(() => { 
-                        requestAnimationFrame(() => { 
-                            try { 
-                                window.scrollTo({ top: 0, behavior: "auto" }); 
-                            } catch(e) {} 
-                        }); 
-                    }); 
-                } else { 
-                    // Standard smooth scrolling adjustments for all non-payment views 
-                    try { 
-                        window.scrollTo({ top: 0, behavior: "smooth" }); 
-                    } catch(e) {} 
-                } 
-                
-                // Safe Conditional Hook Execution Isolation 
-                if (panel.id === "step-panel-2" && typeof window.attachStepTwoNavigationTriggers === "function") { 
-                    window.attachStepTwoNavigationTriggers(); 
-                } 
-                
-                // 🔥 FIX: Scopes the step 3 evaluation and execution strictly to the step 3 panel container node trigger
-                if (panelStepIndex === 3) {
-                    if (!isStep3CatalogInitialized) { 
-                        console.log("[Scroll Manager Interlock] Step 3 container live. Invoking streaming layout engine safely once..."); 
-                        isStep3CatalogInitialized = true; 
-                        
-                        if (typeof window.executeStepThreeUpsellStreaming === "function") { 
-                            window.executeStepThreeUpsellStreaming(); 
-                        } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") { 
-                            window.autoInitializeStep3MarketplaceCatalog(); 
-                        } 
-                    }
-                } else {
-                    // 🔥 FIX: Wipes out the initialization check flag ONLY when the active user leaves step 3 completely
-                    isStep3CatalogInitialized = false; 
-                }
-            } 
-        }); 
+"use strict"; 
+
+const masterLayoutPanels = document.querySelectorAll(".wizard-panel, [id^='step-panel-'], [id^='step-']"); 
+window.activePanelVisibilityObserversArray = []; 
+window.lastConfirmedActiveStepId = null; 
+
+// Guard flag to prevent infinite streaming execution loops on Step 3 
+let isStep3CatalogInitialized = false; 
+
+masterLayoutPanels.forEach(function(panel) { 
+    const panelObserver = new MutationObserver(function(mutations) { 
+        const panelStepIdMatch = panel.id ? panel.id.match(/\d+$/) : null; 
+        const panelStepIndex = panelStepIdMatch ? parseInt(panelStepIdMatch[0], 10) : null; 
+        if (panelStepIndex === null) return; 
         
-        // Arm the layout mutation tracker securely 
-        panelObserver.observe(panel, { attributes: true, attributeFilter: ["style", "class"] }); 
-        window.activePanelVisibilityObserversArray.push(panelObserver); 
+        // Ensure panel display state matches the global active wizard step index exactly 
+        const isVisible = (panel.style.display === "block" || panel.classList.contains("active")) && panelStepIndex === window.currentWizardActiveStep; 
+        
+        if (isVisible && window.lastConfirmedActiveStepId !== panel.id) { 
+            window.lastConfirmedActiveStepId = panel.id; 
+            console.log(`[Scroll Manager] Panel #${panel.id || 'wizard-step'} mounted active. Adjusting viewport anchors...`); 
+            
+            // FIXED MOUNT STABILITY GATEWAY (UPDATED FOR STEPS 6 & 7) 
+            // Use a hardware-safe double animation frame pass for checkout and receipt layers 
+            if (panelStepIndex === 6 || panelStepIndex === 7) { 
+                requestAnimationFrame(() => { 
+                    requestAnimationFrame(() => { 
+                        try { 
+                            window.scrollTo({ top: 0, behavior: "auto" }); 
+                        } catch(e) {} 
+                    }); 
+                }); 
+            } else { 
+                // Standard smooth scrolling adjustments for all non-payment views 
+                try { 
+                    window.scrollTo({ top: 0, behavior: "smooth" }); 
+                } catch(e) {} 
+            } 
+            
+            // Safe Conditional Hook Execution Isolation 
+            if (panel.id === "step-panel-2" && typeof window.attachStepTwoNavigationTriggers === "function") { 
+                window.attachStepTwoNavigationTriggers(); 
+            } 
+            
+            // Scopes the step 3 evaluation and execution strictly to the step 3 panel container node trigger 
+            if (panelStepIndex === 3) { 
+                if (!isStep3CatalogInitialized) { 
+                    console.log("[Scroll Manager Interlock] Step 3 container live. Invoking streaming layout engine safely once..."); 
+                    isStep3CatalogInitialized = true; 
+                    if (typeof window.executeStepThreeUpsellStreaming === "function") { 
+                        window.executeStepThreeUpsellStreaming(); 
+                    } else if (typeof window.autoInitializeStep3MarketplaceCatalog === "function") { 
+                        window.autoInitializeStep3MarketplaceCatalog(); 
+                    } 
+                } 
+            } else { 
+                // Wipes out the initialization check flag ONLY when the active user leaves step 3 completely 
+                isStep3CatalogInitialized = false; 
+            } 
+        } 
     }); 
+    
+    // Arm the layout mutation tracker securely 
+    panelObserver.observe(panel, { attributes: true, attributeFilter: ["style", "class"] }); 
+    window.activePanelVisibilityObserversArray.push(panelObserver); 
+}); 
+
 })();
 
 
@@ -1574,651 +1395,614 @@ if (document.readyState === "loading") {
 })();
 
 
-// ============================================================================ //
-// 🔄 AUTOMATED INTERLOCK: TARGETED CONTAINER DROPDOWN OBSERVATION CORES        //
-// ============================================================================ //
-(function() {
-  "use strict";
+// ============================================================================ // 
+// 🔄 AUTOMATED INTERLOCK: TARGETED CONTAINER DROPDOWN OBSERVATION CORES        // 
+// ============================================================================ // 
+(function() { 
+"use strict"; 
 
-  // Retain a persistent single instance context in a closure to avoid memory leaks
-  let activeStateObserverInstance = null;
+// Retain a persistent single instance context in a closure to avoid memory leaks 
+let activeStateObserverInstance = null; 
 
-  function initializeDropdownObserver() {
-    // Fire an initial discovery pass cleanly to capture pre-rendered selections
-    if (typeof window.autoDiscoverAndHydrateStateDropdowns === "function") {
-      window.autoDiscoverAndHydrateStateDropdowns();
-    }
+function initializeDropdownObserver() { 
+    // Fire an initial discovery pass cleanly to capture pre-rendered selections 
+    if (typeof window.autoDiscoverAndHydrateStateDropdowns === "function") { 
+        window.autoDiscoverAndHydrateStateDropdowns(); 
+    } 
+    const formRootNode = document.getElementById("dynamic-onboarding-fields-root") || document.getElementById("step-2-onboarding-fields-canvas") || document.querySelector(".portal-main") || document.getElementById("wizard-dynamic-form-target"); 
+    if (formRootNode) { 
+        // Disconnect previous observer instance securely if it exists to eliminate leaks 
+        if (activeStateObserverInstance) { 
+            activeStateObserverInstance.disconnect(); 
+        } 
+        activeStateObserverInstance = new MutationObserver(() => { 
+            if (typeof window.autoDiscoverAndHydrateStateDropdowns === "function") { 
+                window.autoDiscoverAndHydrateStateDropdowns(); 
+            } 
+        }); 
+        activeStateObserverInstance.observe(formRootNode, { childList: true, subtree: true }); 
+        console.log("[State Observer Success] Form layout subtree monitoring active cleanly."); 
+    } 
+} 
 
-    const formRootNode = document.getElementById("dynamic-onboarding-fields-root") || 
-                         document.getElementById("step-2-onboarding-fields-canvas") || 
-                         document.querySelector(".portal-main") || 
-                         document.getElementById("wizard-dynamic-form-target");
+// Coordinate initialization startup execution paths cleanly 
+if (document.readyState === "loading") { 
+    document.addEventListener("DOMContentLoaded", initializeDropdownObserver); 
+} else { 
+    initializeDropdownObserver(); 
+} 
 
-    if (formRootNode) {
-      // Disconnect previous observer instance securely if it exists to eliminate leaks
-      if (activeStateObserverInstance) {
-        activeStateObserverInstance.disconnect();
-      }
+// Export back up cleanly 
+window.initializeDropdownObserver = initializeDropdownObserver; 
+})(); 
 
-      activeStateObserverInstance = new MutationObserver(() => {
-        if (typeof window.autoDiscoverAndHydrateStateDropdowns === "function") {
-          window.autoDiscoverAndHydrateStateDropdowns();
-        }
-      });
+// ============================================================================ // 
+// 🔵 CENTRALIZED NAVY BLUE TRANSITION SPINNER INTERCEPTOR                       // 
+// ============================================================================ // 
+(function() { 
+"use strict"; 
 
-      activeStateObserverInstance.observe(formRootNode, { childList: true, subtree: true });
-      console.log("[State Observer Success] Form layout subtree monitoring active cleanly.");
-    }
-  }
+// Use a secure token reference to track overlapping animation passes 
+let activeTransitionToken = 0; 
 
-  // Coordinate initialization startup execution paths cleanly
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeDropdownObserver);
-  } else {
-    initializeDropdownObserver();
-  }
+function triggerWorkspaceTransitionSpinner(callbackHandoffRoutine) { 
+    // Increment token sequence instantly to invalidate older active timers 
+    const currentPassToken = ++activeTransitionToken; 
+    
+    // 1. Build and style the hidden modal block overlay if missing from the viewport 
+    let dynamicSpinnerOverlay = document.getElementById("f4u-global-transition-overlay"); 
+    if (!dynamicSpinnerOverlay) { 
+        dynamicSpinnerOverlay = document.createElement("div"); 
+        dynamicSpinnerOverlay.id = "f4u-global-transition-overlay"; 
+        dynamicSpinnerOverlay.style.cssText = "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(248, 250, 252, 0.85); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; opacity: 0; transition: opacity 0.2s ease; pointer-events: none; box-sizing: border-box;"; 
+        
+        if (!document.getElementById("f4u-spinner-global-keyframes")) { 
+            const styleSheetNode = document.createElement("style"); 
+            styleSheetNode.id = "f4u-spinner-global-keyframes"; 
+            styleSheetNode.textContent = "@keyframes f4uPlatformCoreSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }"; 
+            document.head.appendChild(styleSheetNode); 
+        } 
+        
+        dynamicSpinnerOverlay.innerHTML = ` 
+            <div style="width: 50px; height: 50px; border: 4px solid #cbd5e1; border-top: 4px solid #0a1f44; border-radius: 50%; animation: f4uPlatformCoreSpin 0.8s linear infinite; box-sizing: border-box;"></div> 
+            <span style="color: #0a1f44; font-weight: 700; font-size: 0.9rem; font-family: system-ui, sans-serif; letter-spacing: 0.5px; text-transform: uppercase;">Updating Compliance Workspace...</span> 
+        `; 
+        document.body.appendChild(dynamicSpinnerOverlay); 
+    } 
+    
+    // 2. Fade spinner into active viewport space smoothly 
+    dynamicSpinnerOverlay.style.display = "flex"; 
+    // Forces browser rendering pass calculation frame layout prior to lifting opacity 
+    void dynamicSpinnerOverlay.offsetWidth; 
+    dynamicSpinnerOverlay.style.opacity = "1"; 
+    dynamicSpinnerOverlay.style.pointerEvents = "auto"; 
+    
+    // 3. Coordinated structural execution pipeline 
+    setTimeout(() => { 
+        // Abort fade out cycle routines if an adjacent navigation transition has taken over 
+        if (currentPassToken !== activeTransitionToken) return; 
+        if (typeof callbackHandoffRoutine === "function") { 
+            try { 
+                callbackHandoffRoutine(); 
+            } catch (err) { 
+                console.error("[Spinner Engine Failure] Error during view handoff execution:", err); 
+            } 
+        } 
+        
+        // Allow layout paint adjustments to calculate and settle before dimming the loader wheel overlay 
+        requestAnimationFrame(() => { 
+            setTimeout(() => { 
+                if (currentPassToken !== activeTransitionToken) return; 
+                dynamicSpinnerOverlay.style.opacity = "0"; 
+                dynamicSpinnerOverlay.style.pointerEvents = "none"; 
+                
+                setTimeout(() => { 
+                    // Verify structural ownership states before flipping layouts off-screen 
+                    if (currentPassToken === activeTransitionToken && dynamicSpinnerOverlay.style.opacity === "0") { 
+                        dynamicSpinnerOverlay.style.display = "none"; 
+                    } 
+                }, 200); 
+            }, 100); 
+        }); 
+    }, 180); 
+} 
 
-  // Export back up cleanly
-  window.initializeDropdownObserver = initializeDropdownObserver;
+window.triggerWorkspaceTransitionSpinner = triggerWorkspaceTransitionSpinner; 
 })();
 
-// ============================================================================ //
-// 🔵 CENTRALIZED NAVY BLUE TRANSITION SPINNER INTERCEPTOR                       //
-// ============================================================================ //
-(function() {
-  "use strict";
+// ============================================================================ // 
+// 🗺️ MODULE: STEP 0 JURISDICTION GATE ROUTER ENGINE (FEDERAL BYPASS)           // 
+// ============================================================================ // 
+(function() { 
+"use strict"; 
 
-  // Use a secure token reference to track overlapping animation passes
-  let activeTransitionToken = 0;
+// Persistent tracking reference to defuse rapid synchronous redirect cascades 
+let isCurrentlyProcessingGateRoute = false; 
 
-  function triggerWorkspaceTransitionSpinner(callbackHandoffRoutine) {
-    // Increment token sequence instantly to invalidate older active timers
-    const currentPassToken = ++activeTransitionToken;
-
-    // 1. Build and style the hidden modal block overlay if missing from the viewport
-    let dynamicSpinnerOverlay = document.getElementById("f4u-global-transition-overlay");
+function enforceJurisdictionGateEvaluation() { 
+    // Interlock guard defuses layout routing reflection stack crashes 
+    if (isCurrentlyProcessingGateRoute) return; 
     
-    if (!dynamicSpinnerOverlay) {
-      dynamicSpinnerOverlay = document.createElement("div");
-      dynamicSpinnerOverlay.id = "f4u-global-transition-overlay";
-      dynamicSpinnerOverlay.style.cssText = "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(248, 250, 252, 0.85); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; opacity: 0; transition: opacity 0.2s ease; pointer-events: none; box-sizing: border-box;";
-
-      if (!document.getElementById("f4u-spinner-global-keyframes")) {
-        const styleSheetNode = document.createElement("style");
-        styleSheetNode.id = "f4u-spinner-global-keyframes";
-        styleSheetNode.textContent = "@keyframes f4uPlatformCoreSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }";
-        document.head.appendChild(styleSheetNode);
-      }
-
-      dynamicSpinnerOverlay.innerHTML = `
-        <div style="width: 50px; height: 50px; border: 4px solid #cbd5e1; border-top: 4px solid #0a1f44; border-radius: 50%; animation: f4uPlatformCoreSpin 0.8s linear infinite; box-sizing: border-box;"></div>
-        <span style="color: #0a1f44; font-weight: 700; font-size: 0.9rem; font-family: system-ui, sans-serif; letter-spacing: 0.5px; text-transform: uppercase;">Updating Compliance Workspace...</span>
-      `;
-      document.body.appendChild(dynamicSpinnerOverlay);
-    }
-
-    // 2. Fade spinner into active viewport space smoothly
-    dynamicSpinnerOverlay.style.display = "flex";
+    const urlParams = new URLSearchParams(window.location.search); 
+    const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "").toLowerCase().trim(); 
+    const stateParam = urlParams.get('state'); 
     
-    // Forces browser rendering pass calculation frame layout prior to lifting opacity
-    void dynamicSpinnerOverlay.offsetWidth;
+    // 1. PURE ZERO-HARDCODE FEDERAL TRACK BYPASS DETERMINATION 
+    const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {}; 
+    const isFederalFilingKey = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceSlug) && serviceSlug !== "llc-formation" && serviceSlug !== "corporations"; 
     
-    dynamicSpinnerOverlay.style.opacity = "1";
-    dynamicSpinnerOverlay.style.pointerEvents = "auto";
+    // Explicit keyword safety catch-all 
+    const isFederalKeyword = serviceSlug.includes("cage") || serviceSlug.includes("sam") || serviceSlug.includes("tax") || serviceSlug.includes("ein") || serviceSlug.includes("authority"); 
+    
+    if (isFederalFilingKey || isFederalKeyword) { 
+        console.log(`[Gate Engine] Federal Service path "${serviceSlug}" verified. Automatically bypassing Step 0 state selection.`); 
+        const gatePanel = document.getElementById("step-panel-0"); 
+        if (gatePanel) gatePanel.style.setProperty("display", "none", "important"); 
+        
+        // Verify layout step alignment state before dispatching transitions 
+        if (window.currentWizardActiveStep !== 1 && typeof window.switchWizardActiveViewLayout === "function") { 
+            try { 
+                isCurrentlyProcessingGateRoute = true; 
+                window.switchWizardActiveViewLayout(1); 
+            } finally { 
+                isCurrentlyProcessingGateRoute = false; 
+            } 
+        } 
+        return; 
+    } 
+    
+    // 2. Standard State-Level Formations Track Execution Parameters 
+    const statePricingRegistry = window.CENTRAL_SERVICE_PLAN_DB || {}; 
+    const requiresStateSelection = Object.prototype.hasOwnProperty.call(statePricingRegistry, serviceSlug); 
+    
+    if (requiresStateSelection && !stateParam) { 
+        console.log(`[Gate Engine] State Service "${serviceSlug}" requires jurisdiction. Mounting Step 0...`); 
+        for (let i = 1; i <= 7; i++) { 
+            const p = document.getElementById(`step-panel-${i}`); 
+            if (p) { 
+                p.classList.remove("active"); 
+                p.style.setProperty("display", "none", "important"); 
+            } 
+        } 
+        const gatePanel = document.getElementById("step-panel-0"); 
+        if (gatePanel) { 
+            gatePanel.classList.add("active"); 
+            gatePanel.style.setProperty("display", "block", "important"); 
+        } 
+        if (window.currentWizardActiveStep !== 0) { 
+            window.currentWizardActiveStep = 0; 
+        } 
+        if (typeof window.autoDiscoverAndHydrateStateDropdowns === "function") { 
+            window.autoDiscoverAndHydrateStateDropdowns(); 
+        } 
+    } else { 
+        const gatePanel = document.getElementById("step-panel-0"); 
+        if (gatePanel) gatePanel.style.setProperty("display", "none", "important"); 
+        
+        if (typeof window.switchWizardActiveViewLayout === "function") { 
+            const savedStateCache = localStorage.getItem("f4u_wizard_onboarding_state"); 
+            let stepToLoad = 1; 
+            
+            try { 
+                const parsedState = savedStateCache ? JSON.parse(savedStateCache) : {}; 
+                // Direct entry URL parameter configurations always override stale cached layout points 
+                if (stateParam && urlParams.has('service')) { 
+                    stepToLoad = 1; 
+                } else { 
+                    stepToLoad = parsedState.currentWizardActiveStep !== undefined ? parseInt(parsedState.currentWizardActiveStep, 10) : 1; 
+                } 
+            } catch(e) { 
+                stepToLoad = 1; 
+            } 
+            
+            if (window.currentWizardActiveStep !== stepToLoad) { 
+                try { 
+                    isCurrentlyProcessingGateRoute = true; 
+                    
+                    // =====================================================================
+                    // DECOUPLED DEFERRED SESSION OVERRIDE TRIGGER
+                    // =====================================================================
+                    // Calls external bridge logic to safely ready payment container properties 
+                    // if history states restore the user back into Step 6 instantly.
+                    if (typeof window.executeStripeDisplayRecoveryOverride === "function") {
+                        window.executeStripeDisplayRecoveryOverride(stepToLoad);
+                    }
+                    
+                    window.switchWizardActiveViewLayout(stepToLoad); 
+                } finally { 
+                    isCurrentlyProcessingGateRoute = false; 
+                } 
+            } 
+        } 
+    } 
+} 
 
-    // 3. Coordinated structural execution pipeline
-    setTimeout(() => {
-      // Abort fade out cycle routines if an adjacent navigation transition has taken over
-      if (currentPassToken !== activeTransitionToken) return;
-
-      if (typeof callbackHandoffRoutine === "function") {
-        try {
-          callbackHandoffRoutine();
-        } catch (err) {
-          console.error("[Spinner Engine Failure] Error during view handoff execution:", err);
-        }
-      }
-
-      // Allow layout paint adjustments to calculate and settle before dimming the loader wheel overlay
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          if (currentPassToken !== activeTransitionToken) return;
-          
-          dynamicSpinnerOverlay.style.opacity = "0";
-          dynamicSpinnerOverlay.style.pointerEvents = "none";
-
-          setTimeout(() => {
-            // Verify structural ownership states before flipping layouts off-screen
-            if (currentPassToken === activeTransitionToken && dynamicSpinnerOverlay.style.opacity === "0") {
-              dynamicSpinnerOverlay.style.display = "none";
-            }
-          }, 200);
-        }, 100);
-      });
-    }, 180);
-  }
-
-  window.triggerWorkspaceTransitionSpinner = triggerWorkspaceTransitionSpinner;
-})();
-
-// ============================================================================ //
-// 🗺️ MODULE: STEP 0 JURISDICTION GATE ROUTER ENGINE (FEDERAL BYPASS)          //
-// ============================================================================ //
-(function() {
-  "use strict";
-
-  // Persistent tracking reference to defuse rapid synchronous redirect cascades
-  let isCurrentlyProcessingGateRoute = false;
-
-  function enforceJurisdictionGateEvaluation() {
-    // Interlock guard defuses layout routing reflection stack crashes
-    if (isCurrentlyProcessingGateRoute) return;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const serviceSlug = String(urlParams.get('service') || window.routeActiveServiceKey || "").toLowerCase().trim();
-    const stateParam = urlParams.get('state');
-
-    // 1. PURE ZERO-HARDCODE FEDERAL TRACK BYPASS DETERMINATION
-    const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {};
-    const isFederalFilingKey = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceSlug) && 
-                               serviceSlug !== "llc-formation" && 
-                               serviceSlug !== "corporations";
-
-    // Explicit keyword safety catch-all
-    const isFederalKeyword = serviceSlug.includes("cage") || 
-                             serviceSlug.includes("sam") || 
-                             serviceSlug.includes("tax") || 
-                             serviceSlug.includes("ein") || 
-                             serviceSlug.includes("authority");
-
-    if (isFederalFilingKey || isFederalKeyword) {
-      console.log(`[Gate Engine] Federal Service path "${serviceSlug}" verified. Automatically bypassing Step 0 state selection.`);
-      const gatePanel = document.getElementById("step-panel-0");
-      if (gatePanel) gatePanel.style.setProperty("display", "none", "important");
-
-      // Verify layout step alignment state before dispatching transitions
-      if (window.currentWizardActiveStep !== 1 && typeof window.switchWizardActiveViewLayout === "function") {
-        try {
-          isCurrentlyProcessingGateRoute = true;
-          window.switchWizardActiveViewLayout(1);
-        } finally {
-          isCurrentlyProcessingGateRoute = false;
-        }
-      }
-      return;
-    }
-
-    // 2. Standard State-Level Formations Track Execution Parameters
-    const statePricingRegistry = window.CENTRAL_SERVICE_PLAN_DB || {};
-    const requiresStateSelection = Object.prototype.hasOwnProperty.call(statePricingRegistry, serviceSlug);
-
-    if (requiresStateSelection && !stateParam) {
-      console.log(`[Gate Engine] State Service "${serviceSlug}" requires jurisdiction. Mounting Step 0...`);
-      for (let i = 1; i <= 7; i++) {
-        const p = document.getElementById(`step-panel-${i}`);
-        if (p) {
-          p.classList.remove("active");
-          p.style.setProperty("display", "none", "important");
-        }
-      }
-      const gatePanel = document.getElementById("step-panel-0");
-      if (gatePanel) {
-        gatePanel.classList.add("active");
-        gatePanel.style.setProperty("display", "block", "important");
-      }
-      if (window.currentWizardActiveStep !== 0) {
-        window.currentWizardActiveStep = 0;
-      }
-      if (typeof window.autoDiscoverAndHydrateStateDropdowns === "function") {
-        window.autoDiscoverAndHydrateStateDropdowns();
-      }
-    } else {
-      const gatePanel = document.getElementById("step-panel-0");
-      if (gatePanel) gatePanel.style.setProperty("display", "none", "important");
-
-      if (typeof window.switchWizardActiveViewLayout === "function") {
-        const savedStateCache = localStorage.getItem("f4u_wizard_onboarding_state");
-        let stepToLoad = 1;
-
-        try {
-          const parsedState = savedStateCache ? JSON.parse(savedStateCache) : {};
-          // Direct entry URL parameter configurations always override stale cached layout points
-          if (stateParam && urlParams.has('service')) {
-            stepToLoad = 1;
-          } else {
-            stepToLoad = parsedState.currentWizardActiveStep !== undefined ? parseInt(parsedState.currentWizardActiveStep, 10) : 1;
-          }
-        } catch(e) {
-          stepToLoad = 1;
-        }
-
-        if (window.currentWizardActiveStep !== stepToLoad) {
-          try {
-            isCurrentlyProcessingGateRoute = true;
-
-            // STRIPE COMPATIBILITY GUARD: If restoring progress directly into Step 6 checkout,
-            // unhide the DOM target wrapper panel instantly so Stripe sees real container metrics.
-            if (stepToLoad === 6) {
-              const paymentPanel = document.getElementById("step-panel-6");
-              if (paymentPanel) {
-                paymentPanel.style.setProperty("display", "block", "important");
-                paymentPanel.classList.add("active");
-              }
-            }
-
-            window.switchWizardActiveViewLayout(stepToLoad);
-          } finally {
-            isCurrentlyProcessingGateRoute = false;
-          }
-        }
-      }
-    }
-  }
-
-  // Bind cleanly back into universal global window scope references safely
-  window.enforceJurisdictionGateEvaluation = enforceJurisdictionGateEvaluation;
+// Bind cleanly back into universal global window scope references safely 
+window.enforceJurisdictionGateEvaluation = enforceJurisdictionGateEvaluation; 
 })();
 
 
-/**
- * Handles Step 0 submission click actions, appends values to the URL, and unlocks Step 1.
- */
-function processJurisdictionGateAdvancement() {
-  const stateSelectorNode = document.getElementById("wizard_gate_state_select");
-  if (!stateSelectorNode || !stateSelectorNode.value) {
-    alert("Action Required: Please select your business registration state to proceed.");
-    return;
-  }
-
-  const chosenStateCode = stateSelectorNode.value.toUpperCase().trim();
-  console.log(`[Gate Engine] Setting jurisdiction target state to: ${chosenStateCode}`);
-
-  // 1. APPEND THE CHOSEN STATE DIRECTLY TO THE URL WITHOUT REFRESHING THE PAGE
-  const urlParams = new URLSearchParams(window.location.search);
-  urlParams.set('state', chosenStateCode);
-  const upgradedAddressPath = `${window.location.pathname}?${urlParams.toString()}`;
-  window.history.replaceState({ path: upgradedAddressPath }, '', upgradedAddressPath);
-
-  // Write choice straight to tracking memory so other files read it instantly
-  window.selectedJurisdiction = chosenStateCode;
-  localStorage.setItem('wizard_selected_state', chosenStateCode);
-
-  // SILENT MARKUP VALUE SYNCHRONIZATION BACKUP TASK
-  const alternateSelectors = ["wizard_state_select", "state_select"];
-  alternateSelectors.forEach(id => {
-    localStorage.setItem(`wizard_field_${id}`, chosenStateCode);
+/** 
+ * Handles Step 0 submission click actions, appends values to the URL, and unlocks Step 1. 
+ */ 
+function processJurisdictionGateAdvancement() { 
+    const stateSelectorNode = document.getElementById("wizard_gate_state_select"); 
+    if (!stateSelectorNode || !stateSelectorNode.value) { 
+        alert("Action Required: Please select your business registration state to proceed."); 
+        return; 
+    } 
+    const chosenStateCode = stateSelectorNode.value.toUpperCase().trim(); 
+    console.log(`[Gate Engine] Setting jurisdiction target state to: ${chosenStateCode}`); 
     
-    const alternateNode = document.getElementById(id);
-    if (alternateNode) {
-      alternateNode.value = chosenStateCode;
-      if (typeof window.toggleFederalTaxInventoryCostVisibility === "function") {
-        window.toggleFederalTaxInventoryCostVisibility(alternateNode, null, true);
-      }
-    }
-  });
+    // 1. APPEND THE CHOSEN STATE DIRECTLY TO THE URL WITHOUT REFRESHING THE PAGE 
+    const urlParams = new URLSearchParams(window.location.search); 
+    urlParams.set('state', chosenStateCode); 
+    const upgradedAddressPath = `${window.location.pathname}?${urlParams.toString()}`; 
+    window.history.replaceState({ path: upgradedAddressPath }, '', upgradedAddressPath); 
+    
+    // Write choice straight to tracking memory so other files read it instantly 
+    window.selectedJurisdiction = chosenStateCode; 
+    localStorage.setItem('wizard_selected_state', chosenStateCode); 
+    
+    // SILENT MARKUP VALUE SYNCHRONIZATION BACKUP TASK 
+    const alternateSelectors = ["wizard_state_select", "state_select"]; 
+    alternateSelectors.forEach(id => { 
+        localStorage.setItem(`wizard_field_${id}`, chosenStateCode); 
+        const alternateNode = document.getElementById(id); 
+        if (alternateNode) { 
+            alternateNode.value = chosenStateCode; 
+            if (typeof window.toggleFederalTaxInventoryCostVisibility === "function") { 
+                window.toggleFederalTaxInventoryCostVisibility(alternateNode, null, true); 
+            } 
+        } 
+    }); 
+    
+    // Hide Step 0 overlay panel cleanly 
+    const gatePanel = document.getElementById("step-panel-0"); 
+    if (gatePanel) { 
+        gatePanel.classList.remove("active"); 
+        gatePanel.style.setProperty("display", "none", "important"); 
+    } 
+    
+    // 2. COORDINATED ROUTING DISPATCH LIFECYCLE 
+    requestAnimationFrame(() => { 
+        if (typeof window.switchWizardActiveViewLayout === "function") { 
+            console.log("[Gate Engine] Requirements cleared. Routing layout to Step 1 Overview."); 
+            window.switchWizardActiveViewLayout(1); 
+            
+            // 3. EXECUTE CALCULATION & RENDERING LOOPS AFTER LAYOUT PANEL MOUNTS UNHIDDEN 
+            setTimeout(() => { 
+                // Enforce synchronization on alternate elements that might have just dynamic mounted 
+                alternateSelectors.forEach(id => { 
+                    const alternateNode = document.getElementById(id); 
+                    if (alternateNode && alternateNode.value !== chosenStateCode) { 
+                        alternateNode.value = chosenStateCode; 
+                    } 
+                }); 
+                if (typeof window.processDynamicMarketingLayoutDecorations === "function") { 
+                    window.processDynamicMarketingLayoutDecorations(); 
+                } 
+                if (typeof window.renderStep1CustomFeatureBullets === "function") { 
+                    const cleanServiceKey = String(urlParams.get('service') || "").toLowerCase().trim(); 
+                    window.renderStep1CustomFeatureBullets(cleanServiceKey); 
+                } 
+                // ONLY RUN PRICING MATRIX CRAWL PASSES IF AVAILABLE
+                if (typeof window.runPricingMatrixDataCrawlPass === "function") { 
+                    window.runPricingMatrixDataCrawlPass(); 
+                } 
+            }, 0); 
+        } 
+    }); 
+} 
 
-  // Hide Step 0 overlay panel cleanly
-  const gatePanel = document.getElementById("step-panel-0");
-  if (gatePanel) {
-    gatePanel.classList.remove("active");
-    gatePanel.style.setProperty("display", "none", "important");
-  }
+// Clean namespace global registration map blocks safely 
+window.processJurisdictionGateAdvancement = processJurisdictionGateAdvancement; 
 
-  // 2. COORDINATED ROUTING DISPATCH LIFECYCLE
-  requestAnimationFrame(() => {
-    if (typeof window.switchWizardActiveViewLayout === "function") {
-      console.log("[Gate Engine] Requirements cleared. Routing layout to Step 1 Overview.");
-      
-      window.switchWizardActiveViewLayout(1);
-
-      // 3. EXECUTE CALCULATION & RENDERING LOOPS AFTER LAYOUT PANEL MOUNTS UNHIDDEN
-      setTimeout(() => {
-        // Enforce synchronization on alternate elements that might have just dynamic mounted
-        alternateSelectors.forEach(id => {
-          const alternateNode = document.getElementById(id);
-          if (alternateNode && alternateNode.value !== chosenStateCode) {
-            alternateNode.value = chosenStateCode;
-          }
-        });
-
-        if (typeof window.processDynamicMarketingLayoutDecorations === "function") {
-          window.processDynamicMarketingLayoutDecorations();
-        }
-
-        if (typeof window.renderStep1CustomFeatureBullets === "function") {
-          const cleanServiceKey = String(urlParams.get('service') || "").toLowerCase().trim();
-          window.renderStep1CustomFeatureBullets(cleanServiceKey);
-        }
-
-        // STRIPE COMPATIBILITY GUARD: Only run full DOM crawl passes if we are NOT breaking 
-        // payment initialization components elsewhere on the same loop tick.
-        if (typeof window.runPricingMatrixDataCrawlPass === "function") {
-          window.runPricingMatrixDataCrawlPass();
-        }
-      }, 0);
-    }
-  });
-}
-
-// Clean namespace global registration map blocks safely
-window.processJurisdictionGateAdvancement = processJurisdictionGateAdvancement;
-
-
-// Hook up pre-flight scanner directly to page initialization loops safely
-document.addEventListener("DOMContentLoaded", () => {
-  // Set brief macro delay to let reference database models compile first
-  setTimeout(() => {
-    if (typeof window.enforceJurisdictionGateEvaluation === "function") {
-      window.enforceJurisdictionGateEvaluation();
-    } else {
-      console.log("[Gate Engine Discovery] enforceJurisdictionGateEvaluation method not loaded in scope yet.");
-    }
-  }, 60);
+// Hook up pre-flight scanner directly to page initialization loops safely 
+document.addEventListener("DOMContentLoaded", () => { 
+    // Set brief macro delay to let reference database models compile first 
+    setTimeout(() => { 
+        if (typeof window.enforceJurisdictionGateEvaluation === "function") { 
+            window.enforceJurisdictionGateEvaluation(); 
+        } else { 
+            console.log("[Gate Engine Discovery] enforceJurisdictionGateEvaluation method not loaded in scope yet."); 
+        } 
+    }, 60); 
 });
 
-// ============================================================================ //
-// 🔌 CENTRAL EVENT LISTENER INTERCEPT APP LIFE-CYCLE (DEEP-LINK SANITIZED)     //
-// ============================================================================ //
 
-// Encapsulate retry state outside the global scope to track boot attempts safely
-let platformLifecycleBootRetryCount = 0;
-const MAX_BOOT_RETRIES = 20; // Hard cutoff after 1 second (20 * 50ms) to prevent thread locking
+// ============================================================================ // 
+// 🔌 CENTRAL EVENT LISTENER INTERCEPT APP LIFE-CYCLE (DEEP-LINK SANITIZED)      // 
+// ============================================================================ // 
 
-function runUnifiedPlatformLifecycleBoot() {
-  console.log("[Lifecycle Engine] Triggering application operational boot sequence...");
+// Encapsulate retry state outside the global scope to track boot attempts safely 
+let platformLifecycleBootRetryCount = 0; 
+const MAX_BOOT_RETRIES = 20; // Hard cutoff after 1 second (20 * 50ms) to prevent thread locking 
 
-  // 🛡️ RUNTIME PIPELINE GUARD: Verify configuration rules with absolute safety
-  const isCoreDatabaseReady = typeof window.getPricingConfiguration === "function" || 
-                              (typeof window.CENTRAL_SERVICE_PLAN_DB === "object" && window.CENTRAL_SERVICE_PLAN_DB !== null);
-  
-  if (!isCoreDatabaseReady) {
-    platformLifecycleBootRetryCount++;
-    if (platformLifecycleBootRetryCount > MAX_BOOT_RETRIES) {
-      console.error("[Lifecycle Engine Fatal] Core data configuration failed to initialize within safety timeout window. Aborting boot sequence.");
-      return;
-    }
-
-    console.warn(`[Lifecycle Engine Guard] Core configuration not ready. Attempt ${platformLifecycleBootRetryCount}/${MAX_BOOT_RETRIES}. Retrying in 50ms...`);
-    setTimeout(function() {
-      if (typeof window.runUnifiedPlatformLifecycleBoot === "function") {
-        window.runUnifiedPlatformLifecycleBoot();
-      }
-    }, 50);
-    return;
-  }
-
-  // Reset retry counter once verified successfully
-  platformLifecycleBootRetryCount = 0;
-
-  // Appends outer margins safely without forcing flex definitions that collapse step visibility tracks!
-  const wizardContainerElement = document.querySelector(".wizard-container");
-  if (wizardContainerElement) {
-    wizardContainerElement.style.setProperty('margin', '50px auto 0 auto', 'important');
-    wizardContainerElement.style.setProperty('max-width', '1450px', 'important');
-    wizardContainerElement.style.setProperty('width', '100%', 'important');
-  }
-
-  // Clear out specific visibility properties safely without wiping external third-party classes/inline mutations
-  const masterFormElement = document.getElementById("master-onboarding-form") || document.querySelector(".master-onboarding-form");
-  if (masterFormElement && masterFormElement.style) {
-    if (typeof masterFormElement.style.removeProperty === "function") {
-      masterFormElement.style.removeProperty('display');
-      masterFormElement.style.removeProperty('width');
-      masterFormElement.style.removeProperty('max-width');
-    } else {
-      // Precise surgical fallback string replacement instead of a destructive blank override
-      masterFormElement.style.display = "";
-      masterFormElement.style.width = "";
-      masterFormElement.style.maxWidth = "";
-    }
-  }
-
-  if (typeof window.initializeDynamicChronometerWidget12Hr === "function") {
-    window.initializeDynamicChronometerWidget12Hr();
-  }
-
-  if (typeof window.generateSecureRuntimeSessionTokenVanilla === "function") {
-    window.generateSecureRuntimeSessionTokenVanilla();
-  }
-
-  // Initialize tracking layouts database safely
-  if (typeof window.autoInjectMainWebsitePricingPlan === "function") {
-    window.autoInjectMainWebsitePricingPlan();
-  } else if (typeof window.initializeUrlParameterParserEngineVanilla === "function") {
-    window.initializeUrlParameterParserEngineVanilla();
-  }
-
-  if (typeof window.initializeDigitalSignatureMirrorSync === "function") {
-    window.initializeDigitalSignatureMirrorSync();
-  }
-
-  // =========================================================================
-  // DEEP-LINK TIMELINE RESOLUTION GATEWAY (ZERO-HARDCODE REBOOT)
-  // =========================================================================
-  const urlParams = new URLSearchParams(window.location.search);
-  const hasService = urlParams.get('service');
-  const hasPlan = urlParams.get('plan');
-  const hasState = urlParams.get('state') || urlParams.get('stateCode');
-  
-  let currentActiveStepIndex = parseInt(window.currentWizardActiveStep, 10);
-
-  // PROGRAMMATIC FEDERAL ROUTING VERIFICATION
-  const serviceKeyCheck = String(hasService || window.routeActiveServiceKey || "").toLowerCase().trim();
-  const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {};
-  const isFederalServicePath = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceKeyCheck) && 
-                               serviceKeyCheck !== "llc-formation" && 
-                               serviceKeyCheck !== "corporations";
-
-  // Determine deep-link eligibility dynamically without hardcoded text blocks
-  const isDeepLinkValid = !!(hasService && hasPlan && (hasState || isFederalServicePath));
-
-  if (isDeepLinkValid) {
-    if (isNaN(currentActiveStepIndex) || currentActiveStepIndex <= 1) {
-      console.log("[Lifecycle Engine Override] Deep link active. Syncing internal states cleanly to Step 2.");
-      currentActiveStepIndex = 2;
-      window.currentWizardActiveStep = 2;
-    }
-  } else if (isNaN(currentActiveStepIndex)) {
-    // If this is a completely brand new session layout with no parameters, default to 0
-    currentActiveStepIndex = 0;
-    window.currentWizardActiveStep = 0;
-  }
-
-  // Only restore cached form inputs directly here if the current active target view is NOT Step 2.
-  if (currentActiveStepIndex !== 2) {
-    if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") {
-      window.cacheAndRestoreWizardFormStatesVanilla(true);
-    }
-  }
-
-  if (typeof window.initializeFormDisplayLayoutSync === "function") {
-    window.initializeFormDisplayLayoutSync();
-  }
-
-  if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
-    window.updateDynamicPricingMatrixVanilla();
-  }
-
-    // =========================================================================
-  // 🟢 FIXED VIEW PORT ROUTER HOOK (STRIPE-SAFE INTERLOCK)
-  // =========================================================================
-  if (typeof window.switchWizardActiveViewLayout === "function") {
-    console.log(`[Lifecycle Engine] Transferring runtime thread task to view layout switcher: Step ${currentActiveStepIndex}`);
+function runUnifiedPlatformLifecycleBoot() { 
+    console.log("[Lifecycle Engine] Triggering application operational boot sequence..."); 
     
-    // STRIPE COMPATIBILITY GUARD: If booting directly into Step 6, unhide the panel DOM node 
-    // instantly so Stripe doesn't read a 0px width/height element container.
-    if (currentActiveStepIndex === 6) {
-      const paymentPanelNode = document.getElementById("step-panel-6");
-      if (paymentPanelNode) {
-        paymentPanelNode.style.setProperty("display", "block", "important");
-        paymentPanelNode.classList.add("active");
-      }
-    }
+    // RUNTIME PIPELINE GUARD: Verify configuration rules with absolute safety 
+    const isCoreDatabaseReady = typeof window.getPricingConfiguration === "function" || (typeof window.CENTRAL_SERVICE_PLAN_DB === "object" && window.CENTRAL_SERVICE_PLAN_DB !== null); 
+    if (!isCoreDatabaseReady) { 
+        platformLifecycleBootRetryCount++; 
+        if (platformLifecycleBootRetryCount > MAX_BOOT_RETRIES) { 
+            console.error("[Lifecycle Engine Fatal] Core data configuration failed to initialize within safety timeout window. Aborting boot sequence."); 
+            return; 
+        } 
+        console.warn(`[Lifecycle Engine Guard] Core configuration not ready. Attempt ${platformLifecycleBootRetryCount}/${MAX_BOOT_RETRIES}. Retrying in 50ms...`); 
+        setTimeout(function() { 
+            if (typeof window.runUnifiedPlatformLifecycleBoot === "function") { 
+                window.runUnifiedPlatformLifecycleBoot(); 
+            } 
+        }, 50); 
+        return; 
+    } 
     
-    window.switchWizardActiveViewLayout(currentActiveStepIndex);
-  } else if (typeof window.renderActiveWizardStepUiLayout === "function") {
-    window.renderActiveWizardStepUiLayout();
-  } else {
-    const fallbackTargetPanel = document.getElementById(`step-panel-${currentActiveStepIndex}`);
-    if (fallbackTargetPanel) {
-      fallbackTargetPanel.style.setProperty("display", "block", "important");
-      fallbackTargetPanel.classList.add("active");
-    }
-  }
+    // Reset retry counter once verified successfully 
+    platformLifecycleBootRetryCount = 0; 
+    
+    // Appends outer margins safely without forcing flex definitions that collapse step visibility tracks! 
+    const wizardContainerElement = document.querySelector(".wizard-container"); 
+    if (wizardContainerElement) { 
+        wizardContainerElement.style.setProperty('margin', '50px auto 0 auto', 'important'); 
+        wizardContainerElement.style.setProperty('max-width', '1450px', 'important'); 
+        wizardContainerElement.style.setProperty('width', '100%', 'important'); 
+    } 
+    
+    // Clear out specific visibility properties safely without wiping external third-party classes/inline mutations 
+    const masterFormElement = document.getElementById("master-onboarding-form") || document.querySelector(".master-onboarding-form"); 
+    if (masterFormElement && masterFormElement.style) { 
+        if (typeof masterFormElement.style.removeProperty === "function") { 
+            masterFormElement.style.removeProperty('display'); 
+            masterFormElement.style.removeProperty('width'); 
+            masterFormElement.style.removeProperty('max-width'); 
+        } else { 
+            // Precise surgical fallback string replacement instead of a destructive blank override 
+            masterFormElement.style.display = ""; 
+            masterFormElement.style.width = ""; 
+            masterFormElement.style.maxWidth = ""; 
+        } 
+    } 
+    
+    if (typeof window.initializeDynamicChronometerWidget12Hr === "function") { 
+        window.initializeDynamicChronometerWidget12Hr(); 
+    } 
+    if (typeof window.generateSecureRuntimeSessionTokenVanilla === "function") { 
+        window.generateSecureRuntimeSessionTokenVanilla(); 
+    } 
+    
+    // Initialize tracking layouts database safely 
+    if (typeof window.autoInjectMainWebsitePricingPlan === "function") { 
+        window.autoInjectMainWebsitePricingPlan(); 
+    } else if (typeof window.initializeUrlParameterParserEngineVanilla === "function") { 
+        window.initializeUrlParameterParserEngineVanilla(); 
+    } 
+    if (typeof window.initializeDigitalSignatureMirrorSync === "function") { 
+        window.initializeDigitalSignatureMirrorSync(); 
+    } 
+    
+    // ========================================================================= // 
+    // DEEP-LINK TIMELINE RESOLUTION GATEWAY (ZERO-HARDCODE REBOOT)              // 
+    // ========================================================================= // 
+    const urlParams = new URLSearchParams(window.location.search); 
+    const hasService = urlParams.get('service'); 
+    const hasPlan = urlParams.get('plan'); 
+    const hasState = urlParams.get('state') || urlParams.get('stateCode'); 
+    let currentActiveStepIndex = parseInt(window.currentWizardActiveStep, 10); 
+    
+    // PROGRAMMATIC FEDERAL ROUTING VERIFICATION 
+    const serviceKeyCheck = String(hasService || window.routeActiveServiceKey || "").toLowerCase().trim(); 
+    const federalPricingDb = window.FILINGS4U_GOVERNMENT_PRICING || {}; 
+    const isFederalServicePath = Object.prototype.hasOwnProperty.call(federalPricingDb, serviceKeyCheck) && serviceKeyCheck !== "llc-formation" && serviceKeyCheck !== "corporations"; 
+    
+    // Determine deep-link eligibility dynamically without hardcoded text blocks 
+    const isDeepLinkValid = !!(hasService && hasPlan && (hasState || isFederalServicePath)); 
+    if (isDeepLinkValid) { 
+        if (isNaN(currentActiveStepIndex) || currentActiveStepIndex <= 1) { 
+            console.log("[Lifecycle Engine Override] Deep link active. Syncing internal states cleanly to Step 2."); 
+            currentActiveStepIndex = 2; 
+            window.currentWizardActiveStep = 2; 
+        } 
+    } else if (isNaN(currentActiveStepIndex)) { 
+        // If this is a completely brand new session layout with no parameters, default to 0 
+        currentActiveStepIndex = 0; 
+        window.currentWizardActiveStep = 0; 
+    } 
+    
+    // Only restore cached form inputs directly here if the current active target view is NOT Step 2. 
+    if (currentActiveStepIndex !== 2) { 
+        if (typeof window.cacheAndRestoreWizardFormStatesVanilla === "function") { 
+            window.cacheAndRestoreWizardFormStatesVanilla(true); 
+        } 
+    } 
+    if (typeof window.initializeFormDisplayLayoutSync === "function") { 
+        window.initializeFormDisplayLayoutSync(); 
+    } 
+    if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
+        window.updateDynamicPricingMatrixVanilla(); 
+    } 
+    
+    // ========================================================================= // 
+    // VIEW PORT ROUTER TRANSITION DISPATCH (DECOUPLED OVERRIDES)                // 
+    // ========================================================================= // 
+    if (typeof window.switchWizardActiveViewLayout === "function") { 
+        console.log(`[Lifecycle Engine] Transferring runtime thread task to view layout switcher: Step ${currentActiveStepIndex}`); 
+        
+        // =====================================================================
+        // DECOUPLED STABILITY TRIGGER HOOK
+        // =====================================================================
+        // Calls the new stripe-core.js routine pass to safely ready payment 
+        // node attributes before the visual engine flips panel states.
+        if (typeof window.executeStripeBootOverrideGuard === "function") {
+            window.executeStripeBootOverrideGuard(currentActiveStepIndex);
+        }
+        
+        window.switchWizardActiveViewLayout(currentActiveStepIndex); 
+    } else if (typeof window.renderActiveWizardStepUiLayout === "function") { 
+        window.renderActiveWizardStepUiLayout(); 
+    } else { 
+        const fallbackTargetPanel = document.getElementById(`step-panel-${currentActiveStepIndex}`); 
+        if (fallbackTargetPanel) { 
+            fallbackTargetPanel.style.setProperty("display", "block", "important"); 
+            fallbackTargetPanel.classList.add("active"); 
+        } 
+    } 
+    
+    // Use requestAnimationFrame to ensure the DOM layout engine settles before confirming success 
+    requestAnimationFrame(() => { 
+        console.log("[Lifecycle Engine Success] All operational layers initialized safely and painted."); 
+    }); 
+} 
 
-  // Use requestAnimationFrame to ensure the DOM layout engine settles before confirming success
-  requestAnimationFrame(() => {
-    console.log("[Lifecycle Engine Success] All operational layers initialized safely and painted.");
-  });
-}
-
-// Clean namespace registration map blocks safely
+// Clean namespace registration map blocks safely 
 window.runUnifiedPlatformLifecycleBoot = runUnifiedPlatformLifecycleBoot;
 
 
-// ============================================================================ //
-// 🧠 WIZARD MASTER CORE DATA ARCHITECTURE                                      //
-// ============================================================================ //
-(function() {
-  "use strict";
 
-  // Completely isolated, private data vault. Step scripts cannot overwrite this directly.
-  const WIZARD_CENTRAL_VAULT = {
-    step_0: {}, step_1: {}, step_2: { addons: [] }, step_3: { packages: [], upsells: [] },
-    step_4: {}, step_5: {}, step_6: {}, step_7: {}
-  };
+// ============================================================================ // 
+// 🧠 WIZARD MASTER CORE DATA ARCHITECTURE                                      // 
+// ============================================================================ // 
+(function() { 
+"use strict"; 
 
-  window.wizardCentralState = {
-    // Isolated setter that rejects accidental cross-step overwrites
-    updateStepData: function(stepNumber, key, value) {
-      const stepKey = `step_${stepNumber}`;
-      if (!WIZARD_CENTRAL_VAULT[stepKey]) return;
-      
-      WIZARD_CENTRAL_VAULT[stepKey][key] = value;
-      this.syncCalculatedTotals();
-    },
+// Completely isolated, private data vault. Step scripts cannot overwrite this directly. 
+const WIZARD_CENTRAL_VAULT = { 
+    step_0: {}, step_1: {}, step_2: { addons: [] }, step_3: { packages: [], upsells: [] }, 
+    step_4: {}, step_5: {}, step_6: {}, step_7: {} 
+}; 
 
-    getStepData: function(stepNumber, key) {
-      const stepKey = `step_${stepNumber}`;
-      if (!WIZARD_CENTRAL_VAULT[stepKey]) return null;
-      return WIZARD_CENTRAL_VAULT[stepKey][key] || null;
-    },
-
-    // Aggregates prices from step modules cleanly without triggering mutations
-    syncCalculatedTotals: function() {
-      let finalCalculatedSum = 0;
-
-      // Extract validated step 2 addon pricing totals
-      const step2Addons = WIZARD_CENTRAL_VAULT.step_2.addons || [];
-      step2Addons.forEach(item => { finalCalculatedSum += (parseFloat(item.price) || 0); });
-
-      // Extract validated step 3 upsell/package totals
-      const step3Upsells = WIZARD_CENTRAL_VAULT.step_3.upsells || [];
-      step3Upsells.forEach(item => { finalCalculatedSum += (parseFloat(item.price) || 0); });
-
-      window.computedWizardGrandTotalAmount = finalCalculatedSum;
-      window.wizardCalculatedFinalTotalAmount = finalCalculatedSum;
-
-      // Push updates forward safely to the Stripe & Summary screens if visible
-      if (typeof window.executeMarketplaceSummaryRenderLoop === "function") {
-        window.executeMarketplaceSummaryRenderLoop();
-      }
-    }
-  };
-})();
-
+window.wizardCentralState = { 
+    // Isolated setter that rejects accidental cross-step overwrites 
+    updateStepData: function(stepNumber, key, value) { 
+        const stepKey = `step_${stepNumber}`; 
+        if (!WIZARD_CENTRAL_VAULT[stepKey]) return; 
+        WIZARD_CENTRAL_VAULT[stepKey][key] = value; 
+        this.syncCalculatedTotals(); 
+    }, 
+    getStepData: function(stepNumber, key) { 
+        const stepKey = `step_${stepNumber}`; 
+        if (!WIZARD_CENTRAL_VAULT[stepKey]) return null; 
+        return WIZARD_CENTRAL_VAULT[stepKey][key] || null; 
+    }, 
+    // Aggregates prices from step modules cleanly without triggering mutations 
+    syncCalculatedTotals: function() { 
+        let finalCalculatedSum = 0; 
+        
+        // Extract validated step 2 addon pricing totals 
+        const step2Addons = WIZARD_CENTRAL_VAULT.step_2.addons || []; 
+        step2Addons.forEach(item => { 
+            finalCalculatedSum += (parseFloat(item.price) || 0); 
+        }); 
+        
+        // Extract validated step 3 upsell/package totals 
+        const step3Upsells = WIZARD_CENTRAL_VAULT.step_3.upsells || []; 
+        step3Upsells.forEach(item => { 
+            finalCalculatedSum += (parseFloat(item.price) || 0); 
+        }); 
+        
+        window.computedWizardGrandTotalAmount = finalCalculatedSum; 
+        window.wizardCalculatedFinalTotalAmount = finalCalculatedSum; 
+        
+        // Push updates forward safely to the Summary screens if visible 
+        if (typeof window.executeMarketplaceSummaryRenderLoop === "function") { 
+            window.executeMarketplaceSummaryRenderLoop(); 
+        } 
+    } 
+}; 
+})(); 
 
 // ============================================================================ // 
 // 🗺️ PART 4: MULTI-SIDEBAR TIMELINE NAV LIGHTS ENGINE (DOM ACTIVE STATE SAFE)  // 
 // ============================================================================ // 
 function updateApplicationMapTimelineBubbles(currentStepIndex) { 
-  "use strict";
+"use strict"; 
 
-  // 🟢 FIX: DYNAMIC STEP OVERRIDE BY DOM DISCOVERY
-  // Instead of guessing or tracking a stale window state, check what panel is actually visible on screen!
-  let determinedActiveStepIndex = parseInt(currentStepIndex, 10);
-  if (isNaN(determinedActiveStepIndex)) {
-    determinedActiveStepIndex = 0;
-  }
-
-  // Scan your HTML elements for active panels to lock down the exact index match
-  const currentActivePanel = document.querySelector(".wizard-panel.active") || 
-                             document.querySelector(".wizard-step-container-block.active") ||
-                             document.querySelector("[id*='step-panel-'].active") ||
-                             document.querySelector("[id*='step-'].active");
-
-  if (currentActivePanel && currentActivePanel.id) {
-    // Extract numbers cleanly straight out of your layout IDs (e.g. "step-panel-0" -> 0, "step-1" -> 1)
-    const numericalMatch = currentActivePanel.id.match(/\d+/);
-    if (numericalMatch) {
-      determinedActiveStepIndex = parseInt(numericalMatch[0], 10);
-    }
-  }
-
-  console.log(`[Multi-Sidebar Progress] Illuminating timeline nodes contextually for step: ${determinedActiveStepIndex}`); 
-
-  for (let i = 0; i <= 7; i++) { 
-    const rowNodes = document.querySelectorAll(`#timeline-row-${i}`); 
-    rowNodes.forEach(rowNode => { 
-      if (!rowNode) return; 
-      const dotNode = rowNode.querySelector(".toc-dot"); 
-      const titleNode = rowNode.querySelector(".toc-step-title"); 
-
-      // Reset basic default layouts cleanly before parsing state updates
-      if (dotNode) { 
-        dotNode.style.removeProperty("background-color"); 
-        dotNode.style.removeProperty("border"); 
-        dotNode.style.removeProperty("box-shadow"); 
-      } 
-      if (titleNode) { 
-        titleNode.style.setProperty("color", "#64748b", "important"); 
-        titleNode.style.setProperty("font-weight", "500", "important"); 
-      } 
-
-      // Apply contextually accurate progress state designs matching the active panel index
-      if (i === determinedActiveStepIndex) { 
-        if (dotNode) { 
-          dotNode.style.setProperty("background-color", "#10b981", "important"); 
-          dotNode.style.setProperty("border", "3px solid #10b981", "important"); 
-          dotNode.style.setProperty("box-shadow", "0 0 0 4px rgba(16, 185, 129, 0.25)", "important"); 
+    // DYNAMIC STEP OVERRIDE BY DOM DISCOVERY 
+    // Instead of guessing or tracking a stale window state, check what panel is actually visible on screen! 
+    let determinedActiveStepIndex = parseInt(currentStepIndex, 10); 
+    if (isNaN(determinedActiveStepIndex)) { 
+        determinedActiveStepIndex = 0; 
+    } 
+    
+    // Scan your HTML elements for active panels to lock down the exact index match 
+    const currentActivePanel = document.querySelector(".wizard-panel.active") || 
+                               document.querySelector(".wizard-step-container-block.active") || 
+                               document.querySelector("[id*='step-panel-'].active") || 
+                               document.querySelector("[id*='step-'].active"); 
+                               
+    if (currentActivePanel && currentActivePanel.id) { 
+        // Extract numbers cleanly straight out of your layout IDs (e.g. "step-panel-0" -> 0, "step-1" -> 1) 
+        const numericalMatch = currentActivePanel.id.match(/\d+/); 
+        if (numericalMatch) { 
+            determinedActiveStepIndex = parseInt(numericalMatch[0], 10); 
         } 
-        if (titleNode) { 
-          titleNode.style.setProperty("color", "#10b981", "important"); 
-          titleNode.style.setProperty("font-weight", "800", "important"); 
-        } 
-      } else if (i < determinedActiveStepIndex) { 
-        if (dotNode) { 
-          dotNode.style.setProperty("background-color", "#10b981", "important"); 
-          dotNode.style.setProperty("border", "3px solid #10b981", "important"); 
-        } 
-        if (titleNode) { 
-          titleNode.style.setProperty("color", "#0a1f44", "important"); 
-          titleNode.style.setProperty("font-weight", "700", "important"); 
-        } 
-      } else { 
-        if (dotNode) { 
-          dotNode.style.setProperty("background-color", "#e2e8f0", "important"); 
-          dotNode.style.setProperty("border", "3px solid #e2e8f0", "important"); 
-        } 
-      } 
-    }); 
-  } 
-}
-window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles;
+    } 
+    
+    console.log(`[Multi-Sidebar Progress] Illuminating timeline nodes contextually for step: ${determinedActiveStepIndex}`); 
+    
+    for (let i = 0; i <= 7; i++) { 
+        const rowNodes = document.querySelectorAll(`#timeline-row-${i}`); 
+        rowNodes.forEach(rowNode => { 
+            if (!rowNode) return; 
+            const dotNode = rowNode.querySelector(".toc-dot"); 
+            const titleNode = rowNode.querySelector(".toc-step-title"); 
+            
+            // Reset basic default layouts cleanly before parsing state updates 
+            if (dotNode) { 
+                dotNode.style.removeProperty("background-color"); 
+                dotNode.style.removeProperty("border"); 
+                dotNode.style.removeProperty("box-shadow"); 
+            } 
+            if (titleNode) { 
+                titleNode.style.setProperty("color", "#64748b", "important"); 
+                titleNode.style.setProperty("font-weight", "500", "important"); 
+            } 
+            
+            // Apply contextually accurate progress state designs matching the active panel index 
+            if (i === determinedActiveStepIndex) { 
+                if (dotNode) { 
+                    dotNode.style.setProperty("background-color", "#10b981", "important"); 
+                    dotNode.style.setProperty("border", "3px solid #10b981", "important"); 
+                    dotNode.style.setProperty("box-shadow", "0 0 0 4px rgba(16, 185, 129, 0.25)", "important"); 
+                } 
+                if (titleNode) { 
+                    titleNode.style.setProperty("color", "#10b981", "important"); 
+                    titleNode.style.setProperty("font-weight", "800", "important"); 
+                } 
+            } else if (i < determinedActiveStepIndex) { 
+                if (dotNode) { 
+                    dotNode.style.setProperty("background-color", "#10b981", "important"); 
+                    dotNode.style.setProperty("border", "3px solid #10b981", "important"); 
+                } 
+                if (titleNode) { 
+                    titleNode.style.setProperty("color", "#0a1f44", "important"); 
+                    titleNode.style.setProperty("font-weight", "700", "important"); 
+                } 
+            } else { 
+                if (dotNode) { 
+                    dotNode.style.setProperty("background-color", "#e2e8f0", "important"); 
+                    dotNode.style.setProperty("border", "3px solid #e2e8f0", "important"); 
+                } 
+            } 
+        }); 
+    } 
+} 
 
+window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles; 
 
-// ============================================================================ //
-// 🔐 EXTENSION MODULE: HARDENED CUSTOMER ACCOUNT ACCOUNT VERIFICATION CORE    //
-// ============================================================================ //
+// ============================================================================ // 
+// 🔑 EXTENSION MODULE: HARDENED CUSTOMER ACCOUNT VERIFICATION CORE             // 
+// ============================================================================ // 
 /** 
  * Validates step data and checks if a user profile already exists in Supabase. 
  * @returns {Promise<{exists: boolean, email: string}>} 
  */ 
 async function verifyCustomerAndCheckAccount() { 
-    // 🔥 FIX: Added rigorous ID constraints ahead of broad type queries to protect against Stripe element collisions
+    // Added rigorous ID constraints ahead of broad type queries to protect against Stripe element collisions 
     const emailInput = document.getElementById("lead_email")?.value || 
                        document.getElementById("portal_user_email")?.value || 
-                       document.querySelector(".master-onboarding-form input[type='email']")?.value ||
+                       document.querySelector(".master-onboarding-form input[type='email']")?.value || 
                        document.querySelector("#wizard-account-generation-form input[type='email']")?.value || ""; 
                        
     const customerEmail = emailInput.trim().toLowerCase(); 
@@ -2228,10 +2012,8 @@ async function verifyCustomerAndCheckAccount() {
         throw new Error("Invalid format parameters: Provide a functional email value."); 
     } 
     
-    // Unified database resolver tracking hook
-    const supabaseClient = window.getSuccessPageSupabaseClient ? window.getSuccessPageSupabaseClient() : 
-                           (window.supabaseClientInstance || window.supabase || window.supabaseClient || window.sb); 
-                           
+    // Unified database resolver tracking hook 
+    const supabaseClient = window.getSuccessPageSupabaseClient ? window.getSuccessPageSupabaseClient() : (window.supabaseClientInstance || window.supabase || window.supabaseClient || window.sb); 
     if (!supabaseClient) throw new Error("Database interface offline."); 
     
     try { 
@@ -2242,42 +2024,33 @@ async function verifyCustomerAndCheckAccount() {
             .maybeSingle(); 
             
         if (error) throw error; 
-        
         if (profile) { 
             console.log("[Wizard Core Verification] Existing customer identified:", customerEmail); 
             
-            // 🟢 CRITICAL TRACKING IDENTIFIERS
+            // CRITICAL TRACKING IDENTIFIERS 
             window.f4uIsReturningCustomer = true; 
             window.f4uExistingUserId = profile.id; 
-            
             localStorage.setItem("f4u_is_returning_customer", "true"); 
             localStorage.setItem("f4u_returning_customer_email", customerEmail); 
-            
             return { exists: true, email: customerEmail }; 
         } else { 
             console.log("[Wizard Core Verification] Unregistered guest user trajectory."); 
-            
             window.f4uIsReturningCustomer = false; 
             window.f4uExistingUserId = null; 
-            
             localStorage.setItem("f4u_is_returning_customer", "false"); 
             localStorage.removeItem("f4u_returning_customer_email"); 
-            
             return { exists: false, email: customerEmail }; 
         } 
     } catch (err) { 
         console.warn("[Wizard Core] Profile validation database check deferred:", err.message); 
-        
-        // 🔥 FIX: Cleanly reset state parameters inside the catch block to guarantee error states don't leak old user profiles
+        // Cleanly reset state parameters inside the catch block to guarantee error states don't leak old user profiles 
         window.f4uIsReturningCustomer = false; 
         window.f4uExistingUserId = null; 
-        
         localStorage.setItem("f4u_is_returning_customer", "false"); 
         localStorage.removeItem("f4u_returning_customer_email"); 
-        
         return { exists: false, email: customerEmail, error: err.message }; 
     } 
 } 
 
-// Export verification layers back up into global window scope references safely
+// Export verification layers back up into global window scope references safely 
 window.verifyCustomerAndCheckAccount = verifyCustomerAndCheckAccount;
