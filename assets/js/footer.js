@@ -128,7 +128,7 @@ function renderDynamicGlobalCorporateFooter(overrideTargetId) {
             <div class="footer-col">
               <h4>Support</h4>
               <ul>
-                <li><a href="https://filings4u.com">Client Portal</a></li>
+                <li><a href="https://portal.filings4u.com/client-dashboard.html">Client Portal</a></li>
                 <li><a href="compliance.html">Compliance Hub</a></li>
                 <li><a href="contact.html">Contact Experts</a></li>
                 <li><a href="annual-reports.html">Annual Reports</a></li>
