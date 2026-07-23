@@ -521,7 +521,7 @@ window.fetchClientSecretAndMountStripeElement = async function(finalAmountDue) {
     };
 
     try {
-        const pipelineEndpointResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout', { 
+        const pipelineEndpointResponse = await fetch('https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook', { 
             method: "POST", 
             headers: { "Content-Type": "application/json" }, 
             body: JSON.stringify(profileTransactionPayload) 
@@ -616,7 +616,7 @@ const profileTransactionPayload = {
 console.log("📡 [Supabase Production Gateway] Dispatching secure transactional payload to live Edge Function..."); 
 try { 
     // Formatted cleanly with split strings to ensure full delivery 
-    const productionCloudUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout'; 
+    const productionCloudUrl = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook'; 
     const pipelineEndpointResponse = await fetch(productionCloudUrl, { 
         method: "POST", 
         headers: { "Content-Type": "application/json" }, 
@@ -1048,7 +1048,7 @@ if (eventType === 'checkout.session.completed' || eventType === 'payment_intent.
 async function resolveStripeClientAuthorizationSecret(grandTotalAmount, trackingNumberToken) { 
     try { 
         console.log("[Stripe Loader] Requesting secure Payment Intent token from live production Edge Function..."); 
-        const productionUrlGateway = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-checkout'; 
+        const productionUrlGateway = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook'; 
         
         const response = await fetch(productionUrlGateway, { 
             method: 'POST', 
@@ -1171,136 +1171,114 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         
         const urlScanner = new URLSearchParams(window.location.search);
 
-// ============================================================================ //
-// 🚀 CASCADING PARAMETERS LOGIC EXTRACTION PASS                                //
-// ============================================================================ //
-// Fallback sequence extracts the service tracking string from parameters or memory blocks
-const companyNameParameter = document.getElementById("schema_orders_company_name")?.value || window.currentOrderCorePayload?.company_name || localStorage.getItem("f4u_company_name") || "";
-const serviceSlug = document.getElementById("schema_orders_service_key")?.value || urlScanner.get('service') || window.currentServiceKey || window.routeActiveServiceKey || window.currentOrderCorePayload?.service_key || "";
-const dynamicLabelTextString = document.getElementById("schema_orders_service_title")?.value || window.currentOrderCorePayload?.service_title || localStorage.getItem("f4u_service_title") || "llc-formation";
-const activePlanKeyString = document.getElementById("schema_orders_plan_tier")?.value || urlScanner.get('plan') || window.currentPlanKey || window.routeActivePlanKey || window.currentOrderCorePayload?.plan_tier || "starter";
-const uniqueTrackingToken = document.getElementById("schema_orders_tracking_number")?.value || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
-const poaSignatureParameter = localStorage.getItem("wizard_field_poa_signature_string") || window.currentOrderCorePayload?.poa_signature_verification_string || "signed";
+ // ============================================================================ // 
+// 🚀 CASCADING PARAMETERS LOGIC EXTRACTION PASS                                // 
+// ============================================================================ // 
+// Fallback sequence extracts the service tracking string from parameters or memory blocks 
+const companyNameParameter = document.getElementById("schema_orders_company_name")?.value || window.currentOrderCorePayload?.company_name || localStorage.getItem("f4u_company_name") || ""; 
+const serviceSlug = document.getElementById("schema_orders_service_key")?.value || urlScanner.get('service') || window.currentServiceKey || window.routeActiveServiceKey || window.currentOrderCorePayload?.service_key || ""; 
+const dynamicLabelTextString = document.getElementById("schema_orders_service_title")?.value || window.currentOrderCorePayload?.service_title || localStorage.getItem("f4u_service_title") || "llc-formation"; 
+const activePlanKeyString = document.getElementById("schema_orders_plan_tier")?.value || urlScanner.get('plan') || window.currentPlanKey || window.routeActivePlanKey || window.currentOrderCorePayload?.plan_tier || "starter"; 
+const uniqueTrackingToken = document.getElementById("schema_orders_tracking_number")?.value || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN"; 
+const poaSignatureParameter = localStorage.getItem("wizard_field_poa_signature_string") || window.currentOrderCorePayload?.poa_signature_verification_string || "signed"; 
 
-// Validation parameter checks
-if (!companyNameParameter || companyNameParameter.trim() === "") throw new Error("Validation aborted: Company Name mapping parameters are completely blank.");
-if (!serviceSlug || serviceSlug.trim() === "") throw new Error("Validation aborted: Service alignment parameter tokens are missing.");
-if (!dynamicLabelTextString || dynamicLabelTextString.trim() === "") throw new Error("Validation aborted: Service title parameter tokens are missing.");
-if (!activePlanKeyString || activePlanKeyString.trim() === "") throw new Error("Validation aborted: Selected plan tier identifier variables are unassigned.");
-if (!uniqueTrackingToken || uniqueTrackingToken.trim() === "" || uniqueTrackingToken === "F4U-PENDING") throw new Error("Validation aborted: Active tracking session token identifier is unassigned.");
+// Validation parameter checks 
+if (!companyNameParameter || companyNameParameter.trim() === "") throw new Error("Validation aborted: Company Name mapping parameters are completely blank."); 
+if (!serviceSlug || serviceSlug.trim() === "") throw new Error("Validation aborted: Service alignment parameter tokens are missing."); 
+if (!dynamicLabelTextString || dynamicLabelTextString.trim() === "") throw new Error("Validation aborted: Service title parameter tokens are missing."); 
+if (!activePlanKeyString || activePlanKeyString.trim() === "") throw new Error("Validation aborted: Selected plan tier identifier variables are unassigned."); 
+if (!uniqueTrackingToken || uniqueTrackingToken.trim() === "" || uniqueTrackingToken === "F4U-PENDING") throw new Error("Validation aborted: Active tracking session token identifier is unassigned."); 
 
-const supabaseClient = window.supabaseInstance || window.supabaseClient;
-let dynamicUserId = "00000000-0000-0000-0000-000000000000";
+const supabaseClient = window.supabaseInstance || window.supabaseClient; 
+let dynamicUserId = "00000000-0000-0000-0000-000000000000"; 
+if (supabaseClient && supabaseClient.auth) { 
+    const activeUser = (await supabaseClient.auth.getUser())?.data?.user; 
+    if (activeUser) dynamicUserId = activeUser.id; 
+} 
 
-if (supabaseClient && supabaseClient.auth) {
-  // First check if they already have an active login session
-  let activeUser = (await supabaseClient.auth.getUser())?.data?.user;
-  
-  // If they are a guest (no active session), create their account right now on click
-  if (!activeUser) {
-    console.log("🔒 [Security Pipeline] Guest checkout detected. Creating account in-line...");
-    
-    // Auto-generate a secure placeholder password for this guest account setup
-    const dynamicPasscodePool = new Uint32Array(2);
-    window.crypto.getRandomValues(dynamicPasscodePool);
-    const fallbackGeneratedPasscode = `F4U_Secure_${dynamicPasscodePool[0]}_x9!`;
-
-    // Cache the passcode globally so your Resend Edge Function can read it out of the metadata later
-    window.wizardGeneratedTemporaryCredentialKey = fallbackGeneratedPasscode;
-
-    // Execute the user sign-up
-    const { data: signUpData, error: registerError } = await supabaseClient.auth.signUp({
-      email: finalEmail.trim(),
-      password: fallbackGeneratedPasscode,
-      options: {
-        redirectTo: `${window.location.origin}/forgot-password.html?token=${encodeURIComponent(uniqueTrackingToken.trim())}`
-      }
-    });
-
-    if (registerError) throw registerError;
-    activeUser = signUpData?.user;
-  }
-
-  // Assign the real, newly created server UUID to your payload variable
-  if (activeUser) dynamicUserId = activeUser.id;
-}
-
-// A. DATA PRESERVATION STEP
-if (supabaseClient) {
-  const validatedDatabaseUpsertPayload = {
-    tracking_number: uniqueTrackingToken.trim(),
-    company_name: companyNameParameter.trim(),
-    service_title: dynamicLabelTextString.trim(),
-    plan_tier: activePlanKeyString.trim().toLowerCase(),
-    total_fee: parseFloat(activeGrandCost.toFixed(2)),
-    status: 'paid',
-    tax_id_status: 'Fulfillment Lane',
-    poa_signed_state: true,
-    user_id: dynamicUserId, // ✅ This now holds the real generated account UUID instead of zeroes
-    email: finalEmail,
-    poa_signature_verification_string: poaSignatureParameter.trim(),
-    stripe_payment_id: window.currentOrderCorePayload?.stripe_payment_id || window.stripePaymentIntentId || "intent_token_pending",
-    collected_payload_metadata: {
-      customer_email: finalEmail,
-      customer_first_name: firstName,
-      customer_last_name: lastName,
-      customer_phone: phone,
-      wiz_generated_passcode: window.wizardGeneratedTemporaryCredentialKey || "A7x9_SecurePass" // Pass to the Resend notification metadata
-    }
-  };
-
-  const { error: dbUpsertError } = await supabaseClient.from('orders').upsert(validatedDatabaseUpsertPayload, { onConflict: 'tracking_number' });
-  if (dbUpsertError) throw new Error(`Pre-Sync Failed: ${dbUpsertError.message}`);
-}
+// A. DATA PRESERVATION STEP 
+if (supabaseClient) { 
+    const validatedDatabaseUpsertPayload = { 
+        tracking_number: uniqueTrackingToken.trim(), 
+        company_name: companyNameParameter.trim(), 
+        service_title: dynamicLabelTextString.trim(), 
+        plan_tier: activePlanKeyString.trim().toLowerCase(), 
+        total_fee: parseFloat(activeGrandCost.toFixed(2)), 
+        status: 'pending', 
+        tax_id_status: 'Fulfillment Lane', 
+        poa_signed_state: true, 
+        user_id: dynamicUserId, 
+        email: finalEmail, 
+        poa_signature_verification_string: poaSignatureParameter.trim(), 
+        stripe_payment_id: window.currentOrderCorePayload?.stripe_payment_id || window.stripePaymentIntentId || "intent_token_pending", 
+        collected_payload_metadata: { 
+            customer_email: finalEmail, 
+            customer_first_name: firstName, 
+            customer_last_name: lastName, 
+            customer_phone: phone 
+        } 
+    }; 
+    const { error: dbUpsertError } = await supabaseClient.from('orders').upsert(validatedDatabaseUpsertPayload, { onConflict: 'tracking_number' }); 
+    if (dbUpsertError) throw new Error(`Pre-Sync Failed: ${dbUpsertError.message}`); 
+} 
 
 // ============================================================================ // 
 // 🚀 PRODUCTION-READY SECURE DATA PRESERVATION & TRANSITION PIPELINE           // 
 // ============================================================================ // 
-try { 
-  const resolvedAmountTotal = parseFloat(window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0); 
-  const basePackageCostOnly = parseFloat(window.wizardCentralState?.getStepData(3, "package_price") || localStorage.getItem("wizard_field_base_package_price") || 99.00); 
-  
-  const successReceiptManifestPayload = { 
-    financials_subtotal_amount: basePackageCostOnly, 
-    financials_grand_total_charge: resolvedAmountTotal, 
-    selected_package_title: `filings4u Processing Fee (${(localStorage.getItem("wizard_plan_tier_key") || "STARTER").toUpperCase()})`, 
-    legal_entity_name: document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "Your Enterprise Inc.", 
-    taxpayer_ein: localStorage.getItem("wizard_field_ein_number") || "Processing Terminal Lane", 
-    office_address_street: localStorage.getItem("wizard_field_business_address") || "Fulfillment Lane Registry", 
-    transaction_hash_id: uniqueTrackingToken 
-  }; 
+try {
+    const resolvedAmountTotal = parseFloat(window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 0); 
+    const basePackageCostOnly = parseFloat(window.wizardCentralState?.getStepData(3, "package_price") || localStorage.getItem("wizard_field_base_package_price") || 99.00); 
 
-  // Resolve true signature string from all potential multi-step wizard keys safely 
-  const finalizedPoaSignatureHash = localStorage.getItem("wizard_field_poa_signature_string") || localStorage.getItem("wizard_field_poa_verification_hash") || localStorage.getItem("f4u_poa_signature") || "Signed Natively"; 
+    const successReceiptManifestPayload = { 
+        financials_subtotal_amount: basePackageCostOnly, 
+        financials_grand_total_charge: resolvedAmountTotal, 
+        selected_package_title: `filings4u Processing Fee (${(localStorage.getItem("wizard_plan_tier_key") || "STARTER").toUpperCase()})`, 
+        legal_entity_name: document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "Your Enterprise Inc.", 
+        taxpayer_ein: localStorage.getItem("wizard_field_ein_number") || "Processing Terminal Lane", 
+        office_address_street: localStorage.getItem("wizard_field_business_address") || "Fulfillment Lane Registry", 
+        transaction_hash_id: uniqueTrackingToken 
+    }; 
 
-  // Compute true USA Standard 12-Hour formatted timestamp using local system parameters 
-  const systemDateOptions = { hour12: true, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }; 
-  const localUsaStandardTimestamp = new Intl.DateTimeFormat('en-US', systemDateOptions).format(new Date()); 
+    // Resolve true signature string from all potential multi-step wizard keys safely 
+    const finalizedPoaSignatureHash = localStorage.getItem("wizard_field_poa_signature_string") || 
+                                       localStorage.getItem("wizard_field_poa_verification_hash") || 
+                                       localStorage.getItem("f4u_poa_signature") || 
+                                       "Signed Natively"; 
 
-  // Build the finalized, hardened payload context dictionary object
-  const validatedDatabaseUpsertPayload = { 
-    tracking_number: uniqueTrackingToken.trim(), 
-    company_name: companyNameParameter.trim(), 
-    service_title: dynamicLabelTextString.trim(), 
-    plan_tier: activePlanKeyString.trim().toLowerCase(), 
-    total_fee: parseFloat(activeGrandCost.toFixed(2)), 
-    status: 'pending', 
-    tax_id_status: 'Fulfillment Lane', 
-    poa_signed_state: true, 
-    user_id: dynamicUserId, // ✅ Uses the real user UUID generated in the extraction pass block
-    email: finalEmail, 
-    poa_signature_verification_string: finalizedPoaSignatureHash.trim(), 
-    stripe_payment_id: window.currentOrderCorePayload?.stripe_payment_id || window.stripePaymentIntentId || "intent_token_pending", 
-    collected_payload_metadata: { 
-      customer_email: finalEmail, 
-      customer_first_name: firstName, 
-      customer_last_name: lastName, 
-      customer_phone: phone, 
-      wiz_generated_passcode: window.wizardGeneratedTemporaryCredentialKey || "A7x9_SecurePass", // Bound to your Resend receipts engine
-      timestamp_capture: localUsaStandardTimestamp 
-    } 
-  };
+    // Compute true USA Standard 12-Hour formatted timestamp using local system parameters 
+    const systemDateOptions = { 
+        hour12: true, 
+        year: 'numeric', 
+        month: 'numeric', 
+        day: 'numeric', 
+        hour: 'numeric', 
+        minute: 'numeric', 
+        second: 'numeric' 
+    }; 
+    const localUsaStandardTimestamp = new Intl.DateTimeFormat('en-US', systemDateOptions).format(new Date()); 
 
+    // Build the finalized, hardened payload context dictionary object
+    const validatedDatabaseUpsertPayload = { 
+        tracking_number: uniqueTrackingToken.trim(), 
+        company_name: companyNameParameter.trim(), 
+        service_title: dynamicLabelTextString.trim(), 
+        plan_tier: activePlanKeyString.trim().toLowerCase(), 
+        total_fee: parseFloat(activeGrandCost.toFixed(2)), 
+        status: 'pending', 
+        tax_id_status: 'Fulfillment Lane', 
+        poa_signed_state: true, 
+        user_id: dynamicUserId, 
+        email: finalEmail, 
+        poa_signature_verification_string: finalizedPoaSignatureHash.trim(), 
+        stripe_payment_id: window.currentOrderCorePayload?.stripe_payment_id || window.stripePaymentIntentId || "intent_token_pending", 
+        collected_payload_metadata: { 
+            customer_email: finalEmail, 
+            customer_first_name: firstName, 
+            customer_last_name: lastName, 
+            customer_phone: phone, 
+            timestamp_capture: localUsaStandardTimestamp 
+        } 
+    }; 
 
     // ============================================================================
     // 🗄️ CRITICAL DATABASE EXECUTION PASS: FORCES THE DATA UPDATES TO HIT SUPABASE
@@ -1412,6 +1390,5 @@ if (window.stripeElementsContainer && window.stripeInstance && window.stripeClie
     if (btnDefaultState) btnDefaultState.style.display = "inline-block"; 
     if (btnLoadingState) btnLoadingState.style.display = "none"; 
 } 
-
 }; 
 })();
