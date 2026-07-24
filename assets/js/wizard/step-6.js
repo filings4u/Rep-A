@@ -1,172 +1,101 @@
 // ============================================================================ //
-// UI_CORE_INJECTOR.JS - PART A: CORE ARCHITECTURE & SKELETON RENDERER (UPDATED) //
+// UI_CORE_INJECTOR.JS - PART B: SUBSYSTEM LISTENERS & TRANSACTION DISPATCHER   //
 // ============================================================================ //
 (function() {
-    "use strict";
+  "use strict";
 
-    const STRIPE_KEY = 'pk_test_51TTy4i0dNjSlvyScX676lZwB34Lby8nEuv0sRorwo6kGYKkTJYiTyPQA6PVjzwUSjB9Kz90LdHtCh2E1BTMMEkTX00HCLPKUkf';
-    
-    window.stripeInstance = window.stripeInstance || null;
-    window.stripeElementsContainer = window.stripeElementsContainer || null;
-    window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
-    
-    let capturedInternalClientSecret = null;
+  /**
+   * Safe submission execution controller. 
+   * Prevents double processing and manages Stripe transaction pipelines.
+   */
+  function attachSubmitButtonController() {
+    const triggerButton = document.getElementById("wizard-payment-dispatch-btn");
+    const runtimeFeedbackNode = document.getElementById("stripe-payment-runtime-errors");
 
-    Object.defineProperty(window, 'stripeClientSecret', {
-        get() { return capturedInternalClientSecret; },
-        set(newSecretToken) {
-            if (!newSecretToken || typeof newSecretToken !== 'string' || !newSecretToken.includes('_secret_')) {
-                return;
-            }
-            capturedInternalClientSecret = newSecretToken;
-            console.log("✅ [Stripe Core Intercept] Async authorization token arrived. Forcing instant iframe paint...");
-            if (typeof window.initializeFlatStripeCheckoutElement === "function") {
-                window.initializeFlatStripeCheckoutElement();
-            }
-        },
-        configurable: true, enumerable: true
-    });
-
-    async function initializeFlatStripeCheckoutElement() {
-        console.log("[Stripe Core] Rendering UI layout skeleton...");
-        const baseContainer = document.getElementById("step-6-injection-placeholder");
-        if (!baseContainer) {
-            console.error("[Stripe Core] Execution halted. Target placeholder not found.");
-            return;
-        }
-
-        if (typeof Stripe === "undefined") {
-            baseContainer.innerHTML = "<p style='color: red; font-weight: 600;'>Payment system offline. Please refresh.</p>";
-            return;
-        }
-
-        if (!window.stripeInstance) {
-            window.stripeInstance = Stripe(STRIPE_KEY);
-        }
-
-        // Pull active parameters - Clean up any undefined objects instantly
-        const total = parseFloat(window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || localStorage.getItem("f4u_running_total") || 0);
-        const compName = window.currentOrderCorePayload?.company_name || localStorage.getItem("wizard_field_company_name") || localStorage.getItem("wizard_company_name") || localStorage.getItem("f4u_company_name") || "";
-        const servKey = window.routeActiveServiceKey || window.currentOrderCorePayload?.service_key || localStorage.getItem("wizard_service_key") || "";
-        const servTitle = window.currentOrderCorePayload?.service_title || localStorage.getItem("wizard_field_selected_package_offering") || "Corporate Asset Filing Package";
-        const planTier = window.routeActivePlanKey || window.currentOrderCorePayload?.plan_tier || localStorage.getItem("wizard_plan_tier_key") || "standard";
-        
-        // Generate a random tracking token if it is missing
-        const tracking = localStorage.getItem("f4u_active_tracking_token") || "F4U-" + Math.random().toString(36).substring(2, 10).toUpperCase();
-        localStorage.setItem("f4u_active_tracking_token", tracking);
-
-        let innerFormMounted = document.getElementById("stripe-payment-element-mount-point");
-        if (isNaN(total) || total <= 0) {
-            if (!innerFormMounted) {
-                baseContainer.innerHTML = `
-                    <div id="stripe-calculation-fallback-spinner" style="padding: 30px; text-align: center; color: #475569; font-weight: 500;">
-                        <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i> Calculating final statement values...
-                    </div>
-                `;
-            }
-            setTimeout(initializeFlatStripeCheckoutElement, 300);
-            return;
-        }
-
-        const dynamicSpinner = document.getElementById("stripe-calculation-fallback-spinner");
-        if (dynamicSpinner) {
-            dynamicSpinner.remove();
-        }
-
-        if (!window.stripeClientSecret) {
-            console.warn("⚠️ [Stripe Core Guard] Standby: Awaiting secret payment token from server...");
-            if (!innerFormMounted) {
-                if (typeof window.assembleCleanUILayoutTree === "function") {
-                    window.assembleCleanUILayoutTree(baseContainer, total, compName, servTitle, planTier, tracking);
-                }
-                const targetPlaceholderNode = document.getElementById("stripe-payment-element-mount-point");
-                if (targetPlaceholderNode) {
-                    targetPlaceholderNode.innerHTML = `
-                        <div style="padding: 24px; text-align: center; color: #64748b; font-weight: 500; font-size: 0.88rem; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 6px;">
-                            <i class="fa-solid fa-lock-keyhole fa-spin" style="margin-right: 8px; color: #0a1f44;"></i> Loading secure payment configurations...
-                        </div>
-                    `;
-                }
-            }
-            return;
-        }
-
-        if (innerFormMounted && window.stripePaymentElementInstance) {
-            const liveTotalDisplay = document.getElementById("payment-gateway-total-display");
-            if (liveTotalDisplay) {
-                liveTotalDisplay.textContent = `$${total.toFixed(2)}`;
-            }
-            return;
-        }
-
-        // Initialize core template metadata payloads - strictly removing "pending" strings
-        window.currentOrderCorePayload = {
-            company_name: compName,
-            service_key: servKey,
-            service_title: servTitle,
-            plan_tier: planTier,
-            total_fee: total,
-            status: "payment_initiated",
-            tracking_number: tracking
-        };
-
-        if (typeof window.assembleCleanUILayoutTree === "function") {
-            window.assembleCleanUILayoutTree(baseContainer, total, compName, servTitle, planTier, tracking);
-        }
-
-        setTimeout(async () => {
-            const mountPoint = document.getElementById("stripe-payment-element-mount-point");
-            if (!mountPoint) {
-                console.error("[Stripe Core] Mount point missing from DOM after UI assembly.");
-                return;
-            }
-            try {
-                if (!window.stripeElementsContainer && window.stripeClientSecret) {
-                    window.stripeElementsContainer = window.stripeInstance.elements({
-                        clientSecret: window.stripeClientSecret,
-                        appearance: {
-                            theme: 'flat',
-                            variables: {
-                                colorPrimary: '#0a1f44',
-                                colorBackground: '#ffffff',
-                                colorText: '#0a1f44',
-                                colorTextPlaceholder: '#94a3b8',
-                                borderRadius: '6px',
-                                spacingGridRow: '16px'
-                            },
-                            rules: {
-                                '.Input': { padding: '14px 16px', fontSize: '15px', border: '1px solid #e2e8f0', boxShadow: 'none' },
-                                '.Input:focus': { borderColor: '#2563eb', boxShadow: '0 0 0 4px rgba(37, 99, 235, 0.1)' },
-                                '.Input--invalid': { borderColor: '#ef4444', boxShadow: '0 0 0 4px rgba(239, 68, 68, 0.15)' },
-                                '.Label': { fontWeight: '700', fontSize: '13px', color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }
-                            }
-                        }
-                    });
-                }
-
-                if (window.stripeElementsContainer && !window.stripePaymentElementInstance) {
-                    window.stripePaymentElementInstance = window.stripeElementsContainer.create('payment', {
-                        layout: { type: 'accordion', defaultCollapsed: false, radios: false, spacedAccordionItems: true }
-                    });
-                    window.stripePaymentElementInstance.mount('#stripe-payment-element-mount-point');
-                    console.log("✅ [Stripe Core] Payment Element successfully mounted.");
-
-                    setTimeout(() => {
-                        if (typeof window.attachSubmitButtonController === "function") {
-                            window.attachSubmitButtonController();
-                        } else {
-                            console.warn("[Stripe Core Error] attachSubmitButtonController module unassigned.");
-                        }
-                    }, 150);
-                }
-            } catch (stripeError) {
-                console.error("[Stripe Core] Elements configuration error:", stripeError);
-            }
-        }, 40);
+    if (!triggerButton) {
+      console.warn("⚠ [Stripe Subsystem] Form submit trigger dispatch node missing from DOM landscape.");
+      return;
     }
 
-    window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
+    // Unbind existing event listeners to block redundant attachment patterns
+    triggerButton.replaceWith(triggerButton.cloneNode(true));
+    const activeTriggerButton = document.getElementById("wizard-payment-dispatch-btn");
+
+    activeTriggerButton.addEventListener("click", async (executionEvent) => {
+      executionEvent.preventDefault();
+
+      if (!window.stripeInstance || !window.stripeElementsContainer) {
+        console.error("❌ [Stripe Subsystem] Core SDK instances missing during click runtime processing.");
+        return;
+      }
+
+      // Check current payment element validation states internally
+      if (runtimeFeedbackNode) {
+        runtimeFeedbackNode.style.display = "none";
+        runtimeFeedbackNode.textContent = "";
+      }
+
+      // Lock interactive layout fields to preserve operational safety
+      activeTriggerButton.disabled = true;
+      const primarySpinnerIcon = activeTriggerButton.querySelector("i");
+      const defaultButtonText = activeTriggerButton.textContent;
+      
+      activeTriggerButton.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="margin-right: 8px;"></i> Securely Processing Authorization...`;
+
+      // Extract client payload details to dynamically route return references
+      const fallbackOrigin = window.location.origin;
+      const targetCustomerEmail = window.currentOrderCorePayload?.client_email || 
+                                  localStorage.getItem("wizard_field_client_email") || 
+                                  localStorage.getItem("f4u_customer_email") || 
+                                  "";
+
+      try {
+        // Execute direct browser-redirect checkout confirmation mapping
+        const { error: operationError } = await window.stripeInstance.confirmPayment({
+          elements: window.stripeElementsContainer,
+          confirmParams: {
+            return_url: `${fallbackOrigin}/client-dashboard.html`,
+            receipt_email: targetCustomerEmail || undefined
+          },
+        });
+
+        // The process halts here unless an explicit local or gateway failure trips
+        if (operationError) {
+          throw operationError;
+        }
+
+      } catch (transactionFault) {
+        console.error("⚠ [Stripe Gateway Failure] Payment authorization aborted:", transactionFault.message);
+
+        // Render response states out to user fields
+        if (runtimeFeedbackNode) {
+          runtimeFeedbackNode.style.display = "block";
+          runtimeFeedbackNode.innerHTML = `
+            <div style="padding: 12px 16px; background: #fef2f2; border: 1px solid #fee2e2; border-radius: 6px; color: #991b1b; font-size: 0.88rem; font-weight: 500; margin-bottom: 16px; text-align: left;">
+              <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> ${transactionFault.message}
+            </div>
+          `;
+        }
+
+        // Restore click element access
+        activeTriggerButton.disabled = false;
+        if (primarySpinnerIcon) {
+          activeTriggerButton.innerHTML = "";
+          activeTriggerButton.appendChild(primarySpinnerIcon);
+          activeTriggerButton.appendChild(document.createTextNode(defaultButtonText));
+        } else {
+          activeTriggerButton.textContent = "Authorize and Complete Order";
+        }
+      }
+    });
+    
+    console.log("✅ [Stripe Core Intercept] Secure Payment button event listener successfully attached.");
+  }
+
+  // Register execution modules to the global layout window scope
+  window.attachSubmitButtonController = attachSubmitButtonController;
 })();
+
 
 // ============================================================================ //
 // UI_CORE_INJECTOR.JS - PART B: VIEW TREE HTML SKELETON ASSEMBLER (UPDATED)   //
