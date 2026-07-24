@@ -279,94 +279,119 @@
 })();
 
 
-// ========================================== //
-// FILE 2: STRIPE_ELEMENTS_MOUNT.JS (UPDATED) //
-// ========================================== //
-(function() {
-    "use strict";
+// ============================================================================ // 
+// FILE 2: STRIPE_ELEMENTS_MOUNT.JS (UPDATED & SECURED) 
+// ============================================================================ // 
+(function() { 
+  "use strict"; 
 
-    function executeStripeMountingPipeline(paymentIntentClientSecret) {
-        // Delay execution slightly so the parent core viewport script completes its rendering pass
-        setTimeout(async function() {
-            const targetNode = document.getElementById('stripe-payment-element-mount-point');
-            if (!targetNode) {
-                console.warn("⚠️ [Stripe Mount Engine]: Element '#stripe-payment-element-mount-point' absent from DOM layout.");
-                return;
-            }
+  function executeStripeMountingPipeline(paymentIntentClientSecret) { 
+    // Delay execution slightly so the parent core viewport script completes its rendering pass 
+    setTimeout(async function() { 
+      const targetNode = document.getElementById('stripe-payment-element-mount-point'); 
+      if (!targetNode) { 
+        console.warn("⚠️ [Stripe Mount Engine]: Element '#stripe-payment-element-mount-point' absent from DOM layout."); 
+        return; 
+      } 
 
-            // CRITICAL PROTECTION GATEWAY: If your modern interceptor has already successfully
-            // mounted the interactive elements, abort this legacy timeout pass instantly to prevent overwrites.
-            if (window.stripePaymentElementInstance && document.querySelector('.StripeElement')) {
-                console.log("[Stripe Mount Engine Guard] Active secure card iframe detected. Terminating redundant mounting pass cleanly.");
-                return;
-            }
+      // CRITICAL PROTECTION GATEWAY: If your modern interceptor has already successfully 
+      // mounted the interactive elements, abort this legacy timeout pass instantly to prevent overwrites. 
+      if (window.stripePaymentElementInstance && document.querySelector('.StripeElement')) { 
+        console.log("[Stripe Mount Engine Guard] Active secure card iframe detected. Terminating redundant mounting pass cleanly."); 
+        return; 
+      } 
 
-            let finalizedSecret = paymentIntentClientSecret;
+      let finalizedSecret = paymentIntentClientSecret; 
 
-            // FIXED fallback mapping checking the exact variable keys where your core saves the live secret token string
-            if (typeof finalizedSecret === 'number' || (typeof finalizedSecret === 'string' && !finalizedSecret.includes('_secret_'))) {
-                console.log("⚠️ [Stripe Mount Engine] Received numeric context instead of secret token string. Executing local cache lookups...");
-                finalizedSecret = window.stripeClientSecret || window.stripeClientSecretPayload || localStorage.getItem("f4u_stripe_client_secret");
-            }
+      // Fallback context validation mapping checking the exact variable keys where your core saves the live secret token string
+      if (!finalizedSecret || typeof finalizedSecret !== 'string' || !finalizedSecret.includes('_secret_')) { 
+        console.log("⚠️ [Stripe Mount Engine] Provided token missing valid secret format. Checking global runtime memory cache..."); 
+        finalizedSecret = window.stripeClientSecret || window.stripeClientSecretPayload || localStorage.getItem("f4u_stripe_client_secret"); 
+      } 
 
-            // Ensure the secret is present and valid
-            if (!finalizedSecret || typeof finalizedSecret !== 'string' || !finalizedSecret.includes('_secret_')) {
-                console.error("✕ [Stripe Mount Engine] Initialization aborted: Missing or invalid clientSecret from backend. Received:", paymentIntentClientSecret);
-                // Safety Check: Only throw error text if the canvas container is completely empty to protect active checkouts
-                if (!document.querySelector('.StripeElement')) {
-                    targetNode.innerHTML = "<p style='color: #ef4444; font-weight: 500; font-size:14px;'>Session initialization failed. Please try again.</p>";
-                }
-                return;
-            }
+      // Final security guard verification before executing the factory initialize instance
+      if (!finalizedSecret || typeof finalizedSecret !== 'string' || !finalizedSecret.includes('_secret_')) { 
+        console.error("✕ [Stripe Mount Engine] Initialization aborted: Missing or invalid clientSecret from backend. Received:", paymentIntentClientSecret); 
+        
+        // Safety Check: Only throw error text if the canvas container is completely empty to protect active checkouts 
+        if (!document.querySelector('.StripeElement')) { 
+          targetNode.innerHTML = "<p style='color: #ef4444; font-weight: 500; font-size:14px;'>Session initialization failed. Please try again.</p>"; 
+        } 
+        return; 
+      } 
 
-            try {
-                if (window.stripePaymentElementInstance) {
-                    window.stripePaymentElementInstance.destroy();
-                    window.stripePaymentElementInstance = null;
-                }
+      try { 
+        // Safely tear down existing instance to prevent DOM attachment leaks
+        if (window.stripePaymentElementInstance) { 
+          window.stripePaymentElementInstance.destroy(); 
+          window.stripePaymentElementInstance = null; 
+        } 
 
-                // INITIALIZE CORRECTLY: Pass the verified secret string directly to Stripe Elements
-                window.stripeElementsContainer = window.stripeInstance.elements({
-                    clientSecret: finalizedSecret,
-                    appearance: {
-                        theme: 'flat',
-                        variables: {
-                            colorPrimary: '#0a1f44',
-                            colorBackground: '#ffffff',
-                            colorText: '#0a1f44',
-                            colorTextPlaceholder: '#94a3b8',
-                            borderRadius: '6px',
-                            spacingGridRow: '16px'
-                            
-                        },
-                        rules: {
-                            '.Input': { padding: '14px 16px', fontSize: '15px', border: '1px solid #e2e8f0', boxShadow: 'none' },
-                            '.Input:focus': { borderColor: '#2563eb', boxShadow: '0 0 0 4px rgba(37, 99, 235, 0.1)' },
-                            '.Input--invalid': { borderColor: '#ef4444', boxShadow: '0 0 0 4px rgba(239, 68, 68, 0.15)' },
-                            '.Label': { fontWeight: '700', fontSize: '13px', color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }
-                        }
-                    }
-                });
+        // INITIALIZE CORRECTLY: Pass the verified Payment Intent secret string directly to Stripe Elements 
+        window.stripeElementsContainer = window.stripeInstance.elements({ 
+          clientSecret: finalizedSecret, 
+          appearance: { 
+            theme: 'flat', 
+            variables: { 
+              colorPrimary: '#0a1f44', 
+              colorBackground: '#ffffff', 
+              colorText: '#0a1f44', 
+              colorTextPlaceholder: '#94a3b8', 
+              borderRadius: '6px', 
+              spacingGridRow: '16px' 
+            }, 
+            rules: { 
+              '.Input': { 
+                padding: '14px 16px', 
+                fontSize: '15px', 
+                border: '1px solid #e2e8f0', 
+                boxShadow: 'none' 
+              }, 
+              '.Input:focus': { 
+                borderColor: '#2563eb', 
+                boxShadow: '0 0 0 4px rgba(37, 99, 235, 0.1)' 
+              }, 
+              '.Input--invalid': { 
+                borderColor: '#ef4444', 
+                boxShadow: '0 0 0 4px rgba(239, 68, 68, 0.15)' 
+              }, 
+              '.Label': { 
+                fontWeight: '700', 
+                fontSize: '13px', 
+                color: '#64748b', 
+                textTransform: 'uppercase', 
+                marginBottom: '6px' 
+              } 
+            } 
+          } 
+        }); 
 
-                window.stripePaymentElementInstance = window.stripeElementsContainer.create('payment', {
-                    layout: { type: 'accordion', defaultCollapsed: false, radios: false, spacedAccordionItems: true }
-                });
+        // Generate the combined unified payment element frame layout (Cards, Wallets, Bank Transfers as configured in Stripe Dashboard)
+        window.stripePaymentElementInstance = window.stripeElementsContainer.create('payment', { 
+          layout: { 
+            type: 'accordion', 
+            defaultCollapsed: false, 
+            radios: false, 
+            spacedAccordionItems: true 
+          } 
+        }); 
 
-                window.stripePaymentElementInstance.on("loaderror", function(errEvent) {
-                    console.error("✕ [Stripe Framework Load Error Intercepted]:", errEvent.error);
-                });
+        window.stripePaymentElementInstance.on("loaderror", function(errEvent) { 
+          console.error("✕ [Stripe Framework Load Error Intercepted]:", errEvent.error); 
+        }); 
 
-                window.stripePaymentElementInstance.mount('#stripe-payment-element-mount-point');
-                console.log("✅ [Stripe Engine] Secured card iframe mounted successfully.");
+        window.stripePaymentElementInstance.mount('#stripe-payment-element-mount-point'); 
+        console.log("✅ [Stripe Engine] Secured card iframe mounted successfully."); 
 
-            } catch (innerScopeException) {
-                console.error("✕ [Stripe Mounting Fatal Exception Context]", innerScopeException);
-            }
-        }, 200);
-    }
+      } catch (innerScopeException) { 
+        console.error("✕ [Stripe Mounting Fatal Exception Context]", innerScopeException); 
+      } 
+    }, 200); 
+  } 
 
-    window.executeStripeMountingPipeline = executeStripeMountingPipeline;
+  window.executeStripeMountingPipeline = executeStripeMountingPipeline; 
 })();
+
 
 
 // ============================================================================ //
@@ -873,90 +898,97 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
 
 // ============================================================================ // 
-// step-6.js - UNIFIED TRANSACTION AUTHORIZATION PIPELINE ENGINE (PART 1 - SECURED) // 
+// step-6.js - UNIFIED TRANSACTION AUTHORIZATION PIPELINE ENGINE (PART 1 - SECURED) 
 // ============================================================================ // 
-(function() {
-    "use strict";
+(function() { 
+  "use strict"; 
 
-    async function resolveStripeClientAuthorizationSecret(grandTotalAmount, trackingNumberToken) {
-        try {
-            console.log("[Stripe Loader] Requesting secure Payment Intent token from live production Edge Function...");
-            
-            const productionUrlGateway = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook';
-            
-            const response = await fetch(productionUrlGateway, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    amountValue: grandTotalAmount, 
-                    trackingNumber: trackingNumberToken,
-                    action_intent: "initialize_payment_intent"
-                })
-            });
+  async function resolveStripeClientAuthorizationSecret(grandTotalAmount, trackingNumberToken) { 
+    try { 
+      console.log("[Stripe Loader] Requesting secure Payment Intent token from live production Edge Function..."); 
+      const productionUrlGateway = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook'; 
+      
+      const response = await fetch(productionUrlGateway, { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ 
+          amountValue: grandTotalAmount, 
+          trackingNumber: trackingNumberToken, 
+          action_intent: "initialize_payment_intent" 
+        }) 
+      }); 
 
-            if (!response.ok) {
-                const errorPayload = await response.json().catch(() => ({}));
-                throw new Error(errorPayload.error || "Edge Function rejected credentials generation lookups.");
-            }
+      if (!response.ok) { 
+        const errorPayload = await response.json().catch(() => ({})); 
+        throw new Error(errorPayload.error || "Edge Function rejected credentials generation lookups."); 
+      } 
 
-            const data = await response.json();
-            const rawSecretToken = data.clientSecret || data.client_secret;
+      const data = await response.json(); 
+      const rawSecretToken = data.clientSecret || data.client_secret; 
 
-            if (!rawSecretToken) {
-                throw new Error("Handshake structural failure: Secret authorization token omitted by cloud gateway.");
-            }
+      if (!rawSecretToken) { 
+        throw new Error("Handshake structural failure: Secret authorization token omitted by cloud gateway."); 
+      } 
 
-            // 🚀 FIXED: Allow modern Checkout Session tokens (cs_test_) to pass through completely intact
-            let verifiedCleanSecret = rawSecretToken.trim();
-            if (verifiedCleanSecret.includes('"')) {
-                verifiedCleanSecret = verifiedCleanSecret.replace(/"/g, "");
-            }
+      let verifiedCleanSecret = rawSecretToken.trim(); 
+      if (verifiedCleanSecret.includes('"')) { 
+        verifiedCleanSecret = verifiedCleanSecret.replace(/"/g, ""); 
+      } 
 
-            // Save the exact, unmodified session secret token to the window scope
-            window.stripeClientSecret = verifiedCleanSecret;
-            console.log("✅ [Secret Engine] Intact Checkout Session token configured safely.");
-            
-            if ((data.paymentIntentId || data.id) && window.currentOrderCorePayload) {
-                window.currentOrderCorePayload.stripe_payment_id = data.paymentIntentId || data.id;
-            }
-            
-            return window.stripeClientSecret;
-        } catch (err) {
-            console.error("✕ [Stripe Loader Critical Endpoint Failure]:", err.message || err);
-            throw err;
-        }
-    }
+      // 🛑 CRITICAL INTEGRATION CHECK: Reject checkout session prefixes before they hit Elements
+      if (verifiedCleanSecret.startsWith("cs_")) {
+        console.error("✕ [Token Validation Guard] Server returned a Checkout Session token (cs_...) instead of a Payment Intent client secret (pi_...).");
+        throw new Error("Integration Mismatch: Backend is generating Checkout Sessions instead of Payment Intents.");
+      }
 
-    window.initializeStep6LifecycleAndMount = async function(baseContainer, total, compName, servTitle, planTier, tracking) {
-        if (typeof window.assembleCleanUILayoutTree === "function") {
-            window.assembleCleanUILayoutTree(baseContainer, total, compName, servTitle, planTier, tracking);
-        }
+      // Save the exact, unmodified Payment Intent client secret token to the window scope 
+      window.stripeClientSecret = verifiedCleanSecret; 
+      console.log("✅ [Secret Engine] Intact Payment Intent client secret configured safely."); 
 
-        try {
-            const secretToken = await resolveStripeClientAuthorizationSecret(total, tracking);
+      if ((data.paymentIntentId || data.id) && window.currentOrderCorePayload) { 
+        window.currentOrderCorePayload.stripe_payment_id = data.paymentIntentId || data.id; 
+      } 
 
-            // FORCED DOM RE-PAINT DELAY MACRO
-            setTimeout(() => {
-                const structuralMountPointNode = document.getElementById("stripe-payment-element-mount-point");
-                if (!structuralMountPointNode) {
-                    console.error("✕ [Stripe Pipeline Engine Fatal Error]: Mount point container node is missing after UI skeleton render phase.");
-                    return;
-                }
+      return window.stripeClientSecret; 
 
-                if (typeof window.executeStripeMountingPipeline === "function") {
-                    window.executeStripeMountingPipeline(secretToken);
-                } else {
-                    console.error("✕ [Stripe Pipeline Engine Fatal Error]: window.executeStripeMountingPipeline is not defined in memory context.");
-                }
-            }, 50);
-        } catch (error) {
-            const errorBanner = document.getElementById("step6-error-banner-target");
-            if (errorBanner) {
-                errorBanner.style.display = "block";
-                errorBanner.innerHTML = `⚠️ <strong>Initialization Failure:</strong> Unable to process financial connection tokens.`;
-            }
-        }
-    };
+    } catch (err) { 
+      console.error("✕ [Stripe Loader Critical Endpoint Failure]:", err.message || err); 
+      throw err; 
+    } 
+  } 
+
+  window.initializeStep6LifecycleAndMount = async function(baseContainer, total, compName, servTitle, planTier, tracking) { 
+    if (typeof window.assembleCleanUILayoutTree === "function") { 
+      window.assembleCleanUILayoutTree(baseContainer, total, compName, servTitle, planTier, tracking); 
+    } 
+
+    try { 
+      const secretToken = await resolveStripeClientAuthorizationSecret(total, tracking); 
+      
+      // FORCED DOM RE-PAINT DELAY MACRO 
+      setTimeout(() => { 
+        const structuralMountPointNode = document.getElementById("stripe-payment-element-mount-point"); 
+        if (!structuralMountPointNode) { 
+          console.error("✕ [Stripe Pipeline Engine Fatal Error]: Mount point container node is missing after UI skeleton render phase."); 
+          return; 
+        } 
+        
+        if (typeof window.executeStripeMountingPipeline === "function") { 
+          window.executeStripeMountingPipeline(secretToken); 
+        } else { 
+          console.error("✕ [Stripe Pipeline Engine Fatal Error]: window.executeStripeMountingPipeline is not defined in memory context."); 
+        } 
+      }, 50); 
+
+    } catch (error) { 
+      const errorBanner = document.getElementById("step6-error-banner-target"); 
+      if (errorBanner) { 
+        errorBanner.style.display = "block"; 
+        errorBanner.innerHTML = `⚠️ <strong>Initialization Failure:</strong> ${error.message || "Unable to process financial connection tokens."}`; 
+      } 
+    } 
+  };
+
 
 // ============================================================================ //
 // LOCATION: assets/js/step-6.js (MODULAR SUBMISSION PIPELINE CORES - COMPLETED) //
