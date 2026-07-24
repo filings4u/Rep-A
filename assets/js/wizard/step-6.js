@@ -724,7 +724,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
 
 // ============================================================================ //
-// step-6.js - SECTION 5: DATA PRESERVATION & STRIPE INTENT TRANSMISSION        //
+// step-6.js - SECTION 5: DATA PRESERVATION & STRIPE INTENT TRANSMISSION (PART 1)//
 // ============================================================================ //
 window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue, submitButtonNode) {
     "use strict";
@@ -757,7 +757,6 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         }
 
         console.log("💳 [Stripe Runtime] Validating Element layout entries via .submit()...");
-
         const { error: submitValidationError } = await window.stripeElementsContainer.submit();
         if (submitValidationError) {
             if (errorBanner) {
@@ -792,9 +791,9 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             total_fee: activeGrandCost,
             email: finalEmail,
             tracking_number: uniqueTrackingToken,
-            status: "initiated",
-            poa_signed_state: false,
-            poa_signature_verification_string: "",
+            status: "Paid", // Updated to Paid for immediate inline checkout settlement
+            poa_signed_state: true,
+            poa_signature_verification_string: localStorage.getItem("wizard_field_poa_signature_string") || "",
             stripe_payment_id: window.stripeClientSecret ? window.stripeClientSecret.split('_secret_')[0] : "f4u_checkout_token",
             user_id: activeUserSessionId,
             collected_payload_metadata: {
@@ -830,46 +829,46 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             }
         });
 
-        if (StripeConfirmationResult && StripeConfirmationResult.error) { 
-            console.warn("[Stripe Core API] Authentication flow halted or failed.", StripeConfirmationResult.error.message); 
-            if (errorBanner) { 
-                errorBanner.innerText = StripeConfirmationResult.error.message; 
-                errorBanner.style.display = "block"; 
-            } 
-            if (submitBtn) { 
-                submitBtn.disabled = false; 
-                submitBtn.style.opacity = "1"; 
-                submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>'; 
-            } 
-        } else { 
-            console.log("✅ [Transaction Complete] Stripe payment verified in-line. Transitioning to step 7 receipt views..."); 
-            localStorage.setItem("f4u_payment_status_complete", "true"); 
-            
-            if (typeof window.switchWizardActiveViewLayout === "function") { 
-                window.switchWizardActiveViewLayout(7); 
-            } else if (typeof window.executeStepLifecyclePipeline === "function") { 
-                window.executeStepLifecyclePipeline(7); 
-            } else { 
-                document.querySelectorAll(".wizard-panel").forEach(p => p.style.display = "none"); 
-                const step7PanelNode = document.getElementById("step-panel-7") || document.getElementById("step-7"); 
-                if (step7PanelNode) { 
-                    step7PanelNode.style.setProperty("display", "block", "important"); 
-                    step7PanelNode.classList.add("active"); 
-                } 
-            } 
-        } 
-    } catch (globalPipelineError) { 
-        console.error("🚨 [Pipeline Intercept Failure]:", globalPipelineError.message); 
-        if (errorBanner) { 
-            errorBanner.innerText = globalPipelineError.message; 
-            errorBanner.style.display = "block"; 
-        } 
-        if (submitBtn) { 
-            submitBtn.disabled = false; 
-            submitBtn.style.opacity = "1"; 
-            submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>'; 
-        } 
-    } 
+        if (StripeConfirmationResult && StripeConfirmationResult.error) {
+            console.warn("[Stripe Core API] Authentication flow halted or failed.", StripeConfirmationResult.error.message);
+            if (errorBanner) {
+                errorBanner.innerText = StripeConfirmationResult.error.message;
+                errorBanner.style.display = "block";
+            }
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = "1";
+                submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
+            }
+        } else {
+            console.log("✅ [Transaction Complete] Stripe payment verified in-line. Transitioning to step 7 receipt views...");
+            localStorage.setItem("f4u_payment_status_complete", "true");
+
+            if (typeof window.switchWizardActiveViewLayout === "function") {
+                window.switchWizardActiveViewLayout(7);
+            } else if (typeof window.executeStepLifecyclePipeline === "function") {
+                window.executeStepLifecyclePipeline(7);
+            } else {
+                document.querySelectorAll(".wizard-panel").forEach(p => p.style.display = "none");
+                const step7PanelNode = document.getElementById("step-panel-7") || document.getElementById("step-7");
+                if (step7PanelNode) {
+                    step7PanelNode.style.setProperty("display", "block", "important");
+                    step7PanelNode.classList.add("active");
+                }
+            }
+        }
+    } catch (globalPipelineError) {
+        console.error("🚨 [Pipeline Intercept Failure]:", globalPipelineError.message);
+        if (errorBanner) {
+            errorBanner.innerText = globalPipelineError.message;
+            errorBanner.style.display = "block";
+        }
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = "1";
+            submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
+        }
+    }
 };
 
 
