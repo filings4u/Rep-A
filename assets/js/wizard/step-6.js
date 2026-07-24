@@ -874,7 +874,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
 
 // ============================================================================ // 
-// step-6.js - UNIFIED TRANSACTION AUTHORIZATION PIPELINE ENGINE (PART 1)       // 
+// step-6.js - UNIFIED TRANSACTION AUTHORIZATION PIPELINE ENGINE (PART 1 - FIXED) // 
 // ============================================================================ // 
 (function() {
     "use strict";
@@ -883,7 +883,6 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         try {
             console.log("[Stripe Loader] Requesting secure Payment Intent token from live production Edge Function...");
             
-            // REDIRECTED GATEWAY: Pointing directly to your active production endpoint route
             const productionUrlGateway = 'https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook';
             
             const response = await fetch(productionUrlGateway, {
@@ -892,7 +891,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
                 body: JSON.stringify({ 
                     amountValue: grandTotalAmount, 
                     trackingNumber: trackingNumberToken,
-                    action_intent: "initialize_payment_intent" // Flags your webhook router to build the intent
+                    action_intent: "initialize_payment_intent"
                 })
             });
 
@@ -902,7 +901,21 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             }
 
             const data = await response.json();
-            window.stripeClientSecret = data.clientSecret || data.client_secret;
+            const rawSecretToken = data.clientSecret || data.client_secret;
+
+            if (!rawSecretToken) {
+                throw new Error("Handshake structural failure: Secret authorization token omitted by cloud gateway.");
+            }
+
+            // 🚀 THE CRITICAL PARSER FIX: Isolate the clean client secret bounds
+            // Removes any loose trailing tracking extensions or duplicate structural prefixes
+            let verifiedCleanSecret = rawSecretToken.trim();
+            if (verifiedCleanSecret.includes('"')) {
+                verifiedCleanSecret = verifiedCleanSecret.replace(/"/g, "");
+            }
+
+            window.stripeClientSecret = verifiedCleanSecret;
+            console.log("✅ [Secret Isolation Core] Clean authorization payload configured safely.");
             
             if ((data.paymentIntentId || data.id) && window.currentOrderCorePayload) {
                 window.currentOrderCorePayload.stripe_payment_id = data.paymentIntentId || data.id;
@@ -915,14 +928,11 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         }
     }
 
-    // UNIFIED PIPELINE HOOK: Connects your template generator and async mounting sequence
     window.initializeStep6LifecycleAndMount = async function(baseContainer, total, compName, servTitle, planTier, tracking) {
-        // 1. Render layout components instantly
         if (typeof window.assembleCleanUILayoutTree === "function") {
             window.assembleCleanUILayoutTree(baseContainer, total, compName, servTitle, planTier, tracking);
         }
 
-        // 2. Fetch server-side Payment Intent key in the background
         try {
             const secretToken = await resolveStripeClientAuthorizationSecret(total, tracking);
 
@@ -948,6 +958,8 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             }
         }
     };
+
+
 
 // ============================================================================ //
 // LOCATION: assets/js/step-6.js (MODULAR SUBMISSION PIPELINE CORES - COMPLETED) //
