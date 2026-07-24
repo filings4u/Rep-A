@@ -108,7 +108,7 @@
 })();
 
 // ============================================================================ //
-// 📁 stripe-core.js - SECURE TRANSACTIONAL HANDSHAKE ENVELOPE MODULE (UPDATED) //
+// 📁 stripe-core.js - SECURE TRANSACTIONAL HANDSHAKE ENVELOPE MODULE (PATCHED) //
 // ============================================================================ //
 (function() {
     "use strict";
@@ -138,7 +138,6 @@
         var planTier = (window.currentOrderCorePayload && window.currentOrderCorePayload.plan_tier) || localStorage.getItem("f4u_plan_tier") || "standard";
         var signatureString = (window.currentOrderCorePayload && window.currentOrderCorePayload.poa_signature_verification_string) || localStorage.getItem("f4u_poa_signature") || "";
         
-        // 🚀 USER ID SECURITY SYNC: Resolve to an absolute null layer context instead of zero placeholders to save foreign keys
         var activeUserId = null;
         try {
             var rawAuthToken = localStorage.getItem("supabase.auth.token");
@@ -161,7 +160,6 @@
         }
         localStorage.setItem("f4u_company_name", companyName.trim());
 
-        // Map true state identifiers, cleanly deleting dummy "pending" text tracks
         var schemaDatabasePayload = {
             company_name: companyName.trim(),
             service_title: serviceTitle.trim(),
@@ -171,7 +169,7 @@
             poa_signed_state: signatureString.trim() !== "",
             poa_signature_verification_string: signatureString.trim(),
             tracking_number: uniqueTrackingToken.trim(),
-            user_id: activeUserId, // Pass a genuine UUID hash or absolute NULL cleanly
+            user_id: activeUserId,
             email: clientEmail.trim().toLowerCase(),
             action_intent: "initialize_payment_intent",
             collected_payload_metadata: {
@@ -182,7 +180,7 @@
 
         console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
         
-        var responseStream = await fetch("https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook", {
+        var responseStream = await fetch("https://supabase.co", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(schemaDatabasePayload)
@@ -200,10 +198,17 @@
             throw new Error("Payload mapping error: clientSecret key is missing from Supabase response.");
         }
 
-        // 🚀 FIX: Prevent key manipulation. Store the modern Checkout Session secret completely intact.
-        let pristineSecret = receivedSecretToken.trim();
-        if (pristineSecret.includes('"')) {
-            pristineSecret = pristineSecret.replace(/"/g, "");
+        // 🚀 THE ULTIMATE SANITIZATION FIX:
+        // Force-cleans the string token value to strip out duplicate _secret_ blocks
+        // and trailing custom character fragments returned from the backend data tables.
+        let pristineSecret = receivedSecretToken.trim().replace(/"/g, "");
+        if (pristineSecret.includes('_secret_')) {
+            var tokenSegmentsArray = pristineSecret.split('_secret_');
+            if (tokenSegmentsArray.length >= 2) {
+                // Extracts exactly: "cs_test_abc" + "_secret_" + "123"
+                // Cuts off any trailing custom string appended after the second segment completely
+                pristineSecret = tokenSegmentsArray[0] + '_secret_' + tokenSegmentsArray[1].split('&')[0].split('?')[0];
+            }
         }
 
         window.stripeClientSecret = pristineSecret;
@@ -214,16 +219,17 @@
         }
         window.currentOrderCorePayload.stripe_payment_id = window.stripePaymentIntentId;
 
-        // Sync the onboarding local storage blocks cleanly without appending string tails
+        // Sync the onboarding state variables cleanly using the fully purified key token
         var activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
         activeOnboardingState.stripeClientSecret = pristineSecret;
         localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
         
-        console.log("✅ [Handshake Envelope] Token cached cleanly.");
+        console.log("✅ [Handshake Envelope] Pristine Checkout Session token cached cleanly: ", pristineSecret);
     }
 
     window.executeStabaseCheckoutTransactionHandshake = processCheckoutHandshake;
 })();
+
 
 
 // ============================================================================ //
