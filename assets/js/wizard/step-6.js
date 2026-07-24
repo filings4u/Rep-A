@@ -4,7 +4,7 @@
 (function() {
     "use strict";
 
-    const STRIPE_KEY = 'sk_test_51TTy4i0dNjSlvyScnYt8CJb8rpIgxofPG24TvW0EP9hJG2IXmkieYu1S7yD9210IGUTfhii6oQCPj12MEO1SMWOv00SOaJR80e';
+    const STRIPE_KEY = 'rk_test_51TTy4i0dNjSlvySck4km1AYLNPSG8KhNumJfrsv2nJFHXEHHqpoa2mqmnlpzQZrDLveZvrRcWL1mG4Yjg8fg4xwh00Y8YMC6nN';
     
     window.stripeInstance = window.stripeInstance || null;
     window.stripeElementsContainer = window.stripeElementsContainer || null;
