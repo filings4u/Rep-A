@@ -180,7 +180,7 @@
 
         console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
         
-        var responseStream = await fetch("https://supabase.co", {
+        var responseStream = await fetch("https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(schemaDatabasePayload)
