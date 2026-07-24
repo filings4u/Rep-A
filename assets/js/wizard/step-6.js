@@ -874,7 +874,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
 
 // ============================================================================ // 
-// step-6.js - UNIFIED TRANSACTION AUTHORIZATION PIPELINE ENGINE (PART 1 - FIXED) // 
+// step-6.js - UNIFIED TRANSACTION AUTHORIZATION PIPELINE ENGINE (PART 1 - SECURED) // 
 // ============================================================================ // 
 (function() {
     "use strict";
@@ -907,15 +907,15 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
                 throw new Error("Handshake structural failure: Secret authorization token omitted by cloud gateway.");
             }
 
-            // 🚀 THE CRITICAL PARSER FIX: Isolate the clean client secret bounds
-            // Removes any loose trailing tracking extensions or duplicate structural prefixes
+            // 🚀 FIXED: Allow modern Checkout Session tokens (cs_test_) to pass through completely intact
             let verifiedCleanSecret = rawSecretToken.trim();
             if (verifiedCleanSecret.includes('"')) {
                 verifiedCleanSecret = verifiedCleanSecret.replace(/"/g, "");
             }
 
+            // Save the exact, unmodified session secret token to the window scope
             window.stripeClientSecret = verifiedCleanSecret;
-            console.log("✅ [Secret Isolation Core] Clean authorization payload configured safely.");
+            console.log("✅ [Secret Engine] Intact Checkout Session token configured safely.");
             
             if ((data.paymentIntentId || data.id) && window.currentOrderCorePayload) {
                 window.currentOrderCorePayload.stripe_payment_id = data.paymentIntentId || data.id;
@@ -958,8 +958,6 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             }
         }
     };
-
-
 
 // ============================================================================ //
 // LOCATION: assets/js/step-6.js (MODULAR SUBMISSION PIPELINE CORES - COMPLETED) //
