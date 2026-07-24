@@ -108,7 +108,7 @@
 })();
 
 // ============================================================================ //
-// 📁 stripe-core.js - SECURE TRANSACTIONAL HANDSHAKE ENVELOPE MODULE (PATCHED) //
+// 📁 stripe-core.js - SECURE TRANSACTIONAL HANDSHAKE ENVELOPE MODULE (HARDENED)//
 // ============================================================================ //
 (function() {
     "use strict";
@@ -198,17 +198,20 @@
             throw new Error("Payload mapping error: clientSecret key is missing from Supabase response.");
         }
 
-        // 🚀 THE ULTIMATE SANITIZATION FIX:
-        // Force-cleans the string token value to strip out duplicate _secret_ blocks
-        // and trailing custom character fragments returned from the backend data tables.
-        let pristineSecret = receivedSecretToken.trim().replace(/"/g, "");
-        if (pristineSecret.includes('_secret_')) {
-            var tokenSegmentsArray = pristineSecret.split('_secret_');
-            if (tokenSegmentsArray.length >= 2) {
-                // Extracts exactly: "cs_test_abc" + "_secret_" + "123"
-                // Cuts off any trailing custom string appended after the second segment completely
-                pristineSecret = tokenSegmentsArray[0] + '_secret_' + tokenSegmentsArray[1].split('&')[0].split('?')[0];
-            }
+        // 🚀 NATIVE REGEX SANITIZER:
+        // Matches the standard checkout session token signature completely, strips trailing characters
+        // Extracts exactly: cs_test_..._secret_... without trailing custom code injections
+        var secretRegexPattern = /(cs_(?:test|live)_[a-zA-Z0-9]+_secret_[a-zA-Z0-9]+)/;
+        var matchedSecretSegments = String(receivedSecretToken).match(secretRegexPattern);
+        
+        let pristineSecret;
+        if (matchedSecretSegments && matchedSecretSegments[1]) {
+            pristineSecret = matchedSecretSegments[1];
+        } else {
+            // Safe robust absolute split parser fallback if regex structural matching slips
+            var tokenSegmentsArray = String(receivedSecretToken).trim().replace(/"/g, "").split('_secret_');
+            var cleanKeyPayloadHash = tokenSegmentsArray[1] ? tokenSegmentsArray[1].split(/[^a-zA-Z0-9]/)[0] : "";
+            pristineSecret = tokenSegmentsArray[0] + '_secret_' + cleanKeyPayloadHash;
         }
 
         window.stripeClientSecret = pristineSecret;
@@ -219,7 +222,6 @@
         }
         window.currentOrderCorePayload.stripe_payment_id = window.stripePaymentIntentId;
 
-        // Sync the onboarding state variables cleanly using the fully purified key token
         var activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
         activeOnboardingState.stripeClientSecret = pristineSecret;
         localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
@@ -229,6 +231,7 @@
 
     window.executeStabaseCheckoutTransactionHandshake = processCheckoutHandshake;
 })();
+
 
 
 
