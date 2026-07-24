@@ -111,125 +111,125 @@
 // 📁 stripe-core.js - SECURE TRANSACTIONAL HANDSHAKE ENVELOPE MODULE (HARDENED)//
 // ============================================================================ //
 (function() {
-    "use strict";
+  "use strict";
 
-    /**
-     * Isolated Handshake Method: Processes checkout parameters, communicates with the
-     * Supabase Edge cloud gateway, extracts and maps token attributes.
-     */
-    async function processCheckoutHandshake() {
-        var targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 194.00;
-        var uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
-        
-        var dynamicCompanySelector = [
-            "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", "#bl_applicant_name", 
-            "#cage_legal_name", "#cgs_company_name", "#clia_lab_name", "#corp_proposed_name", "#dba_proposed_name", 
-            "#dbe_legal_name", "#dot_con_legal_name", "#prm_legal_name", "#dqf_carrier_name", "#duns_legal_name", 
-            "#ein_applicant_name", "#fed_tax_legal_name", "#fq_proposed_name", "#fran_tax_legal_name", "#haz_legal_name", 
-            "#hut_legal_name", "#ifta_legal_name", "#ifta_rep_legal_name", "#llc_desired_name", "#rein_original_name", 
-            "#mcs_legal_name", "#mbe_legal_name", "#nea_legal_name", "#np_proposed_name", "#oa_company_name", 
-            "#pr_legal_name", "#ra_client_name", "#st_legal_name", "#scac_legal_name", "#sllc_proposed_name", 
-            "#sm_proposed_name", "#sp_proposed_name", "#ta_legal_name", "#ins_legal_name", "#wbe_legal_name"
-        ].join(",");
-        
-        var companyNameInput = document.querySelector(dynamicCompanySelector);
-        var companyName = (window.currentOrderCorePayload && window.currentOrderCorePayload.company_name) || localStorage.getItem("f4u_company_name") || (companyNameInput ? companyNameInput.value.trim() : "");
-        var serviceTitle = (window.currentOrderCorePayload && window.currentOrderCorePayload.service_title) || localStorage.getItem("f4u_service_title") || window.currentSelectedServiceTitle || "Corporate Filing Package";
-        var planTier = (window.currentOrderCorePayload && window.currentOrderCorePayload.plan_tier) || localStorage.getItem("f4u_plan_tier") || "standard";
-        var signatureString = (window.currentOrderCorePayload && window.currentOrderCorePayload.poa_signature_verification_string) || localStorage.getItem("f4u_poa_signature") || "";
-        
-        var activeUserId = null;
-        try {
-            var rawAuthToken = localStorage.getItem("supabase.auth.token");
-            if (rawAuthToken) {
-                var parsedTokenObj = JSON.parse(rawAuthToken);
-                activeUserId = parsedTokenObj?.currentSession?.user?.id || parsedTokenObj?.user?.id || null;
-            }
-        } catch (e) {
-            console.warn("[Stripe Handshake] Session lookup skipped.");
-        }
+  async function processCheckoutHandshake() {
+    var targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 194.00;
+    var uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
+    
+    var dynamicCompanySelector = [
+      "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", 
+      "#bl_applicant_name", "#cage_legal_name", "#cgs_company_name", "#clia_lab_name", 
+      "#corp_proposed_name", "#dba_proposed_name", "#dbe_legal_name", "#dot_con_legal_name", 
+      "#prm_legal_name", "#dqf_carrier_name", "#duns_legal_name", "#ein_applicant_name", 
+      "#fed_tax_legal_name", "#fq_proposed_name", "#fran_tax_legal_name", "#haz_legal_name", 
+      "#hut_legal_name", "#ifta_legal_name", "#ifta_rep_legal_name", "#llc_desired_name", 
+      "#rein_original_name", "#mcs_legal_name", "#mbe_legal_name", "#nea_legal_name", 
+      "#np_proposed_name", "#oa_company_name", "#pr_legal_name", "#ra_client_name", 
+      "#st_legal_name", "#scac_legal_name", "#sllc_proposed_name", "#sm_proposed_name", 
+      "#sp_proposed_name", "#ta_legal_name", "#ins_legal_name", "#wbe_legal_name"
+    ].join(",");
+    
+    var companyNameInput = document.querySelector(dynamicCompanySelector);
+    var companyName = (window.currentOrderCorePayload && window.currentOrderCorePayload.company_name) || localStorage.getItem("f4u_company_name") || (companyNameInput ? companyNameInput.value.trim() : "");
+    var serviceTitle = (window.currentOrderCorePayload && window.currentOrderCorePayload.service_title) || localStorage.getItem("f4u_service_title") || window.currentSelectedServiceTitle || "Corporate Filing Package";
+    var planTier = (window.currentOrderCorePayload && window.currentOrderCorePayload.plan_tier) || localStorage.getItem("f4u_plan_tier") || "standard";
+    var signatureString = (window.currentOrderCorePayload && window.currentOrderCorePayload.poa_signature_verification_string) || localStorage.getItem("f4u_poa_signature") || "";
+    var activeUserId = null;
 
-        var emailInput = document.querySelector('input[type="email"]') || document.getElementById("portal_user_email_input") || document.getElementById("customer_email");
-        var clientEmail = emailInput ? emailInput.value.trim() : "";
-        if (!clientEmail) {
-            clientEmail = localStorage.getItem("f4u_customer_email") || "";
-        }
-
-        if (!companyName || companyName.trim() === "") {
-            throw new Error("Required field 'company_name' is missing. Please review Step 2 form entries.");
-        }
-        localStorage.setItem("f4u_company_name", companyName.trim());
-
-        var schemaDatabasePayload = {
-            company_name: companyName.trim(),
-            service_title: serviceTitle.trim(),
-            plan_tier: planTier.trim().toLowerCase(),
-            total_fee: targetAmount,
-            status: "initiated",
-            poa_signed_state: signatureString.trim() !== "",
-            poa_signature_verification_string: signatureString.trim(),
-            tracking_number: uniqueTrackingToken.trim(),
-            user_id: activeUserId,
-            email: clientEmail.trim().toLowerCase(),
-            action_intent: "initialize_payment_intent",
-            collected_payload_metadata: {
-                wizard_step_checkpoint: 6,
-                timestamp_capture: new Date().toISOString()
-            }
-        };
-
-        console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
-        
-        var responseStream = await fetch("https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(schemaDatabasePayload)
-        });
-
-        if (!responseStream.ok) {
-            var serverFailureMessage = await responseStream.text();
-            throw new Error("Supabase Edge Function Rejected Request: " + serverFailureMessage);
-        }
-
-        var transactionTokenPayload = await responseStream.json();
-        var receivedSecretToken = transactionTokenPayload.clientSecret || transactionTokenPayload.client_secret;
-
-        if (!receivedSecretToken) {
-            throw new Error("Payload mapping error: clientSecret key is missing from Supabase response.");
-        }
-
-        // 🚀 NATIVE REGEX SANITIZER:
-        // Matches the standard checkout session token signature completely, strips trailing characters
-        // Extracts exactly: cs_test_..._secret_... without trailing custom code injections
-        var secretRegexPattern = /(cs_(?:test|live)_[a-zA-Z0-9]+_secret_[a-zA-Z0-9]+)/;
-        var matchedSecretSegments = String(receivedSecretToken).match(secretRegexPattern);
-        
-        let pristineSecret;
-        if (matchedSecretSegments && matchedSecretSegments[1]) {
-            pristineSecret = matchedSecretSegments[1];
-        } else {
-            // Safe robust absolute split parser fallback if regex structural matching slips
-            var tokenSegmentsArray = String(receivedSecretToken).trim().replace(/"/g, "").split('_secret_');
-            var cleanKeyPayloadHash = tokenSegmentsArray[1] ? tokenSegmentsArray[1].split(/[^a-zA-Z0-9]/)[0] : "";
-            pristineSecret = tokenSegmentsArray[0] + '_secret_' + cleanKeyPayloadHash;
-        }
-
-        window.stripeClientSecret = pristineSecret;
-        window.stripePaymentIntentId = transactionTokenPayload.paymentIntentId || transactionTokenPayload.id;
-
-        if (!window.currentOrderCorePayload) {
-            window.currentOrderCorePayload = {};
-        }
-        window.currentOrderCorePayload.stripe_payment_id = window.stripePaymentIntentId;
-
-        var activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
-        activeOnboardingState.stripeClientSecret = pristineSecret;
-        localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
-        
-        console.log("✅ [Handshake Envelope] Pristine Checkout Session token cached cleanly: ", pristineSecret);
+    try {
+      var rawAuthToken = localStorage.getItem("supabase.auth.token");
+      if (rawAuthToken) {
+        var parsedTokenObj = JSON.parse(rawAuthToken);
+        activeUserId = parsedTokenObj?.currentSession?.user?.id || parsedTokenObj?.user?.id || null;
+      }
+    } catch (e) {
+      console.warn("[Stripe Handshake] Session lookup skipped.");
     }
 
-    window.executeStabaseCheckoutTransactionHandshake = processCheckoutHandshake;
+    var emailInput = document.querySelector('input[type="email"]') || document.getElementById("portal_user_email_input") || document.getElementById("customer_email");
+    var clientEmail = emailInput ? emailInput.value.trim() : "";
+    if (!clientEmail) {
+      clientEmail = localStorage.getItem("f4u_customer_email") || "";
+    }
+
+    if (!companyName || companyName.trim() === "") {
+      throw new Error("Required field 'company_name' is missing. Please review Step 2 form entries.");
+    }
+
+    localStorage.setItem("f4u_company_name", companyName.trim());
+
+    var schemaDatabasePayload = {
+      company_name: companyName.trim(),
+      service_title: serviceTitle.trim(),
+      plan_tier: planTier.trim().toLowerCase(),
+      total_fee: targetAmount,
+      status: "initiated",
+      poa_signed_state: signatureString.trim() !== "",
+      poa_signature_verification_string: signatureString.trim(),
+      tracking_number: uniqueTrackingToken.trim(),
+      user_id: activeUserId,
+      email: clientEmail.trim().toLowerCase(),
+      action_intent: "initialize_payment_intent",
+      collected_payload_metadata: {
+        wizard_step_checkpoint: 6,
+        timestamp_capture: new Date().toISOString()
+      }
+    };
+
+    console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
+    
+    var responseStream = await fetch("https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(schemaDatabasePayload)
+    });
+
+    if (!responseStream.ok) {
+      var serverFailureMessage = await responseStream.text();
+      throw new Error("Supabase Edge Function Rejected Request: " + serverFailureMessage);
+    }
+
+    var transactionTokenPayload = await responseStream.json();
+    var receivedSecretToken = transactionTokenPayload.clientSecret || transactionTokenPayload.client_secret;
+
+    if (!receivedSecretToken) {
+      throw new Error("Payload mapping error: clientSecret key is missing from Supabase response.");
+    }
+
+    // 🚀 UNIFIED DYNAMIC REGEX SANITIZER:
+    // Completely captures both standard PaymentIntents (pi_) and CheckoutSessions (cs_) securely 
+    // Strips trailing parameters or whitespaces up to the strict token string bounds.
+    var hybridSecretPattern = /((?:cs|pi)_(?:test|live)_[a-zA-Z0-9]+_secret_[a-zA-Z0-9]+)/;
+    var matchedSecretSegments = String(receivedSecretToken).match(hybridSecretPattern);
+    
+    let pristineSecret;
+    if (matchedSecretSegments && matchedSecretSegments[1]) {
+      pristineSecret = matchedSecretSegments[1];
+    } else {
+      // Clean fallback if any trailing characters leak through atypical runtime buffers
+      var tokenSegmentsArray = String(receivedSecretToken).trim().replace(/"/g, "").split('_secret_');
+      var cleanKeyPayloadHash = tokenSegmentsArray[1] ? tokenSegmentsArray[1].split(/[^a-zA-Z0-9]/)[0] : "";
+      pristineSecret = tokenSegmentsArray[0] + '_secret_' + cleanKeyPayloadHash;
+    }
+
+    // Assigning this updates the custom window observer in UI_CORE_INJECTOR.JS instantly
+    window.stripeClientSecret = pristineSecret;
+    window.stripePaymentIntentId = transactionTokenPayload.paymentIntentId || transactionTokenPayload.id;
+
+    if (!window.currentOrderCorePayload) {
+      window.currentOrderCorePayload = {};
+    }
+    window.currentOrderCorePayload.stripe_payment_id = window.stripePaymentIntentId;
+
+    var activeOnboardingState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
+    activeOnboardingState.stripeClientSecret = pristineSecret;
+    localStorage.setItem("f4u_wizard_onboarding_state", JSON.stringify(activeOnboardingState));
+
+    console.log("✅ [Handshake Envelope] Pristine Checkout token cached cleanly:", window.stripeClientSecret);
+  }
+
+  window.executeStabaseCheckoutTransactionHandshake = processCheckoutHandshake;
 })();
 
 
