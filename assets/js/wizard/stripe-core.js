@@ -263,40 +263,73 @@
 })();
 
 // ============================================================================ //
-// 📁 stripe-core.js - LIFECYCLE FLOW INTERCEPTOR GATE (FINAL TIMING HARDENED) //
+// 📁 stripe-core.js - LIFECYCLE FLOW INTERCEPTOR GATE (POLLING & TIMING RE-HARDENED) //
 // ============================================================================ //
 (function() {
-    "use strict";
+  "use strict";
 
-    function handleStripeLifecycleHandoff() {
-        const stripePanelContainer = document.getElementById("step-panel-6");
-        if (!stripePanelContainer) return;
+  function handleStripeLifecycleHandoff() {
+    const stripePanelContainer = document.getElementById("step-panel-6");
+    if (!stripePanelContainer) return;
 
-        stripePanelContainer.style.setProperty("display", "block", "important");
-        stripePanelContainer.style.setProperty("opacity", "1", "important");
-        stripePanelContainer.style.setProperty("visibility", "visible", "important");
-        stripePanelContainer.classList.add("active");
+    stripePanelContainer.style.setProperty("display", "block", "important");
+    stripePanelContainer.style.setProperty("opacity", "1", "important");
+    stripePanelContainer.style.setProperty("visibility", "visible", "important");
+    stripePanelContainer.classList.add("active");
+
+    // Flush layout styles immediately to calculate bounding boxes
+    stripePanelContainer.offsetHeight;
+
+    // DOUBLE-ANIMATION FRAME DEFERMENT
+    // Forces the runtime thread to yield control back to the browser layout engine.
+    // This guarantees wizard-master-core.js finishes applying '[Viewport Engine]'
+    // mobile layout skinning parameters before Stripe attempts to paint its iframe.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         
-        // Flush layout styles immediately
-        stripePanelContainer.offsetHeight;
+        // Check if the runtime engine is ready for mounting immediately
+        if (typeof window.initializeFlatStripeCheckoutElement === "function" && window.stripeClientSecret) {
+          console.log("✅ [Stripe Core Shield] Viewport skinning stable. Mounting secure checkout iframe...");
+          window.initializeFlatStripeCheckoutElement();
+          return;
+        }
 
-        // DOUBLE-ANIMATION FRAME DEFERMENT
-        // Forces the runtime thread to yield control back to the browser layout engine.
-        // This guarantees wizard-master-core.js finishes applying '[Viewport Engine]'
-        // mobile layout skinning parameters before Stripe attempts to paint its iframe.
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                if (typeof window.initializeFlatStripeCheckoutElement === "function") {
-                    console.log("✅ [Stripe Core Shield] Viewport skinning stable. Mounting secure checkout iframe...");
-                    window.initializeFlatStripeCheckoutElement();
-                } else {
-                    console.warn("[Stripe Lifecycle Interlock Error] initializeFlatStripeCheckoutElement from step-6.js missing.");
-                }
-            });
-        });
-    }
+        // If the function or async secret isn't available yet, start an adaptive poll loop
+        console.warn("⏳ [Stripe Lifecycle Gate] Core script compilation or auth token pending. Initiating asynchronous polling interlock...");
+        
+        let adaptivePollingAttempts = 0;
+        const maximumPollingTimeout = 50; // 50 attempts * 80ms interval = 4-second maximum fallback window
 
-    window.executeStripeLifecycleHandoffGate = handleStripeLifecycleHandoff;
+        const interlockPollerInterval = setInterval(() => {
+          adaptivePollingAttempts++;
+
+          if (typeof window.initializeFlatStripeCheckoutElement === "function" && window.stripeClientSecret) {
+            clearInterval(interlockPollerInterval);
+            console.log(`✅ [Stripe Core Shield] Interlock resolved after ${adaptivePollingAttempts * 80}ms. Initializing paint sequence...`);
+            window.initializeFlatStripeCheckoutElement();
+          } else if (adaptivePollingAttempts >= maximumPollingTimeout) {
+            clearInterval(interlockPollerInterval);
+            console.error("❌ [Stripe Lifecycle Interlock Timeout Error] initializeFlatStripeCheckoutElement initialization timed out awaiting network streams.");
+            
+            // Render a clear, descriptive warning inside your mount placeholder for user visibility
+            const fallbackUINode = document.getElementById("step-6-injection-placeholder");
+            if (fallbackUINode) {
+              fallbackUINode.innerHTML = `
+                <div style="padding: 20px; text-align: center; border: 1px solid #fee2e2; background: #fef2f2; border-radius: 6px; color: #991b1b; font-family: sans-serif;">
+                  <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                  <p style="margin: 4px 0; font-weight: 600;">Secure Handshake Interrupted</p>
+                  <p style="margin: 0; font-size: 0.85rem; color: #7f1d1d;">The checkout configuration did not respond in time. Please check your connection and refresh.</p>
+                </div>
+              `;
+            }
+          }
+        }, 80); // Poll every 80ms to provide snappy UI rendering updates
+
+      });
+    });
+  }
+
+  window.executeStripeLifecycleHandoffGate = handleStripeLifecycleHandoff;
 })();
 
 // ============================================================================ //
