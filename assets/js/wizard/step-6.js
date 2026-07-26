@@ -1149,17 +1149,19 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     return false;
   }
 
-  try {
-    const finalEmail = emailInput.value.trim().toLowerCase();
-    const firstName = firstNameInput.value.trim();
-    const lastName = lastNameInput.value.trim();
-    const phone = phoneInput.value.trim();
+    try {
+        // 🔄 RESOLVER MAP: Checks both naming variations to guarantee values aren't left empty
+        const finalEmail = (document.getElementById("portal_user_email_input") || document.getElementById("portal_user_email"))?.value.trim().toLowerCase() || "";
+        const firstName = (document.getElementById("portal_user_first_name") || document.getElementById("first_name"))?.value.trim() || localStorage.getItem("wizard_first_name") || "F4U Customer";
+        const lastName = (document.getElementById("portal_user_last_name") || document.getElementById("last_name"))?.value.trim() || localStorage.getItem("wizard_last_name") || "User";
+        const phone = (document.getElementById("portal_user_phone") || document.getElementById("phone"))?.value.trim() || localStorage.getItem("wizard_phone_number") || "000-000-0000";
 
-    // 🎯 RE-SYNC DYNAMIC STORAGE STATES FOR STEP 7 PERSISTENCE
-    localStorage.setItem("wizard_first_name", firstName);
-    localStorage.setItem("wizard_last_name", lastName);
-    localStorage.setItem("wizard_email_address", finalEmail);
-    localStorage.setItem("wizard_phone_number", phone);
+        // 🎯 RE-SYNC DYNAMIC STORAGE STATES FOR STEP 7 PERSISTENCE 
+        localStorage.setItem("wizard_first_name", firstName); 
+        localStorage.setItem("wizard_last_name", lastName); 
+        localStorage.setItem("wizard_email_address", finalEmail); 
+        localStorage.setItem("wizard_phone_number", phone);
+
 
     const rawTextTotal = document.getElementById("payment-gateway-total-display")?.textContent || "";
     const parsedDOMCost = parseFloat(rawTextTotal.replace(/[^0-9.]/g, ""));
