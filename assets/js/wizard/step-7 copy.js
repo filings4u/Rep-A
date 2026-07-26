@@ -396,7 +396,6 @@ container.insertAdjacentHTML('beforeend', `
       text-align: center !important;
     }
   }
-    
 </style>
 
   </div>
