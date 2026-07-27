@@ -1,40 +1,48 @@
 // ============================================================================ //
-// 📁 stripe-core.js - REGISTRY INITIALIZATION LAYER (UPDATED)                  //
+// // 📁 stripe-core.js - REGISTRY INITIALIZATION LAYER (UPDATED) //
 // ============================================================================ //
 (function() {
-    "use strict";
+ "use strict";
+ const urlParamsMatrix = new URLSearchParams(window.location.search);
+ // Isolate and control Stripe context parameters globally
+ window.stripePublicKey = window.stripePublicKey || urlParamsMatrix.get('pk') || null;
+ window.stripeClientSecret = window.stripeClientSecret || null;
+ window.stripeElementsContainer = window.stripeElementsContainer || null;
+ window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
+ // Safe session storage tracking framework for Stripe metadata parsing
+ try {
+ const storedState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
+ let cachedSecret = storedState.stripeClientSecret || storedState.clientSecret || null;
+ if (cachedSecret && typeof cachedSecret === 'string') {
+ cachedSecret = cachedSecret.trim().replace(/"/g, "");
+ // 🚀 THE CRITICAL PARSER PATATION LAYER:
+ // Wipes out corrupted trailing string loops inherited from old sandbox sessions
+ if (cachedSecret.startsWith('cs_test_') || cachedSecret.startsWith('cs_live_')) {
+ const parts = cachedSecret.split('_secret_');
+ if (parts.length > 2) {
+ cachedSecret = `${parts[0]}_secret_${parts[1]}`;
+ }
+ }
+ window.stripeClientSecret = cachedSecret;
+ console.log("✅ [Stripe Matrix Core] Cleaned authorization state restored from session storage caches.");
+ }
+ 
+ // 🎯 THE PIPELINE HANDSHAKE FIX: Ensure profile metrics match separate schema variables if nested inside state objects
+ if (storedState.first_name || storedState.wizard_first_name) {
+ localStorage.setItem("wizard_first_name", storedState.first_name || storedState.wizard_first_name);
+ }
+ if (storedState.last_name || storedState.wizard_last_name) {
+ localStorage.setItem("wizard_last_name", storedState.last_name || storedState.wizard_last_name);
+ }
+ if (storedState.phone_number || storedState.wizard_phone_number) {
+ localStorage.setItem("wizard_phone_number", storedState.phone_number || storedState.wizard_phone_number);
+ }
 
-    const urlParamsMatrix = new URLSearchParams(window.location.search);
-
-    // Isolate and control Stripe context parameters globally
-    window.stripePublicKey = window.stripePublicKey || urlParamsMatrix.get('pk') || null;
-    window.stripeClientSecret = window.stripeClientSecret || null;
-    window.stripeElementsContainer = window.stripeElementsContainer || null;
-    window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
-
-    // Safe session storage tracking framework for Stripe metadata parsing
-    try {
-        const storedState = JSON.parse(localStorage.getItem("f4u_wizard_onboarding_state") || "{}");
-        let cachedSecret = storedState.stripeClientSecret || storedState.clientSecret || null;
-
-        if (cachedSecret && typeof cachedSecret === 'string') {
-            cachedSecret = cachedSecret.trim().replace(/"/g, "");
-            
-            // 🚀 THE CRITICAL PARSER PATATION LAYER: 
-            // Wipes out corrupted trailing string loops inherited from old sandbox sessions
-            if (cachedSecret.startsWith('cs_test_') || cachedSecret.startsWith('cs_live_')) {
-                const parts = cachedSecret.split('_secret_');
-                if (parts.length > 2) {
-                    cachedSecret = `${parts[0]}_secret_${parts[1]}`;
-                }
-            }
-            window.stripeClientSecret = cachedSecret;
-            console.log("✅ [Stripe Matrix Core] Cleaned authorization state restored from session storage caches.");
-        }
-    } catch (paymentCacheErr) {
-        console.warn("[Stripe Matrix Core] Local storage state reading restricted:", paymentCacheErr);
-    }
+ } catch (paymentCacheErr) {
+ console.warn("[Stripe Matrix Core] Local storage state reading restricted:", paymentCacheErr);
+ }
 })();
+
 
 // ============================================================================ //
 // 📁 stripe-core.js - SESSION RECOVERY INTERCEPTOR MODULE                      //
@@ -119,7 +127,7 @@
      */
     async function processCheckoutHandshake() {
         var targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 194.00;
-        var uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
+        var uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || "";
         
         var dynamicCompanySelector = [
             "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", "#bl_applicant_name", 
