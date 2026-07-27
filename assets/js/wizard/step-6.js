@@ -1128,157 +1128,225 @@ window.initializeStep6LifecycleAndMount = async function(baseContainer, total, c
 })();
 
 
+// ============================================================================ //
+// LOCATION: assets/js/step-6.js (PART 1 OF 2 - CORES INITIALIZATION)           //
+// ============================================================================ //
 (function() {
-  "use strict";
+"use strict";
 
-  window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) {
-    if (event && typeof event.preventDefault === "function") event.preventDefault();
+window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) {
+  if (event && typeof event.preventDefault === "function") event.preventDefault();
+  
+  const submitBtn = document.getElementById("wizardSubmitBtnElement");
+  const errorBanner = document.getElementById("step6-error-banner-target");
+  const emailInput = document.getElementById("portal_user_email_input");
+  const firstNameInput = document.getElementById("portal_user_first_name");
+  const lastNameInput = document.getElementById("portal_user_last_name");
+  const phoneInput = document.getElementById("portal_user_phone");
+  const btnDefaultState = document.getElementById("wizardSubmitBtnDefaultState");
+  const btnLoadingState = document.getElementById("wizardSubmitBtnLoadingState");
+  
+  const fieldsArray = [emailInput, firstNameInput, lastNameInput, phoneInput];
+  let validationHasFailed = false;
 
-    const submitBtn = document.getElementById("wizardSubmitBtnElement");
-    const errorBanner = document.getElementById("step6-error-banner-target");
-    
-    // Capture the strict input nodes
-    const emailInput = document.getElementById("portal_user_email_input") || document.getElementById("portal_user_email");
-    const firstNameInput = document.getElementById("portal_user_first_name") || document.getElementById("first_name");
-    const lastNameInput = document.getElementById("portal_user_last_name") || document.getElementById("last_name");
-    const phoneInput = document.getElementById("portal_user_phone") || document.getElementById("phone");
-    const companyInput = document.getElementById("schema_orders_company_name");
+  fieldsArray.forEach(input => {
+    if (input) input.classList.remove("field-error-shake", "wizard-input-field-error-state");
+  });
 
-    const btnDefaultState = document.getElementById("wizardSubmitBtnDefaultState");
-    const btnLoadingState = document.getElementById("wizardSubmitBtnLoadingState");
-
-    // Clear previous visual validation classes
-    const fieldsArray = [emailInput, firstNameInput, lastNameInput, phoneInput, companyInput];
-    fieldsArray.forEach(input => {
-      if (input) input.classList.remove("field-error-shake", "wizard-input-field-error-state");
-    });
-
-    // 🎯 STRICT RULE 1: Direct frontend blocking layout for empty inputs
-    let validationHasFailed = false;
-    fieldsArray.forEach(input => {
-      if (input && input.value.trim() === "") {
-        validationHasFailed = true;
-        input.classList.add("field-error-shake", "wizard-input-field-error-state");
-      }
-    });
-
-    if (validationHasFailed) {
-      if (errorBanner) {
-        errorBanner.style.display = "block";
-        errorBanner.innerHTML = `⚠️ <strong>Missing Information:</strong> Please complete all required fields with your real information before processing payment.`;
-      }
-      const firstEmpty = fieldsArray.find(i => i && i.value.trim() === "");
-      if (firstEmpty) firstEmpty.focus();
-      return false;
+  fieldsArray.forEach(input => {
+    if (input && input.value.trim() === "") {
+      validationHasFailed = true;
+      input.classList.add("field-error-shake");
     }
+  });
 
-    try {
-      const finalEmail = emailInput.value.trim().toLowerCase();
-      const firstName = firstNameInput.value.trim();
-      const lastName = lastNameInput.value.trim();
-      const phone = phoneInput.value.trim();
-      const companyName = companyInput.value.trim();
+  if (validationHasFailed) {
+    const firstEmpty = fieldsArray.find(i => i && i.value.trim() === "");
+    if (firstEmpty) firstEmpty.focus();
+    return false;
+  }
 
-      // Retrieve pricing validation metrics
+  try {
+      // 🔄 RESOLVER MAP: Scrape data out of DOM structures smoothly
+      const finalEmail = (document.getElementById("portal_user_email_input") || document.getElementById("portal_user_email"))?.value.trim().toLowerCase() || "";
+      const firstName = (document.getElementById("portal_user_first_name") || document.getElementById("first_name"))?.value.trim() || localStorage.getItem("wizard_first_name") || "";
+      const lastName = (document.getElementById("portal_user_last_name") || document.getElementById("last_name"))?.value.trim() || localStorage.getItem("wizard_last_name") || "";
+      const phone = (document.getElementById("portal_user_phone") || document.getElementById("phone"))?.value.trim() || localStorage.getItem("wizard_phone_number") || "";
+      
+      // Cache states right away
+      localStorage.setItem("wizard_first_name", firstName); 
+      localStorage.setItem("wizard_last_name", lastName); 
+      localStorage.setItem("wizard_email_address", finalEmail); 
+      localStorage.setItem("wizard_phone_number", phone);
+
       const rawTextTotal = document.getElementById("payment-gateway-total-display")?.textContent || "";
       const parsedDOMCost = parseFloat(rawTextTotal.replace(/[^0-9.]/g, ""));
       const activeGrandCost = !isNaN(parsedDOMCost) ? parsedDOMCost : 0;
 
       if (activeGrandCost <= 0) {
-        throw new Error("Payment total has not been properly calculated.");
-      }
-
-      // Check for a clean, unique tracking token parameter
-      const currentUrlParams = new URLSearchParams(window.location.search);
-      let uniqueTrackingToken = currentUrlParams.get("token") || localStorage.getItem("f4u_active_tracking_token") || "";
-
-      // 🎯 STRICT RULE 2: No more fallback names like F4U-UNKNOWN
-      if (!uniqueTrackingToken || uniqueTrackingToken.trim() === "" || uniqueTrackingToken.includes("UNKNOWN")) {
-        throw new Error("An active system tracking token (F4U Number) is required to process this order.");
+        throw new Error("Unable to authorize funds: Payment calculation total is uninitialized.");
       }
 
       if (submitBtn) submitBtn.disabled = true;
       if (btnDefaultState) btnDefaultState.style.display = "none";
       if (btnLoadingState) btnLoadingState.style.display = "inline-block";
 
-      const selectedPlan = localStorage.getItem("wizard_selected_plan") || "Corporate Filing Package";
+      const companyNameParameter = document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "Not Specified";
+      
+// 🌟 THE OVERWRITE FIX: Clear old state completely if previous purchase completed
+const currentUrlParams = new URLSearchParams(window.location.search);
+const isPastPurchaseComplete = localStorage.getItem("f4u_payment_status_complete") === "true";
+
+if (isPastPurchaseComplete) {
+    // Clear out stale identifiers from local tracking storage
+    localStorage.removeItem("f4u_active_tracking_token");
+    localStorage.removeItem("f4u_payment_status_complete");
+    // Remove token from current URL object so it isn't parsed
+    currentUrlParams.delete("token"); 
+}
+
+// Generate token: Never trust the URL parameter if the past purchase was marked complete
+let uniqueTrackingToken = document.getElementById("schema_orders_tracking_number")?.value;
+
+if (!uniqueTrackingToken) {
+    if (!isPastPurchaseComplete) {
+        uniqueTrackingToken = currentUrlParams.get("token") || localStorage.getItem("f4u_active_tracking_token") || "";
+    } else {
+        uniqueTrackingToken = "";
+    }
+}
+
+// Fallback generator if no valid token remains in context
+if (!uniqueTrackingToken) {
+    uniqueTrackingToken = "F4U-" + Math.random().toString(36).substring(2, 11).toUpperCase();
+    localStorage.setItem("f4u_payment_status_complete", "false");
+}
+
+
+      const selectedPlan = localStorage.getItem("wizard_selected_plan") || localStorage.getItem("wizard_field_selected_package_offering") || "Corporate Filing Package";
       const upsellItemsArray = JSON.parse(localStorage.getItem("wizard_selected_upsells")) || [];
       const flatUpsellsString = upsellItemsArray.join(", ") || "None Selected";
-      const poaSignatureParameter = localStorage.getItem("wizard_poa_signature") || "Digitally Executed";
+      const poaSignatureParameter = localStorage.getItem("wizard_poa_signature") || localStorage.getItem("wizard_field_poa_signature_string") || "Digitally Executed";
 
-      const supabaseClient = window.supabaseInstance || window.supabaseClient;
-
-      if (supabaseClient) {
-        const validatedDatabaseInsertPayload = {
-          tracking_number: uniqueTrackingToken.trim(),
-          first_name: firstName,
-          last_name: lastName,
-          email_address: finalEmail,
-          phone_number: phone,
-          company_name: companyName,
-          selected_plan: selectedPlan.trim(),
-          selected_upsells: flatUpsellsString.trim(),
-          total_paid_amount: parseFloat(activeGrandCost.toFixed(2)),
-          poa_signature: poaSignatureParameter.trim(),
-          poa_execution_stamp: new Date().toISOString(),
-          stripe_payment_id: window.stripeClientSecret ? window.stripeClientSecret.split('_secret_')[0] : "f4u_checkout_token",
-          account_created: false
-        };
-
-        console.log("📡 [Supabase Operations] Writing pure customer data payload...", validatedDatabaseInsertPayload);
-
-        const { error: dbUpsertError } = await supabaseClient
-          .from('orders')
-          .upsert(validatedDatabaseInsertPayload, { onConflict: 'tracking_number' });
-
-        if (dbUpsertError) throw new Error(`Database record failed: ${dbUpsertError.message}`);
+      if (!companyNameParameter || companyNameParameter === "Not Specified") {
+        throw new Error("Validation aborted: Company Name mapping parameters are completely blank.");
       }
+      if (!uniqueTrackingToken) {
+        throw new Error("Validation aborted: Active tracking token is unassigned.");
+      }
+// ============================================================================ //
+// LOCATION: assets/js/step-6.js (PART 2 OF 2 - INJECTION ENGINE)               //
+// ============================================================================ //
+// ============================================================================ //
+// LOCATION: assets/js/step-6.js (PART 2 OF 2 - INJECTION ENGINE)               //
+// ============================================================================ //
+const supabaseClient = window.supabaseInstance || window.supabaseClient;
+let dynamicUserId = null;
 
-      // Process Stripe Payment confirmation engine channels safely
-      if (window.stripeElementsContainer && window.stripeInstance && window.stripeClientSecret) {
-        const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
-        if (stripeSubmitError) throw stripeSubmitError;
+if (supabaseClient && supabaseClient.auth) {
+    const activeUser = (await supabaseClient.auth.getUser())?.data?.user;
+    if (activeUser) dynamicUserId = activeUser.id;
+}
 
-        const { error: confirmError } = await window.stripeInstance.confirmPayment({
-          elements: window.stripeElementsContainer,
-          clientSecret: window.stripeClientSecret,
-          redirect: "if_required",
-          confirmParams: {
+// A. DATA PRESERVATION STEP (DIRECT STRICT INSERTION)
+if (supabaseClient) {
+    // Construct the explicit payload to safely insert your clean F4U tracking token
+    const validatedDatabaseInsertPayload = {
+        tracking_number: uniqueTrackingToken.trim(), // Inserts your exact F4U token directly
+        first_name: firstName,
+        last_name: lastName,
+        email_address: finalEmail,
+        phone_number: phone,
+        company_name: companyNameParameter.trim(),
+        selected_plan: selectedPlan.trim(),
+        selected_upsells: flatUpsellsString.trim(),
+        total_paid_amount: parseFloat(activeGrandCost.toFixed(2)),
+        poa_signature: poaSignatureParameter.trim(),
+        poa_execution_stamp: new Date().toISOString(),
+        stripe_payment_id: window.stripeClientSecret ? window.stripeClientSecret.split('_secret_')[0] : "f4u_checkout_token",
+        account_created: false,
+        created_at: new Date().toISOString()
+    };
+
+    console.log("📡 [Supabase Operations Logs] Inserting fresh transaction entry...", validatedDatabaseInsertPayload);
+    
+    // Strict insert prevents overwriting historical client purchases
+    const { error: dbInsertError } = await supabaseClient
+        .from('orders')
+        .insert(validatedDatabaseInsertPayload); // Payload reference fixed here
+
+    if (dbInsertError) {
+        throw new Error(`Pre-Sync Database Write Failed: ${dbInsertError.message}`);
+    }
+}
+
+// B. SECURE STRIPE PROCESSING
+if (window.stripeElementsContainer && window.stripeInstance && window.stripeClientSecret) {
+    console.log("[Stripe Controller] Submitting payment components schema context...");
+    const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
+    if (stripeSubmitError) throw stripeSubmitError;
+
+    console.log("[Stripe Controller] Launching native billing confirmation challenge over network...");
+    const { error: confirmError } = await window.stripeInstance.confirmPayment({
+        elements: window.stripeElementsContainer,
+        clientSecret: window.stripeClientSecret,
+        redirect: "if_required",
+        confirmParams: {
             return_url: `${window.location.origin}${window.location.pathname}?step=7&status=success&token=${uniqueTrackingToken}`,
             receipt_email: finalEmail
-          }
-        });
-
-        if (confirmError) throw confirmError;
-
-        localStorage.setItem("f4u_payment_status_complete", "true");
-        localStorage.setItem("wizard_first_name", firstName);
-        localStorage.setItem("wizard_last_name", lastName);
-        localStorage.setItem("wizard_email_address", finalEmail);
-        localStorage.setItem("wizard_phone_number", phone);
-
-        const finalUrlParams = new URLSearchParams(window.location.search);
-        finalUrlParams.set("step", "7");
-        finalUrlParams.set("token", uniqueTrackingToken);
-        window.history.pushState({}, '', `${window.location.pathname}?${finalUrlParams.toString()}`);
-
-        if (typeof window.switchWizardActiveViewLayout === "function") {
-          window.switchWizardActiveViewLayout(7);
         }
-      } else {
-        throw new Error("Stripe context parameters missing from checkout memory framework.");
-      }
+    });
 
-    } catch (checkoutError) {
-      console.error("[Checkout Guard Trigger Blocked]", checkoutError);
-      if (errorBanner) {
-        errorBanner.style.display = "block";
-        errorBanner.innerHTML = `⚠️ <strong>Transaction Halted:</strong> ${checkoutError.message || checkoutError}`;
-      }
-      if (submitBtn) submitBtn.disabled = false;
-      if (btnDefaultState) btnDefaultState.style.display = "inline-block";
-      if (btnLoadingState) btnLoadingState.style.display = "none";
+    if (confirmError) throw confirmError;
+
+    console.log("✅ [Transaction Complete] Stripe payment verified in-line. Transitioning views...");
+    localStorage.setItem("f4u_payment_status_complete", "true");
+
+    // 🔄 BRIDGE CONFIGURATION: ASSEMBLE MANIFEST FOR STEP-7 RENDERING SESSIONS
+    const subtotalAmount = parseFloat(window._tempCalcContext?.baseTierPrice || window._tempAddonContext?.baseTierPrice || activeGrandCost);
+    const blueprintReceiptManifest = {
+        transaction_hash_id: uniqueTrackingToken,
+        communications_email: finalEmail,
+        legal_entity_name: companyNameParameter,
+        taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...",
+        office_address_street: localStorage.getItem("wizard_field_principal_address") || "Form Submission Record Entry",
+        selected_package_title: `filings4u Processing Fee (${selectedPlan.toUpperCase()})`,
+        financials_subtotal_amount: subtotalAmount,
+        financials_grand_total_charge: activeGrandCost
+    };
+
+    sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(blueprintReceiptManifest));
+    localStorage.setItem("f4u_active_tracking_token", uniqueTrackingToken);
+    localStorage.setItem("wizard_field_lead_email", finalEmail);
+
+    // 🔄 ROUTING INJECTION: BIND QUERY PARAMETERS AND EXECUTE LIFECYCLE STEP
+    const finalUrlParams = new URLSearchParams(window.location.search);
+    finalUrlParams.set("step", "7");
+    finalUrlParams.set("token", uniqueTrackingToken);
+    finalUrlParams.set("email", encodeURIComponent(finalEmail));
+    window.history.pushState({}, '', `${window.location.pathname}?${finalUrlParams.toString()}`);
+
+    // Wake up your Step 7 hydration engine channels safely
+    if (typeof window.switchWizardActiveViewLayout === "function") {
+        window.switchWizardActiveViewLayout(7);
+    } else if (typeof window.executeStepLifecyclePipeline === "function") {
+        window.executeStepLifecyclePipeline(7);
+    } else if (typeof window.initializeSecureStep7AccountHydration === "function") {
+        window.initializeSecureStep7AccountHydration();
     }
-  };
-})();
+} else {
+    throw new Error("Stripe components uninitialized: Gateway configuration tokens missing from memory context.");
+}
 
+  } catch (checkoutError) {
+    console.error("[Fatal Payment Intercept Catch]", checkoutError);
+    if (errorBanner) {
+      errorBanner.style.display = "block";
+      errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Transaction Aborted:</strong> ${checkoutError.message || checkoutError}`;
+    }
+    if (submitBtn) submitBtn.disabled = false;
+    if (btnDefaultState) btnDefaultState.style.display = "inline-block";
+    if (btnLoadingState) btnLoadingState.style.display = "none";
+  }
+};
+})();
