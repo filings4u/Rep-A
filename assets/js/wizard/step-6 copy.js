@@ -476,7 +476,7 @@
         const { error: stripeConfirmationError } = await window.stripeInstance.confirmPayment({
           elements: window.stripeElementsContainer,
           confirmParams: {
-            return_url: `https://filings4u.com?token={encodeURIComponent(activeTrackingCode)}`,
+            return_url: `https://portal.filings4u.com/client-status.html?token=${encodeURIComponent(activeTrackingCode)}`,
             receipt_email: liveEmailAddress,
             shipping: {
               name: `${liveFirstName} ${liveLastName}`.trim(),
@@ -587,7 +587,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       elements: window.stripeElementsContainer,
       redirect: "if_required", // Clean explicit syntax string handles inline step transitions safely
       confirmParams: {
-        return_url: `https://filings4u.com?token={encodeURIComponent(trackingNumberToken)}`,
+        return_url: `https://portal.filings4u.com/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
         receipt_email: captureEmail || undefined,
         
         // 🎯 FIX: Bundle all customer details inside the Stripe shipping tree so your webhook can read it
@@ -635,7 +635,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         window.showWizardStepCard(7);
       } else {
         // Ultimate location navigation routing escape hatch if no wizard objects are exposed in window space
-        window.location.href = `https://filings4u.com?token={encodeURIComponent(trackingNumberToken)}`;
+        window.location.href = `https://portal.filings4u.com/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`;
       }
     }
   } catch (err) {
@@ -805,18 +805,48 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
 
 // =================================================================================== //
-// step-6.js - PARTS 4 & 5 CONSOLIDATED: SYNTAX-VALID RUNTIME ENGINE
+// step-6.js - PARTS 4 & 5 CONSOLIDATED: DYNAMIC VALIDATION ENGINE (PART 1)          //
 // =================================================================================== //
 window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue, submitButtonNode) {
+  "use strict";
+
   const errorBanner = document.getElementById("step6-error-banner-target");
+  const submitBtn = submitButtonNode || document.getElementById("wizardSubmitBtnElement");
+
+  // 🎯 STRIPPED HARDCODING: Extract pure dynamic variables. Zero default string fallbacks allowed.
+  const trackingNumberToken = (localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "").trim();
   
-  // 🎯 STRICT SCHEMA SYNC: Query parameters using strict public.orders key formats
-  const trackingNumberToken = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
-  const captureFirstName = document.getElementById("portal_user_first_name")?.value.trim() || localStorage.getItem("first_name") || "";
-  const captureLastName = document.getElementById("portal_user_last_name")?.value.trim() || localStorage.getItem("last_name") || "";
-  const captureEmail = document.getElementById("portal_user_email_input")?.value.trim() || localStorage.getItem("email_address") || "";
-  const capturePhone = document.getElementById("portal_user_phone")?.value.trim() || localStorage.getItem("phone_number") || "";
-  const captureCompany = localStorage.getItem("company_name") || "Not Specified";
+  const captureFirstName = (document.getElementById("portal_user_first_name")?.value.trim() || localStorage.getItem("first_name") || "").trim();
+  const captureLastName = (document.getElementById("portal_user_last_name")?.value.trim() || localStorage.getItem("last_name") || "").trim();
+  const captureEmail = (document.getElementById("portal_user_email_input")?.value.trim() || localStorage.getItem("email_address") || "").trim();
+  const capturePhone = (document.getElementById("portal_user_phone")?.value.trim() || localStorage.getItem("phone_number") || "").trim();
+  const captureCompany = (document.getElementById("schema_orders_company_name")?.value.trim() || localStorage.getItem("company_name") || localStorage.getItem("f4u_company_name") || "").trim();
+
+  // 🎯 STRICT AUTHENTICATION GATING: Completely halts execution if ANY vital data is missing
+  const invalidPlaceholders = ["pending input", "pending", "empty", "not specified", "null", "undefined", "f4u-unknown", ""];
+  
+  if (
+    !trackingNumberToken || invalidPlaceholders.includes(trackingNumberToken.toLowerCase()) ||
+    !captureFirstName || invalidPlaceholders.includes(captureFirstName.toLowerCase()) ||
+    !captureLastName || invalidPlaceholders.includes(captureLastName.toLowerCase()) ||
+    !captureEmail || invalidPlaceholders.includes(captureEmail.toLowerCase()) ||
+    !capturePhone || invalidPlaceholders.includes(capturePhone.toLowerCase()) ||
+    !captureCompany || invalidPlaceholders.includes(captureCompany.toLowerCase())
+  ) {
+    if (errorBanner) {
+      errorBanner.style.display = "block";
+      errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Checkout Validation Alert:</strong> Core demographic profiles or transaction tokens are unassigned. Please complete previous wizard steps.`;
+    }
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = "1";
+      submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
+    }
+    return false; // Safely aborts before contacting Stripe or inserting a broken database record
+  }
+
+  console.log(`✅ [Dynamic Gateway Validation] Profile parameters successfully verified for Token: ${trackingNumberToken}`);
+
 
   if (!captureEmail || !captureFirstName || !captureLastName || !capturePhone) {
     if (errorBanner) {
@@ -1013,7 +1043,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
 
 // ============================================================================ //
-// step-6.js - COMPREHENSIVE COMBINED RUNTIME & TRANSACTION ENGINE (FIXED)      //
+// step-6.js - BUTTON HANDLER CONFIGURATION (PART 1 - STRIPPED & UNIFIED)        //
 // ============================================================================ //
 window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue, submitButtonNode) {
   "use strict";
@@ -1021,22 +1051,46 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const submitBtn = submitButtonNode || document.getElementById("wizardSubmitBtnElement");
   const errorBanner = document.getElementById("step6-error-banner-target");
   
-  // 🎯 TARGETING YOUR EXACT HTML TAGS DIRECTLY FROM THE VIEWPORT
+  // 🎯 STRIPPED HARDCODING & DUPLICATES: Consolidated all tracking lookups into one statement
+  const trackingInputNode = document.getElementById("schema_orders_tracking_number");
+  const trackingNumberToken = (trackingInputNode ? trackingInputNode.value.trim() : "") || 
+                              (localStorage.getItem("tracking_number") || "").trim() || 
+                              (localStorage.getItem("f4u_active_tracking_token") || "").trim();
+
   const firstNameNode = document.getElementById("portal_user_first_name");
   const lastNameNode = document.getElementById("portal_user_last_name");
   const emailInputNode = document.getElementById("portal_user_email_input");
   const phoneInputNode = document.getElementById("portal_user_phone");
 
-  // Extract the live typed values directly from the screen
   const firstName = firstNameNode ? firstNameNode.value.trim() : "";
   const lastName = lastNameNode ? lastNameNode.value.trim() : "";
   const finalEmail = emailInputNode ? emailInputNode.value.trim().toLowerCase() : "";
   const phone = phoneInputNode ? phoneInputNode.value.trim() : "";
 
-  // Pull secondary environment parameters from local memory
-  const companyName = (localStorage.getItem("company_name") || localStorage.getItem("wizard_field_company_name") || "Not Specified").trim();
-  const trackingNumberToken = (localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "").trim();
-  
+  // 🎯 STRIPPED HARDCODING: Extract company name without 'Not Specified' strings
+  const companyName = (localStorage.getItem("company_name") || localStorage.getItem("wizard_field_company_name") || "").trim();
+
+  // 🎯 STRICT SYSTEM GATE: Halts instantly if essential records are blank strings
+  const blockedTerms = ["pending input", "pending", "empty", "not specified", "null", "undefined", "f4u-reconcile", "f4u-unknown", ""];
+  if (
+    !trackingNumberToken || blockedTerms.includes(trackingNumberToken.toLowerCase()) ||
+    !firstName || blockedTerms.includes(firstName.toLowerCase()) ||
+    !lastName || blockedTerms.includes(lastName.toLowerCase()) ||
+    !finalEmail || blockedTerms.includes(finalEmail.toLowerCase()) ||
+    !phone || blockedTerms.includes(phone.toLowerCase()) ||
+    !companyName || blockedTerms.includes(companyName.toLowerCase())
+  ) {
+    if (errorBanner) {
+      errorBanner.style.display = "block";
+      errorBanner.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i> <strong>Data Protection Alert:</strong> Vital demographic details or tracking tokens are unassigned. Verification required.`;
+    }
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = "1";
+    }
+    return false;
+  }
+
   const rawTotalText = document.getElementById("payment-gateway-total-display")?.textContent || "";
   const parsedDOMCost = parseFloat(rawTotalText.replace(/[^0-9.]/g, ""));
   const activeGrandCost = !isNaN(parsedDOMCost) ? parsedDOMCost : finalAmountDue;
@@ -1141,7 +1195,9 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
     console.log("💳 Dispatching secure transactional parameters over network...");
 
-    // 3. SECURE STRIPE MOUNT CONFIRMATION TRANSACTION LAYER
+      // ============================================================================ //
+    // 📁 step-6.js - DYNAMIC TRANSACTION AUTHORIZATION LAYER (PART 1 - FIXED)      //
+    // ============================================================================ //
     const StripeConfirmationResult = await window.stripeInstance.confirmPayment({
       elements: window.stripeElementsContainer,
       clientSecret: targetSecretToken,
@@ -1150,7 +1206,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
         receipt_email: finalEmail,
         
-        // 🎯 FIX: Explicitly package your shipping parameters down into the confirmation parameters object
+        // 🎯 FIXED: Every customer now gets their own unique F4U tracking number dynamically mapped here
         shipping: {
           name: `${firstName} ${lastName}`.trim(),
           phone: phone,
@@ -1158,7 +1214,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             line1: "Form Wizard Payment Layer",
             city: companyName.substring(0, 35),
             state: selectedPlan.substring(0, 10),
-            postal_code: trackingNumberToken, // Passes tracking key directly inside Stripe's payload tree
+            postal_code: trackingNumberToken, // ✅ Dynamically passes their specific F4U token to the email engine
             country: "US"
           }
         },
@@ -1171,7 +1227,9 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         }
       }
     });
-
+// ============================================================================ //
+// 📁 step-6.js - DYNAMIC TRANSACTION AUTHORIZATION LAYER (PART 2 - CONCLUDED)  //
+// ============================================================================ //
     if (StripeConfirmationResult && StripeConfirmationResult.error) {
       console.warn("[Stripe Core API] Authentication flow halted or failed.", StripeConfirmationResult.error.message);
       if (errorBanner) {
@@ -1206,6 +1264,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     }
   }
 };
+
 
 
 // ============================================================================ //
@@ -1365,7 +1424,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     return false;
   }
 
-  try {
+    try {
     const finalEmail = emailInput.value.trim().toLowerCase();
     const firstName = firstNameInput.value.trim();
     const lastName = lastNameInput.value.trim();
@@ -1389,11 +1448,36 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     if (btnDefaultState) btnDefaultState.style.display = "none";
     if (btnLoadingState) btnLoadingState.style.display = "inline-block";
 
-    const companyNameParameter = document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "";
-    const trackingNumberToken = document.getElementById("schema_orders_tracking_number")?.value || localStorage.getItem("f4u_active_tracking_token") || "";
+    const companyNameParameter = (document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || localStorage.getItem("company_name") || "").trim();
     
-    const targetStepPlan = localStorage.getItem("wizard_selected_plan") || localStorage.getItem("wizard_field_selected_package_offering") || "Corporate Filing Package";
-    
+    // Read the tracking token without redeclaring 'const'
+    trackingNumberToken = (document.getElementById("schema_orders_tracking_number")?.value || localStorage.getItem("f4u_active_tracking_token") || localStorage.getItem("tracking_number") || "").trim();
+
+    // 🎯 REPAIRED LOOKUP TREE: Expanded fallback keys to match all historical wizard versions
+    const targetStepPlan = (localStorage.getItem("wizard_selected_plan") || 
+                            localStorage.getItem("selected_plan") || 
+                            localStorage.getItem("wizard_field_selected_package_offering") || 
+                            localStorage.getItem("wizard_plan_tier_key") || "").trim();
+
+    // 🎯 DIAGNOSTIC PROFILE LOGGER: Prints variables straight to your console to find the blank key
+    console.log("🔍 [Checkpoint Verification Metrics]:", {
+      companyNameParameter: companyNameParameter || "❌ BLANK",
+      trackingNumberToken: trackingNumberToken || "❌ BLANK",
+      targetStepPlan: targetStepPlan || "❌ BLANK"
+    });
+
+    // Unified dynamic safety gate avoids hardcoded strings but keeps your checkout moving
+    if (!trackingNumberToken) {
+      throw new Error("Validation failed: Active tracking number token is missing.");
+    }
+    if (!companyNameParameter) {
+      throw new Error("Validation failed: Company name is missing.");
+    }
+    if (!targetStepPlan) {
+      throw new Error("Validation failed: Selection plan package is missing.");
+    }
+
+
     let flatUpsellsString = "None Selected";
     try {
       const cachedUpsells = localStorage.getItem("wizard_selected_upsells");
@@ -1459,41 +1543,47 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       }
       console.log("✅ [Supabase Operations Logs] Orders table state safely buffered on data grid.");
     }
+
+
+// step-6.js - B. SECURE STRIPE PROCESSING (STRIPPED & FULLY DYNAMIC)           //
+// ============================================================================ //
+if (window.stripeElementsContainer && window.stripeInstance && window.stripeClientSecret) {
+  console.log("[Stripe Controller] Submitting payment components schema context...");
+  const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
+  if (stripeSubmitError) throw stripeSubmitError;
+
+  console.log("[Stripe Controller] Launching native billing confirmation challenge over network...");
+  
+  const { error: confirmError } = await window.stripeInstance.confirmPayment({
+    elements: window.stripeElementsContainer,
+    clientSecret: window.stripeClientSecret,
+    redirect: "if_required",
+    confirmParams: {
+      // 🎯 FIXED: Replaced hardcoded text with your dynamic variable across your success routes
+      return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
+      receipt_email: finalEmail,
+      
+      shipping: {
+        name: `${firstName} ${lastName}`.trim(),
+        phone: phone,
+        address: {
+          line1: "Form Wizard Payment Layer",
+          city: companyNameParameter.substring(0, 35),
+          state: targetStepPlan.substring(0, 10),
+          // 🎯 FIXED: Hardcoding permanently removed. Every single customer passes their own dynamic token to Stripe
+          postal_code: trackingNumberToken, 
+          country: "US"
+        }
+      }
+    }
+  });
+
+  if (confirmError) throw confirmError;
+
+
 // ============================================================================ //
 // step-6.js - UNIFIED PAYLOAD SUBMIT PIPELINE ENGINE (PART 2 - CONCLUDED)       //
 // ============================================================================ //
-    // B. SECURE STRIPE PROCESSING
-    if (window.stripeElementsContainer && window.stripeInstance && window.stripeClientSecret) {
-      console.log("[Stripe Controller] Submitting payment components schema context...");
-      const { error: stripeSubmitError } = await window.stripeElementsContainer.submit();
-      if (stripeSubmitError) throw stripeSubmitError;
-
-      console.log("[Stripe Controller] Launching native billing confirmation challenge over network...");
-      
-      // 🎯 FIX 2: Attach customer profile and tracking number directly to Stripe's payment network layer
-      const { error: confirmError } = await window.stripeInstance.confirmPayment({
-        elements: window.stripeElementsContainer,
-        clientSecret: window.stripeClientSecret,
-        redirect: "if_required",
-        confirmParams: {
-          return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
-          receipt_email: finalEmail,
-          shipping: {
-            name: `${firstName} ${lastName}`.trim(),
-            phone: phone,
-            address: {
-              line1: "Form Wizard Payment Layer",
-              city: companyNameParameter.substring(0, 35),
-              state: targetStepPlan.substring(0, 10),
-              postal_code: trackingNumberToken, // 🎯 Essential: Securely bundles tracking ID into the Stripe Webhook payload
-              country: "US"
-            }
-          }
-        }
-      });
-
-      if (confirmError) throw confirmError;
-
       console.log("✅ [Transaction Complete] Stripe payment verified in-line. Transitioning views...");
       localStorage.setItem("f4u_payment_status_complete", "true");
 
@@ -1506,7 +1596,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       const blueprintReceiptManifest = {
         transaction_hash_id: trackingNumberToken,
         communications_email: finalEmail,
-        legal_entity_name: companyNameParameter,
+        legal_entity_name: companyNameParameter, // ✅ Safe to read: fully initialized above
         taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...",
         office_address_street: localStorage.getItem("wizard_field_principal_address") || "Form Submission Record Entry",
         selected_package_title: `filings4u Processing Fee (${selectedPlanTitle.toUpperCase()})`,
@@ -1522,14 +1612,13 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       // ============================================================================ //
       // 🔄 ROUTING INJECTION: BIND QUERY PARAMETERS AND EXECUTE LIFECYCLE STEP       //
       // ============================================================================ //
-          // 🎯 FIXED: Directs history updates to your true database F4U tracking reference string
       const currentUrlParams = new URLSearchParams(window.location.search);
       currentUrlParams.set("step", "7");
-      currentUrlParams.set("token", returnedTrackingNumber); // ✅ Locks down the real database F4U code
+      currentUrlParams.set("token", trackingNumberToken);
       currentUrlParams.set("email", encodeURIComponent(finalEmail));
 
+      // Append parameters into history context to satisfy step-7 URL lookups cleanly
       window.history.pushState({}, '', `${window.location.pathname}?${currentUrlParams.toString()}`);
-
 
       // Wake up your Step 7 hydration engine channels safely
       if (typeof window.switchWizardActiveViewLayout === "function") {
@@ -1558,5 +1647,3 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
   // 🎯 ATTACHING MODULE SCOPE LIFE-HOOKS DIRECTLY TO THE GLOBAL WINDOW LAYERS
   window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
   window.executeStripeMountingPipeline = executeStripeMountingPipeline;
-
-

@@ -588,22 +588,34 @@ window.extractAndRenderReceiptManifestData = async function() {
         timestampDisp.textContent = liveDateInstance.toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
     }
 
-    // 2. Look for existing tracking token accounts matching step-6 payload strings
-    let uniqueAccountNumber = "F4U-";
-    const receiptStorageManifestString = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
-    let receiptPayload = null;
-    try {
-        if (receiptStorageManifestString) receiptPayload = JSON.parse(receiptStorageManifestString);
-    } catch (pe) {
-        console.warn("[Receipt Loader] Failed parsing manifest array details:", pe);
-    }
+ // ============================================================================ //
+// step-7.js - DYNAMIC RECEIPT HYDRATION ENGINE (REPAIRED)                      //
+// ============================================================================ //
+// 2. Extract the pristine database tracking token from the step-6 checkout manifest string
+let uniqueAccountNumber = "";
+const receiptStorageManifestString = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
+let receiptPayload = null;
 
-    if (receiptPayload && receiptPayload.transaction_hash_id) {
-        uniqueAccountNumber += receiptPayload.transaction_hash_id.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().substring(0, 8);
-    } else {
-        uniqueAccountNumber += Date.now().toString(36).toUpperCase().substring(0, 8);
-    }
-    window.currentGeneratedMbeAccountNumber = uniqueAccountNumber;
+try {
+  if (receiptStorageManifestString) {
+    receiptPayload = JSON.parse(receiptStorageManifestString);
+  }
+} catch (pe) {
+  console.warn("[Receipt Loader] Failed parsing manifest array details:", pe);
+}
+
+// 🎯 THE DIRECT FIX: Use the complete dynamic tracking token directly. No chopping or re-prefixing.
+if (receiptPayload && receiptPayload.transaction_hash_id) {
+  uniqueAccountNumber = receiptPayload.transaction_hash_id.trim(); // ✅ Grabs your real live F4U-YQLSWNFRX4 token intact
+} else {
+  // Fallback to local storage parameters if session storage is temporarily unavailable
+  uniqueAccountNumber = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN-RECONCILE";
+}
+
+// Lock the pristine tracking string directly into your global view state variables
+window.currentGeneratedMbeAccountNumber = uniqueAccountNumber;
+console.log(`✅ [Step 7 Hydration] Successfully mapped real database tracking reference code: ${uniqueAccountNumber}`);
+
 
     // 3. SECURE INTERLOCK HYDRATION ENGINE FOR STEP 3 & STEP 5 ITEMS
     if (receiptPayload) {
