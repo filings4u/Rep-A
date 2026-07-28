@@ -476,7 +476,7 @@
         const { error: stripeConfirmationError } = await window.stripeInstance.confirmPayment({
           elements: window.stripeElementsContainer,
           confirmParams: {
-            return_url: `https://filings4u.com?token={encodeURIComponent(activeTrackingCode)}`,
+            return_url: `https://filings4u.com?token=${encodeURIComponent(activeTrackingCode)}`,
             receipt_email: liveEmailAddress,
             shipping: {
               name: `${liveFirstName} ${liveLastName}`.trim(),
@@ -587,7 +587,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       elements: window.stripeElementsContainer,
       redirect: "if_required", // Clean explicit syntax string handles inline step transitions safely
       confirmParams: {
-        return_url: `https://filings4u.com?token={encodeURIComponent(trackingNumberToken)}`,
+        return_url: `https://portal.filings4u.com/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
         receipt_email: captureEmail || undefined,
         
         // 🎯 FIX: Bundle all customer details inside the Stripe shipping tree so your webhook can read it
@@ -635,7 +635,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         window.showWizardStepCard(7);
       } else {
         // Ultimate location navigation routing escape hatch if no wizard objects are exposed in window space
-        window.location.href = `https://filings4u.com?token={encodeURIComponent(trackingNumberToken)}`;
+        window.location.href = `https://portal.filings4u.com/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`;
       }
     }
   } catch (err) {
@@ -1013,7 +1013,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
 
 // ============================================================================ //
-// step-6.js - COMPREHENSIVE COMBINED RUNTIME & TRANSACTION ENGINE (FIXED)      //
+// step-6.js - BUTTON HANDLER CONFIGURATION (PART 1 - FIXED)                    //
 // ============================================================================ //
 window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue, submitButtonNode) {
   "use strict";
@@ -1021,17 +1021,20 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const submitBtn = submitButtonNode || document.getElementById("wizardSubmitBtnElement");
   const errorBanner = document.getElementById("step6-error-banner-target");
   
-  // 🎯 TARGETING YOUR EXACT HTML TAGS DIRECTLY FROM THE VIEWPORT
+  // 🎯 THE DIRECT FIX: Read the true database token painted inside your layout input box!
+  const trackingInputNode = document.getElementById("schema_orders_tracking_number");
+  const uniqueTrackingToken = trackingInputNode ? trackingInputNode.value.trim() : (localStorage.getItem("tracking_number") || "F4U-RECONCILE");
+
   const firstNameNode = document.getElementById("portal_user_first_name");
   const lastNameNode = document.getElementById("portal_user_last_name");
   const emailInputNode = document.getElementById("portal_user_email_input");
   const phoneInputNode = document.getElementById("portal_user_phone");
 
-  // Extract the live typed values directly from the screen
   const firstName = firstNameNode ? firstNameNode.value.trim() : "";
   const lastName = lastNameNode ? lastNameNode.value.trim() : "";
   const finalEmail = emailInputNode ? emailInputNode.value.trim().toLowerCase() : "";
   const phone = phoneInputNode ? phoneInputNode.value.trim() : "";
+
 
   // Pull secondary environment parameters from local memory
   const companyName = (localStorage.getItem("company_name") || localStorage.getItem("wizard_field_company_name") || "Not Specified").trim();
@@ -1141,16 +1144,18 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
     console.log("💳 Dispatching secure transactional parameters over network...");
 
-    // 3. SECURE STRIPE MOUNT CONFIRMATION TRANSACTION LAYER
+      // ============================================================================ //
+    // 📁 step-6.js - DYNAMIC TRANSACTION AUTHORIZATION LAYER (PART 1 - FIXED)      //
+    // ============================================================================ //
     const StripeConfirmationResult = await window.stripeInstance.confirmPayment({
       elements: window.stripeElementsContainer,
       clientSecret: targetSecretToken,
       redirect: "if_required",
       confirmParams: {
-        return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
+        return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(uniqueTrackingToken)}`,
         receipt_email: finalEmail,
         
-        // 🎯 FIX: Explicitly package your shipping parameters down into the confirmation parameters object
+        // 🎯 FIXED: Every customer now gets their own unique F4U tracking number dynamically mapped here
         shipping: {
           name: `${firstName} ${lastName}`.trim(),
           phone: phone,
@@ -1158,7 +1163,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             line1: "Form Wizard Payment Layer",
             city: companyName.substring(0, 35),
             state: selectedPlan.substring(0, 10),
-            postal_code: trackingNumberToken, // Passes tracking key directly inside Stripe's payload tree
+            postal_code: uniqueTrackingToken, // ✅ Dynamically passes their specific F4U token to the email engine
             country: "US"
           }
         },
@@ -1171,7 +1176,9 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         }
       }
     });
-
+// ============================================================================ //
+// 📁 step-6.js - DYNAMIC TRANSACTION AUTHORIZATION LAYER (PART 2 - CONCLUDED)  //
+// ============================================================================ //
     if (StripeConfirmationResult && StripeConfirmationResult.error) {
       console.warn("[Stripe Core API] Authentication flow halted or failed.", StripeConfirmationResult.error.message);
       if (errorBanner) {
@@ -1206,6 +1213,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     }
   }
 };
+
 
 
 // ============================================================================ //
@@ -1459,6 +1467,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       }
       console.log("✅ [Supabase Operations Logs] Orders table state safely buffered on data grid.");
     }
+
 // ============================================================================ //
 // step-6.js - UNIFIED PAYLOAD SUBMIT PIPELINE ENGINE (PART 2 - CONCLUDED)       //
 // ============================================================================ //
