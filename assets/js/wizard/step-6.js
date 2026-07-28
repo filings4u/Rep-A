@@ -65,11 +65,15 @@
     const planTier = window.routeActivePlanKey || window.currentOrderCorePayload?.plan_tier || localStorage.getItem("wizard_plan_tier_key") || "standard";
 
     // 🎯 FIX 3: Eliminate random token generation if a tracking row already exists in Supabase
-    let tracking = localStorage.getItem("f4u_active_tracking_token") || localStorage.getItem("tracking_number");
+  let tracking = localStorage.getItem("f4u_active_tracking_token") || localStorage.getItem("tracking_number");
+    
+    // If the token is missing or corrupted, use your original step generator to build the F4U identifier
     if (!tracking || tracking === "GUEST-INTAKE" || tracking.includes("UNKNOWN")) {
-      console.warn("⚠️ [Stripe Core Tracking Warning] No tracking number found in storage! Post-checkout matching may break.");
-      tracking = "F4U-UNKNOWN-RECONCILE";
+      tracking = "F4U-" + Math.random().toString(36).substring(2, 12).toUpperCase();
+      localStorage.setItem("f4u_active_tracking_token", tracking);
+      localStorage.setItem("tracking_number", tracking); 
     }
+
 
     let innerFormMounted = document.getElementById("stripe-payment-element-mount-point");
     if (isNaN(total) || total <= 0) {
@@ -558,7 +562,7 @@ window.executeStripeMountingPipeline = executeStripeMountingPipeline;
 
 window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue, submitButtonNode) {
   const errorBanner = document.getElementById("step6-error-banner-target");
-  const uniqueTrackingToken = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
+  const trackingNumberToken = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
   
   if (!window.stripeElementsContainer) {
     throw new Error("Stripe iframe layout elements are uninitialized. Check network configuration.");
@@ -583,7 +587,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       elements: window.stripeElementsContainer,
       redirect: "if_required", // Clean explicit syntax string handles inline step transitions safely
       confirmParams: {
-        return_url: `https://filings4u.com?token={encodeURIComponent(uniqueTrackingToken)}`,
+        return_url: `https://filings4u.com?token={encodeURIComponent(trackingNumberToken)}`,
         receipt_email: captureEmail || undefined,
         
         // 🎯 FIX: Bundle all customer details inside the Stripe shipping tree so your webhook can read it
@@ -594,7 +598,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             line1: "Wizard Form Checkout Layer",
             city: compName.substring(0, 35),      // Pass company name safely inside structural lines
             state: planTier.substring(0, 10),     // Pass tier choice safely
-            postal_code: uniqueTrackingToken,     // Pass your unique F4U tracking reference string 
+            postal_code: trackingNumberToken,     // Pass your unique F4U tracking reference string 
             country: "US"
           }
         },
@@ -631,7 +635,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         window.showWizardStepCard(7);
       } else {
         // Ultimate location navigation routing escape hatch if no wizard objects are exposed in window space
-        window.location.href = `https://filings4u.com{encodeURIComponent(uniqueTrackingToken)}`;
+        window.location.href = `https://filings4u.com?token={encodeURIComponent(trackingNumberToken)}`;
       }
     }
   } catch (err) {
@@ -715,7 +719,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   window.fetchClientSecretAndMountStripeElement = async function(finalAmountDue) {
     console.log("📡 [Supabase Pre-Fetch] Lazy loading clientSecret...");
     
-    const uniqueTrackingToken = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
+    const trackingNumberToken = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
 
     // Capture parameters with comprehensive storage fallbacks
     const captureUserFirstName = document.getElementById("portal_user_first_name")?.value.trim() || localStorage.getItem("first_name") || localStorage.getItem("wizard_field_first_name") || localStorage.getItem("poa_first_name") || "";
@@ -738,7 +742,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
     // Map variables directly to top-level object fields to match Edge Function parsing logic
     const profileTransactionPayload = {
-      tracking_number: uniqueTrackingToken,
+      tracking_number: trackingNumberToken,
       first_name: captureUserFirstName,
       last_name: captureUserLastName,
       email: captureUserEmail.toLowerCase(),
@@ -807,7 +811,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const errorBanner = document.getElementById("step6-error-banner-target");
   
   // 🎯 STRICT SCHEMA SYNC: Query parameters using strict public.orders key formats
-  const uniqueTrackingToken = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
+  const trackingNumberToken = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
   const captureFirstName = document.getElementById("portal_user_first_name")?.value.trim() || localStorage.getItem("first_name") || "";
   const captureLastName = document.getElementById("portal_user_last_name")?.value.trim() || localStorage.getItem("last_name") || "";
   const captureEmail = document.getElementById("portal_user_email_input")?.value.trim() || localStorage.getItem("email_address") || "";
@@ -834,7 +838,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
   // 🎯 STRICT SCHEMA MATRIX: Map variables to match public.orders database constraints exactly
   const profileTransactionPayload = {
-    tracking_number: uniqueTrackingToken,
+    tracking_number: trackingNumberToken,
     first_name: captureFirstName,
     last_name: captureLastName,
     email_address: captureEmail.toLowerCase(),
@@ -858,7 +862,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       const { data: existingRow } = await client
         .from('orders')
         .select('id')
-        .eq('tracking_number', uniqueTrackingToken)
+        .eq('tracking_number', trackingNumberToken)
         .maybeSingle();
 
       if (existingRow) {
@@ -907,7 +911,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
           clientSecret: window.stripeClientSecret,
           redirect: "if_required",
           confirmParams: {
-            return_url: `${window.location.origin}${window.location.pathname}?step=7&status=success&token=${uniqueTrackingToken}`,
+            return_url: `${window.location.origin}${window.location.pathname}?step=7&status=success&token=${trackingNumberToken}`,
             receipt_email: captureEmail.toLowerCase(),
             shipping: {
               name: `${captureFirstName} ${captureLastName}`.trim(),
@@ -916,7 +920,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
                 line1: "Form Wizard Payment Layer",
                 city: captureCompany.substring(0, 35),
                 state: activeSelectedPlan.substring(0, 10),
-                postal_code: uniqueTrackingToken,
+                postal_code: trackingNumberToken,
                 country: "US"
               }
             }
@@ -950,7 +954,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
           const { data: existingMockRow } = await dbClient
             .from('orders')
             .select('id')
-            .eq('tracking_number', uniqueTrackingToken)
+            .eq('tracking_number', trackingNumberToken)
             .maybeSingle();
 
           if (existingMockRow) {
@@ -1031,7 +1035,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
   // Pull secondary environment parameters from local memory
   const companyName = (localStorage.getItem("company_name") || localStorage.getItem("wizard_field_company_name") || "Not Specified").trim();
-  const uniqueTrackingToken = (localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "").trim();
+  const trackingNumberToken = (localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "").trim();
   
   const rawTotalText = document.getElementById("payment-gateway-total-display")?.textContent || "";
   const parsedDOMCost = parseFloat(rawTotalText.replace(/[^0-9.]/g, ""));
@@ -1050,7 +1054,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       throw new Error("Validation failed: Please enter a valid first and last name to verify your operational profile.");
     }
 
-    if (!uniqueTrackingToken || bannedPlaceholders.includes(uniqueTrackingToken.toLowerCase())) {
+    if (!trackingNumberToken || bannedPlaceholders.includes(trackingNumberToken.toLowerCase())) {
       throw new Error("System configuration alert: Active tracking reference token missing.");
     }
 
@@ -1093,7 +1097,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
     // 🎯 STRICT SCHEMA MATRIX: Map variables to match public.orders database constraints exactly
     const orderRecordPayload = {
-      tracking_number: uniqueTrackingToken.trim(),
+      tracking_number: trackingNumberToken.trim(),
       first_name: firstName,
       last_name: lastName,
       email_address: finalEmail,
@@ -1115,7 +1119,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       const { data: matchedRow } = await supabaseClient
         .from('orders')
         .select('id')
-        .eq('tracking_number', uniqueTrackingToken.trim())
+        .eq('tracking_number', trackingNumberToken.trim())
         .maybeSingle();
 
       if (matchedRow) {
@@ -1143,7 +1147,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       clientSecret: targetSecretToken,
       redirect: "if_required",
       confirmParams: {
-        return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(uniqueTrackingToken)}`,
+        return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
         receipt_email: finalEmail,
         
         // 🎯 FIX: Explicitly package your shipping parameters down into the confirmation parameters object
@@ -1154,7 +1158,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             line1: "Form Wizard Payment Layer",
             city: companyName.substring(0, 35),
             state: selectedPlan.substring(0, 10),
-            postal_code: uniqueTrackingToken, // Passes tracking key directly inside Stripe's payload tree
+            postal_code: trackingNumberToken, // Passes tracking key directly inside Stripe's payload tree
             country: "US"
           }
         },
@@ -1386,7 +1390,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     if (btnLoadingState) btnLoadingState.style.display = "inline-block";
 
     const companyNameParameter = document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "";
-    const uniqueTrackingToken = document.getElementById("schema_orders_tracking_number")?.value || localStorage.getItem("f4u_active_tracking_token") || "";
+    const trackingNumberToken = document.getElementById("schema_orders_tracking_number")?.value || localStorage.getItem("f4u_active_tracking_token") || "";
     
     const targetStepPlan = localStorage.getItem("wizard_selected_plan") || localStorage.getItem("wizard_field_selected_package_offering") || "Corporate Filing Package";
     
@@ -1408,13 +1412,13 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     const poaSignatureParameter = localStorage.getItem("wizard_poa_signature") || localStorage.getItem("wizard_field_poa_signature_string") || "Digitally Executed";
 
     if (!companyNameParameter) throw new Error("Validation aborted: Company Name mapping parameters are completely blank.");
-    if (!uniqueTrackingToken) throw new Error("Validation aborted: Active tracking token is unassigned.");
+    if (!trackingNumberToken) throw new Error("Validation aborted: Active tracking token is unassigned.");
 
     const supabaseClient = window.supabaseInstance || window.supabaseClient;
     const targetSecretToken = window.stripeClientSecret || localStorage.getItem("f4u_stripe_client_secret") || "";
 
     const validatedDatabaseUpsertPayload = {
-      tracking_number: uniqueTrackingToken.trim(),
+      tracking_number: trackingNumberToken.trim(),
       first_name: firstName,
       last_name: lastName,
       email_address: finalEmail,
@@ -1436,7 +1440,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       const { data: matchedRow } = await supabaseClient
         .from('orders')
         .select('id')
-        .eq('tracking_number', uniqueTrackingToken.trim())
+        .eq('tracking_number', trackingNumberToken.trim())
         .maybeSingle();
 
       if (matchedRow) {
@@ -1472,7 +1476,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         clientSecret: window.stripeClientSecret,
         redirect: "if_required",
         confirmParams: {
-          return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(uniqueTrackingToken)}`,
+          return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
           receipt_email: finalEmail,
           shipping: {
             name: `${firstName} ${lastName}`.trim(),
@@ -1481,7 +1485,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
               line1: "Form Wizard Payment Layer",
               city: companyNameParameter.substring(0, 35),
               state: targetStepPlan.substring(0, 10),
-              postal_code: uniqueTrackingToken, // 🎯 Essential: Securely bundles tracking ID into the Stripe Webhook payload
+              postal_code: trackingNumberToken, // 🎯 Essential: Securely bundles tracking ID into the Stripe Webhook payload
               country: "US"
             }
           }
@@ -1500,7 +1504,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       const selectedPlanTitle = window.selectedPlan || localStorage.getItem("wizard_selected_plan") || localStorage.getItem("selected_plan") || "Corporate Filing Package";
 
       const blueprintReceiptManifest = {
-        transaction_hash_id: uniqueTrackingToken,
+        transaction_hash_id: trackingNumberToken,
         communications_email: finalEmail,
         legal_entity_name: companyNameParameter,
         taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...",
@@ -1512,19 +1516,20 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
 
       // Commit strings seamlessly so executeInjectionPipeline can parse line totals instantly
       sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(blueprintReceiptManifest));
-      localStorage.setItem("f4u_active_tracking_token", uniqueTrackingToken);
+      localStorage.setItem("f4u_active_tracking_token", trackingNumberToken);
       localStorage.setItem("wizard_field_lead_email", finalEmail);
 
       // ============================================================================ //
       // 🔄 ROUTING INJECTION: BIND QUERY PARAMETERS AND EXECUTE LIFECYCLE STEP       //
       // ============================================================================ //
+          // 🎯 FIXED: Directs history updates to your true database F4U tracking reference string
       const currentUrlParams = new URLSearchParams(window.location.search);
       currentUrlParams.set("step", "7");
-      currentUrlParams.set("token", uniqueTrackingToken);
+      currentUrlParams.set("token", returnedTrackingNumber); // ✅ Locks down the real database F4U code
       currentUrlParams.set("email", encodeURIComponent(finalEmail));
 
-      // Append parameters into history context to satisfy step-7 URL lookups
       window.history.pushState({}, '', `${window.location.pathname}?${currentUrlParams.toString()}`);
+
 
       // Wake up your Step 7 hydration engine channels safely
       if (typeof window.switchWizardActiveViewLayout === "function") {
