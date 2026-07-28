@@ -396,7 +396,46 @@ container.insertAdjacentHTML('beforeend', `
       text-align: center !important;
     }
   }
-    
+
+  /* ================================================================= */
+/* 🛠️ STEP 7 LIFECYCLE WORKSPACE FLOW REPAIRS                       */
+/* ================================================================= */
+
+/* 1. Force the active panel container to sit nicely in the layout grid */
+#step-panel-7, 
+.wizard-step, 
+.step-panel {
+    display: block !important;
+    clear: both !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    margin-bottom: 40px !important; /* Prevents containers from climbing into each other */
+}
+
+/* 2. Fix the layout root container so it accommodates dynamic height changes */
+#wizard-wrapper, 
+.master-layout, 
+main {
+    height: auto !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* 3. Strip any fixed constraints and safely drop the footer to the bottom */
+footer, 
+.sidebar-footer-lock, 
+[class*="footer-action-row"] {
+    position: relative !important;
+    margin-top: auto !important; /* Locks footer to the bottom of the column grid */
+    padding-top: 24px !important;
+    clear: both !important;
+    width: 100% !important;
+    top: auto !important;
+    bottom: auto !important;
+}
+
 </style>
 
   </div>
@@ -1030,13 +1069,13 @@ window.extractAndRenderCertifiedLegalPoaDocument = async function() {
     if (supabaseClient && returnedToken) {
       const { data: orderRow, error } = await supabaseClient
         .from('orders')
-        .select('poa_signature_verification_string, created_at')
+        .select('poa_signature, created_at')
         .eq('tracking_number', returnedToken)
         .maybeSingle();
 
-      if (!error && orderRow && orderRow.poa_signature_verification_string) {
+      if (!error && orderRow && orderRow.poa_signature) {
         console.log("[Gatekeeper] Verified signature text found in database orders row.");
-        if (signerNode) signerNode.textContent = orderRow.poa_signature_verification_string;
+        if (signerNode) signerNode.textContent = orderRow.poa_signature;
         
         if (orderRow.created_at && timestampNode) {
           const dbDate = new Date(orderRow.created_at);
