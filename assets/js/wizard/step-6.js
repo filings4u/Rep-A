@@ -1503,17 +1503,21 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
 
       if (confirmError) throw confirmError;
 
+// ============================================================================ //
+// step-6.js - SUCCESS ROUTING ALIGNMENT (PART 1 - FIXED)                       //
+// ============================================================================ //
       console.log("✅ [Transaction Complete] Stripe payment verified in-line. Transitioning views...");
       localStorage.setItem("f4u_payment_status_complete", "true");
 
       // ============================================================================ //
       // 🔄 BRIDGE CONFIGURATION: ASSEMBLE MANIFEST FOR STEP-7 RENDERING SESSIONS    //
       // ============================================================================ //
+      const companyNameParameter = document.getElementById("schema_orders_company_name")?.value || localStorage.getItem("f4u_company_name") || "";
       const subtotalAmount = parseFloat(window._tempCalcContext?.baseTierPrice || window._tempAddonContext?.baseTierPrice || activeGrandCost);
-      const selectedPlanTitle = window.selectedPlan || localStorage.getItem("wizard_selected_plan") || localStorage.getItem("selected_plan") || "Corporate Filing Package";
+      const selectedPlanTitle = localStorage.getItem("wizard_selected_plan") || localStorage.getItem("selected_plan") || "Corporate Filing Package";
 
       const blueprintReceiptManifest = {
-        transaction_hash_id: trackingNumberToken,
+        transaction_hash_id: uniqueTrackingToken, // 🎯 FIXED: Directs token metrics using your active tracking variable
         communications_email: finalEmail,
         legal_entity_name: companyNameParameter,
         taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...",
@@ -1523,22 +1527,24 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         financials_grand_total_charge: activeGrandCost
       };
 
-      // Commit strings seamlessly so executeInjectionPipeline can parse line totals instantly
       sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(blueprintReceiptManifest));
-      localStorage.setItem("f4u_active_tracking_token", trackingNumberToken);
+      localStorage.setItem("f4u_active_tracking_token", uniqueTrackingToken);
       localStorage.setItem("wizard_field_lead_email", finalEmail);
 
+
+     // ============================================================================ //
+// step-6.js - SUCCESS ROUTING ALIGNMENT (PART 2 - CONCLUDED)                   //
+// ============================================================================ //
       // ============================================================================ //
       // 🔄 ROUTING INJECTION: BIND QUERY PARAMETERS AND EXECUTE LIFECYCLE STEP       //
       // ============================================================================ //
-          // 🎯 FIXED: Directs history updates to your true database F4U tracking reference string
       const currentUrlParams = new URLSearchParams(window.location.search);
       currentUrlParams.set("step", "7");
-      currentUrlParams.set("token", returnedTrackingNumber); // ✅ Locks down the real database F4U code
+      currentUrlParams.set("token", uniqueTrackingToken); // 🎯 FIXED: Replaced undefined reference variable with uniqueTrackingToken
       currentUrlParams.set("email", encodeURIComponent(finalEmail));
 
+      // Append parameters into history context to satisfy step-7 URL lookups cleanly
       window.history.pushState({}, '', `${window.location.pathname}?${currentUrlParams.toString()}`);
-
 
       // Wake up your Step 7 hydration engine channels safely
       if (typeof window.switchWizardActiveViewLayout === "function") {
@@ -1563,6 +1569,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     if (btnLoadingState) btnLoadingState.style.display = "none";
   }
 };
+
 
   // 🎯 ATTACHING MODULE SCOPE LIFE-HOOKS DIRECTLY TO THE GLOBAL WINDOW LAYERS
   window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
