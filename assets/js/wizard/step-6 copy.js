@@ -560,9 +560,9 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
     const StripeConfirmationResult = await window.stripeInstance.confirmPayment({
       elements: window.stripeElementsContainer,
-      redirect: "", // Allows inline Step 7 transitions for card processing completions
+      redirect: "if_required", // Allows inline Step 7 transitions for card processing completions
       confirmParams: {
-        return_url: `https://filings4u.com{encodeURIComponent(uniqueTrackingToken)}`,
+        return_url: `https://portal.filings4u.com/client-status.html{encodeURIComponent(uniqueTrackingToken)}`,
         receipt_email: captureEmail || undefined,
         payment_method_data: {
           billing_details: {
@@ -596,7 +596,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         window.showWizardStepCard(7);
       } else {
         // Ultimate location navigation routing escape hatch if no wizard objects are exposed in window space
-        window.location.href = `https://filings4u.com/{encodeURIComponent(uniqueTrackingToken)}`;
+        window.location.href = `https://portal.filings4u.com/client-status.html{encodeURIComponent(uniqueTrackingToken)}`;
       }
     }
   } catch (err) {
