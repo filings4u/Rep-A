@@ -504,27 +504,40 @@ const executeInjectionPipeline = function() {
                 });
             }
             
-            // 3. MAP GRAND TOTAL AMOUNT FROM TRANSACTION METADATA
-            if (manifest.financials_grand_total_charge) {
-                billingTotal = `$${manifest.financials_grand_total_charge.toFixed(2)}`;
-            } else if (window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount) {
-                const globalTotal = parseFloat(window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount || 0);
-                billingTotal = `$${globalTotal.toFixed(2)}`;
-            }
-            
-            // 4. BIND FORM PROFILE STRINGS NATIVELY TO IDENTICAL UI NODE FIELDS
-            if (document.getElementById("receipt-profile-name")) document.getElementById("receipt-profile-name").textContent = manifest.legal_entity_name;
-            if (document.getElementById("receipt-profile-ein")) document.getElementById("receipt-profile-ein").textContent = manifest.taxpayer_ein;
-            if (document.getElementById("receipt-profile-address")) document.getElementById("receipt-profile-address").textContent = manifest.office_address_street;
-            if (document.getElementById("receipt-tracking-token-display") && manifest.transaction_hash_id) {
-                document.getElementById("receipt-tracking-token-display").textContent = manifest.transaction_hash_id;
-            }
-        } catch (e) {
-            console.error("[Receipt Manifest Parser Error]", e);
-        }
+      // 3. MAP GRAND TOTAL AMOUNT FROM TRANSACTION METADATA
+    if (manifest.financials_grand_total_charge) {
+      billingTotal = `$${parseFloat(manifest.financials_grand_total_charge).toFixed(2)}`;
+    } else if (window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount) {
+      const globalTotal = parseFloat(window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount || 0);
+      billingTotal = `$${globalTotal.toFixed(2)}`;
+    }
+
+    // 4. BIND FORM PROFILE STRINGS NATIVELY TO IDENTICAL UI NODE FIELDS
+    if (document.getElementById("receipt-profile-name")) {
+      document.getElementById("receipt-profile-name").textContent = manifest.legal_entity_name || "";
+    }
+    if (document.getElementById("receipt-profile-ein")) {
+      document.getElementById("receipt-profile-ein").textContent = manifest.taxpayer_ein || "";
+    }
+    if (document.getElementById("receipt-profile-address")) {
+      document.getElementById("receipt-profile-address").textContent = manifest.office_address_street || "";
     }
     
-    step7Frame.innerHTML = itemsHtml;
+    // 🎯 FIXED: Stripped all hardcoded default tokens. 
+    // This dynamically reads the customer's specific, unaltered tracking number from memory.
+    const dynamicCustomerF4UToken = (manifest.transaction_hash_id || window.currentGeneratedMbeAccountNumber || localStorage.getItem("tracking_number") || "").trim();
+    
+    if (document.getElementById("receipt-tracking-token-display") && dynamicCustomerF4UToken) {
+      document.getElementById("receipt-tracking-token-display").textContent = dynamicCustomerF4UToken; 
+    }
+  } catch (e) {
+    console.error("[Receipt Manifest Parser Error]", e);
+  }
+}
+
+step7Frame.innerHTML = itemsHtml;
+
+
     
     const finalGovFee = parseFloat(window.computedWizardStateGovernmentFee) || 0;
     if (finalGovFee > 0) {
