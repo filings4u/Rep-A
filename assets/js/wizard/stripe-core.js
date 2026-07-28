@@ -117,14 +117,21 @@
 
 
 // ============================================================================ // 
-// 📁 stripe-core.js - UNIFIED TRANSACTION EXECUTION BLOCK                      // 
+// 📁 stripe-core.js - TRANSACTION EXECUTION BLOCK                              // 
 // ============================================================================ // 
-(function() {
-  "use strict";
+(function() { 
+  "use strict"; 
 
   async function processCheckoutHandshake() { 
     var targetAmount = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || 194.00; 
-    var uniqueTrackingToken = localStorage.getItem("f4u_active_tracking_token") || ""; 
+    
+    // FIX: Scrapes live browser URL query bounds first to isolate active tokens completely
+    const URLParamsTracker = new URLSearchParams(window.location.search);
+    var uniqueTrackingToken = URLParamsTracker.get('token') || 
+                              localStorage.getItem("tracking_number") || 
+                              localStorage.getItem("f4u_active_tracking_token") || 
+                              ""; 
+
     var dynamicCompanySelector = [ "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", "#bl_applicant_name", "#cage_legal_name", "#cgs_company_name", "#clia_lab_name", "#corp_proposed_name", "#dba_proposed_name", "#dbe_legal_name", "#dot_con_legal_name", "#prm_legal_name", "#dqf_carrier_name", "#duns_legal_name", "#ein_applicant_name", "#fed_tax_legal_name", "#fq_proposed_name", "#fran_tax_legal_name", "#haz_legal_name", "#hut_legal_name", "#ifta_legal_name", "#ifta_rep_legal_name", "#llc_desired_name", "#rein_original_name", "#mcs_legal_name", "#mbe_legal_name", "#nea_legal_name", "#np_proposed_name", "#oa_company_name", "#pr_legal_name", "#ra_client_name", "#st_legal_name", "#scac_legal_name", "#sllc_proposed_name", "#sm_proposed_name", "#sp_proposed_name", "#ta_legal_name", "#ins_legal_name", "#wbe_legal_name" ].join(","); 
     var companyNameInput = document.querySelector(dynamicCompanySelector); 
     var companyName = (window.currentOrderCorePayload && window.currentOrderCorePayload.company_name) || localStorage.getItem("f4u_company_name") || (companyNameInput ? companyNameInput.value.trim() : ""); 
@@ -154,11 +161,27 @@
     } 
     localStorage.setItem("f4u_company_name", companyName.trim()); 
 
-    var schemaDatabasePayload = { company_name: companyName.trim(), service_title: serviceTitle.trim(), plan_tier: planTier.trim().toLowerCase(), total_fee: targetAmount, status: "initiated", poa_signed_state: signatureString.trim() !== "", poa_signature_verification_string: signatureString.trim(), tracking_number: uniqueTrackingToken.trim(), user_id: activeUserId, email: clientEmail.trim().toLowerCase(), action_intent: "initialize_payment_intent", collected_payload_metadata: { wizard_step_checkpoint: 6, timestamp_capture: new Date().toISOString() } };
-    console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function..."); 
+    var schemaDatabasePayload = { 
+      company_name: companyName.trim(), 
+      service_title: serviceTitle.trim(), 
+      plan_tier: planTier.trim().toLowerCase(), 
+      total_fee: targetAmount, 
+      status: "initiated", 
+      poa_signed_state: signatureString.trim() !== "", 
+      poa_signature_verification_string: signatureString.trim(), 
+      tracking_number: uniqueTrackingToken.trim(), 
+      user_id: activeUserId, 
+      email: clientEmail.trim().toLowerCase(), 
+      action_intent: "initialize_payment_intent", 
+      collected_payload_metadata: { 
+        wizard_step_checkpoint: 6, 
+        timestamp_capture: new Date().toISOString() 
+      } 
+    }; 
+    console.log("📡 [Supabase Gateway] Dispatching secure transactional payload to live Edge Function...");
 
-    try { 
-      // FIX: Directed network stream target to hit your real, live working Supabase Function endpoint
+
+        try { 
       var responseStream = await fetch("https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/stripe-webhook", { 
         method: "POST", 
         headers: { "Content-Type": "application/json" }, 
@@ -204,6 +227,8 @@
 
   window.executeStabaseCheckoutTransactionHandshake = processCheckoutHandshake; 
 })();
+
+
 
 
 
