@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ MCS-150 BIENNIAL UPDATE SERVICE: SYSTEM ENGINE MATRIX (PART 1 OF 3)       //
+﻿// ============================================================================ //
+// ðŸ› ï¸ MCS-150 BIENNIAL UPDATE SERVICE: SYSTEM ENGINE MATRIX (PART 1 OF 3)       //
 // ============================================================================ //
 function initMcs150UpdateService() {
   window.formRegistry = window.formRegistry || {};
@@ -62,7 +62,7 @@ function initMcs150UpdateService() {
 window.initMcs150UpdateService = initMcs150UpdateService;
 
 // ============================================================================ //
-// 📊 MCS-150 BIENNIAL UPDATE SERVICE: INITIAL FORM INTERFACE (PART 1 OF 3)     //
+// ðŸ“Š MCS-150 BIENNIAL UPDATE SERVICE: INITIAL FORM INTERFACE (PART 1 OF 3)     //
 // ============================================================================ //
 window.buildMcs150UpdateFormPart1 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -112,7 +112,7 @@ window.buildMcs150UpdateFormPart1 = function(stateDropdownOptionsHtml = "") {
 window.buildMcs150UpdateFormPart1 = window.buildMcs150UpdateFormPart1;
 
 // ============================================================================ //
-// 📊 MCS-150 BIENNIAL UPDATE SERVICE: LAYOUT MATRIX (PART 2 OF 3)              //
+// ðŸ“Š MCS-150 BIENNIAL UPDATE SERVICE: LAYOUT MATRIX (PART 2 OF 3)              //
 // ============================================================================ //
 window.buildMcs150UpdateFormPart2 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -171,7 +171,7 @@ window.buildMcs150UpdateFormPart2 = function(stateDropdownOptionsHtml = "") {
 window.buildMcs150UpdateFormPart2 = window.buildMcs150UpdateFormPart2;
 
 // ============================================================================ //
-// 📊 MCS-150 BIENNIAL UPDATE SERVICE: LAYOUT MASTER (PART 3 OF 3)              //
+// ðŸ“Š MCS-150 BIENNIAL UPDATE SERVICE: LAYOUT MASTER (PART 3 OF 3)              //
 // ============================================================================ //
 window.buildMcs150UpdateFormPart3 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -215,7 +215,7 @@ window.buildMcs150UpdateFormPart3 = function(stateDropdownOptionsHtml = "") {
 };
 
 // ============================================================================ //
-// 📊 MCS-150 BIENNIAL UPDATE SERVICE: FLEET EQUIPMENT EXTRA FIELDS            //
+// ðŸ“Š MCS-150 BIENNIAL UPDATE SERVICE: FLEET EQUIPMENT EXTRA FIELDS            //
 // ============================================================================ //
 window.buildMcs150UpdateFormEquipmentInventory = function() {
   return `
@@ -254,7 +254,7 @@ window.buildMcs150UpdateFormEquipmentInventory = function() {
 };
 
 // ============================================================================ //
-// 🛠️ IFTA REGISTRATION MODULE: COMPONENT VALIDATION ASSIGNMENTS              //
+// ðŸ› ï¸ IFTA REGISTRATION MODULE: COMPONENT VALIDATION ASSIGNMENTS              //
 // ============================================================================ //
 
 // Inject these three configurations inside your standardFields validation tracking map:
@@ -288,7 +288,7 @@ const validateEquipmentInventoryMetrics = function() {
 };
 
 // ============================================================================ //
-// 📦 MASTER MCS-150 UPDATE APPLICATION ASSEMBLY HOOK                           //
+// ðŸ“¦ MASTER MCS-150 UPDATE APPLICATION ASSEMBLY HOOK                           //
 // ============================================================================ //
 window.buildMcs150UpdateFormMaster = function(stateDropdownOptionsHtml = "") {
   // 1. Compile individual modular layout matrix strings safely
@@ -309,7 +309,7 @@ window.buildMcs150UpdateFormMaster = function(stateDropdownOptionsHtml = "") {
 };
 
 // ============================================================================ //
-// 🛠️ REGISTER MASTER SCAN VALIDATION INTERFACE & MAP TRACKING HOOKS             //
+// ðŸ› ï¸ REGISTER MASTER SCAN VALIDATION INTERFACE & MAP TRACKING HOOKS             //
 // ============================================================================ //
 window.validateEntireMcs150UpdateWizard = function() {
   let isValid = true;
@@ -387,3 +387,4 @@ window.formRegistry['mcs-150-update'] = {
 window.formRegistry['mcs-150-update-form-master'] = function(stateDropdownOptionsHtml = "") {
   return window.buildMcs150UpdateFormMaster(stateDropdownOptionsHtml);
 };
+

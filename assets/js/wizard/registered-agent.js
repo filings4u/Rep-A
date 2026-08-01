@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ REGISTERED AGENT SERVICE VALIDATION MATRIX ENGINE (PART 1 OF 3)
+﻿// ============================================================================ //
+// ðŸ› ï¸ REGISTERED AGENT SERVICE VALIDATION MATRIX ENGINE (PART 1 OF 3)
 // ============================================================================ //
 const registeredAgentPart1Validation = {
   requiredFields: [
@@ -191,7 +191,7 @@ window.formRegistry['registered-agent-part1-layout'] = buildRegisteredAgentServi
 window.formRegistry['registered-agent-part1-validation'] = registeredAgentPart1Validation;
 
 // ============================================================================ //
-// 🛠️ REGISTERED AGENT SERVICE VALIDATION MATRIX ENGINE (PART 2 OF 3)
+// ðŸ› ï¸ REGISTERED AGENT SERVICE VALIDATION MATRIX ENGINE (PART 2 OF 3)
 // ============================================================================ //
 const registeredAgentPart2Validation = {
   requiredFields: [
@@ -307,7 +307,7 @@ function buildRegisteredAgentServicePart2(stateDropdownOptionsHtml = "") {
       <select id="ra_mail_forwarding_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleRegisteredAgentMailForwardingWorkflow(this.value)">
         <option value="" disabled selected>Select Option...</option>
         <option value="yes">Yes, I require custom mail processing and physical forwarding profiles</option>
-        <option value="no">No, add Filings4u Premium Mail Forwarding Digital Node — $25.00 / Mo</option>
+        <option value="no">No, add Filings4u Premium Mail Forwarding Digital Node â€” $25.00 / Mo</option>
       </select>
     </div>
 
@@ -325,7 +325,7 @@ window.formRegistry['registered-agent-part2-layout'] = buildRegisteredAgentServi
 window.formRegistry['registered-agent-part2-validation'] = registeredAgentPart2Validation;
 
 // ============================================================================ //
-// 🛠️ REGISTERED AGENT SERVICE VALIDATION MATRIX ENGINE (PART 3 OF 3)
+// ðŸ› ï¸ REGISTERED AGENT SERVICE VALIDATION MATRIX ENGINE (PART 3 OF 3)
 // ============================================================================ //
 const registeredAgentPart3Validation = {
   requiredFields: [
@@ -416,7 +416,7 @@ window.formRegistry['registered-agent-part3-validation'] = registeredAgentPart3V
 window.formRegistry['registered-agent-form-master'] = buildRegisteredAgentServiceForm;
 
 // ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (REGISTERED AGENT SERVICE EXPOSURES)
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (REGISTERED AGENT SERVICE EXPOSURES)
 // ============================================================================ //
 
 window.toggleRegisteredAgentMailingVisibility = function(value) {
@@ -496,3 +496,4 @@ window.appendNewRegisteredAgentEntityRow = function() {
 
   container.appendChild(newCard);
 };
+

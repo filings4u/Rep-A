@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ NONPROFIT PART 1 VALIDATION MATRIX ENGINE                                 //
+﻿// ============================================================================ //
+// ðŸ› ï¸ NONPROFIT PART 1 VALIDATION MATRIX ENGINE                                 //
 // ============================================================================ //
 
 var nonprofitPart1Validation = {
@@ -194,7 +194,7 @@ window.buildNonprofitOrganizationFieldsLayoutHtml = buildNonprofitOrganizationFi
 
 
 // ============================================================================ //
-// 🛠️ NONPROFIT MODULE VALIDATION ENGINE (COMPREHENSIVE)                       //
+// ðŸ› ï¸ NONPROFIT MODULE VALIDATION ENGINE (COMPREHENSIVE)                       //
 // ============================================================================ //
 
 var nonprofitValidation = {
@@ -310,7 +310,7 @@ window.nonprofitValidation = nonprofitValidation;
 
 
 // ============================================================================ //
-// 🛠️ NONPROFIT PART 2 VALIDATION MATRIX ENGINE                                 //
+// ðŸ› ï¸ NONPROFIT PART 2 VALIDATION MATRIX ENGINE                                 //
 // ============================================================================ //
 
 var nonprofitPart2Validation = {
@@ -454,7 +454,7 @@ window.buildNonprofitOrganizationFieldsLayoutHtmlPart2 = buildNonprofitOrganizat
 
 
 // ============================================================================ //
-// 🛠️ NONPROFIT PART 2 (ADDITIONS) VALIDATION MATRIX ENGINE                     //
+// ðŸ› ï¸ NONPROFIT PART 2 (ADDITIONS) VALIDATION MATRIX ENGINE                     //
 // ============================================================================ //
 
 var nonprofitPart2AdditionsValidation = {
@@ -570,7 +570,7 @@ function buildNonprofitOrganizationFieldsLayoutHtmlPart3() {
       <label for="np_ein_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Will you be applying for an Employer Identification Number (EIN)? <span style="color: #ef4444;">*</span></label>
       <select id="np_ein_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleNonprofitEinReasonField(this.value)">
         <option value="no" selected>No, our organization already possesses an active EIN reference</option>
-        <option value="yes">Yes, I want to add Filings4u EIN Procurement Service — $79.00</option>
+        <option value="yes">Yes, I want to add Filings4u EIN Procurement Service â€” $79.00</option>
       </select>
     </div>
     <div id="np_ein_reason_wrapper" style="grid-column: span 2; display: none; flex-direction: column; gap: 8px;">
@@ -585,7 +585,7 @@ function buildNonprofitOrganizationFieldsLayoutHtmlPart3() {
     <div class="wizard-input-group" style="grid-column: span 2;">
       <label for="np_license_check" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Have you checked for necessary business licenses or permits? <span style="color: #ef4444;">*</span></label>
       <select id="np_license_check" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleNonprofitLicenseWorkflow(this.value)">
-        <option value="yes" selected>Yes, I have verified my structural requirements</option> <option value="no">No, I need assistance checking for required licenses/permits — $79.00</option>
+        <option value="yes" selected>Yes, I have verified my structural requirements</option> <option value="no">No, I need assistance checking for required licenses/permits â€” $79.00</option>
       </select>
     </div>
 
@@ -618,3 +618,4 @@ function buildNonprofitOrganizationFieldsLayoutHtmlPart3() {
   `;
 }
 window.buildNonprofitOrganizationFieldsLayoutHtmlPart2 = buildNonprofitOrganizationFieldsLayoutHtmlPart2;
+

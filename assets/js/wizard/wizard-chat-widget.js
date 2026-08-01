@@ -1,4 +1,4 @@
-/** * filings4u Platform Architecture 
+﻿/** * filings4u Platform Architecture 
  * Module: Wizard UI Controls & Realtime Database Stack 
  * Target: Handles mobile full-screen toggles, forces vertical stacks, and manages Supabase socket state. 
  */ 
@@ -892,7 +892,7 @@ window.confirmAndTerminateChatSession = async function() {
 
   // Call the processing route to compile logs and send them via Resend 
   if (typeof window.compileAndSendFinalTranscript === "function") { 
-    console.log("📄 Dispatching dialogue logs upstream before closing execution window..."); 
+    console.log("ðŸ“„ Dispatching dialogue logs upstream before closing execution window..."); 
     try {
       await window.compileAndSendFinalTranscript(); 
     } catch (transcriptError) {
@@ -1019,7 +1019,7 @@ window.dispatchWizardClientChatMessagePayload = async function() {
       
       if (typeof window.appendIncomingMsgBubbleToWizardUI === "function") { 
         // FIXED: Cleaned raw visual string parameter representation
-        window.appendIncomingMsgBubbleToWizardUI("⚠️ File upload failed. Check bucket permissions.", 'admin'); 
+        window.appendIncomingMsgBubbleToWizardUI("âš ï¸ File upload failed. Check bucket permissions.", 'admin'); 
       } 
       return; 
     } 
@@ -1093,7 +1093,7 @@ window.compileAndSendFinalTranscript = async function() {
       structuredTranscriptString += `[${displayTimestamp}] ${legibleSenderLabel}: ${msg.message_content}\n`; 
     }); 
 
-    console.log("📝 Chat log compiled successfully. Saving session payload data summary state to Supabase..."); 
+    console.log("ðŸ“ Chat log compiled successfully. Saving session payload data summary state to Supabase..."); 
 
     // 3. Mark the intake tracking row session_status as 'ended' to update the admin feed views
     const { error: sessionUpdateError } = await activeInstance 
@@ -1167,3 +1167,4 @@ if (document.readyState === "loading") {
 } else { 
   initializePreflightFormInterceptor(); 
 }
+

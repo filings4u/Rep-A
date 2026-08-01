@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 🧪 SYSTEM COMPLIANCE SERVICE: CLIA CERTIFICATE ENGINE (PART 1 OF 3)
+﻿// ============================================================================ // 
+// ðŸ§ª SYSTEM COMPLIANCE SERVICE: CLIA CERTIFICATE ENGINE (PART 1 OF 3)
 // ============================================================================ // 
 
 function initCliaCertificateServices() {
@@ -291,7 +291,7 @@ function initCliaCertificateServices() {
   };
 
   // ============================================================================ // 
-  // ⚙️ INTERACTIVE INTERFACE CONTROLLERS (CLIA CONDITIONAL TABS)
+  // âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (CLIA CONDITIONAL TABS)
   // ============================================================================ // 
   window.toggleCliaFacilityOtherSpecificationVisibility = function(value) {
     const wrapper = document.getElementById("clia_facility_other_wrapper");
@@ -312,7 +312,7 @@ function initCliaCertificateServices() {
   };
 
   // ============================================================================ // 
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (CLIA CERTIFICATE REGISTRATION)
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (CLIA CERTIFICATE REGISTRATION)
 // ============================================================================ // 
 window.toggleCliaFacilityOtherSpecificationVisibility = function(value) { 
   const otherWrapper = document.getElementById("clia_facility_other_wrapper"); 
@@ -334,7 +334,7 @@ window.toggleCliaFacilityOtherSpecificationVisibility = function(value) {
 };
 
 // ============================================================================ // 
-// 📦 MASTER CLIA CERTIFICATE FORM ASSEMBLY HOOK (UNIFIED)
+// ðŸ“¦ MASTER CLIA CERTIFICATE FORM ASSEMBLY HOOK (UNIFIED)
 // ============================================================================ // 
 window.formRegistry['clia-certificate-form-master'] = function(stateDropdownOptionsHtml = "") { 
   return window.formRegistry['clia-certificate-part1-layout'](stateDropdownOptionsHtml) + 
@@ -347,3 +347,4 @@ window.formRegistry['clia-certificate-form-master'] = function(stateDropdownOpti
 
 // Global execution runtime ignition hook
 initCliaCertificateServices();
+

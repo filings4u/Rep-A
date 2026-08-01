@@ -1,9 +1,9 @@
-/**
+﻿/**
  * Filings4U Platform Architecture
  * Target Module: assets/js/section4.js (Form 2290 Launchpad Features)
  * Standalone Step Matrix Injection Engine
  */
-(function() {
+;(function() {
     // 1. Verify existence of the launchpad section target container
     const launchpadTargetNode = document.getElementById("filings4u-launchpad-feature-root");
     if (!launchpadTargetNode) return;
@@ -78,3 +78,4 @@
         </div>
     `;
 })();
+

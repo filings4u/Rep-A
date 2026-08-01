@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 📐 DUNS NUMBER WIZARD ENGINE REGISTER                                       //
+﻿// ============================================================================ //
+// ðŸ“ DUNS NUMBER WIZARD ENGINE REGISTER                                       //
 // ============================================================================ //
 function initDunsNumberService() {
     window.formRegistry = window.formRegistry || {};
@@ -480,3 +480,4 @@ function initDunsNumberService() {
     };
 }
 // End of initDunsNumberService() closure wrapper
+

@@ -1,7 +1,7 @@
+﻿// ============================================================================ //
+// ðŸ“¡ CENTRALIZED SUPABASE CONNECTION & INTERACTIVE FORM VAULT ENGINE          //
 // ============================================================================ //
-// 📡 CENTRALIZED SUPABASE CONNECTION & INTERACTIVE FORM VAULT ENGINE          //
-// ============================================================================ //
-(function() {
+;(function() {
   "use strict";
   const URL_VAULT_ROUTER = window.ENV_SUPABASE_URL || "";
   const ACCESS_TOKEN_VAULT = window.ENV_SUPABASE_ANON_KEY || "";
@@ -115,7 +115,7 @@ window.processSaveProgressSubmissionPass = async function(event) {
   
   if (alertContainer) alertContainer.style.display = "none";
 
-  // 🟢 TARGETING PRODUCTION SCHEMA: Maps elements perfectly to your column structures
+  // ðŸŸ¢ TARGETING PRODUCTION SCHEMA: Maps elements perfectly to your column structures
   const leadPayload = {
     first_name: firstName,
     last_name: lastName,
@@ -147,7 +147,7 @@ window.processSaveProgressSubmissionPass = async function(event) {
     localStorage.setItem("f4u_saved_progress_email", email);
 
     // Display inline Success Layout
-    displayModalMessage("✓ Success! Your application data has been securely saved. A login magic link has been sent to your email to resume later.", "success");
+    displayModalMessage("âœ“ Success! Your application data has been securely saved. A login magic link has been sent to your email to resume later.", "success");
     
     // Hide form elements so users focus on the confirmation alert banner
     document.getElementById("f4u-save-progress-vault-form").style.display = "none";

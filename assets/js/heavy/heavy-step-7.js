@@ -1,7 +1,7 @@
+﻿// ============================================================================
+// ðŸš› FILINGS4U HEAVY TAX ENGINE - STEP 7: SECURE CHECKOUT & AUTO-PROVISION (PART 1)
 // ============================================================================
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 7: SECURE CHECKOUT & AUTO-PROVISION (PART 1)
-// ============================================================================
-(function() {
+;(function() {
   "use strict";
 
   const ACTIVE_PRODUCTION_STRIPE_PUBLISHABLE_KEY = 'pk_test_51TTy4u1hrjQxq47MgsMyTpdS4Aadnk4H63kILJaWbuUfppSySDt4Ijx9we7zkkCFEaeqzQ7C3k7Ql9HcSA5Urh3n00pEKGxNLE';
@@ -22,7 +22,7 @@
     baseContainer.style.setProperty("display", "block", "important");
 
     if (typeof Stripe === "undefined") {
-      baseContainer.innerHTML = "<div style='color:#ef4444; background:rgba(239,68,68,0.05); border:1px dashed #ef4444; padding:16px; border-radius:6px; font-weight:700; font-size:0.9rem; text-align:center;'>⚠️ Payment SDK scripts offline. Please reload.</div>";
+      baseContainer.innerHTML = "<div style='color:#ef4444; background:rgba(239,68,68,0.05); border:1px dashed #ef4444; padding:16px; border-radius:6px; font-weight:700; font-size:0.9rem; text-align:center;'>âš ï¸ Payment SDK scripts offline. Please reload.</div>";
       return;
     }
 
@@ -41,7 +41,7 @@
 
       baseContainer.innerHTML = `
         <div style="border-bottom: 2px solid #0a1f44 !important; padding-bottom: 12px !important; margin-bottom: 24px !important; box-sizing: border-box !important; width: 100% !important;">
-          <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">💳 Secure Checkout & Account Creation</h3>
+          <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">ðŸ’³ Secure Checkout & Account Creation</h3>
           <p style="margin: 6px 0 0 0 !important; color: #64748b !important; font-size: 0.85rem !important; font-weight: 500 !important;">Authorize your payment below. An encrypted client account profile will be built for you instantly.</p>
         </div>
 
@@ -181,7 +181,7 @@
     }
   };
   // ============================================================================ //
-  // 💳 TRANSACTION PIPELINE SUBMISSION ENGINE (STRIPE-CONFIRM ARCHITECTURE)      //
+  // ðŸ’³ TRANSACTION PIPELINE SUBMISSION ENGINE (STRIPE-CONFIRM ARCHITECTURE)      //
   // ============================================================================ //
   window.executeHeavySecureCheckoutTransaction = async function(event) {
     if (event && typeof event.preventDefault === "function") event.preventDefault();
@@ -273,7 +273,7 @@
       const sessionUuid = window.activeHeavySessionUuid;
 
       // ============================================================================ //
-      // 🚀 SUPABASE AUTH AUTOMATION: PROVISION USER REAL-TIME ACCOUNT (ALERT-FREE)   //
+      // ðŸš€ SUPABASE AUTH AUTOMATION: PROVISION USER REAL-TIME ACCOUNT (ALERT-FREE)   //
       // ============================================================================ //
       let freshlyProvisionedUserUuid = null;
 
@@ -398,3 +398,4 @@
   };
 
 })();
+

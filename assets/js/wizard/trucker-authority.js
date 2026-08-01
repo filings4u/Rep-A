@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Filings4U Platform Architecture
  * Module: trucker-authority.js (Part 1 of 4)
  * Standalone Namespace Init & Part 1 Layout Setup
@@ -537,7 +537,7 @@ window.validateEntireTruckerAuthorityWizard = function() {
 };
 
 // ============================================================================ //
-// 📦 MASTER RENDER SYSTEM ALLOCATION
+// ðŸ“¦ MASTER RENDER SYSTEM ALLOCATION
 // ============================================================================ //
 window.formRegistry['trucker-authority-form-master'] = function(stateDropdownOptionsHtml = "") {
     return window.formRegistry['trucker-authority-part1-layout'](stateDropdownOptionsHtml) + 
@@ -545,3 +545,4 @@ window.formRegistry['trucker-authority-form-master'] = function(stateDropdownOpt
            window.formRegistry['trucker-authority-part3-layout'](stateDropdownOptionsHtml) + 
            window.formRegistry['trucker-authority-part4-layout'](stateDropdownOptionsHtml);
 };
+

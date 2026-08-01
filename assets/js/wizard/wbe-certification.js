@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ WBE CERTIFICATION SERVICE: CORE SYSTEMS INITIALIZATION (PART 1 OF 3)     //
+﻿// ============================================================================ //
+// ðŸ› ï¸ WBE CERTIFICATION SERVICE: CORE SYSTEMS INITIALIZATION (PART 1 OF 3)     //
 // ============================================================================ //
 function initWomanOwnedCertificateService() {
   window.formRegistry = window.formRegistry || {};
@@ -84,7 +84,7 @@ function initWomanOwnedCertificateService() {
 window.initWomanOwnedCertificateService = initWomanOwnedCertificateService;
 
 // ============================================================================ //
-// 📊 FAMILY 25A: WBE CERTIFICATION FORM LAYOUT (PART 1 OF 3)                  //
+// ðŸ“Š FAMILY 25A: WBE CERTIFICATION FORM LAYOUT (PART 1 OF 3)                  //
 // ============================================================================ //
 window.buildWomanOwnedCertificateFormPart1 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -127,7 +127,7 @@ window.buildWomanOwnedCertificateFormPart1 = buildWomanOwnedCertificateFormPart1
 
 
 // ============================================================================ //
-// 🛠️ WBE CERTIFICATION SERVICE: SECONDARY SYSTEM CHECK ENGINE (PART 2 OF 3)    //
+// ðŸ› ï¸ WBE CERTIFICATION SERVICE: SECONDARY SYSTEM CHECK ENGINE (PART 2 OF 3)    //
 // ============================================================================ //
 window.validateWbeFormPart2Metrics = function() {
   let isValid = true;
@@ -165,7 +165,7 @@ window.validateWbeFormPart2Metrics = function() {
 };
 
 // ============================================================================ //
-// 📊 FAMILY 25A: WBE CERTIFICATION FORM LAYOUT (PART 2 OF 3)                  //
+// ðŸ“Š FAMILY 25A: WBE CERTIFICATION FORM LAYOUT (PART 2 OF 3)                  //
 // ============================================================================ //
 window.buildWomanOwnedCertificateFormPart2 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -212,7 +212,7 @@ window.buildWomanOwnedCertificateFormPart2 = function(stateDropdownOptionsHtml =
 window.buildWomanOwnedCertificateFormPart2 = buildWomanOwnedCertificateFormPart2;
 
 // ============================================================================ //
-// 📊 FAMILY 25A: WBE CERTIFICATION FORM LAYOUT (PART 3 OF 4)                  //
+// ðŸ“Š FAMILY 25A: WBE CERTIFICATION FORM LAYOUT (PART 3 OF 4)                  //
 // ============================================================================ //
 window.buildWomanOwnedCertificateFormPart3 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -268,7 +268,7 @@ window.buildWomanOwnedCertificateFormPart3 = function(stateDropdownOptionsHtml =
 };
 window.buildWomanOwnedCertificateFormPart3 = buildWomanOwnedCertificateFormPart3;
 // ============================================================================ //
-// ⚙️ INTERACTIVE LAYOUT INTERLOCK CONTROLLERS                                   //
+// âš™ï¸ INTERACTIVE LAYOUT INTERLOCK CONTROLLERS                                   //
 // ============================================================================ //
 window.toggleMorphicWbeAgencySubInputs = function(selectedValue) {
   const agencyWrapper = document.getElementById("wbe_state_agency_wrapper");
@@ -297,7 +297,7 @@ window.toggleMorphicWbeAgencySubInputs = function(selectedValue) {
 };
 
 // ============================================================================ //
-// 📦 MASTER WBE CERTIFICATION APPLICATION ASSEMBLY HOOK                         //
+// ðŸ“¦ MASTER WBE CERTIFICATION APPLICATION ASSEMBLY HOOK                         //
 // ============================================================================ //
 window.buildWomanOwnedCertificateForm = function(stateDropdownOptionsHtml = "") {
   const p1 = typeof window.buildWomanOwnedCertificateFormPart1 === "function" ? window.buildWomanOwnedCertificateFormPart1(stateDropdownOptionsHtml) : "";
@@ -334,4 +334,5 @@ window.formRegistry['woman-owned-certificate-form-master'] = function(stateDropd
 
 window.buildWomanOwnedCertificateForm = window.buildWomanOwnedCertificateForm;
 window.validateEntireWomanOwnedCertificationWizard = window.validateEntireWomanOwnedCertificationWizard;
+
 

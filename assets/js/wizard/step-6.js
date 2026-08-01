@@ -1,24 +1,23 @@
+﻿// ============================================================================ //
+// ðŸ”Œ PART 1 OF 3: CORE ARCHITECTURE SETUP & STRIPE AUTHORIZATION MATRIX        //
 // ============================================================================ //
-// // UI_CORE_INJECTOR.JS - PART A: CORE ARCHITECTURE & SKELETON RENDERER (FIXED)
-// ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   const STRIPE_KEY = 'pk_test_51TTy4i0dNjSlvyScX676lZwB34Lby8nEuv0sRorwo6kGYKkTJYiTyPQA6PVjzwUSjB9Kz90LdHtCh2E1BTMMEkTX00HCLPKUkf';
-
+  
   window.stripeInstance = window.stripeInstance || null;
   window.stripeElementsContainer = window.stripeElementsContainer || null;
   window.stripePaymentElementInstance = window.stripePaymentElementInstance || null;
-
   let capturedInternalClientSecret = null;
 
-  // 🎯 THE DIRECT FIX: Clean, high-utility explicit method prevents memory lock leaks
+  // ðŸŽ¯ Clean async authorization token capture gateway
   window.setStripeClientSecret = function(newSecretToken) {
     if (!newSecretToken || typeof newSecretToken !== 'string' || !newSecretToken.includes('_secret_')) {
       return;
     }
     capturedInternalClientSecret = newSecretToken;
-    console.log("✅ [Stripe Core Intercept] Async authorization token arrived. Forcing instant iframe paint...");
+    console.log("âœ… [Stripe Core Intercept] Async authorization token arrived. Forcing instant iframe paint...");
     if (typeof window.initializeFlatStripeCheckoutElement === "function") {
       window.initializeFlatStripeCheckoutElement();
     }
@@ -32,6 +31,161 @@
     enumerable: true
   });
 
+
+// ============================================================================ // 
+// ðŸ”Œ PART 2 OF 3: UNIVERSAL SCHEMA TRANSLATION LAYER (FIXED FIELD ENGINE)      // 
+// ============================================================================ // 
+window.compileDatabaseAlignedOrderPayload = function() { 
+  // 1. EXTRACT TOTAL AMOUNT SAFELY (Ensures clean float context) 
+  let rawTotal = localStorage.getItem("total_paid_amount") || localStorage.getItem("f4u_running_total") || "0.00"; 
+  const grandTotalDisplayNode = document.getElementById("summary-grand-total-display") || document.getElementById("payment-gateway-total-display") || Array.from(document.querySelectorAll('*')).find(el => el.textContent && el.textContent.includes('$')); 
+  if (grandTotalDisplayNode) { 
+    const parsedDOMCost = parseFloat(grandTotalDisplayNode.textContent.replace(/[^0-9.]/g, "")); 
+    if (!isNaN(parsedDOMCost) && parsedDOMCost > 0) { 
+      rawTotal = parsedDOMCost.toString(); 
+    } 
+  } 
+  const finalAmountFloat = parseFloat(parseFloat(rawTotal || 0).toFixed(2)); 
+
+  // 2. EXTRACT SELECTED UPSELLS Matrix (Kept intact) 
+  let flatUpsellsString = null; 
+  try { 
+    const cachedUpsells = localStorage.getItem("selected_upsells") || localStorage.getItem("wizard_selected_addons_matrix"); 
+    if (cachedUpsells && cachedUpsells.trim() !== "") { 
+      if (cachedUpsells.trim().startsWith("[")) { 
+        const upsellItemsArray = JSON.parse(cachedUpsells); 
+        if (Array.isArray(upsellItemsArray) && upsellItemsArray.length > 0) { 
+          flatUpsellsString = upsellItemsArray.map(item => item.id || item.name || item).join(", "); 
+        } 
+      } else { 
+        flatUpsellsString = cachedUpsells.trim(); 
+      } 
+    } 
+  } catch (e) { 
+    flatUpsellsString = localStorage.getItem("selected_upsells") || null; 
+  } 
+
+  // ðŸ› ï¸ NEW POWERFUL VISUAL ROW SCANNER: Finds fields based on the uppercase text titles above them 
+  const findMetadataFieldByVisualLabel = (labelText) => { 
+    const directElement = document.getElementById("schema_orders_" + labelText.toLowerCase().replace(" ", "_")); 
+    if (directElement) return directElement; 
+
+    const divs = document.querySelectorAll("div, label, span"); 
+    for (let el of divs) { 
+      if (el.textContent && el.textContent.trim().toUpperCase() === labelText.toUpperCase()) { 
+        const container = el.parentElement; 
+        if (container) { 
+          const field = container.querySelector("input, textarea") || el.nextElementSibling; 
+          if (field) return field; 
+        } 
+      } 
+    } 
+    return null; 
+  }; 
+
+  const getMetadataFieldValue = (labelText) => { 
+    const el = findMetadataFieldByVisualLabel(labelText); 
+    if (!el) return ""; 
+    return (el.value !== undefined ? el.value : el.textContent || "").trim(); 
+  }; 
+
+  const findLiveInputByPlaceholderKeyword = (keyword) => { 
+    const inputs = document.querySelectorAll("input, textarea"); 
+    for (let input of inputs) { 
+      const textPlaceholder = (input.placeholder || "").toLowerCase(); 
+      const elementLabel = (input.getAttribute("aria-label") || "").toLowerCase(); 
+      const elementId = (input.id || "").toLowerCase(); 
+      if (textPlaceholder.includes(keyword) || elementLabel.includes(keyword) || elementId.includes(keyword)) { 
+        if (input.value && input.value.trim() !== "") return input.value.trim(); 
+      } 
+    } 
+    return ""; 
+  }; 
+
+  // ðŸŽ¯ FIX 1: Contact Form Input Scrapers 
+  const firstName = findLiveInputByPlaceholderKeyword("first") || localStorage.getItem("portal_user_first_name") || ""; 
+  const lastName = findLiveInputByPlaceholderKeyword("last") || localStorage.getItem("portal_user_last_name") || ""; 
+  const phoneNumber = findLiveInputByPlaceholderKeyword("phone") || findLiveInputByPlaceholderKeyword("555") || localStorage.getItem("portal_user_phone") || ""; 
+  const emailAddress = (findLiveInputByPlaceholderKeyword("email") || findLiveInputByPlaceholderKeyword("example") || localStorage.getItem("portal_user_email_input") || "info@filings4u.com").toLowerCase(); 
+
+  // ðŸŽ¯ FIX 2: Dynamic Visual Matching from your Gray Container Boxes 
+  const domCompany = getMetadataFieldValue("COMPANY NAME"); 
+  const companyName = (domCompany && domCompany !== "Not Specified" && domCompany !== "") ? domCompany : (localStorage.getItem("schema_orders_company_name") || localStorage.getItem("global_company_owner") || localStorage.getItem("company_name") || "Not Specified"); 
+  
+  const domPlan = getMetadataFieldValue("PLAN TIER"); 
+  const selectedPlan = (domPlan && domPlan !== "") ? domPlan : (localStorage.getItem("schema_orders_plan_tier") || localStorage.getItem("selected_plan") || "STANDARD PLAN"); 
+
+  const urlParams = new URLSearchParams(window.location.search); 
+  const rawServiceKey = urlParams.get('service') || window.routeActiveServiceKey || window.currentServiceKey || localStorage.getItem("wizard_service_key") || ""; 
+  const domService = getMetadataFieldValue("SERVICE TITLE"); 
+  const serviceTitle = (domService && domService !== "") ? domService : (localStorage.getItem("schema_orders_service_title") || String(rawServiceKey).replace(/[\s_]+/g, " ")).toUpperCase(); 
+
+  // ðŸŽ¯ FIX 3: Tracking Token Generator and Check 
+  let domTracking = getMetadataFieldValue("TRACKING NUMBER"); 
+  let trackingNumber = (domTracking && !domTracking.includes("UNKNOWN") && domTracking !== "GUEST-INTAKE" && domTracking !== "") ? domTracking : (localStorage.getItem("schema_orders_tracking_number") || localStorage.getItem("f4u_active_tracking_token") || localStorage.getItem("tracking_number") || ""); 
+  if (!trackingNumber || trackingNumber.trim() === "") { 
+    trackingNumber = "F4U-" + Math.random().toString(36).substring(2, 12).toUpperCase(); 
+    localStorage.setItem("f4u_active_tracking_token", trackingNumber); 
+    localStorage.setItem("tracking_number", trackingNumber); 
+  } 
+
+  // ðŸŽ¯ FIX 4: Backfill Sync Engine (Pushes data cleanly onto the visible screen elements) 
+  const syncVisualField = (labelText, targetVal) => { 
+    const el = findMetadataFieldByVisualLabel(labelText); 
+    if (el && targetVal) { 
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") { 
+        el.value = targetVal; 
+      } else { 
+        el.textContent = targetVal; 
+      } 
+    } 
+  }; 
+
+  // Run the force update onto the screen UI 
+  syncVisualField("COMPANY NAME", companyName); 
+  syncVisualField("PLAN TIER", selectedPlan); 
+  syncVisualField("SERVICE TITLE", serviceTitle); 
+  syncVisualField("TRACKING NUMBER", trackingNumber); 
+
+  // ðŸ–‹ï¸ POA SYNCHRONIZATION 
+  const poaSignature = localStorage.getItem("cached_wizard_poa_signature_verification_string") || window.wizardPoaSignatureVerificationString || null; 
+
+  // ðŸŽ¯ SCHEMA CONTRACT DEFINITION 
+  const ordersTablePayload = { 
+    tracking_number: String(trackingNumber).trim(), 
+    first_name: String(firstName).trim(), 
+    last_name: String(lastName).trim(), 
+    email_address: String(emailAddress).trim(), 
+    phone_number: String(phoneNumber).trim(), 
+    selected_plan: String(selectedPlan).trim(), 
+    selected_upsells: flatUpsellsString, 
+    total_paid_amount: finalAmountFloat, 
+    poa_signature: poaSignature ? String(poaSignature).trim() : null, 
+    poa_execution_stamp: poaSignature ? new Date().toISOString() : null, 
+    stripe_payment_id: window.stripePaymentIntentId || null, 
+    account_created: false, 
+    company_name: String(companyName).trim() 
+  }; 
+
+  window.currentOrderCorePayload = { ...ordersTablePayload, emailAddress: ordersTablePayload.email_address, service_title: serviceTitle, total_fee: ordersTablePayload.total_paid_amount, collected_payload_metadata: { ...ordersTablePayload, service_title: serviceTitle } }; 
+  sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(window.currentOrderCorePayload)); 
+  return ordersTablePayload; 
+};
+
+// ðŸŽ¯ IMMEDIATE & DEFERRED EXECUTION LOOP (Runs automatically without breaking Stripe)
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => window.compileDatabaseAlignedOrderPayload());
+} else {
+  window.compileDatabaseAlignedOrderPayload();
+}
+// Continuous check wrapper to account for single page application renders
+setTimeout(() => window.compileDatabaseAlignedOrderPayload(), 500);
+setTimeout(() => window.compileDatabaseAlignedOrderPayload(), 1500);
+
+
+  // ============================================================================ //
+  // ðŸ”Œ PART 3 OF 3: CORE CHECKOUT ARCHITECTURE & SKELETON UI RENDERER            //
+  // ============================================================================ //
   async function initializeFlatStripeCheckoutElement() {
     console.log("[Stripe Core] Rendering UI layout skeleton...");
     const baseContainer = document.getElementById("step-6-injection-placeholder");
@@ -39,41 +193,23 @@
       console.error("[Stripe Core] Execution halted. Target placeholder not found.");
       return;
     }
-
     if (typeof Stripe === "undefined") {
       baseContainer.innerHTML = "<p style='color: red; font-weight: 600;'>Payment system offline. Please refresh.</p>";
       return;
     }
-
     if (!window.stripeInstance) {
       window.stripeInstance = Stripe(STRIPE_KEY);
     }
 
-    // 🎯 FIX 1: Clean up total calculation into a single deterministic source
-    const rawTotal = window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || localStorage.getItem("f4u_running_total") || 0;
-    const total = parseFloat(rawTotal);
+    // Force data processing pass via compilation layer to pull dynamic properties cleanly out of cached form metrics
+    const liveCalculatedPayload = window.compileDatabaseAlignedOrderPayload();
 
-    // 🎯 FIX 2: Explicitly scrape user details along with company details to sync local state
-    const compName = window.currentOrderCorePayload?.company_name || localStorage.getItem("wizard_field_company_name") || localStorage.getItem("wizard_company_name") || localStorage.getItem("f4u_company_name") || "";
-    const firstName = window.currentOrderCorePayload?.first_name || localStorage.getItem("wizard_first_name") || localStorage.getItem("first_name") || "";
-    const lastName = window.currentOrderCorePayload?.last_name || localStorage.getItem("wizard_last_name") || localStorage.getItem("last_name") || "";
-    const phoneNumber = window.currentOrderCorePayload?.phone_number || localStorage.getItem("wizard_phone_number") || localStorage.getItem("phone_number") || "";
-    const emailAddress = window.currentOrderCorePayload?.email_address || localStorage.getItem("wizard_email_address") || localStorage.getItem("email_address") || "";
-
-    const servKey = window.routeActiveServiceKey || window.currentOrderCorePayload?.service_key || localStorage.getItem("wizard_service_key") || "";
-    const servTitle = window.currentOrderCorePayload?.service_title || localStorage.getItem("wizard_field_selected_package_offering") || "Corporate Asset Filing Package";
-    const planTier = window.routeActivePlanKey || window.currentOrderCorePayload?.plan_tier || localStorage.getItem("wizard_plan_tier_key") || "standard";
-
-    // 🎯 FIX 3: Eliminate random token generation if a tracking row already exists in Supabase
-  let tracking = localStorage.getItem("f4u_active_tracking_token") || localStorage.getItem("tracking_number");
-    
-    // If the token is missing or corrupted, use your original step generator to build the F4U identifier
-    if (!tracking || tracking === "GUEST-INTAKE" || tracking.includes("UNKNOWN")) {
-      tracking = "F4U-" + Math.random().toString(36).substring(2, 12).toUpperCase();
-      localStorage.setItem("f4u_active_tracking_token", tracking);
-      localStorage.setItem("tracking_number", tracking); 
-    }
-
+    // ðŸŽ¯ FIX PROPERTIES: Declarations match exactly, completely eliminating your reference errors
+    const total = liveCalculatedPayload.total_paid_amount;
+    const compName = liveCalculatedPayload.company_name;
+    const planTier = liveCalculatedPayload.selected_plan;
+    const tracking = liveCalculatedPayload.tracking_number;
+    const servTitle = window.currentOrderCorePayload?.service_title || "";
 
     let innerFormMounted = document.getElementById("stripe-payment-element-mount-point");
     if (isNaN(total) || total <= 0) {
@@ -94,7 +230,7 @@
     }
 
     if (!capturedInternalClientSecret) {
-      console.warn("⚠️ [Stripe Core Guard] Standby: Awaiting secret payment token from server...");
+      console.warn("âš ï¸ [Stripe Core Guard] Standby: Awaiting secure secret payment token from server...");
       if (!innerFormMounted) {
         if (typeof window.assembleCleanUILayoutTree === "function") {
           window.assembleCleanUILayoutTree(baseContainer, total, compName, servTitle, planTier, tracking);
@@ -119,21 +255,6 @@
       return;
     }
 
-    // 🎯 FIX 4: Build a comprehensive local data object containing the missing customer fields
-    window.currentOrderCorePayload = {
-      company_name: compName,
-      first_name: firstName,
-      last_name: lastName,
-      phone_number: phoneNumber,
-      email_address: emailAddress,
-      service_key: servKey,
-      service_title: servTitle,
-      plan_tier: planTier,
-      total_fee: total,
-      status: "payment_initiated",
-      tracking_number: tracking
-    };
-
     if (typeof window.assembleCleanUILayoutTree === "function") {
       window.assembleCleanUILayoutTree(baseContainer, total, compName, servTitle, planTier, tracking);
     }
@@ -144,7 +265,6 @@
         console.error("[Stripe Core] Mount point missing from DOM after UI assembly.");
         return;
       }
-
       try {
         if (!window.stripeElementsContainer && capturedInternalClientSecret) {
           window.stripeElementsContainer = window.stripeInstance.elements({
@@ -174,8 +294,7 @@
             layout: { type: 'accordion', defaultCollapsed: false, radios: false, spacedAccordionItems: true }
           });
           window.stripePaymentElementInstance.mount('#stripe-payment-element-mount-point');
-          console.log("✅ [Stripe Core] Payment Element successfully mounted.");
-
+          console.log("âœ… [Stripe Core] Payment Element successfully mounted.");
           setTimeout(() => {
             if (typeof window.attachSubmitButtonController === "function") {
               window.attachSubmitButtonController();
@@ -191,34 +310,139 @@
   }
 
   window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
+  // ============================================================================ //
+  // ðŸ”Œ INTERCEPT ENDPOINT INTERFACE FETCH CALLS DYNAMICALLY                      //
+  // ============================================================================ //
+  if (typeof window.fetch === "function" && !window.fetch.isTranslationLayerWrapped) {
+    const nativeFetchInstance = window.fetch;
+    window.fetch = async function(resource, config) {
+      if (typeof resource === "string" && resource.includes("/functions/v1/stripe-webhook") && config && config.body) {
+        try {
+          const cleanDatabasePayload = window.compileDatabaseAlignedOrderPayload();
+          
+          const unifiedHandoffWrapper = {
+            ...cleanDatabasePayload,
+            emailAddress: cleanDatabasePayload.email_address, 
+            service_title: window.currentOrderCorePayload.service_title, 
+            total_fee: cleanDatabasePayload.total_paid_amount, 
+            collected_payload_metadata: { ...window.currentOrderCorePayload } 
+          };
+
+          config.body = JSON.stringify(unifiedHandoffWrapper);
+        } catch (e) {
+          console.warn("[Schema Translation Error] Payload conversion pass skipped:", e);
+        }
+      }
+      return nativeFetchInstance.apply(this, arguments);
+    };
+    window.fetch.isTranslationLayerWrapped = true;
+  }
 })();
 
+
 // ============================================================================ //
-// // UI_CORE_INJECTOR.JS - PART B: VIEW TREE HTML SKELETON ASSEMBLER (FIXED)
+// UI_CORE_INJECTOR.JS - PART B: VIEW TREE HTML SKELETON ASSEMBLER (BLOCK 1 OF 2)//
 // ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   window.assembleCleanUILayoutTree = function(baseContainer, total, compName, servTitle, planTier, tracking) {
-    console.log("📡 [Stripe Flow Engine] Preparing fresh layout trees for conversion checkout passes...");
+    console.log("ðŸ“¡ [Stripe Flow Engine] Preparing fresh layout trees for conversion checkout passes...");
 
-    // 🎯 EXTRACT INPUT STRINGS FROM MEMORY
-    let formFirstName = localStorage.getItem("first_name") || localStorage.getItem("wizard_field_first_name") || "";
-    let formLastName = localStorage.getItem("last_name") || localStorage.getItem("wizard_field_last_name") || "";
-    let formEmailAddress = localStorage.getItem("email_address") || localStorage.getItem("wizard_field_email") || localStorage.getItem("email") || "";
-    let formPhoneNumber = localStorage.getItem("phone_number") || localStorage.getItem("wizard_field_phone") || localStorage.getItem("phone") || "";
+    // ðŸŽ¯ FIX 1: DIRECT REAL-TIME DOM FIELD EXTRACTION FROM STEP 2
+    let finalCompany = compName;
+    if (!finalCompany || finalCompany === "Not Specified" || finalCompany.trim() === "") {
+      // Step A: Scan the live DOM for inputs labeled with company terms
+      const liveInputs = document.querySelectorAll("input, textarea");
+      for (let input of liveInputs) {
+        const inputId = (input.id || "").toLowerCase();
+        const inputName = (input.name || "").toLowerCase();
+        const inputPlaceholder = (input.placeholder || "").toLowerCase();
+        
+        // Match common business identifiers used in setup fields
+        if (inputId.includes("company") || inputName.includes("company") || inputPlaceholder.includes("company") ||
+            inputId.includes("business") || inputName.includes("business") || inputPlaceholder.includes("business")) {
+          if (input.value && input.value.trim() !== "" && input.value !== "Not Specified") {
+            finalCompany = input.value.trim();
+            break;
+          }
+        }
+      }
 
-    // Secure Shield: Strip away any historical systemic placeholder text so inputs start clean
+      // Step B: Storage Fallbacks if the live input isn't present on screen anymore
+      if (!finalCompany || finalCompany === "Not Specified" || finalCompany.trim() === "") {
+        finalCompany = localStorage.getItem("schema_orders_company_name") || 
+                       localStorage.getItem("global_company_owner") || 
+                       localStorage.getItem("company_name") || 
+                       localStorage.getItem("wizard_company_name") ||
+                       localStorage.getItem("business_name") || "";
+                       
+        // Step C: Fuzzy storage lookup for any stray company key variables
+        if (!finalCompany || finalCompany.trim() === "") {
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i) || "";
+            if (key.toLowerCase().includes("company") || key.toLowerCase().includes("business")) {
+              const possibleVal = (localStorage.getItem(key) || "").trim();
+              if (possibleVal && possibleVal !== "Not Specified" && possibleVal !== "undefined") {
+                finalCompany = possibleVal;
+                break;
+              }
+            }
+          }
+        }
+      }
+      
+      // Step D: Final baseline default value assignment
+      if (!finalCompany || finalCompany.trim() === "") {
+        finalCompany = "Not Specified";
+      }
+    }
+
+    let finalPlan = planTier;
+    if (!finalPlan || finalPlan.trim() === "") {
+      finalPlan = localStorage.getItem("schema_orders_plan_tier") || 
+                  localStorage.getItem("selected_plan") || 
+                  "STANDARD PLAN";
+    }
+
+    let finalService = servTitle;
+    if (!finalService || finalService.trim() === "") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const rawServiceKey = urlParams.get('service') || window.routeActiveServiceKey || window.currentServiceKey || localStorage.getItem("wizard_service_key") || "";
+      finalService = localStorage.getItem("schema_orders_service_title") || String(rawServiceKey).replace(/[\s_]+/g, " ");
+    }
+    finalService = String(finalService).toUpperCase();
+
+    let finalTracking = tracking;
+    if (!finalTracking || finalTracking.includes("UNKNOWN") || finalTracking === "GUEST-INTAKE" || finalTracking.trim() === "") {
+      finalTracking = localStorage.getItem("schema_orders_tracking_number") || 
+                      localStorage.getItem("f4u_active_tracking_token") || 
+                      localStorage.getItem("tracking_number") || 
+                      "";
+    }
+    if (!finalTracking || finalTracking.trim() === "") {
+      finalTracking = "F4U-" + Math.random().toString(36).substring(2, 12).toUpperCase();
+      localStorage.setItem("f4u_active_tracking_token", finalTracking);
+      localStorage.setItem("tracking_number", finalTracking);
+    }
+
+    // ðŸŽ¯ EXTRACT INPUT STRINGS FROM MEMORY
+    let formFirstName = localStorage.getItem("first_name") || localStorage.getItem("wizard_field_first_name") || localStorage.getItem("portal_user_first_name") || "";
+    let formLastName = localStorage.getItem("last_name") || localStorage.getItem("wizard_field_last_name") || localStorage.getItem("portal_user_last_name") || "";
+    let formEmailAddress = localStorage.getItem("email_address") || localStorage.getItem("wizard_field_email") || localStorage.getItem("email") || localStorage.getItem("portal_user_email_input") || "";
+    let formPhoneNumber = localStorage.getItem("phone_number") || localStorage.getItem("wizard_field_phone") || localStorage.getItem("phone") || localStorage.getItem("portal_user_phone") || "";
+
     const layoutPlaceholders = ["pending input", "pending", "empty", "not specified", "null", "undefined"];
     if (layoutPlaceholders.includes(formFirstName.toLowerCase().trim())) formFirstName = "";
     if (layoutPlaceholders.includes(formLastName.toLowerCase().trim())) formLastName = "";
     if (layoutPlaceholders.includes(formEmailAddress.toLowerCase().trim())) formEmailAddress = "";
     if (layoutPlaceholders.includes(formPhoneNumber.toLowerCase().trim())) formPhoneNumber = "";
 
+    // START STRING INJECTION
     baseContainer.innerHTML = `
       <div style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box;">
         <div>
-          <h2 style="margin: 0 0 4px 0; color: #0a1f44; font-weight: 800; font-size: 1.35rem;">Secure Checkout</h2>
+          <h2 style="margin: 0 0 4px 0; color: #0a1f44; font-weight: 800; font-size: 1.35rem;">6. Secure Checkout</h2>
           <p style="color: #64748b; font-size: 0.88rem; margin: 0;">Authorize your compliance filing package payment below.</p>
         </div>
         <div style="text-align: right; background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 6px;">
@@ -233,21 +457,21 @@
         <div style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
           <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
             <label style="font-weight: 700; font-size: 0.725rem; color: #64748b;">COMPANY NAME</label>
-            <input type="text" id="schema_orders_company_name" readonly disabled value="${compName}" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #475569; box-sizing: border-box;">
+            <input type="text" id="schema_orders_company_name" readonly disabled value="${finalCompany}" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #475569; box-sizing: border-box;">
           </div>
           <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
             <label style="font-weight: 700; font-size: 0.725rem; color: #64748b;">SERVICE TITLE</label>
-            <input type="text" id="schema_orders_service_title" readonly disabled value="${servTitle}" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #475569; box-sizing: border-box;">
+            <input type="text" id="schema_orders_service_title" readonly disabled value="${finalService}" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #475569; box-sizing: border-box;">
           </div>
         </div>
         <div style="display: flex; gap: 16px; width: 100%; box-sizing: border-box;">
           <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
             <label style="font-weight: 700; font-size: 0.725rem; color: #64748b;">PLAN TIER</label>
-            <input type="text" id="schema_orders_plan_tier" readonly disabled value="${planTier.toUpperCase()}" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #475569; box-sizing: border-box;">
+            <input type="text" id="schema_orders_plan_tier" readonly disabled value="${finalPlan.toUpperCase()}" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #475569; box-sizing: border-box;">
           </div>
           <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;">
             <label style="font-weight: 700; font-size: 0.725rem; color: #64748b;">TRACKING NUMBER</label>
-            <input type="text" id="schema_orders_tracking_number" readonly disabled value="${tracking}" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #475569; font-family: monospace; box-sizing: border-box;">
+            <input type="text" id="schema_orders_tracking_number" readonly disabled value="${finalTracking}" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #475569; font-family: monospace; box-sizing: border-box;">
           </div>
         </div>
       </div>
@@ -280,19 +504,29 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid #f1f5f9; width: 100%; box-sizing: border-box;">
         <button type="button" id="wizardBackBtnElement" style="background: transparent; border: 1px solid #cbd5e1; color: #475569; padding: 12px 24px; border-radius: 6px; cursor: pointer;">Back</button>
         <button type="button" id="wizardSubmitBtnElement" style="background: #047857; border: none; color: white; padding: 12px 32px; border-radius: 6px; font-weight: 700; cursor: pointer;">
-          <span id="wizardSubmitBtnDefaultState"> Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i> </span>
-          <span id="wizardSubmitBtnLoadingState" style="display: none;"> <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds... </span>
+          <span id="wizardSubmitBtnDefaultState">
+            Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>
+          </span>
+          <span id="wizardSubmitBtnLoadingState" style="display: none;">
+            <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Authorizing Ledger Funds...
+          </span>
         </button>
       </div>
     `;
 
-    // 🎯 FIX: Live Input Synchronization with Runtime Payload Object
+    // ðŸŽ¯ LIVE LOGIC SYNCHRONIZATION WITH ENGINE PAYLOAD
     const syncInputsToPayload = () => {
       if (!window.currentOrderCorePayload) window.currentOrderCorePayload = {};
       window.currentOrderCorePayload.first_name = document.getElementById("portal_user_first_name")?.value || "";
       window.currentOrderCorePayload.last_name = document.getElementById("portal_user_last_name")?.value || "";
       window.currentOrderCorePayload.email_address = document.getElementById("portal_user_email_input")?.value || "";
       window.currentOrderCorePayload.phone_number = document.getElementById("portal_user_phone")?.value || "";
+      
+      // Mirror updates down to raw storage structures
+      localStorage.setItem("portal_user_first_name", window.currentOrderCorePayload.first_name);
+      localStorage.setItem("portal_user_last_name", window.currentOrderCorePayload.last_name);
+      localStorage.setItem("portal_user_email_input", window.currentOrderCorePayload.email_address);
+      localStorage.setItem("portal_user_phone", window.currentOrderCorePayload.phone_number);
     };
 
     document.getElementById("portal_user_first_name")?.addEventListener("input", syncInputsToPayload);
@@ -305,14 +539,19 @@
         window.goToPreviousWizardStep();
       }
     });
+
+    syncInputsToPayload();
   };
 })();
+
+
+
 
 
 // ============================================================================ //
 // // FILE 2: STRIPE_ELEMENTS_MOUNT.JS (REPAIRED & ROUTED)
 // ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   async function executeStripeMountingPipeline(total) {
@@ -324,7 +563,7 @@
     const btnLoadingText = document.getElementById("wizardSubmitBtnLoadingState");
 
     if (!targetNode) {
-      console.error("✕ [Stripe Mount Error]: '#stripe-payment-element-mount-point' absent from DOM layout.");
+      console.error("âœ• [Stripe Mount Error]: '#stripe-payment-element-mount-point' absent from DOM layout.");
       return;
     }
 
@@ -359,7 +598,7 @@
       const servTitle = document.getElementById("schema_orders_service_title")?.value || localStorage.getItem("service_title") || "Corporate Asset Filing Package";
       const planTier = document.getElementById("schema_orders_plan_tier")?.value || localStorage.getItem("selected_plan") || "standard";
       
-      // 🎯 FIX 1: Resolve the tracking number safely from your active DOM or Storage definitions
+      // ðŸŽ¯ FIX 1: Resolve the tracking number safely from your active DOM or Storage definitions
       const activeTrackingToken = trackingInput?.value || localStorage.getItem("f4u_active_tracking_token") || localStorage.getItem("tracking_number") || "F4U-RECONCILE";
 
       // Clean up any rogue system placeholders instantly before validation checks
@@ -383,7 +622,7 @@
         selected_upsells: localStorage.getItem("selected_upsells") || "None Selected"
       };
 
-      console.log("✅ [Stripe Flow Engine] Data fields packaged successfully into local runtime context. Standby for payment confirmation trigger...");
+      console.log("âœ… [Stripe Flow Engine] Data fields packaged successfully into local runtime context. Standby for payment confirmation trigger...");
 
 
 
@@ -392,14 +631,14 @@
       throw new Error(errorData.error || "Failed to initialize financial checkout gateway parameters.");
     }
 
-    // 🎯 FIX 1: Read JSON token safely without multi-read stream lock crashes
+    // ðŸŽ¯ FIX 1: Read JSON token safely without multi-read stream lock crashes
     const checkoutSessionData = await response.json();
     const finalizedSecret = checkoutSessionData.clientSecret;
     const returnedTrackingNumber = checkoutSessionData.trackingNumber;
 
     // Overwrite the UI inputs and localStorage with your clean server-generated tracking number
     if (returnedTrackingNumber && !returnedTrackingNumber.includes("UNKNOWN")) {
-      console.log(`🎯 Real tracking code generated by edge worker: ${returnedTrackingNumber}`);
+      console.log(`ðŸŽ¯ Real tracking code generated by edge worker: ${returnedTrackingNumber}`);
       localStorage.setItem("tracking_number", returnedTrackingNumber);
       if (trackingInput) {
         trackingInput.value = returnedTrackingNumber;
@@ -437,13 +676,13 @@
     });
 
     window.stripePaymentElementInstance.on("loaderror", function(errEvent) {
-      console.error("✕ [Stripe Framework Load Error Intercepted]:", errEvent.error);
+      console.error("âœ• [Stripe Framework Load Error Intercepted]:", errEvent.error);
     });
 
     // Clear the target node workspace and mount the iframe cleanly
     targetNode.innerHTML = "";
     window.stripePaymentElementInstance.mount('#stripe-payment-element-mount-point');
-    console.log("✅ [Stripe Engine] Secured card iframe mounted successfully.");
+    console.log("âœ… [Stripe Engine] Secured card iframe mounted successfully.");
 
     // 4. BIND CLICK EVENT TO THE PRIMARY ACTION BUTTON
     if (submitBtn) {
@@ -466,13 +705,13 @@
         const livePhoneNumber = document.getElementById("portal_user_phone")?.value.trim() || "";
 
         if (!liveFirstName || !liveLastName || !liveEmailAddress || !livePhoneNumber) {
-          showCheckoutError("✕ Form Verification Failure: Please fill in all profile contact fields.");
+          showCheckoutError("âœ• Form Verification Failure: Please fill in all profile contact fields.");
           return;
         }
 
         const activeTrackingCode = localStorage.getItem("tracking_number") || returnedTrackingNumber || "F4U-UNKNOWN";
 
-        // 🎯 FIX 2: Attach data explicitly to the confirmation payload using Stripe Shipping Metadata rules
+        // ðŸŽ¯ FIX 2: Attach data explicitly to the confirmation payload using Stripe Shipping Metadata rules
         const { error: stripeConfirmationError } = await window.stripeInstance.confirmPayment({
           elements: window.stripeElementsContainer,
           confirmParams: {
@@ -503,7 +742,7 @@
       });
     }
   } catch (scopeException) {
-    console.error("✕ [Stripe Mounting Fatal Exception Context]", scopeException);
+    console.error("âœ• [Stripe Mounting Fatal Exception Context]", scopeException);
     showCheckoutError(scopeException.message || "A network transaction interface bottleneck disrupted processing workflows.");
   }
 }
@@ -515,7 +754,7 @@ window.executeStripeMountingPipeline = executeStripeMountingPipeline;
 // ============================================================================ //
 // FILE 3: INTERACTION_CONTROLLER.JS (FIXED)
 // ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   function validateBaseProfileMatrix() {
@@ -527,7 +766,7 @@ window.executeStripeMountingPipeline = executeStripeMountingPipeline;
       "portal_user_phone"
     ];
 
-    // 🎯 SCHEMA MATCH PIPELINE: Maps inputs directly to your explicit database column properties
+    // ðŸŽ¯ SCHEMA MATCH PIPELINE: Maps inputs directly to your explicit database column properties
     const elementKeyMaps = {
       "portal_user_first_name": "first_name",
       "portal_user_last_name": "last_name",
@@ -539,7 +778,7 @@ window.executeStripeMountingPipeline = executeStripeMountingPipeline;
       const inputTarget = document.getElementById(id);
       if (!inputTarget) return;
 
-      // 🎯 FIX: Explicitly strip out historical validation styling classes before re-evaluating
+      // ðŸŽ¯ FIX: Explicitly strip out historical validation styling classes before re-evaluating
       inputTarget.classList.remove("field-validated-emerald", "field-error-shake", "invalid-shake-trigger");
 
       if (!inputTarget.value.trim() || (inputTarget.required && !inputTarget.checkValidity())) {
@@ -548,7 +787,7 @@ window.executeStripeMountingPipeline = executeStripeMountingPipeline;
       } else {
         inputTarget.classList.add("field-validated-emerald");
         
-        // 🎯 STRICT SYSTEM UPDATE: Locks parameters down using exact database schema layout keys
+        // ðŸŽ¯ STRICT SYSTEM UPDATE: Locks parameters down using exact database schema layout keys
         localStorage.setItem(elementKeyMaps[id], inputTarget.value.trim());
       }
     });
@@ -571,7 +810,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   console.log("[Supabase Gateway] Launching standard Stripe runtime payment processing handler...");
   
   try {
-    // 🎯 SECURE CHECKOUT HARMONIZATION: Pull capture fields out of synchronized local DOM keys
+    // ðŸŽ¯ SECURE CHECKOUT HARMONIZATION: Pull capture fields out of synchronized local DOM keys
     const captureFirstName = document.getElementById("portal_user_first_name")?.value.trim() || localStorage.getItem("first_name") || "";
     const captureLastName = document.getElementById("portal_user_last_name")?.value.trim() || localStorage.getItem("last_name") || "";
     const captureEmail = document.getElementById("portal_user_email_input")?.value.trim() || localStorage.getItem("email_address") || "";
@@ -590,7 +829,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         return_url: `https://portal.filings4u.com/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
         receipt_email: captureEmail || undefined,
         
-        // 🎯 FIX: Bundle all customer details inside the Stripe shipping tree so your webhook can read it
+        // ðŸŽ¯ FIX: Bundle all customer details inside the Stripe shipping tree so your webhook can read it
         shipping: {
           name: `${captureFirstName} ${captureLastName}`.trim(),
           phone: capturePhone || undefined,
@@ -623,7 +862,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       submitButtonNode.style.opacity = "1";
       submitButtonNode.innerHTML = `Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>`;
     } else {
-      console.log("✅ [Transaction Complete] In-line payment authorized. State synchronized cleanly.");
+      console.log("âœ… [Transaction Complete] In-line payment authorized. State synchronized cleanly.");
       localStorage.setItem("f4u_payment_status_complete", "true");
       
       // Smooth programmatic layout fallback transition directly straight to step 7
@@ -653,14 +892,14 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 // ============================================================================ //
 // FILE 4: GLUE_LAYER_CONTROLLER.JS (FIXED)
 // ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
-  // 🎯 SECURE GLUE LAYER: Connect your skeleton tree button directly to this handler module execution path
+  // ðŸŽ¯ SECURE GLUE LAYER: Connect your skeleton tree button directly to this handler module execution path
   window.attachSubmitButtonController = function() {
     const paymentBtn = document.getElementById("wizardSubmitBtnElement");
     if (!paymentBtn) {
-      console.warn("⚠️ [Glue Layer Exception]: Target button anchor '#wizardSubmitBtnElement' unassigned.");
+      console.warn("âš ï¸ [Glue Layer Exception]: Target button anchor '#wizardSubmitBtnElement' unassigned.");
       return;
     }
 
@@ -680,7 +919,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       if (typeof window.validateBaseProfileMatrix === "function") {
         if (!window.validateBaseProfileMatrix()) {
           if (banner) {
-            banner.innerText = "✕ Please complete all required profile verification fields securely.";
+            banner.innerText = "âœ• Please complete all required profile verification fields securely.";
             banner.style.display = "block";
           }
           return;
@@ -708,7 +947,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       if (typeof window.executeSecurePaymentConfirmationPipeline === "function") {
         await window.executeSecurePaymentConfirmationPipeline(activeTotal, this);
       } else {
-        console.warn("⚠️ [Glue Layer Alert]: Core payment confirmation method reference unassigned.");
+        console.warn("âš ï¸ [Glue Layer Alert]: Core payment confirmation method reference unassigned.");
       }
     });
   };
@@ -717,7 +956,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
    * STRICT AUTOMATION HOOK: Passes cleanly structured database columns into the Edge Function gateway
    */
   window.fetchClientSecretAndMountStripeElement = async function(finalAmountDue) {
-    console.log("📡 [Supabase Pre-Fetch] Lazy loading clientSecret...");
+    console.log("ðŸ“¡ [Supabase Pre-Fetch] Lazy loading clientSecret...");
     
     const trackingNumberToken = localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "F4U-UNKNOWN";
 
@@ -730,13 +969,13 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     const upsellItemsArray = JSON.parse(localStorage.getItem("selected_upsells")) || [];
     const flatUpsellsString = upsellItemsArray.join(", ") || "None Selected";
     
-    // 🎯 FIX 1: Aligned variable names to prevent reference crashes
+    // ðŸŽ¯ FIX 1: Aligned variable names to prevent reference crashes
     const targetSelectedPlan = localStorage.getItem("selected_plan") || "Standard Filing Package";
     const resolvedCompanyName = localStorage.getItem("company_name") || localStorage.getItem("wizard_company_name") || "Not Specified";
 
-    // 🎯 THE RUNTIME PRE-FETCH GUARD: Halt early background loops instantly if fields are currently empty
+    // ðŸŽ¯ THE RUNTIME PRE-FETCH GUARD: Halt early background loops instantly if fields are currently empty
     if (!captureUserEmail || captureUserEmail.trim() === "") {
-      console.warn("⚠️ [Pre-Fetch Guard] Postponing background intent call: Payer email variable is blank.");
+      console.warn("âš ï¸ [Pre-Fetch Guard] Postponing background intent call: Payer email variable is blank.");
       return; 
     }
 
@@ -749,7 +988,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       emailAddress: captureUserEmail.toLowerCase(),
       phone_number: captureUserPhone,
       company_name: resolvedCompanyName,
-      service_title: targetSelectedPlan, // 🎯 FIXED: Corrected reference mismatch variable crash
+      service_title: targetSelectedPlan, // ðŸŽ¯ FIXED: Corrected reference mismatch variable crash
       total_fee: parseFloat(finalAmountDue),
       collected_payload_metadata: {
         selected_upsells: flatUpsellsString,
@@ -794,7 +1033,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         }
       }
     } catch (err) {
-      console.error("✕ [Supabase Pre-Fetch Failure]", err);
+      console.error("âœ• [Supabase Pre-Fetch Failure]", err);
       const mountTarget = document.getElementById('stripe-payment-element-mount-point');
       if (mountTarget) {
         mountTarget.innerHTML = `<p style="color:#ef4444; font-size:13px; font-weight:700;">Secure checkout window timed out. Please try refreshing.</p>`;
@@ -813,7 +1052,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const errorBanner = document.getElementById("step6-error-banner-target");
   const submitBtn = submitButtonNode || document.getElementById("wizardSubmitBtnElement");
 
-  // 🎯 STRIPPED HARDCODING: Extract pure dynamic variables. Zero default string fallbacks allowed.
+  // ðŸŽ¯ STRIPPED HARDCODING: Extract pure dynamic variables. Zero default string fallbacks allowed.
   const trackingNumberToken = (localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "").trim();
   
   const captureFirstName = (document.getElementById("portal_user_first_name")?.value.trim() || localStorage.getItem("first_name") || "").trim();
@@ -822,7 +1061,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const capturePhone = (document.getElementById("portal_user_phone")?.value.trim() || localStorage.getItem("phone_number") || "").trim();
   const captureCompany = (document.getElementById("schema_orders_company_name")?.value.trim() || localStorage.getItem("company_name") || localStorage.getItem("f4u_company_name") || "").trim();
 
-  // 🎯 STRICT AUTHENTICATION GATING: Completely halts execution if ANY vital data is missing
+  // ðŸŽ¯ STRICT AUTHENTICATION GATING: Completely halts execution if ANY vital data is missing
   const invalidPlaceholders = ["pending input", "pending", "empty", "not specified", "null", "undefined", "f4u-unknown", ""];
   
   if (
@@ -845,7 +1084,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     return false; // Safely aborts before contacting Stripe or inserting a broken database record
   }
 
-  console.log(`✅ [Dynamic Gateway Validation] Profile parameters successfully verified for Token: ${trackingNumberToken}`);
+  console.log(`âœ… [Dynamic Gateway Validation] Profile parameters successfully verified for Token: ${trackingNumberToken}`);
 
 
   if (!captureEmail || !captureFirstName || !captureLastName || !capturePhone) {
@@ -866,7 +1105,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const flatUpsellsString = upsellItemsArray.join(", ") || "None Selected";
   const poaSignature = localStorage.getItem("poa_signature") || "Digitally Executed";
 
-  // 🎯 STRICT SCHEMA MATRIX: Map variables to match public.orders database constraints exactly
+  // ðŸŽ¯ STRICT SCHEMA MATRIX: Map variables to match public.orders database constraints exactly
   const profileTransactionPayload = {
     tracking_number: trackingNumberToken,
     first_name: captureFirstName,
@@ -887,7 +1126,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     // 1. Safe Client Database Logging via standard select/insert logic to bypass the ON CONFLICT bug
     const client = window.supabaseInstance || window.supabaseClient;
     if (client && typeof client.from === 'function') {
-      console.log("📡 [Supabase Orders Logging] Preserving customer order variables inside data grid...");
+      console.log("ðŸ“¡ [Supabase Orders Logging] Preserving customer order variables inside data grid...");
       
       const { data: existingRow } = await client
         .from('orders')
@@ -909,7 +1148,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         
         if (dbInsertErr) throw new Error(`Database Insert failed: ${dbInsertErr.message}`);
       }
-      console.log("✅ [Supabase Logging] Order rows written successfully.");
+      console.log("âœ… [Supabase Logging] Order rows written successfully.");
     }
 
     // 2. SUBMIT CONTEXT VIA STRIPE DEFERRED PAYMENT ELEMENT IFRAMES
@@ -935,7 +1174,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       if (window.stripeInstance && !isMockSecret) {
         console.log("[Stripe Submission Engine] Dispatching secure transactional parameters over network...");
         
-        // 🎯 FIX: Explicitly package your shipping parameters down into the confirmation parameters object
+        // ðŸŽ¯ FIX: Explicitly package your shipping parameters down into the confirmation parameters object
         const { error: confirmError } = await window.stripeInstance.confirmPayment({
           elements: window.stripeElementsContainer,
           clientSecret: window.stripeClientSecret,
@@ -974,7 +1213,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         // Execute secure sandbox operations if a mock secret token is present
         const dbClient = window.supabaseInstance || window.supabaseClient;
         if (dbClient && typeof dbClient.from === 'function') {
-          console.log("🧪 [Sandbox Engine] Mock intent matched. Forcing manual database status update...");
+          console.log("ðŸ§ª [Sandbox Engine] Mock intent matched. Forcing manual database status update...");
           
           const sandboxDatabaseRowUpsertNode = { 
             ...profileTransactionPayload, 
@@ -1001,7 +1240,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             
             if (mockInsertError) throw new Error(mockInsertError.message);
           }
-          console.log("✅ Sandbox Sync Complete: Test transaction record marked inside public.orders.");
+          console.log("âœ… Sandbox Sync Complete: Test transaction record marked inside public.orders.");
         }
       }
     } else {
@@ -1009,7 +1248,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     }
 
     // Global success panel view transitions execution loop
-    console.log("✅ [Transaction Complete] Stripe processing approved. Progressing instantly to Step 7 layout canvas...");
+    console.log("âœ… [Transaction Complete] Stripe processing approved. Progressing instantly to Step 7 layout canvas...");
     localStorage.setItem("f4u_payment_status_complete", "true");
 
     if (typeof window.switchWizardActiveViewLayout === "function") {
@@ -1051,7 +1290,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const submitBtn = submitButtonNode || document.getElementById("wizardSubmitBtnElement");
   const errorBanner = document.getElementById("step6-error-banner-target");
   
-  // 🎯 STRIPPED HARDCODING & DUPLICATES: Consolidated all tracking lookups into one statement
+  // ðŸŽ¯ STRIPPED HARDCODING & DUPLICATES: Consolidated all tracking lookups into one statement
   const trackingInputNode = document.getElementById("schema_orders_tracking_number");
   const trackingNumberToken = (trackingInputNode ? trackingInputNode.value.trim() : "") || 
                               (localStorage.getItem("tracking_number") || "").trim() || 
@@ -1067,10 +1306,10 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
   const finalEmail = emailInputNode ? emailInputNode.value.trim().toLowerCase() : "";
   const phone = phoneInputNode ? phoneInputNode.value.trim() : "";
 
-  // 🎯 STRIPPED HARDCODING: Extract company name without 'Not Specified' strings
+  // ðŸŽ¯ STRIPPED HARDCODING: Extract company name without 'Not Specified' strings
   const companyName = (localStorage.getItem("company_name") || localStorage.getItem("wizard_field_company_name") || "").trim();
 
-  // 🎯 STRICT SYSTEM GATE: Halts instantly if essential records are blank strings
+  // ðŸŽ¯ STRICT SYSTEM GATE: Halts instantly if essential records are blank strings
   const blockedTerms = ["pending input", "pending", "empty", "not specified", "null", "undefined", "f4u-reconcile", "f4u-unknown", ""];
   if (
     !trackingNumberToken || blockedTerms.includes(trackingNumberToken.toLowerCase()) ||
@@ -1112,7 +1351,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       throw new Error("System configuration alert: Active tracking reference token missing.");
     }
 
-    console.log("⏳ [Stripe Runtime] Validating input parameters context over .submit()...");
+    console.log("â³ [Stripe Runtime] Validating input parameters context over .submit()...");
     const { error: submitValidationError } = await window.stripeElementsContainer.submit();
     
     if (submitValidationError) {
@@ -1127,7 +1366,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       return false;
     }
 
-    console.log("⏳ [Stripe Runtime] Dynamic Amount Verified: $" + activeGrandCost + ". Launching checkout window...");
+    console.log("â³ [Stripe Runtime] Dynamic Amount Verified: $" + activeGrandCost + ". Launching checkout window...");
 
     const selectedPlan = localStorage.getItem("wizard_selected_plan") || localStorage.getItem("selected_plan") || window.currentOrderCorePayload?.service_title || "Corporate Asset Filing Package";
     
@@ -1149,7 +1388,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     const poaSignature = localStorage.getItem("wizard_poa_signature") || localStorage.getItem("poa_signature") || localStorage.getItem("wizard_field_poa_signature_string") || "Digitally Executed";
     const targetSecretToken = window.stripeClientSecret || localStorage.getItem("f4u_stripe_client_secret") || "";
 
-    // 🎯 STRICT SCHEMA MATRIX: Map variables to match public.orders database constraints exactly
+    // ðŸŽ¯ STRICT SCHEMA MATRIX: Map variables to match public.orders database constraints exactly
     const orderRecordPayload = {
       tracking_number: trackingNumberToken.trim(),
       first_name: firstName,
@@ -1168,7 +1407,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 
     // 2. SAFE PRE-CHECKOUT DATABASE BACKUP LOGGING (REPAIRED)
     if (supabaseClient && typeof supabaseClient.from === 'function') {
-      console.log("📡 [Supabase Operations Logs] Pushing custom HTML form strings down to schema records...");
+      console.log("ðŸ“¡ [Supabase Operations Logs] Pushing custom HTML form strings down to schema records...");
       
       const { data: matchedRow } = await supabaseClient
         .from('orders')
@@ -1190,13 +1429,13 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         
         if (dbInsertErr) throw new Error(`Database record synchronization failed: ${dbInsertErr.message}`);
       }
-      console.log("✅ [Supabase Inline Write] Clean form elements successfully written to public.orders table.");
+      console.log("âœ… [Supabase Inline Write] Clean form elements successfully written to public.orders table.");
     }
 
-    console.log("💳 Dispatching secure transactional parameters over network...");
+    console.log("ðŸ’³ Dispatching secure transactional parameters over network...");
 
       // ============================================================================ //
-    // 📁 step-6.js - DYNAMIC TRANSACTION AUTHORIZATION LAYER (PART 1 - FIXED)      //
+    // ðŸ“ step-6.js - DYNAMIC TRANSACTION AUTHORIZATION LAYER (PART 1 - FIXED)      //
     // ============================================================================ //
     const StripeConfirmationResult = await window.stripeInstance.confirmPayment({
       elements: window.stripeElementsContainer,
@@ -1206,7 +1445,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
         receipt_email: finalEmail,
         
-        // 🎯 FIXED: Every customer now gets their own unique F4U tracking number dynamically mapped here
+        // ðŸŽ¯ FIXED: Every customer now gets their own unique F4U tracking number dynamically mapped here
         shipping: {
           name: `${firstName} ${lastName}`.trim(),
           phone: phone,
@@ -1214,7 +1453,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
             line1: "Form Wizard Payment Layer",
             city: companyName.substring(0, 35),
             state: selectedPlan.substring(0, 10),
-            postal_code: trackingNumberToken, // ✅ Dynamically passes their specific F4U token to the email engine
+            postal_code: trackingNumberToken, // âœ… Dynamically passes their specific F4U token to the email engine
             country: "US"
           }
         },
@@ -1227,8 +1466,9 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         }
       }
     });
+    
 // ============================================================================ //
-// 📁 step-6.js - DYNAMIC TRANSACTION AUTHORIZATION LAYER (PART 2 - CONCLUDED)  //
+// ðŸ“ step-6.js - DYNAMIC TRANSACTION AUTHORIZATION LAYER (PART 2 - CONCLUDED)  //
 // ============================================================================ //
     if (StripeConfirmationResult && StripeConfirmationResult.error) {
       console.warn("[Stripe Core API] Authentication flow halted or failed.", StripeConfirmationResult.error.message);
@@ -1242,7 +1482,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         submitBtn.innerHTML = 'Secure Payment <i class="fa-solid fa-credit-card" style="margin-left: 6px;"></i>';
       }
     } else {
-      console.log("✅ [Transaction Complete] Stripe payment verified in-line. Transitioning to step 7 receipt views...");
+      console.log("âœ… [Transaction Complete] Stripe payment verified in-line. Transitioning to step 7 receipt views...");
       localStorage.setItem("f4u_payment_status_complete", "true");
       
       if (typeof window.switchWizardActiveViewLayout === "function") {
@@ -1252,7 +1492,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       }
     }
   } catch (globalPipelineError) {
-    console.error("🚨 [Pipeline Intercept Failure]:", globalPipelineError.message);
+    console.error("ðŸš¨ [Pipeline Intercept Failure]:", globalPipelineError.message);
     if (errorBanner) {
       errorBanner.innerText = globalPipelineError.message;
       errorBanner.style.display = "block";
@@ -1270,7 +1510,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
 // ============================================================================ //
 // step-6.js - UNIFIED TRANSACTION AUTHORIZATION PIPELINE ENGINE (PART 1 - FIXED) //
 // ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   async function resolveStripeClientAuthorizationSecret(grandTotalAmount, trackingNumberToken) {
@@ -1294,7 +1534,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         throw new Error("Validation failed: Real customer parameter profiles missing from memory cache layers.");
       }
 
-      // 🎯 FIXED: Mapped keys directly to the function arguments and variables defined above to prevent crash loops
+      // ðŸŽ¯ FIXED: Mapped keys directly to the function arguments and variables defined above to prevent crash loops
       const profileTransactionPayload = {
         tracking_number: trackingNumberToken,
         first_name: captureUserFirstName,
@@ -1343,7 +1583,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
         window.stripeClientSecret = verifiedCleanSecret;
       }
       
-      console.log("✅ [Secret Engine] Intact Checkout Session token configured safely.");
+      console.log("âœ… [Secret Engine] Intact Checkout Session token configured safely.");
       
       if ((data.paymentIntentId || data.id) && window.currentOrderCorePayload) {
         window.currentOrderCorePayload.stripe_payment_id = data.paymentIntentId || data.id;
@@ -1351,7 +1591,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       
       return verifiedCleanSecret;
     } catch (err) {
-      console.error("✕ [Stripe Loader Critical Endpoint Failure]:", err.message || err);
+      console.error("âœ• [Stripe Loader Critical Endpoint Failure]:", err.message || err);
       throw err;
     }
   }
@@ -1368,21 +1608,21 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       setTimeout(() => {
         const structuralMountPointNode = document.getElementById("stripe-payment-element-mount-point");
         if (!structuralMountPointNode) {
-          console.error("✕ [Stripe Pipeline Engine Fatal Error]: Mount point container node is missing after UI skeleton render phase.");
+          console.error("âœ• [Stripe Pipeline Engine Fatal Error]: Mount point container node is missing after UI skeleton render phase.");
           return;
         }
         
         if (typeof window.executeStripeMountingPipeline === "function") {
           window.executeStripeMountingPipeline(total);
         } else {
-          console.error("✕ [Stripe Pipeline Engine Fatal Error]: window.executeStripeMountingPipeline is not defined in memory context.");
+          console.error("âœ• [Stripe Pipeline Engine Fatal Error]: window.executeStripeMountingPipeline is not defined in memory context.");
         }
       }, 50);
     } catch (error) {
       const errorBanner = document.getElementById("step6-error-banner-target");
       if (errorBanner) {
         errorBanner.style.display = "block";
-        errorBanner.innerHTML = `🚨 <strong>Initialization Failure:</strong> ${error.message || "Unable to process financial connection tokens."}`;
+        errorBanner.innerHTML = `ðŸš¨ <strong>Initialization Failure:</strong> ${error.message || "Unable to process financial connection tokens."}`;
       }
     }
   };
@@ -1430,7 +1670,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     const lastName = lastNameInput.value.trim();
     const phone = phoneInput.value.trim();
 
-    // 🎯 RE-SYNC DYNAMIC STORAGE STATES FOR STEP 7 PERSISTENCE
+    // ðŸŽ¯ RE-SYNC DYNAMIC STORAGE STATES FOR STEP 7 PERSISTENCE
     localStorage.setItem("wizard_first_name", firstName);
     localStorage.setItem("wizard_last_name", lastName);
     localStorage.setItem("wizard_email_address", finalEmail);
@@ -1453,17 +1693,17 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
     // Read the tracking token without redeclaring 'const'
     trackingNumberToken = (document.getElementById("schema_orders_tracking_number")?.value || localStorage.getItem("f4u_active_tracking_token") || localStorage.getItem("tracking_number") || "").trim();
 
-    // 🎯 REPAIRED LOOKUP TREE: Expanded fallback keys to match all historical wizard versions
+    // ðŸŽ¯ REPAIRED LOOKUP TREE: Expanded fallback keys to match all historical wizard versions
     const targetStepPlan = (localStorage.getItem("wizard_selected_plan") || 
                             localStorage.getItem("selected_plan") || 
                             localStorage.getItem("wizard_field_selected_package_offering") || 
                             localStorage.getItem("wizard_plan_tier_key") || "").trim();
 
-    // 🎯 DIAGNOSTIC PROFILE LOGGER: Prints variables straight to your console to find the blank key
-    console.log("🔍 [Checkpoint Verification Metrics]:", {
-      companyNameParameter: companyNameParameter || "❌ BLANK",
-      trackingNumberToken: trackingNumberToken || "❌ BLANK",
-      targetStepPlan: targetStepPlan || "❌ BLANK"
+    // ðŸŽ¯ DIAGNOSTIC PROFILE LOGGER: Prints variables straight to your console to find the blank key
+    console.log("ðŸ” [Checkpoint Verification Metrics]:", {
+      companyNameParameter: companyNameParameter || "âŒ BLANK",
+      trackingNumberToken: trackingNumberToken || "âŒ BLANK",
+      targetStepPlan: targetStepPlan || "âŒ BLANK"
     });
 
     // Unified dynamic safety gate avoids hardcoded strings but keeps your checkout moving
@@ -1518,9 +1758,9 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
       created_at: new Date().toISOString()
     };
 
-    // 🎯 FIX 1: Safely handle pre-checkout logging using standard check-then-write conditional updates
+    // ðŸŽ¯ FIX 1: Safely handle pre-checkout logging using standard check-then-write conditional updates
     if (supabaseClient) {
-      console.log("📡 [Supabase Operations Logs] Checking existing database records...");
+      console.log("ðŸ“¡ [Supabase Operations Logs] Checking existing database records...");
       const { data: matchedRow } = await supabaseClient
         .from('orders')
         .select('id')
@@ -1541,7 +1781,7 @@ window.executeOnboardingTransactionPayloadSubmitVanilla = async function(event) 
         
         if (dbInsertErr) throw new Error(`Pre-Sync Database Insert Failed: ${dbInsertErr.message}`);
       }
-      console.log("✅ [Supabase Operations Logs] Orders table state safely buffered on data grid.");
+      console.log("âœ… [Supabase Operations Logs] Orders table state safely buffered on data grid.");
     }
 
 
@@ -1559,7 +1799,7 @@ if (window.stripeElementsContainer && window.stripeInstance && window.stripeClie
     clientSecret: window.stripeClientSecret,
     redirect: "if_required",
     confirmParams: {
-      // 🎯 FIXED: Replaced hardcoded text with your dynamic variable across your success routes
+      // ðŸŽ¯ FIXED: Replaced hardcoded text with your dynamic variable across your success routes
       return_url: `${window.location.origin}/client-status.html?token=${encodeURIComponent(trackingNumberToken)}`,
       receipt_email: finalEmail,
       
@@ -1570,7 +1810,7 @@ if (window.stripeElementsContainer && window.stripeInstance && window.stripeClie
           line1: "Form Wizard Payment Layer",
           city: companyNameParameter.substring(0, 35),
           state: targetStepPlan.substring(0, 10),
-          // 🎯 FIXED: Hardcoding permanently removed. Every single customer passes their own dynamic token to Stripe
+          // ðŸŽ¯ FIXED: Hardcoding permanently removed. Every single customer passes their own dynamic token to Stripe
           postal_code: trackingNumberToken, 
           country: "US"
         }
@@ -1584,11 +1824,11 @@ if (window.stripeElementsContainer && window.stripeInstance && window.stripeClie
 // ============================================================================ //
 // step-6.js - UNIFIED PAYLOAD SUBMIT PIPELINE ENGINE (PART 2 - CONCLUDED)       //
 // ============================================================================ //
-      console.log("✅ [Transaction Complete] Stripe payment verified in-line. Transitioning views...");
+      console.log("âœ… [Transaction Complete] Stripe payment verified in-line. Transitioning views...");
       localStorage.setItem("f4u_payment_status_complete", "true");
 
       // ============================================================================ //
-      // 🔄 BRIDGE CONFIGURATION: ASSEMBLE MANIFEST FOR STEP-7 RENDERING SESSIONS    //
+      // ðŸ”„ BRIDGE CONFIGURATION: ASSEMBLE MANIFEST FOR STEP-7 RENDERING SESSIONS    //
       // ============================================================================ //
       const subtotalAmount = parseFloat(window._tempCalcContext?.baseTierPrice || window._tempAddonContext?.baseTierPrice || activeGrandCost);
       const selectedPlanTitle = window.selectedPlan || localStorage.getItem("wizard_selected_plan") || localStorage.getItem("selected_plan") || "Corporate Filing Package";
@@ -1596,7 +1836,7 @@ if (window.stripeElementsContainer && window.stripeInstance && window.stripeClie
       const blueprintReceiptManifest = {
         transaction_hash_id: trackingNumberToken,
         communications_email: finalEmail,
-        legal_entity_name: companyNameParameter, // ✅ Safe to read: fully initialized above
+        legal_entity_name: companyNameParameter, // âœ… Safe to read: fully initialized above
         taxpayer_ein: localStorage.getItem("wizard_field_ein") || "Processing Summary...",
         office_address_street: localStorage.getItem("wizard_field_principal_address") || "Form Submission Record Entry",
         selected_package_title: `filings4u Processing Fee (${selectedPlanTitle.toUpperCase()})`,
@@ -1610,7 +1850,7 @@ if (window.stripeElementsContainer && window.stripeInstance && window.stripeClie
       localStorage.setItem("wizard_field_lead_email", finalEmail);
 
       // ============================================================================ //
-      // 🔄 ROUTING INJECTION: BIND QUERY PARAMETERS AND EXECUTE LIFECYCLE STEP       //
+      // ðŸ”„ ROUTING INJECTION: BIND QUERY PARAMETERS AND EXECUTE LIFECYCLE STEP       //
       // ============================================================================ //
       const currentUrlParams = new URLSearchParams(window.location.search);
       currentUrlParams.set("step", "7");
@@ -1644,6 +1884,177 @@ if (window.stripeElementsContainer && window.stripeInstance && window.stripeClie
   }
 };
 
-  // 🎯 ATTACHING MODULE SCOPE LIFE-HOOKS DIRECTLY TO THE GLOBAL WINDOW LAYERS
+  // ðŸŽ¯ ATTACHING MODULE SCOPE LIFE-HOOKS DIRECTLY TO THE GLOBAL WINDOW LAYERS
   window.initializeFlatStripeCheckoutElement = initializeFlatStripeCheckoutElement;
   window.executeStripeMountingPipeline = executeStripeMountingPipeline;
+
+
+
+// ============================================================================ //
+// ðŸ”Œ UNIVERSAL SCHEMA TRANSLATION LAYER (BLOCK 1 OF 2)                        //
+// ============================================================================ //
+;(function() {
+  "use strict";
+
+  window.compileDatabaseAlignedOrderPayload = function() {
+    // 1. EXTRACT TOTAL AMOUNT SAFELY (Ensures clean float context matching numeric(10,2))
+    let rawTotal = localStorage.getItem("total_paid_amount") || "0.00";
+    const grandTotalDisplayNode = document.getElementById("summary-grand-total-display") || 
+                                  document.getElementById("payment-gateway-total-display");
+    if (grandTotalDisplayNode) {
+      const parsedDOMCost = parseFloat(grandTotalDisplayNode.textContent.replace(/[^0-9.]/g, ""));
+      if (!isNaN(parsedDOMCost) && parsedDOMCost > 0) {
+        rawTotal = parsedDOMCost.toString();
+      }
+    }
+    const finalAmountFloat = parseFloat(parseFloat(rawTotal || 0).toFixed(2));
+
+    // 2. EXTRACT SELECTED UPSELLS Matrix (Maps safely to your text column)
+    let flatUpsellsString = null;
+    try {
+      const cachedUpsells = localStorage.getItem("selected_upsells") || localStorage.getItem("wizard_selected_addons_matrix");
+      if (cachedUpsells && cachedUpsells.trim() !== "") {
+        if (cachedUpsells.trim().startsWith("[")) {
+          const upsellItemsArray = JSON.parse(cachedUpsells);
+          if (Array.isArray(upsellItemsArray) && upsellItemsArray.length > 0) {
+            flatUpsellsString = upsellItemsArray.map(item => item.id || item.name || item).join(", ");
+          }
+        } else {
+          flatUpsellsString = cachedUpsells.trim();
+        }
+      }
+    } catch (e) {
+      flatUpsellsString = localStorage.getItem("selected_upsells") || null;
+    }
+
+    // ðŸŽ¯ HYBRID BULLETPROOF EXTRACTION ENGINE: Scans screen inputs first, then memory fallbacks
+    const findValueFromScreenOrMemory = (keywords, localStorageKeys, defaultValue = "") => {
+      // Step A: Scan the live DOM for inputs that match placeholders, labels, or IDs
+      const liveInputs = document.querySelectorAll("input, textarea");
+      for (let input of liveInputs) {
+        const id = (input.id || "").toLowerCase();
+        const name = (input.name || "").toLowerCase();
+        const placeholder = (input.placeholder || "").toLowerCase();
+        
+        // Check if any of our identifier keywords are found in this active element
+        const matchFound = keywords.some(keyword => 
+          id.includes(keyword) || name.includes(keyword) || placeholder.includes(keyword)
+        );
+        
+        if (matchFound && input.value && input.value.trim() !== "" && input.value !== "Not Specified") {
+          return input.value.trim();
+        }
+      }
+
+      // Step B: If DOM was wiped, scan local storage for explicit keys or substring matches
+      for (let key of localStorageKeys) {
+        const exactVal = localStorage.getItem(key);
+        if (exactVal && exactVal.trim() !== "" && exactVal !== "Not Specified") return exactVal.trim();
+      }
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const storageKey = localStorage.key(i) || "";
+        const lowerStorageKey = storageKey.toLowerCase();
+        const substringMatch = localStorageKeys.some(k => lowerStorageKey.includes(k.toLowerCase()));
+        if (substringMatch) {
+          const fuzzyVal = localStorage.getItem(storageKey);
+          if (fuzzyVal && fuzzyVal.trim() !== "" && fuzzyVal !== "Not Specified") return fuzzyVal.trim();
+        }
+      }
+
+      return defaultValue;
+    };
+
+    // 3. SECURE WORKSPACE SCHEMA CONTRACT MAPPING (No rigid elements, complete flexibility)
+    const firstName = findValueFromScreenOrMemory(["first"], ["first_name", "wizard_field_first_name", "portal_user_first_name"], "Pending");
+    const lastName = findValueFromScreenOrMemory(["last"], ["last_name", "wizard_field_last_name", "portal_user_last_name"], "Pending");
+    const phoneNumber = findValueFromScreenOrMemory(["phone", "tel"], ["phone_number", "wizard_field_phone", "phone", "portal_user_phone"], "Pending");
+    const emailAddress = findValueFromScreenOrMemory(["email"], ["email_address", "wizard_field_email", "email", "portal_user_email_input"], "info@filings4u.com").toLowerCase();
+    
+    const companyName = findValueFromScreenOrMemory(["company", "business"], ["schema_orders_company_name", "global_company_owner", "company_name", "wizard_company_name", "business_name"], "Not Specified");
+    const selectedPlan = findValueFromScreenOrMemory(["plan", "tier"], ["schema_orders_plan_tier", "selected_plan", "schema_orders_plan_tier"], "Standard Plan");
+    
+    // Resolve tracking token seamlessly to avoid duplicate key errors
+    let trackingNumber = findValueFromScreenOrMemory(["tracking"], ["schema_orders_tracking_number", "f4u_active_tracking_token", "tracking_number"], "");
+    if (!trackingNumber || trackingNumber.trim() === "" || trackingNumber.toUpperCase().includes("UNKNOWN")) {
+      trackingNumber = localStorage.getItem("f4u_active_tracking_token") || localStorage.getItem("tracking_number") || "";
+      if (!trackingNumber || trackingNumber.trim() === "" || trackingNumber.toUpperCase().includes("UNKNOWN")) {
+        trackingNumber = "F4U-" + Math.random().toString(36).substring(2, 12).toUpperCase();
+        localStorage.setItem("f4u_active_tracking_token", trackingNumber);
+      }
+    }
+    
+    const serviceTitle = findValueFromScreenOrMemory(["service", "title"], ["schema_orders_service_title", "wizard_service_key"], "STANDARD SERVICE").toUpperCase();
+
+    // ðŸ–‹ï¸ POA SYNCHRONIZATION
+    const poaSignature = localStorage.getItem("cached_wizard_poa_signature_verification_string") || window.wizardPoaSignatureVerificationString || null;
+
+    // ðŸŽ¯ PERFECT MATCH SCHEMA CONTRACT: Maps directly to public.orders table parameters
+    const ordersTablePayload = {
+      tracking_number: String(trackingNumber).trim(),
+      first_name: String(firstName).trim(),
+      last_name: String(lastName).trim(),
+      email_address: String(emailAddress).trim(),
+      phone_number: String(phoneNumber).trim(),
+      selected_plan: String(selectedPlan).trim(),
+      selected_upsells: flatUpsellsString,
+      total_paid_amount: finalAmountFloat,
+      poa_signature: poaSignature ? String(poaSignature).trim() : null,
+      poa_execution_stamp: poaSignature ? new Date().toISOString() : null,
+      stripe_payment_id: window.stripePaymentIntentId || null,
+      account_created: false,
+      company_name: String(companyName).trim()
+    };
+
+    // Synchronize adjacent runtime contexts
+    window.currentOrderCorePayload = {
+      ...ordersTablePayload,
+      emailAddress: ordersTablePayload.email_address,
+      service_title: serviceTitle,
+      total_fee: ordersTablePayload.total_paid_amount,
+      collected_payload_metadata: { ...ordersTablePayload, service_title: serviceTitle }
+    };
+    sessionStorage.setItem("f4u_finalized_checkout_receipt_manifest", JSON.stringify(window.currentOrderCorePayload));
+
+    return ordersTablePayload;
+  };
+// ============================================================================ //
+// ðŸ”Œ UNIVERSAL SCHEMA TRANSLATION LAYER (BLOCK 2 OF 2)                        //
+// ============================================================================ //
+
+  // 4. INTERCEPT ENDPOINT INTERFACE FETCH CALLS DYNAMICALLY (Safe for Stripe Elements)
+  if (typeof window.fetch === "function" && !window.fetch.isTranslationLayerWrapped) {
+    const nativeFetchInstance = window.fetch;
+
+    window.fetch = async function(resource, config) {
+      // Intercept the outgoing payload right before it hits your backend edge routing function
+      if (typeof resource === "string" && resource.includes("/functions/v1/stripe-webhook") && config && config.body) {
+        try {
+          // Re-evaluate the live DOM fields or fuzzy local memory buckets right at request runtime
+          const cleanDatabasePayload = window.compileDatabaseAlignedOrderPayload();
+          
+          // Construct the final envelope structure to pass backend intake validation requirements
+          const unifiedHandoffWrapper = { 
+            ...cleanDatabasePayload, 
+            emailAddress: cleanDatabasePayload.email_address, 
+            service_title: window.currentOrderCorePayload.service_title, 
+            total_fee: cleanDatabasePayload.total_paid_amount, 
+            collected_payload_metadata: { ...window.currentOrderCorePayload } 
+          };
+          
+          // Override the outbound body payload cleanly with real verified customer parameters
+          config.body = JSON.stringify(unifiedHandoffWrapper);
+          console.log("ðŸš€ [Supabase Intercept Bridge] Adaptive user values safely committed to network stream.");
+        } catch (e) {
+          console.warn("[Schema Translation Error] Adaptive payload evaluation pass skipped:", e);
+        }
+      }
+      
+      // Execute the request context seamlessly to preserve Stripe iframe stability
+      return nativeFetchInstance(resource, config);
+    };
+    
+    window.fetch.isTranslationLayerWrapped = true;
+  }
+})();
+

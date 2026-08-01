@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Filings4U Platform Architecture
  * Module: process-agents.boc-3.js (Part 1 of 4)
  * Standalone Section 1 Layout Definition
@@ -272,10 +272,11 @@ window.validateEntireProcessAgentWizard = function() {
 };
 
 // ============================================================================ //
-// 📦 MASTER RENDER SYSTEM ALLOCATION
+// ðŸ“¦ MASTER RENDER SYSTEM ALLOCATION
 // ============================================================================ //
 window.formRegistry['cage-code-form-master'] = function(stateDropdownOptionsHtml = "") {
     return window.formRegistry['process-agents-boc-3-part1-layout'](stateDropdownOptionsHtml) + 
            window.formRegistry['process-agents-boc-3-part2-layout'](stateDropdownOptionsHtml) + 
            window.formRegistry['process-agents-boc-3-part3-layout'](stateDropdownOptionsHtml);
 };
+

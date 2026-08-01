@@ -1,7 +1,7 @@
+﻿// ============================================================================
+// ðŸš› FILINGS4U HEAVY TAX ENGINE - STEP 3: REAL-TIME TAX MATRIX REVIEW (PART 1)
 // ============================================================================
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 3: REAL-TIME TAX MATRIX REVIEW (PART 1)
-// ============================================================================
-(function() {
+;(function() {
   "use strict";
 
   window.compileHeavyTaxCalculationsSummaryStep3 = async function() {
@@ -66,7 +66,7 @@
     reviewPlaceholder.innerHTML = `
       <!-- FLAT TIMELINE HEADER -->
       <div style="border-bottom: 2px solid #0a1f44 !important; padding-bottom: 12px !important; margin-bottom: 28px !important; box-sizing: border-box !important; width: 100% !important;">
-        <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">📋 Real-Time Tax Summary Review</h3>
+        <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">ðŸ“‹ Real-Time Tax Summary Review</h3>
         <p style="margin: 6px 0 0 0 !important; color: #64748b !important; font-size: 0.85rem !important; font-weight: 500 !important;">Review your itemized calculations before applying filing extensions.</p>
       </div>
 
@@ -133,3 +133,4 @@
   };
 
 })();
+

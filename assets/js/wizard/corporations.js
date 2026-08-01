@@ -1,4 +1,4 @@
-/** * SYSTEM COMPLIANCE SERVICE: CORPORATE FORMATION ENGINE * Step 1: Initialize Unified Form Registries & Core Input Filtering Rules */ 
+﻿/** * SYSTEM COMPLIANCE SERVICE: CORPORATE FORMATION ENGINE * Step 1: Initialize Unified Form Registries & Core Input Filtering Rules */ 
 function initCorporateFormationServices() { 
     window.formRegistry = window.formRegistry || {}; 
     
@@ -162,7 +162,7 @@ window.formRegistry['corporations-part1-layout'] = function(stateDropdownOptions
         <label for="corp_ra_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Select Registered Agent Provision <span style="color: #ef4444;">*</span></label> 
         <select id="corp_ra_choice" required class="wizard-input-field" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 12px; font-size: 0.95rem; font-weight: 600; background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; line-height: 1.2; vertical-align: middle;"> 
             <option value="" disabled>Choose...</option> 
-            <option value="filings4u" selected>Utilize Filings4u Protected Agent Shield Service — $${liveAgentFee} / Year</option> 
+            <option value="filings4u" selected>Utilize Filings4u Protected Agent Shield Service â€” $${liveAgentFee} / Year</option> 
             <option value="custom">Maintain External Independent Third-Party Registered Agent</option> 
         </select> 
         <div class="wizard-error-message" id="err_corp_ra_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
@@ -319,14 +319,14 @@ window.formRegistry['corporations-part2-layout'] = function(stateDropdownOptions
         <label for="corp_scorp_procure" style="font-weight: 700; font-size: 0.82rem; color: var(--navy, #0a1f44);">Add IRS Form 2553 Filing Preparation Service? ($${liveScorpFee})</label> 
         <select id="corp_scorp_procure" class="wizard-input-field" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 12px; font-size: 0.95rem; font-weight: 600; background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; line-height: 1.2;" onchange="if(typeof window.toggleScorpFilingPricingHook === 'function') { window.toggleScorpFilingPricingHook(this.value); }"> 
             <option value="no-decline">No, I will file Form 2553 independently</option> 
-            <option value="yes-buy">Yes, add Form 2553 Preparation — $${liveScorpFee}</option> 
+            <option value="yes-buy">Yes, add Form 2553 Preparation â€” $${liveScorpFee}</option> 
         </select> 
         <div class="wizard-error-message" id="err_corp_scorp_procure" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
     </div> `; 
 };
 
 
-/** * 🔌 CONTROLLER 1: REGISTERED AGENT DISPLAY INTERLOCK * Handles visibility and strict layout constraints for the custom agent form workspace. */ 
+/** * ðŸ”Œ CONTROLLER 1: REGISTERED AGENT DISPLAY INTERLOCK * Handles visibility and strict layout constraints for the custom agent form workspace. */ 
 window.toggleCorporateRegisteredAgentConditionalFields = function(value) { 
     const wrapper = document.getElementById("corp_custom_ra_wrapper"); 
     if (!wrapper) return; 
@@ -407,7 +407,7 @@ window.formRegistry['corporations-form-master'] = function(stateDropdownOptionsH
     const layer3 = window.formRegistry['corporations-part2-layout'] ? window.formRegistry['corporations-part2-layout'](stateDropdownOptionsHtml) : ''; 
     return layer1 + layer2 + layer3; 
 };
-/** * 📦 DYNAMIC SHAREHOLDER REGISTRY MANAGER * Handles instant node instantiations and appends functional remove click listeners. */ 
+/** * ðŸ“¦ DYNAMIC SHAREHOLDER REGISTRY MANAGER * Handles instant node instantiations and appends functional remove click listeners. */ 
 // Global Removals Handler Matrix Node Hook up
 window.removeShareholderCardNode = function(cardIndex) {
     const targetCard = document.getElementById(`shareholder_card_${cardIndex}`);
@@ -479,7 +479,7 @@ document.addEventListener("click", function(e) {
 initCorporateFormationServices();
 
 
-/** * 🗑️ DYNAMIC NODE REMOVAL ENGINE * Safely removes a shareholder card container and re-indexes the layout stack. * @param {number} cardIdIndex The numeric identifier suffix of the target element. */ 
+/** * ðŸ—‘ï¸ DYNAMIC NODE REMOVAL ENGINE * Safely removes a shareholder card container and re-indexes the layout stack. * @param {number} cardIdIndex The numeric identifier suffix of the target element. */ 
 window.removeShareholderCardNode = function(cardIdIndex) { 
     const targetCard = document.getElementById(`shareholder_card_${cardIdIndex}`); 
     const parentContainer = document.getElementById("corp_shareholders_container"); 
@@ -528,7 +528,7 @@ window.removeShareholderCardNode = function(cardIdIndex) {
     }); 
 }; 
 
-/** * 🌟 DYNAMIC DUAL PASS NODE SCANNER * Reusable compilation module to check dynamic fields inside the form engine runtime. */
+/** * ðŸŒŸ DYNAMIC DUAL PASS NODE SCANNER * Reusable compilation module to check dynamic fields inside the form engine runtime. */
 window.validateDynamicShareholders = function(markInvalid, markValid, isVis) {
     let internalStatus = true;
     
@@ -615,3 +615,4 @@ window.validateDynamicShareholders = function(markInvalid, markValid, isVis) {
     
     return internalStatus;
 };
+

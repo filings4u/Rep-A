@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ IFTA REPLACEMENTS SERVICE: VALIDATION MATRIX ENGINE                     //
+﻿// ============================================================================ //
+// ðŸ› ï¸ IFTA REPLACEMENTS SERVICE: VALIDATION MATRIX ENGINE                     //
 // ============================================================================ //
 function initIftaReplacementsService() {
   window.formRegistry = window.formRegistry || {};
@@ -60,7 +60,7 @@ function initIftaReplacementsService() {
 window.initIftaReplacementsService = initIftaReplacementsService;
 
 // ============================================================================ //
-// 📊 FAMILY 32A: IFTA REPLACEMENTS LAYOUT MATRIX (PART 1)                     //
+// ðŸ“Š FAMILY 32A: IFTA REPLACEMENTS LAYOUT MATRIX (PART 1)                     //
 // ============================================================================ //
 window.buildIftaReplacementsFormPart1 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -100,7 +100,7 @@ window.buildIftaReplacementsFormPart1 = function(stateDropdownOptionsHtml = "") 
 };
 
 // ============================================================================ //
-// 📊 FAMILY 32A: IFTA REPLACEMENTS LAYOUT MATRIX (PART 2)                     //
+// ðŸ“Š FAMILY 32A: IFTA REPLACEMENTS LAYOUT MATRIX (PART 2)                     //
 // ============================================================================ //
 window.buildIftaReplacementsFormPart2 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -141,7 +141,7 @@ window.buildIftaReplacementsFormPart2 = function(stateDropdownOptionsHtml = "") 
 };
 
 // ============================================================================ //
-// 📦 MASTER IFTA REPLACEMENTS APPLICATION ASSEMBLY HOOK                         //
+// ðŸ“¦ MASTER IFTA REPLACEMENTS APPLICATION ASSEMBLY HOOK                         //
 // ============================================================================ //
 window.buildIftaReplacementsFormMaster = function(stateDropdownOptionsHtml = "") {
   const p1 = typeof window.buildIftaReplacementsFormPart1 === "function" ? window.buildIftaReplacementsFormPart1(stateDropdownOptionsHtml) : "";
@@ -164,3 +164,4 @@ window.formRegistry = window.formRegistry || {};
 window.formRegistry['ifta-replacements-form-master'] = function(stateDropdownOptionsHtml = "") {
   return window.buildIftaReplacementsFormMaster(stateDropdownOptionsHtml);
 };
+

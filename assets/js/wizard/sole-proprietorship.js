@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ SOLE PROPRIETORSHIP PART 1 VALIDATION MATRIX ENGINE                      //
+﻿// ============================================================================ //
+// ðŸ› ï¸ SOLE PROPRIETORSHIP PART 1 VALIDATION MATRIX ENGINE                      //
 // ============================================================================ //
 
 var solePropPart1Validation = {
@@ -210,7 +210,7 @@ function buildInformalEntityFieldsLayoutHtml() {
 }
 
 // ============================================================================ //
-// 🛠️ SOLE PROPRIETORSHIP PART 2 VALIDATION MATRIX ENGINE                      //
+// ðŸ› ï¸ SOLE PROPRIETORSHIP PART 2 VALIDATION MATRIX ENGINE                      //
 // ============================================================================ //
 
 var solePropPart2Validation = {
@@ -345,7 +345,7 @@ function buildSolePropPart2FieldsLayoutHtml() {
       <select id="sp_license_check" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleSolePropLicenseWorkflow(this.value)">
         <option value="" disabled selected>Choose an option...</option>
         <option value="yes">Yes, I have verified my structural requirements</option>
-        <option value="no">No, I need help — Add Filings4u Compliance Research Suite — $79.00</option>
+        <option value="no">No, I need help â€” Add Filings4u Compliance Research Suite â€” $79.00</option>
       </select>
     </div>
     <div id="sp_custom_license_wrapper" style="grid-column: span 2; display: none; flex-direction: column; gap: 8px;">
@@ -357,7 +357,7 @@ function buildSolePropPart2FieldsLayoutHtml() {
 window.buildSolePropPart2FieldsLayoutHtml = buildSolePropPart2FieldsLayoutHtml;
 
 // ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (SOLE PROPRIETORSHIPS)
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (SOLE PROPRIETORSHIPS)
 // ============================================================================ //
 
 window.toggleSolePropDbaField = function(value) {
@@ -419,3 +419,4 @@ window.toggleSolePropLicenseWorkflow = function(value) {
   }
   if (typeof window.updateDynamicPricingMatrixVanilla === "function") window.updateDynamicPricingMatrixVanilla();
 };
+

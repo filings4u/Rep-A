@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🖋️ PART 1 OF 3: STEP 4 VALIDATION MATRIX CORE & MEMORY CACHE               //
+﻿// ============================================================================ //
+// ðŸ–‹ï¸ PART 1 OF 3: STEP 4 VALIDATION MATRIX CORE & MEMORY CACHE               //
 // ============================================================================ //
 /**
  * filings4u, LLC - Power of Attorney Execution Matrix Engine
@@ -38,7 +38,7 @@ function evaluatePoaInputStateMatrix() {
   // Determine global validity state
   const isFormFullyValid = (isSignatureValid && isConsentChecked && window.hasUserScrolledToBottomPoa);
 
-  // 🚀 CACHE STORAGE UPGRADE: If everything matches validation rules, save it instantly
+  // ðŸš€ CACHE STORAGE UPGRADE: If everything matches validation rules, save it instantly
   if (isFormFullyValid && signatureText !== "") {
     // Generate a cryptographic-looking secure timestamp hash for verification lookups
     const uniqueVerificationHash = "POA-SIG-" + btoa(signatureText + "-" + new Date().toISOString().split('T')[0]).substring(0, 12).toUpperCase();
@@ -114,7 +114,7 @@ window.initCursiveSignatureCaptureLivePreview = function() {
         <strong>2. GRANT OF OPERATIONAL POWERS</strong><br>
         The Principal hereby grants, conveys, and delivers unto the said Attorney-in-Fact full operational power, authority, and jurisdiction to undertake, execute, and perform any and all acts deemed necessary to fulfill the service requests initiated by the Principal within the filings4u, LLC digital wizard interface.<br><br>
         <strong>3. ELECTRONIC SIGNATURES &amp; INTENT</strong><br>
-        This Agreement is executed electronically in strict conformity with the federal Electronic Signatures in Global and National Commerce Act (ESIGN) and the Uniform Electronic Transactions Act (UETA). The Principal expressly understands, agrees, and consents that typing their name into the designated input field—resulting in a script-generated cursive font rendering of their name on the screen—constitutes their valid, legally binding electronic signature carrying identical weight to a handwritten wet ink signature.<br><br>
+        This Agreement is executed electronically in strict conformity with the federal Electronic Signatures in Global and National Commerce Act (ESIGN) and the Uniform Electronic Transactions Act (UETA). The Principal expressly understands, agrees, and consents that typing their name into the designated input fieldâ€”resulting in a script-generated cursive font rendering of their name on the screenâ€”constitutes their valid, legally binding electronic signature carrying identical weight to a handwritten wet ink signature.<br><br>
         <strong>4. RATIFICATION, REVOCATION, AND DURATION</strong><br>
         This agreement shall remain in full force and effect from the date of electronic execution until explicitly revoked. Revocation may occur via written physical notification delivered to filings4u, LLC corporate networks or electronic cancellation processed through verified client portal pathways.<br><br>
         Corporate Entity Information:<br>
@@ -131,7 +131,7 @@ window.initCursiveSignatureCaptureLivePreview = function() {
       <!-- LIVE CURSIVE PREVIEW CANVAS CARD -->
       <div style="display: flex; flex-direction: column; gap: 6px; background: #fafafa; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 8px; text-align: center; justify-content: center; min-height: 80px; box-sizing: border-box; margin-top: 10px;">
         <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 2px;">Legal Electronic Signature Preview</span>
-        <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 2.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;">LEGAL ELECTRONIC SIGNATURE PREVIEW</div>
+        <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 1.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;">LEGAL ELECTRONIC SIGNATURE PREVIEW</div>
       </div>
 
       <!-- CONSENT RECOGNITION AFFIRMATION CHECKBOX WRAPPER (GRAYED OUT) -->
@@ -177,10 +177,10 @@ window.initCursiveSignatureCaptureLivePreview = function() {
   if (typeof window.attachPoaValidationListeners === "function") window.attachPoaValidationListeners();
 if (typeof window.evaluatePoaInputStateMatrix === "function") window.evaluatePoaInputStateMatrix();};
 
-  // 🚀 FIXED: Removed function closing bracket to let the rest of the chunks connect in sequence below
+  // ðŸš€ FIXED: Removed function closing bracket to let the rest of the chunks connect in sequence below
 
   // ============================================================================ //
-  // 🖋️ PART 2 OF 3: THE CANVAS TEMPLATE GENERATOR - CHUNK 2                      //
+  // ðŸ–‹ï¸ PART 2 OF 3: THE CANVAS TEMPLATE GENERATOR - CHUNK 2                      //
   // ============================================================================ //
   const scrollBox = document.getElementById("poa-scroll-box");
   if (scrollBox) {
@@ -219,7 +219,7 @@ if (typeof window.evaluatePoaInputStateMatrix === "function") window.evaluatePoa
     });
   }
 // ============================================================================ //
-// 🖋️ PART 2 OF 3: THE CANVAS TEMPLATE GENERATOR - CHUNK 3                      //
+// ðŸ–‹ï¸ PART 2 OF 3: THE CANVAS TEMPLATE GENERATOR - CHUNK 3                      //
 // ============================================================================ //
 const nameField = document.getElementById("poa_typed_signature");
 const consentBox = document.getElementById("poa_consent_checkbox");
@@ -292,10 +292,10 @@ if (typeof window.evaluatePoaInputStateMatrix === "function") {
 }
 
   // ============================================================================ //
-// 🖋️ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 1                    //
+// ðŸ–‹ï¸ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 1                    //
 // ============================================================================ //
 
-// 🚀 FIX: Programmatic lookups verify active targets inline to prevent variable isolation crashes
+// ðŸš€ FIX: Programmatic lookups verify active targets inline to prevent variable isolation crashes
 const activeResolutionTargetNode = document.getElementById('step-panel-4') || 
                                    document.getElementById('step-4') || 
                                    document.getElementById('step4PanelContainer');
@@ -311,7 +311,7 @@ if (activeResolutionTargetNode) {
     <!-- LIVE CURSIVE PREVIEW CANVAS CARD -->
     <div style="display: flex; flex-direction: column; gap: 6px; background: #fafafa; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 8px; text-align: center; justify-content: center; min-height: 80px; box-sizing: border-box; margin-top: 20px;">
       <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 2px;">Legal Electronic Signature Preview</span>
-      <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 2.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;"></div>
+      <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 1.7rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;"></div>
     </div>
 
     <!-- CONSENT CHECKBOX MATRIX WRAPPER (GRAYED OUT UNTIL VALID NAME DETECTED) -->
@@ -459,7 +459,7 @@ window.evaluatePoaInputStateMatrix = function() {
     window.wizardPoaSignedState = "signed_verified";
     window.wizardPoaSignatureVerificationString = `${signatureText} // Verified via Serverless Edge: ${signatureHashTag}`;
   } else {
-    window.wizardPoaSignedState = "pending";
+    window.wizardPoaSignedState = "signed";
     window.wizardPoaSignatureVerificationString = "";
   }
 
@@ -537,7 +537,7 @@ window.handlePoaWizardStepValidationSubmit = function(event) {
     return false;
   }
 
-  console.log("✅ [Success] Step 4 complete. Advancing to Step 5...");
+  console.log("âœ… [Success] Step 4 complete. Advancing to Step 5...");
   if (typeof window.evaluatePoaInputStateMatrix === "function") window.evaluatePoaInputStateMatrix();
 
   if (typeof window.switchWizardActiveViewLayout === "function") {
@@ -548,7 +548,7 @@ window.handlePoaWizardStepValidationSubmit = function(event) {
   return true;
 };
 
-// 🚀 CRITICAL BOOT TRIGGER: Automatically forces Step 4 to render and load immediately
+// ðŸš€ CRITICAL BOOT TRIGGER: Automatically forces Step 4 to render and load immediately
 if (typeof window.initCursiveSignatureCaptureLivePreview === "function") {
   window.initCursiveSignatureCaptureLivePreview();
 }
@@ -565,7 +565,7 @@ if (poaActivePanelTarget) {
 }
 
   // ============================================================================ //
-  // 🖋️ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 2                    //
+  // ðŸ–‹ï¸ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 2                    //
   // ============================================================================ //
   const signatureInputNode = document.getElementById("poa_typed_signature");
   const consentCheckboxNode = document.getElementById("poa_consent_checkbox");
@@ -579,7 +579,7 @@ if (poaActivePanelTarget) {
   const dynamicTooltipIcon = document.getElementById("poa-tooltip-icon");
   const dynamicTooltipText = document.getElementById("poa-tooltip-text");
 
-  // 📜 STEP 1 DETECTOR: Track legal document container interaction thresholds
+  // ðŸ“œ STEP 1 DETECTOR: Track legal document container interaction thresholds
   if (scrollerNode) {
     scrollerNode.addEventListener("scroll", function() {
       if (window.hasUserScrolledToBottomPoa) return;
@@ -619,10 +619,10 @@ if (poaActivePanelTarget) {
     });
   }
   // ============================================================================ //
-  // 🖋️ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 3                    //
+  // ðŸ–‹ï¸ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 3                    //
   // ============================================================================ //
   
-  // ✍️ STEP 2 MONITOR: Handwriting Engine & Checkbox Matrix Lock Toggles
+  // âœï¸ STEP 2 MONITOR: Handwriting Engine & Checkbox Matrix Lock Toggles
   if (signatureInputNode) {
     signatureInputNode.addEventListener("input", (e) => {
       const entryText = e.target.value;
@@ -662,7 +662,7 @@ if (poaActivePanelTarget) {
           dynamicTooltipText.innerHTML = `<strong>Step 3:</strong> Final step! Please check the legal signature affirmation consent box to proceed.`;
         }
       } else if (window.hasUserScrolledToBottomPoa) {
-        // 🔄 STATE REGRESSION GUARD: Re-lock step 3 if user backspaces their full name parameters
+        // ðŸ”„ STATE REGRESSION GUARD: Re-lock step 3 if user backspaces their full name parameters
         if (wrapperOverlay) {
           wrapperOverlay.style.opacity = "0.4";
           wrapperOverlay.style.pointerEvents = "none";
@@ -692,7 +692,7 @@ if (poaActivePanelTarget) {
     });
   }
 
-  // ☑️ STEP 3 MONITOR: Consent Checkbox Selection Listener
+  // â˜‘ï¸ STEP 3 MONITOR: Consent Checkbox Selection Listener
   if (consentCheckboxNode) {
     consentCheckboxNode.addEventListener("change", () => {
       // Clear out red warning boundary styles if box is checked
@@ -716,7 +716,7 @@ if (poaActivePanelTarget) {
   }
 
   // ============================================================================ //
-// 🖋️ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 4                    //
+// ðŸ–‹ï¸ PART 3 OF 3: THE INTERACTION LISTENERS HOOK - CHUNK 4                    //
 // ============================================================================ //
 /**
  * Intercepts forward wizard progression out of Step 4.
@@ -741,7 +741,7 @@ window.handlePoaWizardStepValidationSubmit = function(event) {
     targetElement.classList.add("shake-error-active");
   };
 
-  // 🧪 CHECKPOINT 1 VERIFICATION: Legal mandate document scroll constraint
+  // ðŸ§ª CHECKPOINT 1 VERIFICATION: Legal mandate document scroll constraint
   if (!window.hasUserScrolledToBottomPoa) {
     console.warn("[Navigation Intercept Violation] Mandate text scroll buffer unread.");
     if (scrollerNode) {
@@ -752,7 +752,7 @@ window.handlePoaWizardStepValidationSubmit = function(event) {
     return false;
   }
 
-  // 🧪 CHECKPOINT 2 VERIFICATION: Name entry validations (Must have first, last, and length >= 2)
+  // ðŸ§ª CHECKPOINT 2 VERIFICATION: Name entry validations (Must have first, last, and length >= 2)
   const currentSignatureString = signatureInputNode ? signatureInputNode.value.trim() : "";
   const isNameEntryValid = currentSignatureString.length >= 2 && currentSignatureString.includes(" ");
 
@@ -766,7 +766,7 @@ window.handlePoaWizardStepValidationSubmit = function(event) {
     return false;
   }
 
-  // 🧪 CHECKPOINT 3 VERIFICATION: Legal confirmation checkbox interaction
+  // ðŸ§ª CHECKPOINT 3 VERIFICATION: Legal confirmation checkbox interaction
   const isCheckboxAccepted = consentCheckboxNode ? consentCheckboxNode.checked : false;
 
   if (!isCheckboxAccepted) {
@@ -783,8 +783,8 @@ window.handlePoaWizardStepValidationSubmit = function(event) {
     return false;
   }
 
-  // 🎉 ALL CRITERIA CLEARED: State memory synced successfully
-  console.log("✅ [Checkpoint Cleared] Step 4 validation passed. Handing control flow to Step 5...");
+  // ðŸŽ‰ ALL CRITERIA CLEARED: State memory synced successfully
+  console.log("âœ… [Checkpoint Cleared] Step 4 validation passed. Handing control flow to Step 5...");
   
   if (typeof window.evaluatePoaInputStateMatrix === "function") {
     window.evaluatePoaInputStateMatrix();
@@ -803,7 +803,7 @@ window.handlePoaWizardStepValidationSubmit = function(event) {
 
 
 // ============================================================================ //
-// 📊 PART 2 OF 2: POWER OF ATTORNEY INTEGRATION ENGINE - CHUNK 1              //
+// ðŸ“Š PART 2 OF 2: POWER OF ATTORNEY INTEGRATION ENGINE - CHUNK 1              //
 // ============================================================================ //
 /**
  * filings4u, LLC - Power of Attorney Execution Matrix Engine
@@ -846,7 +846,7 @@ function evaluatePoaInputStateMatrix() {
   // Form Core Evaluation Completion Metric
   const isFormFullyValid = (isSignatureValid && isConsentChecked && window.hasUserScrolledToBottomPoa);
 
-  // 🚀 METADATA CACHE PIPELINE: Sync verified signatures straight into global scopes for Step 6
+  // ðŸš€ METADATA CACHE PIPELINE: Sync verified signatures straight into global scopes for Step 6
   if (isFormFullyValid && signatureText !== "") {
     // Build a unique tracking transaction verification stamp
     const signatureHashTag = "POA-SIG-" + btoa(signatureText + "-" + new Date().getUTCMinutes()).substring(0, 10).toUpperCase();
@@ -869,7 +869,7 @@ function evaluatePoaInputStateMatrix() {
       nextStepButton.disabled = false;
       nextStepButton.style.opacity = "1";
       nextStepButton.style.cursor = "pointer";
-      // 🚀 FIX: Removed pointer-events: none; to allow clicks to pass to the shake script
+      // ðŸš€ FIX: Removed pointer-events: none; to allow clicks to pass to the shake script
       nextStepButton.style.pointerEvents = "auto"; 
     } else {
       // Keep styling visual indicators set to locked
@@ -885,7 +885,7 @@ function evaluatePoaInputStateMatrix() {
 
 window.evaluatePoaInputStateMatrix = evaluatePoaInputStateMatrix;
 // ============================================================================ //
-// 📊 PART 2 OF 2: POWER OF ATTORNEY INTEGRATION ENGINE - CHUNK 2              //
+// ðŸ“Š PART 2 OF 2: POWER OF ATTORNEY INTEGRATION ENGINE - CHUNK 2              //
 // ============================================================================ //
 
 /**
@@ -916,7 +916,7 @@ function attachPoaValidationListeners() {
   }
 }
 
-// 📦 GLOBAL EXPOSURE AND BINDING PASSES
+// ðŸ“¦ GLOBAL EXPOSURE AND BINDING PASSES
 window.attachPoaValidationListeners = attachPoaValidationListeners;
 
 console.log("[Dynamic Registry] Power of Attorney validation listener definitions successfully armed.");
@@ -925,7 +925,7 @@ console.log("[Dynamic Registry] Power of Attorney validation listener definition
 
 
 // ============================================================================ //
-// 🛡️ PART 2: POWER OF ATTORNEY MATRIX CORE ENGINE - CHUNK 1                    //
+// ðŸ›¡ï¸ PART 2: POWER OF ATTORNEY MATRIX CORE ENGINE - CHUNK 1                    //
 // ============================================================================ //
 window.hasUserScrolledToBottomPoa = window.hasUserScrolledToBottomPoa || false;
 
@@ -969,7 +969,7 @@ function evaluatePoaInputStateMatrix() {
   // Determine global baseline form completion status
   const isFormFullyValid = (isSignatureValid && isConsentChecked && window.hasUserScrolledToBottomPoa);
 
-  // 🚀 METADATA CACHE PIPELINE: Sync verified signatures straight into global scopes for Step 6
+  // ðŸš€ METADATA CACHE PIPELINE: Sync verified signatures straight into global scopes for Step 6
   if (isFormFullyValid && signatureText !== "") {
     // Build a unique tracking transaction verification stamp
     const signatureHashTag = "POA-SIG-" + btoa(signatureText + "-" + new Date().getUTCMinutes()).substring(0, 10).toUpperCase();
@@ -994,7 +994,7 @@ function evaluatePoaInputStateMatrix() {
       nextStepButton.style.cursor = "pointer";
       nextStepButton.style.pointerEvents = "auto"; 
     } else {
-      // 🚀 FIX: Disabled is set to false and pointer-events are kept active 
+      // ðŸš€ FIX: Disabled is set to false and pointer-events are kept active 
       // This allows the element to register clicks so the shake script can intercept them!
       nextStepButton.disabled = false; 
       nextStepButton.style.opacity = "0.5";
@@ -1009,7 +1009,7 @@ function evaluatePoaInputStateMatrix() {
 // Global scope export mapping matrix update
 window.evaluatePoaInputStateMatrix = evaluatePoaInputStateMatrix;
 // ============================================================================ //
-// 🛡️ PART 2: POWER OF ATTORNEY MATRIX CORE ENGINE - CHUNK 2                    //
+// ðŸ›¡ï¸ PART 2: POWER OF ATTORNEY MATRIX CORE ENGINE - CHUNK 2                    //
 // ============================================================================ //
 
 /**
@@ -1057,7 +1057,7 @@ function handlePoaScrollEventPass() {
   }
 }
 
-// 📦 GLOBAL SCOPE REFERENCE EXPOSURE
+// ðŸ“¦ GLOBAL SCOPE REFERENCE EXPOSURE
 window.initPoaScrollTrackingEngine = initPoaScrollTrackingEngine;
 window.handlePoaScrollEventPass = handlePoaScrollEventPass;
 
@@ -1071,7 +1071,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============================================================================ //
-// 🛡️ PART 1 OF 2: COVENANTS WARNING BANNERS & GATES - CHUNK 1                  //
+// ðŸ›¡ï¸ PART 1 OF 2: COVENANTS WARNING BANNERS & GATES - CHUNK 1                  //
 // ============================================================================ //
 
 /**
@@ -1124,7 +1124,7 @@ function displayOrangePoaWarningBanner(alertMessageText) {
   const centralTooltipIcon = document.getElementById("poa-tooltip-icon");
   const centralTooltipText = document.getElementById("poa-tooltip-text");
 
-  // 🚀 OPTIMIZATION UPGRADE: Route the text straight into your centralized banner framework if it exists
+  // ðŸš€ OPTIMIZATION UPGRADE: Route the text straight into your centralized banner framework if it exists
   if (centralTooltipCard && centralTooltipText && centralTooltipIcon) {
     centralTooltipCard.style.background = "#fff5f5";
     centralTooltipCard.style.borderColor = "#fee2e2";
@@ -1162,7 +1162,7 @@ function displayOrangePoaWarningBanner(alertMessageText) {
 // Global exposure mapping updates
 window.displayOrangePoaWarningBanner = displayOrangePoaWarningBanner;
 // ============================================================================ //
-// 🛡️ PART 1 OF 2: COVENANTS WARNING BANNERS & GATES - CHUNK 2                  //
+// ðŸ›¡ï¸ PART 1 OF 2: COVENANTS WARNING BANNERS & GATES - CHUNK 2                  //
 // ============================================================================ //
 
 /**
@@ -1205,7 +1205,7 @@ function runActivePoaClickValidationGate(event) {
     isConsentChecked = true;
   }
 
-  // 🚩 Validation Gate 1: Track terms scroll completion block
+  // ðŸš© Validation Gate 1: Track terms scroll completion block
   if (!window.hasUserScrolledToBottomPoa) {
     console.warn("[Click Gate Violation] Document scroll requirement unverified.");
     if (typeof displayOrangePoaWarningBanner === "function") {
@@ -1216,7 +1216,7 @@ function runActivePoaClickValidationGate(event) {
     return false;
   }
 
-  // 🚩 Validation Gate 2: Track signature name string text values
+  // ðŸš© Validation Gate 2: Track signature name string text values
   if (!isSignatureValid) {
     console.warn("[Click Gate Violation] Full signature criteria unmet.");
     if (typeof displayOrangePoaWarningBanner === "function") {
@@ -1230,7 +1230,7 @@ function runActivePoaClickValidationGate(event) {
     return false;
   }
 
-  // 🚩 Validation Gate 3: Track checkbox verification confirmation choices
+  // ðŸš© Validation Gate 3: Track checkbox verification confirmation choices
   if (!isConsentChecked) {
     console.warn("[Click Gate Violation] Legal checkbox confirmation missing.");
     if (typeof displayOrangePoaWarningBanner === "function") {
@@ -1261,7 +1261,7 @@ function runActivePoaClickValidationGate(event) {
   }
 
   // Validation passes cleanly; advance to Step 5 (Summary)
-  console.log("✅ [Click Gate Success] All compliance gates passed. Routing forward path to Step 5...");
+  console.log("âœ… [Click Gate Success] All compliance gates passed. Routing forward path to Step 5...");
   if (typeof window.goToNextWizardStep === "function") {
     window.goToNextWizardStep(5);
   } else if (typeof window.switchWizardActiveViewLayout === "function") {
@@ -1270,11 +1270,11 @@ function runActivePoaClickValidationGate(event) {
   return true;
 }
 
-// 📦 GLOBAL SCOPE REFERENCE EXPOSURE
+// ðŸ“¦ GLOBAL SCOPE REFERENCE EXPOSURE
 window.runActivePoaClickValidationGate = runActivePoaClickValidationGate;
 
 // ============================================================================ //
-// 🛡️ PART 2 OF 2: COMPLIANCE LISTENERS & UNFREEZERS - CHUNK 1                  //
+// ðŸ›¡ï¸ PART 2 OF 2: COMPLIANCE LISTENERS & UNFREEZERS - CHUNK 1                  //
 // ============================================================================ //
 
 /**
@@ -1282,7 +1282,7 @@ window.runActivePoaClickValidationGate = runActivePoaClickValidationGate;
  * the explicit progression rules: Scroll First -> Type Name -> Check Box.
  */
 // ============================================================================ //
-// 📡 UN-FREEZER BRIDGE ATTACHMENT                                             //
+// ðŸ“¡ UN-FREEZER BRIDGE ATTACHMENT                                             //
 // ============================================================================ //
 function forceUnfreezeStep4FormInputs() {
   const signatureInput = document.getElementById("poa_typed_signature") || document.getElementById("signature_input");
@@ -1290,7 +1290,7 @@ function forceUnfreezeStep4FormInputs() {
   const nameFieldWrapper = document.getElementById("poa_input_wrapper");
   const checkboxWrapper = document.getElementById("poa_consent_wrapper");
 
-  // 🚀 FIX: Removed the loose naked return statement. Covered actions inside a safe conditional block statement frame wrapper instead.
+  // ðŸš€ FIX: Removed the loose naked return statement. Covered actions inside a safe conditional block statement frame wrapper instead.
   if (window.hasUserScrolledToBottomPoa) {
     if (nameFieldWrapper) { nameFieldWrapper.style.opacity = "1"; nameFieldWrapper.style.pointerEvents = "auto"; }
     if (signatureInput) { signatureInput.disabled = false; signatureInput.readOnly = false; }
@@ -1317,7 +1317,7 @@ function forceUnfreezeStep4FormInputs() {
 window.forceUnfreezeStep4FormInputs = forceUnfreezeStep4FormInputs;
 
 // ============================================================================ //
-// 🛡️ PART 2 OF 2: COMPLIANCE LISTENERS & UNFREEZERS - CHUNK 2                  //
+// ðŸ›¡ï¸ PART 2 OF 2: COMPLIANCE LISTENERS & UNFREEZERS - CHUNK 2                  //
 // ============================================================================ //
 
 /**
@@ -1334,7 +1334,7 @@ function attachPoaValidationListeners() {
   const tooltipIcon = document.getElementById("poa-tooltip-icon");
   const tooltipText = document.getElementById("poa-tooltip-text");
 
-  // ✍️ TEXT ENTRY FIELD LISTENER
+  // âœï¸ TEXT ENTRY FIELD LISTENER
   if (signatureInput && !signatureInput.dataset.listenerActive) {
     signatureInput.addEventListener("input", () => {
       if (typeof window.checkPoaInputStateSilently === "function") window.checkPoaInputStateSilently();
@@ -1344,7 +1344,7 @@ function attachPoaValidationListeners() {
     signatureInput.dataset.listenerActive = "true";
   }
 
-  // ☑️ CONSENT CHECKBOX SELECTION LISTENER
+  // â˜‘ï¸ CONSENT CHECKBOX SELECTION LISTENER
   if (consentCheckbox && !consentCheckbox.dataset.listenerActive) {
     consentCheckbox.addEventListener("change", () => {
       if (typeof window.checkPoaInputStateSilently === "function") window.checkPoaInputStateSilently();
@@ -1353,7 +1353,7 @@ function attachPoaValidationListeners() {
     consentCheckbox.dataset.listenerActive = "true";
   }
 
-  // 📜 SCROLL BAR TRACKING LISTENER
+  // ðŸ“œ SCROLL BAR TRACKING LISTENER
   if (scrollBox && !scrollBox.dataset.scrollHooked) {
     scrollBox.addEventListener("scroll", function(e) {
       const target = e.target;
@@ -1391,11 +1391,11 @@ function attachPoaValidationListeners() {
   }
 }
 
-// 📦 GLOBAL SCOPE REFERENCE EXPOSURE
+// ðŸ“¦ GLOBAL SCOPE REFERENCE EXPOSURE
 window.attachPoaValidationListeners = attachPoaValidationListeners;
 
 // ============================================================================ //
-// 🖋️ AUTOMATED LIFECYCLE INITIALIZER & OBSERVER ENGINE                        //
+// ðŸ–‹ï¸ AUTOMATED LIFECYCLE INITIALIZER & OBSERVER ENGINE                        //
 // ============================================================================ //
 document.addEventListener("DOMContentLoaded", () => {
   const poaActivePanelTarget = document.getElementById("step-panel-4") || document.getElementById("step-4");
@@ -1440,7 +1440,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ============================================================================ //
-// 🎨 CORPORATE DESIGN RE-SKIN: UNIFIED APPLICATION COMPLIANCE BANNER - CHUNK 1 //
+// ðŸŽ¨ CORPORATE DESIGN RE-SKIN: UNIFIED APPLICATION COMPLIANCE BANNER - CHUNK 1 //
 // ============================================================================ //
 /**
  * Generates an elegantly skinned, context-aware notification banner.
@@ -1475,7 +1475,7 @@ function displayOrangePoaWarningBanner(messageText) {
 window.displayOrangePoaWarningBanner = displayOrangePoaWarningBanner;
 
 // ============================================================================ //
-// 🟢 WORKSPACE INTERACTION LOCK-RELEASE HOOK                                   //
+// ðŸŸ¢ WORKSPACE INTERACTION LOCK-RELEASE HOOK                                   //
 // ============================================================================ //
 function initializeStep4MutationObserverTracking() {
   const targetPanelNode = document.getElementById("step-panel-4") || document.getElementById("step-4");
@@ -1500,12 +1500,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeStep4MutationObserverTracking();
 });
 // ============================================================================ //
-// 🖋️ LIVE CURSIVE SIGNATURE MIRROR PREVIEW MATRIX - CHUNK 2                     //
+// ðŸ–‹ï¸ LIVE CURSIVE SIGNATURE MIRROR PREVIEW MATRIX - CHUNK 2                     //
 // ============================================================================ //
 function initCursiveSignatureCaptureLivePreview() {
   const textInputField = document.getElementById("poa_typed_signature") || document.getElementById("signature_input");
   
-  // 🚀 FIX: Mapped lookups to check BOTH container IDs so the script works perfectly with your HTML layout tags
+  // ðŸš€ FIX: Mapped lookups to check BOTH container IDs so the script works perfectly with your HTML layout tags
   const cursivePreviewField = document.getElementById("poa_cursive_preview") || document.getElementById("cursive-signature-preview");
 
   if (!textInputField || !cursivePreviewField) {
@@ -1576,7 +1576,7 @@ document.addEventListener("DOMContentLoaded", () => {
 }); 
 
 // ============================================================================ // 
-// 🛡️ PART 5: ACTIVE NAVIGATION INTERCEPTOR - CHUNK 1                          // 
+// ðŸ›¡ï¸ PART 5: ACTIVE NAVIGATION INTERCEPTOR - CHUNK 1                          // 
 // ============================================================================ // 
 /** 
  * High-performance submission validation gate. 
@@ -1624,12 +1624,12 @@ function runActivePoaClickValidationGate(event) {
     isConsentChecked = true; 
   } 
   // ============================================================================ // 
-// 🛡️ PART 5: ACTIVE NAVIGATION INTERCEPTOR - CHUNK 2                          // 
+// ðŸ›¡ï¸ PART 5: ACTIVE NAVIGATION INTERCEPTOR - CHUNK 2                          // 
 // ============================================================================ // 
 
-// 🚀 FIX: Injected the starting try context framework block securely
+// ðŸš€ FIX: Injected the starting try context framework block securely
 try {
-  // 🚩 ON-CLICK GATE 1: Verify document scrolling threshold 
+  // ðŸš© ON-CLICK GATE 1: Verify document scrolling threshold 
   if (!window.hasUserScrolledToBottomPoa) { 
     console.warn("[POA Interceptor Violation] Scroll barrier unverified.");
     if (typeof window.displayOrangePoaWarningBanner === "function") { 
@@ -1640,7 +1640,7 @@ try {
     return false; 
   } 
 
-  // 🚩 ON-CLICK GATE 2: Verify signature name format structure 
+  // ðŸš© ON-CLICK GATE 2: Verify signature name format structure 
   if (!isSignatureValid) { 
     console.warn("[POA Interceptor Violation] Name formatting string invalid.");
     if (typeof window.displayOrangePoaWarningBanner === "function") { 
@@ -1654,7 +1654,7 @@ try {
     return false; 
   } 
 
-  // 🚩 ON-CLICK GATE 3: Verify checkbox authorization checkmarks 
+  // ðŸš© ON-CLICK GATE 3: Verify checkbox authorization checkmarks 
   if (!isConsentChecked) { 
     console.warn("[POA Interceptor Violation] Acceptance checkbox unchecked.");
     if (typeof window.displayOrangePoaWarningBanner === "function") { 
@@ -1675,7 +1675,7 @@ try {
     return false; 
   } 
 
-  // 🟢 SUCCESS: All criteria met. Remove any visible alerts and advance layout views 
+  // ðŸŸ¢ SUCCESS: All criteria met. Remove any visible alerts and advance layout views 
   const existingWarning = document.getElementById("poa-orange-alert-banner"); 
   if (existingWarning) existingWarning.remove(); 
   
@@ -1686,12 +1686,12 @@ try {
     window.evaluatePoaInputStateMatrix();
   }
 
-  // 🧠 CRITICAL DATA MIRROR PASS: 
+  // ðŸ§  CRITICAL DATA MIRROR PASS: 
   if (typeof window.saveWizardFormStatesVanilla === "function") { 
     window.saveWizardFormStatesVanilla(); 
   } 
 
-  // 💾 COMMIT CURRENT POSITION TO LOCAL CACHE PRIOR TO SHIFTING SCENARIOS 
+  // ðŸ’¾ COMMIT CURRENT POSITION TO LOCAL CACHE PRIOR TO SHIFTING SCENARIOS 
   const cacheKey = "f4u_wizard_onboarding_state"; 
   try { 
     const currentCacheData = JSON.parse(localStorage.getItem(cacheKey) || "{}"); 
@@ -1723,7 +1723,7 @@ window.runActivePoaClickValidationGate = runActivePoaClickValidationGate;
 
 
 // ============================================================================ //
-// 📡 UN-FREEZER BRIDGE ATTACHMENT - CHUNK 1                                    //
+// ðŸ“¡ UN-FREEZER BRIDGE ATTACHMENT - CHUNK 1                                    //
 // ============================================================================ //
 
 /**
@@ -1790,7 +1790,7 @@ function forceUnfreezeStep4FormInputs() {
     }
   }
 
-  // 🚀 BUTTON ROUTING UPDATE: Force the click handler onto your validation gate interceptor 
+  // ðŸš€ BUTTON ROUTING UPDATE: Force the click handler onto your validation gate interceptor 
   // keeping the button clickable so the shake animation plays if forms are incomplete.
   if (nextStepButton) {
     nextStepButton.removeAttribute("disabled");
@@ -1840,7 +1840,7 @@ function checkPoaInputStateSilently() {
 }
 
 // ============================================================================ //
-// ⓘ CONTEXTUAL TOOLTIP POP-UP ENGINE (MATCHES UNIFIED ALERT DESIGN SPEC)       //
+// â“˜ CONTEXTUAL TOOLTIP POP-UP ENGINE (MATCHES UNIFIED ALERT DESIGN SPEC)       //
 // ============================================================================ //
 window.checkPoaInputStateSilently = typeof checkPoaInputStateSilently !== "undefined" ? checkPoaInputStateSilently : window.checkPoaInputStateSilently;
 
@@ -1901,7 +1901,7 @@ window.togglePoaDisplay = togglePoaContextualTooltipDisplay;
 window.togglePoaContextualTooltipDisplay = togglePoaContextualTooltipDisplay; // Legacy naming compatibility
 
 // ============================================================================ //
-// 🟢 AUTOMATED GLOBAL DISMISSAL INTERCEPTOR (THE UN-TRAP ENGINE)               //
+// ðŸŸ¢ AUTOMATED GLOBAL DISMISSAL INTERCEPTOR (THE UN-TRAP ENGINE)               //
 // ============================================================================ //
 // Listens to the global page runtime. If the tooltip card is open and the customer
 // clicks anywhere outside its borders, it closes the overlay elements automatically.
@@ -1916,3 +1916,4 @@ document.addEventListener("click", function(globalClickEvent) {
     }
   }
 });
+

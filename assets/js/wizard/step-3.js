@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🗃️ MASTER MARKETPLACE DATABASE REFERENCE (ISOLATED RUNTIME CONFIGURATION)   //
+﻿// ============================================================================ //
+// ðŸ—ƒï¸ MASTER MARKETPLACE DATABASE REFERENCE (ISOLATED RUNTIME CONFIGURATION)   //
 // ============================================================================ //
 window.MASTER_UPSELLS_CATALOG = {
   // --- SERVICE CATEGORY 1: NEW ENTRANT AUDIT REGISTRATION ---
@@ -34,7 +34,7 @@ window.MASTER_UPSELLS_CATALOG = {
 };
 
 // ============================================================================ //
-// 🎯 ROUTE ALIAS ALIGNMENT MATRIX EXTRACTION LAYER                            //
+// ðŸŽ¯ ROUTE ALIAS ALIGNMENT MATRIX EXTRACTION LAYER                            //
 // ============================================================================ //
 // Helper to perform safe deep isolation copies of database configuration frames
 const deepCloneCatalogBranch = (sourceBranch) => {
@@ -46,7 +46,7 @@ const deepCloneCatalogBranch = (sourceBranch) => {
   }
 };
 
-// 🟢 FIXED ROUTE EXTRACTION SEPARATION: 
+// ðŸŸ¢ FIXED ROUTE EXTRACTION SEPARATION: 
 // Assign independent deep clones to completely sandbox active memory arrays
 window.MASTER_UPSELLS_CATALOG["llc-formation"] = deepCloneCatalogBranch(window.MASTER_UPSELLS_CATALOG["corp-formation"]);
 window.MASTER_UPSELLS_CATALOG["corporations"] = deepCloneCatalogBranch(window.MASTER_UPSELLS_CATALOG["corp-formation"]);
@@ -54,7 +54,7 @@ window.MASTER_UPSELLS_CATALOG["corporations"] = deepCloneCatalogBranch(window.MA
 console.log("[Master Catalog Database] Route aliases successfully initialized via decoupled isolation deep clones.");
 
 // ============================================================================ //
-// 🗃️ UPSELLS ENGINE ROUTER DATABASE CATEGORY SCHEMA CONFIGURATION             //
+// ðŸ—ƒï¸ UPSELLS ENGINE ROUTER DATABASE CATEGORY SCHEMA CONFIGURATION             //
 // ============================================================================ //
 window.UPSELLS_ROUTER_DATABASE = {
   "formations": [
@@ -102,7 +102,7 @@ window.UPSELLS_ROUTER_DATABASE = {
   ]
 };
 
-// 🟢 FIXED IMMUTABLE METADATA LAYER:
+// ðŸŸ¢ FIXED IMMUTABLE METADATA LAYER:
 // Deeply freeze parent category keys to give calculation engines exact semantic classifications
 Object.keys(window.UPSELLS_ROUTER_DATABASE).forEach(categoryKey => {
   window.UPSELLS_ROUTER_DATABASE[categoryKey].forEach(item => {
@@ -118,7 +118,7 @@ Object.keys(window.UPSELLS_ROUTER_DATABASE).forEach(categoryKey => {
 console.log("[Master Catalog Schema] Category boundaries frozen and secured perfectly.");
 
 // ============================================================================ //
-// 🎯 DYNAMIC LIFECYCLE EXTENSION ROUTING INTERLOCKS                            //
+// ðŸŽ¯ DYNAMIC LIFECYCLE EXTENSION ROUTING INTERLOCKS                            //
 // ============================================================================ //
 
 // Ensure the global database context exists securely before updating keys
@@ -134,7 +134,7 @@ const duplicateDatabaseCatalogBranch = (sourceArray) => {
   }
 };
 
-// 🟢 FIXED ALIAS DECOUPLING:
+// ðŸŸ¢ FIXED ALIAS DECOUPLING:
 // Map explicit service slugs to isolated deep clones to prevent cross-step mutation leaks
 const targetedFormationsSource = window.UPSELLS_ROUTER_DATABASE["formations"] || window.UPSELLS_ROUTER_DATABASE["corp-formation"];
 
@@ -144,7 +144,7 @@ window.UPSELLS_ROUTER_DATABASE["corporations"] = duplicateDatabaseCatalogBranch(
 console.log("[Router Database Schema] Successfully initialized runtime data elements configuration keys via decoupled clones.");
 
 // ============================================================================ //
-// 📊 LAYER 2: PROGRAMMATIC LOOKUP ROUTER UTILITY ENGINE                         //
+// ðŸ“Š LAYER 2: PROGRAMMATIC LOOKUP ROUTER UTILITY ENGINE                         //
 // ============================================================================ //
 
 /**
@@ -203,7 +203,7 @@ function getScopedUpsellsDataset(routeKey) {
 window.getScopedUpsellsDataset = getScopedUpsellsDataset;
 
 // ============================================================================ //
-// 🟢 CENTRAL ROUTER ACCESS POINT (CATALOG DATA SEPARATION FILTER)              //
+// ðŸŸ¢ CENTRAL ROUTER ACCESS POINT (CATALOG DATA SEPARATION FILTER)              //
 // ============================================================================ //
 
 /**
@@ -225,7 +225,7 @@ function getCategoryAddonsByServiceKey(serviceKey) {
     targetAddonsList = window.MASTER_UPSELLS_CATALOG[lookupKey];
   } 
   else {
-    // 🟢 FIXED ADAPTIVE CONTEXT EXTRACTION:
+    // ðŸŸ¢ FIXED ADAPTIVE CONTEXT EXTRACTION:
     // Fall back to clean semantic categories instead of a blind, random array-grab loop.
     // This stops Corporate, Trucker, and Broker item datasets from ever conflicting or crossing!
     if (lookupKey.includes("corp") || lookupKey.includes("llc") || lookupKey.includes("formation")) {
@@ -271,7 +271,7 @@ if (typeof window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP !== "undefined" && window.UP
 window.getCategoryAddonsByServiceKey = getCategoryAddonsByServiceKey;
 
 // ============================================================================ //
-// 🎨 PART 1: NEUTRAL SELECTION SKINNING MODULE (STEP 3 VIEW ISOLATION)        //
+// ðŸŽ¨ PART 1: NEUTRAL SELECTION SKINNING MODULE (STEP 3 VIEW ISOLATION)        //
 // ============================================================================ //
 
 /**
@@ -303,7 +303,7 @@ function autoSkinSelectedUpsellCards() {
   });
 }
 
-// 📦 GLOBAL SCOPE REFERENCE EXPOSURE
+// ðŸ“¦ GLOBAL SCOPE REFERENCE EXPOSURE
 window.autoSkinSelectedUpsellCards = autoSkinSelectedUpsellCards;
 
 // Safe Intercept: Wrap baseline checkbox toggle pass if initialized on the window scope
@@ -322,7 +322,7 @@ window.triggerStepThreeUiSkinPass = function() {
 };
 
 // ============================================================================ //
-// 🗺️ STEP 3 RENDER TARGET SYNCHRONIZATION BRIDGE (ANTI-FLICKER REBOOT)        //
+// ðŸ—ºï¸ STEP 3 RENDER TARGET SYNCHRONIZATION BRIDGE (ANTI-FLICKER REBOOT)        //
 // ============================================================================ //
 function autoInitializeStep3MarketplaceCatalog() {
   const step3PanelContainer = document.getElementById("step-panel-3") || document.getElementById("step-3");
@@ -346,7 +346,7 @@ function autoInitializeStep3MarketplaceCatalog() {
     }
   }
 
-  // 🛡️ BULLETPROOF ANTI-WIPE GUARD: Prevent destroying server-rendered prices
+  // ðŸ›¡ï¸ BULLETPROOF ANTI-WIPE GUARD: Prevent destroying server-rendered prices
   const hasExistingPrices = step3PanelContainer.querySelector('.price, [class*="price"], .product-price, .upsell-price');
   if (hasExistingPrices && !window.FORCE_REFRESH_MARKETPLACE) {
     console.log("[Marketplace Bridge] Server-rendered prices detected. Aborting wipe sequence to preserve prices.");
@@ -366,7 +366,7 @@ function autoInitializeStep3MarketplaceCatalog() {
     if (typeof window.renderTargetUpsellsListPanel === "function") {
       window.renderTargetUpsellsListPanel(activeCatalog, htmlMarketplaceBox);
     } else {
-      // 🟢 FIXED STRUCTURAL CONTRACT PROTECTION:
+      // ðŸŸ¢ FIXED STRUCTURAL CONTRACT PROTECTION:
       // Default to a verified empty list array instead of passing the raw master parent catalog object.
       // This enforces separation and clears target rendering runtime errors!
       let structuredItemsList = [];
@@ -410,7 +410,7 @@ function autoInitializeStep3MarketplaceCatalog() {
       window.cleanStep3MarketplaceDuplications();
     }
 
-    // 🟢 SYNCHRONOUS INITIALIZATION INITIALIZER:
+    // ðŸŸ¢ SYNCHRONOUS INITIALIZATION INITIALIZER:
     // Execute styling updates synchronously here to lock values in place before the calculations layer triggers.
     autoSkinSelectedUpsellCards();
   }
@@ -440,7 +440,7 @@ window.autoInitializeStep3MarketplaceCatalog = autoInitializeStep3MarketplaceCat
 window.executeStepThreeUpsellStreaming = window.executeStepThreeUpsellStreaming;
 
 // ============================================================================ //
-// 📊 PART 1 OF 3: DYNAMIC SCHEMA ADD-ON INGESTION ENGINE                      //
+// ðŸ“Š PART 1 OF 3: DYNAMIC SCHEMA ADD-ON INGESTION ENGINE                      //
 // ============================================================================ //
 function extractCatalogAddonsDynamically(databaseSource) {
   const unifiedCatalogItems = {};
@@ -485,15 +485,15 @@ function extractCatalogAddonsDynamically(databaseSource) {
   scanTreeRecursively(databaseSource);
   visitedNodes.clear();
 
-  // 🟢 FIXED SYSTEM SPECIFICATION: Always return a flat array to prevent structural data-shape mismatches!
+  // ðŸŸ¢ FIXED SYSTEM SPECIFICATION: Always return a flat array to prevent structural data-shape mismatches!
   return Object.values(unifiedCatalogItems);
 }
 
 // ============================================================================ //
-// 📊 PART 2 OF 3: WORKSPACE COMPONENT STRING BUILDER (ANTI-FLICKER PRO)       //
+// ðŸ“Š PART 2 OF 3: WORKSPACE COMPONENT STRING BUILDER (ANTI-FLICKER PRO)       //
 // ============================================================================ //
 function buildMarketplaceCardsHtml(catalogItems) {
-  // 🟢 FIXED: Forced grid-column span 2 for absolute 100% full-width expansion & updated description text
+  // ðŸŸ¢ FIXED: Forced grid-column span 2 for absolute 100% full-width expansion & updated description text
   const stepHeaderHtml = `
     <div style="grid-column: span 2; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; width: 100%; box-sizing: border-box; clear: both;"> 
       <h3 style="color: #0a1f44; font-size: 1.25rem; font-weight: 800; margin: 0 0 6px 0;">3. Add-Ons</h3> 
@@ -583,10 +583,10 @@ function buildMarketplaceCardsHtml(catalogItems) {
       </div>
       
  <style>
-  /* 📱 MOBILE VIEWPORT BREAKPOINT: PREMIUM STEP 3 CARD OPTIMIZATION */
+  /* ðŸ“± MOBILE VIEWPORT BREAKPOINT: PREMIUM STEP 3 CARD OPTIMIZATION */
   @media (max-width: 600px) {
     
-    /* 1️⃣ OVERRIDE PARENT GRID RULES COHESIVELY */
+    /* 1ï¸âƒ£ OVERRIDE PARENT GRID RULES COHESIVELY */
     div[style*="display: grid;"],
     div[id*="marketplace"],
     #wizard-account-generation-form {
@@ -595,7 +595,7 @@ function buildMarketplaceCardsHtml(catalogItems) {
       width: 100% !important;
     }
 
-    /* 2️⃣ THE COMPLIANCE CARD MATRIX HUB */
+    /* 2ï¸âƒ£ THE COMPLIANCE CARD MATRIX HUB */
     /* Remodels each up-sell envelope block into a premium mobile card layout */
     .upsell-market-card,
     div[class*="upsell-market-card"],
@@ -614,7 +614,7 @@ function buildMarketplaceCardsHtml(catalogItems) {
       margin-bottom: 16px !important;
     }
 
-    /* 3️⃣ TEXT DESCRIPTION WRAPPING COMPONENT */
+    /* 3ï¸âƒ£ TEXT DESCRIPTION WRAPPING COMPONENT */
     /* Removes empty space fields to lock title text and descriptions closer together */
     .upsell-market-card div[style*="display:flex; flex-direction:column; gap:4px;"] {
       display: flex !important;
@@ -640,11 +640,11 @@ function buildMarketplaceCardsHtml(catalogItems) {
       margin: 0 !important;
     }
 
-    /* 4️⃣ THE LOWER INPUTS TIERS: SIDE-BY-SIDE FIXED HORIZONTAL VIEWPORT TRACKING */
+    /* 4ï¸âƒ£ THE LOWER INPUTS TIERS: SIDE-BY-SIDE FIXED HORIZONTAL VIEWPORT TRACKING */
     /* Transforms the lower price text element and active checkbox button back onto a clean side-by-side row */
     .upsell-market-card div[style*="display:flex; flex-direction:column; align-items:flex-end;"] {
       display: flex !important;
-      flex-direction: row !important; /* 🔥 MANDATORY: Moves the Price and the Activate checkbox side-by-side */
+      flex-direction: row !important; /* ðŸ”¥ MANDATORY: Moves the Price and the Activate checkbox side-by-side */
       justify-content: space-between !important; /* Pushes price to the far left, and checkbox to the far right */
       align-items: center !important;
       width: 100% !important;
@@ -692,7 +692,7 @@ function buildMarketplaceCardsHtml(catalogItems) {
 </style>
 
 <style>
-  /* 🟢 DESKTOP & MOBILE ACTIVE SELECTED CARD GLOW TRANSITIONS */
+  /* ðŸŸ¢ DESKTOP & MOBILE ACTIVE SELECTED CARD GLOW TRANSITIONS */
   .upsell-market-card {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
@@ -727,7 +727,7 @@ function buildMarketplaceCardsHtml(catalogItems) {
   });
 
   // ============================================================================ //
-  // 🚀 AUTOMATED NAVIGATION ACTION FOOTER INJECTION PASS                        //
+  // ðŸš€ AUTOMATED NAVIGATION ACTION FOOTER INJECTION PASS                        //
   // ============================================================================ //
   accumulatorHtml += `
     <div class="wizard-footer-action-row" style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; width: 100% !important; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border, #e2e8f0); clear: both; box-sizing: border-box;"> 
@@ -746,12 +746,11 @@ window.buildMarketplaceCardsHtml = buildMarketplaceCardsHtml;
 
 
 // ============================================================================ //
-// 📡 4. REACTIVE STATE INTERCEPTOR ENGINE (DEBOUNCED ANTI-FLICKER PROXY)       //
-// ============================================================================ //
-(function attachAgnosticStateInterceptors() {
+// ðŸ“¡ 4. REACTIVE STATE INTERCEPTOR ENGINE (DEBOUNCED ANTI-FLICKER PROXY)       //
+// ============================================================================ //;(function attachAgnosticStateInterceptors() {
   const targetedMemoryHooks = ['CENTRAL_ADDON_DB', 'UPSELLS_ROUTER_DATABASE', 'UPSELL_ADDON_REGISTRY'];
   
-  // 🛡️ ANTI-FLICKER DEBOUNCE TIMER
+  // ðŸ›¡ï¸ ANTI-FLICKER DEBOUNCE TIMER
   let renderDebounceTimeout = null;
 
   targetedMemoryHooks.forEach(hookKey => {
@@ -770,9 +769,9 @@ window.buildMarketplaceCardsHtml = buildMarketplaceCardsHtml;
             clearTimeout(renderDebounceTimeout);
           }
           
-          // 🛡️ Delay execution to allow pricing engines to finish mutating data properties safely
+          // ðŸ›¡ï¸ Delay execution to allow pricing engines to finish mutating data properties safely
           renderDebounceTimeout = setTimeout(() => {
-            // 🟢 BOUNDARY CHECK: Only trigger streaming if the client is actively on Step 3 view layers
+            // ðŸŸ¢ BOUNDARY CHECK: Only trigger streaming if the client is actively on Step 3 view layers
             const activeStepNum = parseInt(window.currentWizardActiveStep, 10) || 0;
             if (activeStepNum === 3 && typeof window.executeStepThreeUpsellStreaming === "function") {
               console.log(`[Step 3 Proxy] Addon data stabilized via "${hookKey}". Streaming fields...`);
@@ -797,7 +796,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============================================================================ //
-// ⚡ CLICK INTERCEPT ROUTERS & BINDING HANDLERS (ANTI-FLICKER PRO FUNNEL)      //
+// âš¡ CLICK INTERCEPT ROUTERS & BINDING HANDLERS (ANTI-FLICKER PRO FUNNEL)      //
 // ============================================================================ //
 function handleBackgroundUpsellTogglePass(checkboxNode) {
   if (!checkboxNode || typeof checkboxNode !== 'object') return;
@@ -890,7 +889,7 @@ function handleBackgroundUpsellTogglePass(checkboxNode) {
     console.log(`[Funnel Sync] Scrubbed "${addonNameAttr}" out of Step 5 cart state review array.`);
   }
 
-  // 🟢 FIXED SCOPED SEPARATION:
+  // ðŸŸ¢ FIXED SCOPED SEPARATION:
   // Isolate checkbox scraping strictly inside Step 3's DOM target container. 
   // This prevents it from scraping and corrupting Step 2 or Step 4 variables!
   const marketplaceWrapper = document.getElementById("wizard-dynamic-upsells-render-target") || document.getElementById("step-panel-3") || document;
@@ -930,7 +929,7 @@ function handleBackgroundUpsellTogglePass(checkboxNode) {
     window.autoSkinSelectedUpsellCards();
   }
 
-  // 🟢 FIXED SYNCHRONOUS FLOW SEQUENCE:
+  // ðŸŸ¢ FIXED SYNCHRONOUS FLOW SEQUENCE:
   // We execute pricing evaluations instantly and follow up with the storage capture 
   // inside the same task. This ensures values write to cache *after* math updates complete!
   if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
@@ -948,7 +947,7 @@ window.handleBackgroundUpsellTogglePass = handleBackgroundUpsellTogglePass;
 
 
 // ============================================================================ //
-// 🧼 UNIVERSAL STEP 3 VISUAL OVERLAY CLEANER (PASSIVE LAYOUT ALIGNMENT CORE)   //
+// ðŸ§¼ UNIVERSAL STEP 3 VISUAL OVERLAY CLEANER (PASSIVE LAYOUT ALIGNMENT CORE)   //
 // ============================================================================ //
 function eliminateBlankDescriptionUpsellsFromStep3() {
   const step3Container = document.getElementById("step-panel-3") || document.getElementById("step-3");
@@ -987,12 +986,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const step3Container = document.getElementById("step-panel-3") || document.getElementById("step-3");
   if (step3Container) {
-    // 🛡️ ANTI-FLICKER FIX: Narrow the scope of the observer to childList ONLY.
+    // ðŸ›¡ï¸ ANTI-FLICKER FIX: Narrow the scope of the observer to childList ONLY.
     const observer = new MutationObserver((mutationsList) => {
       if (window.isStep3CleanupCurrentlyProcessing) return;
       window.isStep3CleanupCurrentlyProcessing = true;
 
-      // 🟢 FIXED ASYNC PROCESSING ORDER:
+      // ðŸŸ¢ FIXED ASYNC PROCESSING ORDER:
       // Separate visual description formatting safely away from calculation threads.
       // This protects your active pricing nodes from zeroing out during paint re-draw cycles!
       try {
@@ -1010,7 +1009,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 40);
     });
 
-    // 🛡️ CRITICAL PERFORMANCE TUNING: Removed subtree tracking completely
+    // ðŸ›¡ï¸ CRITICAL PERFORMANCE TUNING: Removed subtree tracking completely
     observer.observe(step3Container, { childList: true, subtree: false });
 
     // Initial startup execution loop pass
@@ -1019,7 +1018,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============================================================================ //
-// ⚡ STEP 3 BI-DIRECTIONAL MODAL RE-SYNC BRIDGE (FUNNEL REBOOT)                //
+// âš¡ STEP 3 BI-DIRECTIONAL MODAL RE-SYNC BRIDGE (FUNNEL REBOOT)                //
 // ============================================================================ //
 
 /**
@@ -1031,7 +1030,7 @@ window.executeModalCheckboxDataSyncPass = function(targetFieldId, isCheckedState
   if (!targetFieldId) return;
   console.log(`[Modal Sync Engine] Aligning field matrix vector: #${targetFieldId} -> ${isCheckedState}`);
 
-  // 🟢 FIXED SCOPED TARGETING: Avoid loose substring queries like id*='...' that bleed backwards into Step 2!
+  // ðŸŸ¢ FIXED SCOPED TARGETING: Avoid loose substring queries like id*='...' that bleed backwards into Step 2!
   // We query elements exclusively by strict ID or exact name tokens inside the Step 3 panel layout bounds.
   const step3Container = document.getElementById("step-panel-3") || document.getElementById("step-3") || document;
   
@@ -1105,9 +1104,8 @@ window.syncModalCheckboxActionDirectToForm = window.syncModalCheckboxActionDirec
 window.closeNewEntrantAuditPriceGuideModal = window.closeNewEntrantAuditPriceGuideModal;
 
 // ============================================================================ //
-// 📊 MEMORY ENGINE STABILIZER & SELECTION INTERCEPTOR (ANTI-FLICKER CORE)      //
-// ============================================================================ //
-(function stabilizeRuntimeSync() {
+// ðŸ“Š MEMORY ENGINE STABILIZER & SELECTION INTERCEPTOR (ANTI-FLICKER CORE)      //
+// ============================================================================ //;(function stabilizeRuntimeSync() {
   /**
    * Syncs marketplace checklist boxes immediately down to global state tokens memory registers
    * and dynamically injects values into the active transaction summary payloads.
@@ -1172,7 +1170,7 @@ window.closeNewEntrantAuditPriceGuideModal = window.closeNewEntrantAuditPriceGui
     });
 
     // ============================================================================ //
-    // 🏁 MASTER STEP 5 WIZARD SUMMARY CART SYNCHRONIZATION DATA                  //
+    // ðŸ MASTER STEP 5 WIZARD SUMMARY CART SYNCHRONIZATION DATA                  //
     // ============================================================================ //
     if (!window.currentCartState) {
       window.currentCartState = {};
@@ -1196,7 +1194,7 @@ window.closeNewEntrantAuditPriceGuideModal = window.closeNewEntrantAuditPriceGui
       console.log(`[Funnel Sync] Scrubbed "${addonNameAttr}" out of Step 5 cart state review array.`);
     }
 
-    // 🟢 FIXED SCOPED SEPARATION:
+    // ðŸŸ¢ FIXED SCOPED SEPARATION:
     // Narrow your checkbox scrapers strictly to the Step 3 marketplace canvas element node.
     // This stops it from scanning or overwriting background data fields belonging to Step 2!
     const step3MarketplaceCanvas = document.getElementById("wizard-dynamic-upsells-render-target") || document.getElementById("step-panel-3") || document;
@@ -1226,7 +1224,7 @@ window.closeNewEntrantAuditPriceGuideModal = window.closeNewEntrantAuditPriceGui
       window.autoSkinSelectedUpsellCards();
     }
 
-    // 🟢 FIXED SYNCHRONOUS COUPLING:
+    // ðŸŸ¢ FIXED SYNCHRONOUS COUPLING:
     // Execute pricing calculations and layout parameter states immediately by default.
     // This forces updates to lock into cache variables before multi-step redraw passes run.
     if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
@@ -1238,7 +1236,7 @@ window.closeNewEntrantAuditPriceGuideModal = window.closeNewEntrantAuditPriceGui
     }
   }
 
-  // 🛡️ ANTI-FLICKER MOUNT: Bind cleanly back up to the primary window object UNCONDITIONALLY
+  // ðŸ›¡ï¸ ANTI-FLICKER MOUNT: Bind cleanly back up to the primary window object UNCONDITIONALLY
   window.handleBackgroundUpsellTogglePass = handleBackgroundUpsellTogglePass;
 
   // 4. SEPARATE CONTEXTUAL INITIALIZATION PASS LOOKUPS safely below declarations
@@ -1251,7 +1249,7 @@ window.closeNewEntrantAuditPriceGuideModal = window.closeNewEntrantAuditPriceGui
 })();
 
 // ============================================================================ //
-// ⚡ MASTER UNIFIED INTERCEPTOR: Anti-Flicker Execution Interlock Core         //
+// âš¡ MASTER UNIFIED INTERCEPTOR: Anti-Flicker Execution Interlock Core         //
 // ============================================================================ //
 
 /**
@@ -1261,7 +1259,7 @@ window.closeNewEntrantAuditPriceGuideModal = window.closeNewEntrantAuditPriceGui
 window.executeUpsellStateToggleIntercept = function(checkboxElement) {
   if (!checkboxElement) return;
 
-  // 🟢 ATTRIBUTE FALLBACK FIX: Prioritizes target property attributes, fallback straight to element ID metrics
+  // ðŸŸ¢ ATTRIBUTE FALLBACK FIX: Prioritizes target property attributes, fallback straight to element ID metrics
   const linkedStateProperty = checkboxElement.getAttribute("data-state-property") || checkboxElement.getAttribute("data-state") || checkboxElement.id || checkboxElement.name;
   if (!linkedStateProperty) {
     console.warn("[Sync Interceptor] Aborted: Selection element is missing a valid tracking property key.");
@@ -1282,7 +1280,7 @@ window.executeUpsellStateToggleIntercept = function(checkboxElement) {
   // Backup state mapping markers straight to localStorage for automated script hydration
   localStorage.setItem(`wizard_field_${checkboxElement.id || rawPropertyKey}`, isChecked ? "true" : "false");
 
-  // 🛡️ ANTI-FLICKER INTERLOCK PASS:
+  // ðŸ›¡ï¸ ANTI-FLICKER INTERLOCK PASS:
   // Force synchronizations over background database tracking layers (active_addons_list)
   // before pricing crawlers read the state configurations!
   if (typeof window.handleBackgroundUpsellTogglePass === "function") {
@@ -1321,7 +1319,7 @@ window.executeUpsellStateToggleIntercept = function(checkboxElement) {
     window.autoSkinSelectedUpsellCards();
   }
 
-  // 🟢 FIXED SYNCHRONOUS SEQUENCING PIPELINE:
+  // ðŸŸ¢ FIXED SYNCHRONOUS SEQUENCING PIPELINE:
   // We execute all three downstream calculation operations instantly inside the same task frame.
   // This blocks browser thread micro-lag gaps and guarantees choices write to cache *after* math updates finish!
   if (typeof window.updateDynamicPricingMatrixVanilla === "function") {
@@ -1338,10 +1336,10 @@ window.executeUpsellStateToggleIntercept = function(checkboxElement) {
 };
 
 // ============================================================================ //
-// 📊 MEMORY ENGINE STABILIZER (ASYNCHRONOUS SYSTEM PROPERTY PROTECTOR - FIXED) //
+// ðŸ“Š MEMORY ENGINE STABILIZER (ASYNCHRONOUS SYSTEM PROPERTY PROTECTOR - FIXED) //
 // ============================================================================ //
 
-// 🛡️ ANTI-FLICKER DEBOUNCE TIMER REGISTER
+// ðŸ›¡ï¸ ANTI-FLICKER DEBOUNCE TIMER REGISTER
 let asyncCatalogUpdateDebounceTimeout = null;
 let currentDbVal = window.CENTRAL_ADDON_DB;
 
@@ -1366,7 +1364,7 @@ Object.defineProperty(window, 'CENTRAL_ADDON_DB', {
       }
       
       asyncCatalogUpdateDebounceTimeout = setTimeout(() => {
-        // 🟢 BOUNDARY CHECK: Only run layout generation if the user is actively on Step 3
+        // ðŸŸ¢ BOUNDARY CHECK: Only run layout generation if the user is actively on Step 3
         const activeFunnelStep = parseInt(window.currentWizardActiveStep, 10) || 0;
         if (activeFunnelStep === 3 && typeof window.executeStepThreeUpsellStreaming === "function") {
           console.log("[Memory Guard] Asynchronous database stabilized. Streaming fields to layout...");
@@ -1383,7 +1381,7 @@ Object.defineProperty(window, 'CENTRAL_ADDON_DB', {
 document.addEventListener("DOMContentLoaded", () => {
   const currentActiveStep = parseInt(window.currentWizardActiveStep, 10) || 0;
   
-  // 🟢 FIXED SYNCHRONOUS INITIALIZATION INITIALIZER:
+  // ðŸŸ¢ FIXED SYNCHRONOUS INITIALIZATION INITIALIZER:
   // Execute the layout generation pass instantly without async frame breaks.
   // This guarantees elements render completely before data recovery sweeps can overwrite them!
   if (currentActiveStep === 3 && typeof window.executeStepThreeUpsellStreaming === "function") {
@@ -1392,7 +1390,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// 🛡️ CRITICAL FIX: DO NOT OVERWRITE THE BACKGROUND SYNC ENGINE WITH THE INTERCEPTOR!
+// ðŸ›¡ï¸ CRITICAL FIX: DO NOT OVERWRITE THE BACKGROUND SYNC ENGINE WITH THE INTERCEPTOR!
 // We preserve both references cleanly in global scope so the Master Interceptor
 // can cascade updates directly into your tracking payloads without creating an infinite loop.
 if (typeof window.handleBackgroundUpsellTogglePass === "undefined") {
@@ -1405,11 +1403,11 @@ if (typeof window.handleBackgroundUpsellTogglePass === "undefined") {
   };
 }
 // ============================================================================ //
-// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: SELF-CORRECTING CONTEXT REBOOT         //
+// ðŸ“Š UNIFIED DATA-DRIVEN MATRIX ENGINE: SELF-CORRECTING CONTEXT REBOOT         //
 // ============================================================================ //
 function finalizePricingMatrixUiRender() {
   
-  // 🛡️ RE-HYDRATION LAYER: Build execution context on the fly if uninitialized
+  // ðŸ›¡ï¸ RE-HYDRATION LAYER: Build execution context on the fly if uninitialized
   if (!window._tempCalcContext) {
     window._tempCalcContext = {
       currentCartState: window.currentCartState || {},
@@ -1422,7 +1420,7 @@ function finalizePricingMatrixUiRender() {
 
   const ctx = window._tempCalcContext;
 
-  // 🟢 FIXED CONTEXT REBOOT: Always pull fresh totals directly from the active cart state 
+  // ðŸŸ¢ FIXED CONTEXT REBOOT: Always pull fresh totals directly from the active cart state 
   // to prevent stagnant variables from blocking calculations.
   let freshAddonTotal = 0;
   const activeAddonsList = window.currentCartState?.addons || window.currentSelectedAddonsListArrayMatrix || [];
@@ -1485,7 +1483,7 @@ function finalizePricingMatrixUiRender() {
       }
       dynamicInvoiceArea.innerHTML = appendStateFeeRow;
     } else {
-      // 🛡️ VISUAL RE-FALLBACK PROTECTION: Summary line builder
+      // ðŸ›¡ï¸ VISUAL RE-FALLBACK PROTECTION: Summary line builder
       let baselineRowsHtml = "";
       if (Array.isArray(activeAddonsList)) {
         activeAddonsList.forEach(addon => {
@@ -1509,7 +1507,7 @@ function finalizePricingMatrixUiRender() {
     }
   }
 
-  // 🟢 FIXED SCOPED SEPARATION FILTER:
+  // ðŸŸ¢ FIXED SCOPED SEPARATION FILTER:
   // Isolate marketplace checkbox labeling updates strictly inside the Step 3 panel view layers.
   // This completely stops this loop from overwriting input text labels belonging to Step 2!
   const step3WrapperBox = document.getElementById("wizard-dynamic-upsells-render-target") || document.getElementById("step-panel-3") || document.getElementById("step-3");
@@ -1546,11 +1544,11 @@ window.finalizePricingMatrixUiRender = finalizePricingMatrixUiRender;
 
 
 // ============================================================================ // 
-// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: CORES PIPELINE RUNNER 
+// ðŸ“Š UNIFIED DATA-DRIVEN MATRIX ENGINE: CORES PIPELINE RUNNER 
 // ============================================================================ // 
 window.isMatrixPipelineCurrentlyExecuting = false; 
 
-// 🩹 SELF-HEALING HOOKS: Fallbacks to prevent uninstantiated early-exit blocks
+// ðŸ©¹ SELF-HEALING HOOKS: Fallbacks to prevent uninstantiated early-exit blocks
 if (typeof window.executeCleanInvoiceCalculationPass !== "function") {
     console.warn("[Matrix Pipeline Recovery] Instantiating fallback structure for executeCleanInvoiceCalculationPass.");
     window.executeCleanInvoiceCalculationPass = function(state) {
@@ -1567,7 +1565,7 @@ if (typeof window.runPricingMatrixDataCrawlPass !== "function") {
 }
 
 window.updateDynamicPricingMatrixVanilla = function(state) {
-    // 🟢 RECURSION INTERLOCK GUARD: Instantly kill re-entrant loop calls from step-2 
+    // ðŸŸ¢ RECURSION INTERLOCK GUARD: Instantly kill re-entrant loop calls from step-2 
     if (window.isMatrixPipelineCurrentlyExecuting) { 
         console.log("[Matrix Pipeline Guard] Blocked recursive calculation loop pass from interrupting active execution thread."); 
         return; 
@@ -1602,7 +1600,7 @@ window.updateDynamicPricingMatrixVanilla = function(state) {
 };
 
 // ============================================================================ //
-// 🧼 STEP 3 MARKETPLACE DUPLICATIONS SHIELD CLEANER (ANTI-FLICKER CORE)        //
+// ðŸ§¼ STEP 3 MARKETPLACE DUPLICATIONS SHIELD CLEANER (ANTI-FLICKER CORE)        //
 // ============================================================================ //
 function cleanStep3MarketplaceDuplications() {
   const targetContainer = document.getElementById("wizard-dynamic-upsells-render-target") || 
@@ -1631,7 +1629,7 @@ function cleanStep3MarketplaceDuplications() {
                                          box.id.includes("modal_input_box_") || 
                                          containsVisiblePrice;
 
-    // 🛑 Halt instantly if a valid marketplace element pattern matches
+    // ðŸ›‘ Halt instantly if a valid marketplace element pattern matches
     if (isPartofValidMarketplaceCard) return;
 
     const boxId = String(box.id).toLowerCase();
@@ -1642,7 +1640,7 @@ function cleanStep3MarketplaceDuplications() {
     const isStep2Element = (boxId.startsWith("nea_") || boxId.startsWith("nea-") || boxName.startsWith("nea_") || boxName.startsWith("nea-") || boxClass.includes("nea-service") || boxClass.includes("nea_service"));
     
     if (isStep2Element) {
-      // 🟢 FIXED SEPARATION BOUNDARY PRUNING:
+      // ðŸŸ¢ FIXED SEPARATION BOUNDARY PRUNING:
       // Verify the element is truly detached from Step 3 marketplace grids before calling .remove().
       // This protects your active pricing cards from accidental deletion!
       const isRogueNode = !box.closest("#wizard-dynamic-upsells-render-target") && !box.closest(".upsell-market-card");
@@ -1664,7 +1662,7 @@ window.cleanStep3MarketplaceDuplications = cleanStep3MarketplaceDuplications;
 
 
 // ============================================================================ //
-// 📡 STEP 3 PANEL TRANSITION CLEANER OBSERVER MOUNT MATRIX                     //
+// ðŸ“¡ STEP 3 PANEL TRANSITION CLEANER OBSERVER MOUNT MATRIX                     //
 // ============================================================================ //
 window.isMarketplaceObserverProcessing = false;
 let cleanupDebounceTimeout = null;
@@ -1679,7 +1677,7 @@ if (step3TargetPanel) {
 
       if (cleanupDebounceTimeout) clearTimeout(cleanupDebounceTimeout);
       
-      // 🟢 FIXED OBSERVER PIPELINE:
+      // ðŸŸ¢ FIXED OBSERVER PIPELINE:
       // Run the cleanup pass cleanly once inside a single debounced window frame.
       // This stops dual-firing calculation loops from corrupting DOM selections!
       cleanupDebounceTimeout = setTimeout(() => {
@@ -1699,7 +1697,7 @@ window.renderOnboardingPlanOverviewCard = typeof window.renderOnboardingPlanOver
 window.cleanStep3MarketplaceDuplications = cleanStep3MarketplaceDuplications;
 
 // ============================================================================ //
-// 📡 AUTOMATED UI ENGINE: FULL-CARD INTUITIVE CLICK INTERCEPTOR MAPPER         //
+// ðŸ“¡ AUTOMATED UI ENGINE: FULL-CARD INTUITIVE CLICK INTERCEPTOR MAPPER         //
 // ============================================================================ //
 function initializeIntuitiveFullCardClickListeners() {
   console.log("[Marketplace UI] Binding full-card interactive click handlers...");
@@ -1721,7 +1719,7 @@ function initializeIntuitiveFullCardClickListeners() {
       const targetCheckbox = card.querySelector(".upsell-checkbox");
       if (!targetCheckbox) return;
 
-      // 🟢 SAFETY FIX: If the user explicitly clicked the tiny input box directly, 
+      // ðŸŸ¢ SAFETY FIX: If the user explicitly clicked the tiny input box directly, 
       // let the browser's default behavior handle it so we don't cause an infinite toggle loop.
       if (event.target.closest('input[type="checkbox"]') || event.target.closest('label')) {
         return;
@@ -1752,3 +1750,4 @@ setTimeout(initializeIntuitiveFullCardClickListeners, 400);
 
 // Also expose it to the window global registry so core.js can trigger it on step changes
 window.initializeIntuitiveFullCardClickListeners = initializeIntuitiveFullCardClickListeners;
+

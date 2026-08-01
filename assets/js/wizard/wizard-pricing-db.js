@@ -1,4 +1,4 @@
-// ============================================================================ //
+﻿// ============================================================================ //
 // 1. GLOBAL RUNTIME INITIALIZATION MATRIX (STRICT DATA ELEMENTS ONLY) //
 // ============================================================================ //
 const urlParamsMatrix = new URLSearchParams(window.location.search);
@@ -41,8 +41,7 @@ window.auxiliaryAddonsArray = window.CENTRAL_ADDON_DB && typeof window.CENTRAL_A
 
 // ============================================================================ //
 // 2. RUNTIME SESSION ISOLATION ENGINE (ZERO HARDCODING) //
-// ============================================================================ //
-(function handleStrictSessionLifecycle() {
+// ============================================================================ //;(function handleStrictSessionLifecycle() {
     const activeSessionToken = sessionStorage.getItem("f4u_active_session_established");
     if (!activeSessionToken) {
         localStorage.clear();
@@ -61,7 +60,7 @@ window.auxiliaryAddonsArray = window.CENTRAL_ADDON_DB && typeof window.CENTRAL_A
 
 
 // ============================================================================ //
-// 🏛️ CENTRAL STATE & REGULATORY AGENCY FILING FEE DATABASE
+// ðŸ›ï¸ CENTRAL STATE & REGULATORY AGENCY FILING FEE DATABASE
 // ============================================================================ //
 /**
  * Global filing tariff lookup table.
@@ -82,7 +81,7 @@ window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING;
 
 
 // ============================================================================ //
-// 📊 LAYER 1: UPSELLS ENGINE DATABASE SCHEMA GLOBAL DEFINITION
+// ðŸ“Š LAYER 1: UPSELLS ENGINE DATABASE SCHEMA GLOBAL DEFINITION
 // ============================================================================ //
 window.UPSELLS_ROUTER_DATABASE = {
 
@@ -135,7 +134,7 @@ window.UPSELLS_ROUTER_DATABASE = {
 // Freeze the object globally to preserve memory blocks securely
 Object.freeze(window.UPSELLS_ROUTER_DATABASE);
 // ============================================================================ //
-// 📊 LAYER 2: PROGRAMMATIC LOOKUP ROUTER UTILITY ENGINE
+// ðŸ“Š LAYER 2: PROGRAMMATIC LOOKUP ROUTER UTILITY ENGINE
 // ============================================================================ //
 /**
  * Pure Dynamic Upsell Selector Utility.
@@ -178,7 +177,7 @@ window.CENTRAL_SERVICE_PLAN_DB["heavy-use-tax"] = {
 
 
 // ============================================================================ //
-// ⚙️ SYSTEM STATE FLOW & NAVIGATION TRACKING REGISTRY
+// âš™ï¸ SYSTEM STATE FLOW & NAVIGATION TRACKING REGISTRY
 // ============================================================================ //
 window.currentWizardActiveStep = parseInt(window.currentWizardActiveStep, 10) || 1;
 // FIXED: Increased boundary from 5 to 7 to accurately accommodate your full checkout funnel panels track
@@ -187,7 +186,7 @@ window.totalWizardSteps = 7;
 
 
 // ============================================================================ //
-// 🔌 ACTIVE ADD-ON SERVICE STATE FLAGS (DYNAMIC COMPLIANCE TRACKING)
+// ðŸ”Œ ACTIVE ADD-ON SERVICE STATE FLAGS (DYNAMIC COMPLIANCE TRACKING)
 // ============================================================================ //
 // Core Corporate & Structural Add-on Management Mappings
 window.customSelectedRegisteredAgentServiceActive = window.customSelectedRegisteredAgentServiceActive || false;
@@ -213,7 +212,7 @@ console.log("[State Registry] Global compliance tracking tokens initialized succ
 
 
 // ============================================================================ //
-// 🏛️ CENTRAL SERVICE DESIGNATION PLAN CONFIGURATION DATABASE
+// ðŸ›ï¸ CENTRAL SERVICE DESIGNATION PLAN CONFIGURATION DATABASE
 // ============================================================================ //
 const CENTRAL_SERVICE_PLAN_DB = {
 
@@ -773,9 +772,8 @@ window.CENTRAL_SERVICE_PLAN_DB = CENTRAL_SERVICE_PLAN_DB;
 
 
 // ============================================================================ //
-// 📊 STEP 2 UNIFIED INJECTION MATRIX: DEEP WRITABLE CLONE (PART 1 OF 2)        //
-// ============================================================================ //
-(function injectStep2ComplianceAssets() {
+// ðŸ“Š STEP 2 UNIFIED INJECTION MATRIX: DEEP WRITABLE CLONE (PART 1 OF 2)        //
+// ============================================================================ //;(function injectStep2ComplianceAssets() {
   const originalDb = window.UPSELLS_ROUTER_DATABASE;
   if (!originalDb) return;
 
@@ -796,7 +794,7 @@ window.CENTRAL_SERVICE_PLAN_DB = CENTRAL_SERVICE_PLAN_DB;
   const activeVerticals = ["formations", "broker", "trucker", "generic"];
   // Proceed directly to Part 2 structural array streaming loops...
   // ============================================================================ //
-  // 📊 STEP 2 UNIFIED INJECTION MATRIX: STRUCTURAL STREAMING (PART 2 OF 2)       //
+  // ðŸ“Š STEP 2 UNIFIED INJECTION MATRIX: STRUCTURAL STREAMING (PART 2 OF 2)       //
   // ============================================================================ //
   activeVerticals.forEach(verticalKey => {
     if (!databaseClone[verticalKey]) databaseClone[verticalKey] = [];
@@ -824,4 +822,6 @@ window.CENTRAL_SERVICE_PLAN_DB = CENTRAL_SERVICE_PLAN_DB;
   window.UPSELLS_ROUTER_DATABASE = databaseClone;
   console.log("[Sync Engine] Step 2 compliance schemas successfully streamed into master pricing paths.");
 })();
+
+
 

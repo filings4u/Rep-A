@@ -1,4 +1,4 @@
-function validateSalesTaxRegistrationFormPart1() {
+﻿function validateSalesTaxRegistrationFormPart1() {
   let isValid = true;
 
   const markInvalid = (inputEl, errorEl, msg) => {
@@ -358,7 +358,7 @@ function buildSalesTaxRegistrationFormPart3(stateDropdownOptionsHtml = "") {
    <label for="st_request_exemption_cert" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Request Resale Exemption Certificate? <span style="color: #ef4444;">*</span></label>
    <select id="st_request_exemption_cert" required class="wizard-input-field" style="font-weight: 600; width: 100%; box-sizing: border-box;">
      <option value="no" selected>No, I am only registering to collect and remit retail consumer taxes</option>
-     <option value="yes">Yes, include Filings4u Resale Exemption Certificate Procurement — $45.00</option>
+     <option value="yes">Yes, include Filings4u Resale Exemption Certificate Procurement â€” $45.00</option>
    </select>
    <div class="wizard-error-message" id="err_st_request_exemption_cert" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
  </div>
@@ -426,7 +426,7 @@ function buildSalesTaxRegistrationFormPart5(stateDropdownOptionsHtml = "") {
  `;
 }
 
-// 📦 MASTER SALES TAX REGISTRATION APPLICATION ASSEMBLY HOOK
+// ðŸ“¦ MASTER SALES TAX REGISTRATION APPLICATION ASSEMBLY HOOK
 function buildSalesTaxRegistrationForm(stateDropdownOptionsHtml = "") {
  return buildSalesTaxRegistrationFormPart1(stateDropdownOptionsHtml) + 
         buildSalesTaxRegistrationFormPart2(stateDropdownOptionsHtml) + 
@@ -434,3 +434,4 @@ function buildSalesTaxRegistrationForm(stateDropdownOptionsHtml = "") {
         buildSalesTaxRegistrationFormPart4(stateDropdownOptionsHtml) + 
         buildSalesTaxRegistrationFormPart5(stateDropdownOptionsHtml);
 }
+

@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 📊 PART 1 OF 3: STEP 5 MATRIX INITIALIZATION & VALUE GUARD CONTROLLER        //
+﻿// ============================================================================ //
+// ðŸ“Š PART 1 OF 3: STEP 5 MATRIX INITIALIZATION & VALUE GUARD CONTROLLER        //
 // ============================================================================ //
 let lastObservedGrandTotalStringField = "";
 
@@ -7,7 +7,7 @@ function executeMarketplaceSummaryRenderLoop() {
   const step5PanelContainer = document.getElementById("step-panel-5") || document.getElementById("step-5");
   if (!step5PanelContainer) return;
 
-  // 🟢 FIXED MOUNT STABILITY CHECK:
+  // ðŸŸ¢ FIXED MOUNT STABILITY CHECK:
   // First, verify if the root summary layout board component already exists in the container area.
   // This completely stops duplicate card injection loops if the container query is temporarily micro-lagged!
   let summaryInvoiceBoard = step5PanelContainer.querySelector(".summary-invoice-board");
@@ -46,7 +46,7 @@ function executeMarketplaceSummaryRenderLoop() {
   if (grandTotalDisplay) {
     const currentTotalText = (grandTotalDisplay.textContent || "$0.00").trim();
     
-    // 🟢 LOOP TERMINATOR: Stop execution dead if the pricing value hasn't shifted values!
+    // ðŸŸ¢ LOOP TERMINATOR: Stop execution dead if the pricing value hasn't shifted values!
     if (window.lastObservedGrandTotalStringField === currentTotalText) {
       return; 
     }
@@ -68,7 +68,7 @@ window.recalculateSummaryItemizedMatrixRows = executeMarketplaceSummaryRenderLoo
 
 
 // ============================================================================ //
-// 📊 PART 2 OF 3: THE ITEMIZED PRODUCT LOOP COMPILER & TARGET PRICE RESOLVER  //
+// ðŸ“Š PART 2 OF 3: THE ITEMIZED PRODUCT LOOP COMPILER & TARGET PRICE RESOLVER  //
 // ============================================================================ //
 window.processSummaryItemizedProductLoops = function(rowsContainer, subtotalDisplay, govFeesDisplay, grandTotalDisplay) {
   let catalog = window.MASTER_UPSELLS_CATALOG || window.CENTRAL_ADDON_DB || window.UPSELL_ADDON_REGISTRY || {};
@@ -121,7 +121,7 @@ window.processSummaryItemizedProductLoops = function(rowsContainer, subtotalDisp
       <div style="font-weight: 800; font-size: 1.05rem; color: #0a1f44; font-family: monospace;">$${foundationFilingCost.toFixed(2)}</div>
     </div>`;
 
-  // 🟢 FIXED CONTEXT CATEGORY FILTER:
+  // ðŸŸ¢ FIXED CONTEXT CATEGORY FILTER:
   // Dynamically evaluate aliases through clean string tags instead of forcing a blind corporate fallback loop.
   // This guarantees that trucking audit selections match up with trucking databases perfectly!
   let targetDataset = {};
@@ -167,7 +167,7 @@ window.processSummaryItemizedProductLoops = function(rowsContainer, subtotalDisp
   });
 
 // ========================================================================= //
-// 🏛️ FIX: UNIFIED ADAPTIVE PRICING CONTROLLER (STATE VS FEDERAL FEES)       //
+// ðŸ›ï¸ FIX: UNIFIED ADAPTIVE PRICING CONTROLLER (STATE VS FEDERAL FEES)       //
 // ============================================================================ //
   let baseGovAgencyFee = 0;
   let feeLabelTextString = "Mandatory State Filing Fee";
@@ -199,7 +199,7 @@ window.processSummaryItemizedProductLoops = function(rowsContainer, subtotalDisp
       let mappingKey = serviceSlug.replace("-formation", "");
       if (mappingKey === "corporations") mappingKey = "c_corp";
       
-      // 🟢 FIXED STATE BOUNDARY RESOLVER:
+      // ðŸŸ¢ FIXED STATE BOUNDARY RESOLVER:
       // Verify the target property key exists on the state record before falling back to standard LLC arrays!
       if (stateRecord[mappingKey] !== undefined) {
         baseGovAgencyFee = parseFloat(stateRecord[mappingKey]) || 0;
@@ -229,7 +229,7 @@ window.processSummaryItemizedProductLoops = function(rowsContainer, subtotalDisp
     rowsContainer.innerHTML = compiledRowsHtml;
   }
 
-  // 🟢 FIXED CONTEXT ALIGNMENT PASS:
+  // ðŸŸ¢ FIXED CONTEXT ALIGNMENT PASS:
   // Write calculated figures cleanly to your temporary calculation context object properties 
   // BEFORE running the UI layout renderer to stop the pricing stack disconnect!
   window._tempCalcContext = window._tempCalcContext || {};
@@ -243,11 +243,11 @@ window.processSummaryItemizedProductLoops = function(rowsContainer, subtotalDisp
 };
 
 // ============================================================================ //
-// 📊 PART 3 OF 3: THE ARITHMETIC MATRIX ACCUMULATOR & BINDINGS INJECTION      //
+// ðŸ“Š PART 3 OF 3: THE ARITHMETIC MATRIX ACCUMULATOR & BINDINGS INJECTION      //
 // ============================================================================ //
 window.finalizePricingMatrixUiRender = function(foundationFilingCost, aggregateUpsellCost, baseGovAgencyFee, grandTotalDisplay) {
   
-  // 🟢 FIXED ARITHMETIC PARAMETER CONTRACT RESOLVER:
+  // ðŸŸ¢ FIXED ARITHMETIC PARAMETER CONTRACT RESOLVER:
   // Fall back to reading figures cleanly from your temporary calc context object if parameters pass down empty.
   // This completely eliminates the NaN (Not a Number) execution loops that break Stripe checkout!
   const ctx = window._tempCalcContext || {};
@@ -292,7 +292,7 @@ window.finalizePricingMatrixUiRender = function(foundationFilingCost, aggregateU
       
       
       <style>
-  /* 📱 MOBILE VIEWPORT BREAKPOINT: STEP 5 SUMMARY CONTROLS */
+  /* ðŸ“± MOBILE VIEWPORT BREAKPOINT: STEP 5 SUMMARY CONTROLS */
   @media (max-width: 600px) {
     /* Stacks your Review Page action items vertically on mobile viewports */
     div[style*="display: flex; justify-content: space-between"][class*="action"],
@@ -327,7 +327,7 @@ window.finalizePricingMatrixUiRender = function(foundationFilingCost, aggregateU
 };
 
 // ============================================================================ //
-// 📊 STEP 5 INTERACTIVE VISIBILITY REAL-TIME INVOICE REFRESHER                 //
+// ðŸ“Š STEP 5 INTERACTIVE VISIBILITY REAL-TIME INVOICE REFRESHER                 //
 // ============================================================================ //
 
 // Global tracking parameter handles block recursive call stack crashes instantly
@@ -377,7 +377,7 @@ function forceStep5SummaryInvoiceRefresh() {
     return;
   }
 
-  // 🟢 FIXED LOCK SYNCHRONIZATION TRIGGER:
+  // ðŸŸ¢ FIXED LOCK SYNCHRONIZATION TRIGGER:
   // Release the active processing gate cleanly within a predictable microtask delay 
   // to ensure upcoming DOM template injections have completely stabilized.
   setTimeout(() => {
@@ -409,7 +409,7 @@ if (typeof window.switchWizardActiveViewLayout === "function" && !window.switchW
 window.forceStep5SummaryInvoiceRefresh = forceStep5SummaryInvoiceRefresh;
 
 // ============================================================================ //
-// 🎯 PART 5: UNIFIED ISOLATED VIEW OBSERVER ENGINE                             //
+// ðŸŽ¯ PART 5: UNIFIED ISOLATED VIEW OBSERVER ENGINE                             //
 // ============================================================================ //
 
 /**
@@ -463,7 +463,7 @@ if (document.readyState !== "loading") {
 }
 
 // ============================================================================ //
-// 🛒 STEP 5 INVOICE CALCULATOR & MARKTUP BUILDER ENGINE                        //
+// ðŸ›’ STEP 5 INVOICE CALCULATOR & MARKTUP BUILDER ENGINE                        //
 // ============================================================================ //
 function directInjectCartAddonsToSummaryStep5() {
   console.log("[Summary Engine] Recalculating itemized matrix rows pass...");
@@ -482,7 +482,7 @@ function directInjectCartAddonsToSummaryStep5() {
 
   runningSubtotalAmount += basePackagePriceValue;
 
-  // 🧠 🟢 PERSISTENT STORAGE ARRAY HOOK: Recover selections out of local storage parameters securely
+  // ðŸ§  ðŸŸ¢ PERSISTENT STORAGE ARRAY HOOK: Recover selections out of local storage parameters securely
   let persistentAddonsArray = [];
   try {
     const savedAddonsMatrixString = localStorage.getItem('wizard_selected_addons_matrix');
@@ -518,7 +518,7 @@ function directInjectCartAddonsToSummaryStep5() {
   // Update the row container block HTML with itemized lines safely
   rowsTargetNode.innerHTML = baselineHeaderRow + itemsMarkupString;
 
-  // 🟢 FIXED CALCULATION COUPLING:
+  // ðŸŸ¢ FIXED CALCULATION COUPLING:
   // Instead of manually overriding the text displays using an incomplete subtotal array,
   // we update our temporary calculation context object parameters first.
   window._tempCalcContext = window._tempCalcContext || {};
@@ -550,7 +550,7 @@ function directInjectCartAddonsToSummaryStep5() {
 window.directInjectCartAddonsToSummaryStep5 = directInjectCartAddonsToSummaryStep5;
 
 // ============================================================================ //
-// 📊 PART 1 OF 2: STEP 5 CART REMOVE ACTUATOR ENGINE (STATE SYNCHRONIZED REPAIR) //
+// ðŸ“Š PART 1 OF 2: STEP 5 CART REMOVE ACTUATOR ENGINE (STATE SYNCHRONIZED REPAIR) //
 // ============================================================================ //
 
 /**
@@ -566,7 +566,7 @@ function removeSelectedAddonItemStraightFromSummaryCard(targetCheckboxElementId)
   if (physicalCheckbox) {
     physicalCheckbox.checked = false;
     
-    // 🟢 FIXED ISOLATED CALL ROUTING:
+    // ðŸŸ¢ FIXED ISOLATED CALL ROUTING:
     // Route directly through the smart click interceptor instead of dispatching raw bubbling events 
     // that confuse background layout engines!
     if (typeof window.executeUpsellStateToggleIntercept === "function") {
@@ -615,7 +615,7 @@ function removeSelectedAddonItemStraightFromSummaryCard(targetCheckboxElementId)
     window.saveWizardFormStatesVanilla();
   }
 
-  // 6. 🟢 FIXED UNIFIED CALCULATION EXECUTION:
+  // 6. ðŸŸ¢ FIXED UNIFIED CALCULATION EXECUTION:
   // We execute a single, unified data-injection loop pass. This blocks dual-firing 
   // race conditions and guarantees your invoice values stay rock-solid!
   if (typeof window.directInjectCartAddonsToSummaryStep5 === "function") {
@@ -636,11 +636,11 @@ window.directInjectCartAddonsToSummaryStep5 = typeof directInjectCartAddonsToSum
 
 
 // ============================================================================ //
-// 🎯 PART 2 OF 2: VISIBILITY INTERLOCK ALIGNMENT                               //
+// ðŸŽ¯ PART 2 OF 2: VISIBILITY INTERLOCK ALIGNMENT                               //
 // ============================================================================ //
 
 /**
- * 🟢 FIXED COMPONENT ISOLATION:
+ * ðŸŸ¢ FIXED COMPONENT ISOLATION:
  * The competing duplicate MutationObserver container block has been fully stripped out.
  * This guarantees that your master visibility tracker ('initStep5PurchaseSummaryVisibilityTracker')
  * coordinates all rendering pipelines sequentially without re-entrant loop storms!
@@ -648,7 +648,7 @@ window.directInjectCartAddonsToSummaryStep5 = typeof directInjectCartAddonsToSum
 console.log("[Summary Engine UI] Interlock initialization boundaries successfully established.");
 
 // ============================================================================ //
-// 🎨 STEP 5 UI SUMMARY PANEL OVERRIDE & DISPLAY LAYOUT FORMATTER (DYNAMIC)    //
+// ðŸŽ¨ STEP 5 UI SUMMARY PANEL OVERRIDE & DISPLAY LAYOUT FORMATTER (DYNAMIC)    //
 // ============================================================================ //
 
 /**
@@ -681,7 +681,7 @@ function formatStepFiveSummaryInvoiceDisplayLayout(currentCartState = {}) {
     if (!row) return;
     let rowText = (row.innerText || row.textContent || "").trim();
     
-    // 🟢 FIXED VISUAL ELEMENT MATCHING:
+    // ðŸŸ¢ FIXED VISUAL ELEMENT MATCHING:
     // Maintain flex layout structure for government fee line elements so they display 
     // itemized metrics to the customer accurately, keeping totals aligned with Stripe!
     if (rowText.includes("State Filing Fee") || rowText.includes("Government Filing Fee")) {
@@ -736,15 +736,14 @@ window.formatStepFiveSummaryInvoiceDisplayLayout = formatStepFiveSummaryInvoiceD
 
 
 // ============================================================================ //
-// 🔍 AUTOMATED OBSERVATION TRIGGER: INITIALIZE LIVE SHEET LISTENER INTERFACES //
+// ðŸ” AUTOMATED OBSERVATION TRIGGER: INITIALIZE LIVE SHEET LISTENER INTERFACES //
 // ============================================================================ //
 
 /**
  * UI Mutation Guard Hook
  * Automatically runs the formatter whenever your wizard updates the summary panel.
  * Connected layout trigger directly to the newly isolated formatter module handler.
- */
-(function activateSummaryObserver() {
+ */;(function activateSummaryObserver() {
   const summaryTarget = document.getElementById("summary-purchase-rows-container");
   
   if (!summaryTarget) {
@@ -753,7 +752,7 @@ window.formatStepFiveSummaryInvoiceDisplayLayout = formatStepFiveSummaryInvoiceD
     return;
   }
 
-  // 🟢 FIXED ASYNC LAYOUT INTERLOCK:
+  // ðŸŸ¢ FIXED ASYNC LAYOUT INTERLOCK:
   // Use a debounced lock state flag instead of volatile disconnect/reconnect loops.
   // This completely eliminates micro-flicker loops and keeps prices stable!
   let isObserverProcessingMutations = false;
@@ -780,3 +779,4 @@ window.formatStepFiveSummaryInvoiceDisplayLayout = formatStepFiveSummaryInvoiceD
   summaryObserver.observe(summaryTarget, { childList: true, subtree: true });
   console.log("[Observer Engine] Step 5 layout monitor active, stabilized, and loop-protected.");
 })();
+

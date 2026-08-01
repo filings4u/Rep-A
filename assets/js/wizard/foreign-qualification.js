@@ -1,4 +1,4 @@
-  // ---------------------------------------------------------------------------- //
+﻿  // ---------------------------------------------------------------------------- //
   // SECTION B: PART 1 LAYOUT ENGINE MATRIX                                       //
   // ---------------------------------------------------------------------------- //
   window.formRegistry['foreign-qualification-part1-layout'] = function(stateDropdownOptionsHtml = "") {
@@ -146,7 +146,7 @@
       <div class="wizard-input-group" style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px;">
         <label for="fq_agent_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Select Registered Agent Provision <span style="color: #ef4444;">*</span></label>
         <select id="fq_agent_choice" required class="wizard-input-field" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 12px; font-size: 0.95rem; font-weight: 600; background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; line-height: 1.2;">
-          <option value="yes" selected>Utilize Filings4u Protected Agent Shield Service — $${liveAgentFee} / Year</option>
+          <option value="yes" selected>Utilize Filings4u Protected Agent Shield Service â€” $${liveAgentFee} / Year</option>
           <option value="no">Maintain External Independent Third-Party Registered Agent</option>
         </select>
         <div class="wizard-error-message" id="err_fq_agent_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
@@ -247,7 +247,7 @@
           <label for="fq_add_licensing_service" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Would you like assistance in checking for required licenses and/or permits for $125? <span style="color: #ef4444;">*</span></label>
           <select id="fq_add_licensing_service" class="wizard-input-field" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 12px; font-size: 0.95rem; font-weight: 600; background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; line-height: 1.2;">
             <option value="no" selected>No, I will run state licensing research independently</option>
-            <option value="yes">Yes, add Filings4u Corporate Licensing Procurement Audit — $125.00</option>
+            <option value="yes">Yes, add Filings4u Corporate Licensing Procurement Audit â€” $125.00</option>
           </select>
           <div class="wizard-error-message" id="err_fq_add_licensing_service" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
         </div>
@@ -268,7 +268,7 @@
         <label for="fq_ein_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Will you be applying for a new Employer Identification Number (EIN) for foreign operations? <span style="color: #ef4444;">*</span></label>
         <select id="fq_ein_choice" required class="wizard-input-field" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 12px; font-size: 0.95rem; font-weight: 600; background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; line-height: 1.2;">
           <option value="no" selected>No, I already hold or will apply for EIN structures independently</option>
-          <option value="yes">Yes, add Filings4u Master EIN Procurement Service — $75.00</option>
+          <option value="yes">Yes, add Filings4u Master EIN Procurement Service â€” $75.00</option>
         </select>
         <div class="wizard-error-message" id="err_fq_ein_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
@@ -423,3 +423,4 @@
 
 // Master Structural Initialization Execution Run Trigger
 initForeignQualificationService();
+

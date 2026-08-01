@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 🚛 SYSTEM COMPLIANCE SERVICE: BROKER AUTHORITY ENGINE (PART 1 - SECTION 1)
+﻿// ============================================================================ // 
+// ðŸš› SYSTEM COMPLIANCE SERVICE: BROKER AUTHORITY ENGINE (PART 1 - SECTION 1)
 // ============================================================================ // 
 
 function initBrokerAuthorityServices() {
@@ -279,4 +279,5 @@ window.formRegistry['broker-authority-form-master'] = function(stateDropdownOpti
          window.formRegistry['broker-authority-part2-layout']() + 
          window.formRegistry['broker-authority-part3-layout'](); 
 }; 
+
 

@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 
 const directoryPath = __dirname;
@@ -32,5 +32,6 @@ fs.readdir(directoryPath, (err, files) => {
 
     // Write the output directly to a JSON data map file
     fs.writeFileSync('extracted-data.json', JSON.stringify(masterMap, null, 2), 'utf8');
-    console.log("🎉 Success! Open 'extracted-data.json' to see all your text safely saved.");
+    console.log("ðŸŽ‰ Success! Open 'extracted-data.json' to see all your text safely saved.");
 });
+

@@ -1,9 +1,9 @@
-// ============================================================================ //
-// 🗃️ CENTRAL SERVICE DESIGNATION PLAN CONFIGURATION DATABASE                  //
+﻿// ============================================================================ //
+// ðŸ—ƒï¸ CENTRAL SERVICE DESIGNATION PLAN CONFIGURATION DATABASE                  //
 // ============================================================================ //
 window.CENTRAL_SERVICE_PLAN_DB = window.CENTRAL_SERVICE_PLAN_DB || {}; 
 
-// 🟢 FIX: Cleaned up the broken nested variable assignment to keep the database active
+// ðŸŸ¢ FIX: Cleaned up the broken nested variable assignment to keep the database active
 const databasePackagePayload = {
     "llc-formation": { 
         name: "LLC Formation", starter: 99.00, compliance: 199.00, enterprise: 399.00, 
@@ -267,7 +267,7 @@ window.STATE_PRICING = { packages: window.CENTRAL_SERVICE_PLAN_DB };
 
 
 // ============================================================================ //
-// 🏛️ CENTRAL STATE & REGULATORY JURISDICTION FILING FEES DATABASE              //
+// ðŸ›ï¸ CENTRAL STATE & REGULATORY JURISDICTION FILING FEES DATABASE              //
 // ============================================================================ //
 window.STATE_FILING_FEES = window.STATE_FILING_FEES || {}; 
 
@@ -324,5 +324,6 @@ Object.assign(window.STATE_FILING_FEES, {
     "WI": { name: "Wisconsin", time: "5-7 Business Days", llc: 130.00, series_llc: 130.00, partnership: 70.00, s_corp: 100.00, c_corp: 100.00, non_profit: 35.00 }, 
     "WY": { name: "Wyoming", time: "1-2 Business Days", llc: 100.00, series_llc: 100.00, partnership: 100.00, s_corp: 100.00, c_corp: 100.00, non_profit: 50.00 } 
 });
+
 
 

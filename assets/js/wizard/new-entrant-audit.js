@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 📋 DUAL-COLUMN REFACTOR: STEPS 1 AND 2 SUB-GRIDS (PART 1 OF 2)               //
+﻿// ============================================================================ //
+// ðŸ“‹ DUAL-COLUMN REFACTOR: STEPS 1 AND 2 SUB-GRIDS (PART 1 OF 2)               //
 // ============================================================================ //
 window.formRegistry = window.formRegistry || {};
 
@@ -101,7 +101,7 @@ window.formRegistry['new-entrant-audit-part2-layout'] = function() {
 
 
 // ============================================================================ //
-// 📋 STEP 3 LAYOUT: PREMIUM COMPLIANCE VAULT & UPSELL MATRIX PANEL             //
+// ðŸ“‹ STEP 3 LAYOUT: PREMIUM COMPLIANCE VAULT & UPSELL MATRIX PANEL             //
 // ============================================================================ //
 
 // Step 3: Expanded Folder Packages featuring Select-All and Top Dismissal Controls
@@ -110,7 +110,7 @@ window.formRegistry['new-entrant-audit-part3-layout'] = function() {
     <div id="nea_panel_addons" style="position: relative; background: #ffffff; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; width: 100%; box-sizing: border-box; margin-top: 10px;">
       
       <!-- TOP DISMISS X BUTTON LINK -->
-      <button type="button" onclick="if(typeof window.dismissNewEntrantUpsellCard==='function'){window.dismissNewEntrantUpsellCard();}" style="position: absolute; top: 12px; right: 12px; background: transparent; border: none; font-size: 1.25rem; font-weight: 700; color: #94a3b8; cursor: pointer; outline: none;">✕</button>
+      <button type="button" onclick="if(typeof window.dismissNewEntrantUpsellCard==='function'){window.dismissNewEntrantUpsellCard();}" style="position: absolute; top: 12px; right: 12px; background: transparent; border: none; font-size: 1.25rem; font-weight: 700; color: #94a3b8; cursor: pointer; outline: none;">âœ•</button>
 
       <h3 style="color: var(--navy, #0a1f44); margin: 0 24px 0 0; font-size: 1.1rem; font-weight: 800; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">3. Certified Audit Support & Compliance Vault</h3>
       <p style="color: #64748b; font-size: 0.8rem; margin: 6px 0 12px 0;">Select premium filing options to pass your audit. Selections stream straight to Step 5.</p>
@@ -190,7 +190,7 @@ window.formRegistry['new-entrant-audit-part3-layout'] = function() {
 };
 
 // ============================================================================ //
-// 📋 DUAL-COLUMN REFACTOR: STEP 4 FLEET SUB-GRID (PART 2 OF 2)                 //
+// ðŸ“‹ DUAL-COLUMN REFACTOR: STEP 4 FLEET SUB-GRID (PART 2 OF 2)                 //
 // ============================================================================ //
 
 // Step 4: Fleet Volumetrics Inventory with Side-by-Side Positioning
@@ -239,7 +239,7 @@ window.formRegistry['new-entrant-audit-part5-layout'] = function() {
 };
 
 // ============================================================================ //
-// ⚙️ RUNTIME PLATFORM CONTROLLERS & DATA TOTALIZERS                           //
+// âš™ï¸ RUNTIME PLATFORM CONTROLLERS & DATA TOTALIZERS                           //
 // ============================================================================ //
 
 window.syncNewEntrantUpsellsToSummary = function() {
@@ -293,11 +293,11 @@ window.dismissNewEntrantUpsellCard = function() {
 console.log("[Pipeline Success] Lightweight structural setup complete. Shard loops aligned sequentially.");
 
 // ============================================================================ //
-// 🛠️ NEW ENTRANT AUDIT SERVICE: FIELD SCANCE ENGINE (PART 1 OF 2)               //
+// ðŸ› ï¸ NEW ENTRANT AUDIT SERVICE: FIELD SCANCE ENGINE (PART 1 OF 2)               //
 // ============================================================================ //
 
 /**
- * 🟢 STEP 1 EXPLICIT SCANNER: Validates Owner Demographics only.
+ * ðŸŸ¢ STEP 1 EXPLICIT SCANNER: Validates Owner Demographics only.
  * Bound to the first transition checkpoint explicitly to clear step 1 advancement.
  */
 window.validateNewEntrantAuditFormPart1 = function() {
@@ -340,7 +340,7 @@ window.validateNewEntrantAuditFormPart1 = function() {
 };
 
 /**
- * 🟢 STEP 2 EXPLICIT SCANNER: Validates Motor Carrier IDs only.
+ * ðŸŸ¢ STEP 2 EXPLICIT SCANNER: Validates Motor Carrier IDs only.
  * Bound to the second transition checkpoint explicitly to clear step 2 advancement.
  */
 window.validateNewEntrantAuditFormPart2 = function() {
@@ -383,11 +383,11 @@ window.validateNewEntrantAuditFormPart2 = function() {
 };
 
 // ============================================================================ //
-// 🛠️ NEW ENTRANT AUDIT SERVICE: FIELD SCANCE ENGINE (PART 2 OF 2)               //
+// ðŸ› ï¸ NEW ENTRANT AUDIT SERVICE: FIELD SCANCE ENGINE (PART 2 OF 2)               //
 // ============================================================================ //
 
 /**
- * 🟢 STEP 3 EXPLICIT SCANNER: Validates Premium Addons / Upsells Package folder matrix.
+ * ðŸŸ¢ STEP 3 EXPLICIT SCANNER: Validates Premium Addons / Upsells Package folder matrix.
  * Bound to the third transition checkpoint explicitly to clear step 3 advancement.
  */
 window.validateNewEntrantAuditFormPart3 = function() {
@@ -396,7 +396,7 @@ window.validateNewEntrantAuditFormPart3 = function() {
 };
 
 /**
- * 🟢 STEP 4 EXPLICIT SCANNER: Validates Fleet Volumetrics / Equipment Inventory.
+ * ðŸŸ¢ STEP 4 EXPLICIT SCANNER: Validates Fleet Volumetrics / Equipment Inventory.
  * Bound to the fourth transition checkpoint explicitly to clear step 4 advancement.
  */
 window.validateNewEntrantAuditFormPart4 = function() {
@@ -434,7 +434,7 @@ window.validateNewEntrantAuditFormPart4 = function() {
 };
 
 /**
- * 🟢 STEP 5 EXPLICIT SCANNER: Validates Special Audit Memo Field parameters.
+ * ðŸŸ¢ STEP 5 EXPLICIT SCANNER: Validates Special Audit Memo Field parameters.
  * Bound to the fifth transition checkpoint explicitly to clear step 5 advancement.
  */
 window.validateNewEntrantAuditFormPart5 = function() {
@@ -480,7 +480,7 @@ console.log("[Pipeline Verified] Multi-part tracking step validators mapped inde
 
 
 // ============================================================================ //
-// 📦 MASTER SYSTEM ROUTER COMPILER ASSEMBLY HOOK                               //
+// ðŸ“¦ MASTER SYSTEM ROUTER COMPILER ASSEMBLY HOOK                               //
 // ============================================================================ //
 
 /**
@@ -514,3 +514,4 @@ window.formRegistry['new-entrant-audit-form-master'] = function(stateDropdownOpt
 window.formRegistry['new-entrant-safety-audit-form-master'] = window.formRegistry['new-entrant-audit-form-master'];
 
 console.log("[Master Closure] Complete New Entrant pipeline assembled and closed successfully.");
+

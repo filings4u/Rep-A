@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ IFTA REGISTRATION SERVICE: VALIDATION MATRIX ENGINE                      //
+﻿// ============================================================================ //
+// ðŸ› ï¸ IFTA REGISTRATION SERVICE: VALIDATION MATRIX ENGINE                      //
 // ============================================================================ //
 function initIftaRegistrationService() {
   // Global wizard registries allocation
@@ -42,7 +42,7 @@ function initIftaRegistrationService() {
         }
       };
 
-      // 🟢 FIXED: Use safe DOM presence filters instead of fragile offset geometric checks
+      // ðŸŸ¢ FIXED: Use safe DOM presence filters instead of fragile offset geometric checks
       const existsInActiveDom = (el) => el && document.body.contains(el);
 
       // 1. Process Business Name Presence Check
@@ -107,7 +107,7 @@ window.initIftaRegistrationService = initIftaRegistrationService;
 
 
 // ============================================================================ //
-// 🛠️ FAMILY 30A: IFTA REGISTRATION LAYOUT MATRIX (PART 1 OF 3)              //
+// ðŸ› ï¸ FAMILY 30A: IFTA REGISTRATION LAYOUT MATRIX (PART 1 OF 3)              //
 // ============================================================================ //
 function buildIftaRegistrationFormPart1(stateDropdownOptionsHtml = "") {
   return `
@@ -173,7 +173,7 @@ window.buildIftaRegistrationFormPart1 = buildIftaRegistrationFormPart1;
 
 
 // ============================================================================ //
-// 🛠️ IFTA REGISTRATION MODULE: VALIDATION MATRIX ENGINE (PARTS 2 & 3)          //
+// ðŸ› ï¸ IFTA REGISTRATION MODULE: VALIDATION MATRIX ENGINE (PARTS 2 & 3)          //
 // ============================================================================ //
 /**
  * Validates IRP account parameters, base state alignments, and decal volumetric constraints
@@ -202,7 +202,7 @@ window.validateIftaRegistrationFormParts2And3 = function() {
     }
   };
 
-  // 🟢 FIXED: Use safe DOM presence filters instead of fragile offset geometric checks
+  // ðŸŸ¢ FIXED: Use safe DOM presence filters instead of fragile offset geometric checks
   const existsInActiveDom = (el) => el && document.body.contains(el);
 
   // 1. Validate Apportioned IRP Account Number
@@ -249,7 +249,7 @@ window.validateIftaRegistrationFormParts2And3 = function() {
 
 
 // ============================================================================ //
-// 🛠️ FAMILY 30A: IFTA REGISTRATION LAYOUT MATRIX (PART 2 OF 3)              //
+// ðŸ› ï¸ FAMILY 30A: IFTA REGISTRATION LAYOUT MATRIX (PART 2 OF 3)              //
 // ============================================================================ //
 function buildIftaRegistrationFormPart2(stateDropdownOptionsHtml = "") {
   return `
@@ -305,7 +305,7 @@ window.buildIftaRegistrationFormPart2 = buildIftaRegistrationFormPart2;
 
 
 // ============================================================================ //
-// 🛠️ FAMILY 30A: IFTA REGISTRATION LAYOUT MATRIX (PART 3 OF 3)              //
+// ðŸ› ï¸ FAMILY 30A: IFTA REGISTRATION LAYOUT MATRIX (PART 3 OF 3)              //
 // ============================================================================ //
 function buildIftaRegistrationFormPart3(stateDropdownOptionsHtml = "") {
   return `
@@ -327,7 +327,7 @@ function buildIftaRegistrationFormPart3(stateDropdownOptionsHtml = "") {
 }
 
 // ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (IFTA CONDITIONAL LOGIC ENGINE)        //
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (IFTA CONDITIONAL LOGIC ENGINE)        //
 // ============================================================================ //
 /**
  * Handles workflow switching logic based on order scope selection.
@@ -354,14 +354,14 @@ window.toggleIftaFulfillmentSubFields = function(selectedValue) {
 };
 
 // ============================================================================ //
-// 📦 MASTER IFTA REGISTRATION APPLICATION ASSEMBLY HOOK                         //
+// ðŸ“¦ MASTER IFTA REGISTRATION APPLICATION ASSEMBLY HOOK                         //
 // ============================================================================ //
 window.buildIftaRegistrationForm = function(stateDropdownOptionsHtml = "") {
   const p1 = typeof window.buildIftaRegistrationFormPart1 === "function" ? window.buildIftaRegistrationFormPart1(stateDropdownOptionsHtml) : "";
   const p2 = typeof window.buildIftaRegistrationFormPart2 === "function" ? window.buildIftaRegistrationFormPart2(stateDropdownOptionsHtml) : "";
   const p3 = typeof window.buildIftaRegistrationFormPart3 === "function" ? window.buildIftaRegistrationFormPart3(stateDropdownOptionsHtml) : "";
 
-  // 🟢 FIXED: Converted outer frame into full-width stacked blocks.
+  // ðŸŸ¢ FIXED: Converted outer frame into full-width stacked blocks.
   // Forces all parts to span the entire card panel without collapsing sideways into a double column grid container.
   return `
     <div class="ifta-registration-master-container" style="grid-column: span 2 !important; width: 100% !important; display: flex !important; flex-direction: column !important; gap: 24px !important; box-sizing: border-box !important;">
@@ -392,3 +392,4 @@ window.formRegistry = window.formRegistry || {};
 window.formRegistry['ifta-registration-form-master'] = function(stateDropdownOptionsHtml = "") {
   return window.buildIftaRegistrationForm(stateDropdownOptionsHtml);
 };
+

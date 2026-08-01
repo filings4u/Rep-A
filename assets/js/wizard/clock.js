@@ -1,7 +1,7 @@
+﻿// ============================================================================ //
+// ðŸ•’ MODULE: UNIVERSAL SELF-HEALING 12-HOUR CHRONOMETER & CALENDAR ENGINE     //
 // ============================================================================ //
-// 🕒 MODULE: UNIVERSAL SELF-HEALING 12-HOUR CHRONOMETER & CALENDAR ENGINE     //
-// ============================================================================ //
-(function() {
+;(function() {
     "use strict";
 
     /**

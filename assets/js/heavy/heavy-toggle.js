@@ -1,7 +1,7 @@
+﻿// ============================================================================ //
+// ðŸ“ FILINGS4U HEAVY TAX ENGINE - MOBILE MENU CONTROLLER (PART 1 OF 2)          //
 // ============================================================================ //
-// 📁 FILINGS4U HEAVY TAX ENGINE - MOBILE MENU CONTROLLER (PART 1 OF 2)          //
-// ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   // 1-indexed structural mapping matching your centralized master tax engine orchestrator
@@ -51,11 +51,11 @@
     const isClosed = (navPanel.style.display === "none" || !navPanel.style.display);
     if (isClosed) {
       navPanel.style.setProperty("display", "block", "important");
-      if (triggerIcon) triggerIcon.innerHTML = "✕ Close";
+      if (triggerIcon) triggerIcon.innerHTML = "âœ• Close";
       if (typeof window.syncDropdownStepIndicatorLights === "function") window.syncDropdownStepIndicatorLights();
     } else {
       navPanel.style.setProperty("display", "none", "important");
-      if (triggerIcon) triggerIcon.innerHTML = "☰ Menu";
+      if (triggerIcon) triggerIcon.innerHTML = "â˜° Menu";
     }
   };
 
@@ -99,9 +99,9 @@
 
 
 // ============================================================================ //
-// 📁 FILINGS4U HEAVY TAX ENGINE - MOBILE MENU CONTROLLER (PART 2 OF 2)          //
+// ðŸ“ FILINGS4U HEAVY TAX ENGINE - MOBILE MENU CONTROLLER (PART 2 OF 2)          //
 // ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   // Re-pull access matrix definitions out of global script memory namespaces safely
@@ -116,7 +116,7 @@
       const rowWrapper = document.querySelector(`li[data-index="${step.idx}"]`);
       if (!lamp) return;
 
-      // 🟢 PAST VERIFIED COMPLETED PANELS (Solid Emerald Green Layout Style)
+      // ðŸŸ¢ PAST VERIFIED COMPLETED PANELS (Solid Emerald Green Layout Style)
       if (step.idx < activeStepIdx) {
         lamp.style.setProperty("background-color", "#10b981", "important");
         lamp.style.setProperty("box-shadow", "0 0 0 2px #fff, 0 0 0 4px #10b981", "important");
@@ -125,7 +125,7 @@
           rowWrapper.style.setProperty("background-color", "#ffffff", "important");
         }
       } 
-      // 🔵 RECENT RUNTIME VIEWPORT PANEL (Dark Corporate Navy Core Focus Accent)
+      // ðŸ”µ RECENT RUNTIME VIEWPORT PANEL (Dark Corporate Navy Core Focus Accent)
       else if (step.idx === activeStepIdx) {
         lamp.style.setProperty("background-color", "#0a1f44", "important");
         lamp.style.setProperty("box-shadow", "0 0 0 2px #fff, 0 0 0 4px #0a1f44, 0 0 8px rgba(10, 31, 68, 0.4)", "important");
@@ -134,7 +134,7 @@
           rowWrapper.style.setProperty("background-color", "rgba(16, 185, 129, 0.04)", "important");
         }
       } 
-      // ⚪ UNVISITED TRACKS OR REGRESSED REVERSED NODES (Force Overwrites Back To Grey Slate)
+      // âšª UNVISITED TRACKS OR REGRESSED REVERSED NODES (Force Overwrites Back To Grey Slate)
       else {
         lamp.style.setProperty("background-color", "#cbd5e1", "important");
         lamp.style.setProperty("box-shadow", "0 0 0 2px #fff, 0 0 0 3px #cbd5e1", "important");
@@ -180,7 +180,7 @@
         const navPanel = document.getElementById("f4u-dropdown-menu-panel");
         if (navPanel) navPanel.style.setProperty("display", "none", "important");
         const icon = document.getElementById("mobileNavTriggerIcon");
-        if (icon) icon.innerHTML = "☰ Menu";
+        if (icon) icon.innerHTML = "â˜° Menu";
       });
 
       rowNode.dataset.dropdownListenerHooked = "true";
@@ -195,7 +195,7 @@
     if (!e.target.closest('#f4u-dropdown-menu-panel') && !e.target.closest('#mobileNavToggleBtn')) {
       navPanel.style.setProperty("display", "none", "important");
       const icon = document.getElementById("mobileNavTriggerIcon");
-      if (icon) icon.innerHTML = "☰ Menu";
+      if (icon) icon.innerHTML = "â˜° Menu";
     }
   });
 
@@ -210,3 +210,4 @@
     window.initializeOverlayMenuAssets();
   }
 })();
+

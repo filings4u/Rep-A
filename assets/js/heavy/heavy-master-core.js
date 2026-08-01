@@ -1,8 +1,8 @@
-
+﻿
 // ============================================================================
-// 📁 FILINGS4U HEAVY TAX ENGINE - MASTER CENTRALIZED LIFE-CYCLE ORCHESTRATOR
+// ðŸ“ FILINGS4U HEAVY TAX ENGINE - MASTER CENTRALIZED LIFE-CYCLE ORCHESTRATOR
 // ============================================================================
-(function() {
+;(function() {
   "use strict";
 
   // Universal state registers shared across all modular step files
@@ -64,7 +64,7 @@ function executeRawPanelVisibilityToggle(cleanIndex) {
     }
   });
 
-  // 🟢 3. NEW: AUTOMATED SYNCHRONIZATION WITH YOUR HEAVY USE TAX MAP TIMELINE
+  // ðŸŸ¢ 3. NEW: AUTOMATED SYNCHRONIZATION WITH YOUR HEAVY USE TAX MAP TIMELINE
   if (typeof window.updateApplicationMapTimelineBubbles === "function") {
     window.updateApplicationMapTimelineBubbles(cleanIndex);
   }
@@ -164,9 +164,9 @@ function executeRawPanelVisibilityToggle(cleanIndex) {
 
 
 // ============================================================================ // 
-// 🔵 CENTRALIZED NAVY BLUE TRANSITION SPINNER INTERCEPTOR                      // 
+// ðŸ”µ CENTRALIZED NAVY BLUE TRANSITION SPINNER INTERCEPTOR                      // 
 // ============================================================================ // 
-(function() { 
+;(function() { 
     "use strict"; 
     
     // Use a secure token reference to track overlapping animation passes 
@@ -238,9 +238,9 @@ function executeRawPanelVisibilityToggle(cleanIndex) {
 })();
 
 // ============================================================================ //
-// 🗺️ WIZARD STATE MANAGER & INTERCEPTOR FOR APPLICATION MAP                    //
+// ðŸ—ºï¸ WIZARD STATE MANAGER & INTERCEPTOR FOR APPLICATION MAP                    //
 // ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   /**
@@ -260,7 +260,7 @@ function executeRawPanelVisibilityToggle(cleanIndex) {
       console.log(`[Map Sync] Successfully lit up Step Index: ${validatedStep}`);
     } else {
       console.warn("[Map Sync] Warning: Bubble engine not found in DOM yet. Retrying...");
-      setTimeout(function() {
+      setTimeout;(function() {
         if (typeof window.updateApplicationMapTimelineBubbles === "function") {
           window.updateApplicationMapTimelineBubbles(validatedStep);
         }
@@ -281,7 +281,7 @@ function executeRawPanelVisibilityToggle(cleanIndex) {
     navButtons.forEach(function(button) {
       button.addEventListener("click", function() {
         // Wrap in a tiny timeout to ensure the core engine finishes altering the DOM state first
-        setTimeout(function() {
+        setTimeout;(function() {
           // Read from your master global variable or standard UI data-attribute
           let discoveredStep = window.currentWizardActiveStep;
 

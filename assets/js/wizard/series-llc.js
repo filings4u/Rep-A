@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ SERIES LLC PART 1 VALIDATION MATRIX ENGINE                                //
+﻿// ============================================================================ //
+// ðŸ› ï¸ SERIES LLC PART 1 VALIDATION MATRIX ENGINE                                //
 // ============================================================================ //
 
 var seriesLlcPart1Validation = {
@@ -150,7 +150,7 @@ window.buildSeriesLlcPart1 = buildSeriesLlcPart1;
 
 
 // ============================================================================ //
-// 🛠️ SERIES LLC PART 2 VALIDATION MATRIX ENGINE                                //
+// ðŸ› ï¸ SERIES LLC PART 2 VALIDATION MATRIX ENGINE                                //
 // ============================================================================ //
 
 var seriesLlcPart2Validation = {
@@ -250,7 +250,7 @@ function buildSeriesLlcPart2(stateDropdownOptionsHtml) {
       <label for="sllc_ra_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Select Registered Agent Provision <span style="color: #ef4444;">*</span></label>
       <select id="sllc_ra_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleRegisteredAgentConditionalFields(this.value)">
         <option value="" disabled selected>Choose an option...</option>
-        <option value="filings4u">Utilize Filings4u Protected Agent Shield Service — $${liveAgentFee} / Year</option>
+        <option value="filings4u">Utilize Filings4u Protected Agent Shield Service â€” $${liveAgentFee} / Year</option>
         <option value="custom">Maintain External Independent Third-Party Registered Agent</option>
       </select>
       <div class="wizard-error-message" id="err_sllc_ra_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
@@ -294,7 +294,7 @@ window.buildSeriesLlcPart2 = buildSeriesLlcPart2;
 
 
 // ============================================================================ //
-// 🛠️ SERIES LLC CONTACT VALIDATION MATRIX ENGINE                              //
+// ðŸ› ï¸ SERIES LLC CONTACT VALIDATION MATRIX ENGINE                              //
 // ============================================================================ //
 
 var seriesLlcContactValidation = {
@@ -434,7 +434,7 @@ var section3HtmlPayload = `
 window.buildSeriesLlcPart2 = buildSeriesLlcPart2;
 
 // ============================================================================ //
-// 🛠️ SERIES LLC PART 2A VALIDATION MATRIX ENGINE                               //
+// ðŸ› ï¸ SERIES LLC PART 2A VALIDATION MATRIX ENGINE                               //
 // ============================================================================ //
 
 var seriesLlcPart2AValidation = {
@@ -572,7 +572,7 @@ function buildSeriesLlcPart2A(stateDropdownOptionsHtml) {
       <label for="sllc_ra_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Select Registered Agent Provision <span style="color: #ef4444;">*</span></label>
       <select id="sllc_ra_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleRegisteredAgentConditionalFields(this.value)">
         <option value="" disabled selected>Choose an option...</option>
-        <option value="filings4u">Utilize Filings4u Protected Agent Shield Service — $${liveAgentFee} / Year</option>
+        <option value="filings4u">Utilize Filings4u Protected Agent Shield Service â€” $${liveAgentFee} / Year</option>
         <option value="custom">Maintain External Independent Third-Party Registered Agent</option>
       </select>
       <div class="wizard-error-message" id="err_sllc_ra_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
@@ -665,7 +665,7 @@ window.buildSeriesLlcPart2A = buildSeriesLlcPart2A;
 
 
 // ============================================================================ //
-// 🛠️ SERIES LLC PART 2B VALIDATION MATRIX ENGINE                               //
+// ðŸ› ï¸ SERIES LLC PART 2B VALIDATION MATRIX ENGINE                               //
 // ============================================================================ //
 
 var seriesLlcPart2BValidation = {
@@ -880,7 +880,7 @@ function buildSeriesLlcPart2B(stateDropdownOptionsHtml) {
       <label for="sllc_ein_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Will you be applying for an Employer Identification Number (EIN)? <span style="color: #ef4444;">*</span></label>
       <select id="sllc_ein_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleSeriesEinWorkflow(this.value)">
         <option value="no" selected>No, I already hold or will apply for EIN structures independently</option>
-        <option value="yes">Yes, add Filings4u Master EIN Procurement Service — $\${liveEinFee}</option>
+        <option value="yes">Yes, add Filings4u Master EIN Procurement Service â€” $\${liveEinFee}</option>
       </select>
     </div>
     <div id="sllc_ein_reason_wrapper" style="grid-column: span 2; display: none; flex-direction: column; gap: 8px;">
@@ -891,7 +891,7 @@ function buildSeriesLlcPart2B(stateDropdownOptionsHtml) {
 }
 
 // ============================================================================ //
-// 🏛️ SERIES LLC MASTER LAYOUT COMPILER & PART 3 VALIDATION MATRIX              //
+// ðŸ›ï¸ SERIES LLC MASTER LAYOUT COMPILER & PART 3 VALIDATION MATRIX              //
 // ============================================================================ //
 
 function buildSeriesLlcFieldsLayoutHtml() {
@@ -986,7 +986,7 @@ function buildSeriesLlcPart3() {
       <label for="sllc_license_check" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Have you verified the necessary localized business licenses or permits? <span style="color: #ef4444;">*</span></label>
       <select id="sllc_license_check" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleSeriesLicenseWorkflow(this.value)">
         <option value="yes" selected>Yes, I have verified my structural compliance tracks</option>
-        <option value="no">No, I need help — Add Filings4u License &amp; Permit Audit Suite — $${liveLicenseFee}</option>
+        <option value="no">No, I need help â€” Add Filings4u License &amp; Permit Audit Suite â€” $${liveLicenseFee}</option>
       </select>
       <div class="wizard-error-message" id="err_sllc_license_check" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
@@ -1047,4 +1047,5 @@ function buildSeriesLlcRegistrationFieldsLayoutHtml() {
 
 window.buildSeriesLlcFieldsLayoutHtml = buildSeriesLlcFieldsLayoutHtml;
 window.buildSeriesLlcRegistrationFieldsLayoutHtml = buildSeriesLlcRegistrationFieldsLayoutHtml;
+
 

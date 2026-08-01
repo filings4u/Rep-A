@@ -1,5 +1,5 @@
-// ============================================================================
-// ⚡ STEP 2 DYNAMIC RECOVERY LIFELINE: ASSET PROTECTION TIERS LAYOUT REGISTER
+﻿// ============================================================================
+// âš¡ STEP 2 DYNAMIC RECOVERY LIFELINE: ASSET PROTECTION TIERS LAYOUT REGISTER
 // ============================================================================
 
 /**
@@ -108,3 +108,4 @@ function validateAssetProtectionTiersForm() {
 
 // Bind directly to window scope to allow easy cross-step pipeline access
 window.validateAssetProtectionTiersForm = validateAssetProtectionTiersForm;
+

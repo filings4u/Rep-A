@@ -1,14 +1,13 @@
+﻿// ============================================================================ //
+// ðŸ“ ASSETS/JS/INTERACTION-CONTROLLER.JS                                       //
 // ============================================================================ //
-// 📁 ASSETS/JS/INTERACTION-CONTROLLER.JS                                       //
-// ============================================================================ //
-(function() { 
+;(function() { 
 "use strict";
 
 // Inject the validation animation rules instantly into the head to ensure inputs shake on error states
 // ============================================================================
-// 🎨 HARDWARE-ACCELERATED SHAKE STYLE INJECTOR (PATCH FOR interaction-controller.js)
-// ============================================================================
-(function injectValidationShakeStyles() {
+// ðŸŽ¨ HARDWARE-ACCELERATED SHAKE STYLE INJECTOR (PATCH FOR interaction-controller.js)
+// ============================================================================;(function injectValidationShakeStyles() {
     if (document.getElementById("f4u-validation-shake-keyframes")) return;
     const styleSheetNode = document.createElement("style");
     styleSheetNode.id = "f4u-validation-shake-keyframes";
@@ -29,7 +28,7 @@
 
 
 // ============================================================================
-// 🛡️ UNIFIED SHAKE DISPATCHER ENGINE (PATCH FOR interaction-controller.js)
+// ðŸ›¡ï¸ UNIFIED SHAKE DISPATCHER ENGINE (PATCH FOR interaction-controller.js)
 // ============================================================================
 function validateBaseProfileMatrix() { 
     let textFieldsValid = true; 
@@ -73,7 +72,7 @@ function attachSubmitButtonController() {
         if (errorBanner) errorBanner.style.display = "none"; 
         
 // ============================================================================
-// 🛡️ FRONTEND SHAKE & RETRY VALVE (PATCH FOR interaction-controller.js)
+// ðŸ›¡ï¸ FRONTEND SHAKE & RETRY VALVE (PATCH FOR interaction-controller.js)
 // ============================================================================
 if (!validateBaseProfileMatrix()) { 
     console.warn("[Submit Validation] Aborting pipeline submission. Fields missing."); 
@@ -118,7 +117,7 @@ if (!validateBaseProfileMatrix()) {
     }; 
     
     cleanBtn.addEventListener("click", window.f4u_active_submit_handler); 
-    console.log("✅ [Stripe Controller] Secure Payment button event listener successfully attached."); 
+    console.log("âœ… [Stripe Controller] Secure Payment button event listener successfully attached."); 
 } 
 
 function bootloaderRuntimeGate() { 
@@ -148,7 +147,7 @@ if (document.readyState === "loading") {
 // ============================================================================ //
 // ASSETS/JS/INTERACTION-CONTROLLER.JS (FIXED DATA PASS STATE SYNCHRONIZER)      //
 // ============================================================================ //
-(function() { 
+;(function() { 
 "use strict";
 
 function attachSubmitButtonController() { 
@@ -179,7 +178,7 @@ function attachSubmitButtonController() {
         
         try { 
             // ============================================================================
-            // 🚀 THE FIX: LOCK DOWN ACCURATE PRICE RECORDS BEFORE ANY DOM REWRITES
+            // ðŸš€ THE FIX: LOCK DOWN ACCURATE PRICE RECORDS BEFORE ANY DOM REWRITES
             // ============================================================================
             // Captures total from memory layers first before reading volatile text nodes
             const resolvedFinalTotal = parseFloat(
@@ -228,8 +227,10 @@ function attachSubmitButtonController() {
     }; 
     
     cleanBtn.addEventListener("click", window.f4u_active_submit_handler); 
-    console.log("✅ [Stripe Controller] Secure Payment button event listener successfully attached."); 
+    console.log("âœ… [Stripe Controller] Secure Payment button event listener successfully attached."); 
 } 
 
 window.attachSubmitButtonController = attachSubmitButtonController; 
 })();
+
+

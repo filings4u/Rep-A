@@ -1,4 +1,4 @@
-function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, activeBullets = [], finalBaseFee = 0.00) {
+﻿function renderOnboardingPlanOverviewCard(serviceDataNode, tierTitleDisplay, activeBullets = [], finalBaseFee = 0.00) {
   if (window.isPlanCardRenderingLockActive) return;
   window.isPlanCardRenderingLockActive = true;
   try {
@@ -71,7 +71,7 @@ function cleanStep3MarketplaceDuplications() {
         const boxName = String(box.name).toLowerCase(); 
         const boxClass = String(box.className).toLowerCase(); 
         
-        // 🟢 THE FIX: Check for underscores, hyphens, AND compliance utility classes 
+        // ðŸŸ¢ THE FIX: Check for underscores, hyphens, AND compliance utility classes 
         const isStep2Element = boxId.startsWith("nea_") || boxId.startsWith("nea-") || 
                                boxName.startsWith("nea_") || boxName.startsWith("nea-") || 
                                boxClass.includes("nea-service") || boxClass.includes("nea_service"); 
@@ -97,7 +97,7 @@ if (step3TargetPanel) {
     const layoutObserver = new MutationObserver(() => { 
         if (step3TargetPanel.style.display !== "none") { 
             
-            // 🟢 FIXED MARGIN LAYER: Disconnect the observer instance background hooks instantly 
+            // ðŸŸ¢ FIXED MARGIN LAYER: Disconnect the observer instance background hooks instantly 
             // before deleting elements to block recursive style change callback cascades.
             if (window.step3LayoutObserverInstance) {
                 window.step3LayoutObserverInstance.disconnect();
@@ -128,20 +128,20 @@ window.cleanStep3MarketplaceDuplications = cleanStep3MarketplaceDuplications;
  * @param {string} activeSlug - The raw matching service handle code from the portal. 
  */ 
 function renderStep1CustomFeatureBullets(activeSlug) { 
-    // 🛡️ RUNTIME LIFECYCLE GUARD: 
+    // ðŸ›¡ï¸ RUNTIME LIFECYCLE GUARD: 
     // Protect execution against variable loading delays safely by rescheduling instead of breaking. 
     if (typeof window.getPricingConfiguration !== "function") { 
-        setTimeout(function() { 
+        setTimeout;(function() { 
             renderStep1CustomFeatureBullets(activeSlug); 
         }, 50); 
         return; 
     } 
 
-    // Pure dynamic variable resolution — No default parameter strings assumed 
+    // Pure dynamic variable resolution â€” No default parameter strings assumed 
     const activePlanKey = window.routeActivePlanKey; 
     if (!activePlanKey) { 
         // If the router hasn't set the plan key yet, wait and try again. 
-        setTimeout(function() { 
+        setTimeout;(function() { 
             renderStep1CustomFeatureBullets(activeSlug); 
         }, 50); 
         return; 
@@ -172,7 +172,7 @@ function renderStep1CustomFeatureBullets(activeSlug) {
         return; 
     } 
 
-    // 🟢 OPTIMIZATION FIX: Run the downstream calculations bridge first, 
+    // ðŸŸ¢ OPTIMIZATION FIX: Run the downstream calculations bridge first, 
     // ensuring the checkout invoice numbers NEVER lock up on Steps 2, 3, or 5. 
     if (typeof window.updateDynamicPricingMatrixVanilla === "function") { 
         window.updateDynamicPricingMatrixVanilla(); 
@@ -185,7 +185,7 @@ function renderStep1CustomFeatureBullets(activeSlug) {
         const activePanelId = String(activeStepBlock.id).trim().toLowerCase(); 
         
         if (activePanelId !== "step-panel-1" && activePanelId !== "step-1") { 
-            // 🟢 INTEGRITY ATTACHMENT GATE:
+            // ðŸŸ¢ INTEGRITY ATTACHMENT GATE:
             // Check if the Step 1 card block container has already been compiled and printed.
             const preExistingPlanCard = document.getElementById("step-1-selected-plan-overview");
             
@@ -217,7 +217,7 @@ window.renderStep1CustomFeatureBullets = renderStep1CustomFeatureBullets;
 
 
 // ============================================================================ // 
-// 🎯 DATA LIFESTYLE VALIDATOR: TIMING-INDEPENDENT LIFECYCLE ENFORCER          // 
+// ðŸŽ¯ DATA LIFESTYLE VALIDATOR: TIMING-INDEPENDENT LIFECYCLE ENFORCER          // 
 // ============================================================================ // 
 
 /** 
@@ -247,8 +247,8 @@ function processDynamicMarketingLayoutDecorations(planConfig, activePlanKeyStrin
     if (!coreDatabaseRegistry || !coreDatabaseRegistry[cleanServiceKey]) { 
         if (currentRetry < 3) { 
             console.log(`[Lifecycle Sync] Target database node is initializing. Retrying context hook (${currentRetry + 1}/3)...`); 
-            setTimeout(function() { 
-                // 🟢 FIXED ARGUMENTS INDEX: Corrected variable routing positions to ensure retry count accumulates
+            setTimeout;(function() { 
+                // ðŸŸ¢ FIXED ARGUMENTS INDEX: Corrected variable routing positions to ensure retry count accumulates
                 processDynamicMarketingLayoutDecorations(planConfig, activePlanKeyString, currentRetry + 1); 
             }, 100); 
             return false; 
@@ -308,7 +308,7 @@ function processDynamicMarketingLayoutDecorations(planConfig, activePlanKeyStrin
         window.renderOnboardingPlanOverviewCard(targetServiceNode, tierTitleDisplay, dynamicBulletsArray, basePackageFeeAmount); 
     } 
 
-    // 🟢 TRIGGER: Explicitly force state field rendering checks upon passing criteria validations 
+    // ðŸŸ¢ TRIGGER: Explicitly force state field rendering checks upon passing criteria validations 
     if (typeof autoPopulateAllUsStateSelectDropdowns === "function") {
         autoPopulateAllUsStateSelectDropdowns(); 
     }
@@ -321,7 +321,7 @@ window.processDynamicMarketingLayoutDecorations = processDynamicMarketingLayoutD
 
 
 /**
- * 🟢 AUTOMATED US STATE INJECTOR UTILITY (50 STATES EXPANSION)
+ * ðŸŸ¢ AUTOMATED US STATE INJECTOR UTILITY (50 STATES EXPANSION)
  * Scans the active form layout tree for state dropdown lists and automatically injects option records.
  */
 function autoPopulateAllUsStateSelectDropdowns() {
@@ -346,7 +346,7 @@ function autoPopulateAllUsStateSelectDropdowns() {
     ];
 
  // ============================================================================ //
-// 🗺️ STATE HYDRATOR CORE ENGINE (STATE-PRESERVING SELECTION PASS)             //
+// ðŸ—ºï¸ STATE HYDRATOR CORE ENGINE (STATE-PRESERVING SELECTION PASS)             //
 // ============================================================================ //
 
 function autoPopulateAllUsStateSelectDropdowns() {
@@ -384,7 +384,7 @@ function autoPopulateAllUsStateSelectDropdowns() {
 
         console.log(`[State Hydrator] Populating 50 US states into dropdown: #${selectDropdown.id || "unnamed-node"}`);
 
-        // 🟢 PRESERVATION FIX: Capture the user's active dropdown choice before rebuilding the inner HTML
+        // ðŸŸ¢ PRESERVATION FIX: Capture the user's active dropdown choice before rebuilding the inner HTML
         const previouslySelectedCachedValue = selectDropdown.value;
 
         // Capture whatever default option was placeholder text inside the template layout (e.g. "-- Choose State --")
@@ -398,7 +398,7 @@ function autoPopulateAllUsStateSelectDropdowns() {
         selectDropdown.innerHTML = compiledStateOptionsHtml;
         selectDropdown.dataset.statesInjected = "true";
 
-        // 🟢 RESTORATION PASS: Re-apply their selection choice safely if it exists inside the new option set
+        // ðŸŸ¢ RESTORATION PASS: Re-apply their selection choice safely if it exists inside the new option set
         if (previouslySelectedCachedValue) {
             selectDropdown.value = previouslySelectedCachedValue;
         }
@@ -413,7 +413,7 @@ if (document.readyState !== "loading") {
 }
 
 // ============================================================================ // 
-// 🎨 Step 5 UI SUMMARY PANEL OVERRIDE & DISPLAY LAYOUT FORMATTER (DYNAMIC)    // 
+// ðŸŽ¨ Step 5 UI SUMMARY PANEL OVERRIDE & DISPLAY LAYOUT FORMATTER (DYNAMIC)    // 
 // ============================================================================ // 
 /** 
  * filings4u, LLC - Fail-Safe Step 5 UI Formatter 
@@ -454,7 +454,7 @@ function formatStepFiveSummaryInvoiceDisplayLayout(currentCartState = {}) {
             const basePrice = parseFloat(window._tempCalcContext.baseTierPrice) || 0; 
             const addonPrice = parseFloat(window._tempCalcContext.incrementalAddonTotal) || 0; 
             
-            // 🟢 DYNAMIC ARITHMETIC ENFORCEMENT TYPE-CAST:
+            // ðŸŸ¢ DYNAMIC ARITHMETIC ENFORCEMENT TYPE-CAST:
             // Explicitly wrapping value extractions inside parseFloat ensures that string objects 
             // can never break the calculation matrix line or cause broken text additions.
             const truckingPrice = parseFloat(window.lastCalculatedNewEntrantAddonTotal) || 0; 
@@ -495,15 +495,14 @@ window.formatStepFiveSummaryInvoiceDisplayLayout = formatStepFiveSummaryInvoiceD
 
 
 // ============================================================================
-// 🔍 AUTOMATED OBSERVATION TRIGGER: INITIALIZE LIVE SHEET LISTENER INTERFACES
+// ðŸ” AUTOMATED OBSERVATION TRIGGER: INITIALIZE LIVE SHEET LISTENER INTERFACES
 // ============================================================================
 
 /**
  * UI Mutation Guard Hook
  * Automatically runs the formatter whenever your wizard updates the summary panel.
  * Connected layout trigger directly to the newly isolated formatter module handler.
- */
-(function activateSummaryObserver() {
+ */;(function activateSummaryObserver() {
   const summaryTarget = document.getElementById("summary-purchase-rows-container");
   
   if (!summaryTarget) {
@@ -527,7 +526,7 @@ window.formatStepFiveSummaryInvoiceDisplayLayout = formatStepFiveSummaryInvoiceD
 })();
 
 // ============================================================================
-// 📡 UNIFIED BACKGROUND PRE-FETCH MODULE (LATENCY REMOVAL ENGINE - DYNAMIC)
+// ðŸ“¡ UNIFIED BACKGROUND PRE-FETCH MODULE (LATENCY REMOVAL ENGINE - DYNAMIC)
 // ============================================================================
 
 /**
@@ -558,7 +557,7 @@ if (document.readyState !== "loading") {
 }
 
 // ============================================================================ //
-// 🛠️ UNIVERSAL STEP VALIDATION DISPATCHER (100% PURE DYNAMIC ENGINE)          //
+// ðŸ› ï¸ UNIVERSAL STEP VALIDATION DISPATCHER (100% PURE DYNAMIC ENGINE)          //
 // ============================================================================ //
 
 /** 
@@ -575,13 +574,13 @@ function runMasterActiveStepFormValidation() {
 
     if (!cleanKey) return true;
 
-    // 🟢 STEP 1: CONVERT SYSTEM SERVICE KEY TO DYNAMIC LOOKUP WORDS
+    // ðŸŸ¢ STEP 1: CONVERT SYSTEM SERVICE KEY TO DYNAMIC LOOKUP WORDS
     // Examples: 
     // "sales-tax-registration" splits into ["sales", "tax", "registration"]
     // "heavy-use-tax" splits into ["heavy", "use", "tax"]
     const primaryKeyWords = cleanKey.split('-');
 
-    // 🟢 STEP 2: REFLEXIVE WINDOW SCOPE MEMORY SCAN
+    // ðŸŸ¢ STEP 2: REFLEXIVE WINDOW SCOPE MEMORY SCAN
     // Read every function currently loaded into the browser memory window
     const globalContextKeys = Object.keys(window);
     
@@ -599,7 +598,7 @@ function runMasterActiveStepFormValidation() {
         return isValidationFunction && matchesServiceKeyword;
     });
 
-    // 🟢 STEP 3: DYNAMIC AUTOMATED DISPATCH EXECUTION
+    // ðŸŸ¢ STEP 3: DYNAMIC AUTOMATED DISPATCH EXECUTION
     if (targetValidationMethodKey) {
         console.log(`[Validation Dispatch Success] Auto-discovered validation logic: window.${targetValidationMethodKey}()`);
         return window[targetValidationMethodKey]();
@@ -619,3 +618,5 @@ function runMasterActiveStepFormValidation() {
 // Bind cleanly back into universal global window scope references safely
 window.runMasterActiveStepFormValidation = runMasterActiveStepFormValidation;
 }
+
+

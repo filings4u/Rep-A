@@ -1,4 +1,4 @@
-function validatePayrollTaxFormPart1() {
+﻿function validatePayrollTaxFormPart1() {
   let isValid = true;
 
   const markInvalid = (inputEl, errorEl, msg) => {
@@ -279,7 +279,7 @@ function buildPayrollTaxFormPart3(stateDropdownOptionsHtml = "") {
  `;
 }
 
-// 📦 MASTER PAYROLL TAX REGISTRATION APPLICATION ASSEMBLY HOOK
+// ðŸ“¦ MASTER PAYROLL TAX REGISTRATION APPLICATION ASSEMBLY HOOK
 function buildPayrollTaxForm(stateDropdownOptionsHtml = "") {
  return buildPayrollTaxFormPart1(stateDropdownOptionsHtml) + 
         buildPayrollTaxFormPart2(stateDropdownOptionsHtml) + 
@@ -298,4 +298,5 @@ function validateEntirePayrollTaxWizard() {
 
   return (isPart1Valid && isPart23Valid);
 }
+
 

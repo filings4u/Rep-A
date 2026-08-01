@@ -1,8 +1,8 @@
-/**
+﻿/**
  * Filings4U Platform Architecture
  * Target Module: assets/js/hero.js (Clean Two-Column White Marketing Engine)
  */
-(function() {
+;(function() {
     // 1. Establish structural verification checks for the navigation injection point
     const heroTargetNode = document.getElementById("filings4u-global-hero-root");
     if (!heroTargetNode) return;
@@ -15,7 +15,7 @@
                 <!-- LEFT COLUMN: CONVERSION COPY AND CALL TO ACTIONS -->
                 <div style="display: flex; flex-direction: column; gap: 20px;">
                     <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--primary, #10b981); color: #065f46; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; width: max-content; letter-spacing: 1px;">
-                        ⚡ IRS-Authorized 2290 Filing Engine
+                        âš¡ IRS-Authorized 2290 Filing Engine
                     </div>
                     
                     <h1 style="font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; line-height: 1.15; color: var(--navy, #0a1f44); margin: 0; font-family: inherit; letter-spacing: -0.5px;">
@@ -58,7 +58,7 @@
  * Filings4U Platform Architecture
  * Target Module: assets/js/hero.js (Clean Two-Column White Marketing Engine - Part B)
  */
-(function() {
+;(function() {
     // 1. Target the global hero container node to seamlessly complete the template string injection
     const heroTargetNode = document.getElementById("filings4u-global-hero-root");
     if (!heroTargetNode) return;
@@ -109,3 +109,4 @@
         </div>
     `;
 })();
+

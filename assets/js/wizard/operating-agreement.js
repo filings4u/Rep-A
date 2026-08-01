@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ OPERATING AGREEMENT VALIDATION MATRIX ENGINE (PART 1 OF 3)
+﻿// ============================================================================ //
+// ðŸ› ï¸ OPERATING AGREEMENT VALIDATION MATRIX ENGINE (PART 1 OF 3)
 // ============================================================================ //
 const operatingAgreementPart1Validation = {
   requiredFields: [
@@ -111,7 +111,7 @@ window.formRegistry['operating-agreement-part1-validation'] = operatingAgreement
 
 
 // ============================================================================ //
-// 🛠️ OPERATING AGREEMENT VALIDATION MATRIX ENGINE (PART 2 OF 3)
+// ðŸ› ï¸ OPERATING AGREEMENT VALIDATION MATRIX ENGINE (PART 2 OF 3)
 // ============================================================================ //
 const operatingAgreementPart2Validation = {
   validateStep: function() {
@@ -254,7 +254,7 @@ window.formRegistry['operating-agreement-part2-layout'] = buildOperatingAgreemen
 window.formRegistry['operating-agreement-part2-validation'] = operatingAgreementPart2Validation;
 
 // ============================================================================ //
-// 🛠️ OPERATING AGREEMENT VALIDATION MATRIX ENGINE (PART 3 OF 3)
+// ðŸ› ï¸ OPERATING AGREEMENT VALIDATION MATRIX ENGINE (PART 3 OF 3)
 // ============================================================================ //
 const operatingAgreementPart3Validation = {
   requiredFields: [
@@ -307,7 +307,7 @@ function buildOperatingAgreementPart3(stateDropdownOptionsHtml = "") {
 }
 window.buildOperatingAgreementPart3 = buildOperatingAgreementPart3;
 
-// 📦 MASTER OPERATING AGREEMENT ASSEMBLY HOOK
+// ðŸ“¦ MASTER OPERATING AGREEMENT ASSEMBLY HOOK
 function buildOperatingAgreementForm(stateDropdownOptionsHtml = "") {
   return buildOperatingAgreementPart1(stateDropdownOptionsHtml) + buildOperatingAgreementPart2(stateDropdownOptionsHtml) + buildOperatingAgreementPart3(stateDropdownOptionsHtml);
 }
@@ -320,7 +320,7 @@ window.formRegistry['operating-agreement-form-master'] = buildOperatingAgreement
 
 
 // ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (OPERATING AGREEMENT LEDGERS)
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (OPERATING AGREEMENT LEDGERS)
 // ============================================================================ //
 
 window.toggleOperatingAgreementOwnershipSubForm = function(value) {
@@ -410,3 +410,4 @@ window.appendNewOperatingAgreementMemberRow = function() {
 
   container.appendChild(newCard);
 };
+

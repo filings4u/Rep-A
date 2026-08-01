@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 📊 DYNAMIC SAFE PRICE PROVIDER (PREVENTS CRASH IF SERVICE OR TIER IS UNEXPECTED) // 
+﻿// ============================================================================ // 
+// ðŸ“Š DYNAMIC SAFE PRICE PROVIDER (PREVENTS CRASH IF SERVICE OR TIER IS UNEXPECTED) // 
 // ============================================================================ // 
 /** 
  * Dynamic backup pricing utility parser. Pulls floating point values safely without object read crashes. 
@@ -35,7 +35,7 @@ window.getServicePrice = function(serviceKey, tierKey) {
     ); 
 
     if (validNumericTiers.length > 0) { 
-        // 🟢 FIXED: Cleaned up spacing and comment text to guarantee this variable declaration line can never be minified out
+        // ðŸŸ¢ FIXED: Cleaned up spacing and comment text to guarantee this variable declaration line can never be minified out
         const automatedFallbackKey = validNumericTiers[0]; 
         console.log(`[Price Provider Fallback] Tier "${targetPlanKey}" missing for "${serviceKey}". Auto-assigned to loaded node: ${automatedFallbackKey}`); 
         return parseFloat(matchedPricingMatrix[automatedFallbackKey]) || 0; 
@@ -46,7 +46,7 @@ window.getServicePrice = function(serviceKey, tierKey) {
 
 
 // ============================================================================ // 
-// 📊 FALLBACK PRICING LOOKUP METHOD (FIXED: ZERO HARDCODED STRINGS)           // 
+// ðŸ“Š FALLBACK PRICING LOOKUP METHOD (FIXED: ZERO HARDCODED STRINGS)           // 
 // ============================================================================ // 
 /** 
  * Dynamic backup pricing parser. Pulls floating point values from records without hardcoded indexes. 
@@ -66,7 +66,7 @@ function baseTierPriceCalculationFallbackVanilla(serviceKey, planKey) {
 
         const targetServiceNode = window.CENTRAL_SERVICE_PLAN_DB[sKey]; 
 
-        // 🟢 SYNCED PATTERN RESOLVER: Map both nested plans/prices and flat objects structures cleanly
+        // ðŸŸ¢ SYNCED PATTERN RESOLVER: Map both nested plans/prices and flat objects structures cleanly
         const matchedPricesMatrix = targetServiceNode.plans || targetServiceNode.prices || targetServiceNode; 
 
         if (matchedPricesMatrix && typeof matchedPricesMatrix === "object") { 
@@ -106,7 +106,7 @@ window.baseTierPriceCalculationFallbackVanilla = baseTierPriceCalculationFallbac
 
 
 // ============================================================================ // 
-// 🛡️ GENERATE SECURE TRANSACTION REFERENCE STAMP (PURE DATA-DRIVEN)           // 
+// ðŸ›¡ï¸ GENERATE SECURE TRANSACTION REFERENCE STAMP (PURE DATA-DRIVEN)           // 
 // ============================================================================ // 
 /** 
  * Generates an automated unique reference token entirely from runtime parameters. 
@@ -142,7 +142,7 @@ function generateSecureRuntimeSessionTokenVanilla() {
         window.crypto.getRandomValues(bufferArray); 
         hexTokenStr = Array.from(bufferArray, val => val.toString(16).padStart(8, '0')).join('').toUpperCase();
     } else { 
-        // 🟢 ADAPTIVE SAFE FALLBACK: If Web Crypto API is unavailable over this host connection, compile a timestamp hash
+        // ðŸŸ¢ ADAPTIVE SAFE FALLBACK: If Web Crypto API is unavailable over this host connection, compile a timestamp hash
         console.warn("[Token Generation Warning] Web Crypto API is unavailable. Deploying dynamic system time vector fallback."); 
         
         let timestampSegment = Date.now().toString(16).toUpperCase();
@@ -170,7 +170,7 @@ window.generateSecureRuntimeSessionTokenVanilla = generateSecureRuntimeSessionTo
 
 
 // ============================================================================ // 
-// 🔄 PART 1: ZERO-HARDCODING DYNAMIC INTERCEPTOR LOOKUP MODULE                 // 
+// ðŸ”„ PART 1: ZERO-HARDCODING DYNAMIC INTERCEPTOR LOOKUP MODULE                 // 
 // ============================================================================ // 
 /** 
  * Programmatic String Normalizer 
@@ -209,7 +209,7 @@ function resolvePricingConfigurationDynamically(rawKey) {
 
     const registeredDbKeys = Object.keys(db); 
 
-    // 2. 🟢 PRIORITIZATION FIX: First Pass - Strict Normalized Equality Scan
+    // 2. ðŸŸ¢ PRIORITIZATION FIX: First Pass - Strict Normalized Equality Scan
     // This loops to ensure exact matches are identified first, regardless of object ordering properties
     for (let i = 0; i < registeredDbKeys.length; i++) { 
         const currentDbKey = registeredDbKeys[i]; 
@@ -285,7 +285,7 @@ function getPricingConfiguration(rawKey) {
         } 
     } 
 
-    // 🟢 POLYMORPHIC SYNC PASS: Extract price metrics and bullets to fulfill Module 1 schema expectations
+    // ðŸŸ¢ POLYMORPHIC SYNC PASS: Extract price metrics and bullets to fulfill Module 1 schema expectations
     let extractedPrice = 0;
     let fallbackBullets = [];
 
@@ -309,13 +309,13 @@ function getPricingConfiguration(rawKey) {
         basePrice: extractedPrice, 
         bullets: fallbackBullets 
     }; 
-} // 🟢 FIXED: Outer function closed cleanly here
+} // ðŸŸ¢ FIXED: Outer function closed cleanly here
 
 // ============================================================================ // 
-// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: CONFIGURATION DISCOVERY (PART 1 OF 3) // 
+// ðŸ“Š UNIFIED DATA-DRIVEN MATRIX ENGINE: CONFIGURATION DISCOVERY (PART 1 OF 3) // 
 // ============================================================================ // 
 /**
- * 🟢 SEPARATED FUNCTION: Now sits in its own correct file execution scope.
+ * ðŸŸ¢ SEPARATED FUNCTION: Now sits in its own correct file execution scope.
  */
 function executeCleanInvoiceCalculationPass(currentCartState = {}) { 
     console.log("[Pricing Engine] Initializing safe non-recursive calculation pass..."); 
@@ -391,7 +391,7 @@ window.getPricingConfiguration = getPricingConfiguration;
 window.executeCleanInvoiceCalculationPass = executeCleanInvoiceCalculationPass;
 
 // ============================================================================ // 
-// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: POLYMORPHIC DISCOVERY (PART 2 OF 3)    // 
+// ðŸ“Š UNIFIED DATA-DRIVEN MATRIX ENGINE: POLYMORPHIC DISCOVERY (PART 2 OF 3)    // 
 // ============================================================================ // 
 function runPricingMatrixDataCrawlPass() { 
     const ctx = window._tempCalcContext; 
@@ -401,7 +401,7 @@ function runPricingMatrixDataCrawlPass() {
     const mappingCoordinates = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {}; 
     let unifiedCatalogItems = {}; 
 
-    // 🟢 INITIALIZED FIX: Instantiate visitedNodes as a Set to clear the ReferenceError
+    // ðŸŸ¢ INITIALIZED FIX: Instantiate visitedNodes as a Set to clear the ReferenceError
     const visitedNodes = new Set(); 
 
     // 1. RECURSIVE DISCOVERY WALK 
@@ -451,7 +451,7 @@ function runPricingMatrixDataCrawlPass() {
     }); 
 
     // ============================================================================ //
-    // 🟢 ADDED: DYNAMIC STEP 3 RECOVERY INJECTION ENGINE PASS                     //
+    // ðŸŸ¢ ADDED: DYNAMIC STEP 3 RECOVERY INJECTION ENGINE PASS                     //
     // ============================================================================ //
     const step3Inputs = document.querySelectorAll('#step-panel-3 input[type="checkbox"]'); 
     step3Inputs.forEach(inputNode => { 
@@ -574,7 +574,7 @@ window.runPricingMatrixDataCrawlPass = runPricingMatrixDataCrawlPass;
 
 
 /**
- * 🟢 ADDED WORKFLOW ENGINE: Intercepts active checkbox clicks on Steps 2 and 3
+ * ðŸŸ¢ ADDED WORKFLOW ENGINE: Intercepts active checkbox clicks on Steps 2 and 3
  * Hooks up selected options directly to the receipt matrix and the Step 5 overview panel
  */
 function handleBackgroundUpsellTogglePass(checkboxElement) {
@@ -602,7 +602,7 @@ window.runPricingMatrixDataCrawlPass = runPricingMatrixDataCrawlPass;
 window.handleBackgroundUpsellTogglePass = handleBackgroundUpsellTogglePass;
 
 // ============================================================================ // 
-// 📊 POLYMORPHIC CONFIGURATION RESOLVER (INTELLIGENT DYNAMIC PATTERN MATCH)   // 
+// ðŸ“Š POLYMORPHIC CONFIGURATION RESOLVER (INTELLIGENT DYNAMIC PATTERN MATCH)   // 
 // ============================================================================ // 
 function getPricingConfiguration(serviceKey, planKey) {
     // Locate the central database object safely
@@ -639,7 +639,7 @@ function getPricingConfiguration(serviceKey, planKey) {
         basePrice: extractedPrice, 
         bullets: fallbackBullets 
     }; 
-} // 🟢 Now valid: Properly paired with the function signature above
+} // ðŸŸ¢ Now valid: Properly paired with the function signature above
 
 // Export configuration helper safely to global execution boundaries
 window.getPricingConfiguration = getPricingConfiguration;
@@ -663,7 +663,7 @@ function executeNewEntrantAuditLiveFulfillmentSync() {
         // Automatically extracts text properties from custom data-label fields, placeholder text, or fallback to the element ID 
         const computedLabelText = checkboxElement.getAttribute('data-label') || checkboxElement.getAttribute('data-name') || checkboxElement.id; 
         
-        // 🟢 ADDED: Register the item name so we can safely clean up unchecked selections
+        // ðŸŸ¢ ADDED: Register the item name so we can safely clean up unchecked selections
         allNeaFormNamesRegistry.push(computedLabelText);
 
         // CRITICAL CHECK: Only compile the data if the user has actually checked the box 
@@ -681,7 +681,7 @@ function executeNewEntrantAuditLiveFulfillmentSync() {
             window.currentCartState.addons = []; 
         } 
 
-        // 🟢 UPDATED: Clear out ALL potential Step 2 items out of the global cart array 
+        // ðŸŸ¢ UPDATED: Clear out ALL potential Step 2 items out of the global cart array 
         window.currentCartState.addons = window.currentCartState.addons.filter(addon => { 
             return !allNeaFormNamesRegistry.includes(addon.name); 
         }); 
@@ -703,7 +703,7 @@ window.executeNewEntrantAuditLiveFulfillmentSync = executeNewEntrantAuditLiveFul
 
 
 // ============================================================================ // 
-// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: UI BINDINGS INJECTIONS (REPAIRED)      // 
+// ðŸ“Š UNIFIED DATA-DRIVEN MATRIX ENGINE: UI BINDINGS INJECTIONS (REPAIRED)      // 
 // ============================================================================ // 
 function finalizePricingMatrixUiRender() { 
     const ctx = window._tempCalcContext; 
@@ -736,7 +736,7 @@ function finalizePricingMatrixUiRender() {
     // Calculate final absolute matrix grand totals 
     const dynamicTotalValue = (parseFloat(ctx.baseTierPrice) || 0) + (parseFloat(ctx.incrementalAddonTotal) || 0) + baseGovAgencyFee + agencyTariff; 
 
-    // 🟢 GLOBAL ACCESS PASS: Commit calculated values back to active workspace fields for backend payment processors
+    // ðŸŸ¢ GLOBAL ACCESS PASS: Commit calculated values back to active workspace fields for backend payment processors
     window.computedWizardGrandTotalAmount = dynamicTotalValue;
     window.computedWizardStateGovernmentFee = baseGovAgencyFee;
 
@@ -759,14 +759,14 @@ function finalizePricingMatrixUiRender() {
     if (dynamicTotalElement) { 
         dynamicTotalElement.innerText = `$${dynamicTotalValue.toFixed(2)}`; 
     } 
-} // 🟢 FIXED: Master UI rendering function closed safely and cleanly
+} // ðŸŸ¢ FIXED: Master UI rendering function closed safely and cleanly
 
 // Export function safely to window registry boundaries
 window.finalizePricingMatrixUiRender = finalizePricingMatrixUiRender;
 
 
   // ============================================================================ //
-  // 🛠️ CRITICAL FIX FOR LINE 1799: SAFE WORKSPACE ELEMENT ASSIGNMENT (DYNAMIC)
+  // ðŸ› ï¸ CRITICAL FIX FOR LINE 1799: SAFE WORKSPACE ELEMENT ASSIGNMENT (DYNAMIC)
   // ============================================================================ //
   // DYNAMIC FIX: Prevented dynamic global leaks from overwriting check-box interfaces unexpectedly.
   // Checks and targets elements specifically by their unique data profiles.
@@ -781,7 +781,7 @@ window.finalizePricingMatrixUiRender = finalizePricingMatrixUiRender;
 window.finalizePricingMatrixUiRender = finalizePricingMatrixUiRender;
 
 // ============================================================================ // 
-// 📊 MODULE 1: CENTRAL LIVE CHECKOUT PRICING SYNC ENGINE (ADDONS) (DYNAMIC)   // 
+// ðŸ“Š MODULE 1: CENTRAL LIVE CHECKOUT PRICING SYNC ENGINE (ADDONS) (DYNAMIC)   // 
 // ============================================================================ // 
 /** 
  * Appends dynamic addon pricing metrics and invoice layouts to the checkout matrix. 
@@ -819,7 +819,7 @@ function appendCheckedAddons(initialHtmlRows) {
         processedIds.push(rawId); 
     }); 
 
-    // 2. 🟢 HYBRID RECOVERY PASS: If checkboxes are hidden or wiped, read from global trackers and storage cache
+    // 2. ðŸŸ¢ HYBRID RECOVERY PASS: If checkboxes are hidden or wiped, read from global trackers and storage cache
     const savedStateString = localStorage.getItem("f4u_wizard_onboarding_state");
     let parsedStateCache = {};
     try { if (savedStateString) parsedStateCache = JSON.parse(savedStateString); } catch(e) {}
@@ -856,14 +856,14 @@ function appendCheckedAddons(initialHtmlRows) {
         compiledHtmlLayout: workingHtml,
         trackedTokensList: processedIds
     };
-} // 🟢 Now closed cleanly and handles the step 5 summary seamlessly
+} // ðŸŸ¢ Now closed cleanly and handles the step 5 summary seamlessly
 
 // Export function safely to window registry boundaries
 window.appendCheckedAddons = appendCheckedAddons;
 
 
 // ============================================================================ // 
-// 📊 MODULE 1: CENTRAL LIVE CHECKOUT PRICING SYNC ENGINE (JURISDICTION)        // 
+// ðŸ“Š MODULE 1: CENTRAL LIVE CHECKOUT PRICING SYNC ENGINE (JURISDICTION)        // 
 // ============================================================================ // 
 /** 
  * Extracts the user's selected 2-digit US state code dynamically from active view panels. 
@@ -990,7 +990,7 @@ window.appendCheckedAddons = appendCheckedAddons;
 
 
 // ============================================================================ //
-// 📊 MODULE 1: CENTRAL LIVE CHECKOUT PRICING SYNC ENGINE (INVOICE COMPILER)
+// ðŸ“Š MODULE 1: CENTRAL LIVE CHECKOUT PRICING SYNC ENGINE (INVOICE COMPILER)
 // ============================================================================ //
 /**
  * High-performance central processing loop that compiles base fees, state fees,
@@ -1084,7 +1084,7 @@ function updateDynamicPricingMatrixVanilla() {
     secondaryTotalDisplay.textContent = '$' + finalGrandTotal.toFixed(2);
   }
 
-  // 🛡️ REPAIRED EVENT LISTENER LEAK: Employs strict defensive attributes to completely isolate loop crashes
+  // ðŸ›¡ï¸ REPAIRED EVENT LISTENER LEAK: Employs strict defensive attributes to completely isolate loop crashes
   if (jurisdiction.element && !jurisdiction.element.hasAttribute('data-has-sync-listener')) {
     jurisdiction.element.setAttribute('data-has-sync-listener', 'true');
     jurisdiction.element.addEventListener('change', function() {
@@ -1102,7 +1102,7 @@ if (document.readyState === "loading") {
 }
 
 // ============================================================================ // 
-// 📊 MODULE 3: PRODUCTION SUMMARY MATRIX FIELD INJECTOR (SAFE ALIAS MATRIX)   // 
+// ðŸ“Š MODULE 3: PRODUCTION SUMMARY MATRIX FIELD INJECTOR (SAFE ALIAS MATRIX)   // 
 // ============================================================================ // 
 /** 
  * Public structural bridge to execute centralized checkout pricing metrics calculations. 
@@ -1129,7 +1129,7 @@ function resolveActiveStateFee(stateLabel, serviceKey) {
     
     if (!currentKey) return 0; 
 
-    // 🟢 OPERATIONAL INSIGHT OPTIMIZATION: Token Priority Matrix
+    // ðŸŸ¢ OPERATIONAL INSIGHT OPTIMIZATION: Token Priority Matrix
     // Prevents string collisions (e.g., "series-corporation") by validating specific keys first
     let serviceTypeKey = "llc"; // Default fallback type
     
@@ -1176,7 +1176,7 @@ window.resolveActiveStateFee = resolveActiveStateFee;
 
 
 // ============================================================================ // 
-// 📊 CENTRAL PROCESSING CONFIGURATOR: SIDEBAR INVOICE CORE                    // 
+// ðŸ“Š CENTRAL PROCESSING CONFIGURATOR: SIDEBAR INVOICE CORE                    // 
 // ============================================================================ // 
 let stripeInstance = null; 
 let stripeElementsContainer = null; 
@@ -1185,11 +1185,10 @@ let stripePaymentElementInstance = null;
 /** 
  * Fully dynamic runtime state initializer. 
  * FIXED: Zero hardcoded fallback strings. Resolves keys algorithmically from live database nodes. 
- */ 
-(function initializeSystemStatesDynamically() { 
+ */ ;(function initializeSystemStatesDynamically() { 
     const coreDb = window.CENTRAL_SERVICE_PLAN_DB || window.GLOBAL_COMPANY_PRICING?.packages; 
 
-    // 🟢 OPTIMIZATION: Pull state memory recovery arrays to prevent package overwriting
+    // ðŸŸ¢ OPTIMIZATION: Pull state memory recovery arrays to prevent package overwriting
     const storedStateString = localStorage.getItem("f4u_wizard_onboarding_state");
     let cachedState = {};
     try { if (storedStateString) cachedState = JSON.parse(storedStateString); } catch(e) {}
@@ -1244,7 +1243,7 @@ let stripePaymentElementInstance = null;
 
 
 // ============================================================================ // 
-// 📊 LIVE CALCULATIONS SYNCHRONIZER ENGINE (COMBINED INTEGRATED FUNNEL)        // 
+// ðŸ“Š LIVE CALCULATIONS SYNCHRONIZER ENGINE (COMBINED INTEGRATED FUNNEL)        // 
 // ============================================================================ // 
 
 // RUNTIME LOOP PREVENTION LOCK: Stop cascading maximum call stack events 
@@ -1291,7 +1290,7 @@ function executeNewEntrantAuditLiveFulfillmentSync() {
             if (checkboxNode.checked) { 
                 dynamicAddonTotal += itemPrice; 
 
-                // 🟢 UPGRADED: Added a professional, clean red [Remove] link block next to the line item.
+                // ðŸŸ¢ UPGRADED: Added a professional, clean red [Remove] link block next to the line item.
                 // Clicking this will un-check the item programmatically without making the user turn back to Step 2.
                 selectedAddonItemsHtml += ` 
                  <div class="summary-invoice-row" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; color: #64748b; width: 100%; box-sizing: border-box;"> 
@@ -1341,7 +1340,7 @@ function executeNewEntrantAuditLiveFulfillmentSync() {
 } 
 
 /**
- * 🟢 COMPANION ENGINE: EXPLICIT LIVE CART REMOVER
+ * ðŸŸ¢ COMPANION ENGINE: EXPLICIT LIVE CART REMOVER
  * Unchecks checkboxes programmatically and updates the subtotal balances instantly.
  */
 function removeSelectedAddonItemStraightFromSummaryCard(checkboxElementId, itemLabelName) {
@@ -1381,5 +1380,7 @@ function removeSelectedAddonItemStraightFromSummaryCard(checkboxElementId, itemL
 // Expose functions globally to window scopes namespaces cleanly
 window.executeNewEntrantAuditLiveFulfillmentSync = executeNewEntrantAuditLiveFulfillmentSync;
 window.removeSelectedAddonItemStraightFromSummaryCard = removeSelectedAddonItemStraightFromSummaryCard;
+
+
 
 

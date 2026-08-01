@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🗺️ MODULE: DYNAMIC APPLICATION MAP TIMELINE TIMING & VIEWPORT HUB          //
+﻿// ============================================================================ //
+// ðŸ—ºï¸ MODULE: DYNAMIC APPLICATION MAP TIMELINE TIMING & VIEWPORT HUB          //
 // ============================================================================ //
 function renderDynamicWizardApplicationMap() {
   "use strict";
@@ -9,7 +9,7 @@ function renderDynamicWizardApplicationMap() {
     return;
   }
 
-  // 🟢 DYNAMIC MOBILE-RESPONSIVE COMPLETION ESTIMATOR ENGINE
+  // ðŸŸ¢ DYNAMIC MOBILE-RESPONSIVE COMPLETION ESTIMATOR ENGINE
   let dynamicMinutesText = "5 minutes";
   try {
     const coreFormInputs = document.querySelectorAll(
@@ -47,7 +47,7 @@ function renderDynamicWizardApplicationMap() {
     console.warn("[Timing Engine Exception] Falling back to default time boundaries:", timingCalculationError);
   }
 
-  // 🟢 FIXED: UNIQUE, DISTINCT DESCRIPTIONS ASSIGNED TO EACH STEP
+  // ðŸŸ¢ FIXED: UNIQUE, DISTINCT DESCRIPTIONS ASSIGNED TO EACH STEP
   const timelineRegistryMatrix = [
     { idx: 0, title: "1. Fleet Intake Info", desc: "State of Formation or Registration" },
     { idx: 1, title: "2. Vehicle Input Matrix", desc: "VIN verification and gross weight" },
@@ -96,12 +96,12 @@ function renderDynamicWizardApplicationMap() {
 }
 
 // ============================================================================ //
-// 🗺️ PART 4: MULTI-SIDEBAR TIMELINE NAV LIGHTS ENGINE (SOLID EMERALD 1-INDEX)  //
+// ðŸ—ºï¸ PART 4: MULTI-SIDEBAR TIMELINE NAV LIGHTS ENGINE (SOLID EMERALD 1-INDEX)  //
 // ============================================================================ //
 function updateApplicationMapTimelineBubbles(currentStepIndex) {
   "use strict";
   
-  // 🟢 OFFSET CONVERSION: Transform master orchestrator 1-index (1-8) into timeline 0-index (0-7)
+  // ðŸŸ¢ OFFSET CONVERSION: Transform master orchestrator 1-index (1-8) into timeline 0-index (0-7)
   const rawStepValue = parseInt(currentStepIndex, 10);
   const activeStep = (isNaN(rawStepValue) ? 1 : rawStepValue) - 1; 
   
@@ -116,7 +116,7 @@ function updateApplicationMapTimelineBubbles(currentStepIndex) {
       const dotNode = rowNode.querySelector(".toc-dot");
       const titleNode = rowNode.querySelector(".toc-step-title");
 
-      // 🟢 CONDITION 1: CURRENT ACTIVE PANEL VIEW (Emerald Green + Focus Ring)
+      // ðŸŸ¢ CONDITION 1: CURRENT ACTIVE PANEL VIEW (Emerald Green + Focus Ring)
       if (i === activeStep) {
         if (dotNode) {
           dotNode.style.setProperty("background-color", "#10b981", "important");
@@ -128,7 +128,7 @@ function updateApplicationMapTimelineBubbles(currentStepIndex) {
           titleNode.style.setProperty("font-weight", "800", "important");
         }
       } 
-      // 🟢 CONDITION 2: VERIFIED COMPLETED PAST STEPS (Solid Emerald Green, No Shadow)
+      // ðŸŸ¢ CONDITION 2: VERIFIED COMPLETED PAST STEPS (Solid Emerald Green, No Shadow)
       else if (i < activeStep) {
         if (dotNode) {
           dotNode.style.setProperty("background-color", "#10b981", "important");
@@ -140,7 +140,7 @@ function updateApplicationMapTimelineBubbles(currentStepIndex) {
           titleNode.style.setProperty("font-weight", "700", "important");
         }
       } 
-      // ⚪ CONDITION 3: UNVISITED FUTURE OR BACKTRACKED REGRESSED STEPS (Slate Grey Override)
+      // âšª CONDITION 3: UNVISITED FUTURE OR BACKTRACKED REGRESSED STEPS (Slate Grey Override)
       else {
         if (dotNode) {
           // Explicitly forcing slate-grey overwrites with !important to clear lingering green
@@ -165,3 +165,4 @@ if (document.readyState !== "loading") {
 } else {
   document.addEventListener("DOMContentLoaded", window.renderDynamicWizardApplicationMap);
 }
+

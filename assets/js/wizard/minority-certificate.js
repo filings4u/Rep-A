@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ MINORITY CERTIFICATE SERVICE: REGISTRY INITIALIZATION (PART 1 OF 5)      //
+﻿// ============================================================================ //
+// ðŸ› ï¸ MINORITY CERTIFICATE SERVICE: REGISTRY INITIALIZATION (PART 1 OF 5)      //
 // ============================================================================ //
 function initMinorityCertificateService() {
   window.formRegistry = window.formRegistry || {};
@@ -105,7 +105,7 @@ function initMinorityCertificateService() {
 }
 window.initMinorityCertificateService = initMinorityCertificateService;
 // ============================================================================ //
-// 📊 FAMILY 24A: MBE CERTIFICATION LAYOUT MATRIX (PART 2 OF 5)                 //
+// ðŸ“Š FAMILY 24A: MBE CERTIFICATION LAYOUT MATRIX (PART 2 OF 5)                 //
 // ============================================================================ //
 window.buildMinorityCertificateFormPart1 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -153,7 +153,7 @@ window.buildMinorityCertificateFormPart1 = function(stateDropdownOptionsHtml = "
 
 
 // ============================================================================ //
-// 🛠️ MINORITY CERTIFICATE SERVICE: SECONDARY VALIDATION ENGINE (PART 3 OF 5)  //
+// ðŸ› ï¸ MINORITY CERTIFICATE SERVICE: SECONDARY VALIDATION ENGINE (PART 3 OF 5)  //
 // ============================================================================ //
 window.validateMinorityCertificateFormParts2And3 = function() {
   let isValid = true;
@@ -263,7 +263,7 @@ window.validateMinorityCertificateFormParts2And3 = function() {
 
 
 // ============================================================================ //
-// 📊 FAMILY 24A: MBE CERTIFICATION LAYOUT MATRIX (PART 4 OF 5)                 //
+// ðŸ“Š FAMILY 24A: MBE CERTIFICATION LAYOUT MATRIX (PART 4 OF 5)                 //
 // ============================================================================ //
 window.buildMinorityCertificateFormPart2 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -342,7 +342,7 @@ window.buildMinorityCertificateFormPart2 = function(stateDropdownOptionsHtml = "
 
 
 // ============================================================================ //
-// 📊 FAMILY 24A: MBE CERTIFICATION LAYOUT MATRIX (PART 5 OF 5)                 //
+// ðŸ“Š FAMILY 24A: MBE CERTIFICATION LAYOUT MATRIX (PART 5 OF 5)                 //
 // ============================================================================ //
 window.buildMinorityCertificateFormPart3 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -392,7 +392,7 @@ window.buildMinorityCertificateFormPart3 = function(stateDropdownOptionsHtml = "
 };
 
 // ============================================================================ //
-// ⚙️ INTERACTIVE LAYOUT INTERLOCK CONTROLLERS                                   //
+// âš™ï¸ INTERACTIVE LAYOUT INTERLOCK CONTROLLERS                                   //
 // ============================================================================ //
 window.toggleMorphicMbeAgencySubInputs = function(selectedValue) {
   const agencyWrapper = document.getElementById("mbe_state_agency_wrapper");
@@ -421,14 +421,14 @@ window.toggleMorphicMbeAgencySubInputs = function(selectedValue) {
 };
 
 // ============================================================================ //
-// 📦 MASTER MBE CERTIFICATION APPLICATION ASSEMBLY HOOK                         //
+// ðŸ“¦ MASTER MBE CERTIFICATION APPLICATION ASSEMBLY HOOK                         //
 // ============================================================================ //
 window.buildMinorityCertificateForm = function(stateDropdownOptionsHtml = "") {
   const p1 = typeof window.buildMinorityCertificateFormPart1 === "function" ? window.buildMinorityCertificateFormPart1(stateDropdownOptionsHtml) : "";
   const p2 = typeof window.buildMinorityCertificateFormPart2 === "function" ? window.buildMinorityCertificateFormPart2(stateDropdownOptionsHtml) : "";
   const p3 = typeof window.buildMinorityCertificateFormPart3 === "function" ? window.buildMinorityCertificateFormPart3(stateDropdownOptionsHtml) : "";
 
-  // 🟢 FIXED: Wrapped in clear vertical block stacking cards matching previous models precisely
+  // ðŸŸ¢ FIXED: Wrapped in clear vertical block stacking cards matching previous models precisely
   return `
     <div class="mbe-certification-master-container" style="grid-column: span 2 !important; width: 100% !important; display: flex !important; flex-direction: column !important; gap: 24px !important; box-sizing: border-box !important;">
       <div id="mbe_panel_part1" class="mbe-layout-card" style="display: block; width: 100%; box-sizing: border-box;">${p1}</div>
@@ -459,3 +459,4 @@ window.formRegistry['minority-certificate-form-master'] = function(stateDropdown
 
 window.buildMinorityCertificateFormPart3 = window.buildMinorityCertificateFormPart3;
 window.validateEntireMinorityCertificationWizard = window.validateEntireMinorityCertificationWizard;
+

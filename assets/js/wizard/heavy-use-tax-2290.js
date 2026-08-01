@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ HEAVY USE TAX (IRS FORM 2290) MODULE VALIDATION MATRIX ENGINE           //
+﻿// ============================================================================ //
+// ðŸ› ï¸ HEAVY USE TAX (IRS FORM 2290) MODULE VALIDATION MATRIX ENGINE           //
 // ============================================================================ //
 function initHeavyUseTax2290Service() {
   // Global wizard registries allocation
@@ -44,7 +44,7 @@ function initHeavyUseTax2290Service() {
         }
       };
 
-      // 🟢 FIXED: Use safe DOM presence filters instead of fragile offset geometric checks 
+      // ðŸŸ¢ FIXED: Use safe DOM presence filters instead of fragile offset geometric checks 
       const existsInActiveDom = (el) => el && document.body.contains(el);
 
       // 1. Validate Official Business Name Presence Check
@@ -143,7 +143,7 @@ window.initHeavyUseTax2290Service = initHeavyUseTax2290Service;
 
 
 // ============================================================================ //
-// 🛠️ FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 1 OF 3)              //
+// ðŸ› ï¸ FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 1 OF 3)              //
 // ============================================================================ //
 function buildHeavyUseTaxForm2290Part1(stateDropdownOptionsHtml = "") {
   return `
@@ -153,7 +153,7 @@ function buildHeavyUseTaxForm2290Part1(stateDropdownOptionsHtml = "") {
       <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: HEAVY HIGHWAY VEHICLE USE TAX -->
       <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
         <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> IRS Form 2290 Compliance Mandates</strong>
-        The Federal Heavy Highway Vehicle Use Tax (Form 2290) is an annual statutory tax levied on highway motor vehicles operating at a taxable gross weight of 55,000 pounds or more. <span style="font-weight: 700; color: #ef4444;">⚠ IRS Regulatory Shield:</span> The IRS strictly prohibits the use of Social Security Numbers (SSN) for Form 2290 processing. An official Employer Identification Number (EIN) is mandatory to generate your Schedule 1 stamped receipt.
+        The Federal Heavy Highway Vehicle Use Tax (Form 2290) is an annual statutory tax levied on highway motor vehicles operating at a taxable gross weight of 55,000 pounds or more. <span style="font-weight: 700; color: #ef4444;">âš  IRS Regulatory Shield:</span> The IRS strictly prohibits the use of Social Security Numbers (SSN) for Form 2290 processing. An official Employer Identification Number (EIN) is mandatory to generate your Schedule 1 stamped receipt.
       </div>
 
       <!-- SECTION 1: VEHICLE OPERATOR TAX ID PROFILE -->
@@ -242,7 +242,7 @@ window.buildHeavyUseTaxForm2290Part1 = buildHeavyUseTaxForm2290Part1;
 
 
 // ============================================================================ //
-// 🛠️ HEAVY USE TAX MODULE VALIDATION MATRIX ENGINE (PARTS 2 & 3)             //
+// ðŸ› ï¸ HEAVY USE TAX MODULE VALIDATION MATRIX ENGINE (PARTS 2 & 3)             //
 // ============================================================================ //
 /**
  * Validates fleet ledger arrays, multi-row VIN entries, and low-mileage suspension parameters
@@ -271,7 +271,7 @@ window.validateHeavyUseTaxForm2290Parts2And3 = function() {
     }
   };
 
-  // 🟢 FIXED: Use safe DOM presence filters instead of fragile offset geometric checks
+  // ðŸŸ¢ FIXED: Use safe DOM presence filters instead of fragile offset geometric checks
   const existsInActiveDom = (el) => el && document.body.contains(el);
 
   // Find all active vehicle record blocks generated inside the fleet ledger container
@@ -348,7 +348,7 @@ window.validateHeavyUseTaxForm2290Parts2And3 = function() {
 
 
 // ============================================================================ // 
-// 🛠️ HEAVY USE TAX (2290) FLEET ASSET ROW ADDER CONTROLLER                    // 
+// ðŸ› ï¸ HEAVY USE TAX (2290) FLEET ASSET ROW ADDER CONTROLLER                    // 
 // ============================================================================ // 
 
 /**
@@ -372,11 +372,11 @@ window.appendNewHeavyUseTaxVehicleRow = function() {
   const rowCardNode = document.createElement('div');
   rowCardNode.className = 'member-record-card';
   rowCardNode.id = `hut_vehicle_card_${nextIndex}`;
-  // 🟢 FIXED: Safe programmatic execution relies on standard unified tracking identifiers
+  // ðŸŸ¢ FIXED: Safe programmatic execution relies on standard unified tracking identifiers
   rowCardNode.setAttribute('data-row-index', nextIndex);
   rowCardNode.setAttribute('data-officer-index', nextIndex);
 
-  // 🟢 FIXED: Wrapped layout inside a clean, modern responsive CSS sub-grid matrix
+  // ðŸŸ¢ FIXED: Wrapped layout inside a clean, modern responsive CSS sub-grid matrix
   // Normalizes layout fields side-by-side on desktop, while breaking columns cleanly on screen bottlenecks
   rowCardNode.style.cssText = "background: #ffffff; border: 1px solid var(--border, #cbd5e1); padding: 16px; border-radius: 8px; box-sizing: border-box; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; position: relative; margin-top: 12px; width: 100% !important; clear: both !important;";
 
@@ -504,7 +504,7 @@ if (typeof window.calculateAutoFleetFilingTaxFees === 'function') {
   window.calculateAutoFleetFilingTaxFees();}};
 
 // ============================================================================ //
-// 🛠️ FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 2 COUPLING DECK)      //
+// ðŸ› ï¸ FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 2 COUPLING DECK)      //
 // ============================================================================ //
 function buildHeavyUseTaxForm2290Part2(stateDropdownOptionsHtml = "") {
   return `
@@ -604,7 +604,7 @@ window.buildHeavyUseTaxForm2290Part2 = buildHeavyUseTaxForm2290Part2;
 
 
 // ============================================================================ //
-// 🛠️ FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 3 OF 3)              //
+// ðŸ› ï¸ FAMILY 20A: HEAVY USE TAX (2290) LAYOUT MATRIX (PART 3 OF 3)              //
 // ============================================================================ //
 function buildHeavyUseTaxForm2290Part3(stateDropdownOptionsHtml = "") {
   return `
@@ -627,14 +627,14 @@ function buildHeavyUseTaxForm2290Part3(stateDropdownOptionsHtml = "") {
 }
 
 // ============================================================================ //
-// 📦 MASTER HEAVY USE TAX (2290) APPLICATION ASSEMBLY HOOK                     //
+// ðŸ“¦ MASTER HEAVY USE TAX (2290) APPLICATION ASSEMBLY HOOK                     //
 // ============================================================================ //
 window.buildHeavyUseTaxForm2290 = function(stateDropdownOptionsHtml = "") {
   const p1 = typeof window.buildHeavyUseTaxForm2290Part1 === "function" ? window.buildHeavyUseTaxForm2290Part1(stateDropdownOptionsHtml) : "";
   const p2 = typeof window.buildHeavyUseTaxForm2290Part2 === "function" ? window.buildHeavyUseTaxForm2290Part2(stateDropdownOptionsHtml) : "";
   const p3 = typeof window.buildHeavyUseTaxForm2290Part3 === "function" ? window.buildHeavyUseTaxForm2290Part3(stateDropdownOptionsHtml) : "";
 
-  // 🟢 FIXED: Wrapped in unified full-width flex container layout block.
+  // ðŸŸ¢ FIXED: Wrapped in unified full-width flex container layout block.
   // Forces all parts to span the entire card landscape without splitting columns or collapsing to one side.
   return `
     <div class="heavy-use-tax-master-container" style="grid-column: span 2 !important; width: 100% !important; display: flex !important; flex-direction: column !important; gap: 24px !important; box-sizing: border-box !important;">
@@ -666,3 +666,4 @@ window.formRegistry = window.formRegistry || {};
 window.formRegistry['heavy-use-tax-2290-form-master'] = function(stateDropdownOptionsHtml = "") {
   return window.buildHeavyUseTaxForm2290(stateDropdownOptionsHtml);
 };
+

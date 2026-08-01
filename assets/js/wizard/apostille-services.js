@@ -1,9 +1,9 @@
-function initApostilleServices() { 
+﻿function initApostilleServices() { 
   // Global wizard registries allocation 
   window.formRegistry = window.formRegistry || {}; 
 
   // ============================================================================ // 
-  // 🛠️ APOSTILLE AUTHENTICATION VALIDATION MATRIX ENGINE (PART 1 OF 3) 
+  // ðŸ› ï¸ APOSTILLE AUTHENTICATION VALIDATION MATRIX ENGINE (PART 1 OF 3) 
   // ============================================================================ // 
   window.formRegistry['apostille-services-part1-validation'] = { 
     requiredFields: [ 
@@ -182,7 +182,7 @@ window.formRegistry['apostille-services-form-master'] = function(stateDropdownOp
 
 
 // ============================================================================ // 
-// 🛠️ APOSTILLE AUTHENTICATION VALIDATION MATRIX ENGINE (PARTS 2 & 3)
+// ðŸ› ï¸ APOSTILLE AUTHENTICATION VALIDATION MATRIX ENGINE (PARTS 2 & 3)
 // ============================================================================ // 
 
 // 1. Part 2 Validation Registration (Document Counts & Upload Processing)
@@ -317,7 +317,7 @@ window.formRegistry['apostille-services-part2-layout'] = function() {
       <label for="ap_inbound_courier" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Inbound Document Delivery Method <span style="color: #ef4444;">*</span></label> 
       <select id="ap_inbound_courier" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleApostilleInboundShippingLabelHook(this.value)"> 
         <option value="user-ship" selected>I will ship my original hardcopy paperwork to Filings4u independently</option> 
-        <option value="filings4u-label">Generate a Filings4u Prepaid FedEx Overnight Shipping Label — Add $35.00</option> 
+        <option value="filings4u-label">Generate a Filings4u Prepaid FedEx Overnight Shipping Label â€” Add $35.00</option> 
       </select> 
     </div> 
     
@@ -325,7 +325,7 @@ window.formRegistry['apostille-services-part2-layout'] = function() {
       <label for="ap_outbound_courier" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Outbound Safe Delivery Speed <span style="color: #ef4444;">*</span></label> 
       <select id="ap_outbound_courier" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleApostilleOutboundDeliveryWorkflow(this.value)"> 
         <option value="standard" selected>Standard Secure Return Courier Tracker (Included)</option> 
-        <option value="intl-express">International Express Courier Outbound Delivery — Add $75.00</option> 
+        <option value="intl-express">International Express Courier Outbound Delivery â€” Add $75.00</option> 
       </select> 
     </div> 
   `; 
@@ -389,7 +389,7 @@ window.formRegistry['apostille-services-part3-layout'] = function(stateDropdownO
 };
 
 // ============================================================================ // 
-// 📦 MASTER APOSTILLE AUTHENTICATION SERVICES ASSEMBLY HOOK
+// ðŸ“¦ MASTER APOSTILLE AUTHENTICATION SERVICES ASSEMBLY HOOK
 // ============================================================================ // 
 window.formRegistry['apostille-services-form-master'] = function(stateDropdownOptionsHtml = "") {
   const layout1 = typeof window.formRegistry['apostille-services-part1-layout'] === 'function' ? window.formRegistry['apostille-services-part1-layout'](stateDropdownOptionsHtml) : '';
@@ -400,7 +400,7 @@ window.formRegistry['apostille-services-form-master'] = function(stateDropdownOp
 };
 
 // ============================================================================ // 
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (APOSTILLE AUTHENTICATION)
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (APOSTILLE AUTHENTICATION)
 // ============================================================================ // 
 
 // 1. Controller: Toggle Document Specification Visibility
@@ -456,7 +456,7 @@ window.toggleApostilleServicesDocCountVolumePricingHook = function() {
 };
 
 // ============================================================================ // 
-// 📦 MASTER SYSTEM INTEGRATION HOOK
+// ðŸ“¦ MASTER SYSTEM INTEGRATION HOOK
 // ============================================================================ // 
 window.formRegistry['apostille-services-form-master'] = function(stateDropdownOptionsHtml = "") {
   const layout1 = typeof window.formRegistry['apostille-services-part1-layout'] === 'function' ? window.formRegistry['apostille-services-part1-layout'](stateDropdownOptionsHtml) : '';
@@ -465,4 +465,5 @@ window.formRegistry['apostille-services-form-master'] = function(stateDropdownOp
   
   return layout1 + layout2 + layout3;
 };
+
 

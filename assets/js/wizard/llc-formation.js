@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LLC FORMATION SERVICE ENGINE
  * Step 1: Initialize Unified Form Registries & Core Input Filtering Rules
  */
@@ -27,7 +27,7 @@ function initLlcFormationService() {
     ],
 
     /**
-     * 🔘 LIVE CHARACTER INPUT FILTERS
+     * ðŸ”˜ LIVE CHARACTER INPUT FILTERS
      * Restricts inputs and formats values dynamically across all sub-fields
      */
     setupLiveInputFilters: function() {
@@ -47,7 +47,7 @@ function initLlcFormationService() {
     },
 
     /**
-     * 🔍 GLOBAL VALIDATION ENGINE MATRIX EXECUTION
+     * ðŸ” GLOBAL VALIDATION ENGINE MATRIX EXECUTION
      */
     validate: function() {
       let isValid = true;
@@ -414,3 +414,4 @@ window.formRegistry['llc-formation-form-master'] = function(stateDropdownOptions
 
 // Master Ignition Run Trigger Execution Pass
 initLlcFormationService();
+

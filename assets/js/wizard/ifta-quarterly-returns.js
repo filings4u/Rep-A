@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ IFTA QUARTERLY RETURNS SERVICE: VALIDATION MATRIX ENGINE                  //
+﻿// ============================================================================ //
+// ðŸ› ï¸ IFTA QUARTERLY RETURNS SERVICE: VALIDATION MATRIX ENGINE                  //
 // ============================================================================ //
 function initIftaQuarterlyReturnsService() {
   window.formRegistry = window.formRegistry || {};
@@ -41,7 +41,7 @@ function initIftaQuarterlyReturnsService() {
         }
       };
 
-      // 🟢 FIXED: Use safe DOM presence filters instead of fragile offset geometric checks
+      // ðŸŸ¢ FIXED: Use safe DOM presence filters instead of fragile offset geometric checks
       const existsInActiveDom = (el) => el && document.body.contains(el);
 
       // 1. Process Baseline Profile Fields Validation
@@ -56,7 +56,7 @@ function initIftaQuarterlyReturnsService() {
             clearError(el);
           }
         }
-      }); // 🟢 FIXED: Closed loop syntax bracket safely
+      }); // ðŸŸ¢ FIXED: Closed loop syntax bracket safely
 
       // 2. Scan Dynamic Jurisdiction Miles/Gallons Cards
       const container = document.getElementById('ifta_juris_container');
@@ -128,7 +128,7 @@ window.initIftaQuarterlyReturnsService = initIftaQuarterlyReturnsService;
 
 
 // ============================================================================ //
-// 🛠️ IFTA QUARTERLY RETURNS SERVICE: FORM LAYOUT TEMPLATE (PART 1 OF 2)         //
+// ðŸ› ï¸ IFTA QUARTERLY RETURNS SERVICE: FORM LAYOUT TEMPLATE (PART 1 OF 2)         //
 // ============================================================================ //
 function buildIftaQuarterlyReturnsForm(stateDropdownOptionsHtml = "") {
   return `
@@ -189,7 +189,7 @@ function buildIftaQuarterlyReturnsForm(stateDropdownOptionsHtml = "") {
 window.buildIftaQuarterlyReturnsFormPart1 = buildIftaQuarterlyReturnsForm;
 
 // ============================================================================ //
-// 🛠️ IFTA QUARTERLY RETURNS SERVICE: FORM LAYOUT TEMPLATE (PART 2 OF 2)         //
+// ðŸ› ï¸ IFTA QUARTERLY RETURNS SERVICE: FORM LAYOUT TEMPLATE (PART 2 OF 2)         //
 // ============================================================================ //
 function buildIftaQuarterlyReturnsFormPart2(stateDropdownOptionsHtml = "") {
   return `
@@ -258,7 +258,7 @@ function buildIftaQuarterlyReturnsFormPart2(stateDropdownOptionsHtml = "") {
 // Secure master framework registry mappings configuration
 window.formRegistry = window.formRegistry || {};
 window.formRegistry['ifta-quarterly-returns-form-master'] = function(stateDropdownOptionsHtml = "") {
-  // 🟢 FIXED: Points to buildIftaQuarterlyReturnsFormPart1 to match your code splitting definitions
+  // ðŸŸ¢ FIXED: Points to buildIftaQuarterlyReturnsFormPart1 to match your code splitting definitions
   const p1 = typeof window.buildIftaQuarterlyReturnsFormPart1 === "function" ? window.buildIftaQuarterlyReturnsFormPart1(stateDropdownOptionsHtml) : "";
   const p2 = typeof window.buildIftaQuarterlyReturnsFormPart2 === "function" ? window.buildIftaQuarterlyReturnsFormPart2(stateDropdownOptionsHtml) : "";
   return p1 + p2;
@@ -268,7 +268,7 @@ window.buildIftaQuarterlyReturnsFormPart2 = buildIftaQuarterlyReturnsFormPart2;
 
 
 // ============================================================================ //
-// 🛠️ IFTA QUARTERLY RETURNS SERVICE: INTERACTIVE RUNTIME CONTROLLERS (PART 3) //
+// ðŸ› ï¸ IFTA QUARTERLY RETURNS SERVICE: INTERACTIVE RUNTIME CONTROLLERS (PART 3) //
 // ============================================================================ //
 
 /**
@@ -385,12 +385,12 @@ window.removeIftaJurisdictionRow = function(indexValue) {
 
 
 // ============================================================================ // 
-// 📦 MASTER IFTA APPLICATION ASSEMBLY HOOK (REPAIRED NAMING MATRIX)           // 
+// ðŸ“¦ MASTER IFTA APPLICATION ASSEMBLY HOOK (REPAIRED NAMING MATRIX)           // 
 // ============================================================================ // 
 
 /**
  * FIXED: Renamed to match the exact pointer your wizard engine invokes
- * 🟢 FIXED: Compiles the individual split-part methods and wraps the layout strings 
+ * ðŸŸ¢ FIXED: Compiles the individual split-part methods and wraps the layout strings 
  * into clear full-screen card panel modules matching your previous setups perfectly.
  */
 window.buildIftaQuarterlyReturnsFormMaster = function(stateDropdownOptionsHtml = "") { 
@@ -407,7 +407,7 @@ window.buildIftaQuarterlyReturnsFormMaster = function(stateDropdownOptionsHtml =
 
 /**
  * Master multi-step verification sequencing scanner loop for global checkouts.
- * 🟢 FIXED: Remapped registration string lookups to match 'ifta-quarterly-returns-validation' exactly as initialized.
+ * ðŸŸ¢ FIXED: Remapped registration string lookups to match 'ifta-quarterly-returns-validation' exactly as initialized.
  */
 window.validateEntireIftaWizard = function() { 
   if (typeof window.formRegistry?.['ifta-quarterly-returns-validation']?.validate === 'function') { 
@@ -424,3 +424,4 @@ window.formRegistry = window.formRegistry || {};
 window.formRegistry['ifta-quarterly-returns-form-master'] = function(stateDropdownOptionsHtml = "") { 
   return window.buildIftaQuarterlyReturnsFormMaster(stateDropdownOptionsHtml); 
 };
+

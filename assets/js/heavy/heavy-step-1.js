@@ -1,11 +1,11 @@
+﻿// ============================================================================ //
+// ðŸš› FILINGS4U HEAVY TAX ENGINE - STEP 1: FLEET INTAKE & LIVE IRS PREFLIGHT (PART 1)
 // ============================================================================ //
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 1: FLEET INTAKE & LIVE IRS PREFLIGHT (PART 1)
-// ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   // ============================================================================ //
-  // 📱 AUTOMATED MOBILE RESPONSIVE CSS INJECTOR ENGINE                         //
+  // ðŸ“± AUTOMATED MOBILE RESPONSIVE CSS INJECTOR ENGINE                         //
   // ============================================================================ //
   function injectMobileResponsiveStep1Styles() {
     if (document.getElementById("f4u-step1-responsive-styles")) return;
@@ -63,9 +63,9 @@
 
 
 // ============================================================================ //
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 1: FLEET INTAKE & LIVE IRS PREFLIGHT (PART 2)
+// ðŸš› FILINGS4U HEAVY TAX ENGINE - STEP 1: FLEET INTAKE & LIVE IRS PREFLIGHT (PART 2)
 // ============================================================================ //
-(function() {
+;(function() {
   "use strict";
 
   // Re-pull core helper properties out of local lexical namespace memory paths safely
@@ -115,7 +115,7 @@
 
     try {
       // =========================================================================
-      // 📡 LIVE IRS DATABASE RECORD VERIFICATION PASS (EDGE INTERCEPT)
+      // ðŸ“¡ LIVE IRS DATABASE RECORD VERIFICATION PASS (EDGE INTERCEPT)
       // =========================================================================
       const supabaseProjectUrl = window.SUPABASE_URL || "https://lrbimrlbskjweynxlgas.supabase.co";
       const edgeFunctionEndpoint = `${supabaseProjectUrl}/functions/v1/irs-ein-validator`;
@@ -211,3 +211,4 @@
     bindHeavyIntakeStep1Routines();
   }
 })();
+

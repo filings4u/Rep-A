@@ -1,4 +1,4 @@
-(function() {
+﻿;(function() {
   window.STEP_2_UPSELLS_REFERENCE = {
     "assemble-dqf": { 
       name: "Assemble Driver Qualification Files (DQF)", 
@@ -81,3 +81,4 @@
   window.closeNewEntrantAuditPriceGuideModal = closeNewEntrantAuditPriceGuideModal;
   window.triggerNewEntrantAuditComplianceChecklistPopup = launchNewEntrantAuditRequirementsGuideModal;
 })();
+

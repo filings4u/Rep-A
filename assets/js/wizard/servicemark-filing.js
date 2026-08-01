@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ FAMILY 5 GENERAL IP REGISTRY MODULE VALIDATION CHUNK
+﻿// ============================================================================ //
+// ðŸ› ï¸ FAMILY 5 GENERAL IP REGISTRY MODULE VALIDATION CHUNK
 // ============================================================================ //
 const ipRegistryGeneralValidation = {
   requiredFields: [
@@ -28,7 +28,7 @@ const ipRegistryGeneralValidation = {
 };
 
 // ============================================================================ //
-// 🛠️ SERVICEMARK FILING APPLICATION PART 1 VALIDATION CHUNK
+// ðŸ› ï¸ SERVICEMARK FILING APPLICATION PART 1 VALIDATION CHUNK
 // ============================================================================ //
 const servicemarkFilingPart1Validation = {
   requiredFields: [
@@ -197,7 +197,7 @@ window.formRegistry['servicemark-filing-part1-layout'] = buildServicemarkFilingP
 window.formRegistry['servicemark-filing-part1-validation'] = servicemarkFilingPart1Validation;
 
 // ============================================================================ //
-// 🛠️ SERVICEMARK FILING PART 2 VALIDATION MATRIX ENGINE 
+// ðŸ› ï¸ SERVICEMARK FILING PART 2 VALIDATION MATRIX ENGINE 
 // ============================================================================ //
 const servicemarkFilingPart2Validation = {
   requiredFields: [
@@ -313,7 +313,7 @@ function buildServicemarkFilingPart2(stateDropdownOptionsHtml = "") {
         <label for="sm_add_search_service" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Would you like assistance in conducting a servicemark search for a fee? <span style="color: #ef4444;">*</span></label>
         <select id="sm_add_search_service" class="wizard-input-field" style="font-weight: 600;" onchange="if(typeof updateWizardFinalTotalAmountMatrix === 'function') { updateWizardFinalTotalAmountMatrix(); }">
           <option value="no" selected>No, I will review existing conflicting state filings independently</option>
-          <option value="yes">Yes, add Filings4u Comprehensive State Clearance Search — $79.00</option>
+          <option value="yes">Yes, add Filings4u Comprehensive State Clearance Search â€” $79.00</option>
         </select>
       </div>
     </div>
@@ -326,7 +326,7 @@ window.formRegistry['servicemark-filing-part2-layout'] = buildServicemarkFilingP
 window.formRegistry['servicemark-filing-part2-validation'] = servicemarkFilingPart2Validation;
 
 // ============================================================================ //
-// 🛠️ SERVICEMARK FILING PART 3 VALIDATION MATRIX ENGINE 
+// ðŸ› ï¸ SERVICEMARK FILING PART 3 VALIDATION MATRIX ENGINE 
 // ============================================================================ //
 const servicemarkFilingPart3Validation = {
   requiredFields: [
@@ -484,7 +484,7 @@ function buildServicemarkFilingPart3(stateDropdownOptionsHtml = "") {
 }
 window.buildServicemarkFilingPart3 = buildServicemarkFilingPart3;
 
-// 📦 MASTER STATE SERVICEMARK FILING APPLICATION ASSEMBLY HOOK
+// ðŸ“¦ MASTER STATE SERVICEMARK FILING APPLICATION ASSEMBLY HOOK
 function buildServicemarkFilingForm(stateDropdownOptionsHtml = "") {
   return buildServicemarkFilingPart1(stateDropdownOptionsHtml) + buildServicemarkFilingPart2(stateDropdownOptionsHtml) + buildServicemarkFilingPart3(stateDropdownOptionsHtml);
 }
@@ -496,7 +496,7 @@ window.formRegistry['servicemark-filing-part3-validation'] = servicemarkFilingPa
 window.formRegistry['servicemark-filing-form-master'] = buildServicemarkFilingForm;
 
 // ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (SERVICEMARK FILING APPLICATION)
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (SERVICEMARK FILING APPLICATION)
 // ============================================================================ //
 
 window.toggleServicemarkSpecimenWorkflow = function(value) {
@@ -550,3 +550,4 @@ window.toggleServicemarkAttorneyWrapperVisibility = function(value) {
     fields.forEach(el => { el.removeAttribute("required"); el.value = ""; });
   }
 };
+

@@ -1,4 +1,4 @@
-/** 
+﻿/** 
  * ANNUAL REPORTS SERVICE ENGINE 
  * Step 1: Initialize Unified Form Registries & Core Input Filtering Rules 
  */ 
@@ -9,7 +9,7 @@ function initAnnualReportsService() {
   // SECTION A: DATA CORRECTION AND ENGINE RE-VALIDATION OBJECT 
   // ---------------------------------------------------------------------------- // 
   
-  // 🛡️ FIX 1: Idempotency Check. If already initialized, do not re-assign the object
+  // ðŸ›¡ï¸ FIX 1: Idempotency Check. If already initialized, do not re-assign the object
   // This prevents triggering your framework's global state change watch-listeners.
   if (window.formRegistry['annual-reports-validation-engine']) {
     // Optional: Re-run input filtering setups safely if DOM elements were swapped
@@ -52,7 +52,7 @@ function initAnnualReportsService() {
     ], 
 
     /** 
-     * 🔘 LIVE CHARACTER INPUT FILTERS 
+     * ðŸ”˜ LIVE CHARACTER INPUT FILTERS 
      * Instantly cleans values and restricts sizes dynamically across all sub-fields 
      */ 
     setupLiveInputFilters: function() { 
@@ -61,7 +61,7 @@ function initAnnualReportsService() {
       numericIds.forEach(id => { 
         const inputNode = document.getElementById(id); 
         if (inputNode) { 
-          // 🛡️ FIX 2: Use a tracking flag property to ensure we never duplicate the 
+          // ðŸ›¡ï¸ FIX 2: Use a tracking flag property to ensure we never duplicate the 
           // input event listeners if this lifecycle runs multiple times on the same nodes.
           if (inputNode.dataset.listenerAttached) return;
 
@@ -87,7 +87,7 @@ function initAnnualReportsService() {
     }, 
 
     /** 
-     * 🔍 FORM RE-VALIDATION MATRIX EXECUTION BLOCK 
+     * ðŸ” FORM RE-VALIDATION MATRIX EXECUTION BLOCK 
      */ 
     validate: function() { 
       let isValid = true; 
@@ -459,7 +459,7 @@ window.formRegistry['annual-reports-part3-layout'] = function() {
     <h3 style="color: var(--navy, #0a1f44); font-size: 1.1rem; font-weight: 800; margin: 0;">6. Additional Provisions</h3>
   </div>
 
-  <!-- 🌟 ADDED TEXTAREA FIELD UNDER ADDITIONAL PROVISIONS SECTION -->
+  <!-- ðŸŒŸ ADDED TEXTAREA FIELD UNDER ADDITIONAL PROVISIONS SECTION -->
   <div class="wizard-input-group" style="grid-column: span 2; margin-bottom: 20px; display: flex; flex-direction: column; gap: 6px;">
     <label for="ar_additional_provisions" style="font-weight: 700; font-size: 0.9rem; color: var(--navy, #0a1f44);">Provisions & Supplemental Details (Optional)</label>
     <textarea id="ar_additional_provisions" class="wizard-input-field" rows="4" placeholder="Enter any extra state-specific guidelines, custom corporate operational metrics, or general provisions required for your report profile file..." style="padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.95rem; width: 100%; box-sizing: border-box; font-family: inherit; resize: vertical;"></textarea>
@@ -492,7 +492,7 @@ window.formRegistry['annual-reports-form-master'] = function(stateDropdownOption
 };
 
 /**
- * 🔗 UNIFIED ANNUAL REPORT CONDITIONAL LOGIC CONTROLLER
+ * ðŸ”— UNIFIED ANNUAL REPORT CONDITIONAL LOGIC CONTROLLER
  * Binds selection rules to display panels and clears hidden form data to protect validation state.
  */
 window.bindAnnualReportConditionalDisplayTriggers = function() {
@@ -568,3 +568,4 @@ window.bindAnnualReportConditionalDisplayTriggers = function() {
   // 6. License Compliance renewals row
   bindBinaryTogglePanel("ar_compliance_verified", "ar_compliance_pending_wrapper");
 };
+

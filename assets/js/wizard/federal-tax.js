@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 📐 FEDERAL INCOME TAX WIZARD ENGINE REGISTER                                //
+﻿// ============================================================================ //
+// ðŸ“ FEDERAL INCOME TAX WIZARD ENGINE REGISTER                                //
 // ============================================================================ //
 function initFederalTaxService() {
     window.formRegistry = window.formRegistry || {};
@@ -115,7 +115,7 @@ function initFederalTaxService() {
                     <label for="fed_tax_principal_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label>
                     <select id="fed_tax_principal_state" required class="wizard-input-field" style="font-weight: 600; width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 6px; background-color: #ffffff; color: var(--slate); box-sizing: border-box; height: 42px;">
                         <option value="" disabled selected>Select...</option>
-                        \${optionsList}
+                        ${optionsList}
                     </select>
                 </div>
                 <div>
@@ -432,3 +432,4 @@ function initFederalTaxService() {
         return combinedHtml;
     };
 }
+

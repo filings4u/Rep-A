@@ -1,9 +1,9 @@
-/**
+﻿/**
  * filings4u, LLC - Unified Runtime Utilities & Analytics Ticker
  * Handles environmental live clocks, workspace greetings, and input keystroke mirrors.
  * REMOVED CONFLICTING HARDCODED PANEL LAYER STEPS TO PREVENT DOUBLE-CLICK LOOPS.
  */
-(function() {
+;(function() {
     "use strict";
 
     function bootProductionPatchEngine() {
@@ -67,3 +67,4 @@
 
     setTimeout(bootProductionPatchEngine, 40);
 })();
+

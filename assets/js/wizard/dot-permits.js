@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Filings4U Platform Architecture
  * Module: dot-permits-fresh.js
  * Part 1: Grid Override Styles, Framework Init, & Single-Column Layouts
@@ -214,3 +214,4 @@ function initDotPermitsService() {
     };
 }
 initDotPermitsService();
+

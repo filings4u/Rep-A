@@ -1,7 +1,7 @@
+﻿// ============================================================================
+// ðŸš› FILINGS4U HEAVY TAX ENGINE - STEP 4: ADD-ONS SELECTION SUITE
 // ============================================================================
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 4: ADD-ONS SELECTION SUITE
-// ============================================================================
-(function() {
+;(function() {
   "use strict";
 
   // Persistent background selections tracker
@@ -17,7 +17,7 @@
 
    placeholder.innerHTML = `
   <div style="border-bottom: 2px solid #0a1f44 !important; padding-bottom: 12px !important; margin-bottom: 24px !important; box-sizing: border-box !important; width: 100% !important;">
-    <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">🛡️ Premium Compliance Upgrades</h3>
+    <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">ðŸ›¡ï¸ Premium Compliance Upgrades</h3>
     <p style="margin: 6px 0 0 0 !important; color: #64748b !important; font-size: 0.85rem !important; font-weight: 500 !important;">Protect your fleet, expedite IRS queues, and unlock priority audit recovery resources.</p>
   </div>
 
@@ -130,7 +130,7 @@
       if (panel5) {
         panel5.innerHTML = `
           <div style="border-bottom: 2px solid #0a1f44; padding-bottom: 12px; margin-bottom: 24px;">
-            <h3 style="margin: 0; color: #0a1f44; font-size: 1.35rem; font-weight: 800;">✍️ Authorization Signature</h3>
+            <h3 style="margin: 0; color: #0a1f44; font-size: 1.35rem; font-weight: 800;">âœï¸ Authorization Signature</h3>
             <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.85rem;">Sign or type legal name credentials to authorize transmission protocols.</p>
           </div>
           <div style="padding: 40px; text-align:center; color: #64748b; font-weight:600; font-size:0.9rem; background:#f8fafc; border: 1px dashed #cbd5e1; border-radius:8px; margin-bottom:24px;">
@@ -150,3 +150,4 @@
   };
 
 })();
+

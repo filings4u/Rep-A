@@ -1,7 +1,7 @@
+﻿// ============================================================================
+// ðŸš› FILINGS4U HEAVY TAX ENGINE - STEP 5: DIGITAL SIGNATURE (PART 1 OF 3)
 // ============================================================================
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 5: DIGITAL SIGNATURE (PART 1 OF 3)
-// ============================================================================
-(function() {
+;(function() {
   "use strict";
 
   window.capturedSignatureBase64String = null;
@@ -19,7 +19,7 @@
     targetDiv.innerHTML = `
       <!-- FLAT TIMELINE HEADER -->
       <div style="border-bottom: 2px solid #0a1f44 !important; padding-bottom: 12px !important; margin-bottom: 24px !important; box-sizing: border-box !important; width: 100% !important;">
-        <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">✍️ Authorization & Digital Signature</h3>
+        <h3 style="margin: 0 !important; color: #0a1f44 !important; font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.4px !important;">âœï¸ Authorization & Digital Signature</h3>
         <p style="margin: 6px 0 0 0 !important; color: #64748b !important; font-size: 0.85rem !important; font-weight: 500 !important;">Authorize Filings4u to transmit your Form 2290 parameters to the IRS.</p>
       </div>
 
@@ -38,7 +38,7 @@
         The Principal hereby grants, conveys, and delivers unto the said Attorney-in-Fact full operational power, authority, and jurisdiction to undertake, execute, and perform any and all acts deemed necessary to fulfill the service requests initiated by the Principal within the filings4u, LLC digital wizard interface.<br><br>
         
         <strong>3. ELECTRONIC SIGNATURES &amp; INTENT</strong><br>
-        This Agreement is executed electronically in strict conformity with the federal Electronic Signatures in Global and National Commerce Act (ESIGN) and the Uniform Electronic Transactions Act (UETA). The Principal expressly understands, agrees, and consents that typing their name into the designated input field—resulting in a script-generated cursive font rendering of their name on the screen—constitutes their valid, legally binding electronic signature carrying identical weight to a handwritten wet ink signature.<br><br>
+        This Agreement is executed electronically in strict conformity with the federal Electronic Signatures in Global and National Commerce Act (ESIGN) and the Uniform Electronic Transactions Act (UETA). The Principal expressly understands, agrees, and consents that typing their name into the designated input fieldâ€”resulting in a script-generated cursive font rendering of their name on the screenâ€”constitutes their valid, legally binding electronic signature carrying identical weight to a handwritten wet ink signature.<br><br>
         
         <strong>4. RATIFICATION, REVOCATION, AND DURATION</strong><br>
         This agreement shall remain in full force and effect from the date of electronic execution until explicitly revoked. Revocation may occur via written physical notification delivered to filings4u, LLC corporate networks or electronic cancellation processed through verified client portal pathways.<br><br>
@@ -120,7 +120,7 @@
         signatureInputFieldNode.classList.add("f4u-shake-alert");
         signatureInputFieldNode.focus();
         
-        setTimeout(function() {
+        setTimeout;(function() {
           signatureInputFieldNode.classList.remove("f4u-shake-alert");
           signatureInputFieldNode.style.setProperty("border-color", "#cbd5e1", "important");
           signatureInputFieldNode.style.setProperty("box-shadow", "none", "important");
@@ -148,6 +148,7 @@
   };
 
 })();
+
 
 
 

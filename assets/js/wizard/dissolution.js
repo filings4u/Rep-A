@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🏛️ FAMILY: ENTITY DISSOLUTION APPLICATION UNIFIED WIZARD ENGINE
+﻿// ============================================================================ //
+// ðŸ›ï¸ FAMILY: ENTITY DISSOLUTION APPLICATION UNIFIED WIZARD ENGINE
 // ============================================================================ //
 
 function initDissolutionService() { 
@@ -7,7 +7,7 @@ function initDissolutionService() {
   window.formRegistry = window.formRegistry || {}; 
 
   // ============================================================================ //
-  // 📋 PART 1: ENTITY DISSOLUTION APPLICATION VALIDATION MATRIX ENGINE (PART 1 OF 5)
+  // ðŸ“‹ PART 1: ENTITY DISSOLUTION APPLICATION VALIDATION MATRIX ENGINE (PART 1 OF 5)
   // ============================================================================ //
   
   // Part 1 Validation Allocation
@@ -86,7 +86,7 @@ function initDissolutionService() {
 
 
 // ============================================================================ // 
-// 📐 PART 2: ENTITY DISSOLUTION UI LAYOUT ARCHITECTURE (PART 1 OF 5)           // 
+// ðŸ“ PART 2: ENTITY DISSOLUTION UI LAYOUT ARCHITECTURE (PART 1 OF 5)           // 
 // ============================================================================ // 
 
 // Part 1 Layout Allocation: Entity Information Template 
@@ -136,7 +136,7 @@ window.formRegistry['dissolution-part1-layout'] = function(stateDropdownOptionsH
         <label for="dis_state_of_formation" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">State of Incorporation/Formation <span style="color: #ef4444;">*</span></label> 
         <select id="dis_state_of_formation" required class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 6px; background-color: #ffffff; color: var(--slate); font-weight: 600; box-sizing: border-box; height: 42px;"> 
           <option value="" disabled selected>Select State...</option> 
-          \${stateDropdownOptionsHtml} 
+          ${stateDropdownOptionsHtml} 
         </select> 
         <div class="wizard-error-message" id="err_dis_state_of_formation" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
       </div> 
@@ -163,7 +163,7 @@ window.formRegistry['dissolution-part1-layout'] = function(stateDropdownOptionsH
           <div> 
             <label for="dis_business_state" style="font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; display: block; margin-bottom: 4px;">State <span style="color: #ef4444;">*</span></label> 
             <select id="dis_business_state" required class="wizard-input-field" style="width: 100%; padding: 10px 14px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: 6px; background-color: #ffffff; color: var(--slate); font-weight: 600; box-sizing: border-box; height: 42px;"> 
-              \${stateDropdownOptionsHtml} 
+              ${stateDropdownOptionsHtml} 
             </select> 
             <div class="wizard-error-message" id="err_dis_business_state" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div> 
           </div> 
@@ -180,7 +180,7 @@ window.formRegistry['dissolution-part1-layout'] = function(stateDropdownOptionsH
 };
 
    // ============================================================================ // 
-// 📋 PART 1: ENTITY DISSOLUTION APPLICATION VALIDATION MATRIX ENGINE (PART 2)   // 
+// ðŸ“‹ PART 1: ENTITY DISSOLUTION APPLICATION VALIDATION MATRIX ENGINE (PART 2)   // 
 // ============================================================================ // 
 
 // Part 2 Validation Allocation: Contact, Timeline, and Reasons 
@@ -278,7 +278,7 @@ window.formRegistry['dissolution-part2-validation'] = {
 };
 
   // ============================================================================ //
-  // 📋 PART 1: ENTITY DISSOLUTION APPLICATION VALIDATION MATRIX ENGINE (PART 3)
+  // ðŸ“‹ PART 1: ENTITY DISSOLUTION APPLICATION VALIDATION MATRIX ENGINE (PART 3)
   // ============================================================================ //
 
   // Part 3 Validation Allocation: Asset and Debt Breakdowns
@@ -357,7 +357,7 @@ window.formRegistry['dissolution-part2-validation'] = {
 
 
   // ============================================================================ //
-  // 📐 PART 2: UPDATE - ENTITY DISSOLUTION PART 2 UI LAYOUT ENGINE
+  // ðŸ“ PART 2: UPDATE - ENTITY DISSOLUTION PART 2 UI LAYOUT ENGINE
   // ============================================================================ //
 
   // Part 2 Layout Allocation: Contact Information & Reasons Template
@@ -414,7 +414,7 @@ window.formRegistry['dissolution-part2-validation'] = {
 
 
   // ============================================================================ //
-  // 📐 PART 2: UPDATE - ENTITY DISSOLUTION PARTS 3 & 4 UI LAYOUT ENGINES
+  // ðŸ“ PART 2: UPDATE - ENTITY DISSOLUTION PARTS 3 & 4 UI LAYOUT ENGINES
   // ============================================================================ //
 
   // Part 3 Layout Allocation: Dissolution Details Template
@@ -491,7 +491,7 @@ window.formRegistry['dissolution-part2-validation'] = {
   };
 
   // ============================================================================ //
-  // ⚙️ INTERACTIVE INTERFACE CONTROLLERS (ENTITY DISSOLUTIONS)
+  // âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (ENTITY DISSOLUTIONS)
   // ============================================================================ //
 
   function toggleDissolutionStructureOther(value) { 
@@ -565,7 +565,7 @@ window.formRegistry['dissolution-part2-validation'] = {
   window.toggleDissolutionDebtsVisibility = toggleDissolutionDebtsVisibility;
 
   // ============================================================================ //
-  // 🏁 PART 4: MASTER VALIDATION INTERCEPTOR HOOK
+  // ðŸ PART 4: MASTER VALIDATION INTERCEPTOR HOOK
   // ============================================================================ //
 
   /**
@@ -610,7 +610,7 @@ window.formRegistry['dissolution-part2-validation'] = {
 
  
   // ============================================================================ //
-  // 🏁 PART 4: MASTER VALIDATION INTERCEPTOR HOOK
+  // ðŸ PART 4: MASTER VALIDATION INTERCEPTOR HOOK
   // ============================================================================ //
 
   /**
@@ -664,4 +664,5 @@ window.formRegistry['dissolution-part2-validation'] = {
   };
 
 } // End of initEntityDissolutionService() closure wrapper
+
 

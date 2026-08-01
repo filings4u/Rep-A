@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🌐 FILINGS4U, LLC - FRONTEND UNIVERSAL INGESTION CONTROLLER ENGINE           //
+﻿// ============================================================================ //
+// ðŸŒ FILINGS4U, LLC - FRONTEND UNIVERSAL INGESTION CONTROLLER ENGINE           //
 // ============================================================================ //
 
 /**
@@ -86,3 +86,4 @@ window.processUniversalWizardPurchaseFulfillment = async function(checkoutDetail
     return false;
   }
 };
+

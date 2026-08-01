@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ TRADEMARK FILING PART 1 VALIDATION MATRIX ENGINE 
+﻿// ============================================================================ //
+// ðŸ› ï¸ TRADEMARK FILING PART 1 VALIDATION MATRIX ENGINE 
 // ============================================================================ //
 const trademarkFilingPart1Validation = {
   requiredFields: [
@@ -136,7 +136,7 @@ window.formRegistry['trademark-filing-part1-layout'] = buildTrademarkFilingPart1
 window.formRegistry['trademark-filing-part1-validation'] = trademarkFilingPart1Validation;
 
 // ============================================================================ //
-// 🛠️ TRADEMARK FILING PART 2 VALIDATION MATRIX ENGINE 
+// ðŸ› ï¸ TRADEMARK FILING PART 2 VALIDATION MATRIX ENGINE 
 // ============================================================================ //
 const trademarkFilingPart2Validation = {
   requiredFields: [
@@ -252,7 +252,7 @@ function buildTrademarkFilingPart2(stateDropdownOptionsHtml = "") {
         <label for="tm_add_search_service" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Would you like to use filings4u Search Service for $79? <span style="color: #ef4444;">*</span></label>
         <select id="tm_add_search_service" class="wizard-input-field" style="font-weight: 600;" onchange="if(typeof updateWizardFinalTotalAmountMatrix === 'function') { updateWizardFinalTotalAmountMatrix(); }">
           <option value="no" selected>No, I will review existing conflicting filings independently</option>
-          <option value="yes">Yes, add Filings4u Comprehensive Brand Clearance Search — $79.00</option>
+          <option value="yes">Yes, add Filings4u Comprehensive Brand Clearance Search â€” $79.00</option>
         </select>
       </div>
     </div>
@@ -265,7 +265,7 @@ window.formRegistry['trademark-filing-part2-layout'] = buildTrademarkFilingPart2
 window.formRegistry['trademark-filing-part2-validation'] = trademarkFilingPart2Validation;
 
 // ============================================================================ //
-// 🛠️ TRADEMARK FILING PART 3 VALIDATION MATRIX ENGINE 
+// ðŸ› ï¸ TRADEMARK FILING PART 3 VALIDATION MATRIX ENGINE 
 // ============================================================================ //
 const trademarkFilingPart3Validation = {
   requiredFields: [
@@ -414,7 +414,7 @@ function buildTrademarkFilingPart3(stateDropdownOptionsHtml = "") {
 }
 window.buildTrademarkFilingPart3 = buildTrademarkFilingPart3;
 
-// 📦 MASTER USPTO TRADEMARK FILING APPLICATION ASSEMBLY HOOK
+// ðŸ“¦ MASTER USPTO TRADEMARK FILING APPLICATION ASSEMBLY HOOK
 function buildTrademarkFilingForm(stateDropdownOptionsHtml = "") {
   return buildTrademarkFilingPart1(stateDropdownOptionsHtml) + buildTrademarkFilingPart2(stateDropdownOptionsHtml) + buildTrademarkFilingPart3(stateDropdownOptionsHtml);
 }
@@ -426,7 +426,7 @@ window.formRegistry['trademark-filing-part3-validation'] = trademarkFilingPart3V
 window.formRegistry['trademark-filing-form-master'] = buildTrademarkFilingForm;
 
 // ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (TRADEMARK FILING APPLICATION)
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (TRADEMARK FILING APPLICATION)
 // ============================================================================ //
 
 window.toggleTrademarkSpecimenWorkflow = function(value) {
@@ -479,3 +479,4 @@ window.toggleTrademarkAttorneyWrapperVisibility = function(value) {
     fields.forEach(el => { el.removeAttribute("required"); el.value = ""; });
   }
 };
+

@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ DOT CONSORTIUM SERVICE: VALIDATION MATRIX ENGINE                          //
+﻿// ============================================================================ //
+// ðŸ› ï¸ DOT CONSORTIUM SERVICE: VALIDATION MATRIX ENGINE                          //
 // ============================================================================ //
 function initDotConsortiumService() {
   window.formRegistry = window.formRegistry || {};
@@ -103,7 +103,7 @@ function initDotConsortiumService() {
 
 window.initDotConsortiumService = initDotConsortiumService;
 // ============================================================================ //
-// 🛠️ DOT CONSORTIUM SERVICE: FORM LAYOUT TEMPLATE (PART 2 OF 3)                //
+// ðŸ› ï¸ DOT CONSORTIUM SERVICE: FORM LAYOUT TEMPLATE (PART 2 OF 3)                //
 // ============================================================================ //
 
 function buildDotConsortiumEnrollmentForm(stateDropdownOptionsHtml = "") {
@@ -206,11 +206,11 @@ function buildDotConsortiumEnrollmentForm(stateDropdownOptionsHtml = "") {
 // Bind component builder securely to global scope layers
 window.buildDotConsortiumEnrollmentForm = buildDotConsortiumEnrollmentForm;
 // ============================================================================ //
-// 🛠️ DOT CONSORTIUM SERVICE: COMPILATION & HOOKS (PART 3 OF 3)                  //
+// ðŸ› ï¸ DOT CONSORTIUM SERVICE: COMPILATION & HOOKS (PART 3 OF 3)                  //
 // ============================================================================ //
 
 /**
- * 📦 MASTER DOT CONSORTIUM APPLICATION ASSEMBLY HOOK
+ * ðŸ“¦ MASTER DOT CONSORTIUM APPLICATION ASSEMBLY HOOK
  * Generates the clean outer dual-column CSS grid template envelope.
  */
 window.buildDotConsortiumFormMaster = function(stateDropdownOptionsHtml = "") {
@@ -243,3 +243,4 @@ window.formRegistry = window.formRegistry || {};
 window.formRegistry['dot-consortium-form-master'] = function(stateDropdownOptionsHtml = "") {
   return window.buildDotConsortiumFormMaster(stateDropdownOptionsHtml);
 };
+

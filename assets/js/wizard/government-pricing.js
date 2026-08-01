@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🏛️ CENTRAL GOVERNMENT & REGULATORY AGENCY FILING FEE DATABASE               //
+﻿// ============================================================================ //
+// ðŸ›ï¸ CENTRAL GOVERNMENT & REGULATORY AGENCY FILING FEE DATABASE               //
 // ============================================================================ //
 window.CENTRAL_SERVICE_PLAN_DB = window.CENTRAL_SERVICE_PLAN_DB || {};
 window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING || {
@@ -11,7 +11,7 @@ window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING || {
     "corporations": 0.00
 };
 
-// 🟢 FIX: Flattens the payloads cleanly to prevent unexpected token parsing runtime failures
+// ðŸŸ¢ FIX: Flattens the payloads cleanly to prevent unexpected token parsing runtime failures
 const regulatoryPackagePayload = {
     "federal-tax": { 
         name: "Federal Income Tax", starter: 299.00, compliance: 499.00, enterprise: 799.00, 
@@ -263,7 +263,7 @@ Object.assign(window.CENTRAL_SERVICE_PLAN_DB, regulatoryPackagePayload);
 window.GOVERNMENT_PRICING = { packages: window.CENTRAL_SERVICE_PLAN_DB };
 
 // ============================================================================ //
-// 🏛️ CENTRAL GOVERNMENT & REGULATORY AGENCY FILING FEE DATABASE               //
+// ðŸ›ï¸ CENTRAL GOVERNMENT & REGULATORY AGENCY FILING FEE DATABASE               //
 // ============================================================================ //
 /**
  * Global filing tariff lookup table.
@@ -283,7 +283,7 @@ window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING || {
 window.FILINGS4U_GOVERNMENT_PRICING = window.FILINGS4U_GOVERNMENT_PRICING; 
 
 // ============================================================================ // 
-// 🗃️ HIGHWAY USE TAX (FORM 2290) DYNAMIC PRICING CONFIGURATION LAYER         // 
+// ðŸ—ƒï¸ HIGHWAY USE TAX (FORM 2290) DYNAMIC PRICING CONFIGURATION LAYER         // 
 // ============================================================================ // 
 window.CENTRAL_SERVICE_PLAN_DB = window.CENTRAL_SERVICE_PLAN_DB || {}; 
 
@@ -302,7 +302,7 @@ window.CENTRAL_SERVICE_PLAN_DB["heavy-use-tax-2290"] = {
 
 
 // ============================================================================ //
-// 🏛️ CENTRAL STATE & REGULATORY JURISDICTION FILING FEES DATABASE              //
+// ðŸ›ï¸ CENTRAL STATE & REGULATORY JURISDICTION FILING FEES DATABASE              //
 // ============================================================================ //
 window.GOVT_REGULATORY_FEES = window.GOVT_REGULATORY_FEES || {};
 
@@ -517,3 +517,4 @@ Object.assign(window.GOVT_REGULATORY_FEES, {
     "filing-fee": 769.00
   },
 });
+

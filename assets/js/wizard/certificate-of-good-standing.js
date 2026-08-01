@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 📜 SYSTEM COMPLIANCE SERVICE: CERTIFICATE OF GOOD STANDING (PART 1 OF 3)
+﻿// ============================================================================ // 
+// ðŸ“œ SYSTEM COMPLIANCE SERVICE: CERTIFICATE OF GOOD STANDING (PART 1 OF 3)
 // ============================================================================ // 
 
 function initCertificateOfGoodStandingServices() {
@@ -200,14 +200,14 @@ function initCertificateOfGoodStandingServices() {
         <label for="cgs_delivery_speed" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Fulfillment Processing Speed <span style="color: #ef4444;">*</span></label> 
         <select id="cgs_delivery_speed" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleGoodStandingFulfillmentSpeedWorkflow(this.value)"> 
           <option value="standard" selected>Standard Processing (Timeline varies based on state speed arrays)</option> 
-          <option value="expedited">Expedited Courier Service — Add $49.00 (Priority state extraction filing)</option> 
+          <option value="expedited">Expedited Courier Service â€” Add $49.00 (Priority state extraction filing)</option> 
         </select> 
       </div> 
       <div class="wizard-input-group" style="grid-column: span 1;"> 
         <label for="cgs_delivery_method" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Document Delivery Format <span style="color: #ef4444;">*</span></label> 
         <select id="cgs_delivery_method" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleGoodStandingPhysicalDeliveryVisibility(this.value)"> 
           <option value="digital" selected>Digital Extraction Only (Secure PDF download link via dashboard portal)</option> 
-          <option value="physical">Digital PDF + Certified Physical Hardcopy Delivery — Add $35.00</option> 
+          <option value="physical">Digital PDF + Certified Physical Hardcopy Delivery â€” Add $35.00</option> 
         </select> 
       </div> 
 
@@ -250,7 +250,7 @@ function initCertificateOfGoodStandingServices() {
   };
 
   // ============================================================================ // 
-  // ⚙️ INTERACTIVE INTERFACE CONTROLLERS
+  // âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS
   // ============================================================================ // 
   window.toggleGoodStandingPurposeSpecificationVisibility = function(value) { 
     const purposeWrapper = document.getElementById("cgs_purpose_other_wrapper"); 
@@ -291,7 +291,7 @@ function initCertificateOfGoodStandingServices() {
   };
 
   // ============================================================================ // 
-  // 📦 MASTER CERTIFICATE OF GOOD STANDING ASSEMBLY HOOK
+  // ðŸ“¦ MASTER CERTIFICATE OF GOOD STANDING ASSEMBLY HOOK
   // ============================================================================ // 
   window.formRegistry['certificate-of-good-standing-form-master'] = function(stateDropdownOptionsHtml = "") { 
     return window.formRegistry['certificate-of-good-standing-part1-layout'](stateDropdownOptionsHtml) + 
@@ -302,4 +302,5 @@ function initCertificateOfGoodStandingServices() {
 
 // Ignition
 initCertificateOfGoodStandingServices();
+
 

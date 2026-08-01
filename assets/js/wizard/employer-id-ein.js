@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 📐 EMPLOYER ID (EIN) WIZARD ENGINE REGISTER                                  // 
+﻿// ============================================================================ // 
+// ðŸ“ EMPLOYER ID (EIN) WIZARD ENGINE REGISTER                                  // 
 // ============================================================================ // 
 function initEmployerIdEinService() { 
     // BREAK THE INFINITE LOOP: If this module's validation layout has already been registered, exit immediately 
@@ -634,4 +634,5 @@ window.formRegistry['employer-id-ein-part5-validation'] = {
 
         return combinedHtml;
     };
+
 

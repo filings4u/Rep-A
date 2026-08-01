@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Filings4U Platform Architecture
  * Module: scac-code.js (Restructured Grid Configuration - Part 1)
  */
@@ -242,7 +242,7 @@ window.validateEntireScacCodeWizard = function() {
 };
 
 // ============================================================================ //
-// 📦 MASTER RENDER SYSTEM ALLOCATION
+// ðŸ“¦ MASTER RENDER SYSTEM ALLOCATION
 // ============================================================================ //
 window.formRegistry['scac-code-form-master'] = function(stateDropdownOptionsHtml = "") {
     return window.formRegistry['scac-code-banner-snippet']() +
@@ -250,3 +250,4 @@ window.formRegistry['scac-code-form-master'] = function(stateDropdownOptionsHtml
            window.formRegistry['scac-code-part2-layout'](stateDropdownOptionsHtml) + 
            window.formRegistry['scac-code-part3-layout'](stateDropdownOptionsHtml);
 };
+

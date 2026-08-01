@@ -1,7 +1,6 @@
-// ============================================================================ //
-// 📦 ISOLATED AUTOMATED SYSTEM FOOTER INJECTION ENGINE                         //
-// ============================================================================ //
-(function renderGlobalApplicationFooterHtml() {
+﻿// ============================================================================ //
+// ðŸ“¦ ISOLATED AUTOMATED SYSTEM FOOTER INJECTION ENGINE                         //
+// ============================================================================ //;(function renderGlobalApplicationFooterHtml() {
   "use strict";
 
   // Target your dedicated external layout anchor placeholder right below Step 7
@@ -17,10 +16,10 @@
    * Combines full-width desktop constraints with custom negative margin mobile breakouts.
    */
   targetNode.innerHTML = `
-    <!-- 🟢 DYNAMIC MEDIA OVERRIDES WRAPPER -->
+    <!-- ðŸŸ¢ DYNAMIC MEDIA OVERRIDES WRAPPER -->
 <style>
   /* ============================================================================ */
-  /* 💻 GLOBAL & DESKTOP GRID DEFAULTS                                           */
+  /* ðŸ’» GLOBAL & DESKTOP GRID DEFAULTS                                           */
   /* ============================================================================ */
   #f4u-standalone-footer-wrapper {
     display: block !important;
@@ -36,13 +35,13 @@
   }
   
   /* ============================================================================ */
-  /* 📱 MOBILE VIEWPORT BREAKPOINT BLOCK (UNDER 600px EXCLUSIVE)                 */
+  /* ðŸ“± MOBILE VIEWPORT BREAKPOINT BLOCK (UNDER 600px EXCLUSIVE)                 */
   /* ============================================================================ */
   @media (max-width: 600px) {
     
   
     
-    /* 🟢 THE INLINE STRIPPER: Overrides hardcoded inline desktop constraints on the inner tag */
+    /* ðŸŸ¢ THE INLINE STRIPPER: Overrides hardcoded inline desktop constraints on the inner tag */
     #f4u-standalone-footer-wrapper .portal-legal-footer {
       display: flex !important;
       flex-direction: column !important; /* Stacks your elements into 3 distinct centered tiers */
@@ -52,7 +51,7 @@
       padding: 24px 16px !important;
       gap: 16px !important;
       
-      /* 🟢 CRITICAL: Overrides the hardcoded desktop layout inline metrics */
+      /* ðŸŸ¢ CRITICAL: Overrides the hardcoded desktop layout inline metrics */
       width: 100% !important;
       max-width: 100% !important; 
       margin: 0 !important; 
@@ -90,9 +89,9 @@
 </style>
 
 
-    <!-- 🟢 MASTER CONTEXT LAYOUT CANVAS -->
+    <!-- ðŸŸ¢ MASTER CONTEXT LAYOUT CANVAS -->
     <div id="f4u-standalone-footer-wrapper">
-      <!-- 🟢 FIXED INLINE STYLE LAYER: Added max-width and margin auto directly to the footer tag -->
+      <!-- ðŸŸ¢ FIXED INLINE STYLE LAYER: Added max-width and margin auto directly to the footer tag -->
       <footer class="portal-legal-footer" style="box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1450px; background: #0a1f44; padding: 24px 32px; color: #ffffff; margin: 0 auto; clear: both; transition: all 0.2s ease-in-out;">
         
         <!-- LEFT COMPONENT: COPYRIGHT TEXT BLOCK (Row 1 on Mobile) -->
@@ -119,3 +118,5 @@
 
   console.log("[Footer Engine Success] Multi-device responsive breakout parameters applied cleanly inside container target.");
 })();
+
+

@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 🗺️ MODULE: DYNAMIC APPLICATION MAP TIMELINE TIMING & VIEWPORT HUB 
+﻿// ============================================================================ // 
+// ðŸ—ºï¸ MODULE: DYNAMIC APPLICATION MAP TIMELINE TIMING & VIEWPORT HUB 
 // ============================================================================ // 
 function renderDynamicWizardApplicationMap() { 
   "use strict"; 
@@ -9,7 +9,7 @@ function renderDynamicWizardApplicationMap() {
     return; 
   } 
   
-  // 🟢 DYNAMIC MOBILE-RESPONSIVE COMPLETION ESTIMATOR ENGINE
+  // ðŸŸ¢ DYNAMIC MOBILE-RESPONSIVE COMPLETION ESTIMATOR ENGINE
   let dynamicMinutesText = "5 minutes"; 
   try {
     // 1. Scan for all visible, non-hidden input components on the page
@@ -29,7 +29,7 @@ function renderDynamicWizardApplicationMap() {
 
     const activeFormFieldsCount = distinctFieldsSet.size;
 
-    // 🟢 3. MOBILE ENGINE TRANSLATION GATEWAYS
+    // ðŸŸ¢ 3. MOBILE ENGINE TRANSLATION GATEWAYS
     // Detect screen width under 768px (standard tablet/mobile breakpoint)
     const isMobileDeviceView = window.matchMedia("(max-width: 768px)").matches;
     
@@ -66,7 +66,8 @@ function renderDynamicWizardApplicationMap() {
     { idx: 4, title: "4. Power of Attorney", desc: "Digital signature execution" }, 
     { idx: 5, title: "5. Purchase Summary", desc: "Order item breakdowns" }, 
     { idx: 6, title: "6. Secure Payment", desc: "Encrypted checkout gateway" }, 
-    { idx: 7, title: "7. Success Portal", desc: "Account creation systems" } 
+    { idx: 7, title: "7. Account Creation", desc: "Secure your account password" }, 
+    { idx: 8, title: "8. Success Portal", desc: "Review and Download Receipt" } 
   ]; 
   
   let compiledMapHtml = ` 
@@ -109,13 +110,13 @@ function renderDynamicWizardApplicationMap() {
 } 
 
 // ============================================================================ // 
-// 🗺️ PART 4: MULTI-SIDEBAR TIMELINE NAV LIGHTS ENGINE (SOLID EMERALD 0-INDEX) 
+// ðŸ—ºï¸ PART 4: MULTI-SIDEBAR TIMELINE NAV LIGHTS ENGINE (SOLID EMERALD 0-INDEX) 
 // ============================================================================ // 
 function updateApplicationMapTimelineBubbles(currentStepIndex) { 
   const rawStepValue = parseInt(currentStepIndex, 10); 
   const activeStep = isNaN(rawStepValue) ? 0 : rawStepValue; 
   
-  for (let i = 0; i <= 7; i++) { 
+  for (let i = 0; i <= 8; i++) { 
     const rowNodes = document.querySelectorAll(`#timeline-row-${i}`); 
     rowNodes.forEach(rowNode => { 
       if (!rowNode) return; 
@@ -172,3 +173,4 @@ if (document.readyState !== "loading") {
 } else { 
   document.addEventListener("DOMContentLoaded", window.renderDynamicWizardApplicationMap); 
 }
+

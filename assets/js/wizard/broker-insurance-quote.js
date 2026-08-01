@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 🚛 SYSTEM COMPLIANCE SERVICE: BROKER INSURANCE QUOTE ENGINE (PART 1)
+﻿// ============================================================================ // 
+// ðŸš› SYSTEM COMPLIANCE SERVICE: BROKER INSURANCE QUOTE ENGINE (PART 1)
 // ============================================================================ // 
 
 function initBrokerInsuranceQuoteServices() {
@@ -53,7 +53,7 @@ function initBrokerInsuranceQuoteServices() {
       <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP --> 
       <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;"> 
         <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> Freight Broker Insurance Lead Clearinghouse & BMC-85 Financial Network</strong> 
-        Operating safely as an FMCSA licensed property broker requires robust risk management parameter shields to insulate your logistics firm from vicarious liability claims. <span style="font-weight: 700; color: var(--primary);">⚠ Crucial Disclosing Provision:</span> Filings4u is a specialized commercial document filing service organization. We are not a licensed insurance agency, brokerage, or underwriter, and we do not sell insurance policies directly. All risk profile metrics submitted here are securely routed to our premium licensed insurance entity partners to compile and issue a competitive, non-binding quote tailored to your brokerage. <span style="font-weight: 700; color: var(--navy);">Notice:</span> Financial underwriting requests through this channel are strictly structured for **BMC-85 Trust Fund ($75,000 Cash Escrow Settlement)** options. 
+        Operating safely as an FMCSA licensed property broker requires robust risk management parameter shields to insulate your logistics firm from vicarious liability claims. <span style="font-weight: 700; color: var(--primary);">âš  Crucial Disclosing Provision:</span> Filings4u is a specialized commercial document filing service organization. We are not a licensed insurance agency, brokerage, or underwriter, and we do not sell insurance policies directly. All risk profile metrics submitted here are securely routed to our premium licensed insurance entity partners to compile and issue a competitive, non-binding quote tailored to your brokerage. <span style="font-weight: 700; color: var(--navy);">Notice:</span> Financial underwriting requests through this channel are strictly structured for **BMC-85 Trust Fund ($75,000 Cash Escrow Settlement)** options. 
       </div> 
 
       <!-- SECTION 1: BROKER RISK ASSESSMENT PROFILE --> 
@@ -358,3 +358,4 @@ function initBrokerInsuranceQuoteServices() {
 
 // Ignition
 initBrokerInsuranceQuoteServices();
+

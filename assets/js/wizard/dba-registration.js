@@ -1,12 +1,12 @@
-// ============================================================================ //
-// 🏛️ FAMILY 33A: DBA REGISTRATION UNIFIED WIZARD ENGINE                        //
+﻿// ============================================================================ //
+// ðŸ›ï¸ FAMILY 33A: DBA REGISTRATION UNIFIED WIZARD ENGINE                        //
 // ============================================================================ //
 function initDbaRegistrationService() {
   // Global wizard registries allocation
   window.formRegistry = window.formRegistry || {};
 
   // ============================================================================ //
-  // 📋 PART 1: DBA REGISTRATION VALIDATION MATRIX ENGINE                         //
+  // ðŸ“‹ PART 1: DBA REGISTRATION VALIDATION MATRIX ENGINE                         //
   // ============================================================================ //
   window.formRegistry['dba-registration-part1-validation'] = {
     requiredFields: [
@@ -90,7 +90,7 @@ function initDbaRegistrationService() {
   };
 
 // ============================================================================ //
-// 📋 PART 2: DBA REGISTRATION VALIDATION MATRIX ENGINE                         //
+// ðŸ“‹ PART 2: DBA REGISTRATION VALIDATION MATRIX ENGINE                         //
 // ============================================================================ //
 window.formRegistry['dba-registration-part2-validation'] = {
   requiredFields: [
@@ -184,7 +184,7 @@ window.formRegistry['dba-registration-part2-validation'] = {
 };
 
 // ============================================================================ //
-// 📋 PART 3: DBA REGISTRATION VALIDATION MATRIX ENGINE                         //
+// ðŸ“‹ PART 3: DBA REGISTRATION VALIDATION MATRIX ENGINE                         //
 // ============================================================================ //
 window.formRegistry['dba-registration-part3-validation'] = {
   validateStep: function() {
@@ -419,7 +419,7 @@ window.formRegistry['dba-registration-part1-layout'] = function(stateDropdownOpt
         <label for="dba_has_consent" style="font-weight: 700; font-size: 0.82rem; color: var(--navy);">Have you obtained written permission from the original entity? <span style="color: #ef4444;">*</span></label>
         <select id="dba_has_consent" class="wizard-input-field" style="background: #ffffff; font-weight: 600;">
           <option value="yes" selected>Yes, I have executed written permission files ready to upload</option>
-          <option value="no-buy">No, add Filings4u Comprehensive Name Availability Search — $79.00</option>
+          <option value="no-buy">No, add Filings4u Comprehensive Name Availability Search â€” $79.00</option>
         </select>
         <div class="wizard-error-message" id="err_dba_has_consent" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
@@ -431,7 +431,7 @@ window.formRegistry['dba-registration-part1-layout'] = function(stateDropdownOpt
 };
 
 // ============================================================================ //
-// 📋 PART 1: UPDATE - DBA REGISTRATION PART 2 VALIDATION ENGINE                //
+// ðŸ“‹ PART 1: UPDATE - DBA REGISTRATION PART 2 VALIDATION ENGINE                //
 // ============================================================================ //
 window.formRegistry['dba-registration-part2-validation'] = {
   requiredFields: [
@@ -527,7 +527,7 @@ window.formRegistry['dba-registration-part2-validation'] = {
 };
 
 // ============================================================================ //
-// 📐 PART 2: UPDATE - DBA REGISTRATION PART 2 UI LAYOUT ENGINE                //
+// ðŸ“ PART 2: UPDATE - DBA REGISTRATION PART 2 UI LAYOUT ENGINE                //
 // ============================================================================ //
 // Continued Part 4 Layout Allocation: Tax, Compliance, Provisions, and Duration
 layoutHtml += `
@@ -566,7 +566,7 @@ layoutHtml += `
       <select id="dba_license_check" required class="wizard-input-field" style="font-weight: 600;">
         <option value="" disabled selected>Choose an option...</option>
         <option value="yes">Yes, I have verified my structural requirements</option>
-        <option value="no">No, I need help — Add Filings4u Compliance Research Suite — $79.00</option>
+        <option value="no">No, I need help â€” Add Filings4u Compliance Research Suite â€” $79.00</option>
       </select>
       <div class="wizard-error-message" id="err_dba_license_check" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
     </div>
@@ -623,7 +623,7 @@ layoutHtml += `
 };
 
 // ============================================================================ //
-// 🎮 PART 3: DBA INTERACTIVE INTERFACE CONTROLLER EXTENSIONS                  //
+// ðŸŽ® PART 3: DBA INTERACTIVE INTERFACE CONTROLLER EXTENSIONS                  //
 // ============================================================================ //
 
 // 1. Handle name conflict permission visibility rules
@@ -730,7 +730,7 @@ window.toggleDbaEinReasonField = toggleDbaEinReasonField;
 window.toggleDbaLicenseWorkflow = toggleDbaLicenseWorkflow;
 window.toggleDbaDurationField = toggleDbaDurationField;
 // ============================================================================ //
-// 🏁 PART 4: MASTER VALIDATION INTERCEPTOR HOOK                                //
+// ðŸ PART 4: MASTER VALIDATION INTERCEPTOR HOOK                                //
 // ============================================================================ //
 /**
  * filings4u, LLC - Master DBA Validation Interceptor Hook
@@ -782,7 +782,7 @@ window.formRegistry['dba-registration-form-master'] = function(stateDropdownOpti
 };
 
 // ============================================================================ //
-// 🛠️ AUTOMATED INTERACTIVE BINDING INITIALIZER ROUTINE                         //
+// ðŸ› ï¸ AUTOMATED INTERACTIVE BINDING INITIALIZER ROUTINE                         //
 // ============================================================================ //
 function bindDbaInteractiveEventListeners() {
   document.addEventListener("change", function(event) {
@@ -809,3 +809,4 @@ function bindDbaInteractiveEventListeners() {
 
 // Automatically register interaction layers alongside parent component initiation
 bindDbaInteractiveEventListeners();
+

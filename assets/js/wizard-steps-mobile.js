@@ -1,7 +1,7 @@
+﻿// ============================================================================ //
+// ðŸ›¡ï¸ MOBILE VIRTUAL DOM PROTECTION AND AGNOSTIC HOOK BRIDGE (EXTENDED)
 // ============================================================================ //
-// 🛡️ MOBILE VIRTUAL DOM PROTECTION AND AGNOSTIC HOOK BRIDGE (EXTENDED)
-// ============================================================================ //
-(function() {
+;(function() {
     console.log("[Mobile Guard] Dynamic layout fallbacks initializing...");
 
     // 1. Mock the missing desktop sidebar elements to protect legacy script iterations
@@ -68,7 +68,7 @@
 
 
 // ============================================================================ //
-// 🔗 MOBILE PARAMETERS CONVERSION AND DYNAMIC RECOVERY LOGIC ENGINE
+// ðŸ”— MOBILE PARAMETERS CONVERSION AND DYNAMIC RECOVERY LOGIC ENGINE
 // ============================================================================ //
 
 // Core structural check to protect checkbox handlers from breaking inside mobile panels
@@ -114,7 +114,7 @@ function initializeUrlParameterParserEngineVanillaMobile() {
         } 
     } 
 
-  // 3. 🟢 FIXED MOBILE FIELD GENERATION ON BOOT:
+  // 3. ðŸŸ¢ FIXED MOBILE FIELD GENERATION ON BOOT:
   // Triggers your dynamic form engine safely inside mobile container wrappers
   if (typeof window.executeStepTwoDynamicFormInjection === "function") {
     // FIX: Pass the active service key explicitly as the second argument so the engine doesn't break on local addresses
@@ -129,7 +129,7 @@ function initializeUrlParameterParserEngineVanillaMobile() {
 window.initializeUrlParameterParserEngineVanilla = initializeUrlParameterParserEngineVanillaMobile;
 
 // ============================================================================ //
-// 🚀 MANDATORY AUTO-RUN TRIGGER FOR 100+ SERVICES LAYER
+// ðŸš€ MANDATORY AUTO-RUN TRIGGER FOR 100+ SERVICES LAYER
 // ============================================================================ //
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", window.initializeUrlParameterParserEngineVanillaMobile);
@@ -141,7 +141,7 @@ if (document.readyState === "loading") {
 
 
 // ============================================================================ //
-// 💾 MOBILE CACHE AND RESTORE WIZARD FORM STATES LOGIC
+// ðŸ’¾ MOBILE CACHE AND RESTORE WIZARD FORM STATES LOGIC
 // ============================================================================ //
 function cacheAndRestoreWizardFormStatesVanillaMobile(isExecutionInitialLoad) { 
     const cacheKeyNamespace = "f4u_wizard_onboarding_state"; 
@@ -217,7 +217,7 @@ function cacheAndRestoreWizardFormStatesVanillaMobile(isExecutionInitialLoad) {
         try { 
             const currentCacheData = JSON.parse(localStorage.getItem(cacheKeyNamespace) || "{}"); 
             
-            // 🟢 TARGETS ACTIVE MASTER MOBILE ONBOARDING FORM CONTAINER
+            // ðŸŸ¢ TARGETS ACTIVE MASTER MOBILE ONBOARDING FORM CONTAINER
             const inputs = document.querySelectorAll("#master-onboarding-form input, #master-onboarding-form select, #master-onboarding-form textarea"); 
             inputs.forEach(inputNode => { 
                 const key = inputNode.id || inputNode.name; 
@@ -240,7 +240,7 @@ function cacheAndRestoreWizardFormStatesVanillaMobile(isExecutionInitialLoad) {
 window.cacheAndRestoreWizardFormStatesVanilla = cacheAndRestoreWizardFormStatesVanillaMobile;
 
 // ============================================================================ //
-// 📋 MOBILE POWER OF ATTORNEY VALIDATION ENGINE
+// ðŸ“‹ MOBILE POWER OF ATTORNEY VALIDATION ENGINE
 // ============================================================================ //
 function evaluatePoaInputStateMatrixMobile() { 
     console.log("[Mobile POA Matrix] Evaluating Step 4 digital signature states..."); 
@@ -287,7 +287,7 @@ function evaluatePoaInputStateMatrixMobile() {
 } 
 
 // ============================================================================ // 
-// 🗺️ MOBILE UNIVERSAL DYNAMIC PARAMETER CAPTURE ENGINE
+// ðŸ—ºï¸ MOBILE UNIVERSAL DYNAMIC PARAMETER CAPTURE ENGINE
 // ============================================================================ // 
 function autoInjectMainWebsitePricingPlanMobile() { 
     const urlParams = new URLSearchParams(window.location.search); 
@@ -295,7 +295,7 @@ function autoInjectMainWebsitePricingPlanMobile() {
     const urlPlan = urlParams.get('plan'); 
     const urlState = urlParams.get('state') || urlParams.get('stateCode') || ""; 
     
-    // 🛑 PATH ISOLATED ROUTING GUARD FOR MOBILE LANDING INTERFACES:
+    // ðŸ›‘ PATH ISOLATED ROUTING GUARD FOR MOBILE LANDING INTERFACES:
     // If organic mobile traffic lands on this wizard directly without parameters, 
     // bounce them safely out to a clean mobile get-started setup.
     if (!urlService || !urlPlan) { 
@@ -383,7 +383,7 @@ window.autoInjectMainWebsitePricingPlan = autoInjectMainWebsitePricingPlanMobile
 
 
 // ============================================================================ //
-// 📊 MOBILE FORM STATE TRACKING MATRIX (PROGRESSIVE MERGE RECOVERY)
+// ðŸ“Š MOBILE FORM STATE TRACKING MATRIX (PROGRESSIVE MERGE RECOVERY)
 // ============================================================================ //
 function saveWizardFormStatesVanillaMobile() { 
     const cacheKeyNamespace = "f4u_wizard_onboarding_state"; 
@@ -408,7 +408,7 @@ function saveWizardFormStatesVanillaMobile() {
 
     if (window.isWizardCurrentlyRestoringStateVanilla) return; 
 
-    // 🟢 PROGRESSIVE STATE MERGE RECOVERY FOR MOBILE MULTI-STEP JUMPS
+    // ðŸŸ¢ PROGRESSIVE STATE MERGE RECOVERY FOR MOBILE MULTI-STEP JUMPS
     let activeFormMetricsObject = {}; 
     try { 
         const preExistingCacheString = localStorage.getItem(cacheKeyNamespace); 
@@ -452,7 +452,7 @@ window.saveWizardFormStatesVanilla = saveWizardFormStatesVanillaMobile;
 
 
 // ============================================================================ //
-// 🚀 MOBILE MASTER UNIFIED WIZARD BOOT ENGINE LAYER
+// ðŸš€ MOBILE MASTER UNIFIED WIZARD BOOT ENGINE LAYER
 // ============================================================================ //
 window.wizardBootRetryAttempts = window.wizardBootRetryAttempts || 0; 
 
@@ -618,7 +618,7 @@ window.runUnifiedWizardBootEngine = runUnifiedWizardBootEngineMobile;
 
 
 // ============================================================================ //
-// 📋 MOBILE POWER OF ATTORNEY VALIDATION & PARAMETERS VERIFICATION ENGINE
+// ðŸ“‹ MOBILE POWER OF ATTORNEY VALIDATION & PARAMETERS VERIFICATION ENGINE
 // ============================================================================ //
 
 function evaluatePoaInputStateMatrixMobile() { 
@@ -661,7 +661,7 @@ function evaluatePoaInputStateMatrixMobile() {
 } 
 
 // ============================================================================ //
-// ⚡ MOBILE FIELD REGEX VALIDATION LOGIC ENGINE
+// âš¡ MOBILE FIELD REGEX VALIDATION LOGIC ENGINE
 // ============================================================================ //
 function validateStepInputParametersVanillaMobile(activeStep) { 
     var activePanel = document.getElementById("step-panel-" + activeStep); 
@@ -710,7 +710,7 @@ function validateStepInputParametersVanillaMobile(activeStep) {
         } 
     }); 
 
-    // 🟢 MOBILE FOCUS ASSISTANCE: 
+    // ðŸŸ¢ MOBILE FOCUS ASSISTANCE: 
     // Smoothly shifts the scroller view bounds directly over the error element target 
     if (!stepIsValid && firstInvalidElement) { 
         firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
@@ -725,7 +725,7 @@ window.validateStepInputParametersVanilla = validateStepInputParametersVanillaMo
 
 
 // ============================================================================ //
-// 📱 MOBILE INTERACTIVE EVENT LISTENERS & RUNTIME INTERLOCKS
+// ðŸ“± MOBILE INTERACTIVE EVENT LISTENERS & RUNTIME INTERLOCKS
 // ============================================================================ //
 
 function evaluatePoaInputStateMatrixMobile() { 
@@ -808,7 +808,7 @@ function attachPoaValidationListenersMobile() {
     } 
 } 
 
-// 📦 GLOBAL EXPOSURE 
+// ðŸ“¦ GLOBAL EXPOSURE 
 window.evaluatePoaInputStateMatrix = evaluatePoaInputStateMatrixMobile; 
 window.attachPoaValidationListeners = attachPoaValidationListenersMobile; 
 
@@ -837,23 +837,23 @@ console.log("[Mobile Dynamic Registry] Event listener system successfully initia
 
 
 // ============================================================================ //
-// 🔌 CENTRAL MOBILE EVENT LISTENER INTERCEPT APP LIFE-CYCLE
+// ðŸ”Œ CENTRAL MOBILE EVENT LISTENER INTERCEPT APP LIFE-CYCLE
 // ============================================================================ //
 
 function runUnifiedPlatformLifecycleBootMobile() { 
     console.log("[Mobile Lifecycle Engine] Triggering application operational boot sequence..."); 
 
-    // 🛡️ RUNTIME PIPELINE GUARD: Verify that crucial configuration scripts or variables are parsed before running.
+    // ðŸ›¡ï¸ RUNTIME PIPELINE GUARD: Verify that crucial configuration scripts or variables are parsed before running.
     const isCoreDatabaseReady = typeof window.getPricingConfiguration === "function" || window.CENTRAL_SERVICE_PLAN_DB; 
     if (!isCoreDatabaseReady) { 
         console.warn("[Mobile Lifecycle Engine Guard] Core data configuration or pricing methods are not yet ready. Retrying loop..."); 
-        setTimeout(function() { 
+        setTimeout;(function() { 
             window.runUnifiedPlatformLifecycleBoot(); 
         }, 50); 
         return; 
     } 
 
-    // 🟢 MOBILE STRUCTURAL REPAIR: Strips desktop 50px gap pushes and maximum width constraints 
+    // ðŸŸ¢ MOBILE STRUCTURAL REPAIR: Strips desktop 50px gap pushes and maximum width constraints 
     const wizardContainerElement = document.querySelector(".wizard-container"); 
     if (wizardContainerElement) { 
         wizardContainerElement.style.setProperty('margin', '0', 'important'); 
@@ -933,7 +933,7 @@ if (document.readyState !== "loading") {
 
 
 // ============================================================================ //
-// 🔘 MOBILE DBA FORM INTERACTIVE ROUTING EVENT CONTROLLERS
+// ðŸ”˜ MOBILE DBA FORM INTERACTIVE ROUTING EVENT CONTROLLERS
 // ============================================================================ //
 function toggleDbaPermissionWorkflowMobile(selectedValue) { 
     const wrapper = document.getElementById("dba_permission_matrix_wrapper"); 
@@ -1001,7 +1001,7 @@ function autoDiscoverAndHookInteractiveDbaFieldsMobile() {
 window.autoDiscoverAndHookInteractiveDbaFields = autoDiscoverAndHookInteractiveDbaFieldsMobile; 
 
 // ============================================================================ // 
-// 👥 PART 4: MOBILE LLC MEMBERSHIP CONTROLLER 
+// ðŸ‘¥ PART 4: MOBILE LLC MEMBERSHIP CONTROLLER 
 // ============================================================================ // 
 function handleMembershipDropdownChangeMobile(selectElement) { 
     var chosenValue = selectElement.value; 
@@ -1014,7 +1014,7 @@ function handleMembershipDropdownChangeMobile(selectElement) {
     membersBox.innerHTML = ""; 
     
     if (isSingleMember) { 
-        // 🟢 FIXED MOBILE MARKUP STRUCTURAL REPAIR: 
+        // ðŸŸ¢ FIXED MOBILE MARKUP STRUCTURAL REPAIR: 
         // Re-added the complete, valid missing opening select tag block to stop options collapsing on iOS/Android
         singleMemberBox.innerHTML = '<div class="wizard-input-group" style="margin-top: 14px; background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0; width: 100% !important; box-sizing: border-box;">' + 
             '<label for="sole_member_choice" style="font-weight: 700; color: #0a1f44; display: block; margin-bottom: 6px; font-size: 0.85rem;">Are you the 1 Member of this company? *</label>' + 
@@ -1046,7 +1046,7 @@ window.handleMembershipDropdownChange = handleMembershipDropdownChangeMobile;
 window.handleSoleMemberIdentityToggle = handleSoleMemberIdentityToggleMobile; 
 
 // ============================================================================ // 
-// 📡 MOBILE LATE-BINDING MUTATION LISTENER BRIDGE 
+// ðŸ“¡ MOBILE LATE-BINDING MUTATION LISTENER BRIDGE 
 // ============================================================================ // 
 document.addEventListener("DOMContentLoaded", () => { 
     const mainFormSlotNode = document.getElementById("dynamic-onboarding-fields-root") || document.body; 
@@ -1062,7 +1062,7 @@ document.addEventListener("DOMContentLoaded", () => {
 }); 
 
 // ============================================================================ //
-// 🧭 MOBILE NAVIGATION & APPLICATION SLIDER PANELS (STEP 2 COMPLIANT)          //
+// ðŸ§­ MOBILE NAVIGATION & APPLICATION SLIDER PANELS (STEP 2 COMPLIANT)          //
 // ============================================================================ //
 function goToNextWizardStepMobile(targetStep, eventClickRef) { 
     window.currentWizardActiveStep = parseInt(window.currentWizardActiveStep, 10) || 1; 
@@ -1129,10 +1129,10 @@ function switchWizardActiveViewLayoutMobile(activeStepTarget) {
         window.runUnifiedWizardBootEngine(); 
     }
 
-    // 🟢 DEFERRED REPOSITION FIX FOR STEP 2:
+    // ðŸŸ¢ DEFERRED REPOSITION FIX FOR STEP 2:
     // Pushes the footer row down AFTER dynamic script inputs are mounted into the DOM layout sheets
     if (activeStepTarget === 2) {
-        setTimeout(function() {
+        setTimeout;(function() {
             const masterForm = document.getElementById("master-onboarding-form"); 
             const actionFooter = document.querySelector(".wizard-action-footer") || document.querySelector(".mobile-sticky-footer"); 
             if (masterForm && actionFooter) { 
@@ -1153,7 +1153,7 @@ window.switchWizardActiveViewLayout = switchWizardActiveViewLayoutMobile;
 
 
 // ============================================================================ //
-// 🗺️ REPAIRED MOBILE SIDEBAR TIMELINE NAV LIGHTS ENGINE
+// ðŸ—ºï¸ REPAIRED MOBILE SIDEBAR TIMELINE NAV LIGHTS ENGINE
 // ============================================================================ //
 function updateApplicationMapTimelineBubblesMobile(currentStepIndex) { 
     const activeStep = parseInt(currentStepIndex, 10) || 1; 
@@ -1211,7 +1211,7 @@ function updateApplicationMapTimelineBubblesMobile(currentStepIndex) {
 window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubblesMobile; 
 
 // ============================================================================ // 
-// 🎨 MOBILE NEUTRAL SELECTION SKINNING MODULE (STEP 3 VIEW ISOLATION) 
+// ðŸŽ¨ MOBILE NEUTRAL SELECTION SKINNING MODULE (STEP 3 VIEW ISOLATION) 
 // ============================================================================ // 
 function autoSkinSelectedUpsellCardsMobile() { 
     const step3Checkboxes = document.querySelectorAll( 
@@ -1253,7 +1253,7 @@ if (document.readyState !== "loading") {
 
 
 // ============================================================================ //
-// 🛡️ MOBILE POWER OF ATTORNEY MATRIX CORE ENGINE & WARNING CLICK GATES
+// ðŸ›¡ï¸ MOBILE POWER OF ATTORNEY MATRIX CORE ENGINE & WARNING CLICK GATES
 // ============================================================================ //
 window.hasUserScrolledToBottomPoa = window.hasUserScrolledToBottomPoa || false; 
 
@@ -1395,20 +1395,20 @@ function runActivePoaClickValidationGateMobile() {
     if (consentCheckbox) isConsentChecked = consentCheckbox.checked; 
     else isConsentChecked = true; 
 
-    // 🚩 Validation Gate 1: Track terms scroll completion block 
+    // ðŸš© Validation Gate 1: Track terms scroll completion block 
     if (!window.hasUserScrolledToBottomPoa) { 
         displayOrangePoaWarningBannerMobile("Action Required: Please scroll down to the bottom of the disclosure document container to verify and clear the onboarding terms block."); 
         return false; 
     } 
 
-    // 🚩 Validation Gate 2: Track signature name string text values 
+    // ðŸš© Validation Gate 2: Track signature name string text values 
     if (!isSignatureValid) { 
         displayOrangePoaWarningBannerMobile("Action Required: Please enter your complete First and Last Name inside the legal digital signature element field box."); 
         if (signatureInput) signatureInput.focus(); 
         return false; 
     } 
 
-    // 🚩 Validation Gate 3: Track checkbox verification confirmation choices 
+    // ðŸš© Validation Gate 3: Track checkbox verification confirmation choices 
     if (!isConsentChecked) { 
         displayOrangePoaWarningBannerMobile("Action Required: Please review and tick the verification acknowledgment statement checkbox to authorize documentation filing protocols."); 
         if (consentCheckbox) consentCheckbox.focus(); 
@@ -1434,7 +1434,7 @@ window.validateStepInputParametersVanilla = function(activeStep) {
 };
 
 // ============================================================================ //
-// 📱 MOBILE INPUT SECURITY RE-ENGAGEMENT & EVENT TUNNEL MATRIX
+// ðŸ“± MOBILE INPUT SECURITY RE-ENGAGEMENT & EVENT TUNNEL MATRIX
 // ============================================================================ //
 
 /** 
@@ -1495,7 +1495,7 @@ function attachPoaValidationListenersMobile() {
 } 
 
 // ============================================================================ // 
-// 🎨 CORPORATE DESIGN RE-SKIN: UNIFIED APPLICATION COMPLIANCE BANNER (MOBILE) 
+// ðŸŽ¨ CORPORATE DESIGN RE-SKIN: UNIFIED APPLICATION COMPLIANCE BANNER (MOBILE) 
 // ============================================================================ // 
 function displayOrangePoaWarningBannerMobile(messageText) { 
     const poaPanel = document.getElementById("step-panel-4") || document.getElementById("step-4"); 
@@ -1520,12 +1520,12 @@ function displayOrangePoaWarningBannerMobile(messageText) {
     warningBox.scrollIntoView({ behavior: "smooth", block: "center" }); 
 } 
 
-// 📦 GLOBAL SCOPE EXPOSURE AND OBSERVER OVERRIDES
+// ðŸ“¦ GLOBAL SCOPE EXPOSURE AND OBSERVER OVERRIDES
 window.forceUnfreezeStep4FormInputs = forceUnfreezeStep4FormInputsMobile; 
 window.attachPoaValidationListeners = attachPoaValidationListenersMobile; 
 window.displayOrangePoaWarningBanner = displayOrangePoaWarningBannerMobile; 
 
-// 🟢 MOBILE WORKSPACE INTERACTION LOCK-RELEASE HOOK: 
+// ðŸŸ¢ MOBILE WORKSPACE INTERACTION LOCK-RELEASE HOOK: 
 function initializeStep4MutationObserverTrackingMobile() { 
     const targetPanelNode = document.getElementById("step-panel-4") || document.getElementById("step-4"); 
     if (!targetPanelNode) return; 
@@ -1556,7 +1556,7 @@ if (document.readyState !== "loading") {
 }
 
 // ============================================================================ //
-// 🔌 MOBILE STEP 3 RENDER TARGET SYNCHRONIZATION BRIDGE (TIMING RESILIENT)
+// ðŸ”Œ MOBILE STEP 3 RENDER TARGET SYNCHRONIZATION BRIDGE (TIMING RESILIENT)
 // ============================================================================ //
 function autoInitializeStep3MarketplaceCatalogMobile() { 
     const htmlMarketplaceBox = document.getElementById("wizard-dynamic-upsells-render-target"); 
@@ -1574,7 +1574,7 @@ function autoInitializeStep3MarketplaceCatalogMobile() {
 document.addEventListener("DOMContentLoaded", autoInitializeStep3MarketplaceCatalogMobile); 
 
 // ============================================================================ // 
-// 🛠️ MOBILE WORKSPACE CARD COMPILER (ANTI-SMASH CARD OVERRIDES)
+// ðŸ› ï¸ MOBILE WORKSPACE CARD COMPILER (ANTI-SMASH CARD OVERRIDES)
 // ============================================================================ // 
 function renderTargetUpsellsListPanelMobile(catalog, renderTarget) { 
     if (!catalog || !renderTarget) return {}; 
@@ -1638,7 +1638,7 @@ if (typeof window.handleBackgroundUpsellTogglePass !== "function") {
 window.renderTargetUpsellsListPanel = renderTargetUpsellsListPanelMobile; 
 
 // ============================================================================ // 
-// 🧼 MOBILE STEP 3 VISUAL OVERLAY CLEANER
+// ðŸ§¼ MOBILE STEP 3 VISUAL OVERLAY CLEANER
 // ============================================================================ // 
 function eliminateBlankDescriptionUpsellsFromStep3Mobile() { 
     console.log("[Mobile Marketplace Guard] Cleaning Step 3 elements layout fields..."); 
@@ -1682,7 +1682,7 @@ window.eliminateBlankDescriptionUpsellsFromStep3 = eliminateBlankDescriptionUpse
 
 
 // ============================================================================ //
-// 🖋️ MOBILE LIVE CURSIVE SIGNATURE MIRROR PREVIEW MATRIX
+// ðŸ–‹ï¸ MOBILE LIVE CURSIVE SIGNATURE MIRROR PREVIEW MATRIX
 // ============================================================================ //
 function initCursiveSignatureCaptureLivePreviewMobile() { 
     const textInputField = document.getElementById("poa_typed_signature") || document.getElementById("signature_input"); 
@@ -1727,7 +1727,7 @@ if (poaPreviewPanel) {
 window.initCursiveSignatureCaptureLivePreview = initCursiveSignatureCaptureLivePreviewMobile; 
 
 // ============================================================================ // 
-// 🛡️ MOBILE ACTIVE NAVIGATION INTERCEPTOR (PERMANENTLY ACTIVE ON-CLICK BAR) 
+// ðŸ›¡ï¸ MOBILE ACTIVE NAVIGATION INTERCEPTOR (PERMANENTLY ACTIVE ON-CLICK BAR) 
 // ============================================================================ // 
 function runActivePoaClickValidationGateMobile(event) { 
     console.log("[Mobile POA Interceptor] Active click captured. Evaluating criteria fields..."); 
@@ -1758,7 +1758,7 @@ function runActivePoaClickValidationGateMobile(event) {
         isConsentChecked = true; 
     } 
 
-    // 🚩 MOBILE ON-CLICK GATE 1: Verify document scrolling threshold 
+    // ðŸš© MOBILE ON-CLICK GATE 1: Verify document scrolling threshold 
     if (!window.hasUserScrolledToBottomPoa) { 
         if (typeof window.displayOrangePoaWarningBanner === "function") { 
             window.displayOrangePoaWarningBanner("Action Needed: Please scroll to the bottom of the disclosure to confirm you read it and understand it."); 
@@ -1766,7 +1766,7 @@ function runActivePoaClickValidationGateMobile(event) {
         return false; 
     } 
 
-    // 🚩 MOBILE ON-CLICK GATE 2: Verify signature name format structure 
+    // ðŸš© MOBILE ON-CLICK GATE 2: Verify signature name format structure 
     if (!isSignatureValid) { 
         if (typeof window.displayOrangePoaWarningBanner === "function") { 
             window.displayOrangePoaWarningBanner("Action Required: Please enter your complete First and Last Name inside the legal digital signature element field box."); 
@@ -1775,7 +1775,7 @@ function runActivePoaClickValidationGateMobile(event) {
         return false; 
     } 
 
-    // 🚩 MOBILE ON-CLICK GATE 3: Verify checkbox authorization checkmarks 
+    // ðŸš© MOBILE ON-CLICK GATE 3: Verify checkbox authorization checkmarks 
     if (!isConsentChecked) { 
         if (typeof window.displayOrangePoaWarningBanner === "function") { 
             window.displayOrangePoaWarningBanner("Action Required: Please review and tick the verification acknowledgment statement checkbox to authorize documentation filing protocols."); 
@@ -1784,12 +1784,12 @@ function runActivePoaClickValidationGateMobile(event) {
         return false; 
     } 
 
-    // 🟢 SUCCESS: All criteria met. Remove alerts and slide mobile view to panel 5
+    // ðŸŸ¢ SUCCESS: All criteria met. Remove alerts and slide mobile view to panel 5
     const existingWarning = document.getElementById("poa-orange-alert-banner"); 
     if (existingWarning) existingWarning.remove(); 
     console.log("[Mobile POA Interceptor] Step 4 compliance gates passed. Advancing to Step 5."); 
 
-    // 💾 COMMIT POSITION TRACK TO SYSTEM ENGINE CACHE
+    // ðŸ’¾ COMMIT POSITION TRACK TO SYSTEM ENGINE CACHE
     const cacheKey = "f4u_wizard_onboarding_state"; 
     try { 
         const currentCacheData = JSON.parse(localStorage.getItem(cacheKey) || "{}"); 
@@ -1809,7 +1809,7 @@ window.runActivePoaClickValidationGate = runActivePoaClickValidationGateMobile;
 
 
 // ============================================================================ //
-// 📡 MOBILE UN-FREEZER BRIDGE ATTACHMENT FOR INLINE SUBMIT CONTROL FIELDS
+// ðŸ“¡ MOBILE UN-FREEZER BRIDGE ATTACHMENT FOR INLINE SUBMIT CONTROL FIELDS
 // ============================================================================ //
 
 if (typeof window.forceUnfreezeStep4FormInputs !== "function") { 
@@ -1860,7 +1860,7 @@ window.forceUnfreezeStep4FormInputs = forceUnfreezeStep4FormInputsMobile;
 window.checkPoaInputStateSilently = checkPoaInputStateSilentlyMobile; 
 
 // ============================================================================ // 
-// ⓘ MOBILE CONTEXTUAL TOOLTIP POP-UP ENGINE 
+// â“˜ MOBILE CONTEXTUAL TOOLTIP POP-UP ENGINE 
 // ============================================================================ // 
 function togglePoaContextualTooltipDisplayMobile(event) { 
     if (event && typeof event.stopPropagation === "function") { 
@@ -1897,7 +1897,7 @@ function togglePoaContextualTooltipDisplayMobile(event) {
         `; 
     } 
 
-    // 🟢 MOBILE RE-SKIN OVERRIDES: Forces absolute box layout safety parameters inside thin viewports
+    // ðŸŸ¢ MOBILE RE-SKIN OVERRIDES: Forces absolute box layout safety parameters inside thin viewports
     tooltipCard.style.display = "block"; 
     tooltipCard.style.setProperty("background-color", "#ffffff", "important"); 
     tooltipCard.style.setProperty("border", "1px solid #e2e8f0", "important"); 
@@ -1924,7 +1924,7 @@ document.addEventListener("click", () => {
 
 
 // ============================================================================ //
-// 🟢 AUTOMATED GLOBAL DISMISSAL INTERCEPTOR (THE UN-TRAP ENGINE)
+// ðŸŸ¢ AUTOMATED GLOBAL DISMISSAL INTERCEPTOR (THE UN-TRAP ENGINE)
 // ============================================================================ //
 document.addEventListener("click", function(globalClickEvent) { 
     const tooltipCardElement = document.getElementById("poa-tooltip-card"); 
@@ -1938,7 +1938,7 @@ document.addEventListener("click", function(globalClickEvent) {
 }); 
 
 // ============================================================================ //
-// 📊 STEP 5 INTERACTIVE VISIBILITY REAL-TIME INVOICE REFRESHER
+// ðŸ“Š STEP 5 INTERACTIVE VISIBILITY REAL-TIME INVOICE REFRESHER
 // ============================================================================ //
 function forceStep5SummaryInvoiceRefreshMobile() { 
     console.log("[Mobile Summary Hub] Step 5 panel active. Forcing calculations update..."); 
@@ -1956,7 +1956,7 @@ function forceStep5SummaryInvoiceRefreshMobile() {
     } 
 } 
 
-// 🟢 SAFE MOBILE INTERCEPT ROUTER
+// ðŸŸ¢ SAFE MOBILE INTERCEPT ROUTER
 if (typeof window.switchWizardActiveViewLayout === "function" && !window.switchWizardActiveViewLayout.isWrappedBySummaryEngine) { 
     const originalActiveLayoutSwapperMobile = window.switchWizardActiveViewLayout; 
     window.switchWizardActiveViewLayout = function(activeStepTarget) { 
@@ -1969,7 +1969,7 @@ if (typeof window.switchWizardActiveViewLayout === "function" && !window.switchW
 } 
 
 /** 
- * 🟢 UNIFIED ISOLATED VIEW OBSERVER ENGINE (MOBILE CONFIG)
+ * ðŸŸ¢ UNIFIED ISOLATED VIEW OBSERVER ENGINE (MOBILE CONFIG)
  */ 
 function initStep5PurchaseSummaryVisibilityTrackerMobile() { 
     const summaryPanelNodeElement = document.getElementById("step-panel-5") || document.getElementById("step-5"); 
@@ -2004,7 +2004,7 @@ window.initStep5PurchaseSummaryVisibilityTracker = initStep5PurchaseSummaryVisib
 
 
 // ============================================================================ //
-// 🛒 MOBILE STEP 5 INVOICE CALCULATOR & MARKUP BUILDER ENGINE
+// ðŸ›’ MOBILE STEP 5 INVOICE CALCULATOR & MARKUP BUILDER ENGINE
 // ============================================================================ //
 function directInjectCartAddonsToSummaryStep5Mobile() { 
     console.log("[Mobile Summary Engine] Recalculating itemized matrix rows pass..."); 
@@ -2054,7 +2054,7 @@ function directInjectCartAddonsToSummaryStep5Mobile() {
     
     rowsTargetNode.innerHTML = baselineHeaderRow + itemsMarkupString; 
 
-    // 🟢 DYNAMIC MOBILE MARKUP BINDING BRIDGE
+    // ðŸŸ¢ DYNAMIC MOBILE MARKUP BINDING BRIDGE
     const grandTotalTargetElements = [ 
         document.getElementById("summary-grand-total-display"), 
         document.getElementById("step-5-total-value"), 
@@ -2085,7 +2085,7 @@ window.directInjectCartAddonsToSummaryStep5 = directInjectCartAddonsToSummarySte
 
 
 // ============================================================================ //
-// 📊 MOBILE STEP 5 CART REMOVE ACTUATOR ENGINE
+// ðŸ“Š MOBILE STEP 5 CART REMOVE ACTUATOR ENGINE
 // ============================================================================ //
 function removeSelectedAddonItemStraightFromSummaryCardMobile(targetCheckboxElementId) { 
     if (!targetCheckboxElementId) return; 
@@ -2129,7 +2129,7 @@ function removeSelectedAddonItemStraightFromSummaryCardMobile(targetCheckboxElem
 window.removeSelectedAddonItemStraightFromSummaryCard = removeSelectedAddonItemStraightFromSummaryCardMobile;
 
 // ============================================================================ // 
-// 📋 MOBILE DYNAMIC INTERACTIVE CHECKLIST ENGINE (POPUP MODAL CONTROL)
+// ðŸ“‹ MOBILE DYNAMIC INTERACTIVE CHECKLIST ENGINE (POPUP MODAL CONTROL)
 // ============================================================================ // 
 function launchNewEntrantAuditRequirementsGuideModalMobile() { 
     let modalRoot = document.getElementById("f4u-price-guide-modal-root"); 
@@ -2227,7 +2227,7 @@ window.closeNewEntrantAuditPriceGuideModal = closeNewEntrantAuditPriceGuideModal
 
 
 // ============================================================================ //
-// 📋 MOBILE DBA INTERACTIVE CHECKLIST MOUNTS & FUNNEL CONTROLLERS
+// ðŸ“‹ MOBILE DBA INTERACTIVE CHECKLIST MOUNTS & FUNNEL CONTROLLERS
 // ============================================================================ //
 
 function syncModalCheckboxActionDirectToFormMobile(backgroundFormId, isChecked) { 
@@ -2299,7 +2299,7 @@ window.toggleNewEntrantAuditLetterDetails = toggleNewEntrantAuditLetterDetailsMo
 window.processStepTwoFunnelAdvancementGate = processStepTwoFunnelAdvancementGateMobile;
 
 // ============================================================================ // 
-// 📊 STEP 5 INTERACTIVE VISIBILITY REAL-TIME INVOICE REFRESHER 
+// ðŸ“Š STEP 5 INTERACTIVE VISIBILITY REAL-TIME INVOICE REFRESHER 
 // ============================================================================ // 
 function forceStep5SummaryInvoiceRefreshMobile() { 
     if (typeof window.runPricingMatrixDataCrawlPass === "function") { 
@@ -2323,7 +2323,7 @@ if (step5PanelElementNode) {
 }
 
 // ============================================================================ //
-// 💳 MOBILE STEP 6 SECURE GATEWAY REAL-TIME INVOICE REFRESHER & STRIPE BRIDGE
+// ðŸ’³ MOBILE STEP 6 SECURE GATEWAY REAL-TIME INVOICE REFRESHER & STRIPE BRIDGE
 // ============================================================================ //
 
 function forceStep6StripePaymentGatewayRefreshPassMobile() { 
@@ -2338,7 +2338,7 @@ function forceStep6StripePaymentGatewayRefreshPassMobile() {
         console.log(`[Mobile Payment Gate] Balance display hydrated: $${parseFloat(activeRunningTotalAmount).toFixed(2)}`); 
     } 
 
-    // 💳 🟢 AUTOMATED STRIPE INTERFACE INITIALIZER WITH SINGLE-MOUNT SAFETY GATE
+    // ðŸ’³ ðŸŸ¢ AUTOMATED STRIPE INTERFACE INITIALIZER WITH SINGLE-MOUNT SAFETY GATE
     const stripeInputContainer = document.getElementById("stripe-card-element") || document.getElementById("card-element"); 
     if (stripeInputContainer && stripeInputContainer.children.length > 0) { 
         console.log("[Mobile Payment Gate] Stripe element pre-rendered inside container."); 
@@ -2366,7 +2366,7 @@ if (step6PanelContainerNode) {
 } 
 
 // ============================================================================ // 
-// 📦 GLOBAL LAYERS EXPOSURE AND CORE LISTENER REGISTRATIONS 
+// ðŸ“¦ GLOBAL LAYERS EXPOSURE AND CORE LISTENER REGISTRATIONS 
 // ============================================================================ // 
 window.syncModalCheckboxActionDirectToForm = window.syncModalCheckboxActionDirectToForm || syncModalCheckboxActionDirectToFormMobile; 
 window.syncModalCheckboxChangeToBackgroundForm = window.syncModalCheckboxActionDirectToForm; 
@@ -2388,8 +2388,8 @@ if (document.readyState !== "loading") {
     document.addEventListener("DOMContentLoaded", attachStepTwoNavigationTriggersMobile); 
 } 
 
-(function() { 
-    // 🟢 MOBILE PERFORMANCE ENHANCEMENT: Restores internal container scrollers instead of the whole page 
+;(function() { 
+    // ðŸŸ¢ MOBILE PERFORMANCE ENHANCEMENT: Restores internal container scrollers instead of the whole page 
     const masterLayoutPanels = document.querySelectorAll(".wizard-panel"); 
     masterLayoutPanels.forEach(function(panel) { 
         const panelObserverMobile = new MutationObserver(function(mutations) { 
@@ -2413,7 +2413,7 @@ if (document.readyState !== "loading") {
 
 
 // ============================================================================ //
-// 📡 MOBILE NETWORK ASSET ROUTER & DYNAMIC FILE LOADER SYSTEM
+// ðŸ“¡ MOBILE NETWORK ASSET ROUTER & DYNAMIC FILE LOADER SYSTEM
 // ============================================================================ //
 
 const SERVICE_URL_REGISTRY_MOBILE = { 
@@ -2523,7 +2523,7 @@ const SERVICE_URL_REGISTRY_MOBILE = {
 
 
 // ============================================================================ //
-// ⚡ MOBILE UNIVERSAL SERVICE-FORM LIFECYCLE COMPILER ENGINE
+// âš¡ MOBILE UNIVERSAL SERVICE-FORM LIFECYCLE COMPILER ENGINE
 // ============================================================================ //
 async function executeStepTwoDynamicFormInjectionMobile(keysBeforeScriptLoads, rawUrlSlug) { 
     console.log("[Mobile Lifecycle Engine] Starting universal template injection compilation pass..."); 
@@ -2645,7 +2645,7 @@ async function executeStepTwoDynamicFormInjectionMobile(keysBeforeScriptLoads, r
 window.executeStepTwoDynamicFormInjection = executeStepTwoDynamicFormInjectionMobile; 
 
 // ============================================================================ //
-// 📱 MOBILE DEVICE CLASS HANDLERS
+// ðŸ“± MOBILE DEVICE CLASS HANDLERS
 // ============================================================================ //
 function evaluateSystemViewportDesignMobile() { 
     const container = document.querySelector('.wizard-container'); 
@@ -2660,9 +2660,9 @@ window.addEventListener("resize", evaluateSystemViewportDesignMobile);
 
 
 // ============================================================================ //
-// 🚀 STANDALONE MOBILE INITIALIZATION ORCHESTRATOR
+// ðŸš€ STANDALONE MOBILE INITIALIZATION ORCHESTRATOR
 // ============================================================================ //
-(function() {
+;(function() {
     function bootStandaloneMobileWizard() {
         console.log("[Mobile Standalone Boot] Synchronizing framework lifecycles...");
         
@@ -2686,3 +2686,4 @@ window.addEventListener("resize", evaluateSystemViewportDesignMobile);
         document.addEventListener("DOMContentLoaded", bootStandaloneMobileWizard);
     }
 })();
+

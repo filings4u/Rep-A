@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 🚛 SYSTEM COMPLIANCE SERVICE: BOC-3 AMENDMENT ENGINE (PART 1 OF 3)
+﻿// ============================================================================ // 
+// ðŸš› SYSTEM COMPLIANCE SERVICE: BOC-3 AMENDMENT ENGINE (PART 1 OF 3)
 // ============================================================================ // 
 
 function initBoc3AmendmentServices() {
@@ -111,7 +111,7 @@ function initBoc3AmendmentServices() {
         <label for="boc_scope_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Filing Scope Adjustment Intent <span style="color: #ef4444;">*</span></label>
         <select id="boc_scope_choice" required class="wizard-input-field" onchange="window.toggleBoc3FilingPricingWeightParameters(this.value)">
           <option value="blanket" selected>Full Blanket Designation (Covers all 50 US States under unified registry)</option>
-          <option value="individual">Individual State Changes (Update agents for specific target territories only) — Add $45.00</option>
+          <option value="individual">Individual State Changes (Update agents for specific target territories only) â€” Add $45.00</option>
         </select>
       </div>
 
@@ -289,3 +289,4 @@ function initBoc3AmendmentServices() {
 
 // Global execution runtime ignition hook
 initBoc3AmendmentServices();
+

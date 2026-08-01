@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ HAZMAT REGISTRATION MODULE VALIDATION MATRIX ENGINE                         //
+﻿// ============================================================================ //
+// ðŸ› ï¸ HAZMAT REGISTRATION MODULE VALIDATION MATRIX ENGINE                         //
 // ============================================================================ //
 function initHazmatRegistrationService() {
   // Global wizard registries allocation
@@ -148,8 +148,8 @@ function buildHazmatRegistrationFormPart1(stateDropdownOptionsHtml = "") {
         <label for="haz_business_tier" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 4px;">Federal Business Entity Size Classification <span style="color: #ef4444;">*</span></label>
         <select id="haz_business_tier" required class="wizard-input-field" style="font-weight: 600; width: 100%; padding: 10px 12px; border: 1px solid var(--border, #cbd5e1); border-radius: 6px; box-sizing: border-box; outline: none;" onchange="if(typeof updateWizardFinalTotalAmountMatrix === 'function') { updateWizardFinalTotalAmountMatrix(); }">
           <option value="" disabled selected>Select Business Classification...</option>
-          <option value="small">Small Business / Non-Profit Operator (Meets SBA size criteria parameters — Reduced federal registration fees apply)</option>
-          <option value="large">Large Business Entity (Exceeds baseline SBA size parameters — Standard federal registration fees apply)</option>
+          <option value="small">Small Business / Non-Profit Operator (Meets SBA size criteria parameters â€” Reduced federal registration fees apply)</option>
+          <option value="large">Large Business Entity (Exceeds baseline SBA size parameters â€” Standard federal registration fees apply)</option>
         </select>
         <div class="wizard-error-message" id="err_haz_business_tier" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
@@ -161,7 +161,7 @@ function buildHazmatRegistrationFormPart1(stateDropdownOptionsHtml = "") {
 
 
 // ============================================================================ //
-// 🛠️ FAMILY 31B: HAZMAT REGISTRATION LAYOUT MATRIX (PART 2 OF 3)               //
+// ðŸ› ï¸ FAMILY 31B: HAZMAT REGISTRATION LAYOUT MATRIX (PART 2 OF 3)               //
 // ============================================================================ //
 function buildHazmatRegistrationFormPart2(stateDropdownOptionsHtml = "") {
   return `
@@ -236,7 +236,7 @@ function buildHazmatRegistrationFormPart2(stateDropdownOptionsHtml = "") {
 window.buildHazmatRegistrationFormPart2 = buildHazmatRegistrationFormPart2;
 
 // ============================================================================ //
-// 🛠️ FAMILY 31C: HAZMAT REGISTRATION LAYOUT MATRIX (PART 3 OF 3)               //
+// ðŸ› ï¸ FAMILY 31C: HAZMAT REGISTRATION LAYOUT MATRIX (PART 3 OF 3)               //
 // ============================================================================ //
 function buildHazmatRegistrationFormPart3(stateDropdownOptionsHtml = "") {
   return `
@@ -292,7 +292,7 @@ window.buildHazmatRegistrationFormPart3 = buildHazmatRegistrationFormPart3;
 
 
 // ============================================================================ // 
-// 🛠️ FAMILY 31A: HAZMAT REGISTRATION LAYOUT MATRIX (PART 2 OF 3)               // 
+// ðŸ› ï¸ FAMILY 31A: HAZMAT REGISTRATION LAYOUT MATRIX (PART 2 OF 3)               // 
 // ============================================================================ // 
 function buildHazmatRegistrationFormPart2(stateDropdownOptionsHtml = "") { 
   return ` 
@@ -378,7 +378,7 @@ window.buildHazmatRegistrationFormPart2 = buildHazmatRegistrationFormPart2;
 
 
 // ============================================================================ // 
-// 🛠️ FAMILY 31A: HAZMAT REGISTRATION LAYOUT MATRIX (PART 3 OF 3)               // 
+// ðŸ› ï¸ FAMILY 31A: HAZMAT REGISTRATION LAYOUT MATRIX (PART 3 OF 3)               // 
 // ============================================================================ // 
 function buildHazmatRegistrationFormPart3(stateDropdownOptionsHtml = "") { 
   return ` 
@@ -432,7 +432,7 @@ function buildHazmatRegistrationFormPart3(stateDropdownOptionsHtml = "") {
 
 
 // ============================================================================ // 
-// 📦 MASTER HAZMAT REGISTRATION APPLICATION ASSEMBLY FRAMEWORK                 // 
+// ðŸ“¦ MASTER HAZMAT REGISTRATION APPLICATION ASSEMBLY FRAMEWORK                 // 
 // ============================================================================ // 
 window.buildHazmatRegistrationForm = function(stateDropdownOptionsHtml = "") { 
   // 1. Gather all sub-module field matrices strings
@@ -468,3 +468,4 @@ window.formRegistry = window.formRegistry || {};
 window.formRegistry['hazmat-registration-form-master'] = function(stateDropdownOptionsHtml = "") { 
   return window.buildHazmatRegistrationForm(stateDropdownOptionsHtml); 
 };
+

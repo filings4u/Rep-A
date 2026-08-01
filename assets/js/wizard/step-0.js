@@ -1,7 +1,6 @@
-// ============================================================================ //
-// 🗺️ STEP 0: CONTEXTUAL JURISDICTION FILING ENTRY GATE LAYOUT ENGINE             //
-// ============================================================================ //
-(function renderStep0JurisdictionGateHtml() {
+﻿// ============================================================================ //
+// ðŸ—ºï¸ STEP 0: CONTEXTUAL JURISDICTION FILING ENTRY GATE LAYOUT ENGINE             //
+// ============================================================================ //;(function renderStep0JurisdictionGateHtml() {
   "use strict";
 
   const wizardFormWrapper = 
@@ -68,7 +67,7 @@
 
 
 // ============================================================================ //
-// 🔌 STEP 0 INTERACTIVE NAVIGATION AND PARAMETER STREAMING ACTIONS              //
+// ðŸ”Œ STEP 0 INTERACTIVE NAVIGATION AND PARAMETER STREAMING ACTIONS              //
 // ============================================================================ //
 window.processJurisdictionGateAdvancement = function() {
   const stateSelectorNode = document.getElementById("wizard_gate_state_select");
@@ -144,3 +143,5 @@ window.processJurisdictionGateAdvancement = function() {
     step1Panel.style.setProperty("display", "block", "important");
   }
 };
+
+

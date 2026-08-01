@@ -1,4 +1,4 @@
-function validateProcurementRegistrationFormPart1() {
+﻿function validateProcurementRegistrationFormPart1() {
   let isValid = true;
 
   const markInvalid = (inputEl, errorEl, msg) => {
@@ -423,7 +423,7 @@ function buildProcurementRegistrationFormPart3(stateDropdownOptionsHtml = "") {
  `;
 }
 
-// 📦 MASTER SAM.GOV PROCUREMENT APPLICATION ASSEMBLY HOOK
+// ðŸ“¦ MASTER SAM.GOV PROCUREMENT APPLICATION ASSEMBLY HOOK
 function buildProcurementRegistrationForm(stateDropdownOptionsHtml = "") {
  return buildProcurementRegistrationFormPart1(stateDropdownOptionsHtml) + 
         buildProcurementRegistrationFormPart2(stateDropdownOptionsHtml) + 
@@ -441,3 +441,4 @@ function validateEntireProcurementWizard() {
 
   return (isPart1Valid && isPart23Valid);
 }
+

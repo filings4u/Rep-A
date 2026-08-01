@@ -1,5 +1,5 @@
-// ============================================================================
-// ⚡ 4.5 UNIFIED ASYNCHRONOUS FORM INJECTION SYSTEM FOR STEP 2 (TIMING SECURED)
+﻿// ============================================================================
+// âš¡ 4.5 UNIFIED ASYNCHRONOUS FORM INJECTION SYSTEM FOR STEP 2 (TIMING SECURED)
 // ============================================================================
 
 /**
@@ -66,7 +66,7 @@ async function executeStepTwoDynamicFormInjection(isTransitionOverrideActive) {
   }
   
 // ============================================================================ //
-// 🛠️ STEP 2 DYNAMIC INJECTION FORMS HOOK AND ALGORITHMIC SCHEMA BUILDER       //
+// ðŸ› ï¸ STEP 2 DYNAMIC INJECTION FORMS HOOK AND ALGORITHMIC SCHEMA BUILDER       //
 // ============================================================================ //
 
 /**
@@ -153,7 +153,7 @@ function executeStepTwoDynamicFormInjection(isInitialBoot) {
       } else {
         fieldsRoot.innerHTML = `
           <div style="grid-column: span 2; text-align: center; padding: 25px; color: #ef4444; font-weight: 700; border: 1px dashed #ef4444; border-radius: 8px; width: 100%; box-sizing: border-box;">
-            ⚠ Dynamic layout module components could not be synchronized over the network. Please refresh the onboarding portal.
+            âš  Dynamic layout module components could not be synchronized over the network. Please refresh the onboarding portal.
           </div>`;
       }
     }
@@ -221,7 +221,7 @@ window.validateAlgorithmicFallbackFields = validateAlgorithmicFallbackFields;
 
 
 // ============================================================================ //
-// 🏛️ MASTER REGULATORY FORM FIELD INJECTION ENGINE (UNIVERSAL CONFIG ROUTER) //
+// ðŸ›ï¸ MASTER REGULATORY FORM FIELD INJECTION ENGINE (UNIVERSAL CONFIG ROUTER) //
 // ============================================================================ //
 
 /**
@@ -361,4 +361,5 @@ window.executeDynamicRegulatoryFieldInjection = executeDynamicRegulatoryFieldInj
 
 // Bind cleanly back to global workspace scopes
 window.executeDynamicRegulatoryFieldInjection = executeDynamicRegulatoryFieldInjection;
+
 

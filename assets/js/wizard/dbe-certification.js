@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🛠️ DBE CERTIFICATION SERVICE: REGULATORY ENGINE MATRIX (PART 1 OF 3)       //
+﻿// ============================================================================ //
+// ðŸ› ï¸ DBE CERTIFICATION SERVICE: REGULATORY ENGINE MATRIX (PART 1 OF 3)       //
 // ============================================================================ //
 function initDisadvantagedBusinessService() {
   window.formRegistry = window.formRegistry || {};
@@ -75,7 +75,7 @@ function initDisadvantagedBusinessService() {
 window.initDisadvantagedBusinessService = initDisadvantagedBusinessService;
 
 // ============================================================================ //
-// 📊 FAMILY 26A: DBE CERTIFICATION FORM LAYOUT (PART 1 OF 3)                   //
+// ðŸ“Š FAMILY 26A: DBE CERTIFICATION FORM LAYOUT (PART 1 OF 3)                   //
 // ============================================================================ //
 window.buildDbeCertificateFormPart1 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -117,7 +117,7 @@ window.buildDbeCertificateFormPart1 = function(stateDropdownOptionsHtml = "") {
 };
 window.buildDbeCertificateFormPart1 = buildDbeCertificateFormPart1;
 // ============================================================================ //
-// 📊 FAMILY 26A: DBE CERTIFICATION FORM LAYOUT (PART 2 OF 3)                   //
+// ðŸ“Š FAMILY 26A: DBE CERTIFICATION FORM LAYOUT (PART 2 OF 3)                   //
 // ============================================================================ //
 window.buildDbeCertificateFormPart2 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -173,7 +173,7 @@ window.buildDbeCertificateFormPart2 = buildDbeCertificateFormPart2;
 
 
 // ============================================================================ //
-// 🛠️ DBE CERTIFICATION SERVICE: MASTER VALIDATION MATRIX ENGINE               //
+// ðŸ› ï¸ DBE CERTIFICATION SERVICE: MASTER VALIDATION MATRIX ENGINE               //
 // ============================================================================ //
 window.validateEntireDbeCertificationWizard = function() {
   let isValid = true;
@@ -247,7 +247,7 @@ window.validateEntireDbeCertificationWizard = function() {
 };
 
 // ============================================================================ //
-// 📦 MASTER DBE CERTIFICATION APPLICATION ASSEMBLY HOOK                         //
+// ðŸ“¦ MASTER DBE CERTIFICATION APPLICATION ASSEMBLY HOOK                         //
 // ============================================================================ //
 window.buildDbeCertificateFormMaster = function(stateDropdownOptionsHtml = "") {
   const p1 = typeof window.buildDbeCertificateFormPart1 === "function" ? window.buildDbeCertificateFormPart1(stateDropdownOptionsHtml) : "";
@@ -287,3 +287,4 @@ window.formRegistry['dbe-certificate-form-master'] = function(stateDropdownOptio
 };
 
 window.buildDbeCertificateFormMaster = window.buildDbeCertificateFormMaster;
+

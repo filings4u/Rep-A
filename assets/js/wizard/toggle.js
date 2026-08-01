@@ -1,4 +1,4 @@
-// Part 1: Clear Layout Definition and Logo Extractor Loop
+﻿// Part 1: Clear Layout Definition and Logo Extractor Loop
 const timelineRegistryMatrix = [
   { idx: 0, title: "State Selection", desc: "State of Formation or Registration" },
   { idx: 1, title: "1. Selected Package", desc: "Items and inclusions" },
@@ -46,11 +46,11 @@ window.toggleMobileSidebarMenuOverlay = function(explicitEventRef) {
 
   if (isClosed) {
     navPanel.style.setProperty("display", "block", "important");
-    if (triggerIcon) triggerIcon.innerHTML = "✕ Close";
+    if (triggerIcon) triggerIcon.innerHTML = "âœ• Close";
     if (typeof window.syncDropdownStepIndicatorLights === "function") window.syncDropdownStepIndicatorLights();
   } else {
     navPanel.style.setProperty("display", "none", "important");
-    if (triggerIcon) triggerIcon.innerHTML = "☰ Menu";
+    if (triggerIcon) triggerIcon.innerHTML = "â˜° Menu";
   }
 };
 
@@ -73,7 +73,7 @@ window.generateMenuMarkupFromMatrix = function() {
         </li>
     `).join('');
 
-    // 2. 🟢 APPEND THE DYNAMIC SAVE PROGRESS ACTION ROW AT THE ABSOLUTE BOTTOM
+    // 2. ðŸŸ¢ APPEND THE DYNAMIC SAVE PROGRESS ACTION ROW AT THE ABSOLUTE BOTTOM
     dropdownMarkup += `
         <li style="padding: 16px; width: 100%; box-sizing: border-box; background: #ffffff; list-style-type: none;">
             <button id="sidebarFallbackLogoutBtn" class="logout-btn" type="button" 
@@ -158,7 +158,7 @@ window.attachDropdownRowNavigationClickListeners = function() {
       const navPanel = document.getElementById("f4u-dropdown-menu-panel");
       if (navPanel) navPanel.style.setProperty("display", "none", "important");
       const icon = document.getElementById("mobileNavTriggerIcon");
-      if (icon) icon.innerHTML = "☰ Menu";
+      if (icon) icon.innerHTML = "â˜° Menu";
     });
     rowNode.dataset.dropdownListenerHooked = "true";
   });
@@ -171,7 +171,7 @@ document.addEventListener("click", function(e) {
   if (!e.target.closest('#f4u-dropdown-menu-panel') && !e.target.closest('#mobileNavToggleBtn')) {
     navPanel.style.setProperty("display", "none", "important");
     const icon = document.getElementById("mobileNavTriggerIcon");
-    if (icon) icon.innerHTML = "☰ Menu";
+    if (icon) icon.innerHTML = "â˜° Menu";
   }
 });
 
@@ -187,4 +187,5 @@ if (document.readyState === "loading") {
 } else {
   window.initializeOverlayMenuAssets();
 }
+
 

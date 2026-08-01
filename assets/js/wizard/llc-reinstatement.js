@@ -1,8 +1,7 @@
-/**
+﻿/**
  * filings4u, LLC - Global Wizard-Wide Typography Standardizer
  * Injects a global stylesheet targeting all heading levels inside the wizard container.
- */
-(function enforceWizardWideHeadingScaling() {
+ */;(function enforceWizardWideHeadingScaling() {
   console.log("[Typography Suite] Applying smaller layout scaling matrix throughout the entire wizard...");
   
   const styleNode = document.createElement("style");
@@ -48,7 +47,7 @@
 
 
 // ============================================================================ //
-// 🏛️ FILINGS4U, LLC - UNIFIED LLC-REINSTATEMENT VALIDATION MATRIX ENGINE        //
+// ðŸ›ï¸ FILINGS4U, LLC - UNIFIED LLC-REINSTATEMENT VALIDATION MATRIX ENGINE        //
 // ============================================================================ //
 
 // Safely configure and instantiate the exact system framework properties
@@ -424,14 +423,14 @@ window.formRegistry['llc-reinstatement-part2-layout'] = function() {
     '<div id="rein_fees_unpaid_wrapper" style="grid-column: span 2; display: none; flex-direction: column; gap: 16px;">',
       '<div style="background: #fffaf0; border-left: 4px solid #f59e0b; padding: 14px; border-radius: 0 8px 8px 0; box-sizing: border-box;">',
         '<p style="color: #b45309; font-size: 0.825rem; margin: 0; font-weight: 600; line-height: 1.5;">',
-          '⚠️ All outstanding fees must be paid before the state will reinstate your formation. Filings4u will send you a notification inside your dashboard if there is a balance on your account.',
+          'âš ï¸ All outstanding fees must be paid before the state will reinstate your formation. Filings4u will send you a notification inside your dashboard if there is a balance on your account.',
         '</p>',
       '</div>',
       '<div class="wizard-input-group" style="margin: 0; width: 100%;">',
         '<label for="rein_add_compliance_audit" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Would you like to use Filings4u Compliance Service for $99 + State Fees to check if all fees have been paid? <span style="color: #ef4444;">*</span></label>',
         '<select id="rein_add_compliance_audit" class="wizard-input-field" style="font-weight: 600;" onchange="if(typeof updateWizardFinalTotalAmountMatrix === \'function\') { updateWizardFinalTotalAmountMatrix(); }">',
           '<option value="no" selected>No, I will review outstanding agency ledger lines independently</option>',
-          '<option value="yes">Yes, add Filings4u Compliance Balance Check & State Audit Service — $99.00</option>',
+          '<option value="yes">Yes, add Filings4u Compliance Balance Check & State Audit Service â€” $99.00</option>',
         '</select>',
       '</div>',
     '</div>'
@@ -625,7 +624,7 @@ window.formRegistry['llc-reinstatement-part3-layout'] = function() {
       '<label for="rein_ein_choice" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy);">Will you be applying for a new Employer Identification Number (EIN) after reinstatement? <span style="color: #ef4444;">*</span></label>',
       '<select id="rein_ein_choice" required class="wizard-input-field" style="font-weight: 600;" onchange="toggleReinstatementEinWorkflow(this.value)">',
         '<option value="no" selected>No, I already hold or will apply for EIN structures independently</option>',
-        '<option value="yes">Yes, add Filings4u Master EIN Procurement Service — $75.00</option>',
+        '<option value="yes">Yes, add Filings4u Master EIN Procurement Service â€” $75.00</option>',
       '</select>',
       '<div class="wizard-error-message" id="err_rein_ein_choice" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>',
     '</div>',
@@ -728,7 +727,7 @@ console.log("[LLC Reinstatement Part 3] Final layout templates and conditional c
 
 
 // ============================================================================ //
-// 📦 MASTER LLC REINSTATEMENT ASSEMBLY HOOK                                   //
+// ðŸ“¦ MASTER LLC REINSTATEMENT ASSEMBLY HOOK                                   //
 // ============================================================================ //
 
 /**
@@ -749,7 +748,7 @@ function buildLlcReinstatementForm(stateDropdownOptionsHtml) {
 // Bind cleanly back into the global tree references for legacy master calls
 window.buildLlcReinstatementForm = buildLlcReinstatementForm;
 // ============================================================================ //
-// ⚙️ INTERACTIVE INTERFACE CONTROLLERS (LLC REINSTATEMENT)                      //
+// âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (LLC REINSTATEMENT)                      //
 // ============================================================================ //
 
 window.toggleReinstatementFeesNoticeVisibility = function(value) {
@@ -839,3 +838,5 @@ window.toggleReinstatementAuditServicePricingHook = function(value) {
 };
 
 console.log("[LLC Reinstatement Finalizer] All interactive elements and billing recalculation modules fully loaded.");
+
+

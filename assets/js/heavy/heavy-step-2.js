@@ -1,7 +1,7 @@
+﻿// ============================================================================
+// ðŸš› FILINGS4U HEAVY TAX ENGINE - STEP 2: VEHICLE SPREADSHEET MATRIX (PART 1)
 // ============================================================================
-// 🚛 FILINGS4U HEAVY TAX ENGINE - STEP 2: VEHICLE SPREADSHEET MATRIX (PART 1)
-// ============================================================================
-(function() {
+;(function() {
   "use strict";
 
   // --- AUTOMATED IRS TAX BRACKET ASSIGNER ---
@@ -153,7 +153,7 @@
     const client = window.supabaseClient || window.supabase || window.f4uWizardSupabaseInstance;
     
     // =========================================================================
-    // 🎨 FIXED: 100% ALERT-FREE DATA VALIDATION FEEDBACK SYSTEM
+    // ðŸŽ¨ FIXED: 100% ALERT-FREE DATA VALIDATION FEEDBACK SYSTEM
     // =========================================================================
     if (!window.activeLoadedFleetVehiclesArray || window.activeLoadedFleetVehiclesArray.length === 0) {
       const vinInput = document.getElementById("matrix_vin");
@@ -240,7 +240,7 @@
         console.log("[Heavy Step 2 Local Bypass] Supabase engine unmapped. Proceeding under sandbox execution space matrix modes seamlessly.");
       }
 
-      // 🚀 SUCCESS GATEWAY: Advance layout workspace views safely with your transition spinner wired in
+      // ðŸš€ SUCCESS GATEWAY: Advance layout workspace views safely with your transition spinner wired in
       if (typeof window.compileHeavyTaxCalculationsSummaryStep3 === "function") {
         await window.compileHeavyTaxCalculationsSummaryStep3();
       }
@@ -265,3 +265,4 @@
     }
   };
 })();
+

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Filings4U Platform Architecture
  * Module: trucker-insurance-quote.js
  * Part 1: Core Form Initialization & Part 1 Risk Assessment Layout
@@ -13,7 +13,7 @@ function initTruckerInsuranceQuoteServices() {
             <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;">
                 <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> Commercial Motor Carrier Insurance Lead Clearinghouse</strong>
                 Fulfilling public liability coverage requirements is a federal pre-requisite under FMCSA rules to activate your interstate Operating Authority (Form BMC-91 or BMC-91X). 
-                <span style="font-weight: 700; color: var(--primary);">⚠ Crucial Disclosing Provision:</span> Filings4u is a specialized commercial document filing service organization. We are not a licensed insurance agency, brokerage, or underwriter, and we do not sell insurance policies directly. All risk profile metrics submitted here are securely routed to our premium licensed insurance entity partners to compile and issue a competitive, non-binding quote tailored to your fleet.
+                <span style="font-weight: 700; color: var(--primary);">âš  Crucial Disclosing Provision:</span> Filings4u is a specialized commercial document filing service organization. We are not a licensed insurance agency, brokerage, or underwriter, and we do not sell insurance policies directly. All risk profile metrics submitted here are securely routed to our premium licensed insurance entity partners to compile and issue a competitive, non-binding quote tailored to your fleet.
             </div>
 
             <!-- SECTION 1: CARRIER RISK ASSESSMENT PROFILE -->
@@ -252,7 +252,7 @@ function initTruckerInsuranceQuoteServices() {
     };
 
     // ============================================================================ //
-    // 📦 MASTER TRUCKER INSURANCE LEAD APPLICATION ASSEMBLY HOOK
+    // ðŸ“¦ MASTER TRUCKER INSURANCE LEAD APPLICATION ASSEMBLY HOOK
     // ============================================================================ //
     window.formRegistry['trucker-insurance-quote-form-master'] = function(stateDropdownOptionsHtml = "") {
         return window.formRegistry['trucker-insurance-quote-part1-layout'](stateDropdownOptionsHtml) +
@@ -278,3 +278,4 @@ function initTruckerInsuranceQuoteServices() {
 
 // Global invocation setup initialization engine context
 initTruckerInsuranceQuoteServices();
+

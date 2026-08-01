@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 🗺️ WIZARD CORE ENGINE: MULTI-STEP INTERACTIVE NAVIGATION MODULE
+﻿// ============================================================================ //
+// ðŸ—ºï¸ WIZARD CORE ENGINE: MULTI-STEP INTERACTIVE NAVIGATION MODULE
 // ============================================================================ //
 window.currentWizardActiveStep = window.currentWizardActiveStep || 1;
 window.totalWizardExpectedSteps = window.totalWizardExpectedSteps || 7;
@@ -42,7 +42,7 @@ function goToNextWizardStep(targetStepIndex, event = null) {
     // Determine direction of navigation
     const isMovingForward = numericTargetIndex > previousStoredActiveStep;
 
-    // 🛡️ Input Validation Guard: Runs ONLY when moving FORWARD
+    // ðŸ›¡ï¸ Input Validation Guard: Runs ONLY when moving FORWARD
     if (isMovingForward && typeof window.validateStepInputParametersVanilla === "function") {
         console.log(`[Router Check] Verifying form fields for Step ${previousStoredActiveStep} before advancing...`);
         const isStepValid = window.validateStepInputParametersVanilla(previousStoredActiveStep);
@@ -62,7 +62,7 @@ function goToNextWizardStep(targetStepIndex, event = null) {
     const maximumWizardSteps = parseInt(window.totalWizardExpectedSteps, 10) || 7;
     if (numericTargetIndex > maximumWizardSteps) return false;
 
-    // ⚡ STAGE-ZERO INJECTION GATEKEEPER (Runs only when advancing to Step 2)
+    // âš¡ STAGE-ZERO INJECTION GATEKEEPER (Runs only when advancing to Step 2)
     if (numericTargetIndex === 2 && previousStoredActiveStep < 2) {
         if (typeof window.executeStepTwoDynamicFormInjection === "function") {
             try {
@@ -73,7 +73,7 @@ function goToNextWizardStep(targetStepIndex, event = null) {
         }
     }
 
-    // 💳 ZERO-HARDCODE CHECKOUT PROCESSING GATEWAY
+    // ðŸ’³ ZERO-HARDCODE CHECKOUT PROCESSING GATEWAY
     if (numericTargetIndex === maximumWizardSteps && previousStoredActiveStep === (maximumWizardSteps - 1)) {
         if (typeof window.executeOnboardingTransactionPayloadSubmitVanilla === "function") {
             window.executeOnboardingTransactionPayloadSubmitVanilla(numericTargetIndex);
@@ -89,7 +89,7 @@ function goToNextWizardStep(targetStepIndex, event = null) {
     window.currentWizardActiveStep = numericTargetIndex;
 
     // ============================================================================ //
-  // 🔄 PANEL VISIBILITY CONTAINMENT LOOP                                         //
+  // ðŸ”„ PANEL VISIBILITY CONTAINMENT LOOP                                         //
   // ============================================================================ //
   let isTargetPanelFoundAndDisplayed = false;
   const allWizardPanelsArray = document.querySelectorAll('[id^="step-panel-"]');
@@ -138,7 +138,7 @@ window.goToNextWizardStep = goToNextWizardStep;
 
 
 // ============================================================================ //
-// 🛡️ MANDATORY WORKFLOW VALIDATION ENGINE (PART A)
+// ðŸ›¡ï¸ MANDATORY WORKFLOW VALIDATION ENGINE (PART A)
 // ============================================================================ //
 /**
  * Executes a strict validation sweep across all required fields on the current step.
@@ -160,11 +160,11 @@ function validateCurrentWizardStepInputs(currentStepIndex) {
     requiredInputs.forEach(function(inputElement) {
         if (!inputElement) return;
 
-        // 🛡️ Check if the field is visually hidden inside a collapsed template block wrapper
+        // ðŸ›¡ï¸ Check if the field is visually hidden inside a collapsed template block wrapper
         const isVisuallyHidden = (inputElement.offsetWidth === 0 && inputElement.offsetHeight === 0) || inputElement.closest('[style*="display: none"]');
         if (isVisuallyHidden) return;
 
-        // 🛡️ Lock check verification: Pure property extraction flags for readonly elements
+        // ðŸ›¡ï¸ Lock check verification: Pure property extraction flags for readonly elements
         if (inputElement.hasAttribute("readonly") || inputElement.readOnly || inputElement.disabled) {
             inputElement.classList.remove("input-error");
             inputElement.style.removeProperty("border-color");
@@ -211,7 +211,7 @@ window.validateStepInputParametersVanilla = validateCurrentWizardStepInputs;
 
 
 // ============================================================================ //
-// 🖋️ STEP 4: INTERCEPTOR ENGINE & DYNAMIC VALIDATION POP-UP (PART A)          //
+// ðŸ–‹ï¸ STEP 4: INTERCEPTOR ENGINE & DYNAMIC VALIDATION POP-UP (PART A)          //
 // ============================================================================ //
 window.isScrollCompletedGlobal = false;
 
@@ -240,13 +240,13 @@ window.handlePoaValidationSubmitIntercept = function(clickEvent) {
 
   // 1. DYNAMIC LOGICAL GATES EVALUATION
   if (!window.isScrollCompletedGlobal) {
-    alertMessageTextString = "⚠️ Please scroll to the bottom of the agreement to review and unlock the fields.";
+    alertMessageTextString = "âš ï¸ Please scroll to the bottom of the agreement to review and unlock the fields.";
     elementToHighlightNode = scrollBox;
   } else if (rawNameValue.length < 2 || !rawNameValue.includes(" ")) {
-    alertMessageTextString = "✍️ Requirement Warning: Please type your full name (First and Last) to sign.";
+    alertMessageTextString = "âœï¸ Requirement Warning: Please type your full name (First and Last) to sign.";
     elementToHighlightNode = nameInput;
   } else if (!consentBox.checked) {
-    alertMessageTextString = "🔒 Verification Guard: You must check this box to confirm your electronic consent.";
+    alertMessageTextString = "ðŸ”’ Verification Guard: You must check this box to confirm your electronic consent.";
     elementToHighlightNode = consentBox.parentElement;
   }
 
@@ -284,7 +284,7 @@ window.handlePoaValidationSubmitIntercept = function(clickEvent) {
   }
 
   // 4. CLEANUP TIMEOUTS: Scrub error markers after 3.5 seconds
-  setTimeout(function() {
+  setTimeout;(function() {
     alertContainerNode.classList.remove("show");
     elementToHighlightNode.classList.remove("poa-shake-element", "input-error");
     setTimeout(() => alertContainerNode.remove(), 200);
@@ -365,7 +365,7 @@ window.updateWizardStepProgressIndicatorBubbles = updateWizardStepProgressIndica
 
 
 // ============================================================================ //
-// ✍️ DIGITAL CURSIVE SIGNATURE RENDERING SUITE
+// âœï¸ DIGITAL CURSIVE SIGNATURE RENDERING SUITE
 // ============================================================================ //
 /**
  * Initializes real-time text-to-cursive handwriting mirror syncs across wizard fields.
@@ -385,7 +385,7 @@ function initCursiveSignatureCaptureLivePreview() {
         previewDisplay.style.transition = "opacity 0.2s ease-in-out, transform 0.2s ease-in-out";
     }
 
-    // 🛡️ RECOVERY PASS: Check active value states upon entering the step panel view
+    // ðŸ›¡ï¸ RECOVERY PASS: Check active value states upon entering the step panel view
     const inputField = document.getElementById("poa_signer_printed") || 
                        document.getElementById("signature-input") || 
                        document.getElementById("legal-signature") || 
@@ -403,7 +403,7 @@ function initCursiveSignatureCaptureLivePreview() {
         }
     }
 
-    // 🛡️ EVENT DELEGATION SECURITY HOOK:
+    // ðŸ›¡ï¸ EVENT DELEGATION SECURITY HOOK:
     // Bind directly to the document root exactly once. This ensures that even if inputs
     // are wiped out or re-injected dynamically, signatures continue mirroring flawlessly.
     if (!window.isSignatureGlobalListenerHooked) {
@@ -458,7 +458,7 @@ window.initCursiveSignatureCaptureLivePreview = initCursiveSignatureCaptureLiveP
 
 
 // ============================================================================ //
-// 📊 UNIVERSAL TIMELINE VISUAL REFLECTOR (PART A)
+// ðŸ“Š UNIVERSAL TIMELINE VISUAL REFLECTOR (PART A)
 // ============================================================================ //
 /**
  * Universal timeline visual reflector. Updates sidebar bubble tracks.
@@ -539,11 +539,11 @@ window.updateApplicationMapTimelineBubbles = updateApplicationMapTimelineBubbles
 
 
 // ============================================================================ //
-// 🛠️ SAFE SINGLE-MOUNT LIFECYCLE INTERCEPTOR PROXY
+// ðŸ› ï¸ SAFE SINGLE-MOUNT LIFECYCLE INTERCEPTOR PROXY
 // ============================================================================ //
 // Ensures the hook is attached exactly once to the root timeline execution pipeline.
 if (!window.isWizardNavigationProxyHookActive) {
-    (function() {
+    ;(function() {
         const originalNextStepFunc = window.goToNextWizardStep;
         
         if (typeof originalNextStepFunc === "function") {
@@ -565,7 +565,7 @@ if (!window.isWizardNavigationProxyHookActive) {
 
 
 // ============================================================================ //
-// 🛡️ GLOBAL NAVIGATION SAFETY HUB (DESTRUCTION PREVENTION DISPATCH)
+// ðŸ›¡ï¸ GLOBAL NAVIGATION SAFETY HUB (DESTRUCTION PREVENTION DISPATCH)
 // ============================================================================ //
 document.addEventListener("click", function(eventObj) {
     const clickedElement = eventObj.target.closest("button, a, .wizard-prev-btn, .btn-wizard-alt");
@@ -577,7 +577,7 @@ document.addEventListener("click", function(eventObj) {
     const elementId = clickedElement.id || "";
     const classList = clickedElement.classList;
 
-    // 🔍 Selective Back Verification: Check if the operator is intentionally trying to navigate backward
+    // ðŸ” Selective Back Verification: Check if the operator is intentionally trying to navigate backward
     const isExplicitBackButton = inlineOnclickString.includes("back") || 
                                  inlineOnclickString.includes("prev") || 
                                  inlineOnclickString.includes("- 1") || 
@@ -588,7 +588,7 @@ document.addEventListener("click", function(eventObj) {
                                  elementText === "back" || 
                                  elementText === "previous";
 
-    // 🚨 GUARD: If it is NOT a back button, exit immediately. Let forward form validators handle it.
+    // ðŸš¨ GUARD: If it is NOT a back button, exit immediately. Let forward form validators handle it.
     if (!isExplicitBackButton) return;
 
     // Safely isolate back movements to avoid unwanted form submissions or page resets
@@ -611,7 +611,7 @@ document.addEventListener("click", function(eventObj) {
     let safePreviousStepIndex = calculatedCurrentStep - 1;
     if (safePreviousStepIndex < 1) safePreviousStepIndex = 1;
 
-    // 🔄 Delegate view changes safely back to your central master router function core
+    // ðŸ”„ Delegate view changes safely back to your central master router function core
     if (typeof window.executeDirectStepJump === "function") {
         window.executeDirectStepJump(safePreviousStepIndex);
     } else if (typeof window.goToNextWizardStep === "function") {
@@ -643,7 +643,7 @@ document.addEventListener("click", function(eventObj) {
 
 
 // ============================================================================ //
-// ➕ EXPANDED FMCSA REJECTION CRITERIA SCREENERS (NEW COMPLIANCE WORKFLOWS)
+// âž• EXPANDED FMCSA REJECTION CRITERIA SCREENERS (NEW COMPLIANCE WORKFLOWS)
 // ============================================================================ //
 /**
  * Toggles dynamic alerts if an operator flags an absolute failure metric (e.g. no drug pool).
@@ -680,7 +680,7 @@ window.toggleNewEntrantCriticalFailureWarningVisibility = toggleNewEntrantCritic
 
 
 // ============================================================================ //
-// 🔄 NEW ENTRANT SAFETY AUDIT CONFIGURATOR INTERACTION LAYER (CFR PART 385)
+// ðŸ”„ NEW ENTRANT SAFETY AUDIT CONFIGURATOR INTERACTION LAYER (CFR PART 385)
 // ============================================================================ //
 /**
  * Toggles a date input field block if an operator has received an official target audit notification letter.
@@ -738,7 +738,7 @@ window.closeNewEntrantAuditComplianceChecklistPopup = closeNewEntrantAuditCompli
 
 
 // ============================================================================ //
-// 🔄 FREIGHT BROKER INSURANCE & FINANCIAL RESPONSIBILITY (BMC-84 / BMC-85)
+// ðŸ”„ FREIGHT BROKER INSURANCE & FINANCIAL RESPONSIBILITY (BMC-84 / BMC-85)
 // ============================================================================ //
 /**
  * Toggles a description textbox if the applicant declares historical bankruptcy parameters.
@@ -797,7 +797,7 @@ function toggleBrokerInsuranceFelonyDetailsVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ FMCSA $75,000 REGULATORY COMPLIANCE TUNNELS (NEW WORKFLOWS)
+// âž• FMCSA $75,000 REGULATORY COMPLIANCE TUNNELS (NEW WORKFLOWS)
 // ============================================================================ //
 /**
  * Orchestrates visibility parameters based on whether the broker selects a BMC-84 Bond or BMC-85 Trust.
@@ -854,7 +854,7 @@ window.toggleBrokerFinancialResponsibilityTypeSelection = toggleBrokerFinancialR
 
 
 // ============================================================================ //
-// 🔄 INTERNATIONAL FUEL TAX AGREEMENT (IFTA) INTERACTION
+// ðŸ”„ INTERNATIONAL FUEL TAX AGREEMENT (IFTA) INTERACTION
 // ============================================================================ //
 /**
  * Handles base fuel tax registration visibility rules for qualified motor vehicles.
@@ -888,7 +888,7 @@ function toggleIftaFulfillmentSubFields(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ EXPANDED JURISDICTIONAL IFTA STATE FILE SEPARATORS (NEW ROUTERS)
+// âž• EXPANDED JURISDICTIONAL IFTA STATE FILE SEPARATORS (NEW ROUTERS)
 // ============================================================================ //
 /**
  * Toggles a custom description block if the trucking fleet maintains independent bulk fuel storage tanks.
@@ -962,7 +962,7 @@ window.validateIftaDecalVolumeRequirements = validateIftaDecalVolumeRequirements
 
 
 // ============================================================================ //
-// 🔄 DRIVER QUALIFICATION FILE INTERACTIVE MATRIX (49 CFR PART 391 COMPLIANT)
+// ðŸ”„ DRIVER QUALIFICATION FILE INTERACTIVE MATRIX (49 CFR PART 391 COMPLIANT)
 // ============================================================================ //
 /**
  * Handles the display of fleet-scale document tracking fields.
@@ -1011,7 +1011,7 @@ function toggleDqfFleetQuantityVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ CFR §391 FMCSA COMPLIANCE RECORD WORKFLOWS (NEW DRIVER ENTRY HOOKS)
+// âž• CFR Â§391 FMCSA COMPLIANCE RECORD WORKFLOWS (NEW DRIVER ENTRY HOOKS)
 // ============================================================================ //
 /**
  * Toggles a custom entry panel if the driver holds a Commercial Driver's License (CDL).
@@ -1067,7 +1067,7 @@ function toggleDqfMedicalCardExemptionVisibility(medicalCardStatusSelection) {
 }
 
 // ============================================================================ //
-// 🔄 PROCESS AGENT (BOC-3) FILING INTERACTION LAYER
+// ðŸ”„ PROCESS AGENT (BOC-3) FILING INTERACTION LAYER
 // ============================================================================ //
 /**
  * Handles the display of operating authority identifiers for BOC-3 filings.
@@ -1123,7 +1123,7 @@ window.toggleBoc3AuthorityIdentifiersVisibility = toggleBoc3AuthorityIdentifiers
 
 
 // ============================================================================ //
-// 🔄 SAM.GOV PROCUREMENT REGISTRATION INTERACTION LAYER
+// ðŸ”„ SAM.GOV PROCUREMENT REGISTRATION INTERACTION LAYER
 // ============================================================================ //
 /**
  * Handles the display of alternate inputs based on whether the entity has an existing UEI.
@@ -1155,7 +1155,7 @@ function toggleSamUniqueEntityIdVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// 🔄 MINORITY CERTIFICATE REGISTRATION INTERACTION LAYER (STATE & FEDERAL)
+// ðŸ”„ MINORITY CERTIFICATE REGISTRATION INTERACTION LAYER (STATE & FEDERAL)
 // ============================================================================ //
 /**
  * Toggles a custom description block if the contractor requests a localized State or Local MBE filing track.
@@ -1184,7 +1184,7 @@ function toggleMorphicMbeAgencySubInputs(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ EXPANDED FEDERAL SBA & STATE DBE CERTIFICATION WORKFLOWS (NEW WORKFLOWS)
+// âž• EXPANDED FEDERAL SBA & STATE DBE CERTIFICATION WORKFLOWS (NEW WORKFLOWS)
 // ============================================================================ //
 /**
  * Toggles expanded programmatic modules if the client requests Federal SBA programmatic tracks (8a / WOSB / SDVOSB).
@@ -1263,7 +1263,7 @@ window.validateMinorityOwnershipEquityPercentage = validateMinorityOwnershipEqui
 
 
 // ============================================================================ //
-// 🔄 CAGE CODE REGISTRATION INTERACTION LAYER ROUTINES (SAM & DLA COMPLIANT)
+// ðŸ”„ CAGE CODE REGISTRATION INTERACTION LAYER ROUTINES (SAM & DLA COMPLIANT)
 // ============================================================================ //
 /**
  * Toggles structural fields based on whether the entity is a subsidiary of a parent company.
@@ -1312,7 +1312,7 @@ function toggleCageParentCompanyWrapperVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ EXPANDED DEFENSE LOGISTICS AGENCY (DLA) DATA ROUTERS (NEW WORKFLOWS)
+// âž• EXPANDED DEFENSE LOGISTICS AGENCY (DLA) DATA ROUTERS (NEW WORKFLOWS)
 // ============================================================================ //
 /**
  * Toggles a custom description area if the contractor's primary business activity
@@ -1373,7 +1373,7 @@ function toggleCageSecurityClearanceDetailsVisibility(hasClearanceSelection) {
 }
 
 // ============================================================================ //
-// 🔄 DUNS NUMBER CONFIGURATION INTERACTION LAYER ROUTINES
+// ðŸ”„ DUNS NUMBER CONFIGURATION INTERACTION LAYER ROUTINES
 // ============================================================================ //
 /**
  * Toggles structural fields based on whether the entity operates as a branch or subsidiary.
@@ -1422,7 +1422,7 @@ function toggleDunsParentCompanyVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ EXPANDED DUN & BRADSTREET PROFILE MODIFIERS (NEW ROUTERS)
+// âž• EXPANDED DUN & BRADSTREET PROFILE MODIFIERS (NEW ROUTERS)
 // ============================================================================ //
 /**
  * Toggles a custom description area if the contractor's operations are located
@@ -1494,7 +1494,7 @@ window.toggleDunsGlobalTradeMetricsVisibility = toggleDunsGlobalTradeMetricsVisi
 
 
 // ============================================================================ //
-// 🔄 HEAVY USE TAX (2290) CONFIGURATOR INTERACTION LAYER
+// ðŸ”„ HEAVY USE TAX (2290) CONFIGURATOR INTERACTION LAYER
 // ============================================================================ //
 let currentHutVehicleCount = 1;
 
@@ -1665,7 +1665,7 @@ function auditTotalHutFleetCountMetrics() {
     if (alertBanner) {
         if (totalInjectedCards >= 25) {
             alertBanner.style.setProperty("display", "block", "important");
-            alertBanner.innerHTML = `💡 <strong>IRS Electronic Filing Mandate Active:</strong> Your current declaration list contains ${totalInjectedCards} heavy highway vehicles. The IRS legally mandates electronic filing (e-file) for fleets of 25 trucks or greater. filings4u will automatically format your bundle for secure digital routing.`;
+            alertBanner.innerHTML = `ðŸ’¡ <strong>IRS Electronic Filing Mandate Active:</strong> Your current declaration list contains ${totalInjectedCards} heavy highway vehicles. The IRS legally mandates electronic filing (e-file) for fleets of 25 trucks or greater. filings4u will automatically format your bundle for secure digital routing.`;
         } else {
             alertBanner.style.setProperty("display", "none", "important");
         }
@@ -1680,7 +1680,7 @@ window.auditTotalHutFleetCountMetrics = auditTotalHutFleetCountMetrics;
 
 
 // ============================================================================ //
-// 🔄 SALES TAX REGISTRATION CONFIGURATOR INTERACTION LAYER
+// ðŸ”„ SALES TAX REGISTRATION CONFIGURATOR INTERACTION LAYER
 // ============================================================================ //
 /**
  * Dynamically balances input visibilities and requirement vectors for Sales Tax Nexus.
@@ -1740,7 +1740,7 @@ function toggleSalesTaxNexusSubInputs(selectionValue) {
 }
 
 // ============================================================================ //
-// 🔄 PAYROLL TAX REGISTRATION INTERACTION LAYER
+// ðŸ”„ PAYROLL TAX REGISTRATION INTERACTION LAYER
 // ============================================================================ //
 /**
  * Handles the display of alternate inputs based on whether the entity has existing tax IDs.
@@ -1784,7 +1784,7 @@ window.togglePayrollTaxSutaFieldsVisibility = togglePayrollTaxSutaFieldsVisibili
 
 
 // ============================================================================ //
-// 🔄 FRANCHISE TAX APPLICATION INTERACTION LAYER (DIRECT FILING MODE)
+// ðŸ”„ FRANCHISE TAX APPLICATION INTERACTION LAYER (DIRECT FILING MODE)
 // ============================================================================ //
 let currentFranchiseOfficerCount = 1;
 
@@ -1804,8 +1804,8 @@ function executeFranchiseTaxStateParsingWorkflow(selectedStateCode) {
 
     // Extensible External Data Matrix Setup Fallback (Can live in your separate configurations file)
     const FRANCHISE_STATE_NOTICES_DB = window.FRANCHISE_STATE_NOTICES_DB || {
-        "TX": { method: "informational", notice: "💡 Texas State Notice: Businesses with gross receipts below the state statutory threshold file a No-Tax-Due Information Report. filings4u will automatically process this variant for your entity configuration." },
-        "DE": { method: "flat", notice: "💡 Delaware State Notice: Domestic LLCs are subject to a flat minimum annual franchise tax of $300.00. Corporations calculate their parameter fees via the Authorized Shares method or Assumed Par Value Capital method." }
+        "TX": { method: "informational", notice: "ðŸ’¡ Texas State Notice: Businesses with gross receipts below the state statutory threshold file a No-Tax-Due Information Report. filings4u will automatically process this variant for your entity configuration." },
+        "DE": { method: "flat", notice: "ðŸ’¡ Delaware State Notice: Domestic LLCs are subject to a flat minimum annual franchise tax of $300.00. Corporations calculate their parameter fees via the Authorized Shares method or Assumed Par Value Capital method." }
     };
 
     const configurationRecord = FRANCHISE_STATE_NOTICES_DB[stateKey];
@@ -1860,7 +1860,7 @@ function toggleFranchiseTaxThresholdInputFieldsVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ DYNAMIC PRINCIPAL OFFICER FIELD NODE INJECTOR (WITH VALID ADDRESS SUFFIXES)
+// âž• DYNAMIC PRINCIPAL OFFICER FIELD NODE INJECTOR (WITH VALID ADDRESS SUFFIXES)
 // ============================================================================ //
 /**
  * Injects a comprehensive principal officer / manager management row frame card.
@@ -1943,7 +1943,7 @@ window.removeFranchiseTaxOfficerRow = removeFranchiseTaxOfficerRow;
 
 
 // ============================================================================ //
-// 🔄 STATE INCOME TAX DATA AGGREGATION & PASS-THROUGH CONTROLLERS
+// ðŸ”„ STATE INCOME TAX DATA AGGREGATION & PASS-THROUGH CONTROLLERS
 // ============================================================================ //
 /**
  * Automates pulling historical field entries out of the wizard data cache.
@@ -2092,7 +2092,7 @@ window.toggleStateTaxApportionmentVisibility = toggleStateTaxApportionmentVisibi
 
 
 // ============================================================================ //
-// 🔄 CLIA CERTIFICATE REGISTRATION INTERACTION LAYER (CMS FORM 116 COMPLIANT)
+// ðŸ”„ CLIA CERTIFICATE REGISTRATION INTERACTION LAYER (CMS FORM 116 COMPLIANT)
 // ============================================================================ //
 /**
  * Toggles a custom description textbox if the laboratory's facility type is marked as "other".
@@ -2122,7 +2122,7 @@ function toggleCliaFacilityOtherSpecificationVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ EXPANDED STATE & FEDERAL LABORATORY COMPLIANCE WORKFLOWS (NEW ROUTERS)
+// âž• EXPANDED STATE & FEDERAL LABORATORY COMPLIANCE WORKFLOWS (NEW ROUTERS)
 // ============================================================================ //
 /**
  * Toggles the expanded testing specialty ledger table.
@@ -2210,7 +2210,7 @@ function toggleCliaMultiSiteExceptionVisibility(isMultiSiteSelection) {
 }
 
 // ============================================================================ //
-// 🔄 FEDERAL INCOME TAX DATA AGGREGATION & PARTNER INTAKE ROUTINES
+// ðŸ”„ FEDERAL INCOME TAX DATA AGGREGATION & PARTNER INTAKE ROUTINES
 // ============================================================================ //
 /**
  * Handles toggling visibility blocks for Cost of Goods Sold (COGS) metric tracking.
@@ -2251,7 +2251,7 @@ function toggleFederalTaxInventoryCostVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ TAX FILE PASS-THROUGH ONBOARDING DISPATCHERS (NEW ROUTERS)
+// âž• TAX FILE PASS-THROUGH ONBOARDING DISPATCHERS (NEW ROUTERS)
 // ============================================================================ //
 /**
  * Toggles structural fields based on whether the entity operates an accounting inventory ledger.
@@ -2304,7 +2304,7 @@ window.toggleFederalTaxPartnerAccountingMethodVisibility = toggleFederalTaxPartn
 
 
 // ============================================================================ //
-// 🔄 APOSTILLE & FEDERAL IMMIGRATION SERVICES INTERACTION LAYER
+// ðŸ”„ APOSTILLE & FEDERAL IMMIGRATION SERVICES INTERACTION LAYER
 // ============================================================================ //
 /**
  * Handles the display of alternate text areas if the target document profile is marked "other".
@@ -2334,7 +2334,7 @@ function toggleApostilleDocumentSpecificationVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ EXPANDED FEDERAL IMMIGRATION FILINGS LOGIC MATRIX (NEW ROUTERS)
+// âž• EXPANDED FEDERAL IMMIGRATION FILINGS LOGIC MATRIX (NEW ROUTERS)
 // ============================================================================ //
 /**
  * Toggles structural fields based on whether the applicant possesses a federal Alien Registration Number.
@@ -2446,7 +2446,7 @@ window.toggleImmigrationEmploymentSponsorshipFields = toggleImmigrationEmploymen
 
 
 // ============================================================================ //
-// 🔄 ENTITY DISSOLUTION APPLICATION INTERACTION LAYER (ALL CORPORATE TYPES)
+// ðŸ”„ ENTITY DISSOLUTION APPLICATION INTERACTION LAYER (ALL CORPORATE TYPES)
 // ============================================================================ //
 /**
  * Toggles structural fields based on whether the entity type is marked "other".
@@ -2557,7 +2557,7 @@ function toggleDissolutionDebtsVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ EXPANDED STATE-COMPLIANCE CLOSURE CHECKPOINTS (NEW ROUTERS)
+// âž• EXPANDED STATE-COMPLIANCE CLOSURE CHECKPOINTS (NEW ROUTERS)
 // ============================================================================ //
 /**
  * Toggles tax clearance validation workflows based on state requirements.
@@ -2616,7 +2616,7 @@ function toggleDissolutionNonprofitCharityDistribution(entityTypeSelection) {
 }
 
 // ============================================================================ //
-// 🔄 CERTIFICATE OF GOOD STANDING INTERACTION LAYER (DUPLICATES PURGED)
+// ðŸ”„ CERTIFICATE OF GOOD STANDING INTERACTION LAYER (DUPLICATES PURGED)
 // ============================================================================ //
 /**
  * Public window proxies to map legacy form events into the optimized core.
@@ -2652,7 +2652,7 @@ window.toggleDissolutionNonprofitCharityDistribution = toggleDissolutionNonprofi
 
 
 // ============================================================================ //
-// 🔄 ZERO-HARDCODING CONTEXT-AWARE INTERACTION CONTROL ROUTINES (PART A)
+// ðŸ”„ ZERO-HARDCODING CONTEXT-AWARE INTERACTION CONTROL ROUTINES (PART A)
 // ============================================================================ //
 /**
  * Dynamically toggles any form wrapper container using explicit data-attributes.
@@ -2724,7 +2724,7 @@ function handleDynamicFormSectionToggleVisibility(elementNode) {
 }
 
 // ============================================================================ //
-// 🔄 ZERO-HARDCODING CONTEXT-AWARE INTERACTION CONTROL ROUTINES (PART B)
+// ðŸ”„ ZERO-HARDCODING CONTEXT-AWARE INTERACTION CONTROL ROUTINES (PART B)
 // ============================================================================ //
 /**
  * Evaluates dynamic validation scopes for complex element field groupings.
@@ -2768,7 +2768,7 @@ window.evaluateStepStateValidationBoundary = evaluateStepStateValidationBoundary
 
 
 // ============================================================================ //
-// 🔄 OPERATING AGREEMENT INTERACTIVE SUBSYSTEM LAYER (LLC & LLP REBUILT)
+// ðŸ”„ OPERATING AGREEMENT INTERACTIVE SUBSYSTEM LAYER (LLC & LLP REBUILT)
 // ============================================================================ //
 
 /**
@@ -2950,7 +2950,7 @@ function verifyOperatingAgreementLedgerBalanceBeforeSubmit() {
 }
 
 /// ============================================================================ //
-// 🔄 BUSINESS LICENSES CONFIGURATOR INTERACTION LAYER
+// ðŸ”„ BUSINESS LICENSES CONFIGURATOR INTERACTION LAYER
 // ============================================================================ //
 /**
  * Toggles dynamic address input cards based on secondary corporate mailing addresses.
@@ -3081,7 +3081,7 @@ window.toggleBusinessLicensesOtherPermitsVisibility = toggleBusinessLicensesOthe
 
 
 // ============================================================================ //
-// 🔄 OPERATING AGREEMENT INTERACTIVE SUBSYSTEM LAYER (LLC & LLP REBUILT)
+// ðŸ”„ OPERATING AGREEMENT INTERACTIVE SUBSYSTEM LAYER (LLC & LLP REBUILT)
 // ============================================================================ //
 let currentOaMemberCount = 1;
 
@@ -3096,7 +3096,7 @@ function toggleOperatingAgreementOwnershipSubForm(structureType) {
     const partnerLabel = document.getElementById("oa_member_type_label_root");
     if (!singleWrapper || !multiWrapper) return;
 
-    // 🏛️ Dynamic Taxonomy Adjustment: Updates display text if entity is an LLP / Partnership
+    // ðŸ›ï¸ Dynamic Taxonomy Adjustment: Updates display text if entity is an LLP / Partnership
     if (partnerLabel) {
         partnerLabel.textContent = (structureType === "llp" || structureType === "partnership") ? "Partner / Shareholder Ledger" : "LLC Member Equity Node";
     }
@@ -3285,7 +3285,7 @@ window.verifyOperatingAgreementLedgerBalanceBeforeSubmit = verifyOperatingAgreem
 
 
 // ============================================================================ //
-// 🔄 ANNUAL REPORT REPORTING LIFE-CYCLE VISIBILITY ROUTINES
+// ðŸ”„ ANNUAL REPORT REPORTING LIFE-CYCLE VISIBILITY ROUTINES
 // ============================================================================ //
 /**
  * Toggles dynamic address input cards based on secondary corporate mailing addresses.
@@ -3468,7 +3468,7 @@ window.toggleAnnualReportComplianceCheckVisibility = toggleAnnualReportComplianc
 
 
 // ============================================================================ //
-// 🔄 USPTO TRADEMARK APPLICATION INTERACTION LAYER ROUTINES
+// ðŸ”„ USPTO TRADEMARK APPLICATION INTERACTION LAYER ROUTINES
 // ============================================================================ //
 
 /**
@@ -3590,7 +3590,7 @@ function toggleTrademarkAttorneyWrapperVisibility(selectionValue) {
     }
 }
 // ============================================================================ //
-// 🔄 STATE SERVICEMARK APPLICATION INTERACTION LAYER ROUTINES
+// ðŸ”„ STATE SERVICEMARK APPLICATION INTERACTION LAYER ROUTINES
 // ============================================================================ //
 
 /**
@@ -3731,7 +3731,7 @@ window.toggleServicemarkAttorneyWrapperVisibility = toggleServicemarkAttorneyWra
 
 
 // ============================================================================ //
-// 🔄 LLC REINSTATEMENT INTERACTION LOGIC CONTROL ROUTINES
+// ðŸ”„ LLC REINSTATEMENT INTERACTION LOGIC CONTROL ROUTINES
 // ============================================================================ //
 
 /**
@@ -3873,7 +3873,7 @@ window.toggleReinstatementDurationFieldVisibility = toggleReinstatementDurationF
 
 
 // ============================================================================ //
-// 🔄 CONDITIONAL INTERACTION INTERFACE CONTROL ROUTINES
+// ðŸ”„ CONDITIONAL INTERACTION INTERFACE CONTROL ROUTINES
 // ============================================================================ //
 
 /**
@@ -4011,7 +4011,7 @@ window.toggleFqEinWorkflow = toggleFqEinWorkflow;
 
 
 // ============================================================================ //
-// 🔄 PROFESSIONAL REGISTERED AGENT SERVICE LOGIC WORKFLOWS
+// ðŸ”„ PROFESSIONAL REGISTERED AGENT SERVICE LOGIC WORKFLOWS
 // ============================================================================ //
 let currentRaEntityCount = 1;
 
@@ -4074,7 +4074,7 @@ function toggleRegisteredAgentMultiEntityVisibility(selectionValue) {
 }
 
 // ============================================================================ //
-// ➕ DYNAMIC SECONDARY ENTITY ROW GENERATOR (FIXED INVALID HTML MARGINS)
+// âž• DYNAMIC SECONDARY ENTITY ROW GENERATOR (FIXED INVALID HTML MARGINS)
 // ============================================================================ //
 /**
  * Injects a clean secondary entity tracking data card framework context structure.
@@ -4184,7 +4184,7 @@ window.toggleRegisteredAgentMailForwardingWorkflow = toggleRegisteredAgentMailFo
 
 
 // ============================================================================ //
-// 🔄 CERTIFICATE OF GOOD STANDING INTERACTION LAYER
+// ðŸ”„ CERTIFICATE OF GOOD STANDING INTERACTION LAYER
 // ============================================================================ //
 
 /**
@@ -4275,7 +4275,7 @@ window.toggleGoodStandingPhysicalDeliveryVisibility = toggleGoodStandingPhysical
 
 
 // ============================================================================ //
-// 🔄 MASTER ALIAS ROUTING BRIDGE INTERFACES (DUPLICATES PURGED)
+// ðŸ”„ MASTER ALIAS ROUTING BRIDGE INTERFACES (DUPLICATES PURGED)
 // ============================================================================ //
 /**
  * Public structural API proxy allowing external scripts, timelines, or indicators
@@ -4332,7 +4332,7 @@ if (document.readyState !== "loading") {
 
 
 // ============================================================================ //
-// 🔘 SERIES LLC RUNTIME EVENT CONTROLLERS
+// ðŸ”˜ SERIES LLC RUNTIME EVENT CONTROLLERS
 // ============================================================================ //
 let activeSeriesLlcMemberCounterIndex = 1;
 
@@ -4417,7 +4417,7 @@ window.toggleSeriesCellsWrapperVisibility = toggleSeriesCellsWrapperVisibility;
 
 
 // ============================================================================ //
-// ➕ SUB-SERIES CELLS DYNAMIC GENERATOR MATRIX
+// âž• SUB-SERIES CELLS DYNAMIC GENERATOR MATRIX
 // ============================================================================ //
 let activeSubSeriesCellCounterIndex = 1;
 
@@ -4493,7 +4493,7 @@ function toggleSeriesEinWorkflow(selectedValue) {
         wrapper.style.setProperty("display", targetDisplay, "important");
     }
 
-    // ⚡ FIXED INVERSE LOGIC: If they select "no", trigger procurement upsell loops
+    // âš¡ FIXED INVERSE LOGIC: If they select "no", trigger procurement upsell loops
     window.customSelectedEinProcurementServiceActive = (selectedValue === "no" || selectedValue === "no-buy");
     
     if (typeof updateDynamicPricingMatrixVanilla === "function") {
@@ -4544,7 +4544,7 @@ window.toggleSeriesLlcDurationField = toggleSeriesLlcDurationField;
 
 
 // ============================================================================ //
-// 🔘 NONPROFIT WORKFLOW INTERACTIVE LAYOUT CONTROLLERS
+// ðŸ”˜ NONPROFIT WORKFLOW INTERACTIVE LAYOUT CONTROLLERS
 // ============================================================================ //
 let activeNonprofitBoardCounterIndex = 3;
 
@@ -4625,7 +4625,7 @@ function toggleNonprofitEinReasonField(selectedValue) {
         wrapper.style.setProperty("display", targetDisplay, "important");
     }
 
-    // ⚡ FIXED INVERSE LOGIC: If they select "no" (meaning they don't have one), trigger procurement upsell
+    // âš¡ FIXED INVERSE LOGIC: If they select "no" (meaning they don't have one), trigger procurement upsell
     window.customSelectedEinProcurementServiceActive = (selectedValue === "no" || selectedValue === "no-buy");
     
     if (typeof updateDynamicPricingMatrixVanilla === "function") {
@@ -4666,7 +4666,7 @@ window.toggleNonprofitLicenseWorkflow = toggleNonprofitLicenseWorkflow;
 
 
 // ============================================================================ //
-// 🔘 SOLE PROPRIETORSHIP FORM INTERACTIVE INTERACTION CONTROLLERS
+// ðŸ”˜ SOLE PROPRIETORSHIP FORM INTERACTIVE INTERACTION CONTROLLERS
 // ============================================================================ //
 /**
  * Toggles a custom text box wrapper if the sole proprietor uses an assumed name.
@@ -4726,7 +4726,7 @@ function toggleSolePropLicenseWorkflow(selectedValue) {
 }
 
 // ============================================================================ //
-// 🔘 DBA FORM INTERACTIVE ROUTING EVENT CONTROLLERS
+// ðŸ”˜ DBA FORM INTERACTIVE ROUTING EVENT CONTROLLERS
 // ============================================================================ //
 /**
  * Toggles structural permission fields and handles data cleanup rules upon collapse.
@@ -4829,7 +4829,7 @@ window.toggleDbaLicenseWorkflow = toggleDbaLicenseWorkflow;
 window.toggleDbaDurationField = toggleDbaDurationField;
 
 // ============================================================================ //
-// 🗺️ UNIVERSAL GOOGLE PLACES AUTOMATIC ADDRESS VALIDATION CONTROL HUB
+// ðŸ—ºï¸ UNIVERSAL GOOGLE PLACES AUTOMATIC ADDRESS VALIDATION CONTROL HUB
 // ============================================================================ //
 /**
  * Attaches Google Places Autocomplete to a specific input field and parses address sub-components.
@@ -4888,7 +4888,7 @@ function attachGooglePlacesAutocompleteToNode(inputNodeElement, dataElementPrefi
 
         const balancedStreetAddressLine = `${addressStreetNumber} ${addressRouteStreetName}`.trim();
 
-        // 🔍 SMART ADAPTIVE ELEMENT LOOKUP (NO STRINGS HARDCODED)
+        // ðŸ” SMART ADAPTIVE ELEMENT LOOKUP (NO STRINGS HARDCODED)
         // First tries the standard prefix naming convention pattern
         let streetField = document.getElementById(`${dataElementPrefix}_street`) || inputNodeElement;
         let cityField = document.getElementById(`${dataElementPrefix}_city`);
@@ -4951,7 +4951,7 @@ window.autoDiscoverAndHookAddressNodes = autoDiscoverAndHookAddressNodes;
 
 
 // ============================================================================ //
-// 🔘 C-CORP & S-CORP INTERACTIVE ROUTING CONTROLLERS                          //
+// ðŸ”˜ C-CORP & S-CORP INTERACTIVE ROUTING CONTROLLERS                          //
 // ============================================================================ //
 
 function validateCorpNameSuffix(inputField) {
@@ -4988,7 +4988,7 @@ function validateCorpNameSuffix(inputField) {
 }
 
 // ============================================================================ //
-// ➕ DYNAMIC INCREMENTAL SHAREHOLDER NODE GENERATOR ENGINE                    //
+// âž• DYNAMIC INCREMENTAL SHAREHOLDER NODE GENERATOR ENGINE                    //
 // ============================================================================ //
 
 let activeCorpShareholderCounterIndex = 1;
@@ -5112,7 +5112,7 @@ function initializeFormDisplayLayoutSync() {
 
 
 // ============================================================================ //
-// 🔘 LLC & CORPORATE LIFECYCLE CONTROLLERS (DYNAMIC DELEGATION METHOD)       //
+// ðŸ”˜ LLC & CORPORATE LIFECYCLE CONTROLLERS (DYNAMIC DELEGATION METHOD)       //
 // ============================================================================ //
 
 function handleCorporateLayoutToggleVisibility(elementNode) {
@@ -5148,7 +5148,7 @@ function toggleEinConditionalWorkflow(selectedValue) {
 }
 
 // ============================================================================ //
-// 💾 STATE PERSISTENCE INITIALIZATION MATRIX & COHERENCE PATCHES
+// ðŸ’¾ STATE PERSISTENCE INITIALIZATION MATRIX & COHERENCE PATCHES
 // ============================================================================ //
 /**
  * Boots form states and gracefully handles legacy drawing canvas deprecation.
@@ -5214,7 +5214,7 @@ if (document.readyState !== "loading") {
 
 
 // ============================================================================ //
-// 🔘 CENTRAL NAVIGATION ACTION INTERCEPTOR HUB
+// ðŸ”˜ CENTRAL NAVIGATION ACTION INTERCEPTOR HUB
 // ============================================================================ //
 /**
  * Global navigation interceptor routing panel advanced transitions cleanly.
@@ -5282,7 +5282,7 @@ window.handleNavigationButtonClickEvent = handleNavigationButtonClickEvent;
 
 
 // ============================================================================ //
-// 🔌 CENTRAL EVENT DELEGATION NAVIGATION & PRICING LISTENER MATRIX (REPAIRED)
+// ðŸ”Œ CENTRAL EVENT DELEGATION NAVIGATION & PRICING LISTENER MATRIX (REPAIRED)
 // ============================================================================ //
 document.addEventListener("change", function (event) {
     const targetElement = event.target;
@@ -5352,7 +5352,7 @@ window.initializeStepTwoInteractiveLayoutListeners = function() {
 
 
 // ============================================================================ //
-// 🔘 LLC WORKFLOW CONDITIONAL FIELD CONTROLLERS (FULLY ABSTRACTED - REPAIRED)
+// ðŸ”˜ LLC WORKFLOW CONDITIONAL FIELD CONTROLLERS (FULLY ABSTRACTED - REPAIRED)
 // ============================================================================ //
 /**
  * Validates the LLC corporate name suffix against an array of approved tokens.
@@ -5366,7 +5366,7 @@ function validateLlcNameSuffix(inputField) {
 
     const lowerVal = rawVal.toLowerCase();
     
-    // 📋 Dynamic Suffix Extraction Strategy: Reads approved tokens directly from DOM configuration
+    // ðŸ“‹ Dynamic Suffix Extraction Strategy: Reads approved tokens directly from DOM configuration
     const allowedSuffixDataAttr = inputField.getAttribute("data-allowed-suffixes");
     let authorizedSuffixesArray = ["llc", "limited liability company", "l.l.c."];
 
@@ -5473,7 +5473,7 @@ window.toggleEinConditionalWorkflow = toggleEinConditionalWorkflow;
 
 
 // ============================================================================ //
-// ➕ DYNAMIC INCREMENTAL RECORD BLOCK GENERATOR ENGINE (DEFRAGMENTATION REPAIR)
+// âž• DYNAMIC INCREMENTAL RECORD BLOCK GENERATOR ENGINE (DEFRAGMENTATION REPAIR)
 // ============================================================================ //
 let activeLlcMemberCounterIndex = 1;
 
@@ -5641,7 +5641,7 @@ window.toggleLlcDurationDateVisibility = toggleLlcDurationDateVisibility;
 
 
 // ============================================================================ //
-// 💳 SECURE TRANSACTION SERIALIZER & PAYLOAD ASSEMBLER (PART A - REPAIRED)
+// ðŸ’³ SECURE TRANSACTION SERIALIZER & PAYLOAD ASSEMBLER (PART A - REPAIRED)
 // ============================================================================ //
 // FIXED: Extracted values directly from global window memory spaces to avoid reference errors
 const activeSecureServiceKey = window.routeActiveServiceKey || document.getElementById("wizard-route-service-id")?.value || "";
@@ -5673,7 +5673,7 @@ console.log("[Transaction Dispatch] Final billing payload generated:", primarySu
 
 
 // ============================================================================ //
-// 💳 SECURE TRANSACTION SERIALIZER & PAYLOAD ASSEMBLER (PART B)
+// ðŸ’³ SECURE TRANSACTION SERIALIZER & PAYLOAD ASSEMBLER (PART B)
 // ============================================================================ //
 /**
  * Asynchronously serializes questionnaire values, fires the Stripe engine, 
@@ -5681,7 +5681,7 @@ console.log("[Transaction Dispatch] Final billing payload generated:", primarySu
  * FIXED: Implemented an anti-double-click thread lock block to prevent duplicate transaction entries.
  */
 async function processFinalSecureCheckoutSubmission(primarySubmissionPayloadData, cardNum, cardExp, cardCvv, nextBtn, originalBtnBg, originalBtnHtml) {
-    // 🛡️ ANTI-DUPLICATE BILLING SUBMISSION THREAD LOCK
+    // ðŸ›¡ï¸ ANTI-DUPLICATE BILLING SUBMISSION THREAD LOCK
     if (window.isCheckoutProcessingTransactionSubmitActive) {
         console.warn("[Transaction Guard] A payment payload submission pass is already active. Ignoring click duplicate.");
         return;
@@ -5726,7 +5726,7 @@ window.processFinalSecureCheckoutSubmission = processFinalSecureCheckoutSubmissi
 
 
 // ============================================================================ //
-// ✍️ DIGITAL CURSIVE SIGNATURE REFLECTOR (REPLACES CANVAS PAD REPAIRED)
+// âœï¸ DIGITAL CURSIVE SIGNATURE REFLECTOR (REPLACES CANVAS PAD REPAIRED)
 // ============================================================================ //
 /**
  * Initializes real-time text-to-cursive handwriting mirror syncs across signature authorization fields.
@@ -5744,7 +5744,7 @@ function initializeDigitalSignatureMirrorSync() {
 
     if (!typedSignatureInput) return; // Safely escape if not on the signature screen step
 
-    // 🛡️ MULTI-MOUNT PROTECTION GATEWAY: Prevent listener multiplier leaks if called twice
+    // ðŸ›¡ï¸ MULTI-MOUNT PROTECTION GATEWAY: Prevent listener multiplier leaks if called twice
     if (typedSignatureInput.hasAttribute('data-signature-listener-bound')) {
         console.log("[Signature Sync] Listeners already mounted to target input node. Skipping dual hook pass.");
         return;
@@ -5781,7 +5781,7 @@ window.initializeDigitalSignatureMirrorSync = initializeDigitalSignatureMirrorSy
 
 
 // ============================================================================ //
-// 💾 STRATEGIC SAVE & EXIT PROGRESS HANDLER (STANDALONE POP-UP ENGINE FIXED)
+// ðŸ’¾ STRATEGIC SAVE & EXIT PROGRESS HANDLER (STANDALONE POP-UP ENGINE FIXED)
 // ============================================================================ //
 /**
  * Global save & exit overlay manager. Scrapes input lead forms, synchronizes
@@ -5916,7 +5916,7 @@ window.executeSaveAndExitWorkflow = executeSaveAndExitWorkflow;
 
 
 // ============================================================================ //
-// 🎨 UI VISIBILITY PROGRESS TRACKING RENDER ENGINE (REPAIRED)
+// ðŸŽ¨ UI VISIBILITY PROGRESS TRACKING RENDER ENGINE (REPAIRED)
 // ============================================================================ //
 /**
  * Global timeline view engine. Synchronizes active progress bars, toggles visibility
@@ -6002,7 +6002,7 @@ window.renderActiveWizardStepUiLayout = renderActiveWizardStepUiLayout;
 
 
 // ============================================================================ //
-// 📊 CONSOLIDATED MATRIX ENGINE (PART 1 OF 3)
+// ðŸ“Š CONSOLIDATED MATRIX ENGINE (PART 1 OF 3)
 // ============================================================================ //
 window.updateDynamicPricingMatrixVanilla = function(currentCartState = {}) {
   console.log("[Pricing Engine] Initializing clean calculation pass...");
@@ -6065,7 +6065,7 @@ window.updateDynamicPricingMatrixVanilla = function(currentCartState = {}) {
 };
 
 // ============================================================================ //
-// 📊 UNIFIED DATA-DRIVEN MATRIX ENGINE: POLYMORPHIC DISCOVERY (PART 2 OF 3)
+// ðŸ“Š UNIFIED DATA-DRIVEN MATRIX ENGINE: POLYMORPHIC DISCOVERY (PART 2 OF 3)
 // ============================================================================ //
 function runPricingMatrixDataCrawlPass() {
   const ctx = window._tempCalcContext;
@@ -6163,7 +6163,7 @@ function runPricingMatrixDataCrawlPass() {
 
 
 // ============================================================================ //
-// 📊 CONSOLIDATED MATRIX ENGINE (PART 3 OF 3) - STATE OVERHAUL
+// ðŸ“Š CONSOLIDATED MATRIX ENGINE (PART 3 OF 3) - STATE OVERHAUL
 // ============================================================================ //
 window.finalizePricingMatrixUiRender = function(passedState = {}) {
   const ctx = window._tempCalcContext;
@@ -6425,7 +6425,7 @@ if (document.readyState === "loading") {
 
 
 // ============================================================================ //
-// 📊 MASTER PRICING CALCULATOR MODULE: FINALIZE TOTALS & SYNC DISPLAY NODES
+// ðŸ“Š MASTER PRICING CALCULATOR MODULE: FINALIZE TOTALS & SYNC DISPLAY NODES
 // ============================================================================ //
 window.updateDynamicPricingMatrixVanilla = function() {
   console.log("[Pricing Engine] Initializing clean invoice subtotal calculation pass...");
@@ -6498,7 +6498,7 @@ window.updateDynamicPricingMatrixVanilla = function() {
       <span style="font-family: monospace; color: #10b981;">$${finalizedGrandTotal.toFixed(2)}</span>
     </div>`;
 
-  // ✨ DOM BINDING SLOTS: Inject totals back into your UI elements safely
+  // âœ¨ DOM BINDING SLOTS: Inject totals back into your UI elements safely
   const step1BaseInvoiceTotalNode = document.getElementById("step-1-base-fee-value");
   if (step1BaseInvoiceTotalNode) {
     step1BaseInvoiceTotalNode.textContent = `$${finalizedGrandTotal.toFixed(2)}`;
@@ -6580,7 +6580,7 @@ if (document.readyState === "loading") {
 
 
 // ============================================================================ //
-// 🎨 VISUAL ERROR MARKER INJECTION PROTOCOL (STRICT GRIDS & PREVENT DUPLICATES)
+// ðŸŽ¨ VISUAL ERROR MARKER INJECTION PROTOCOL (STRICT GRIDS & PREVENT DUPLICATES)
 // ============================================================================ //
 /**
  * Injects a visual error message block directly beneath an invalid input field.
@@ -6637,7 +6637,7 @@ window.markFieldAsInvalidVanilla = markFieldAsInvalidVanilla;
 
 
 // ============================================================================ //
-// 🔍 INPUT INTERACTIVE VALIDATION CONTROL ENGINE (FULLY ABSTRACT - ZERO CODES)
+// ðŸ” INPUT INTERACTIVE VALIDATION CONTROL ENGINE (FULLY ABSTRACT - ZERO CODES)
 // ============================================================================ //
 /**
  * Scans active wizard steps, intercepts missing fields, and enforces required visibility scopes.
@@ -6708,7 +6708,7 @@ window.validateStepInputParametersVanilla = validateStepInputParametersVanilla;
 
 
 // ============================================================================ //
-// 🚀 MASTER STEP NAVIGATION CONTROL LOGIC (VANILLA JS IMPLEMENTATION - REPAIRED)
+// ðŸš€ MASTER STEP NAVIGATION CONTROL LOGIC (VANILLA JS IMPLEMENTATION - REPAIRED)
 // ============================================================================ //
 /**
  * Handles relative stepping transitions across the onboarding panels matrix.
@@ -6767,7 +6767,7 @@ window.navigateWizardStepTrackVanilla = navigateWizardStepTrackVanilla;
 
 
 // ============================================================================ //
-// 🔄 MASTER ALIAS ROUTING BRIDGE FOR HTML BUTTONS (STRICT JUMP ENGINE)
+// ðŸ”„ MASTER ALIAS ROUTING BRIDGE FOR HTML BUTTONS (STRICT JUMP ENGINE)
 // ============================================================================ //
 /**
  * Core navigation router intercepting multi-step wizard clicks.
@@ -6813,7 +6813,7 @@ function goToNextWizardStep(targetStepIndex, event = null) {
     }
 
     // ============================================================================ //
-    // ⚡ STAGE-ZERO INJECTION GATEKEEPER
+    // âš¡ STAGE-ZERO INJECTION GATEKEEPER
     // ============================================================================ //
     // If the customer is advancing onto Step 2, force-inject the dynamic form elements
     // right before execution loops change the panel visibility states.
@@ -6836,7 +6836,7 @@ window.goToNextWizardStep = goToNextWizardStep;
 
 
 // ============================================================================ //
-// 🚀 DATA-SAFE STEP PANEL VISIBILITY TRANSITION CONTROLLER
+// ðŸš€ DATA-SAFE STEP PANEL VISIBILITY TRANSITION CONTROLLER
 // ============================================================================ //
 /**
  * Direct UI visibility transition execution pass layer.
@@ -6919,7 +6919,7 @@ window.executeDirectStepJump = executeDirectStepJump;
 
 
 // ============================================================================ //
-// 🎨 MODULE 2C: DYNAMIC MARKETPLACE INTERFACE RENDERING ENGINE
+// ðŸŽ¨ MODULE 2C: DYNAMIC MARKETPLACE INTERFACE RENDERING ENGINE
 // ============================================================================ //
 
 function renderTargetUpsellsListPanel() {
@@ -7018,7 +7018,7 @@ window.executeMarketplaceUIRenderLoop = executeMarketplaceUIRenderLoop;
 
 
 // ============================================================================ //
-// 📊 MODULE 2D: DYNAMIC CHECKOUT SUMMARY INJECTION SYSTEM
+// ðŸ“Š MODULE 2D: DYNAMIC CHECKOUT SUMMARY INJECTION SYSTEM
 // ============================================================================ //
 
 function executeMarketplaceSummaryRenderLoop() {
@@ -7091,7 +7091,7 @@ window.executeMarketplaceSummaryRenderLoop = executeMarketplaceSummaryRenderLoop
 
 
 // ============================================================================ //
-// ⚙️ INITIALIZATION ENGINE
+// âš™ï¸ INITIALIZATION ENGINE
 // ============================================================================ //
 
 function initializeAssetProtectionMarketplace() {
@@ -7110,3 +7110,4 @@ if (document.readyState === "loading") {
 } else {
   window.initializeAssetProtectionMarketplace();
 }
+

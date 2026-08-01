@@ -1,5 +1,5 @@
-// ============================================================
-// 📡 ENGINE MODULE C: AGNOSTIC GLOBAL EVENT INTERCEPT PIPELINE
+﻿// ============================================================
+// ðŸ“¡ ENGINE MODULE C: AGNOSTIC GLOBAL EVENT INTERCEPT PIPELINE
 // ============================================================
 document.addEventListener("change", function(event) {
   const node = event.target;
@@ -47,3 +47,4 @@ if (document.readyState === "loading") {
 } else {
   runMarketplaceBootstrapPipeline();
 }
+

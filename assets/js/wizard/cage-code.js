@@ -1,5 +1,5 @@
-// ============================================================================ // 
-// 🪪 SYSTEM COMPLIANCE SERVICE: CAGE CODE ENGINE (PART 1 OF 3)
+﻿// ============================================================================ // 
+// ðŸªª SYSTEM COMPLIANCE SERVICE: CAGE CODE ENGINE (PART 1 OF 3)
 // ============================================================================ // 
 
 function initCageCodeServices() {
@@ -72,7 +72,7 @@ function initCageCodeServices() {
       <!-- DYNAMIC SYSTEM COMPLIANCE TOOLTIP: CAGE CODE REGISTRATION --> 
       <div style="grid-column: span 2; background: rgba(10, 31, 68, 0.03); border-left: 4px solid var(--navy); padding: 14px; border-radius: 0 8px 8px 0; font-size: 0.8rem; line-height: 1.4; color: var(--slate); box-sizing: border-box; margin-bottom: 8px;"> 
         <strong style="color: var(--navy); display: block; margin-bottom: 4px;"><i class="fa-solid fa-circle-info"></i> Federal CAGE Code Procurement Backplane</strong> 
-        A Commercial and Government Entity (CAGE) Code is a specialized five-character identifier assigned by the Defense Logistics Agency (DLA). It is a mandatory structural parameter for corporate entities tracking federal grants, executing Department of Defense (DoD) procurement contracts, and securing facility clearances. <span style="font-weight: 700; color: var(--primary);">⚡ Proxy Fulfillment Mode:</span> Filings4u acts as your official third-party proxy agent to prepare, validate, and execute this configuration sequence through the DLA and federal data backplanes. 
+        A Commercial and Government Entity (CAGE) Code is a specialized five-character identifier assigned by the Defense Logistics Agency (DLA). It is a mandatory structural parameter for corporate entities tracking federal grants, executing Department of Defense (DoD) procurement contracts, and securing facility clearances. <span style="font-weight: 700; color: var(--primary);">âš¡ Proxy Fulfillment Mode:</span> Filings4u acts as your official third-party proxy agent to prepare, validate, and execute this configuration sequence through the DLA and federal data backplanes. 
       </div> 
 
       <!-- SECTION 1: COMMERCIAL CONTRACTOR BASELINE PROFILE --> 
@@ -353,7 +353,7 @@ function initCageCodeServices() {
   };
 
   // ============================================================================ // 
-  // ⚙️ INTERACTIVE INTERFACE CONTROLLERS (CAGE CODE SUBSIDIARY FIELDS)
+  // âš™ï¸ INTERACTIVE INTERFACE CONTROLLERS (CAGE CODE SUBSIDIARY FIELDS)
   // ============================================================================ // 
   window.toggleCageParentCompanyWrapperVisibility = function(value) {
     const wrapper = document.getElementById("cage_parent_company_wrapper");
@@ -377,7 +377,7 @@ function initCageCodeServices() {
   };
 
   // ============================================================================ // 
-  // 📦 MASTER RENDER SYSTEM ALLOCATION
+  // ðŸ“¦ MASTER RENDER SYSTEM ALLOCATION
   // ============================================================================ // 
   window.formRegistry['cage-code-form-master'] = function(stateDropdownOptionsHtml = "") { 
     return window.formRegistry['cage-code-part1-layout'](stateDropdownOptionsHtml) + 
@@ -388,4 +388,5 @@ function initCageCodeServices() {
 
 // Ignition
 initCageCodeServices();
+
 

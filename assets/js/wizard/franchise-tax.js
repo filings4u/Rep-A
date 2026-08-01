@@ -1,5 +1,5 @@
-// ============================================================================ //
-// 📊 FRANCHISE TAX REGISTRATION LAYOUT MATRIX (PART 1)                         //
+﻿// ============================================================================ //
+// ðŸ“Š FRANCHISE TAX REGISTRATION LAYOUT MATRIX (PART 1)                         //
 // ============================================================================ //
 window.buildFranchiseTaxFormPart1 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -41,7 +41,7 @@ window.buildFranchiseTaxFormPart1 = function(stateDropdownOptionsHtml = "") {
 
 
 // ============================================================================ //
-// 📊 FRANCHISE TAX REGISTRATION LAYOUT MATRIX (PART 2)                         //
+// ðŸ“Š FRANCHISE TAX REGISTRATION LAYOUT MATRIX (PART 2)                         //
 // ============================================================================ //
 window.buildFranchiseTaxFormPart2 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -98,7 +98,7 @@ window.buildFranchiseTaxFormPart2 = function(stateDropdownOptionsHtml = "") {
 
 
 // ============================================================================ //
-// 📊 ARCHITECTURE SEGMENT 1: FRANCHISE TAX REGISTRATION LAYOUT PART 1          //
+// ðŸ“Š ARCHITECTURE SEGMENT 1: FRANCHISE TAX REGISTRATION LAYOUT PART 1          //
 // ============================================================================ //
 window.buildFranchiseTaxFormPart1 = function(stateDropdownOptionsHtml = "") {
   const blankStatesHtml = stateDropdownOptionsHtml || `
@@ -137,7 +137,7 @@ window.buildFranchiseTaxFormPart1 = function(stateDropdownOptionsHtml = "") {
 
       <div class="wizard-input-group" style="grid-column: span 2; margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
         <label for="fran_tax_legal_name" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Official Business Name <span style="color: #ef4444;">*</span></label>
-        <!-- 🟢 FIXED FIELD ID ATTRIBUTE FROM haz_legal_name TO fran_tax_legal_name TO MATCH PART 1 VALIDATION MATRIX -->
+        <!-- ðŸŸ¢ FIXED FIELD ID ATTRIBUTE FROM haz_legal_name TO fran_tax_legal_name TO MATCH PART 1 VALIDATION MATRIX -->
         <input type="text" id="fran_tax_legal_name" required placeholder="Enter legal company name exactly as registered with the Secretary of State" class="wizard-input-field" style="width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; min-height: 44px;">
         <div class="wizard-error-message" id="err_fran_tax_legal_name" style="color: #ef4444; font-size: 0.75rem; margin-top: 4px; display: none;"></div>
       </div>
@@ -151,7 +151,7 @@ window.formRegistry['franchise-tax-part1-layout'] = window.buildFranchiseTaxForm
 
 
 // ============================================================================ //
-// 📊 ARCHITECTURE SEGMENT 2: FRANCHISE TAX REGISTRATION LAYOUT PART 2          //
+// ðŸ“Š ARCHITECTURE SEGMENT 2: FRANCHISE TAX REGISTRATION LAYOUT PART 2          //
 // ============================================================================ //
 window.buildFranchiseTaxFormPart2 = function(stateDropdownOptionsHtml = "") {
   return `
@@ -165,7 +165,7 @@ window.buildFranchiseTaxFormPart2 = function(stateDropdownOptionsHtml = "") {
 
       <div class="wizard-input-group" style="grid-column: span 2; margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
         <label for="fran_tax_method_type" style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--navy, #0a1f44);">Filing Category Basis <span style="color: #ef4444;">*</span></label>
-        <!-- 🟢 FIXED DYNAMIC DROPDOWN INTERLOCK ONCHANGE: UPDATES VISIBILITY VIA CLASSIFIED WRAPPER OBJECT DISPLAY PROPERTIES AND MAPS THE ERROR MATRIX CLEANUP AND TOTAL AMOUNT CALCULATOR -->
+        <!-- ðŸŸ¢ FIXED DYNAMIC DROPDOWN INTERLOCK ONCHANGE: UPDATES VISIBILITY VIA CLASSIFIED WRAPPER OBJECT DISPLAY PROPERTIES AND MAPS THE ERROR MATRIX CLEANUP AND TOTAL AMOUNT CALCULATOR -->
         <select id="fran_tax_method_type" required class="wizard-input-field" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 12px; font-size: 0.95rem; font-weight: 600; background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; line-height: 1.2;" onchange="
           const calcWrapper = document.getElementById('fran_tax_calculation_wrapper');
           if (calcWrapper) {
@@ -229,7 +229,7 @@ window.toggleFranchiseTaxThresholdInputFieldsVisibility = function(value) {
   if (!calculationWrapper) return;
   
   if (value === "margin-or-stock") {
-    // 🟢 FIXED: Preserves the internal grid columns of your Section D templates seamlessly
+    // ðŸŸ¢ FIXED: Preserves the internal grid columns of your Section D templates seamlessly
     calculationWrapper.style.setProperty("display", "grid", "important");
     if (assetInput) {
       assetInput.setAttribute("required", "required");
@@ -241,7 +241,7 @@ window.toggleFranchiseTaxThresholdInputFieldsVisibility = function(value) {
       assetInput.removeAttribute("required");
     }
     
-    // 🟢 FIXED: Flush out variables securely and dispatch events to update your tracking data store
+    // ðŸŸ¢ FIXED: Flush out variables securely and dispatch events to update your tracking data store
     calculationWrapper.querySelectorAll("input").forEach(el => {
       el.value = "";
       el.style.borderColor = "#cbd5e1";
@@ -268,17 +268,17 @@ window.executeFranchiseTaxStateParsingWorkflow = function(stateValue) {
   const upperState = stateValue ? stateValue.toUpperCase() : ""; 
   if (upperState === "DE") { 
     bannerNode.style.setProperty("display", "block", "important"); 
-    bannerTextNode.innerHTML = "💡 <b>Delaware Notice:</b> Entities using Authorized Shares can alternate between the Minimum Recorded $175.00 Flat Method and the Assumed Par Value Capital Method during formal auditing."; 
+    bannerTextNode.innerHTML = "ðŸ’¡ <b>Delaware Notice:</b> Entities using Authorized Shares can alternate between the Minimum Recorded $175.00 Flat Method and the Assumed Par Value Capital Method during formal auditing."; 
   } else if (upperState === "TX") { 
     bannerNode.style.setProperty("display", "block", "important"); 
-    bannerTextNode.innerHTML = "💡 <b>Texas Notice:</b> No Franchise Tax is due if total annualized revenue drops below the statutory threshold limit, but a Public Information Report (PIR) remains mandatory."; 
+    bannerTextNode.innerHTML = "ðŸ’¡ <b>Texas Notice:</b> No Franchise Tax is due if total annualized revenue drops below the statutory threshold limit, but a Public Information Report (PIR) remains mandatory."; 
   } else { 
     bannerNode.style.setProperty("display", "none", "important"); 
     bannerTextNode.innerText = ""; 
   } 
 }; 
 
-// 🟢 FIXED: Replaced loose document-wide listeners with localized element listener registration hooks 
+// ðŸŸ¢ FIXED: Replaced loose document-wide listeners with localized element listener registration hooks 
 window.bindLocalizedFranchiseTaxEventHandlers = function(rootContainerElement) { 
   const parentCanvas = rootContainerElement || document.getElementById("step-2-onboarding-fields-canvas") || document.getElementById("step-2-injection-placeholder") || document.querySelector(".franchise-tax-grid-segment")?.parentElement; 
   if (!parentCanvas) return; 
@@ -324,7 +324,7 @@ window.formRegistry['franchise-tax-part3-layout'] = function(stateDropdownOption
        <option value="DE">Delaware</option>
        <option value="NV">Nevada</option>`;
 
-  // 🟢 FIXED: Removed outer native columns to integrate smoothly with full-width master streams
+  // ðŸŸ¢ FIXED: Removed outer native columns to integrate smoothly with full-width master streams
   return `
     <div class="franchise-tax-part3-inner-grid" style="grid-column: span 2 !important; width: 100% !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; box-sizing: border-box !important;">
       
@@ -441,10 +441,10 @@ window.validateFranchiseTaxFormPart3 = function() {
     iEl.style.setProperty("border-color", "#cbd5e1", "important");
   };
 
-  // 🟢 FIXED: Check DOM attachment state instead of rendering layout metrics
+  // ðŸŸ¢ FIXED: Check DOM attachment state instead of rendering layout metrics
   const existsInActiveDom = (el) => el && document.body.contains(el);
 
-  // 🟢 FIXED: Isolated error node matching targeting unique parent wrappers
+  // ðŸŸ¢ FIXED: Isolated error node matching targeting unique parent wrappers
   const getFieldErrorMessageNode = (fieldEl, specificErrId) => {
     if (!fieldEl) return null;
     const explicitNode = document.getElementById(specificErrId);
@@ -458,7 +458,7 @@ window.validateFranchiseTaxFormPart3 = function() {
 
   const cards = container.querySelectorAll('.member-record-card');
   cards.forEach(card => {
-    // 🟢 FIXED: Use explicit data attributes to protect structural evaluation loops
+    // ðŸŸ¢ FIXED: Use explicit data attributes to protect structural evaluation loops
     const index = card.getAttribute('data-officer-index') || card.id.replace('fran_officer_card_', '');
     if (!index) return;
 
@@ -532,7 +532,7 @@ window.validateFranchiseTaxFormPart3 = function() {
 // SECTION H: PARTS 4 & 5 LAYOUT ENGINE MATRIX [FIXED]                          //
 // ---------------------------------------------------------------------------- //
 window.formRegistry['franchise-tax-part4-layout'] = function(stateDropdownOptionsHtml = "") {
-  // 🟢 FIXED: Kept full-width layout wrapper, ensuring the outer grid tracks expand across 100% of workspace
+  // ðŸŸ¢ FIXED: Kept full-width layout wrapper, ensuring the outer grid tracks expand across 100% of workspace
   return `
     <div class="franchise-tax-part4-inner-grid" style="grid-column: span 2 !important; width: 100% !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; box-sizing: border-box !important;">
       
@@ -561,7 +561,7 @@ window.formRegistry['franchise-tax-part4-layout'] = function(stateDropdownOption
 };
 
 window.formRegistry['franchise-tax-part5-layout'] = function(stateDropdownOptionsHtml = "") {
-  // 🟢 FIXED: Ensured part 5 uses matching grid parameters to stay centered and wide without collapsing
+  // ðŸŸ¢ FIXED: Ensured part 5 uses matching grid parameters to stay centered and wide without collapsing
   return `
     <div class="franchise-tax-part5-inner-grid" style="grid-column: span 2 !important; width: 100% !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; box-sizing: border-box !important;">
       
@@ -607,14 +607,14 @@ window.formRegistry['franchise-tax-parts4and5-validation'] = {
       iEl.style.setProperty("border-color", "#cbd5e1", "important");
     };
 
-    // 🟢 FIXED: Safe DOM-attachment presence assertion
+    // ðŸŸ¢ FIXED: Safe DOM-attachment presence assertion
     const existsInActiveDom = (el) => el && document.body.contains(el);
 
     const fileField = document.getElementById('fran_file_ledger_summary');
     const fileErr = document.getElementById('err_fran_file_ledger_summary');
 
     if (existsInActiveDom(fileField) && fileErr) {
-      // 🟢 FIXED: Safe array boundary check for document upload fields
+      // ðŸŸ¢ FIXED: Safe array boundary check for document upload fields
       const isFileEmpty = !fileField.files || fileField.files.length === 0;
       if (isFileEmpty) {
         markInvalid(fileField, fileErr, "Please upload your capital stock or gross margin ledger summary.");
@@ -634,7 +634,7 @@ window.buildFranchiseTaxFilingForm = function(stateDropdownOptionsHtml = "") {
   const p4 = typeof window.formRegistry['franchise-tax-part4-layout'] === "function" ? window.formRegistry['franchise-tax-part4-layout'](stateDropdownOptionsHtml) : "";
   const p5 = typeof window.formRegistry['franchise-tax-part5-layout'] === "function" ? window.formRegistry['franchise-tax-part5-layout'](stateDropdownOptionsHtml) : "";
 
-  // 🟢 SOLUTION: Set wrappers to display: block layout tracks since the inner layouts now
+  // ðŸŸ¢ SOLUTION: Set wrappers to display: block layout tracks since the inner layouts now
   // generate and sustain their own exact grid column measurements flawlessly.
   return `
     <div class="franchise-tax-master-container" style="grid-column: span 2 !important; width: 100% !important; display: flex !important; flex-direction: column !important; gap: 24px !important; box-sizing: border-box !important;">
@@ -652,13 +652,13 @@ window.buildFranchiseTaxFilingForm = function(stateDropdownOptionsHtml = "") {
 
 
 // ---------------------------------------------------------------------------- //
-// SECTION K: 🗑️ DYNAMIC NODE REMOVAL ENGINE (OFFICER RECORDS SYSTEM) [FIXED] //
+// SECTION K: ðŸ—‘ï¸ DYNAMIC NODE REMOVAL ENGINE (OFFICER RECORDS SYSTEM) [FIXED] //
 // ---------------------------------------------------------------------------- //
 window.removeFranchiseOfficerCardNode = function(cardIndex) {
   const parentContainer = document.getElementById("fran_officers_container");
   if (!parentContainer) return;
 
-  // 🟢 FIXED: Locate the target container strictly by its immutable data attribute index
+  // ðŸŸ¢ FIXED: Locate the target container strictly by its immutable data attribute index
   const targetCard = parentContainer.querySelector(`.member-record-card[data-officer-index="${cardIndex}"]`);
   if (!targetCard) return;
 
@@ -689,7 +689,7 @@ window.removeFranchiseOfficerCardNode = function(cardIndex) {
 
     const trackingFields = ['name', 'title', 'street', 'unit', 'city', 'state', 'zip'];
     trackingFields.forEach(field => {
-      // 🟢 FIXED: Target unique inputs cleanly using exact substring formatting rather than broad prefixes
+      // ðŸŸ¢ FIXED: Target unique inputs cleanly using exact substring formatting rather than broad prefixes
       const inputEl = card.querySelector(`input[id*="_officer_${field}_"], select[id*="_officer_${field}_"]`);
       const labelEl = card.querySelector(`label[for*="_officer_${field}_"]`);
       const errorEl = card.querySelector(`.wizard-error-message[id*="_officer_${field}_"]`);
@@ -704,7 +704,7 @@ window.removeFranchiseOfficerCardNode = function(cardIndex) {
       }
     });
 
-    // 🟢 FIXED: Swap out fragile inline onclick hooks for modern data-attribute targets
+    // ðŸŸ¢ FIXED: Swap out fragile inline onclick hooks for modern data-attribute targets
     const trashButton = card.querySelector(".btn-remove-officer");
     if (trashButton) {
       trashButton.setAttribute("data-target-index", operationalNewIndex);
@@ -717,7 +717,7 @@ window.removeFranchiseOfficerCardNode = function(cardIndex) {
 
 
 // ---------------------------------------------------------------------------- //
-// SECTION L: 📦 DYNAMIC OFFICER REGISTRY ROW APPENDER LISTENERS                //
+// SECTION L: ðŸ“¦ DYNAMIC OFFICER REGISTRY ROW APPENDER LISTENERS                //
 // ---------------------------------------------------------------------------- //
 if (!window.hasFranchiseOfficerListenerAttached) {
   document.addEventListener("click", function(e) {
@@ -735,7 +735,7 @@ if (!window.hasFranchiseOfficerListenerAttached) {
     const cardNode = document.createElement("div");
     cardNode.className = "member-record-card";
     cardNode.id = `fran_officer_card_${cardIndex}`;
-    // 🟢 FIXED: Injected immutable structural indexing data attribute layer for Section K engine matching alignment
+    // ðŸŸ¢ FIXED: Injected immutable structural indexing data attribute layer for Section K engine matching alignment
     cardNode.setAttribute('data-officer-index', cardIndex);
     cardNode.style.cssText = "background: #ffffff; border: 1px solid var(--border, #e2e8f0); padding: 16px; border-radius: 8px; width: 100%; box-sizing: border-box; margin-top: 12px; clear: both;";
     
@@ -857,3 +857,4 @@ window.formRegistry = window.formRegistry || {};
 window.formRegistry['franchise-tax-form-master'] = function(stateDropdownOptionsHtml = "") {
   return window.buildFranchiseTaxFilingForm(stateDropdownOptionsHtml);
 };
+
