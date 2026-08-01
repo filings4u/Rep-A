@@ -731,7 +731,7 @@ window.injectStateFilingFeesIntoReceipt = function(step8Frame, grandTotalField, 
 
 
 // ============================================================================
-// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (BLOCK 4 OF 4 - BALANCED)
+// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (PART 4 OF 4 - BALANCED)
 // MODULE: RELOAD INTERCEPTOR, POA REHYDRATOR, AND MASTER CLOSURE MATRIX
 // ============================================================================
 
@@ -743,7 +743,6 @@ window.extractAndRenderReceiptManifestData = function() {
       executeInjectionPipeline();
     }
     
-    // ✅ TRIGGER THE CALCULATOR HOOK: Fire off the invoice line items block
     if (typeof window.computeInvoiceHydrationLoop === "function") {
       window.computeInvoiceHydrationLoop();
     }
@@ -778,7 +777,6 @@ window.printSpecificPoaDocument = function() {
   const currentTimestamp = document.getElementById("poa-certified-timestamp")?.textContent || "";
   const printWindow = window.open("", "_blank", "width=800,height=900");
 
-  // ✅ FIXED: Completely closed string templates write the print script document context parameters safely
   printWindow.document.write("<html><head><title>Power of Attorney Certification Record</title></head><body style='font-family:sans-serif;padding:40px;color:#0a1f44;'><h4>Digital Power of Attorney Certification</h4><p>LIMITED POWER OF ATTORNEY AGENCY AGREEMENT</p><hr><h3 style='font-style:italic;color:#1e3a8a;'>" + currentSigner + "</h3><p style='font-family:monospace;font-size:12px;'>" + currentTimestamp + "</p><script>window.onload=function(){window.print();setTimeout(function(){window.close();},100);};</script></body></html>");
   printWindow.document.close();
 };
@@ -786,13 +784,15 @@ window.printSpecificPoaDocument = function() {
 window.initializeSecureStep8AccountHydration = function() {
   console.log("Awakening Step 8 success layout panel processes...");
   
-  // ✅ REFRESH SECURITY INTERCEPTOR: Wipes cache and expels users to root web path on reload loops
-  if (window.performance && window.performance.getEntriesByType("navigation")) {
-    const navEntries = window.performance.getEntriesByType("navigation");
-    if (navEntries.length > 0 && navEntries[0].type === "reload") {
-      console.warn("[Security Shield] Success portal refresh captured. Wiping storage variables.");
+  // ✅ FIXED REFRESH LOOKUP: Explicitly isolates item index 0 to calculate true browser refreshes accurately
+  const navigationListArray = window.performance.getEntriesByType("navigation");
+  if (navigationListArray && navigationListArray.length > 0) {
+    if (navigationListArray[0].type === "reload") {
+      console.warn("[Security Shield] Success portal reload captured. Performing complete memory expulsion.");
+      
       localStorage.clear();
       sessionStorage.clear();
+      
       window.location.replace("https://filings4u.com");
       return;
     }
@@ -814,7 +814,6 @@ window.initializeSecureStep8AccountHydration = function() {
   }
 
   // Baseline token memory wipe parameters pass
-  localStorage.removeItem("tracking_number");
   localStorage.removeItem("first_name");
   localStorage.removeItem("last_name");
   localStorage.removeItem("phone_number");
@@ -838,6 +837,7 @@ if (document.readyState === "loading") {
     window.initializeSecureStep8AccountHydration();
   }
 }
+
 
 // ============================================================================
 // FILE: step-8.js - CLOSURE INTEGRATOR (PART 4 OF 4 CONTINUATION)

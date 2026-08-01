@@ -295,7 +295,7 @@ function renderProfileForm(container, userEmail) {
 }
 
 // ============================================================================
-// FILE: step-7.js - TERMINAL COMPLIANCE HOOK MATRIX (BLOCK 5 OF 6 - REPAIRED)
+// FILE: step-7.js - TERMINAL COMPLIANCE HOOK MATRIX (BLOCK 5 OF 7 - REPAIRED)
 // MODULE: ACCOUNT PROFILE COMPLETION & FUNCTION INVOKE MATRIX
 // ============================================================================
 
@@ -355,7 +355,6 @@ function bindFormSubmissionEvents() {
     .then(function(resolvedUserId) {
       console.log("Deploying profile data fields to client_profiles data table");
       
-      // ✅ SAFE CONSTRAINT EVALUATION GATING: If account exists, perform an update scan path instead of a broken insert pass
       if (resolvedUserId && resolvedUserId !== "existing_account_fallback_token") {
         profilePayload.id = resolvedUserId;
         return window.supabase
@@ -372,7 +371,8 @@ function bindFormSubmissionEvents() {
           .update(profilePayload)
           .eq("email", userEmail)
           .then(function(updateResult) {
-            if (upsertResult && upsertResult.error) console.warn("Muted background entry override trace");
+            // ✅ FIXED TYPO: References the correct local updateResult attribute parameter safely
+            if (updateResult && updateResult.error) console.warn("Muted profile update warning text");
             return true;
           });
       }
@@ -381,9 +381,10 @@ function bindFormSubmissionEvents() {
       if (targetTrackingNumber) {
         console.log("Forcing baseline order column updates for tracking key " + targetTrackingNumber);
         
-        // Cache name parameters in local memory frames to populate your cursive signature box on Step 8 perfectly
+        // Cache parameters into memory so step 8 rehydration can pull names even if session fails
         localStorage.setItem("first_name", profilePayload.first_name);
         localStorage.setItem("last_name", profilePayload.last_name);
+        localStorage.setItem("tracking_number", targetTrackingNumber);
 
         return window.supabase
           .from("orders")
@@ -399,8 +400,7 @@ function bindFormSubmissionEvents() {
       }
     })
     .then(function() {
-      // ✅ FIXED EDGE ENDPOINT TARGET: Forces payload vectors straight to your true active stripe-webhook function
-      console.log("Invoking transaction notification distribution worker...");
+      console.log("Invoking transaction notification distribution worker over the network...");
       return window.supabase.functions.invoke("stripe-webhook", {
         body: {
           tracking_number: targetTrackingNumber,
