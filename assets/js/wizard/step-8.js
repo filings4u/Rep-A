@@ -583,7 +583,7 @@ window.extractAndRenderReceiptManifestData = function() {
 };
 
 // ============================================================================
-// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (PART 4 OF 4 - SECURITY FLUSH)
+// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (PART 4 OF 4 - SECURED)
 // MODULE: RELOAD INTERCEPTOR, POA REHYDRATOR, AND HARD RESET MATRIX
 // ============================================================================
 
@@ -645,17 +645,15 @@ window.extractAndRenderReceiptManifestData = function() {
   window.initializeSecureStep8AccountHydration = function() {
     console.log("Awakening Step 8 success layout panel processes...");
     
-    // ✅ BANK-GRADE REFRESH SHIELD: Intercept browser reloads instantly
-    if (window.performance && window.performance.getEntriesByType("navigation")[0]) {
-      const navEntry = window.performance.getEntriesByType("navigation")[0];
-      if (navEntry.type === "reload") {
-        console.warn("[Security Guard] Page refresh detected on Step 8. Performing complete memory wipe and website expulsion.");
+    // ✅ FIXED PERFORMANCE ENTRY ROUTER: Correct target item lookup index evaluates real refresh commands perfectly
+    const navigationListArray = window.performance.getEntriesByType("navigation");
+    if (navigationListArray && navigationListArray.length > 0) {
+      if (navigationListArray[0].type === "reload") {
+        console.warn("[Security Guard] Page refresh detected on secure layout canvas. Performing complete memory expulsion.");
         
-        // Destructively flush all session data parameters out of cache memory paths right away
         localStorage.clear();
         sessionStorage.clear();
         
-        // Bounce the browser tracking node context straight out to your core brand root site
         window.location.replace("https://filings4u.com");
         return;
       }
@@ -665,14 +663,12 @@ window.extractAndRenderReceiptManifestData = function() {
     window.computeInvoiceHydrationLoop();
     window.extractAndRenderCertifiedLegalPoaDocument();
 
-    // Adjust visibility bounds to clean out scrolling frame limits completely
     const masterPlaceholder = document.getElementById("step-8-injection-placeholder");
     if (masterPlaceholder) {
       masterPlaceholder.style.setProperty("height", "auto", "important");
       masterPlaceholder.style.setProperty("min-height", "100%", "important");
     }
 
-    // Standard local storage data parameter cleanup pass
     localStorage.removeItem("tracking_number");
     localStorage.removeItem("first_name");
     localStorage.removeItem("last_name");
@@ -696,7 +692,6 @@ window.extractAndRenderReceiptManifestData = function() {
       window.initializeSecureStep8AccountHydration();
     }
   }
-
 
 // ============================================================================
 // FILE: step-8.js - STATEMENT & DYNAMIC CERTIFICATION LAYOUT (PART 2 OF 3)
