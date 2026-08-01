@@ -582,34 +582,11 @@ window.extractAndRenderReceiptManifestData = function() {
   }
 };
 
- // 5️⃣ SYSTEM LIFECYCLE DISPATCH INITIALIZER: Awakes processing loops instantly on step mount
-  window.initializeSecureStep8AccountHydration = function() {
-    console.log("Awakening Step 8 success layout panel processes...");
-    window.buildAndRenderStep8LayoutStructure();
-    window.computeInvoiceHydrationLoop();
-    window.extractAndRenderCertifiedLegalPoaDocument();
-  };
+// ============================================================================
+// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (PART 4 OF 4 - SECURITY FLUSH)
+// MODULE: RELOAD INTERCEPTOR, POA REHYDRATOR, AND HARD RESET MATRIX
+// ============================================================================
 
-  // Dynamic hard refresh execution gate check routing controls
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function() {
-      if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
-        window.initializeSecureStep8AccountHydration();
-      }
-    });
-  } else {
-    if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
-      window.initializeSecureStep8AccountHydration();
-    }
-  }
-
-
-  // ============================================================================
-  // FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (PART 4 OF 4)
-  // MODULE: POA CERTIFICATION REHYDRATOR & PRINT POPUP ENGINE
-  // ============================================================================
-
-  // 3️⃣ CONTRACT REHYDRATOR: Pulls user name safely into the cursive signatures display panel
   window.extractAndRenderCertifiedLegalPoaDocument = function() {
     const signerNode = document.getElementById("poa-certified-signer");
     const timestampNode = document.getElementById("poa-certified-timestamp");
@@ -631,7 +608,6 @@ window.extractAndRenderReceiptManifestData = function() {
     }
   };
 
-  // 4️⃣ POPUP PRINTER UTILITY GATEWAY
   window.printSpecificPoaDocument = function() {
     const currentSigner = document.getElementById("poa-certified-signer")?.textContent || "Authorized Principal";
     const currentTimestamp = document.getElementById("poa-certified-timestamp")?.textContent || "";
@@ -666,6 +642,60 @@ window.extractAndRenderReceiptManifestData = function() {
     printWindow.document.close();
   };
 
+  window.initializeSecureStep8AccountHydration = function() {
+    console.log("Awakening Step 8 success layout panel processes...");
+    
+    // ✅ BANK-GRADE REFRESH SHIELD: Intercept browser reloads instantly
+    if (window.performance && window.performance.getEntriesByType("navigation")[0]) {
+      const navEntry = window.performance.getEntriesByType("navigation")[0];
+      if (navEntry.type === "reload") {
+        console.warn("[Security Guard] Page refresh detected on Step 8. Performing complete memory wipe and website expulsion.");
+        
+        // Destructively flush all session data parameters out of cache memory paths right away
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Bounce the browser tracking node context straight out to your core brand root site
+        window.location.replace("https://filings4u.com");
+        return;
+      }
+    }
+
+    window.buildAndRenderStep8LayoutStructure();
+    window.computeInvoiceHydrationLoop();
+    window.extractAndRenderCertifiedLegalPoaDocument();
+
+    // Adjust visibility bounds to clean out scrolling frame limits completely
+    const masterPlaceholder = document.getElementById("step-8-injection-placeholder");
+    if (masterPlaceholder) {
+      masterPlaceholder.style.setProperty("height", "auto", "important");
+      masterPlaceholder.style.setProperty("min-height", "100%", "important");
+    }
+
+    // Standard local storage data parameter cleanup pass
+    localStorage.removeItem("tracking_number");
+    localStorage.removeItem("first_name");
+    localStorage.removeItem("last_name");
+    localStorage.removeItem("phone_number");
+    localStorage.removeItem("company_name");
+    localStorage.removeItem("selected_plan");
+    localStorage.removeItem("selected_upsells");
+    localStorage.removeItem("poa_signature");
+    localStorage.removeItem("f4u_wizard_onboarding_state");
+    sessionStorage.removeItem("f4u_force_manual_state_selection");
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+        window.initializeSecureStep8AccountHydration();
+      }
+    });
+  } else {
+    if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+      window.initializeSecureStep8AccountHydration();
+    }
+  }
 
 
 // ============================================================================
