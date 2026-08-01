@@ -127,92 +127,93 @@
   };
 
  // ============================================================================
-  // FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (PART 2 OF 4 - REPAIRED)
-  // MODULE: STATEMENT LEDGER, BOTTOM TOOLBAR NOTICE, & SIDE-BY-SIDE BUTTONS
-  // ============================================================================
-  
+// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (BLOCK 2 OF 4 - REPAIRED)
+// MODULE: STATEMENT LEDGER & CERTIFIED LEGAL COMPONENT MATRIX
+// ============================================================================
+
+  // ✅ FIXED SCOPING LINK: Moved this variable inside the function layout stream
   const baselineMarkupString = `
-        <!-- STATEMENT ITEMIZATION LEDGER CONTAINER -->
-        <div style="margin-bottom: 32px; width: 100%; box-sizing: border-box; text-align: left; display: block !important;">
-          <h3 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 800; color: #0a1f44; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Itemized Billing Statement</h3>
-          <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column; width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; padding: 12px 24px; box-sizing: border-box; gap: 12px;"></div>
-          <div style="background: #ffffff; padding: 24px 0; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; border-bottom: 2px solid #f1f5f9;">
-            <span style="font-size: 1.1rem; color: #0a1f44; font-weight: 800;">Total Paid Amount</span>
-            <span id="receipt-grand-total-display" style="font-family: monospace; font-size: 1.35rem; color: #10b981; font-weight: 900;">$0.00</span>
-          </div>
-        </div>
-
-        <!-- PRINTER INTERACTION ACTIONS BUTTON ROW -->
-        <div class="no-print" style="text-align: right; width: 100%; box-sizing: border-box; margin-bottom: 24px;">
-          <button type="button" onclick="window.print();" style="background: #ffffff; border: 1px solid #cbd5e1; color: #0a1f44; font-weight: 700; font-size: 0.9rem; padding: 12px 24px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;">
-            Download or Print Receipt
-          </button>
-        </div>
-
-        <!-- POWER OF ATTORNEY CERTIFICATION PANEL -->
-        <div id="live-poa-document-manifest" style="display: block !important; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; overflow: hidden; margin-top: 28px; box-sizing: border-box; width: 100%; text-align: left; clear: both;">
-          <div class="no-print" style="background: #0a1f44; padding: 16px; color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Executed Legal Records</span>
-            <span style="font-size: 0.8rem; font-weight: 600; opacity: 0.9;">Power of Attorney</span>
-          </div>
-
-          <div id="poa-print-canvas" style="padding: 32px; color: #0a1f44; line-height: 1.6; font-size: 0.9rem; background: #ffffff; width: 100%; box-sizing: border-box; display: block !important;">
-            <h4 style="margin: 0 0 16px 0; font-size: 1.2rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: -0.2px; color: #0a1f44;">Digital Power of Attorney Certification</h4>
-            <div id="poa-scroll-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; font-size: 0.85rem; color: #334155; line-height: 1.6; max-height: 220px; overflow-y: scroll; font-family: system-ui, sans-serif; text-align: justify; margin-bottom: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; width: 100%;">
-              LIMITED POWER OF ATTORNEY AND CORPORATE AGENCY AGREEMENT<br><br>
-              WHEREAS, the undersigned Principal does hereby nominatively appoint, designate, and empower filings4u, LLC, as its true and lawful Attorney-in-Fact and Corporate Agent.
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-              <div>
-                <small style="color: #64748b; font-weight: 700; display: block; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; margin-bottom: 4px;">Authorized Principal</small>
-                <span id="poa-certified-signer" style="font-size: 1.8rem; font-family: system-ui, sans-serif; font-weight: 600; color: #1e3a8a; display: block; min-height: 30px;">Extracting Signature...</span>
-              </div>
-              <div>
-                <small style="color: #64748b; font-weight: 700; display: block; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; margin-bottom: 6px;">Execution Date Stamp</small>
-                <span id="poa-certified-timestamp" style="font-family: monospace; font-size: 0.85rem; font-weight: 700; color: #334155; display: block;">Extracting Clock Timestamp...</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="no-print" style="padding: 0 32px 32px 32px; background: #ffffff;">
-            <button type="button" onclick="window.printSpecificPoaDocument();" style="width: 100%; padding: 14px; background: #0a1f44; color: #ffffff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; transition: background 0.2s; box-shadow: 0 4px 12px rgba(10, 31, 68, 0.15);">
-              Download or Print Certified POA Record
-            </button>
-          </div>
-        </div>
-  `;
-
-  const targetPlaceholderNode = document.getElementById("step-8-injection-placeholder");
-  if (targetPlaceholderNode) {
-    // 1. Append the main billing rows and contract layouts first
-    targetPlaceholderNode.innerHTML += baselineMarkupString;
-
-    // ✅ FIXED: Injected at the absolute end, placing the warning container below the forms, right above the side-by-side links
-    targetPlaceholderNode.insertAdjacentHTML("beforeend", `
-      <div class="no-print" style="width: 100%; box-sizing: border-box; margin-top: 40px; clear: both; text-align: center;">
-        
-        <!-- SPAM NOTICE CONTAINER PINNED TO THE BOTTOM OF THE SHEET -->
-        <div id="f4u-step8-activation-notice-card" style="margin-bottom: 24px; background: rgba(245, 158, 11, 0.05); border: 1px solid #f59e0b; border-radius: 8px; padding: 16px; font-size: 0.85rem; color: #b45309; display: flex; align-items: center; gap: 10px; font-weight: 500; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; box-sizing: border-box;">
-          <div>
-            <strong>Missing your activation setup mailer?</strong> Please thoroughly check your <strong>Email Inbox</strong> and <strong>Spam / Junk folder</strong> sections if you do not observe the encryption password configuration token code delivered within 2-3 minutes.
-          </div>
-        </div>
-
-        <!-- PORTAL GRID NAVIGATION ACTIONS DIRECTORY -->
-        <div style="margin-top: 24px; border-top: 1px dashed #e2e8f0; padding-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 600px; margin-left: auto; margin-right: auto; box-sizing: border-box;">
-          <a href="https://filings4u.com" class="fluid-wide-action-btn" style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px 24px; background-color: #0a1f44; color: #ffffff !important; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 14px; box-sizing: border-box; box-shadow: 0 4px 6px -1px rgba(10, 31, 68, 0.15); transition: background 0.15s ease;">
-            Enter Secure Client Portal Dashboard
-          </a>
-          <a href="https://filings4u.com" style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px 24px; background-color: #f1f5f9; color: #475569 !important; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 14px; box-sizing: border-box; transition: background 0.15s ease;">
-            Return to Corporate Home Page
-          </a>
-        </div>
+    <!-- STATEMENT ITEMIZATION LEDGER CONTAINER -->
+    <div style="margin-bottom: 32px; width: 100%; box-sizing: border-box; text-align: left; display: block !important;">
+      <h3 style="margin: 0 0 16px 0; font-size: 1.1rem; font-weight: 800; color: #0a1f44; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">Itemized Billing Statement</h3>
+      <div id="receipt-items-injector-frame" style="display: flex; flex-direction: column; width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; padding: 12px 24px; box-sizing: border-box; gap: 12px;"></div>
+      <div style="background: #ffffff; padding: 24px 0; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; border-bottom: 2px solid #f1f5f9;">
+        <span style="font-size: 1.1rem; color: #0a1f44; font-weight: 800;">Total Paid Amount</span>
+        <span id="receipt-grand-total-display" style="font-family: monospace; font-size: 1.35rem; color: #10b981; font-weight: 900;">$0.00</span>
       </div>
-    `);
-  }
-})();
+    </div>
 
+    <!-- PRINTER INTERACTION ACTIONS BUTTON ROW -->
+    <div class="no-print" style="text-align: right; width: 100%; box-sizing: border-box; margin-bottom: 24px;">
+      <button type="button" onclick="window.print();" style="background: #ffffff; border: 1px solid #cbd5e1; color: #0a1f44; font-weight: 700; font-size: 0.9rem; padding: 12px 24px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;">
+        Download or Print Receipt
+      </button>
+    </div>
+
+    <!-- POWER OF ATTORNEY CERTIFICATION PANEL -->
+    <div id="live-poa-document-manifest" style="display: block !important; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; overflow: hidden; margin-top: 28px; box-sizing: border-box; width: 100%; text-align: left; clear: both;">
+      <div class="no-print" style="background: #0a1f44; padding: 16px; color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Executed Legal Records</span>
+        <span style="font-size: 0.8rem; font-weight: 600; opacity: 0.9;">Power of Attorney</span>
+      </div>
+      
+      <div id="poa-print-canvas" style="padding: 32px; color: #0a1f44; line-height: 1.6; font-size: 0.9rem; background: #ffffff; width: 100%; box-sizing: border-box; display: block !important;">
+        <h4 style="margin: 0 0 16px 0; font-size: 1.2rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: -0.2px; color: #0a1f44;">Digital Power of Attorney Certification</h4>
+        <div id="poa-scroll-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; font-size: 0.85rem; color: #334155; line-height: 1.6; max-height: 220px; overflow-y: scroll; font-family: system-ui, sans-serif; text-align: justify; margin-bottom: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); box-sizing: border-box; width: 100%;">
+          LIMITED POWER OF ATTORNEY AND CORPORATE AGENCY AGREEMENT<br><br>
+          WHEREAS, the undersigned Principal does hereby nominatively appoint, designate, and empower filings4u, LLC, as its true and lawful Attorney-in-Fact and Corporate Agent.
+        </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 20px;"> 
+      <div> 
+        <small style="color: #64748b; font-weight: 700; display: block; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; margin-bottom: 4px;">Authorized Principal</small> 
+        <span id="poa-certified-signer" style="font-size: 1.8rem; font-family: system-ui, sans-serif; font-weight: 600; color: #1e3a8a; display: block; min-height: 30px;">Extracting Signature...</span> 
+      </div> 
+      <div> 
+        <small style="color: #64748b; font-weight: 700; display: block; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; margin-bottom: 6px;">Execution Date Stamp</small> 
+        <span id="poa-certified-timestamp" style="font-family: monospace; font-size: 0.85rem; font-weight: 700; color: #334155; display: block;">Extracting Clock Timestamp...</span> 
+      </div> 
+    </div> 
+  </div> 
+  
+  <div class="no-print" style="padding: 0 32px 32px 32px; background: #ffffff;"> 
+    <button type="button" onclick="window.printSpecificPoaDocument();" style="width: 100%; padding: 14px; background: #0a1f44; color: #ffffff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; transition: background 0.2s; box-shadow: 0 4px 12px rgba(10, 31, 68, 0.15);"> 
+      Download or Print Certified POA Record 
+    </button> 
+  </div> 
+</div>`;
+
+    const targetPlaceholderNode = document.getElementById("step-8-injection-placeholder"); 
+    if (targetPlaceholderNode) { 
+      // 1. Append the main billing rows and contract layouts first 
+      targetPlaceholderNode.innerHTML += baselineMarkupString; 
+
+      // ✅ FIXED: Injected at the absolute end, placing the warning container below the forms, right above the side-by-side links
+      targetPlaceholderNode.insertAdjacentHTML("beforeend",` 
+        <div class="no-print" style="width: 100%; box-sizing: border-box; margin-top: 40px; clear: both; text-align: center;"> 
+          
+          <!-- SPAM NOTICE CONTAINER PINNED TO THE BOTTOM OF THE SHEET --> 
+          <div id="f4u-step8-activation-notice-card" style="margin-bottom: 24px; background: rgba(245, 158, 11, 0.05); border: 1px solid #f59e0b; border-radius: 8px; padding: 16px; font-size: 0.85rem; color: #b45309; display: flex; align-items: center; gap: 10px; font-weight: 500; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; box-sizing: border-box;"> 
+            <div> 
+              <strong>Missing your activation setup mailer?</strong> Please thoroughly check your <strong>Email Inbox</strong> and <strong>Spam / Junk folder</strong> sections if you do not observe the encryption password configuration token code delivered within 2-3 minutes. 
+            </div> 
+          </div> 
+
+          <!-- PORTAL GRID NAVIGATION ACTIONS DIRECTORY --> 
+          <div style="margin-top: 24px; border-top: 1px dashed #e2e8f0; padding-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 600px; margin-left: auto; margin-right: auto; box-sizing: border-box;"> 
+            
+            <!-- ✅ FIXED REDIRECT ROUTE: Point directly to your genuine portal gateway login script page link -->
+            <a href="https://filings4u.com" class="fluid-wide-action-btn" style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px 24px; background-color: #0a1f44; color: #ffffff !important; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 14px; box-sizing: border-box; box-shadow: 0 4px 6px -1px rgba(10, 31, 68, 0.15); transition: background 0.15s ease;"> 
+              Enter Secure Client Portal Dashboard 
+            </a> 
+            
+            <a href="https://filings4u.com" style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px 24px; background-color: #f1f5f9; color: #475569 !important; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 14px; box-sizing: border-box; transition: background 0.15s ease;"> 
+              Return to Corporate Home Page 
+            </a> 
+          </div> 
+        </div> 
+      `); 
+    
 
 // ============================================================================
 // FILE: step-8.js - STYLESHEET LAYER FIX (SYNTAX PROOFED)
@@ -321,114 +322,191 @@ injectionStyleNode.textContent = `
 document.head.appendChild(injectionStyleNode);
 
 // ============================================================================
-// FILE: step-8.js - SYNTAX REPAIR MATRIX
-// MODULE: DYNAMIC RECEIPT GENERATOR ENGINE (FIXED MAPS)
+// FILE: step-8.js - SYNTAX REPAIR MATRIX (BLOCK 4 OF 4 - REPAIRED)
+// MODULE: DYNAMIC RECEIPT GENERATOR ENGINE & TIMELINE INTEGRATOR CLOSURES
 // ============================================================================
 
-const executeInjectionPipeline = function() {
-  const step8Frame = document.getElementById("receipt-items-injector-frame");
-  const grandTotalField = document.getElementById("receipt-grand-total-display");
-  const manifestRaw = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
-  
-  console.log("[Step 8 Pipeline] Attempting injection. Target Frame Found:", !!step8Frame);
-
-  if (!step8Frame) {
-    if (!window._step8RetryCounter) {
-      window._step8RetryCounter = 1;
-      setTimeout(executeInjectionPipeline, 150);
-    }
-    return false;
-  }
-
-  let itemsHtml = "";
-  let billingTotal = "$0.00";
-
-  if (manifestRaw) {
-    try {
-      const manifest = JSON.parse(manifestRaw);
-
-      // 1. EXTRACT DATA DIRECTLY FROM TRANSITION DATA OBJECTS
-      const baseFeeValue = parseFloat(manifest.financials_subtotal_amount) || 0;
-      const baseLabel = manifest.selected_package_title || "Processing Fee";
-      itemsHtml += `
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44;">
-          <span style="font-weight: 500;">${baseLabel}</span>
-          <strong style="font-weight: 700;">$${baseFeeValue.toFixed(2)}</strong>
-        </div>
-      `;
-
-      // 2. MULTI-CHANNEL INTERLOCK LOOKUP LOOP FOR DYNAMIC ADDONS
-      let activeAddonsList = [];
-      if (window.currentSelectedAddonsListArrayMatrix && window.currentSelectedAddonsListArrayMatrix.length > 0) {
-        activeAddonsList = window.currentSelectedAddonsListArrayMatrix;
-      } else if (window.currentCartState && Array.isArray(window.currentCartState.addons)) {
-        activeAddonsList = window.currentCartState.addons;
-      } else if (window.wizardSelections && Array.isArray(window.wizardSelections.items)) {
-        activeAddonsList = window.wizardSelections.items;
+  window.computeInvoiceHydrationLoop = function() {
+    const step8Frame = document.getElementById("receipt-items-injector-frame");
+    const grandTotalField = document.getElementById("receipt-grand-total-display");
+    const manifestRaw = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
+    
+    console.log("[Step 8 Pipeline] Attempting injection. Target Frame Found:", !!step8Frame);
+    
+    if (!step8Frame) {
+      if (!window._step8RetryCounter) {
+        window._step8RetryCounter = 1;
+        setTimeout(window.computeInvoiceHydrationLoop, 150);
       }
+      return false;
+    }
 
-      if (Array.isArray(activeAddonsList)) {
-        activeAddonsList.forEach(addon => {
-          if (addon) {
-            const parsedPrice = parseFloat(addon.price || addon.price_amount || 0);
-            if (parsedPrice > 0) {
-              itemsHtml += `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #475569; border-top: 1px dashed #f1f5f9;">
-                  <span style="font-weight: 400;">+ ${addon.title || addon.name || addon.label || "Compliance Upgrade Item"}</span>
-                  <strong style="font-weight: 600; font-family: monospace;">$${parsedPrice.toFixed(2)}</strong>
-                </div>
-              `;
+    let itemsHtml = "";
+    let billingTotal = "$0.00";
+
+    if (manifestRaw) {
+      try {
+        const manifest = JSON.parse(manifestRaw);
+
+        // 1. EXTRACT DATA DIRECTLY FROM TRANSITION DATA OBJECTS
+        const baseFeeValue = parseFloat(manifest.financials_subtotal_amount) || 0;
+        const baseLabel = manifest.selected_package_title || "Processing Fee";
+        
+        itemsHtml += `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44; width: 100% !important;">
+            <span style="font-weight: 500;">${baseLabel}</span>
+            <strong style="font-weight: 700;">$${baseFeeValue.toFixed(2)}</strong>
+          </div>
+        `;
+
+        // 2. MULTI-CHANNEL LOOKUP LOOP FOR DYNAMIC ADDONS
+        let activeAddonsList = [];
+        if (window.currentSelectedAddonsListArrayMatrix && window.currentSelectedAddonsListArrayMatrix.length > 0) {
+          activeAddonsList = window.currentSelectedAddonsListArrayMatrix;
+        } else if (window.currentCartState && Array.isArray(window.currentCartState.addons)) {
+          activeAddonsList = window.currentCartState.addons;
+        } else if (window.wizardSelections && Array.isArray(window.wizardSelections.items)) {
+          activeAddonsList = window.wizardSelections.items;
+        }
+
+        if (Array.isArray(activeAddonsList)) {
+          activeAddonsList.forEach(addon => {
+            if (addon) {
+              const parsedPrice = parseFloat(addon.price || addon.price_amount || 0);
+              if (parsedPrice > 0) {
+                itemsHtml += `
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #475569; border-top: 1px dashed #f1f5f9; width: 100% !important;">
+                    <span style="font-weight: 400;">+ ${addon.title || addon.name || addon.label || "Compliance Upgrade Item"}</span>
+                    <strong style="font-weight: 600; font-family: monospace;">$${parsedPrice.toFixed(2)}</strong>
+                  </div>
+                `;
+              }
             }
-          }
-        });
-      }
+          });
+        }
 
-      // 3. MAP GRAND TOTAL AMOUNT FROM TRANSACTION METADATA
-      if (manifest.financials_grand_total_charge) {
-        billingTotal = `$${parseFloat(manifest.financials_grand_total_charge).toFixed(2)}`;
-      } else if (window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount) {
-        const globalTotal = parseFloat(window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount || 0);
-        billingTotal = `$${globalTotal.toFixed(2)}`;
-      }
+        // 3. MAP GRAND TOTAL AMOUNT FROM TRANSACTION METADATA
+        if (manifest.financials_grand_total_charge) {
+          billingTotal = "$" + parseFloat(manifest.financials_grand_total_charge).toFixed(2);
+        } else if (window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount) {
+          const globalTotal = parseFloat(window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount || 0);
+          billingTotal = "$" + globalTotal.toFixed(2);
+        }
 
-      if (grandTotalField) {
-        grandTotalField.textContent = billingTotal;
-      }
+        if (grandTotalField) {
+          grandTotalField.textContent = billingTotal;
+        }
 
-      // 4. MAP THE CUSTOMER TRACKING CODE FROM SECURE MEMORY (FIXED PROPERTY FIELD TARGET TO RESOLVE ISSUE 2)
-      const dynamicCustomerF4UToken = (manifest.tracking_number || manifest.transaction_hash_id || window.currentGeneratedMbeAccountNumber || localStorage.getItem("tracking_number") || "").trim();
-      
-      if (document.getElementById("receipt-tracking-token-display") && dynamicCustomerF4UToken) {
-        document.getElementById("receipt-tracking-token-display").textContent = dynamicCustomerF4UToken;
-      }
+        // 4. MAP SECURE CUSTOMER ACCOUNT INDICATOR CODES
+        const dynamicCustomerF4UToken = (manifest.tracking_number || manifest.transaction_hash_id || window.currentGeneratedMbeAccountNumber || localStorage.getItem("tracking_number") || "F4U-DEPLOYED").trim();
+        const trackingTokenElement = document.getElementById("receipt-tracking-token-display");
+        if (trackingTokenElement && dynamicCustomerF4UToken) {
+          trackingTokenElement.textContent = dynamicCustomerF4UToken;
+        }
 
-    } catch (e) {
-      console.error("[Receipt Manifest Parser Error]", e);
+      } catch (e) {
+        console.error("[Receipt Manifest Parser Error]", e);
+      }
+    }
+
+    // ✅ FIXED SETTER PLACEMENT: Assigns markup loop strings safely inside compiled functional bounds
+    step8Frame.innerHTML = itemsHtml;
+  };
+
+  // 5️⃣ CONTRACT REHYDRATOR: Draws the customer cursive signature parameters inside legal panels safely
+  window.extractAndRenderCertifiedLegalPoaDocument = function() {
+    const signerNode = document.getElementById("poa-certified-signer");
+    const timestampNode = document.getElementById("poa-certified-timestamp");
+    
+    var rawFirstName = localStorage.getItem("first_name") || "";
+    var rawLastName = localStorage.getItem("last_name") || "";
+    
+    if (signerNode) {
+      if (rawFirstName || rawLastName) {
+        signerNode.textContent = (rawFirstName + " " + rawLastName).trim();
+      } else {
+        signerNode.textContent = "Authorized Principal Signatory";
+      }
+    }
+
+    if (timestampNode) {
+      const liveClock = new Date();
+      timestampNode.textContent = liveClock.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }) + " @ " + liveClock.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) + " (Certified Secure Handoff)";
+    }
+  };
+
+  // POPUP POP WINDOW PRINTER CONTROLLER UTILITY
+  window.printSpecificPoaDocument = function() {
+    const currentSigner = document.getElementById("poa-certified-signer")?.textContent || "Authorized Principal";
+    const currentTimestamp = document.getElementById("poa-certified-timestamp")?.textContent || "";
+    const printWindow = window.open("", "_blank", "width=800,height=900");
+
+    printWindow.document.write("<html><head><title>POA Certification Record</title></head><body style='font-family:sans-serif;padding:40px;color:#0a1f44;'><h2>Digital Power of Attorney Certification</h2><p>LIMITED POWER OF ATTORNEY AGENCY AGREEMENT</p><hr><h3 style='font-style:italic;color:#1e3a8a;'>" + currentSigner + "</h3><p style='font-family:monospace;font-size:12px;'>" + currentTimestamp + "</p><script>window.onload=function(){window.print();setTimeout(function(){window.close();},100);};</script></body></html>");
+    printWindow.document.close();
+  };
+
+  // 6️⃣ MASTER UNIFIED CORE LIFECYCLE ACTIVATOR INITIALIZER
+  window.initializeSecureStep8AccountHydration = function() {
+    console.log("[Success Portal Lifecycle] Firing layout drawer and dynamic value hydration queues...");
+    
+    // BANK-GRADE REFRESH INTERCEPT SHIELD: Wipes local cache variables and kicks users to website root on reloads
+    const navEntriesArray = window.performance.getEntriesByType("navigation");
+    if (navEntriesArray && navEntriesArray.length > 0) {
+      if (navEntriesArray[0].type === "reload") {
+        console.warn("[Security Guard Bypass] Success portal refresh captured. Wiping storage profiles.");
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("https://filings4u.com");
+        return;
+      }
+    }
+
+    // Run structural layout compilers in sequence
+    window.buildAndRenderStep8LayoutStructure();
+    window.computeInvoiceHydrationLoop();
+    window.extractAndRenderCertifiedLegalPoaDocument();
+
+    const masterPlaceholder = document.getElementById("step-8-injection-placeholder");
+    if (masterPlaceholder) {
+      masterPlaceholder.style.setProperty("height", "auto", "important");
+      masterPlaceholder.style.setProperty("min-height", "100%", "important");
+    }
+  };
+
+  // Execution boundary checker hooks automatically trigger on active index load states
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+        window.initializeSecureStep8AccountHydration();
+      }
+    });
+  } else {
+    if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+      window.initializeSecureStep8AccountHydration();
     }
   }
 
-  // INNER LAYOUT INJECTION
-  step8Frame.innerHTML = itemsHtml;
 };
 
 
+// ============================================================================
+// FILE: step-8.js - DYNAMIC STATE FEES & LIFECYCLE INITIALIZER (REPAIRED)
+// MODULE: GLOBAL INTERLOCK RUNTIME HYDRATION HOOKS
+// ============================================================================
 
-// ============================================================================ //
-// 📄 FILE: step-8.js - BLOCK 4 - PART D & E (FIXED & CONTAINED)                //
-// 🧲 MODULE: DYNAMIC STATE FEES & LIFECYCLE INITIALIZER                       //
-// ============================================================================ //
-
-// Cleaned, synchronous initialization pipeline trigger hook for Step 8.
+// ✅ FIXED RUNTIME ENTRY POINT: Exposes the manifestation rehydrator clearly to your master wizard core scripts
 window.extractAndRenderReceiptManifestData = function() {
+  console.log("[Receipt Framework] Launching success portal rendering passes...");
+  
   if (typeof window.buildAndRenderStep8LayoutStructure === "function") {
     window.buildAndRenderStep8LayoutStructure();
     
-    // Safely fire the injection pipeline now that elements are generated in the DOM
-    if (typeof executeInjectionPipeline === "function") {
-      setTimeout(executeInjectionPipeline, 50);
+    // ✅ FIXED LOOKUP REFERENCE: Pulls the pipeline worker explicitly from the shared window scope context
+    if (typeof window.computeInvoiceHydrationLoop === "function") {
+      setTimeout(window.computeInvoiceHydrationLoop, 50);
     }
   } else {
-    console.error("[Receipt Framework] UI Structural generation hook missing.");
+    console.error("[Receipt Framework] UI Structural generation hook missing inside window context.");
   }
 };
 
@@ -439,7 +517,13 @@ window.injectStateFilingFeesIntoReceipt = function(step8Frame, grandTotalField, 
 
   if (finalGovFee > 0) {
     const manifestRaw = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
-    let manifestObj = manifestRaw ? JSON.parse(manifestRaw) : {};
+    let manifestObj = {};
+    try {
+      if (manifestRaw) manifestObj = JSON.parse(manifestRaw);
+    } catch (e) {
+      manifestObj = {};
+    }
+
     let selectedStateCode = window.currentCartState?.selectedState || manifestObj.filing_state || window.selectedJurisdiction || "State";
     let stateFriendlyName = selectedStateCode;
 
@@ -448,24 +532,32 @@ window.injectStateFilingFeesIntoReceipt = function(step8Frame, grandTotalField, 
     }
 
     const stateFilingFeeRowHtml = `
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44; border-top: 1px dashed #f1f5f9;">
+      <div class="receipt-line-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #0a1f44; border-top: 1px dashed #f1f5f9; width: 100% !important;">
         <span style="font-weight: 500;">+ Mandatory ${stateFriendlyName} Filing Fee</span>
         <strong style="font-weight: 700;">$${finalGovFee.toFixed(2)}</strong>
       </div>
     `;
-    step8Frame.insertAdjacentHTML('beforeend', stateFilingFeeRowHtml);
+    
+    step8Frame.insertAdjacentHTML("beforeend", stateFilingFeeRowHtml);
   }
 
   if (grandTotalField) {
     grandTotalField.textContent = billingTotal;
   }
+  
   window._step8RetryCounter = 0;
+  
+  // Rehydrate the cursive signatory lines right after appending numbers
+  if (typeof window.extractAndRenderCertifiedLegalPoaDocument === "function") {
+    window.extractAndRenderCertifiedLegalPoaDocument();
+  }
 };
 
-  // ============================================================================
-  // FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (PART 3 OF 4)
-  // MODULE: INVOICE STATEMENT DATA HYDRATION LAYER
-  // ============================================================================
+
+ // ============================================================================
+// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (BLOCK 4 OF 4 - REPAIRED)
+// MODULE: INVOICE LEDGER HYDRATION AND MASTER LIFECYCLE ACTIVATION CLOSURES
+// ============================================================================
 
   window.computeInvoiceHydrationLoop = function() {
     const activeInjectorFrame = document.getElementById("receipt-items-injector-frame");
@@ -482,7 +574,7 @@ window.injectStateFilingFeesIntoReceipt = function(step8Frame, grandTotalField, 
       console.warn("Failed parsing manifest content", pe);
     }
 
-    // Capture and mount precise tracking token reference codes
+    // Capture and mount precise tracking token reference codes safely inside local function scope
     const uniqueAccountNumber = manifestPayload?.tracking_number || localStorage.getItem("tracking_number") || "F4U-PROCESSING";
     if (activeTrackingDisplay) {
       activeTrackingDisplay.textContent = uniqueAccountNumber.trim();
@@ -494,17 +586,20 @@ window.injectStateFilingFeesIntoReceipt = function(step8Frame, grandTotalField, 
       activeTimestampDisp.textContent = liveDate.toLocaleString("en-US", { year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true });
     }
 
-    if (manifestPayload && activeInjectorFrame) {
-      let invoiceLinesMarkup = "";
-      let calculatedSubtotal = 0;
+    // Initialize block properties before the conditional logic gate executes
+    let invoiceLinesMarkup = "";
+    let calculatedSubtotal = 0;
+    let grandTotalValue = 0;
+    let statutoryGovFeesValue = 0;
 
+    if (manifestPayload && activeInjectorFrame) {
       if (manifestPayload.financials_subtotal_amount) {
         const pkgPrice = parseFloat(manifestPayload.financials_subtotal_amount) || 0;
         calculatedSubtotal += pkgPrice;
         invoiceLinesMarkup += `
           <div class="receipt-line-item" style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; color: #0a1f44; box-sizing: border-box; width: 100% !important;">
-            <span><strong>${manifestPayload.selected_package_title || "Processing Fee"}</strong></span>
-            <span style="font-family: monospace; font-weight: 700;">$${pkgPrice.toFixed(2)}</span>
+            <span><strong>\${manifestPayload.selected_package_title || "Processing Fee"}</strong></span>
+            <span style="font-family: monospace; font-weight: 700;">$\${pkgPrice.toFixed(2)}</span>
           </div>
         `;
       }
@@ -518,8 +613,8 @@ window.injectStateFilingFeesIntoReceipt = function(step8Frame, grandTotalField, 
             calculatedSubtotal += addonPrice;
             invoiceLinesMarkup += `
               <div class="receipt-line-item" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #475569; font-size: 0.85rem; box-sizing: border-box; width: 100% !important;">
-                <span>+ ${addonItem.title || addonItem.label || addonItem.name || "Compliance Upgrade"}</span>
-                <span style="font-family: monospace;">$${addonPrice.toFixed(2)}</span>
+                <span>+ \${addonItem.title || addonItem.label || addonItem.name || "Compliance Upgrade"}</span>
+                <span style="font-family: monospace;">$\${addonPrice.toFixed(2)}</span>
               </div>
             `;
           }
@@ -528,71 +623,44 @@ window.injectStateFilingFeesIntoReceipt = function(step8Frame, grandTotalField, 
 
       activeInjectorFrame.innerHTML = invoiceLinesMarkup;
 
-      const grandTotalValue = parseFloat(window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount || manifestPayload.financials_grand_total_charge || calculatedSubtotal);
-      const statutoryGovFeesValue = Math.max(0, grandTotalValue - calculatedSubtotal);
+      grandTotalValue = parseFloat(window.wizardCalculatedFinalTotalAmount || window.computedWizardGrandTotalAmount || manifestPayload.financials_grand_total_charge || calculatedSubtotal);
+      statutoryGovFeesValue = Math.max(0, grandTotalValue - calculatedSubtotal);
 
       if (statutoryGovFeesValue > 0) {
         let selectedStateCode = window.currentCartState?.selectedState || manifestPayload.filing_state || window.selectedJurisdiction || "State";
         const stateFilingFeeRowHtml = `
           <div class="receipt-line-item" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #0a1f44; font-size: 0.9rem; box-sizing: border-box; width: 100% !important;">
-            <span><strong>+ Mandatory ${selectedStateCode} Filing Fee</strong></span>
-            <span style="font-family: monospace; font-weight: 700;">$${statutoryGovFeesValue.toFixed(2)}</span>
+            <span><strong>+ Mandatory \${selectedStateCode} Filing Fee</strong></span>
+            <span style="font-family: monospace; font-weight: 700;">$\${statutoryGovFeesValue.toFixed(2)}</span>
           </div>
         `;
         activeInjectorFrame.insertAdjacentHTML("beforeend", stateFilingFeeRowHtml);
       }
 
       if (activeGrandDisp) {
-        activeGrandDisp.textContent = `$${grandTotalValue.toFixed(2)}`;
+        activeGrandDisp.textContent = "$" + grandTotalValue.toFixed(2);
       }
+
+      // ✅ FIXED CACHE PLACEMENT: Moved inside the validation scope and mapped to accurate context keys to prevent crashes
+      window.cacheCompiledInvoiceLayoutForDashboardExport = {
+        trackingNumber: uniqueAccountNumber,
+        itemsLayoutMarkup: invoiceLinesMarkup,
+        subtotalAmount: calculatedSubtotal,
+        governmentFees: statutoryGovFeesValue,
+        grandTotalPaid: grandTotalValue,
+        generatedTimestamp: new Date().toISOString()
+      };
+      console.log("[Portal Link Interlock] Invoice statement state cached cleanly.");
     }
- 
-    window.cacheCompiledInvoiceLayoutForDashboardExport = {
-      trackingNumber: uniqueAccountNumber,
-      itemsLayoutMarkup: invoiceLinesMarkup,
-      subtotalAmount: subtotalValue,
-      governmentFees: statutoryGovFeesValue,
-      grandTotalPaid: grandTotalValue,
-      generatedTimestamp: new Date().toISOString()
-    };
-    console.log("[Portal Link Interlock] Invoice statement state cached cleanly.");
-  }
+  };
 
-
-
-// ============================================================================
-// FILE: step-8.js - BLOCK 4 - PART G (CLEANED LAYOUT INITIALIZATION)
-// MODULE: STRUCTURAL LAYOUT HYDRATION HOOK ONLY
-// ============================================================================
-
-window.extractAndRenderReceiptManifestData = function() {
-  if (typeof window.buildAndRenderStep8LayoutStructure === "function") {
-    window.buildAndRenderStep8LayoutStructure();
-    
-    if (typeof executeInjectionPipeline === "function") {
-      executeInjectionPipeline();
-    }
-    
-    // ✅ TRIGGER THE CALCULATOR HOOK: Fire off the invoice line items block we fixed in Part F
-    if (typeof window.computeInvoiceHydrationLoop === "function") {
-      window.computeInvoiceHydrationLoop();
-    }
-  } else {
-    console.error("[Receipt Framework] UI Structural generation hook missing.");
-  }
-};
-
-// ============================================================================
-// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (PART 4 OF 4 - SECURED)
-// MODULE: RELOAD INTERCEPTOR, POA REHYDRATOR, AND HARD RESET MATRIX
-// ============================================================================
-
+  // 3️⃣ CONTRACT REHYDRATOR: Pulls user name safely into the cursive signatures display panel
   window.extractAndRenderCertifiedLegalPoaDocument = function() {
     const signerNode = document.getElementById("poa-certified-signer");
     const timestampNode = document.getElementById("poa-certified-timestamp");
     
-    var rawFirstName = localStorage.getItem("wizard_field_first_name") || localStorage.getItem("first_name") || "";
-    var rawLastName = localStorage.getItem("wizard_field_last_name") || localStorage.getItem("last_name") || "";
+    var rawFirstName = localStorage.getItem("first_name") || "";
+    var rawLastName = localStorage.getItem("last_name") || "";
     
     if (signerNode) {
       if (rawFirstName || rawLastName) {
@@ -608,39 +676,238 @@ window.extractAndRenderReceiptManifestData = function() {
     }
   };
 
+  // POPUP CONTEXT PRINTER CONTROLLER UTILITY
   window.printSpecificPoaDocument = function() {
     const currentSigner = document.getElementById("poa-certified-signer")?.textContent || "Authorized Principal";
     const currentTimestamp = document.getElementById("poa-certified-timestamp")?.textContent || "";
     const printWindow = window.open("", "_blank", "width=800,height=900");
 
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Power of Attorney Certification Record</title>
-          <style>
-            body { font-family: system-ui, sans-serif; color: #0a1f44; padding: 40px; line-height: 1.6; }
-            h4 { font-size: 24px; text-transform: uppercase; text-align: center; margin-bottom: 20px; font-weight: 800; border-bottom: 2px solid #0a1f44; padding-bottom: 12px; }
-            p { font-size: 14px; color: #334155; text-align: justify; margin-bottom: 30px; }
-            .meta-row { display: table; width: 100%; margin-top: 40px; border-top: 1px solid #cbd5e1; padding-top: 20px; }
-            .meta-cell { display: table-cell; width: 50%; vertical-align: top; }
-            .label { font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 6px; }
-            .signer { font-size: 26px; font-style: italic; color: #1e3a8a; font-weight: 700; }
-            .stamp { font-family: monospace; font-size: 13px; color: #334155; font-weight: 700; }
-          </style>
-        </head>
-        <body>
-          <h4>Digital Power of Attorney Certification</h4>
-          <p>LIMITED POWER OF ATTORNEY AND CORPORATE AGENCY AGREEMENT<br><br>The scope of this appointment is restricted and expressly limited to administrative and regulatory compliance processing.</p>
-          <div class="meta-row">
-            <div class="meta-cell"><div class="label">Authorized Principal</div><div class="signer">${currentSigner}</div></div>
-            <div class="meta-cell"><div class="label">Execution Date Stamp</div><div class="stamp">${currentTimestamp}</div></div>
-          </div>
-          <script>window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 100); };</script>
-        </body>
-      </html>
-    `);
+    printWindow.document.write("<html><head><title>POA Certification Record</title></head><body style='font-family:sans-serif;padding:40px;color:#0a1f44;'><h2>Digital Power of Attorney Certification</h2><p>LIMITED POWER OF ATTORNEY AGENCY AGREEMENT</p><hr><h3 style='font-style:italic;color:#1e3a8a;'>" + currentSigner + "</h3><p style='font-family:monospace;font-size:12px;'>" + currentTimestamp + "</p><script>window.onload=function(){window.print();setTimeout(function(){window.close();},100);};</script></body></html>");
     printWindow.document.close();
   };
+
+  // 4️⃣ MASTER UNIFIED CORE LIFECYCLE ACTIVATOR INITIALIZER
+  window.initializeSecureStep8AccountHydration = function() {
+    console.log("[Success Portal Lifecycle] Firing layout drawer and dynamic value hydration queues...");
+    
+    // BANK-GRADE REFRESH INTERCEPT SHIELD: Wipes local cache variables and kicks users to website root on reloads
+    const navEntriesArray = window.performance.getEntriesByType("navigation");
+    if (navEntriesArray && navEntriesArray.length > 0) {
+      if (navEntriesArray[0].type === "reload") {
+        console.warn("[Security Guard Bypass] Success portal refresh captured. Wiping storage profiles.");
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("https://filings4u.com");
+        return;
+      }
+    }
+
+    // Run structural layout compilers in sequence
+    window.buildAndRenderStep8LayoutStructure();
+    window.computeInvoiceHydrationLoop();
+    window.extractAndRenderCertifiedLegalPoaDocument();
+
+    const masterPlaceholder = document.getElementById("step-8-injection-placeholder");
+    if (masterPlaceholder) {
+      masterPlaceholder.style.setProperty("height", "auto", "important");
+      masterPlaceholder.style.setProperty("min-height", "100%", "important");
+    }
+  };
+
+  // Execution boundary checker hooks automatically trigger on active index load states
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+        window.initializeSecureStep8AccountHydration();
+      }
+    });
+  } else {
+    if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+      window.initializeSecureStep8AccountHydration();
+    }
+  }
+
+// ✅ SECURE SYSTEM FILE CLOSURE: Completely seals up the global namespace cleanly
+
+
+// ============================================================================
+// FILE: step-8.js - UNIFIED MASTER RECEIPT ENGINE (BLOCK 4 OF 4 - BALANCED)
+// MODULE: RELOAD INTERCEPTOR, POA REHYDRATOR, AND MASTER CLOSURE MATRIX
+// ============================================================================
+
+window.extractAndRenderReceiptManifestData = function() {
+  if (typeof window.buildAndRenderStep8LayoutStructure === "function") {
+    window.buildAndRenderStep8LayoutStructure();
+    
+    if (typeof executeInjectionPipeline === "function") {
+      executeInjectionPipeline();
+    }
+    
+    // ✅ TRIGGER THE CALCULATOR HOOK: Fire off the invoice line items block
+    if (typeof window.computeInvoiceHydrationLoop === "function") {
+      window.computeInvoiceHydrationLoop();
+    }
+  } else {
+    console.error("[Receipt Framework] UI Structural generation hook missing.");
+  }
+};
+
+window.extractAndRenderCertifiedLegalPoaDocument = function() {
+  const signerNode = document.getElementById("poa-certified-signer");
+  const timestampNode = document.getElementById("poa-certified-timestamp");
+  
+  var rawFirstName = localStorage.getItem("wizard_field_first_name") || localStorage.getItem("first_name") || "";
+  var rawLastName = localStorage.getItem("wizard_field_last_name") || localStorage.getItem("last_name") || "";
+  
+  if (signerNode) {
+    if (rawFirstName || rawLastName) {
+      signerNode.textContent = (rawFirstName + " " + rawLastName).trim();
+    } else {
+      signerNode.textContent = "Authorized Principal Signatory";
+    }
+  }
+  
+  if (timestampNode) {
+    const liveClock = new Date();
+    timestampNode.textContent = liveClock.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }) + " @ " + liveClock.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) + " (Certified Secure Handoff)";
+  }
+};
+
+window.printSpecificPoaDocument = function() {
+  const currentSigner = document.getElementById("poa-certified-signer")?.textContent || "Authorized Principal";
+  const currentTimestamp = document.getElementById("poa-certified-timestamp")?.textContent || "";
+  const printWindow = window.open("", "_blank", "width=800,height=900");
+
+  // ✅ FIXED: Completely closed string templates write the print script document context parameters safely
+  printWindow.document.write("<html><head><title>Power of Attorney Certification Record</title></head><body style='font-family:sans-serif;padding:40px;color:#0a1f44;'><h4>Digital Power of Attorney Certification</h4><p>LIMITED POWER OF ATTORNEY AGENCY AGREEMENT</p><hr><h3 style='font-style:italic;color:#1e3a8a;'>" + currentSigner + "</h3><p style='font-family:monospace;font-size:12px;'>" + currentTimestamp + "</p><script>window.onload=function(){window.print();setTimeout(function(){window.close();},100);};</script></body></html>");
+  printWindow.document.close();
+};
+
+window.initializeSecureStep8AccountHydration = function() {
+  console.log("Awakening Step 8 success layout panel processes...");
+  
+  // ✅ REFRESH SECURITY INTERCEPTOR: Wipes cache and expels users to root web path on reload loops
+  if (window.performance && window.performance.getEntriesByType("navigation")) {
+    const navEntries = window.performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+      console.warn("[Security Shield] Success portal refresh captured. Wiping storage variables.");
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.replace("https://filings4u.com");
+      return;
+    }
+  }
+
+  // Execute structural compilers in sequential alignment order
+  if (typeof window.extractAndRenderReceiptManifestData === "function") {
+    window.extractAndRenderReceiptManifestData();
+  }
+  if (typeof window.extractAndRenderCertifiedLegalPoaDocument === "function") {
+    window.extractAndRenderCertifiedLegalPoaDocument();
+  }
+
+  // Adjust placeholder container sizes to clean out vertical scrolls entirely
+  const placeholder = document.getElementById("step-8-injection-placeholder");
+  if (placeholder) {
+    placeholder.style.setProperty("height", "auto", "important");
+    placeholder.style.setProperty("min-height", "100%", "important");
+  }
+
+  // Baseline token memory wipe parameters pass
+  localStorage.removeItem("tracking_number");
+  localStorage.removeItem("first_name");
+  localStorage.removeItem("last_name");
+  localStorage.removeItem("phone_number");
+  localStorage.removeItem("company_name");
+  localStorage.removeItem("selected_plan");
+  localStorage.removeItem("selected_upsells");
+  localStorage.removeItem("poa_signature");
+  localStorage.removeItem("f4u_wizard_onboarding_state");
+  sessionStorage.removeItem("f4u_force_manual_state_selection");
+};
+
+// Auto-trigger setup parameters if the step page initializes on an active state loop
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+      window.initializeSecureStep8AccountHydration();
+    }
+  });
+} else {
+  if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+    window.initializeSecureStep8AccountHydration();
+  }
+}
+
+// ============================================================================
+// FILE: step-8.js - CLOSURE INTEGRATOR (PART 4 OF 4 CONTINUATION)
+// MODULE: RELOAD SECURITY REFRESH SHIELD & NAMESPACE CLOSURES
+// ============================================================================
+
+window.initializeSecureStep8AccountHydration = function() {
+  console.log("Awakening Step 8 success layout panel processes...");
+  
+  // ✅ BANK-GRADE REFRESH SHIELD: Intercept browser reloads instantly
+  if (window.performance && window.performance.getEntriesByType("navigation")) {
+    const navEntriesList = window.performance.getEntriesByType("navigation");
+    if (navEntriesList && navEntriesList.length > 0 && navEntriesList[0].type === "reload") {
+      console.warn("[Security Shield] Success portal reload captured. Performing complete memory expulsion.");
+      
+      // Destructively flush all session data parameters out of cache memory paths right away
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      // Bounce the browser tracking node context straight out to your core brand root site
+      window.location.replace("https://filings4u.com");
+      return;
+    }
+  }
+
+  // Execute structural layout compilers in sequential alignment order
+  if (typeof window.extractAndRenderReceiptManifestData === "function") {
+    window.extractAndRenderReceiptManifestData();
+  }
+  if (typeof window.extractAndRenderCertifiedLegalPoaDocument === "function") {
+    window.extractAndRenderCertifiedLegalPoaDocument();
+  }
+
+  // Adjust visibility bounds to clean out scrolling frame limits completely
+  const placeholderContainer = document.getElementById("step-8-injection-placeholder");
+  if (placeholderContainer) {
+    placeholderContainer.style.setProperty("height", "auto", "important");
+    placeholderContainer.style.setProperty("min-height", "100%", "important");
+  }
+
+  // Standard local storage data parameter cleanup pass on success page exit states
+  localStorage.removeItem("tracking_number");
+  localStorage.removeItem("first_name");
+  localStorage.removeItem("last_name");
+  localStorage.removeItem("phone_number");
+  localStorage.removeItem("company_name");
+  localStorage.removeItem("selected_plan");
+  localStorage.removeItem("selected_upsells");
+  localStorage.removeItem("poa_signature");
+  localStorage.removeItem("f4u_wizard_onboarding_state");
+  sessionStorage.removeItem("f4u_force_manual_state_selection");
+};
+
+// Execution boundary checker hooks automatically trigger on active index load states
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+      window.initializeSecureStep8AccountHydration();
+    }
+  });
+} else {
+  if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+    window.initializeSecureStep8AccountHydration();
+  }
+}
+
+// ============================================================================
+// FILE: step-8.js - STATEMENT & DYNAMIC CERTIFICATION LAYOUT (PART 4 OF 4)
+// MODULE: DATA PROCESSING REHYDRATION PIPELINE & NAMESPACE CLOSURES
+// ============================================================================
 
   window.initializeSecureStep8AccountHydration = function() {
     console.log("Awakening Step 8 success layout panel processes...");
@@ -694,84 +961,143 @@ window.extractAndRenderReceiptManifestData = function() {
   }
 
 // ============================================================================
-// FILE: step-8.js - STATEMENT & DYNAMIC CERTIFICATION LAYOUT (PART 2 OF 3)
-// MODULE: DATA PROCESSING REHYDRATION PIPELINE
+// FILE: step-8.js - STATEMENT & DYNAMIC CERTIFICATION LAYOUT (PART 4 OF 4)
+// MODULE: DATA PROCESSING REHYDRATION PIPELINE & NAMESPACE CLOSURES
 // ============================================================================
-window.rehydrateStatementAndPoaLayers = function() {
-  const activeInjectorFrame = document.getElementById("receipt-items-injector-frame");
-  const activeGrandDisp = document.getElementById("receipt-grand-total-display");
-  const liveSignerNode = document.getElementById("poa-certified-signer");
-  const liveTimestampNode = document.getElementById("poa-certified-timestamp");
-  
-  const manifestRaw = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
-  let manifestObj = {};
 
-  try {
-    if (manifestRaw) {
-      manifestObj = JSON.parse(manifestRaw);
+  window.rehydrateStatementAndPoaLayers = function() {
+    // ✅ FIXED: Elements are looked up dynamically INSIDE the function wrapper so they are found perfectly after Step 8 builds!
+    const activeInjectorFrame = document.getElementById("receipt-items-injector-frame");
+    const activeGrandDisp = document.getElementById("receipt-grand-total-display");
+    const liveSignerNode = document.getElementById("poa-certified-signer");
+    const liveTimestampNode = document.getElementById("poa-certified-timestamp");
+    const trackingTokenElement = document.getElementById("receipt-tracking-token-display");
+    const timestampDispElement = document.getElementById("receipt-timestamp-display");
+
+    const manifestRaw = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
+    let manifestObj = {};
+
+    try {
+      if (manifestRaw) {
+        manifestObj = JSON.parse(manifestRaw);
+      }
+    } catch (pe) {
+      console.warn("Failed parsing manifest array details", pe);
     }
-  } catch (pe) {
-    console.warn("Failed parsing manifest array details", pe);
-  }
 
-  // 1. REHYDRATE REAL SIGNATURE TEXT (FIXED PROPERTY TARGET TO RESOLVE TYPOS)
-  if (liveSignerNode) {
-    const realCustomerNameInput = manifestObj.poa_signature || 
-                                 localStorage.getItem("wizard_field_poa_signature") || 
-                                 localStorage.getItem("wizard_field_poa_typed_signature") || 
-                                 localStorage.getItem("poa_electronic_signature") || 
-                                 localStorage.getItem("wizard_field_first_name") || 
-                                 "Authorized Principal Account";
-                                 
-    liveSignerNode.textContent = realCustomerNameInput.trim();
-    console.log("Clean signature text mounted safely into preview node frame");
-  }
+    // 1. REHYDRATE REAL SIGNATURE TEXT (FIXED PROPERTY TARGET TO RESOLVE TYPOS)
+    if (liveSignerNode) {
+      const realCustomerNameInput = manifestObj.poa_signature || 
+                                     localStorage.getItem("wizard_field_poa_signature") || 
+                                     localStorage.getItem("wizard_field_poa_typed_signature") || 
+                                     localStorage.getItem("poa_electronic_signature") || 
+                                     localStorage.getItem("wizard_field_first_name") || 
+                                     localStorage.getItem("first_name") || 
+                                     "Authorized Principal Account";
+      
+      var cachedFirstName = localStorage.getItem("first_name") || "";
+      var cachedLastName = localStorage.getItem("last_name") || "";
+      
+      if (cachedFirstName || cachedLastName) {
+        liveSignerNode.textContent = (cachedFirstName + " " + cachedLastName).trim();
+      } else {
+        liveSignerNode.textContent = realCustomerNameInput.trim();
+      }
+      console.log("Clean signature text mounted safely into preview node frame");
+    }
 
-  // 2. REHYDRATE SECURE CLOCK CERTIFICATION TIMESTAMPS
-  if (liveTimestampNode) {
-    let executionDate = new Date();
-    let logPrefix = "(Local Platform Time)";
+    // 2. REHYDRATE SECURE CLOCK CERTIFICATION TIMESTAMPS
+    if (liveTimestampNode) {
+      let executionDate = new Date();
+      let logPrefix = "(Local Platform Time)";
+      if (manifestObj.poa_timestamp || manifestObj.created_at || manifestObj.poa_execution_stamp) {
+        executionDate = new Date(manifestObj.poa_timestamp || manifestObj.created_at || manifestObj.poa_execution_stamp);
+        logPrefix = "(Certified Server Time)";
+      }
+      const dateString = executionDate.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+      const timeString = executionDate.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+      liveTimestampNode.textContent = dateString + " @ " + timeString + " " + logPrefix;
+    }
+
+    // 3. GENERATE LIVE TOP RECEIPT RUNTIME TIMESTAMP
+    if (timestampDispElement) {
+      const liveDateInstance = new Date();
+      timestampDispElement.textContent = liveDateInstance.toLocaleString("en-US", { 
+        year: "numeric", 
+        month: "numeric", 
+        day: "numeric", 
+        hour: "numeric", 
+        minute: "2-digit", 
+        hour12: true 
+      });
+    }
+
+    // 4. MAP DYNAMIC SECURE ACCOUNT INDICATOR TO DISPLAY PANEL
+    if (trackingTokenElement) {
+      const dynamicTokenString = manifestObj.tracking_number || localStorage.getItem("tracking_number") || "F4U-DEPLOYED";
+      trackingTokenElement.textContent = dynamicTokenString.trim();
+    }
+  };
+
+  // ✅ GLOBAL SYSTEM LIFECYCLE INTERLOCK: Ties all rendering blocks tightly into your single master activation gate
+  window.initializeSecureStep8AccountHydration = function() {
+    console.log("[Success Portal Lifecycle] Commencing final clean layout draw and data rehydration loops...");
     
-    if (manifestObj.poa_timestamp || manifestObj.created_at) {
-      executionDate = new Date(manifestObj.poa_timestamp || manifestObj.created_at);
-      logPrefix = "(Certified Server Time)";
+    // BANK-GRADE REFRESH INTERCEPT SHIELD: Wipes local cache variables and kicks users to website root on reload attempts
+    const navigationListArray = window.performance.getEntriesByType("navigation");
+    if (navigationListArray && navigationListArray.length > 0) {
+      if (navigationListArray[0].type === "reload") {
+        console.warn("[Security Shield] Success portal reload captured. Performing complete memory expulsion.");
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("https://filings4u.com");
+        return;
+      }
+    }
+
+    // Run compilers in exact operational layout sequence
+    if (typeof window.buildAndRenderStep8LayoutStructure === "function") {
+      window.buildAndRenderStep8LayoutStructure();
+    }
+    if (typeof window.computeInvoiceHydrationLoop === "function") {
+      window.computeInvoiceHydrationLoop();
     }
     
-    const dateString = executionDate.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
-    const timeString = executionDate.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
-    liveTimestampNode.textContent = dateString + " @ " + timeString + " " + logPrefix;
-  }
-};
-
-// Delay execution slightly to ensure DOM layout engine paints container frames completely
-setTimeout(function() {
-  if (typeof window.rehydrateStatementAndPoaLayers === "function") {
+    // Execute data rehydration layers safely
     window.rehydrateStatementAndPoaLayers();
+
+    // Adjust parent container dimensions to cleanly fix vertical scrolling crops
+    const placeholderFrame = document.getElementById("step-8-injection-placeholder");
+    if (placeholderFrame) {
+      placeholderFrame.style.setProperty("height", "auto", "important");
+      placeholderFrame.style.setProperty("min-height", "100%", "important");
+    }
+
+    // Standard session cleanup pass on success page activation states
+    localStorage.removeItem("tracking_number");
+    localStorage.removeItem("first_name");
+    localStorage.removeItem("last_name");
+    localStorage.removeItem("phone_number");
+    localStorage.removeItem("company_name");
+    localStorage.removeItem("selected_plan");
+    localStorage.removeItem("selected_upsells");
+    localStorage.removeItem("poa_signature");
+    localStorage.removeItem("f4u_wizard_onboarding_state");
+    sessionStorage.removeItem("f4u_force_manual_state_selection");
+  };
+
+  // Execution boundary checker hooks automatically trigger on active index load states
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+        window.initializeSecureStep8AccountHydration();
+      }
+    });
+  } else {
+    if (window.location.search.includes("step=8") || parseInt(window.currentWizardActiveStep, 10) === 8) {
+      window.initializeSecureStep8AccountHydration();
+    }
   }
-}, 100);
 
-
-// ============================================================================
-// FILE: step-8.js - BLOCK 4 - PART F (VISUAL COMPLIANCE & TIMESTAMP ONLY)
-// MODULE: NOTIFICATION INSIGHTS & TIME CLOCK ENGINE
-// ============================================================================
-
-
-// Bind only the verified structural display elements existing inside the DOM
-const receiptTrackingDisplay = document.getElementById("receipt-tracking-token-display");
-const injectorFrame = document.getElementById("receipt-items-injector-frame");
-const grandDisp = document.getElementById("receipt-grand-total-display");
-const timestampDisp = document.getElementById("receipt-timestamp-display");
-
-// 1. Generate Live Receipt and POA Audit Timestamp
-if (timestampDisp) {
-  const liveDateInstance = new Date();
-  timestampDisp.textContent = liveDateInstance.toLocaleString("en-US", { 
-    year: "numeric", 
-    month: "numeric", 
-    day: "numeric", 
-    hour: "numeric", 
-    minute: "2-digit", 
-    hour12: true 
-  });
-}
+// ✅ SECURE COMPLIANT CLOSURE: Completely seals the master Immediately Invoked Function Expression scope cleanly
+})();
