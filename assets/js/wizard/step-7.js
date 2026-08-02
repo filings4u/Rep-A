@@ -322,13 +322,16 @@ function renderProfileForm(container, userEmail) {
     bindFormSubmissionEvents();
 }
 
-// Helper to grab all selected upsells from localStorage cleanly
+// ============================================================================
+// 📦 HELPER ENGINES FOR BACKGROUND DATA HARVESTING
+// ============================================================================
+
+// 1. Grab all selected upsells from localStorage cleanly
 function compileActiveUpsellsList() {
   var selected = [];
   var catalog = window.MASTER_UPSELLS_CATALOG || {};
   var coordinateMaps = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
 
-  // Loop through all items across all categories in the catalog
   for (var category in catalog) {
     if (Object.prototype.hasOwnProperty.call(catalog, category) && Array.isArray(catalog[category])) {
       catalog[category].forEach(function(item) {
@@ -336,7 +339,6 @@ function compileActiveUpsellsList() {
         var catalogSlug = item.id;
         var trackingKey = coordinateMaps[catalogSlug] || catalogSlug;
         
-        // Check both potential local storage naming conventions
         var storedFieldState = localStorage.getItem("wizard_field_" + trackingKey) || localStorage.getItem("wizard_field_" + catalogSlug);
         var isChecked = (storedFieldState === "true" || storedFieldState === "yes" || storedFieldState === true);
         
@@ -349,6 +351,143 @@ function compileActiveUpsellsList() {
   return selected.join(", ");
 }
 
+// 2. Scan the DOM for any active business name fields with a fallback string
+function extractWizardCompanyName() {
+  var companySelectorList = [
+    "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", 
+    "#bl_applicant_name", "#cage_legal_name", "#cgs_company_name", "#clia_lab_name", 
+    "#corp_proposed_name", "#dba_proposed_name", "#dbe_legal_name", "#dot_con_legal_name", 
+    "#prm_legal_name", "#dqf_carrier_name", "#duns_legal_name", "#ein_applicant_name", 
+    "#fed_tax_legal_name", "#fq_proposed_name", "#fran_tax_legal_name", "#haz_legal_name", 
+    "#hut_legal_name", "#ifta_legal_name", "#ifta_rep_legal_name", "#llc_desired_name", 
+    "#rein_original_name", "#mcs_legal_name", "#mbe_legal_name", "#nea_legal_name", 
+    "#np_proposed_name", "#oa_company_name", "#pr_legal_name", "#ra_client_name", 
+    "#st_legal_name", "#scac_legal_name", "#sllc_proposed_name", "#sm_proposed_name", 
+    "#sp_proposed_name", "#ta_legal_name", "#ins_legal_name", "#wbe_legal_name"
+  ];
+
+  for (var i = 0; i < companySelectorList.length; i++) {
+    var element = document.querySelector(companySelectorList[i]);
+    if (element && element.value && element.value.trim() !== "") {
+      return element.value.trim();
+    }
+  }
+  
+  // Fallback if no form input has a value present
+  return "Contact Customer";
+}
+// ============================================================================
+// 🔄 MODULE: IDENTITY SWITCHBOARD AND ROUTER INTERLOCK GATEWAY (BLOCK 3)
+// ============================================================================
+window.initializeStep7AccountCreation = function() {
+  console.log("[Step 7 Engine] Initializing account status verification rules...");
+
+  if (!window.supabase || typeof window.supabase.from !== "function") {
+    const SUPABASE_URL = "https://supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";
+    if (window.supabase && typeof window.supabase.createClient === "function") {
+      window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else if (typeof createClient === "function") {
+      window.supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  }
+
+  var panelCanvas = document.getElementById("step-panel-7");
+  if (!panelCanvas) return;
+
+  var receiptManifest = {};
+  try {
+    var manifestRaw = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
+    if (manifestRaw) receiptManifest = JSON.parse(manifestRaw);
+  } catch(err) {}
+
+  var urlParams = new URLSearchParams(window.location.search);
+  var capturedCheckoutEmail = urlParams.get("email") || receiptManifest.customer_email || localStorage.getItem("stripe_checkout_registered_userid") || "";
+  
+  if (!capturedCheckoutEmail || capturedCheckoutEmail.trim() === "") {
+    return;
+  }
+  var cleanEmail = capturedCheckoutEmail.trim().toLowerCase();
+
+  window.supabase
+    .from("client_profiles")
+    .select("first_name, last_name, phone_number, tracking_number")
+    .eq("email", cleanEmail)
+    .maybeSingle()
+    .then(function(lookupResult) {
+      if (lookupResult.error) throw lookupResult.error;
+
+      // BYPASS ROUTE: Profile already exists! Run automated background synchronization
+      if (lookupResult.data) {
+        console.log("[Identity Router] Account matched. Syncing upsells & business data behind the scenes...");
+        
+        var profile = lookupResult.data;
+        var targetTrackingNumber = receiptManifest.tracking_number || localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "";
+        var activeUpsellsString = compileActiveUpsellsList();
+        var extractedCompanyName = extractWizardCompanyName();
+
+        return window.supabase
+          .from("client_profiles")
+          .update({ selected_upsells: activeUpsellsString })
+          .eq("email", cleanEmail)
+          .then(function() {
+            if (targetTrackingNumber) {
+              localStorage.setItem("first_name", profile.first_name);
+              localStorage.setItem("last_name", profile.last_name);
+              localStorage.setItem("tracking_number", targetTrackingNumber);
+
+              return window.supabase
+                .from("orders")
+                .update({
+                  account_created: true,
+                  first_name: profile.first_name,
+                  last_name: profile.last_name,
+                  phone_number: profile.phone_number,
+                  selected_upsells: activeUpsellsString,
+                  company_name: extractedCompanyName, // Push harvested company name
+                  poa_signature: (profile.first_name + " " + profile.last_name + " (Digitally Executed)").trim(),
+                  poa_execution_stamp: new Date().toISOString()
+                })
+                .eq("tracking_number", targetTrackingNumber);
+            }
+          })
+          .then(function() {
+            return window.supabase.functions.invoke("stripe-webhook", {
+              body: {
+                tracking_number: targetTrackingNumber,
+                customer_email: cleanEmail,
+                total_amount: window.wizardCalculatedFinalTotalAmount || 0,
+                first_name: profile.first_name,
+                last_name: profile.last_name,
+                phone_number: profile.phone_number
+              }
+            });
+          })
+          .then(function() {
+            localStorage.setItem("stripe_checkout_registered_userid", cleanEmail);
+            if (typeof window.executeStepTransitionIndex8 === "function") {
+              window.executeStepTransitionIndex8();
+            }
+          });
+      }
+
+      // Fresh Account Workflow: Fall back to showing form fields if profile doesn't exist
+      const activeStepIndexInt = parseInt(window.currentWizardActiveStep, 10);
+      if (activeStepIndexInt === 7) {
+        renderProfileForm(panelCanvas, cleanEmail);
+      }
+    })
+    .catch(function(lookupError) {
+      console.error("[Router Error Handled]:", lookupError);
+      const fallbackStepCheck = parseInt(window.currentWizardActiveStep, 10);
+      if (fallbackStepCheck === 7) {
+        renderProfileForm(panelCanvas, cleanEmail);
+      }
+    });
+};
+// ============================================================================
+// 📋 MODULE: ACCOUNT PROFILE COMPLETION & INTERLOCK MATRIX (BLOCK 5)
+// ============================================================================
 function bindFormSubmissionEvents() {
   var formElement = document.getElementById("f4u-client-profile-creation-form");
   if (!formElement || formElement.getAttribute("data-interlock-bound") === "true") return;
@@ -368,15 +507,14 @@ function bindFormSubmissionEvents() {
     try {
       var manifestRaw = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
       if (manifestRaw) receiptManifest = JSON.parse(manifestRaw);
-    } catch(err) {
-      receiptManifest = {};
-    }
+    } catch(err) {}
 
     var targetTrackingNumber = receiptManifest.tracking_number || localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "";
     var temporaryPasswordSecureSeed = Math.random().toString(36).slice(-10) + Math.random().toString(36).toUpperCase().slice(-4) + "!9A";
     
-    // ⚡ HARVEST UPSELL DATA SILENTLY
+    // Harvest dynamic upsells & company name strings
     var activeUpsellsString = compileActiveUpsellsList();
+    var extractedCompanyName = extractWizardCompanyName();
 
     var profilePayload = {
       email: userEmail,
@@ -387,10 +525,8 @@ function bindFormSubmissionEvents() {
       city: document.getElementById("city") ? document.getElementById("city").value.trim() : "Not Provided",
       state: document.getElementById("state") ? document.getElementById("state").value : "IL",
       zip_code: document.getElementById("zip_code") ? document.getElementById("zip_code").value.trim() : "00000",
-      selected_upsells: activeUpsellsString // Inject upsells into payload
+      selected_upsells: activeUpsellsString
     };
-
-    console.log("Initiating secure identity provisioning checks for " + userEmail);
 
     window.supabase.auth.signUp({
       email: userEmail,
@@ -406,7 +542,6 @@ function bindFormSubmissionEvents() {
       return "existing_account_fallback_token";
     })
     .then(function(resolvedUserId) {
-      console.log("Deploying profile data fields to client_profiles data table");
       if (resolvedUserId && resolvedUserId !== "existing_account_fallback_token") {
         profilePayload.id = resolvedUserId;
         return window.supabase
@@ -421,16 +556,11 @@ function bindFormSubmissionEvents() {
           .from("client_profiles")
           .update(profilePayload)
           .eq("email", userEmail)
-          .then(function(updateResult) {
-            if (updateResult && updateResult.error) console.warn("Muted profile update warning text");
-            return true;
-          });
+          .then(function() { return true; });
       }
     })
     .then(function() {
       if (targetTrackingNumber) {
-        console.log("Forcing baseline order column updates for tracking key " + targetTrackingNumber);
-        
         localStorage.setItem("first_name", profilePayload.first_name);
         localStorage.setItem("last_name", profilePayload.last_name);
         localStorage.setItem("tracking_number", targetTrackingNumber);
@@ -442,7 +572,8 @@ function bindFormSubmissionEvents() {
             first_name: profilePayload.first_name,
             last_name: profilePayload.last_name,
             phone_number: profilePayload.phone_number,
-            selected_upsells: activeUpsellsString, // Sync to order table directly
+            selected_upsells: activeUpsellsString,
+            company_name: extractedCompanyName, // Save dynamic business name mapping
             poa_signature: (profilePayload.first_name + " " + profilePayload.last_name + " (Digitally Executed)").trim(),
             poa_execution_stamp: new Date().toISOString()
           })
@@ -450,7 +581,6 @@ function bindFormSubmissionEvents() {
       }
     })
     .then(function() {
-      console.log("Invoking transaction notification distribution worker over the network...");
       return window.supabase.functions.invoke("stripe-webhook", {
         body: {
           tracking_number: targetTrackingNumber,
@@ -463,17 +593,17 @@ function bindFormSubmissionEvents() {
       });
     })
     .then(function() {
-      console.log("Identity provisioning pipeline execution complete. Advancing screens.");
       localStorage.setItem("stripe_checkout_registered_userid", userEmail);
       executeStepTransitionIndex8();
     })
     .catch(function(runtimeError) {
-      console.error("Pipeline failure caught safely. Forcing navigation step change.", runtimeError);
+      console.error("Pipeline fallback executed.", runtimeError);
       localStorage.setItem("stripe_checkout_registered_userid", userEmail);
       executeStepTransitionIndex8();
     });
   });
 }
+
 
 
 // ============================================================================
