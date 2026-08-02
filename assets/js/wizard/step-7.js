@@ -682,35 +682,28 @@ async function handleStep7CompletionPipeline() {
  * Executes the final checkout submission and syncs order data to Supabase.
  * Maps URL query parameters (service and plan) to separate columns.
  */
+// 🎯 CRASH-PROOF WRAPPED STEP 7 EXECUTION PIPELINE
 async function executeStep7SubmissionPipeline() {
-  // Locate the submit button to update user feedback dynamically
   const step7SubmitButton = document.getElementById("f4u-submit-profile-btn");
   
   try {
-    console.log("🚀 Step 7 submission initiated. Gathering transaction data metrics...");
+    console.log("🚀 Step 7 submission pipeline active. Syncing metrics safely...");
 
-    // 1. Fetch parameters safely out of our initial storage cache
     const finalCapturedService = sessionStorage.getItem("f4u_wizard_service") || "Standard Fulfillment Service";
     const finalCapturedPlan = sessionStorage.getItem("f4u_wizard_plan") || "Standard Processing Tier";
 
-    // Lock down button to prevent accidental double-click form submission mutations
     if (step7SubmitButton) {
       step7SubmitButton.textContent = "Processing & Syncing Order...";
       step7SubmitButton.disabled = true;
     }
 
-    // 2. Compile collected workspace data inputs from previous form layout steps
     const orderPayload = {
-      // Build a unique structural reference ID string
       tracking_number: "F4U-" + Math.floor(100000 + Math.random() * 900000),
-      
-      // Pull input metrics directly from your layout form DOM structures
       first_name: document.getElementById("wizardFirstName") ? document.getElementById("wizardFirstName").value : "Authorized",
       last_name: document.getElementById("wizardLastName") ? document.getElementById("wizardLastName").value : "Representative",
       email_address: (window.clientSessionEmail || sessionStorage.getItem("client_user_email") || "guest@filings4u.com").trim().toLowerCase(),
       phone_number: document.getElementById("wizardPhone") ? document.getElementById("wizardPhone").value : "Not Provided",
       
-      // 🎯 MAP THE ISOLATED URL SELECTIONS INTO SEPARATE COLUMNS
       selected_service: finalCapturedService, 
       selected_plan: finalCapturedPlan,       
       
@@ -719,9 +712,6 @@ async function executeStep7SubmissionPipeline() {
       stripe_payment_id: window.activeStripePaymentId || sessionStorage.getItem("f4u_stripe_payment_id") || "ch_wizard_step7_ledger"
     };
 
-    console.log("📤 Pushing Step 7 transaction block to Supabase payload logs...", orderPayload);
-
-    // 3. Force upload sequence into public.orders table array schema
     const { data, error } = await client
       .from('orders')
       .insert([orderPayload])
@@ -729,20 +719,17 @@ async function executeStep7SubmissionPipeline() {
 
     if (error) throw error;
 
-    console.log("✅ Step 7 Data successfully logged to remote cloud infrastructure:", data);
+    console.log("✅ Database tables successfully synchronized:", data);
     
-    // 4. Scrub temporary configuration session strings safely upon layout success
     sessionStorage.removeItem("f4u_wizard_service");
     sessionStorage.removeItem("f4u_wizard_plan");
 
-    // Proactively route user to confirmation screen or final dashboard tab view
     window.location.href = "dashboard-success.html";
 
   } catch (step7Exception) {
     console.error("✕ Step 7 Submission Engine Crash:", step7Exception);
     alert("System Error: Encountered data formatting limitations when uploading your order data on Step 7.");
     
-    // Unlock the element state gracefully if database insertion crashes
     if (step7SubmitButton) {
       step7SubmitButton.textContent = "Generate Account Profile & Sync Order";
       step7SubmitButton.disabled = false;
@@ -750,14 +737,14 @@ async function executeStep7SubmissionPipeline() {
   }
 }
 
-// 🎯 EVENT LISTENER ATTACHMENT TO TRIGGER THE WRAPPED FUNCTION ABOVE
-const step7SubmitButton = document.getElementById("f4u-submit-profile-btn");
-if (step7SubmitButton) {
-  step7SubmitButton.addEventListener("click", async (event) => {
-    // Prevent natural form reloads from interrupting data streams
+// 🎯 SECURE EVENT ATTACHMENT WITH HTML FORM ABORT PREVENTIONS
+const step7SubmitButtonNode = document.getElementById("f4u-submit-profile-btn");
+if (step7SubmitButtonNode) {
+  step7SubmitButtonNode.addEventListener("click", async (event) => {
+    // 🛡️ STOP THE BROWSER FROM RELOADING OR APPENDING VALUES TO THE URL:
     event.preventDefault();
+    event.stopPropagation();
     
-    // Execute the wrapped function pipeline
     await executeStep7SubmissionPipeline();
   });
 }

@@ -29,15 +29,16 @@
 </head>
 <body>
 <script>
+// Clean, isolated query parser that prevents state autofill pollution
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  // Parse parameters out of the incoming browser URL string
+  // 1. Instantly parse query strings directly from the window address bar
   const urlParameters = new URLSearchParams(window.location.search);
   const urlService = urlParameters.get("service");
   const urlPlan = urlParameters.get("plan");
 
-  // Save parameters cleanly to isolated storage buckets
+  // 2. Only cache parameters if they are explicitly present in the address string
   if (urlService && urlService.trim() !== "") {
     sessionStorage.setItem("f4u_wizard_service", urlService.trim());
   }
@@ -45,10 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionStorage.setItem("f4u_wizard_plan", urlPlan.trim());
   }
 
+  // Debugging logger to verify variables without breaking DOM layouts
   if (urlService || urlPlan) {
-    console.log(`📡 Wizard Entry Parameters Cached -> Service: [${urlService}], Plan: [${urlPlan}]`);
+    console.log(`📡 Clean Parameters Locked -> Service: [${urlService}], Plan: [${urlPlan}]`);
   }
 });
+
 </script>
 
 
