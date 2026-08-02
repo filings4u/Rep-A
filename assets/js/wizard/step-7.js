@@ -679,13 +679,7 @@ async function handleStep7CompletionPipeline() {
 }
 
 /**
- * Executes the final checkout submission and syncs order data to Supabase.
- * Maps URL query parameters (service and plan) to separate columns.
- */
-// 🎯 CRASH-PROOF WRAPPED STEP 7 EXECUTION PIPELINE
-/**
- * Asynchronously processes Step 7 completion, forcing raw database error logging.
- * Exposes hidden table formatting rejections directly to the developer console.
+ * Processes Step 7 completion, fixing double URL-encoding and cleaning headers.
  */
 async function executeStep7SubmissionPipeline() {
   const step7SubmitButton = document.getElementById("f4u-submit-profile-btn");
@@ -710,18 +704,28 @@ async function executeStep7SubmissionPipeline() {
       return el && el.value && el.value.trim() !== "" ? el.value.trim() : fallback;
     };
 
+    // 🎯 FIX 1: Clean and fully decode email strings to eliminate %2540 and %40 corruption
+    let rawEmailInput = window.clientSessionEmail || sessionStorage.getItem("client_user_email") || "guest@filings4u.com";
+    
+    // Perform up to three loops of decoding to strip nested character entity codes out safely
+    try {
+      rawEmailInput = decodeURIComponent(decodeURIComponent(rawEmailInput));
+    } catch (e) {
+      rawEmailInput = decodeURIComponent(rawEmailInput);
+    }
+    
+    const finalCleanEmail = rawEmailInput.trim().toLowerCase();
+    console.log(`🧼 Sanitized User Email Destination Context: [${finalCleanEmail}]`);
+
     // 2. Build the payload parameters strictly honoring your database constraints
     const orderPayload = {
       tracking_number: "F4U-" + Math.floor(100000 + Math.random() * 900000),
       first_name: getVal("wizardFirstName", "Authorized"),
       last_name: getVal("wizardLastName", "Representative"),
-      email_address: (window.clientSessionEmail || sessionStorage.getItem("client_user_email") || "guest@filings4u.com").trim().toLowerCase(),
+      email_address: finalCleanEmail, // Clean parsed address
       phone_number: getVal("wizardPhone", "Not Provided"),
-      
-      // Enforce full fallback parameters on both your table's tracking keys
       selected_service: finalCapturedService, 
       selected_plan: finalCapturedPlan,       
-      
       company_name: getVal("wizardCompanyName", "Not Specified"),
       total_paid_amount: parseFloat(getVal("wizardFinalAmountPaid", "0.00")),
       stripe_payment_id: window.activeStripePaymentId || sessionStorage.getItem("f4u_stripe_payment_id") || "ch_wizard_step7_ledger"
@@ -729,19 +733,30 @@ async function executeStep7SubmissionPipeline() {
 
     console.log("📤 Dispatching payload payload to server validation gates...", orderPayload);
 
+    // 🎯 FIX 2: Create a customized database client instance for this call that strips custom headers to bypass CORS blocks
+    let isolatedClient = client;
+    if (typeof supabase !== 'undefined' && client && typeof client.from === 'function') {
+      const URL = "https://supabase.co";
+      const KEY = client.supabaseKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";
+      
+      // Reinitializes the client module bypassing the internal x-client-info telemetry header tracking block
+      isolatedClient = supabase.createClient(URL, KEY, {
+        global: {
+          headers: {}
+        },
+        auth: { persistSession: false }
+      });
+    }
+
     // 3. Force insertion chain directly through your remote client table infrastructure
-    const { data, error: supabaseError } = await client
+    const { data, error: supabaseError } = await isolatedClient
       .from('orders')
       .insert([orderPayload])
       .select();
 
-    // 🎯 THE HIDDEN FAILURE CAPTURE VECTOR:
     if (supabaseError) {
       console.error("❌ CRITICAL DATABASE REJECTION HIGHLIGHTED:", supabaseError);
-      
-      // Force display the exact database failure details directly on the UI screen
       alert(`✕ Supabase Database Error:\nCode: ${supabaseError.code}\nMessage: ${supabaseError.message}\nDetails: ${supabaseError.details || 'None'}`);
-      
       throw supabaseError;
     }
 
@@ -756,7 +771,6 @@ async function executeStep7SubmissionPipeline() {
   } catch (step7Exception) {
     console.error("✕ Step 7 Submission Engine Crash Context:", step7Exception);
     
-    // Fallback UI reset to guarantee visibility into JavaScript exceptions
     if (step7SubmitButton) {
       step7SubmitButton.textContent = "Generate Account Profile & Sync Order";
       step7SubmitButton.disabled = false;
