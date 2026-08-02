@@ -790,7 +790,7 @@ async function executeStep7SubmissionPipeline() {
     // 7. Initialize clean context block bypassing preflight telemetry blocks
     let isolatedDatabaseClient = client;
     if (client && typeof client.from === 'function' && typeof supabase !== 'undefined') {
-      const URL = "https://supabase.co";
+      const URL = "https://lrbimrlbskjweynxlgas.supabase.co";
       const ANON_KEY = client.supabaseKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";
       
       isolatedDatabaseClient = supabase.createClient(URL, ANON_KEY, {
