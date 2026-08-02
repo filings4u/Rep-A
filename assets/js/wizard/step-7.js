@@ -683,53 +683,80 @@ async function handleStep7CompletionPipeline() {
  * Maps URL query parameters (service and plan) to separate columns.
  */
 // 🎯 CRASH-PROOF WRAPPED STEP 7 EXECUTION PIPELINE
+/**
+ * Asynchronously processes Step 7 completion, forcing raw database error logging.
+ * Exposes hidden table formatting rejections directly to the developer console.
+ */
 async function executeStep7SubmissionPipeline() {
   const step7SubmitButton = document.getElementById("f4u-submit-profile-btn");
   
   try {
-    console.log("🚀 Step 7 submission pipeline active. Syncing metrics safely...");
+    console.log("📡 Initiating high-fidelity transaction synchronization sequence...");
 
-    const finalCapturedService = sessionStorage.getItem("f4u_wizard_service") || "Standard Fulfillment Service";
-    const finalCapturedPlan = sessionStorage.getItem("f4u_wizard_plan") || "Standard Processing Tier";
+    // 1. Fetch raw query parameters out of local session cache buckets
+    const rawService = sessionStorage.getItem("f4u_wizard_service");
+    const rawPlan = sessionStorage.getItem("f4u_wizard_plan");
+    
+    const finalCapturedService = rawService && rawService.trim() !== "" ? rawService.trim() : "Standard Fulfillment Service";
+    const finalCapturedPlan = rawPlan && rawPlan.trim() !== "" ? rawPlan.trim() : "Standard Processing Tier";
 
     if (step7SubmitButton) {
       step7SubmitButton.textContent = "Processing & Syncing Order...";
       step7SubmitButton.disabled = true;
     }
 
+    const getVal = (id, fallback) => {
+      const el = document.getElementById(id);
+      return el && el.value && el.value.trim() !== "" ? el.value.trim() : fallback;
+    };
+
+    // 2. Build the payload parameters strictly honoring your database constraints
     const orderPayload = {
       tracking_number: "F4U-" + Math.floor(100000 + Math.random() * 900000),
-      first_name: document.getElementById("wizardFirstName") ? document.getElementById("wizardFirstName").value : "Authorized",
-      last_name: document.getElementById("wizardLastName") ? document.getElementById("wizardLastName").value : "Representative",
+      first_name: getVal("wizardFirstName", "Authorized"),
+      last_name: getVal("wizardLastName", "Representative"),
       email_address: (window.clientSessionEmail || sessionStorage.getItem("client_user_email") || "guest@filings4u.com").trim().toLowerCase(),
-      phone_number: document.getElementById("wizardPhone") ? document.getElementById("wizardPhone").value : "Not Provided",
+      phone_number: getVal("wizardPhone", "Not Provided"),
       
+      // Enforce full fallback parameters on both your table's tracking keys
       selected_service: finalCapturedService, 
       selected_plan: finalCapturedPlan,       
       
-      company_name: document.getElementById("wizardCompanyName") ? document.getElementById("wizardCompanyName").value : "Not Specified",
-      total_paid_amount: document.getElementById("wizardFinalAmountPaid") ? parseFloat(document.getElementById("wizardFinalAmountPaid").value || 0.00) : 0.00,
+      company_name: getVal("wizardCompanyName", "Not Specified"),
+      total_paid_amount: parseFloat(getVal("wizardFinalAmountPaid", "0.00")),
       stripe_payment_id: window.activeStripePaymentId || sessionStorage.getItem("f4u_stripe_payment_id") || "ch_wizard_step7_ledger"
     };
 
-    const { data, error } = await client
+    console.log("📤 Dispatching payload payload to server validation gates...", orderPayload);
+
+    // 3. Force insertion chain directly through your remote client table infrastructure
+    const { data, error: supabaseError } = await client
       .from('orders')
       .insert([orderPayload])
       .select();
 
-    if (error) throw error;
+    // 🎯 THE HIDDEN FAILURE CAPTURE VECTOR:
+    if (supabaseError) {
+      console.error("❌ CRITICAL DATABASE REJECTION HIGHLIGHTED:", supabaseError);
+      
+      // Force display the exact database failure details directly on the UI screen
+      alert(`✕ Supabase Database Error:\nCode: ${supabaseError.code}\nMessage: ${supabaseError.message}\nDetails: ${supabaseError.details || 'None'}`);
+      
+      throw supabaseError;
+    }
 
-    console.log("✅ Database tables successfully synchronized:", data);
+    console.log("✅ Step 7 checkout logs synchronized successfully:", data);
     
+    // 4. Scrub temporary configuration session strings safely upon layout success
     sessionStorage.removeItem("f4u_wizard_service");
     sessionStorage.removeItem("f4u_wizard_plan");
 
     window.location.href = "dashboard-success.html";
 
   } catch (step7Exception) {
-    console.error("✕ Step 7 Submission Engine Crash:", step7Exception);
-    alert("System Error: Encountered data formatting limitations when uploading your order data on Step 7.");
+    console.error("✕ Step 7 Submission Engine Crash Context:", step7Exception);
     
+    // Fallback UI reset to guarantee visibility into JavaScript exceptions
     if (step7SubmitButton) {
       step7SubmitButton.textContent = "Generate Account Profile & Sync Order";
       step7SubmitButton.disabled = false;
@@ -741,7 +768,6 @@ async function executeStep7SubmissionPipeline() {
 const step7SubmitButtonNode = document.getElementById("f4u-submit-profile-btn");
 if (step7SubmitButtonNode) {
   step7SubmitButtonNode.addEventListener("click", async (event) => {
-    // 🛡️ STOP THE BROWSER FROM RELOADING OR APPENDING VALUES TO THE URL:
     event.preventDefault();
     event.stopPropagation();
     
