@@ -679,27 +679,39 @@ async function handleStep7CompletionPipeline() {
 }
 
 /**
- * Fully optimized, integrated Step 7 data compilation script.
- * Dynamically scraps signatures, checks upsells, and scans company structures.
+ * Processes Step 7 completion for completely new guest signups.
+ * Captures form inputs, inserts the order table row, and handles registration workflows.
  */
 async function executeStep7SubmissionPipeline() {
   const step7SubmitButton = document.getElementById("f4u-submit-profile-btn");
   
   try {
-    console.log("📡 Scraper Engine Initialized: Scraping data layouts across the wizard...");
+    console.log("📡 Step 7 Onboarding Activated: Processing a fresh guest customer transaction...");
 
     if (step7SubmitButton) {
       step7SubmitButton.textContent = "Processing Profile Data...";
       step7SubmitButton.disabled = true;
     }
 
-    // 1. STRIP SIGNATURE CAPTURE VALUE
+    // 🛠️ HELPER SCRIPT: Reads form fields safely. Falls back to a clean default string if empty.
+    const getVal = (id, fallback) => {
+      const el = document.getElementById(id);
+      return el && el.value && el.value.trim() !== "" ? el.value.trim() : fallback;
+    };
+
+    // 🎯 1. CAPTURE SCRIPT: Read the customer's typed Name and Phone from Step 7 inputs
+    // (If your HTML inputs use different IDs like "register_first_name", change these strings to match)
+    const capturedFirstName = getVal("wizardFirstName") || getVal("first_name") || getVal("register_first_name") || "Authorized";
+    const capturedLastName = getVal("wizardLastName") || getVal("last_name") || getVal("register_last_name") || "Representative";
+    const capturedPhone = getVal("wizardPhone") || getVal("phone") || getVal("register_phone") || "Not Provided";
+
+    // 🎯 2. CAPTURE SCRIPT: Extract the typed signature line
     const poaSignatureInput = document.getElementById("poa_typed_signature") || document.getElementById("signature_input");
     const collectedSignature = poaSignatureInput && poaSignatureInput.value && poaSignatureInput.value.trim() !== "" 
       ? poaSignatureInput.value.trim() 
-      : "Digitally Executed Signature";
+      : `${capturedFirstName} ${capturedLastName} (Digitally Executed Signature)`;
 
-    // 2. PARSE AND RESOLVE CURRENT COMPANY NAME FROM DYNAMIC ACCORDION SELECTOR
+    // 🎯 3. CAPTURE SCRIPT: Scan your 40 business inputs to grab the corporate entity name
     const customCompanySelectors = [
       "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", "#bl_applicant_name", 
       "#cage_legal_name", "#cgs_company_name", "#clia_lab_name", "#corp_proposed_name", "#dba_proposed_name", 
@@ -716,12 +728,11 @@ async function executeStep7SubmissionPipeline() {
       const activeElement = document.querySelector(exactSelector);
       if (activeElement && activeElement.value && activeElement.value.trim() !== "") {
         discoveredCompanyName = activeElement.value.trim();
-        console.log(`🏢 Discovered Company Match via Selector [${exactSelector}]: ${discoveredCompanyName}`);
-        break; // Match found, exit loop immediately
+        break; 
       }
     }
 
-    // 3. COMPILE DYNAMIC ACTIVE MARKETPLACE UPSELLS STACK
+    // 🎯 4. CAPTURE SCRIPT: Collect active marketplace add-ons from local storage mapping
     let activeUpsellsArray = [];
     if (typeof processedItemsList !== 'undefined' && Array.isArray(processedItemsList)) {
       processedItemsList.forEach(item => {
@@ -750,14 +761,14 @@ async function executeStep7SubmissionPipeline() {
     }
     const finalUpsellsString = activeUpsellsArray.length > 0 ? activeUpsellsArray.join(", ") : "No Add-ons Selected";
 
-    // 4. EXTRACT SERVICE PLAN METRICS FROM SESSION BUCKETS
+    // 🎯 5. CAPTURE SCRIPT: Extract service plan strings cached out of incoming URL variables
     const rawServiceUrl = sessionStorage.getItem("f4u_wizard_service");
     const rawPlanUrl = sessionStorage.getItem("f4u_wizard_plan");
     const finalServiceColumn = rawServiceUrl && rawServiceUrl.trim() !== "" ? rawServiceUrl.trim() : "Standard Fulfillment Service";
     const finalPlanColumn = rawPlanUrl && rawPlanUrl.trim() !== "" ? rawPlanUrl.trim() : "Standard Processing Tier";
 
-    // 5. EXTRACT CLEAN CORRUPT-PROOF CUSTOMER EMAIL ADDRESS
-    let rawEmailSource = window.clientSessionEmail || sessionStorage.getItem("client_user_email") || "guest@filings4u.com";
+    // 🎯 6. CAPTURE SCRIPT: Resolve clean, decoded email string context
+    let rawEmailSource = window.clientSessionEmail || sessionStorage.getItem("client_user_email") || getVal("wizardEmail") || getVal("email");
     try {
       rawEmailSource = decodeURIComponent(decodeURIComponent(rawEmailSource));
     } catch (e) {
@@ -765,29 +776,25 @@ async function executeStep7SubmissionPipeline() {
     }
     const finalCleanEmail = rawEmailSource.trim().toLowerCase();
 
-    // 6. ASSEMBLE PRODUCTION READY DATA WRITING SCHEMATICS 
+    // 📦 PACKAGE THE COMPLETE DATA BLOCKS TOGETHER TO DISPATCH TO SUPABASE
     const orderPayload = {
       tracking_number: "F4U-" + Math.floor(100000 + Math.random() * 900000),
-      
-      // Temporary defaults, immediately overwritten by backend query triggers via client_profiles matching email
-      first_name: "Valued",
-      last_name: "Customer",
-      phone_number: "Not Provided",
-      
+      first_name: capturedFirstName,
+      last_name: capturedLastName,
+      phone_number: capturedPhone,
       email_address: finalCleanEmail,
       selected_service: finalServiceColumn, 
       selected_plan: finalPlanColumn,       
       selected_upsells: finalUpsellsString,
       company_name: discoveredCompanyName,
       poa_signature: collectedSignature,
-      
       total_paid_amount: parseFloat(sessionStorage.getItem("f4u_final_checkout_amount") || "0.00"),
       stripe_payment_id: window.activeStripePaymentId || sessionStorage.getItem("f4u_stripe_payment_id") || "ch_live_payment_token"
     };
 
-    console.log("📤 Distributing combined payload to database engine:", orderPayload);
+    console.log("📤 Sending perfect order details payload to Supabase matrix...", orderPayload);
 
-    // 7. Initialize clean context block bypassing preflight telemetry blocks
+    // Instantiate client connection configuration bypassing preflight header tracking barriers
     let isolatedDatabaseClient = client;
     if (client && typeof client.from === 'function' && typeof supabase !== 'undefined') {
       const URL = "https://lrbimrlbskjweynxlgas.supabase.co";
@@ -799,23 +806,24 @@ async function executeStep7SubmissionPipeline() {
       });
     }
 
-    // 8. Fire transaction pass into your remote cluster
+    // 🚀 EXECUTE INTERPOLATED DATA INSERTION 
     const { data: orderData, error: orderError } = await isolatedDatabaseClient
       .from('orders')
       .insert([orderPayload])
       .select();
 
     if (orderError) {
-      console.error("❌ DATABASE PLUG ENGINE REFUSED DATA CELL WRITE:", orderError);
-      alert(`✕ Sync Failure: [${orderError.code}] - ${orderError.message}`);
+      console.error("❌ SUPABASE REJECTED DATABASE ENTRY ROW:", orderError);
+      alert(`✕ Database Insertion Dropped:\n[${orderError.code}] - ${orderError.message}`);
       throw orderError;
     }
 
-    console.log("✅ Combined order matrix values written down safely:", orderData);
+    console.log("✅ Step 7 checkout logs synchronized successfully:", orderData);
     
-    // Scrub setup variables and route cleanly to success screen
+    // Clear out navigation cache rules and route user forward to step 8 / confirmation screen
     sessionStorage.removeItem("f4u_wizard_service");
     sessionStorage.removeItem("f4u_wizard_plan");
+    
     window.location.href = "dashboard-success.html";
 
   } catch (step7Exception) {
@@ -827,7 +835,7 @@ async function executeStep7SubmissionPipeline() {
   }
 }
 
-// Bind button interactions securely 
+// Bind click submission intercepts
 const submitButtonElement = document.getElementById("f4u-submit-profile-btn");
 if (submitButtonElement) {
   submitButtonElement.addEventListener("click", async (event) => {
@@ -836,4 +844,3 @@ if (submitButtonElement) {
     await executeStep7SubmissionPipeline();
   });
 }
-
