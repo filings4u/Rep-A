@@ -28,6 +28,29 @@
     
 </head>
 <body>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
+
+  // Parse parameters out of the incoming browser URL string
+  const urlParameters = new URLSearchParams(window.location.search);
+  const urlService = urlParameters.get("service");
+  const urlPlan = urlParameters.get("plan");
+
+  // Save parameters cleanly to isolated storage buckets
+  if (urlService && urlService.trim() !== "") {
+    sessionStorage.setItem("f4u_wizard_service", urlService.trim());
+  }
+  if (urlPlan && urlPlan.trim() !== "") {
+    sessionStorage.setItem("f4u_wizard_plan", urlPlan.trim());
+  }
+
+  if (urlService || urlPlan) {
+    console.log(`📡 Wizard Entry Parameters Cached -> Service: [${urlService}], Plan: [${urlPlan}]`);
+  }
+});
+</script>
+
 
 
 <!-- UPDATED DROPDOWN STRUCTURE: US RIGHT-SIDE ALIGNMENT -->

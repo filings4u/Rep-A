@@ -1,6 +1,7 @@
 ﻿// ============================================================================ //
 // ðŸ—ºï¸ STEP 0: CONTEXTUAL JURISDICTION FILING ENTRY GATE LAYOUT ENGINE             //
-// ============================================================================ //;(function renderStep0JurisdictionGateHtml() {
+// ============================================================================ //
+;(function renderStep0JurisdictionGateHtml() {
   "use strict";
 
   const wizardFormWrapper = 
@@ -144,4 +145,18 @@ window.processJurisdictionGateAdvancement = function() {
   }
 };
 
+// Run this block immediately during page initialization to cache parameters securely
+const urlParameters = new URLSearchParams(window.location.search);
+const urlService = urlParameters.get("service");
+const urlPlan = urlParameters.get("plan");
 
+if (urlService && urlService.trim() !== "") {
+  sessionStorage.setItem("f4u_wizard_service", urlService.trim());
+}
+if (urlPlan && urlPlan.trim() !== "") {
+  sessionStorage.setItem("f4u_wizard_plan", urlPlan.trim());
+}
+
+if (urlService || urlPlan) {
+  console.log(`📡 URL Entry Parameters Cached -> Service: [${urlService}], Plan: [${urlPlan}]`);
+}
