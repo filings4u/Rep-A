@@ -175,92 +175,120 @@ window.formRegistry['account-creation-layout'] = function(stateOptionsHtml) {
 };
 
 // ============================================================================
-// FILE: step-7.js (BLOCK 3 OF 4 - REPAIRED)
-// MODULE: IDENTITY SWITCHBOARD AND ROUTER INTERLOCK GATEWAY
+// FILE: step-7.js (BLOCK 3 OF 4 - REPAIRED BYPASS ENGINE)
+// MODULE: IDENTITY SWITCHBOARD WITH BACKGROUND DATA PROVISIONING
 // ============================================================================
-
 window.initializeStep7AccountCreation = function() {
   console.log("[Step 7 Engine] Initializing account status verification rules...");
 
-  // SELF-HEALING ENGINE DRIVER: Restores the client if overwritten by Stripe/Iframe frames
   if (!window.supabase || typeof window.supabase.from !== "function") {
-    console.warn("[Step 7 Interlock] Supabase driver corrupted. Re-initializing client...");
     const SUPABASE_URL = "https://lrbimrlbskjweynxlgas.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";
-    
     if (window.supabase && typeof window.supabase.createClient === "function") {
       window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     } else if (typeof createClient === "function") {
       window.supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } else {
-      console.error("[Step 7 Critical] Supabase SDK missing entirely from the window tree context.");
     }
   }
 
   var panelCanvas = document.getElementById("step-panel-7");
-  if (!panelCanvas) {
-    console.error("[Step 7 Error] Element '#step-panel-7' wrapper missing from main view canvas.");
-    return;
-  }
+  if (!panelCanvas) return;
 
   var receiptManifest = {};
   try {
     var manifestRaw = sessionStorage.getItem("f4u_finalized_checkout_receipt_manifest");
     if (manifestRaw) receiptManifest = JSON.parse(manifestRaw);
-  } catch(err) {
-    receiptManifest = {};
-  }
+  } catch(err) {}
 
-  // Extract email from URL parameters or session storage context safely
   var urlParams = new URLSearchParams(window.location.search);
   var capturedCheckoutEmail = urlParams.get("email") || receiptManifest.customer_email || localStorage.getItem("stripe_checkout_registered_userid") || "";
-
+  
   if (!capturedCheckoutEmail || capturedCheckoutEmail.trim() === "") {
-    console.warn("[Step 7 warning] No email detected in session layer context. Deferring layout compilation passes.");
+    console.warn("[Step 7 warning] No email detected.");
     return;
   }
-
   var cleanEmail = capturedCheckoutEmail.trim().toLowerCase();
 
-  // IDENTITY SWITCHBOARD CHECK: Query database row to verify if account already exists
+  // IDENTITY SWITCHBOARD CHECK
   window.supabase
     .from("client_profiles")
-    .select("id, tracking_number")
+    .select("first_name, last_name, phone_number, tracking_number")
     .eq("email", cleanEmail)
     .maybeSingle()
     .then(function(lookupResult) {
       if (lookupResult.error) throw lookupResult.error;
 
-      // BYPASS ROUTE DETECTED: Profile exists! Route past Step 7 straight to Success Portal
+      // BYPASS ROUTE DETECTED: Profile already exists!
       if (lookupResult.data) {
-        console.log("[Step 7 Identity Router] Account verified for " + cleanEmail + ". Executing Step 8 bypass link...");
-        localStorage.setItem("stripe_checkout_registered_userid", cleanEmail);
+        console.log("[Identity Router] Existing account matched for " + cleanEmail + ". Processing stealth background updates...");
         
-        if (typeof window.executeStepTransitionIndex8 === "function") {
-          window.executeStepTransitionIndex8();
-        }
-        return;
+        var profile = lookupResult.data;
+        var targetTrackingNumber = receiptManifest.tracking_number || localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "";
+        var activeUpsellsString = compileActiveUpsellsList();
+
+        // 1. Silently update client_profiles to link new upsells
+        return window.supabase
+          .from("client_profiles")
+          .update({ selected_upsells: activeUpsellsString })
+          .eq("email", cleanEmail)
+          .then(function() {
+            // 2. Silently match and force-provision the orders table parameters 
+            if (targetTrackingNumber) {
+              localStorage.setItem("first_name", profile.first_name);
+              localStorage.setItem("last_name", profile.last_name);
+              localStorage.setItem("tracking_number", targetTrackingNumber);
+
+              return window.supabase
+                .from("orders")
+                .update({
+                  account_created: true,
+                  first_name: profile.first_name,
+                  last_name: profile.last_name,
+                  phone_number: profile.phone_number,
+                  selected_upsells: activeUpsellsString,
+                  poa_signature: (profile.first_name + " " + profile.last_name + " (Digitally Executed)").trim(),
+                  poa_execution_stamp: new Date().toISOString()
+                })
+                .eq("tracking_number", targetTrackingNumber);
+            }
+          })
+          .then(function() {
+            // 3. Fire your worker payload so tracking statuses match across webhooks
+            return window.supabase.functions.invoke("stripe-webhook", {
+              body: {
+                tracking_number: targetTrackingNumber,
+                customer_email: cleanEmail,
+                total_amount: window.wizardCalculatedFinalTotalAmount || 0,
+                first_name: profile.first_name,
+                last_name: profile.last_name,
+                phone_number: profile.phone_number
+              }
+            });
+          })
+          .then(function() {
+            console.log("[Identity Router] Background sync complete. Routing past Step 7.");
+            localStorage.setItem("stripe_checkout_registered_userid", cleanEmail);
+            if (typeof window.executeStepTransitionIndex8 === "function") {
+              window.executeStepTransitionIndex8();
+            }
+          });
       }
 
-      // NO PROFILE FOUND: Render input fields matrix for new account setup safely if Step 7 is active
+      // NO PROFILE FOUND: Safe regular form workflow render
       const activeStepIndexInt = parseInt(window.currentWizardActiveStep, 10);
       if (activeStepIndexInt === 7) {
-        console.log("[Step 7 Identity Router] Fresh registration workspace required. Painting input forms layout.");
         renderProfileForm(panelCanvas, cleanEmail);
-      } else {
-        console.log("[Step 7 Identity Router] Setup engine standby. Rendering layout deferred to protect Step 0 visualization bounds.");
       }
     })
     .catch(function(lookupError) {
-      console.error("[Step 7 Engine Switchboard Error Handled]:", lookupError.message || lookupError);
-      
-      // Defensively isolate layout injection to prevent form overlaps on Step 0 or Step 1
+      console.error("[Router Error Handled]:", lookupError);
       const fallbackStepCheck = parseInt(window.currentWizardActiveStep, 10);
       if (fallbackStepCheck === 7) {
         renderProfileForm(panelCanvas, cleanEmail);
       }
     });
 };
+
 
 
 // Helper isolation layer to inject form string layout safely
@@ -294,10 +322,32 @@ function renderProfileForm(container, userEmail) {
     bindFormSubmissionEvents();
 }
 
-// ============================================================================
-// FILE: step-7.js - TERMINAL COMPLIANCE HOOK MATRIX (BLOCK 5 OF 7 - REPAIRED)
-// MODULE: ACCOUNT PROFILE COMPLETION & FUNCTION INVOKE MATRIX
-// ============================================================================
+// Helper to grab all selected upsells from localStorage cleanly
+function compileActiveUpsellsList() {
+  var selected = [];
+  var catalog = window.MASTER_UPSELLS_CATALOG || {};
+  var coordinateMaps = window.UPSELLS_GLOBAL_STATE_PROPERTY_MAP || {};
+
+  // Loop through all items across all categories in the catalog
+  for (var category in catalog) {
+    if (Object.prototype.hasOwnProperty.call(catalog, category) && Array.isArray(catalog[category])) {
+      catalog[category].forEach(function(item) {
+        if (!item || !item.id) return;
+        var catalogSlug = item.id;
+        var trackingKey = coordinateMaps[catalogSlug] || catalogSlug;
+        
+        // Check both potential local storage naming conventions
+        var storedFieldState = localStorage.getItem("wizard_field_" + trackingKey) || localStorage.getItem("wizard_field_" + catalogSlug);
+        var isChecked = (storedFieldState === "true" || storedFieldState === "yes" || storedFieldState === true);
+        
+        if (isChecked && selected.indexOf(catalogSlug) === -1) {
+          selected.push(catalogSlug);
+        }
+      });
+    }
+  }
+  return selected.join(", ");
+}
 
 function bindFormSubmissionEvents() {
   var formElement = document.getElementById("f4u-client-profile-creation-form");
@@ -306,7 +356,6 @@ function bindFormSubmissionEvents() {
 
   formElement.addEventListener("submit", function(event) {
     event.preventDefault();
-
     var submitBtn = document.getElementById("f4u-submit-profile-btn");
     if (submitBtn) {
       submitBtn.disabled = true;
@@ -325,6 +374,9 @@ function bindFormSubmissionEvents() {
 
     var targetTrackingNumber = receiptManifest.tracking_number || localStorage.getItem("tracking_number") || localStorage.getItem("f4u_active_tracking_token") || "";
     var temporaryPasswordSecureSeed = Math.random().toString(36).slice(-10) + Math.random().toString(36).toUpperCase().slice(-4) + "!9A";
+    
+    // ⚡ HARVEST UPSELL DATA SILENTLY
+    var activeUpsellsString = compileActiveUpsellsList();
 
     var profilePayload = {
       email: userEmail,
@@ -334,7 +386,8 @@ function bindFormSubmissionEvents() {
       street_address: document.getElementById("street_address") ? document.getElementById("street_address").value.trim() : "Not Provided",
       city: document.getElementById("city") ? document.getElementById("city").value.trim() : "Not Provided",
       state: document.getElementById("state") ? document.getElementById("state").value : "IL",
-      zip_code: document.getElementById("zip_code") ? document.getElementById("zip_code").value.trim() : "00000"
+      zip_code: document.getElementById("zip_code") ? document.getElementById("zip_code").value.trim() : "00000",
+      selected_upsells: activeUpsellsString // Inject upsells into payload
     };
 
     console.log("Initiating secure identity provisioning checks for " + userEmail);
@@ -354,7 +407,6 @@ function bindFormSubmissionEvents() {
     })
     .then(function(resolvedUserId) {
       console.log("Deploying profile data fields to client_profiles data table");
-      
       if (resolvedUserId && resolvedUserId !== "existing_account_fallback_token") {
         profilePayload.id = resolvedUserId;
         return window.supabase
@@ -365,13 +417,11 @@ function bindFormSubmissionEvents() {
             return true;
           });
       } else {
-        // Safe database bypass update for existing users based on matching lookup records
         return window.supabase
           .from("client_profiles")
           .update(profilePayload)
           .eq("email", userEmail)
           .then(function(updateResult) {
-            // ✅ FIXED TYPO: References the correct local updateResult attribute parameter safely
             if (updateResult && updateResult.error) console.warn("Muted profile update warning text");
             return true;
           });
@@ -381,11 +431,10 @@ function bindFormSubmissionEvents() {
       if (targetTrackingNumber) {
         console.log("Forcing baseline order column updates for tracking key " + targetTrackingNumber);
         
-        // Cache parameters into memory so step 8 rehydration can pull names even if session fails
         localStorage.setItem("first_name", profilePayload.first_name);
         localStorage.setItem("last_name", profilePayload.last_name);
         localStorage.setItem("tracking_number", targetTrackingNumber);
-
+        
         return window.supabase
           .from("orders")
           .update({
@@ -393,6 +442,7 @@ function bindFormSubmissionEvents() {
             first_name: profilePayload.first_name,
             last_name: profilePayload.last_name,
             phone_number: profilePayload.phone_number,
+            selected_upsells: activeUpsellsString, // Sync to order table directly
             poa_signature: (profilePayload.first_name + " " + profilePayload.last_name + " (Digitally Executed)").trim(),
             poa_execution_stamp: new Date().toISOString()
           })
@@ -423,8 +473,8 @@ function bindFormSubmissionEvents() {
       executeStepTransitionIndex8();
     });
   });
-
 }
+
 
 // ============================================================================
 // FILE: step-7.js - BOTTOM INFRASTRUCTURE HOOKS (BLOCK 6 OF 6 - REPAIRED)
