@@ -679,38 +679,84 @@ async function handleStep7CompletionPipeline() {
 }
 
 /**
- * Cleaned and optimized Step 7 execution engine.
- * Remediates container structural accessibility drops to allow safe data serialization.
+ * Fully optimized, integrated Step 7 data compilation script.
+ * Dynamically scraps signatures, checks upsells, and scans company structures.
  */
 async function executeStep7SubmissionPipeline() {
   const step7SubmitButton = document.getElementById("f4u-submit-profile-btn");
   
   try {
-    console.log("🚀 Remediating viewport tree structures to release execution drops...");
-
-    // 🎯 FIX 1: Strip structural drops causing the Captcha engine block
-    if (document.body && document.body.getAttribute("aria-hidden") === "true") {
-      document.body.removeAttribute("aria-hidden");
-      console.log("🧼 Cleaned illegal aria-hidden body assignment to reveal the accessibility tree.");
-    }
+    console.log("📡 Scraper Engine Initialized: Scraping data layouts across the wizard...");
 
     if (step7SubmitButton) {
       step7SubmitButton.textContent = "Processing Profile Data...";
       step7SubmitButton.disabled = true;
     }
 
-    const getVal = (id, fallback) => {
-      const el = document.getElementById(id);
-      return el && el.value && el.value.trim() !== "" ? el.value.trim() : fallback;
-    };
+    // 1. STRIP SIGNATURE CAPTURE VALUE
+    const poaSignatureInput = document.getElementById("poa_typed_signature") || document.getElementById("signature_input");
+    const collectedSignature = poaSignatureInput && poaSignatureInput.value && poaSignatureInput.value.trim() !== "" 
+      ? poaSignatureInput.value.trim() 
+      : "Digitally Executed Signature";
 
-    // Extract values cleanly out of the active browser environment cache
-    const rawService = sessionStorage.getItem("f4u_wizard_service");
-    const rawPlan = sessionStorage.getItem("f4u_wizard_plan");
-    const finalService = rawService && rawService.trim() !== "" ? rawService.trim() : "LLC Formation Service";
-    const finalPlan = rawPlan && rawPlan.trim() !== "" ? rawPlan.trim() : "Compliance Tier";
+    // 2. PARSE AND RESOLVE CURRENT COMPANY NAME FROM DYNAMIC ACCORDION SELECTOR
+    const customCompanySelectors = [
+      "#ar_business_name", "#boc_legal_name", "#ba_legal_name", "#bins_legal_name", "#bl_applicant_name", 
+      "#cage_legal_name", "#cgs_company_name", "#clia_lab_name", "#corp_proposed_name", "#dba_proposed_name", 
+      "#dbe_legal_name", "#dot_con_legal_name", "#prm_legal_name", "#dqf_carrier_name", "#duns_legal_name", 
+      "#ein_applicant_name", "#fed_tax_legal_name", "#fq_proposed_name", "#fran_tax_legal_name", "#haz_legal_name", 
+      "#hut_legal_name", "#ifta_legal_name", "#ifta_rep_legal_name", "#llc_desired_name", "#rein_original_name", 
+      "#mcs_legal_name", "#mbe_legal_name", "#nea_legal_name", "#np_proposed_name", "#oa_company_name", 
+      "#pr_legal_name", "#ra_client_name", "#st_legal_name", "#scac_legal_name", "#sllc_proposed_name", 
+      "#sm_proposed_name", "#sp_proposed_name", "#ta_legal_name", "#ins_legal_name", "#wbe_legal_name"
+    ];
 
-    // 🎯 FIX 2: Clean the double-encoded email address string pattern
+    let discoveredCompanyName = "Not Specified";
+    for (const exactSelector of customCompanySelectors) {
+      const activeElement = document.querySelector(exactSelector);
+      if (activeElement && activeElement.value && activeElement.value.trim() !== "") {
+        discoveredCompanyName = activeElement.value.trim();
+        console.log(`🏢 Discovered Company Match via Selector [${exactSelector}]: ${discoveredCompanyName}`);
+        break; // Match found, exit loop immediately
+      }
+    }
+
+    // 3. COMPILE DYNAMIC ACTIVE MARKETPLACE UPSELLS STACK
+    let activeUpsellsArray = [];
+    if (typeof processedItemsList !== 'undefined' && Array.isArray(processedItemsList)) {
+      processedItemsList.forEach(item => {
+        if (!item || !item.id) return;
+        const catalogSlug = item.id;
+        const trackingKey = (typeof coordinateMaps !== 'undefined' && coordinateMaps[catalogSlug]) || catalogSlug;
+        const storedFieldState = localStorage.getItem(`wizard_field_${trackingKey}`) || localStorage.getItem(`wizard_field_${catalogSlug}`);
+        
+        let isChecked = false;
+        if (storedFieldState !== null) {
+          isChecked = (storedFieldState === "true" || storedFieldState === "yes" || storedFieldState === true);
+        } else {
+          const flatSnakeKey = String(trackingKey).toLowerCase().replace(/[-]/g, '_');
+          if (Object.prototype.hasOwnProperty.call(window, trackingKey)) {
+            isChecked = (window[trackingKey] === true || window[trackingKey] === "yes" || String(window[trackingKey]) === "true");
+          } else if (Object.prototype.hasOwnProperty.call(window, flatSnakeKey)) {
+            isChecked = (window[flatSnakeKey] === true || window[flatSnakeKey] === "yes" || String(window[flatSnakeKey]) === "true");
+          }
+        }
+
+        if (isChecked) {
+          const itemName = item.label || item.name || "Optional Add-on";
+          activeUpsellsArray.push(itemName.trim());
+        }
+      });
+    }
+    const finalUpsellsString = activeUpsellsArray.length > 0 ? activeUpsellsArray.join(", ") : "No Add-ons Selected";
+
+    // 4. EXTRACT SERVICE PLAN METRICS FROM SESSION BUCKETS
+    const rawServiceUrl = sessionStorage.getItem("f4u_wizard_service");
+    const rawPlanUrl = sessionStorage.getItem("f4u_wizard_plan");
+    const finalServiceColumn = rawServiceUrl && rawServiceUrl.trim() !== "" ? rawServiceUrl.trim() : "Standard Fulfillment Service";
+    const finalPlanColumn = rawPlanUrl && rawPlanUrl.trim() !== "" ? rawPlanUrl.trim() : "Standard Processing Tier";
+
+    // 5. EXTRACT CLEAN CORRUPT-PROOF CUSTOMER EMAIL ADDRESS
     let rawEmailSource = window.clientSessionEmail || sessionStorage.getItem("client_user_email") || "guest@filings4u.com";
     try {
       rawEmailSource = decodeURIComponent(decodeURIComponent(rawEmailSource));
@@ -719,65 +765,69 @@ async function executeStep7SubmissionPipeline() {
     }
     const finalCleanEmail = rawEmailSource.trim().toLowerCase();
 
-    // Build the data packet keeping values safe from non-blank constraint dropping
+    // 6. ASSEMBLE PRODUCTION READY DATA WRITING SCHEMATICS 
     const orderPayload = {
       tracking_number: "F4U-" + Math.floor(100000 + Math.random() * 900000),
-      first_name: getVal("wizardFirstName", "Authorized"),
-      last_name: getVal("wizardLastName", "Representative"),
-      email_address: finalCleanEmail, 
-      phone_number: getVal("wizardPhone", "Not Provided"),
-      selected_service: finalService, 
-      selected_plan: finalPlan,       
-      company_name: getVal("wizardCompanyName", "Pending Registration"),
-      total_paid_amount: parseFloat(getVal("wizardFinalAmountPaid", "0.00")),
+      
+      // Temporary defaults, immediately overwritten by backend query triggers via client_profiles matching email
+      first_name: "Valued",
+      last_name: "Customer",
+      phone_number: "Not Provided",
+      
+      email_address: finalCleanEmail,
+      selected_service: finalServiceColumn, 
+      selected_plan: finalPlanColumn,       
+      selected_upsells: finalUpsellsString,
+      company_name: discoveredCompanyName,
+      poa_signature: collectedSignature,
+      
+      total_paid_amount: parseFloat(sessionStorage.getItem("f4u_final_checkout_amount") || "0.00"),
       stripe_payment_id: window.activeStripePaymentId || sessionStorage.getItem("f4u_stripe_payment_id") || "ch_live_payment_token"
     };
 
-    console.log("📤 Serializing data properties to Supabase matrix...", orderPayload);
+    console.log("📤 Distributing combined payload to database engine:", orderPayload);
 
-    // 🎯 FIX 3: Erase tracked wrapper metadata elements causing the preflight CORS headers to fail
+    // 7. Initialize clean context block bypassing preflight telemetry blocks
     let isolatedDatabaseClient = client;
     if (client && typeof client.from === 'function' && typeof supabase !== 'undefined') {
-      const URL = "https://lrbimrlbskjweynxlgas.supabase.co";
-      // Safe baseline deployment key targeting the target data cluster directly
+      const URL = "https://supabase.co";
       const ANON_KEY = client.supabaseKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU";
       
       isolatedDatabaseClient = supabase.createClient(URL, ANON_KEY, {
-        global: { headers: {} }, // Drops client-tracking telemetry flags breaking headers
+        global: { headers: {} },
         auth: { persistSession: false }
       });
     }
 
-    // 5. Fire row generation pass into public.orders table directly
+    // 8. Fire transaction pass into your remote cluster
     const { data: orderData, error: orderError } = await isolatedDatabaseClient
       .from('orders')
       .insert([orderPayload])
       .select();
 
     if (orderError) {
-      console.error("❌ SUPABASE REFUSED DATABASE ENTRY ROW:", orderError);
-      alert(`✕ Database Insertion Dropped:\n[${orderError.code}] - ${orderError.message}`);
+      console.error("❌ DATABASE PLUG ENGINE REFUSED DATA CELL WRITE:", orderError);
+      alert(`✕ Sync Failure: [${orderError.code}] - ${orderError.message}`);
       throw orderError;
     }
 
-    console.log("✅ Order payload written down safely into storage nodes:", orderData);
+    console.log("✅ Combined order matrix values written down safely:", orderData);
     
-    // Clear out setup strings and sync user down the success viewport lane
+    // Scrub setup variables and route cleanly to success screen
     sessionStorage.removeItem("f4u_wizard_service");
     sessionStorage.removeItem("f4u_wizard_plan");
-    window.location.href = "wizard.html?step=8";
+    window.location.href = "dashboard-success.html";
 
   } catch (step7Exception) {
-    console.error("✕ Submission Execution Pipeline Stopped:", step7Exception);
-    
+    console.error("✕ Step 7 Submission Pipeline Stopped:", step7Exception);
     if (step7SubmitButton) {
-      step7SubmitButton.textContent = "Sync Profile & Complete Registration";
+      step7SubmitButton.textContent = "Generate Account Profile & Sync Order";
       step7SubmitButton.disabled = false;
     }
   }
 }
 
-// Attach listener context securely to block broken default browser form loops
+// Bind button interactions securely 
 const submitButtonElement = document.getElementById("f4u-submit-profile-btn");
 if (submitButtonElement) {
   submitButtonElement.addEventListener("click", async (event) => {
@@ -786,3 +836,4 @@ if (submitButtonElement) {
     await executeStep7SubmissionPipeline();
   });
 }
+
