@@ -352,31 +352,35 @@ function bindFormSubmissionEvents() {
     .catch(function() {
       return "existing_account_fallback_token";
     })
-    .then(function(resolvedUserId) {
-      console.log("Deploying profile data fields to client_profiles data table");
-      
-      if (resolvedUserId && resolvedUserId !== "existing_account_fallback_token") {
-        profilePayload.id = resolvedUserId;
-        return window.supabase
-          .from("client_profiles")
-          .upsert([profilePayload], { onConflict: "email" })
-          .then(function(upsertResult) {
-            if (upsertResult.error) throw upsertResult.error;
-            return true;
-          });
-      } else {
-        // Safe database bypass update for existing users based on matching lookup records
-        return window.supabase
-          .from("client_profiles")
-          .update(profilePayload)
-          .eq("email", userEmail)
-          .then(function(updateResult) {
-            // ✅ FIXED TYPO: References the correct local updateResult attribute parameter safely
-            if (updateResult && updateResult.error) console.warn("Muted profile update warning text");
-            return true;
-          });
-      }
-    })
+.then(function(resolvedUserId) {
+  console.log("Deploying profile data fields to client_profiles data table");
+
+  // ✅ MAP FRONTEND PROPERTY TO MATCH NEW DATABASE COLUMN NAME EXPLICITLY
+  profilePayload.email_address = userEmail;
+  delete profilePayload.email; // Cleans up the old column key to prevent database column errors
+
+  if (resolvedUserId && resolvedUserId !== "existing_account_fallback_token") {
+    profilePayload.id = resolvedUserId;
+    return window.supabase
+      .from("client_profiles")
+      .upsert([profilePayload], { onConflict: "email_address" }) // 👈 Changed from "email" to "email_address"
+      .then(function(upsertResult) {
+        if (upsertResult.error) throw upsertResult.error;
+        return true;
+      });
+  } else {
+    // Safe database bypass update for existing users based on matching lookup records
+    return window.supabase
+      .from("client_profiles")
+      .update(profilePayload)
+      .eq("email_address", userEmail) // 👈 Changed from "email" to "email_address"
+      .then(function(updateResult) {
+        if (updateResult && updateResult.error) console.warn("Muted profile update warning text");
+        return true;
+      });
+  }
+})
+
     .then(function() {
       if (targetTrackingNumber) {
         console.log("Forcing baseline order column updates for tracking key " + targetTrackingNumber);
@@ -563,22 +567,30 @@ window.attachAccountCreationFormEvents = function() {
     .catch(function() {
       return "existing_account_fallback_token";
     })
-    .then(function(resolvedUserId) {
-      console.log("Syncing field properties directly into client_profiles table rows...");
-      
-      if (resolvedUserId && resolvedUserId !== "existing_account_fallback_token") {
-        profilePayload.id = resolvedUserId;
-        return window.supabase
-          .from(profileForm.getAttribute("data-profiles-table") || "client_profiles")
-          .upsert([profilePayload], { onConflict: "email" })
-          .then(function(res) { if (res.error) throw res.error; return true; });
-      } else {
-        return window.supabase
-          .from(profileForm.getAttribute("data-profiles-table") || "client_profiles")
-          .update(profilePayload)
-          .eq("email", userEmail);
-      }
-    })
+.then(function(resolvedUserId) {
+  console.log("Syncing field properties directly into client_profiles table rows...");
+  
+  // ✅ MAP FRONTEND PROPERTY TO MATCH NEW DATABASE COLUMN NAME EXPLICITLY
+  profilePayload.email_address = userEmail;
+  delete profilePayload.email; // Cleans up old column key to prevent database column errors
+
+  if (resolvedUserId && resolvedUserId !== "existing_account_fallback_token") {
+    profilePayload.id = resolvedUserId;
+    return window.supabase
+      .from(profileForm.getAttribute("data-profiles-table") || "client_profiles")
+      .upsert([profilePayload], { onConflict: "email_address" }) // 👈 Changed from "email" to "email_address"
+      .then(function(res) {
+        if (res.error) throw res.error;
+        return true;
+      });
+  } else {
+    return window.supabase
+      .from(profileForm.getAttribute("data-profiles-table") || "client_profiles")
+      .update(profilePayload)
+      .eq("email_address", userEmail); // 👈 Changed from "email" to "email_address"
+  }
+})
+
     .then(function() {
       if (targetTrackingNumber) {
         console.log("Syncing database columns for orders tracking token " + targetTrackingNumber);
