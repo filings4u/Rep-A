@@ -544,10 +544,6 @@ setTimeout(() => window.compileDatabaseAlignedOrderPayload(), 1500);
   };
 })();
 
-
-
-
-
 // ============================================================================ //
 // // FILE 2: STRIPE_ELEMENTS_MOUNT.JS (REPAIRED & ROUTED)
 // ============================================================================ //
@@ -864,6 +860,10 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
     } else {
       console.log("âœ… [Transaction Complete] In-line payment authorized. State synchronized cleanly.");
       localStorage.setItem("f4u_payment_status_complete", "true");
+        // 🟢 BRIDGE THE LAYER: Write the captured email context to the storage frames Step 7 reads
+  localStorage.setItem("email_address", captureEmail);
+  localStorage.setItem("stripe_checkout_registered_userid", captureEmail);
+
       
       // Smooth programmatic layout fallback transition directly straight to step 7
       if (typeof window.switchWizardActiveViewLayout === "function") {

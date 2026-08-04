@@ -207,9 +207,15 @@
       receiptManifest = {};
     }
 
-    // Pull active user session tracking variables
+    // 🟢 UNIFIED DATA PASS HARMONIZATION MATRIX (Prioritizes email_address across all storages)
     var urlParams = new URLSearchParams(window.location.search);
-    var capturedCheckoutEmail = urlParams.get("email") || receiptManifest.customer_email || localStorage.getItem("stripe_checkout_registered_userid") || "";
+    var capturedCheckoutEmail = urlParams.get("email_address") || 
+                                 urlParams.get("email") || 
+                                 localStorage.getItem("email_address") || 
+                                 localStorage.getItem("stripe_checkout_registered_userid") || 
+                                 receiptManifest.email_address ||
+                                 receiptManifest.customer_email || 
+                                 "";
 
     if (!capturedCheckoutEmail || capturedCheckoutEmail.trim() === "") {
       console.warn("[Step 7 warning] No email detected in session layer context. Deferring layout compilation passes.");
@@ -217,6 +223,43 @@
     }
 
     var cleanEmail = capturedCheckoutEmail.trim().toLowerCase();
+
+    // IDENTITY SWITCHBOARD CHECK: Query database row to verify if account already exists
+    window.supabase
+      .from("client_profiles")
+      .select("id, tracking_number")
+      .eq("email_address", cleanEmail)
+      .maybeSingle()
+      .then(function(lookupResult) {
+        if (lookupResult.error) throw lookupResult.error;
+
+        // BYPASS ROUTE DETECTED: Profile exists! Route past Step 7 straight to Success Portal
+        if (lookupResult.data) {
+          console.log("[Step 7 Identity Router] Account verified for " + cleanEmail + ". Executing Step 8 bypass link...");
+          localStorage.setItem("email_address", cleanEmail);
+          localStorage.setItem("stripe_checkout_registered_userid", cleanEmail);
+          
+          if (window.f4uMasterInstanceApp) {
+            window.f4uMasterInstanceApp.currentStep = 8;
+          } else if (typeof window.executeStepTransitionIndex8 === "function") {
+            window.executeStepTransitionIndex8();
+          }
+          return;
+        }
+
+        // NO PROFILE FOUND: Render fields safely if Step 7 is actively focused
+        var currentActiveStepVal = window.f4uMasterInstanceApp ? window.f4uMasterInstanceApp.currentStep : parseInt(window.currentWizardActiveStep, 10);
+        if (currentActiveStepVal === 7 || isNaN(currentActiveStepVal)) {
+          console.log("[Step 7 Identity Router] Fresh registration workspace required. Painting input forms layout.");
+          window.renderProfileForm(panelCanvas, cleanEmail);
+        } else {
+          console.log("[Step 7 Identity Router] Setup engine standby. Rendering layout deferred to protect early step views.");
+        }
+      })
+      .catch(function(lookupError) {
+        console.error("[Step 7 Engine Switchboard Error Handled]:", lookupError.message || lookupError);
+        window.renderProfileForm(panelCanvas, cleanEmail);
+      });
 
     // IDENTITY SWITCHBOARD CHECK: Query database row to verify if account already exists
     window.supabase
