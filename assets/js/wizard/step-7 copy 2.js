@@ -1211,7 +1211,7 @@ window.printSpecificPoaDocument = function() {
       </div>
       <script>
         window.onload = function() { window.print(); setTimeout;(function() { window.close(); }, 100); };
-      <\/script>
+      </script>
     </body>
     </html>
   `);

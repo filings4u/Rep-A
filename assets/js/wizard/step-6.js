@@ -919,7 +919,7 @@ window.executeSecurePaymentConfirmationPipeline = async function(finalAmountDue,
       if (typeof window.validateBaseProfileMatrix === "function") {
         if (!window.validateBaseProfileMatrix()) {
           if (banner) {
-            banner.innerText = "âœ• Please complete all required profile verification fields securely.";
+            banner.innerText = "Please complete all required fields.";
             banner.style.display = "block";
           }
           return;
