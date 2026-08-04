@@ -3,122 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#10b981">
     <title>Corporate Compliance Infrastructure | filings4u</title>
-    <script src="assets/js/supabase-config.js"></script>
+
+    <!-- 1. CORE SYNCHRONOUS ROUTING DEPENDENCIES -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- 🟢 FIXED: RESTORED CORRECT EXPLICIT UNPKG SOURCE PATH TARGETS FOR VUE 3 CORE -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/js/wizard/wizard-chat-widget.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <!-- 2. SYSTEM ARCHITECTURE STYLESHEETS -->
+    <link rel="icon" type="image/png" href="images/fav.png">
     <link rel="stylesheet" href="assets/css/new-wizard.css">
+    <link rel="stylesheet" href="assets/css/wizard-chat-wizard.css">
+    <link rel="stylesheet" href="assets/css/wizard-mobile.css">
+    <link rel="stylesheet" href="assets/css/wizard-toggle.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    
+    <!-- 🟢 FIXED: RESTORED VALID GOOGLE FONTS PRECONNECT ORIGINS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="dashboard-wrapper">
-    
-    <!-- LEFT SIDEBAR MAP CONTAINER -->
-    <aside class="portal-sidebar">
-        <div class="sidebar-brand-block">
-            <img src="images/logo.png" alt="filings4u" style="height: 35px; width: auto; object-fit: contain; display: block; margin: 0 auto;">
-        </div>
-
-        <div class="sidebar-content-area">
-            <div class="sidebar-header-box">
-                <h3 class="sidebar-title-label">Application Map</h3>
-                <p class="sidebar-time-tracker">Estimated completion time: <span>5 minutes</span></p>
+    <!-- CENTRALIZED APPLICATION CONTROLLER SCROLL HUB -->
+    <div id="app" class="dashboard-wrapper">
+        <!-- LOCKED STATIONARY SIDEBAR PROGRESS MAP LAYER -->
+        <aside class="portal-sidebar">
+            <div class="sidebar-brand-block">
+                <img src="images/logo.png" alt="filings4u" style="height: 35px; width: auto; object-fit: contain; display: block; margin: 0 auto;">
             </div>
             
-            <nav aria-label="Wizard Steps Progress Tracker" class="sidebar-nav-timeline">
-                <div id="timeline-row-1" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">1. Selected Package</span><span class="toc-step-desc">Items and inclusions</span></div></div>
-                <div id="timeline-row-2" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">2. Service Form</span><span class="toc-step-desc">Purchase configuration profile</span></div></div>
-                <div id="timeline-row-3" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">3. Add-Ons</span><span class="toc-step-desc">Compliance assets & shields</span></div></div>
-                <div id="timeline-row-4" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">4. Power of Attorney</span><span class="toc-step-desc">Digital signature execution</span></div></div>
-                <div id="timeline-row-5" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">5. Purchase Summary</span><span class="toc-step-desc">Order item breakdowns</span></div></div>
-                <div id="timeline-row-6" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">6. Secure Payment</span><span class="toc-step-desc">Encrypted checkout gateway</span></div></div>
-                <div id="timeline-row-7" class="toc-step-row"><span class="toc-dot"></span><div class="toc-text-group"><span class="toc-step-title">7. Success Portal</span><span class="toc-step-desc">Account creation systems</span></div></div>
-            </nav>
-        </div>
-
-        <div class="sidebar-footer-lock">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; width: 100%;">
-        
-            <button id="sidebarFallbackLogoutBtn" class="logout-btn" style="width: 100%; cursor: pointer; box-sizing: border-box; padding: 10px; background: #0a1f44; color: white; border: none; border-radius: 6px; font-weight: 600;">Save Progress</button>
-        </div>
-    </aside>
-    
-    <!-- RIGHT MAIN SCREEN CONTENT AREA -->
-   <!-- RIGHT MAIN SCREEN CONTENT AREA -->
-<main class="portal-main">
-    <div class="wizard-container-wrapper">
-        
-        <!-- STEP 1 STRETCHED WIZARD INNER PANEL -->
-        <div class="wizard-panel active" id="step-panel-1">
-            
-            <!-- ⏱️ LIVE PINNED CLOCK COMPONENT -->
-            <div class="form-clock-pill-anchor">
-                <span>⏱️</span>
-                <span id="portal-clock">00/00/0000 | 00:00:00</span>
-            </div>
-            
-            <!-- Header Block -->
-            <div class="step-header-container" style="margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; max-width: calc(100% - 220px);">
-                <h2 class="step-main-title">Your Selection Overview</h2>
-                <p class="step-subtitle" style="color: var(--slate); font-size: 0.95rem; margin: 0;">Review your selected package and features below.</p>
+            <!-- APPLICATION PROGRESS MAP TARGET VIEWPORT -->
+            <div id="wizard-sidebar-application-map-target" style="width: 100%; flex: 1; box-sizing: border-box;">
+                <!-- Content handled dynamically by the dynamic timeline engine -->
             </div>
 
-            <div class="form-grid-layout" style="display: flex; flex-direction: column; gap: 24px; width: 100%;">
+            <div class="sidebar-footer-lock">
+                <button type="button" @click="saveProgressFallback" class="logout-btn">Save Progress</button>
+            </div>
+        </aside>
+
+        <!-- RIGHT AUTO-FLOW CONTAINER SCREEN WORKSPACE -->
+        <main class="portal-main">
+            <div class="wizard-container-wrapper">
                 
-                <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 8px;">
-                    <label for="wizard-route-service-id" class="wizard-input-label" style="color: #0a1f44; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Selected Compliance Offering</label>
-                    <div class="input-lock-wrapper" style="position: relative; width: 100%;">
-                        <input type="text" id="wizard-route-service-id" name="selected_package_offering" readonly required class="wizard-input-field readonly-lock-field" value="Delaware LLC Premium Registration" style="width: 100%; padding: 14px 40px 14px 14px; border: 1px solid var(--border); border-radius: 8px; background: #f8fafc; color: #0a1f44; font-weight: 600; box-sizing: border-box; font-size: 0.95rem;">
+                <!-- STEP 1 INNER PANEL: SELECTION OVERVIEW -->
+                <div class="wizard-panel" :class="{ active: currentStep === 1 }" id="step-panel-1">
+                    <div class="step-header-container">
+                        <h2 class="step-main-title">1. Your Selection Overview</h2>
+                        <p class="step-subtitle">Review your selected package and features below.</p>
+                    </div>
+                    <div id="step-0-injection-placeholder"></div>
+                    <div id="step-1-injection-placeholder"></div>
+                </div>
+
+                <!-- STEP 2 INNER PANEL: CORPORATE PROFILE INTAKE -->
+                <div class="wizard-panel" :class="{ active: currentStep === 2 }" id="step-panel-2">
+                    <div class="step-header-container">
+                        <h2 class="step-main-title">2. Corporate Profile Intake</h2>
+                        <p class="step-subtitle">Provide your primary organizational structure parameters.</p>
+                    </div>
+                    <div id="step-2-injection-placeholder">
+                        <div id="step-2-onboarding-fields-canvas" class="isolated-form-payload-container"></div>
                     </div>
                 </div>
 
-                <div class="wizard-input-group" style="display: flex; flex-direction: column; gap: 8px;">
-                    <label class="wizard-input-label" style="color: #0a1f44; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">What Comes with the Package</label>
-                    <div id="step-1-package-features-list" class="features-list-data-container" style="width: 100%;">
-                        <div class="loading-skeleton-row" style="padding: 20px; border: 1px dashed var(--border); border-radius: 8px; color: var(--slate); text-align: center; font-size: 0.9rem; background: #fafafa;">
-                            <span>Assembling your customized layout configuration parameters...</span>
+                <!-- STEP 3 INNER PANEL: COMPLIANCE MARKETPLACE -->
+                <div class="wizard-panel" :class="{ active: currentStep === 3 }" id="step-panel-3">
+                    <div class="step-header-container">
+                        <h2 class="step-main-title">3. Compliance Marketplace</h2>
+                        <p class="step-subtitle">Select additional protective assets and corporate shields.</p>
+                    </div>
+                    <div id="step-3-injection-placeholder">
+                        <div id="step-3-onboarding-fields-canvas"></div>
+                    </div>
+                </div>
+
+                <!-- STEP 4 INNER PANEL: DIGITAL POWER OF ATTORNEY -->
+                <div class="wizard-panel" :class="{ active: currentStep === 4 }" id="step-panel-4">
+                    <div class="step-header-container">
+                        <h2 class="step-main-title">4. Power of Attorney</h2>
+                        <p class="step-subtitle">Execute your digital signature tracking attestation parameters.</p>
+                    </div>
+                    <div id="step-4-injection-placeholder">
+                        <div id="step-4-onboarding-fields-canvas"></div>
+                    </div>
+                </div>
+
+                <!-- STEP 5 INNER PANEL: PURCHASE SUMMARY SHEET -->
+                <div class="wizard-panel" :class="{ active: currentStep === 5 }" id="step-panel-5">
+                    <div class="step-header-container">
+                        <h2 class="step-main-title">5. Purchase Summary</h2>
+                        <p class="step-subtitle">Review your final itemized order rows before completing payment.</p>
+                    </div>
+                    <div id="step-5-injection-placeholder">
+                        <div id="step-5-onboarding-fields-canvas"></div>
+                    </div>
+                </div>
+
+                <!-- STEP 6 INNER PANEL: SECURE PAYMENT checkout -->
+                <div class="wizard-panel" :class="{ active: currentStep === 6 }" id="step-panel-6">
+                    <div class="step-header-container">
+                        <h2 class="step-main-title">6. Secure Payment Checkout</h2>
+                        <p class="step-subtitle">Encrypted checkout gateway infrastructure.</p>
+                    </div>
+                    <div id="step-6-injection-placeholder">
+                        <div id="stripe-payment-element-mount-point"></div>
+                        <div id="step6-error-banner-target"></div>
+                    </div>
+                </div>
+                <!-- STEP 7 INNER PANEL: IDENTITY PROFILE SIGNUP -->
+                <div class="wizard-panel" :class="{ active: currentStep === 7 }" id="step-panel-7">
+                    <!-- Target ground for account profile registration compilation passes -->
+                    <div id="step-7-injection-placeholder"></div>
+                </div>
+
+                <!-- STEP 8 INNER PANEL: SUCCESS FULFILLMENT PORTAL -->
+                <div class="wizard-panel" :class="{ active: currentStep === 8 }" id="step-panel-8">
+                    <!-- Dynamic client statement rehydration hub -->
+                    <div id="step-8-injection-placeholder"></div>
+                </div>
+
+               <!-- DYNAMIC AUTO-FLOW NAVIGATION ACTION FOOTER AREA --> 
+<div id="wizard-footer-injection-target" v-if="currentStep < 7"> 
+    <div class="wizard-action-footer"> 
+        <button type="button" @click="handlePrevStep" :disabled="currentStep === 1" class="btn-wizard-alt">Back</button> 
+        <!-- 🟢 FIXED: Using v-text removes the curly braces entirely so the browser can never display raw code -->
+        <button type="button" @click="handleNextStep" class="btn-wizard-main" v-text="currentStep === 6 ? 'Complete Payment' : 'Continue'">Continue</button> 
+    </div> 
+</div>
+
+
+                <!-- EXTERNAL COMPACT CORPORATE STATIC FOOTER BOX -->
+                <div id="f4u-standalone-footer-wrapper">
+                    <div class="portal-legal-footer">
+                        <p class="copyright-text-block">© 2026 filings4u. All security measures active.</p>
+                        <div class="footer-links-centered-row">
+                            <a href="/terms" target="_blank">Terms of Service</a>
+                            <a href="/privacy" target="_blank">Privacy Framework</a>
+                        </div>
+                        <div class="secure-crypto-badge-pop">
+                            <i class="fa-solid fa-lock"></i> SSL Secured 256-Bit
                         </div>
                     </div>
                 </div>
 
-                <div id="step-1-base-fee-row" style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: 700; color: #0a1f44; font-size: 0.95rem;">Base Fee:</span>
-                    <strong id="step-1-base-fee-value" style="font-family: monospace; color: var(--primary); font-size: 1.5rem; font-weight: 800;">$0.00</strong>
-                </div>
+    <!-- 🟢 FIXED LAYOUT SEQUENCE: Correctly closes structural wrappers without grid bleed -->
             </div>
-
-            <div class="wizard-action-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 40px; border-top: 1px solid var(--border); padding-top: 24px;">
-                <button type="button" class="btn-wizard-alt" style="display: none;">Back</button>
-                <button type="button" class="btn-wizard-main" onclick="goToNextWizardStep(2, event)" style="cursor: pointer; margin-left: auto; background: #10b981; color: white; border: none; padding: 14px 28px; border-radius: 8px; font-weight: 700; font-size: 0.95rem;">Continue to Form</button>
-            </div>
-
-        </div>
+        </main>
     </div>
 
-        <!-- 💡 FIX: Cleaned up the inner wrappers so all elements sit on the same line -->
-        <footer class="portal-legal-footer">
-            
-            <!-- LEFT COMPONENT: COPYRIGHT TEXT BLOCK -->
-            <p class="copyright-text-block">
-                &copy; 2026 filings4u, LLC. All rights reserved.<br>
-                A Subsidiary of <a href="https://roselandcompanies.com" target="_blank" rel="noopener noreferrer" style="color: #10b981; text-decoration: none; font-weight: bold;">Roseland Companies, LLC</a>
-            </p>
-            
-            <!-- CENTER COMPONENT: MIDDLE LEGAL LINKS -->
-            <div class="footer-links-centered-row">
-                <a href="privacy-policy.html">Privacy Policy</a>
-                <a href="terms-of-service.html">Terms of Service</a>
-                <a href="refund-policy.html">Refund Policy</a>
-            </div>
+    <!-- 1. LOAD BASE VUE ENGINE CONSOLE INSTANCE FIRST -->
+    <script src="assets/js/wizard/wizard-master-core.js"></script>
 
-            <!-- RIGHT COMPONENT: SECURE TRUST BADGE KEY -->
-            <div class="trust-badge" style="background: rgba(255, 255, 255, 0.05); padding: 10px 20px; border-radius: 8px; font-size: 0.75rem; color: #ffffff; display: flex; align-items: center; white-space: nowrap;">
-                <span style="color: #10b981; font-weight: 800; margin-right: 8px;">SECURE</span> 256-bit SSL Encrypted Connection
-            </div>
-            
-        </footer>
+    <!-- 2. LOAD PRICING REFRESH DATA ASSETS NEXT -->
+    <script src="assets/js/wizard/government-pricing.js"></script>
+    <script src="assets/js/wizard/state-pricing.js"></script>
 
-    </main>
-</div>
-
-
+    <!-- 3. LOAD FUNCTION PIPELINES THAT DEPEND ON VUE LAST -->
+    <script src="assets/js/wizard/application-map.js"></script>
+    <script src="assets/js/wizard/stripe-core.js"></script>
+    <script src="assets/js/wizard/step-7.js"></script>
 </body>
 </html>

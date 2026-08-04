@@ -168,75 +168,99 @@
     const cleanBtn = document.getElementById("wizardSubmitBtnElement") || document.getElementById("f4u-submit-profile-btn");
     if (!cleanBtn) return;
 
-    if (window.f4u_active_submit_handler) {
-      cleanBtn.removeEventListener("click", window.f4u_active_submit_handler);
+// ============================================================================
+// FIX: REPLACED SECTION 5 SUBMIT HANDLER TO PREVENT DEFAULT PAGE RELOADS
+// ============================================================================
+window.f4u_active_submit_handler = async (clickEvent) => {
+    // 1. Force absolute stoppage of default form submissions right away
+    if (clickEvent) {
+        clickEvent.preventDefault();
+        clickEvent.stopPropagation();
     }
 
-    window.f4u_active_submit_handler = async (clickEvent) => {
-      clickEvent.preventDefault();
-      const errorBanner = document.getElementById("step6-error-banner-target") || document.getElementById("err_profile_email");
-      if (errorBanner) errorBanner.style.display = "none";
+    const errorBanner = document.getElementById("step6-error-banner-target") || document.getElementById("err_profile_email");
+    if (errorBanner) errorBanner.style.display = "none";
 
-      if (typeof window.validateBaseProfileMatrix === "function" && !window.validateBaseProfileMatrix()) {
+    if (typeof window.validateBaseProfileMatrix === "function" && !window.validateBaseProfileMatrix()) {
         console.warn("[Submit Validation] Pipeline aborted. Fields missing.");
         if (errorBanner) {
-          errorBanner.innerText = "Please complete all required contact fields before processing payment.";
-          errorBanner.style.display = "block";
+            errorBanner.innerText = "Please complete all required contact fields before processing payment.";
+            errorBanner.style.display = "block";
         }
-        return;
-      }
+        return false; // Prevent further execution explicitly
+    }
 
-      cleanBtn.disabled = true;
-      cleanBtn.style.opacity = "0.6";
-      cleanBtn.innerHTML = "Processing Transaction <i class='fa-solid fa-spinner fa-spin' style='margin-left: 6px;'></i>";
+    cleanBtn.disabled = true;
+    cleanBtn.style.opacity = "0.6";
+    cleanBtn.innerHTML = "Processing Transaction <i class='fa-solid fa-spinner fa-spin' style='margin-left: 6px;'></i>";
 
-      try {
+    try {
         const resolvedFinalTotal = parseFloat(
-          window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || localStorage.getItem("f4u_running_total") || 0
+            window.computedWizardGrandTotalAmount || window.wizardCalculatedFinalTotalAmount || localStorage.getItem("f4u_running_total") || 0
         );
-
         const activeCartMetadata = localStorage.getItem("f4u_active_cart_itemized_rows") || "[]";
 
-        // Assigns parameters using your clean, corrected production element IDs
         if (window.currentOrderCorePayload) {
-          window.currentOrderCorePayload.email = document.getElementById("email")?.value.trim() || "";
-          window.currentOrderCorePayload.total_fee = resolvedFinalTotal;
-          window.currentOrderCorePayload.collected_payload_metadata = {
-            first_name: document.getElementById("first_name")?.value.trim() || "",
-            last_name: document.getElementById("last_name")?.value.trim() || "",
-            phone: document.getElementById("phone_number")?.value.trim() || "",
-            wizard_step_checkpoint: 6,
-            itemized_receipt_rows: JSON.parse(activeCartMetadata),
-            timestamp_capture: new Date().toISOString()
-          };
+            window.currentOrderCorePayload.email = document.getElementById("email")?.value.trim() || "";
+            window.currentOrderCorePayload.total_fee = resolvedFinalTotal;
+            window.currentOrderCorePayload.collected_payload_metadata = {
+                first_name: document.getElementById("first_name")?.value.trim() || "",
+                last_name: document.getElementById("last_name")?.value.trim() || "",
+                phone: document.getElementById("phone_number")?.value.trim() || "",
+                wizard_step_checkpoint: 6,
+                itemized_receipt_rows: JSON.parse(activeCartMetadata),
+                timestamp_capture: new Date().toISOString()
+            };
         }
 
         if (typeof window.executeOnboardingTransactionPayloadSubmitVanilla === "function") {
-          console.log("[Stripe Pipeline] Running vanilla payload submit...");
-          await window.executeOnboardingTransactionPayloadSubmitVanilla(clickEvent);
+            console.log("[Stripe Pipeline] Running vanilla payload submit...");
+            await window.executeOnboardingTransactionPayloadSubmitVanilla(clickEvent);
         } else if (typeof window.executeSecurePaymentConfirmationPipeline === "function") {
-          console.log("[Stripe Pipeline] Running secure confirmation pipeline...");
-          await window.executeSecurePaymentConfirmationPipeline(resolvedFinalTotal, cleanBtn);
+            console.log("[Stripe Pipeline] Running secure confirmation pipeline...");
+            await window.executeSecurePaymentConfirmationPipeline(resolvedFinalTotal, cleanBtn);
         } else {
-          // Direct local REST submission fallback processing path
-          const extracted = await window.processUniversalWizardPurchaseFulfillment();
-          if (extracted && typeof window.executeStepTransitionIndex8 === "function") {
-            window.executeStepTransitionIndex8();
-          } else {
-            throw new Error("Stripe transaction pipelines are uninitialized.");
-          }
+            // Direct local REST submission fallback processing path
+            const extracted = await window.processUniversalWizardPurchaseFulfillment();
+            
+            if (extracted) {
+                // Set step indexes before navigating so reloads don't reset to Step 1
+                window.currentWizardActiveStep = 8;
+                localStorage.setItem("f4u_active_wizard_step_index", "8");
+
+                if (typeof window.executeStepTransitionIndex8 === "function") {
+                    window.executeStepTransitionIndex8();
+                } else {
+                    console.warn("⚠️ window.executeStepTransitionIndex8 missing! Running manual DOM transition fallback.");
+                    
+                    // MANUAL FALLBACK: Hide current panels, reveal step 8 panel manually
+                    document.querySelectorAll("[id^='step-panel-']").forEach(panel => panel.style.display = "none");
+                    const step8Panel = document.getElementById("step-panel-8") || document.getElementById("step-8-injection-placeholder");
+                    if (step8Panel) {
+                        step8Panel.style.display = "block";
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        alert("Transaction complete! Step 8 UI layout panel wrapper was not found in the HTML DOM.");
+                    }
+                }
+            } else {
+                throw new Error("Database fulfillment submission rejected data packet.");
+            }
         }
-      } catch (pipelineException) {
+    } catch (pipelineException) {
         console.error("[Stripe Runtime Pipeline Error]", pipelineException);
         if (errorBanner) {
-          errorBanner.innerText = pipelineException.message || "An unexpected processing error occurred.";
-          errorBanner.style.display = "block";
+            errorBanner.innerText = pipelineException.message || "An unexpected processing error occurred.";
+            errorBanner.style.display = "block";
         }
         cleanBtn.disabled = false;
         cleanBtn.style.opacity = "1";
         cleanBtn.innerHTML = "Secure Payment <i class='fa-solid fa-credit-card' style='margin-left: 6px;'></i>";
-      }
-    };
+    }
+
+    return false; // Strict fallback insurance to completely halt any form action bubble
+};
+
 
     cleanBtn.addEventListener("click", window.f4u_active_submit_handler);
     console.log("✅ [Stripe Controller] Secure Payment button event listener successfully attached.");

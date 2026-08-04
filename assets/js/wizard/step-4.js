@@ -131,7 +131,7 @@ window.initCursiveSignatureCaptureLivePreview = function() {
       <!-- LIVE CURSIVE PREVIEW CANVAS CARD -->
       <div style="display: flex; flex-direction: column; gap: 6px; background: #fafafa; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 8px; text-align: center; justify-content: center; min-height: 80px; box-sizing: border-box; margin-top: 10px;">
         <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 2px;">Legal Electronic Signature Preview</span>
-        <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 1.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;">LEGAL ELECTRONIC SIGNATURE PREVIEW</div>
+        <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 2.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;">LEGAL ELECTRONIC SIGNATURE PREVIEW</div>
       </div>
 
       <!-- CONSENT RECOGNITION AFFIRMATION CHECKBOX WRAPPER (GRAYED OUT) -->
@@ -311,7 +311,7 @@ if (activeResolutionTargetNode) {
     <!-- LIVE CURSIVE PREVIEW CANVAS CARD -->
     <div style="display: flex; flex-direction: column; gap: 6px; background: #fafafa; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 8px; text-align: center; justify-content: center; min-height: 80px; box-sizing: border-box; margin-top: 20px;">
       <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 2px;">Legal Electronic Signature Preview</span>
-      <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 1.7rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;"></div>
+      <div id="poa_cursive_preview" style="font-family: 'Brush Script MT', 'Dancing Script', 'Cursive', sans-serif; font-size: 2.2rem; color: #1e3a8a; min-height: 44px; line-height: 1.2; word-break: break-all;"></div>
     </div>
 
     <!-- CONSENT CHECKBOX MATRIX WRAPPER (GRAYED OUT UNTIL VALID NAME DETECTED) -->
@@ -459,7 +459,7 @@ window.evaluatePoaInputStateMatrix = function() {
     window.wizardPoaSignedState = "signed_verified";
     window.wizardPoaSignatureVerificationString = `${signatureText} // Verified via Serverless Edge: ${signatureHashTag}`;
   } else {
-    window.wizardPoaSignedState = "signed";
+    window.wizardPoaSignedState = "pending";
     window.wizardPoaSignatureVerificationString = "";
   }
 

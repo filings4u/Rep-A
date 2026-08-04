@@ -743,7 +743,8 @@ window.formatStepFiveSummaryInvoiceDisplayLayout = formatStepFiveSummaryInvoiceD
  * UI Mutation Guard Hook
  * Automatically runs the formatter whenever your wizard updates the summary panel.
  * Connected layout trigger directly to the newly isolated formatter module handler.
- */;(function activateSummaryObserver() {
+ */
+(function activateSummaryObserver() {
   const summaryTarget = document.getElementById("summary-purchase-rows-container");
   
   if (!summaryTarget) {
@@ -779,4 +780,3 @@ window.formatStepFiveSummaryInvoiceDisplayLayout = formatStepFiveSummaryInvoiceD
   summaryObserver.observe(summaryTarget, { childList: true, subtree: true });
   console.log("[Observer Engine] Step 5 layout monitor active, stabilized, and loop-protected.");
 })();
-

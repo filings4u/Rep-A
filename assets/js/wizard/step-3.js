@@ -747,7 +747,8 @@ window.buildMarketplaceCardsHtml = buildMarketplaceCardsHtml;
 
 // ============================================================================ //
 // ðŸ“¡ 4. REACTIVE STATE INTERCEPTOR ENGINE (DEBOUNCED ANTI-FLICKER PROXY)       //
-// ============================================================================ //;(function attachAgnosticStateInterceptors() {
+// ============================================================================ //
+(function attachAgnosticStateInterceptors() {
   const targetedMemoryHooks = ['CENTRAL_ADDON_DB', 'UPSELLS_ROUTER_DATABASE', 'UPSELL_ADDON_REGISTRY'];
   
   // ðŸ›¡ï¸ ANTI-FLICKER DEBOUNCE TIMER
@@ -1105,7 +1106,8 @@ window.closeNewEntrantAuditPriceGuideModal = window.closeNewEntrantAuditPriceGui
 
 // ============================================================================ //
 // ðŸ“Š MEMORY ENGINE STABILIZER & SELECTION INTERCEPTOR (ANTI-FLICKER CORE)      //
-// ============================================================================ //;(function stabilizeRuntimeSync() {
+// ============================================================================ //
+(function stabilizeRuntimeSync() {
   /**
    * Syncs marketplace checklist boxes immediately down to global state tokens memory registers
    * and dynamically injects values into the active transaction summary payloads.
@@ -1750,4 +1752,3 @@ setTimeout(initializeIntuitiveFullCardClickListeners, 400);
 
 // Also expose it to the window global registry so core.js can trigger it on step changes
 window.initializeIntuitiveFullCardClickListeners = initializeIntuitiveFullCardClickListeners;
-
