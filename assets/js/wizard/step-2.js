@@ -2918,4 +2918,50 @@ if (document.readyState === "loading") {
     bootstrapStepTwoLifecycleEngine(); 
 }
 
+// 🟢 STEP 2 EXTRACTOR: Fires when clicking "Next" on the Step 2 Form
+async function secureStep2DataCapture() {
+  const currentTrackingNumber = localStorage.getItem("tracking_number") || "";
+  if (!currentTrackingNumber) {
+    console.error("✕ Handoff Error: No tracking number active in wizard memory.");
+    return;
+  }
+
+  // 1. DYNAMIC SCRAPER: Auto-grabs ALL inputs, textareas, and selects inside the step 2 container
+  const step2FormContainer = document.getElementById("wizard-step-2-container"); // Adjust to your step 2 wrapper ID
+  if (!step2FormContainer) return;
+
+  const inputs = step2FormContainer.querySelectorAll("input, textarea, select");
+  const extractedDataPayload = {};
+
+  inputs.forEach(element => {
+    if (element.id && element.value !== undefined) {
+      // Exclude structural elements or password fields if any exist
+      if (element.type !== "password" && element.type !== "submit") {
+        extractedDataPayload[element.id] = element.value.trim();
+      }
+    }
+  });
+
+  console.log("📦 Form payload scraped successfully:", extractedDataPayload);
+
+  // 2. SUPABASE TRANSMISSION: Push the flexible JSON object to the database
+  const client = window.supabaseInstance || window.supabaseClient;
+  if (client && typeof client.from === 'function') {
+    try {
+      const { data, error } = await client
+        .from('orders')
+        .update({
+          form_payload: extractedDataPayload, // 🔑 The flexible object column
+          updated_at: new Date().toISOString()
+        })
+        .eq('tracking_number', currentTrackingNumber.trim());
+
+      if (error) throw error;
+      console.log("✅ Step 2 wizard fields successfully synced to orders table record.");
+    } catch (err) {
+      console.error("✕ Failed to sync wizard data payload to cloud server:", err.message);
+    }
+  }
+}
+
 })();
