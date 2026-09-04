@@ -16,7 +16,7 @@
     wizardPath: "/wizard.html",
     handoffEndpoint: "https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/wizard-handoff",
     anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU",
-    transitionMs: 650
+    transitionMs: 75
   });
 
   let redirecting = false;
@@ -232,7 +232,7 @@
       <div class="card">
         <div class="accent"></div>
         <div class="body">
-          <div class="brand">filings4<span>u</span></div>
+          <img class="brand-logo" src="images/logo.png" alt="filings4u">
           <div class="spinner" aria-hidden="true"></div>
           <div class="error-icon" aria-hidden="true">!</div>
           <h2 id="f4u-handoff-title">Opening your secure filing workspace</h2>
