@@ -2,16 +2,11 @@
  * filings4u secure wizard handoff
  * MARKETING REPO ONLY — SERVICE PAGES ONLY.
  *
- * No native browser alert(), confirm(), or prompt().
- * All status/error messages use branded filings4u UI.
- *
- * Pricing button example:
- * <a href="#"
- *    data-wizard-handoff
- *    data-service="llc-formation"
- *    data-plan="compliance">
- *   Choose Compliance
- * </a>
+ * Self-contained transport:
+ * - does NOT create a Supabase client
+ * - does NOT require window.f4uSupabase
+ * - uses the browser-safe anon key only to call the verified Edge Function
+ * - no alert(), confirm(), or prompt()
  */
 (function () {
   "use strict";
@@ -19,56 +14,42 @@
   const CONFIG = Object.freeze({
     wizardOrigin: "https://wizard.filings4u.com",
     wizardPath: "/wizard.html",
+    handoffEndpoint: "https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/wizard-handoff",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU",
     transitionMs: 650
   });
 
   let redirecting = false;
   let lastTrigger = null;
 
-  const clean = (value) => String(value ?? "").trim();
+  const clean = value => String(value ?? "").trim();
+  const slug = value => clean(value)
+    .toLowerCase()
+    .replace(/[_\s]+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 
-  const slug = (value) =>
-    clean(value)
-      .toLowerCase()
-      .replace(/[_\s]+/g, "-")
-      .replace(/[^a-z0-9-]/g, "")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
+  function contextFrom(trigger) {
+    const data = trigger?.dataset || {};
+    return {
+      service: slug(data.service || data.wizardService || data.serviceKey),
+      plan: slug(data.plan || data.wizardPlan || data.planTier),
+      state: clean(data.state || data.stateCode || data.jurisdiction).toUpperCase()
+    };
+  }
 
-  function servicePageReturnUrl() {
-    const url = new URL(window.location.href);
+  function returnUrl() {
+    const url = new URL(location.href);
     url.hash = "";
     return url.toString();
   }
 
-  function contextFrom(trigger) {
-    const data = trigger?.dataset || {};
-
-    return {
-      service: slug(
-        data.service ||
-        data.wizardService ||
-        data.serviceKey
-      ),
-      plan: slug(
-        data.plan ||
-        data.wizardPlan ||
-        data.planTier
-      ),
-      state: clean(
-        data.state ||
-        data.stateCode ||
-        data.jurisdiction
-      ).toUpperCase()
-    };
-  }
-
   function installStyles() {
-    if (document.getElementById("f4u-wizard-handoff-styles")) return;
+    if (document.getElementById("f4u-handoff-styles")) return;
 
     const style = document.createElement("style");
-    style.id = "f4u-wizard-handoff-styles";
-
+    style.id = "f4u-handoff-styles";
     style.textContent = `
       #f4u-secure-handoff {
         position: fixed;
@@ -78,15 +59,14 @@
         align-items: center;
         justify-content: center;
         padding: 24px;
-        background: rgba(10, 31, 68, 0.56);
+        background: rgba(10,31,68,.58);
         backdrop-filter: blur(7px);
         -webkit-backdrop-filter: blur(7px);
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
         transition: opacity .18s ease, visibility .18s ease;
-        font-family: Inter, Manrope, "DM Sans", system-ui, -apple-system,
-          BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: Inter, Manrope, "DM Sans", system-ui, sans-serif;
       }
 
       #f4u-secure-handoff.is-open {
@@ -95,66 +75,52 @@
         pointer-events: auto;
       }
 
-      #f4u-secure-handoff .f4u-handoff-card {
+      #f4u-secure-handoff .card {
         width: min(92vw, 430px);
         overflow: hidden;
         border: 1px solid #dbe3ee;
         border-radius: 18px;
-        background: #ffffff;
-        box-shadow: 0 28px 80px rgba(10, 31, 68, .24);
+        background: #fff;
+        box-shadow: 0 28px 80px rgba(10,31,68,.24);
         text-align: center;
-        transform: translateY(8px) scale(.985);
-        transition: transform .18s ease;
       }
 
-      #f4u-secure-handoff.is-open .f4u-handoff-card {
-        transform: translateY(0) scale(1);
-      }
-
-      #f4u-secure-handoff .f4u-handoff-accent {
+      #f4u-secure-handoff .accent {
         height: 5px;
         background: #10b981;
       }
 
-      #f4u-secure-handoff .f4u-handoff-body {
+      #f4u-secure-handoff .body {
         padding: 32px 30px 28px;
       }
 
-      #f4u-secure-handoff .f4u-handoff-brand {
-        margin: 0 0 22px;
+      #f4u-secure-handoff .brand {
+        margin-bottom: 22px;
         color: #0a1f44;
         font-size: 28px;
-        line-height: 1;
         font-weight: 900;
         letter-spacing: -1.15px;
       }
 
-      #f4u-secure-handoff .f4u-handoff-brand span {
+      #f4u-secure-handoff .brand span {
         color: #10b981;
       }
 
-      #f4u-secure-handoff .f4u-handoff-icon {
-        display: grid;
-        place-items: center;
-        width: 54px;
-        height: 54px;
-        margin: 0 auto 18px;
-        border-radius: 50%;
-      }
-
-      #f4u-secure-handoff .f4u-handoff-spinner {
+      #f4u-secure-handoff .spinner {
         width: 48px;
         height: 48px;
+        margin: 0 auto 20px;
         border: 4px solid #dfe7ef;
         border-top-color: #10b981;
         border-radius: 50%;
-        animation: f4uHandoffSpin .78s linear infinite;
+        animation: f4uSpin .78s linear infinite;
       }
 
-      #f4u-secure-handoff .f4u-handoff-error-icon {
+      #f4u-secure-handoff .error-icon {
         display: none;
         width: 54px;
         height: 54px;
+        margin: 0 auto 18px;
         border-radius: 50%;
         background: #fff1f2;
         color: #be123c;
@@ -163,23 +129,22 @@
         line-height: 54px;
       }
 
-      #f4u-secure-handoff[data-state="error"] .f4u-handoff-spinner {
+      #f4u-secure-handoff[data-state="error"] .spinner {
         display: none;
       }
 
-      #f4u-secure-handoff[data-state="error"] .f4u-handoff-error-icon {
+      #f4u-secure-handoff[data-state="error"] .error-icon {
         display: block;
       }
 
-      #f4u-secure-handoff .f4u-handoff-title {
+      #f4u-secure-handoff h2 {
         margin: 0;
         color: #0a1f44;
         font-size: 19px;
         line-height: 1.35;
-        font-weight: 800;
       }
 
-      #f4u-secure-handoff .f4u-handoff-message {
+      #f4u-secure-handoff p {
         margin: 8px auto 0;
         max-width: 330px;
         color: #64748b;
@@ -187,9 +152,9 @@
         line-height: 1.6;
       }
 
-      #f4u-secure-handoff .f4u-handoff-error-detail {
+      #f4u-secure-handoff .detail {
         display: none;
-        margin: 16px 0 0;
+        margin-top: 16px;
         padding: 11px 13px;
         border: 1px solid #fecdd3;
         border-radius: 9px;
@@ -201,269 +166,186 @@
         word-break: break-word;
       }
 
-      #f4u-secure-handoff[data-state="error"] .f4u-handoff-error-detail {
+      #f4u-secure-handoff[data-state="error"] .detail {
         display: block;
       }
 
-      #f4u-secure-handoff .f4u-handoff-actions {
+      #f4u-secure-handoff .actions {
         display: none;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
         margin-top: 20px;
       }
 
-      #f4u-secure-handoff[data-state="error"] .f4u-handoff-actions {
+      #f4u-secure-handoff[data-state="error"] .actions {
         display: grid;
       }
 
-      #f4u-secure-handoff .f4u-handoff-btn {
+      #f4u-secure-handoff button {
         min-height: 44px;
         border-radius: 9px;
         padding: 10px 15px;
-        border: 1px solid transparent;
         font: inherit;
         font-size: 14px;
         font-weight: 800;
         cursor: pointer;
       }
 
-      #f4u-secure-handoff .f4u-handoff-btn--secondary {
-        border-color: #cbd5e1;
-        background: #ffffff;
+      #f4u-handoff-close {
+        border: 1px solid #cbd5e1;
+        background: #fff;
         color: #0a1f44;
       }
 
-      #f4u-secure-handoff .f4u-handoff-btn--primary {
+      #f4u-handoff-retry {
+        border: 1px solid #10b981;
         background: #10b981;
         color: #052e27;
       }
 
-      #f4u-secure-handoff .f4u-handoff-btn:hover {
-        filter: brightness(.98);
-      }
-
-      @keyframes f4uHandoffSpin {
+      @keyframes f4uSpin {
         to { transform: rotate(360deg); }
       }
 
       @media (max-width: 480px) {
-        #f4u-secure-handoff .f4u-handoff-body {
-          padding: 28px 22px 24px;
-        }
-
-        #f4u-secure-handoff .f4u-handoff-actions {
+        #f4u-secure-handoff .actions {
           grid-template-columns: 1fr;
         }
       }
-
-      @media (prefers-reduced-motion: reduce) {
-        #f4u-secure-handoff,
-        #f4u-secure-handoff .f4u-handoff-card {
-          transition: none;
-        }
-
-        #f4u-secure-handoff .f4u-handoff-spinner {
-          animation-duration: 1.5s;
-        }
-      }
     `;
-
     document.head.appendChild(style);
   }
 
-  function ensureOverlay() {
+  function overlay() {
     installStyles();
 
-    let overlay = document.getElementById("f4u-secure-handoff");
-    if (overlay) return overlay;
+    let el = document.getElementById("f4u-secure-handoff");
+    if (el) return el;
 
-    overlay = document.createElement("div");
-    overlay.id = "f4u-secure-handoff";
-    overlay.dataset.state = "loading";
-    overlay.setAttribute("role", "dialog");
-    overlay.setAttribute("aria-modal", "true");
-    overlay.setAttribute("aria-labelledby", "f4u-handoff-title");
-    overlay.setAttribute("aria-describedby", "f4u-handoff-message");
+    el = document.createElement("div");
+    el.id = "f4u-secure-handoff";
+    el.dataset.state = "loading";
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-modal", "true");
 
-    overlay.innerHTML = `
-      <div class="f4u-handoff-card">
-        <div class="f4u-handoff-accent"></div>
-
-        <div class="f4u-handoff-body">
-          <div class="f4u-handoff-brand">filings4<span>u</span></div>
-
-          <div class="f4u-handoff-icon" aria-hidden="true">
-            <div class="f4u-handoff-spinner"></div>
-            <div class="f4u-handoff-error-icon">!</div>
-          </div>
-
-          <h2 class="f4u-handoff-title" id="f4u-handoff-title">
-            Opening your secure filing workspace
-          </h2>
-
-          <p class="f4u-handoff-message" id="f4u-handoff-message">
+    el.innerHTML = `
+      <div class="card">
+        <div class="accent"></div>
+        <div class="body">
+          <div class="brand">filings4<span>u</span></div>
+          <div class="spinner" aria-hidden="true"></div>
+          <div class="error-icon" aria-hidden="true">!</div>
+          <h2 id="f4u-handoff-title">Opening your secure filing workspace</h2>
+          <p id="f4u-handoff-message">
             Your service and package selection are being transferred securely.
           </p>
-
-          <div
-            class="f4u-handoff-error-detail"
-            id="f4u-handoff-error-detail"
-            aria-live="polite">
-          </div>
-
-          <div class="f4u-handoff-actions">
-            <button
-              type="button"
-              class="f4u-handoff-btn f4u-handoff-btn--secondary"
-              id="f4u-handoff-close">
-              Stay on this page
-            </button>
-
-            <button
-              type="button"
-              class="f4u-handoff-btn f4u-handoff-btn--primary"
-              id="f4u-handoff-retry">
-              Try again
-            </button>
+          <div class="detail" id="f4u-handoff-detail"></div>
+          <div class="actions">
+            <button type="button" id="f4u-handoff-close">Stay on this page</button>
+            <button type="button" id="f4u-handoff-retry">Try again</button>
           </div>
         </div>
       </div>
     `;
 
-    document.body.appendChild(overlay);
+    document.body.appendChild(el);
 
-    document
-      .getElementById("f4u-handoff-close")
+    document.getElementById("f4u-handoff-close")
       ?.addEventListener("click", closeOverlay);
 
-    document
-      .getElementById("f4u-handoff-retry")
-      ?.addEventListener("click", function () {
-        if (!lastTrigger) {
-          closeOverlay();
-          return;
-        }
-        enter(lastTrigger, true);
+    document.getElementById("f4u-handoff-retry")
+      ?.addEventListener("click", () => {
+        if (lastTrigger) enter(lastTrigger, true);
       });
 
-    return overlay;
+    return el;
   }
 
   function showLoading() {
-    const overlay = ensureOverlay();
+    const el = overlay();
+    el.dataset.state = "loading";
 
-    overlay.dataset.state = "loading";
+    document.getElementById("f4u-handoff-title").textContent =
+      "Opening your secure filing workspace";
 
-    const title = document.getElementById("f4u-handoff-title");
-    const message = document.getElementById("f4u-handoff-message");
-    const detail = document.getElementById("f4u-handoff-error-detail");
+    document.getElementById("f4u-handoff-message").textContent =
+      "Your service and package selection are being transferred securely.";
 
-    if (title) title.textContent = "Opening your secure filing workspace";
-    if (message) {
-      message.textContent =
-        "Your service and package selection are being transferred securely.";
-    }
-    if (detail) detail.textContent = "";
+    document.getElementById("f4u-handoff-detail").textContent = "";
 
-    requestAnimationFrame(() => overlay.classList.add("is-open"));
-    return overlay;
+    requestAnimationFrame(() => el.classList.add("is-open"));
   }
 
-  function showError(error) {
-    const overlay = ensureOverlay();
+  function showError(message) {
+    const el = overlay();
+    el.dataset.state = "error";
+    el.classList.add("is-open");
 
-    overlay.dataset.state = "error";
-    overlay.classList.add("is-open");
+    document.getElementById("f4u-handoff-title").textContent =
+      "We couldn't open the secure workspace";
 
-    const title = document.getElementById("f4u-handoff-title");
-    const message = document.getElementById("f4u-handoff-message");
-    const detail = document.getElementById("f4u-handoff-error-detail");
+    document.getElementById("f4u-handoff-message").textContent =
+      "Your filing selection is still safe. Please try the secure transfer again.";
 
-    if (title) title.textContent = "We couldn't open the secure workspace";
-
-    if (message) {
-      message.textContent =
-        "Your filing selection is still safe. Please try the secure transfer again.";
-    }
-
-    if (detail) {
-      detail.textContent =
-        error?.message ||
-        "The secure handoff service did not complete the request.";
-    }
+    document.getElementById("f4u-handoff-detail").textContent =
+      message || "The secure handoff service did not complete the request.";
 
     document.getElementById("f4u-handoff-retry")?.focus();
   }
 
   function closeOverlay() {
-    const overlay = document.getElementById("f4u-secure-handoff");
-    if (!overlay) return;
-
-    overlay.classList.remove("is-open");
+    const el = document.getElementById("f4u-secure-handoff");
+    if (el) el.classList.remove("is-open");
     redirecting = false;
-
-    window.setTimeout(() => {
-      overlay.dataset.state = "loading";
-    }, 200);
   }
 
   async function mint(context) {
-    const client =
-      window.f4uSupabase ||
-      window.supabaseClientInstance ||
-      null;
-
-    if (!client) {
-      throw new Error("The website connection is not ready. Please refresh and try again.");
-    }
-
-    const { data, error } = await client.functions.invoke("wizard-handoff", {
-      body: {
+    const response = await fetch(CONFIG.handoffEndpoint, {
+      method: "POST",
+      mode: "cors",
+      credentials: "omit",
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": CONFIG.anonKey,
+        "Authorization": "Bearer " + CONFIG.anonKey
+      },
+      body: JSON.stringify({
         action: "mint",
         service: context.service,
         plan: context.plan,
         state: context.state || null,
-        return_url: servicePageReturnUrl()
-      }
+        return_url: returnUrl()
+      })
     });
 
-    if (error) {
-      let message = error.message || "Secure handoff request failed.";
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (_) {}
 
-      // Supabase FunctionsHttpError may carry useful response text.
-      try {
-        if (typeof error.context?.json === "function") {
-          const payload = await error.context.json();
-          if (payload?.error) message = payload.error;
-        }
-      } catch (_) {}
-
-      throw new Error(message);
+    if (!response.ok) {
+      throw new Error(
+        payload?.error ||
+        "The secure handoff service returned HTTP " + response.status + "."
+      );
     }
 
-    if (!data?.token) {
+    if (!payload?.token) {
       throw new Error("The secure handoff did not return an access token.");
     }
 
-    return data;
+    return payload;
   }
 
-  async function enter(trigger, isRetry = false) {
-    if (redirecting && !isRetry) return;
+  async function enter(trigger, retry = false) {
+    if (redirecting && !retry) return;
 
     lastTrigger = trigger;
-
     const context = contextFrom(trigger);
 
     if (!context.service || !context.plan) {
-      console.error(
-        "[filings4u] Pricing handoff requires service and plan.",
-        trigger
-      );
-
-      showError(
-        new Error("This pricing option is missing its service or package information.")
-      );
+      showError("This pricing option is missing its service or package information.");
       return;
     }
 
@@ -472,56 +354,36 @@
 
     try {
       const handoff = await mint(context);
-
-      const destination = new URL(
-        CONFIG.wizardPath,
-        CONFIG.wizardOrigin
-      );
-
+      const destination = new URL(CONFIG.wizardPath, CONFIG.wizardOrigin);
       destination.searchParams.set("handoff", handoff.token);
 
-      window.setTimeout(() => {
-        window.location.assign(destination.toString());
+      setTimeout(() => {
+        location.assign(destination.toString());
       }, CONFIG.transitionMs);
 
     } catch (error) {
       redirecting = false;
-
-      console.error(
-        "[filings4u] Secure wizard handoff failed:",
-        error
-      );
-
-      showError(error);
+      console.error("[filings4u] Secure wizard handoff failed:", error);
+      showError(error?.message);
     }
   }
 
-  document.addEventListener(
-    "click",
-    function (event) {
-      if (
-        event.defaultPrevented ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey
-      ) {
-        return;
-      }
+  document.addEventListener("click", event => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) return;
 
-      const trigger =
-        event.target?.closest?.("[data-wizard-handoff]");
+    const trigger = event.target?.closest?.("[data-wizard-handoff]");
+    if (!trigger) return;
 
-      if (!trigger) return;
+    event.preventDefault();
+    enter(trigger);
+  }, true);
 
-      event.preventDefault();
-      enter(trigger);
-    },
-    true
-  );
-
-  window.F4UWizardHandoff = Object.freeze({
-    enter
-  });
+  window.F4UWizardHandoff = Object.freeze({ enter });
 })();
