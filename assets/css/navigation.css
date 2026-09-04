@@ -1,49 +1,15 @@
-/**
- * filings4u Platform Architecture
- * Module: navigation.css (Isolated Menu Drawer & Dropdown Infrastructure)
- */
-
-/* ==========================================================================
-   1. INTERMEDIATE TABLET WRAPPER CONTROLS (max-width: 1024px)
-   ========================================================================== */
-@media (max-width: 1024px) {
-    .nav-content-wrapper { padding: 0 20px !important; box-sizing: border-box !important; }
-    .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 24px; box-sizing: border-box; gap: 16px; align-items: flex-start; }
-    .nav-links.mobile-active { display: flex !important; }
-    .dropdown-content { position: static !important; transform: none !important; box-shadow: none !important; border: none !important; padding: 12px 0 0 16px !important; flex-direction: column !important; gap: 16px !important; width: 100% !important; }
-}
-
-/* ==========================================================================
-   2. DESKTOP MONITOR MEGA-MENU INGEST (min-width: 992px)
-   ========================================================================== */
-@media (min-width: 992px) {
-    nav .btn-client-portal, a.btn-client-portal { order: initial !important; margin-top: 0 !important; margin-bottom: 0 !important; display: inline-block !important; background-color: #0a1f44 !important; color: #ffffff !important; transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important; }
-    nav .btn-client-portal:hover, a.btn-client-portal:hover { background: #10b981 !important; background-color: #10b981 !important; color: #ffffff !important; }
-    .nav-links .nav-item-dropdown, .nav-item-dropdown.static-dropdown { position: relative !important; height: 100% !important; }
-    nav .dropdown-content.mega-panel-two-col, nav .dropdown-content.mega-panel-three-col, .dropdown-content.mega-panel-two-col, .dropdown-content.mega-panel-three-col { display: none !important; position: absolute !important; top: 100% !important; left: 0 !important; transform: none !important; right: auto !important; width: max-content !important; background: #ffffff !important; border-top: 3px solid #10b981 !important; box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08) !important; border-radius: 0 0 12px 12px !important; padding: 24px 28px !important; gap: 28px !important; z-index: 100000 !important; }
-    .static-dropdown:hover .dropdown-content.mega-panel-two-col, .static-dropdown:hover .dropdown-content.mega-panel-three-col { display: grid !important; }
-    nav .dropdown-content.mega-panel-two-col { grid-template-columns: repeat(2, minmax(160px, max-content)) !important; }
-    nav .dropdown-content.mega-panel-three-col { grid-template-columns: repeat(3, minmax(160px, max-content)) !important; }
-    .mega-column { flex: 0 0 auto !important; width: max-content !important; min-width: 160px !important; max-width: 200px !important; }
-    .nav-links .nav-item-dropdown:nth-child(4) .dropdown-content.mega-panel-three-col { left: auto !important; right: 0 !important; gap: 20px !important; }
-}
-
-/* ==========================================================================
-   3. MOBILE DRAWER SYSTEM & ACCORDION DROPDOWNS (max-width: 991px)
-   ========================================================================== */
-@media (max-width: 991px) {
-    .nav-content-wrapper { display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; }
-    .nav-links { display: none !important; flex-direction: column !important; position: fixed !important; top: 70px !important; right: -100% !important; left: auto !important; width: 85vw !important; max-width: 85vw !important; height: calc(100vh - 70px) !important; background: #ffffff !important; z-index: 99999 !important; overflow-y: auto !important; padding: 24px 20px !important; box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important; transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; box-sizing: border-box !important; }
-    body.nav-open .nav-links, .nav-links.active { display: flex !important; right: 0 !important; left: auto !important; visibility: visible !important; opacity: 1 !important; flex-direction: column !important; align-items: stretch !important; }
-    .nav-links a { color: #0a1f44 !important; padding: 14px 10px !important; display: block !important; font-size: 1.1rem !important; font-weight: 700 !important; border-bottom: 1px solid #f1f5f9 !important; text-align: left !important; width: 100% !important; box-sizing: border-box !important; }
-    .nav-item-dropdown { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; position: relative !important; }
-    .nav-item-dropdown > a { background: transparent !important; border: none !important; padding: 14px 10px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; box-shadow: none !important; border-radius: 0 !important; color: #0a1f44 !important; font-weight: 700 !important; text-decoration: none !important; }
-    .nav-item-dropdown > a span { margin-left: auto !important; color: #0a1f44 !important; font-size: 0.75rem !important; display: inline-block !important; }
-    .nav-item-dropdown .dropdown-content, .nav-item-dropdown .mega-panel-two-col, .nav-item-dropdown .mega-panel-three-col { display: none !important; position: relative !important; top: 0 !important; left: 0 !important; max-height: none !important; overflow: visible !important; background: transparent !important; width: 100% !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
-    .nav-item-dropdown.active-toggle .dropdown-content, .nav-item-dropdown.active-toggle .mega-panel-two-col, .nav-item-dropdown.active-toggle .mega-panel-three-col { display: flex !important; flex-direction: column !important; grid-template-columns: none !important; padding: 15px !important; margin-top: 5px !important; height: auto !important; background: #f8fafc !important; border-bottom-left-radius: 24px !important; border-bottom-right-radius: 24px !important; visibility: visible !important; opacity: 1 !important; }
-    .mega-column { display: flex !important; flex-direction: column !important; width: 100% !important; gap: 0 !important; height: auto !important; }
-    .mega-column .column-title { display: block !important; font-size: 0.75rem !important; color: #0a1f44 !important; text-align: left !important; margin-top: 15px !important; padding: 0 !important; border-bottom: none !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; }
-    .mega-column a { display: block !important; color: #0a1f44 !important; font-size: 0.95rem !important; font-weight: 600 !important; padding: 10px 0 !important; text-align: left !important; border-bottom: none !important; width: 100% !important; }
-    .nav-links .btn-client-portal { display: block !important; width: 100% !important; text-align: center !important; margin-top: 25px !important; margin-bottom: 0 !important; padding: 14px 0 !important; border-radius: 8px !important; font-weight: 700 !important; position: relative !important; order: 9999 !important; color: #ffffff !important; background-color: #0a1f44 !important; }
-    .nav-links .btn-client-portal:hover { color: #ffffff !important; background-color: #10b981 !important; }
-}
+/* Global navigation — visually matched to the new filings4u shell */
+#filings4u-global-navigation-root{position:relative;z-index:1000}
+.global-site-header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(226,232,240,.88)}
+.nav-content-wrapper{width:min(1180px,calc(100% - 40px));height:82px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo-link{display:flex;align-items:center;flex:0 0 auto}.logo-link .logo{width:164px;height:auto;display:block}
+.nav-links{display:flex;align-items:center;justify-content:flex-end;gap:20px;font-size:.88rem;font-weight:700;color:#334155;min-width:0}
+.nav-item-dropdown{position:relative}.dropdown-toggle{display:flex;align-items:center;gap:6px;padding:30px 0;color:#334155;white-space:nowrap}.dropdown-toggle:hover{color:#0e9f6e}.arrow-indicator{font-size:.72rem;color:#94a3b8;transition:transform .2s ease}
+.dropdown-content{display:none;position:absolute;top:calc(100% - 8px);left:-24px;background:#fff;border:1px solid #e2e8f0;border-top:3px solid #10b981;border-radius:0 0 18px 18px;box-shadow:0 24px 60px rgba(10,31,68,.14);padding:24px;gap:30px;z-index:3000}
+.mega-panel-two-col{grid-template-columns:repeat(2,minmax(180px,1fr));min-width:460px}.mega-panel-four-col{grid-template-columns:repeat(4,minmax(155px,1fr));width:min(840px,calc(100vw - 48px));left:auto;right:-120px}
+.static-dropdown:hover>.dropdown-content{display:grid}.static-dropdown:hover>.dropdown-toggle .arrow-indicator{transform:rotate(180deg)}
+.mega-column{display:flex;flex-direction:column;gap:4px}.column-title{font:800 .68rem Manrope,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:#0e9f6e;margin-bottom:7px}.mega-column a{padding:8px 9px;border-radius:9px;color:#475569;font-size:.82rem;font-weight:650;line-height:1.25}.mega-column a:hover{background:#f1f8f5;color:#0a1f44}
+.btn-client-portal{display:inline-flex;align-items:center;justify-content:center;padding:11px 16px;border:1px solid #cbd5e1;border-radius:999px;color:#0a1f44;background:#fff;white-space:nowrap}.btn-client-portal:hover{background:#0a1f44;color:#fff;border-color:#0a1f44}
+.mobile-toggle-btn{display:none;border:0;background:transparent;padding:8px;cursor:pointer}.mobile-toggle-btn span{width:24px;height:2px;background:#0a1f44;display:block;margin:5px;border-radius:2px}
+@media(max-width:1120px){.nav-links{gap:14px;font-size:.82rem}.nav-content-wrapper{gap:16px}.logo-link .logo{width:150px}.mega-panel-four-col{right:-70px}}
+@media(max-width:1024px){body.nav-open{overflow:hidden}.nav-content-wrapper{height:72px;width:min(100% - 28px,1180px)}.mobile-toggle-btn{display:block}.nav-links{display:none;position:fixed;top:72px;right:0;width:min(92vw,430px);height:calc(100vh - 72px);overflow-y:auto;background:#fff;padding:18px 20px 32px;box-shadow:-16px 24px 50px rgba(10,31,68,.15);flex-direction:column;align-items:stretch;gap:0}.nav-links.active,.nav-links.mobile-active{display:flex}.nav-item-dropdown{width:100%}.dropdown-toggle{padding:15px 4px;border-bottom:1px solid #eef2f7;justify-content:space-between}.dropdown-content,.mega-panel-two-col,.mega-panel-four-col{display:none!important;position:static;width:100%;min-width:0;grid-template-columns:1fr!important;border:0;border-radius:12px;box-shadow:none;background:#f8fafc;padding:12px 14px;margin:4px 0 10px}.nav-item-dropdown.mobile-open>.dropdown-content,.nav-item-dropdown.active-toggle>.dropdown-content{display:flex!important;flex-direction:column}.mega-column{width:100%;margin-bottom:7px}.column-title{margin-top:8px}.mega-column a{font-size:.9rem;padding:9px 6px}.btn-client-portal{margin-top:18px;border-radius:12px;padding:14px;background:#10b981;border-color:#10b981;color:#062d25}.logo-link .logo{width:145px}}

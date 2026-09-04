@@ -1,87 +1,195 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#10b981">
-  <meta name="google-site-verification" content="4Xb3mK08lR189z4z1WVzXerRjHn9I1Tk9OcZGu5Twlo" />
-  <title>Professional Compliance Dashboard | filings4u</title>
- 
- <!-- UNIFIED RESPONSIVE GLOBAL STYLESHEET -->
-    <link rel="icon" type="image/png" href="images/fav.png">
-  <link rel="stylesheet" href="assets/css/master.css">
-  <link rel="stylesheet" href="assets/css/toggle.css"> 
-<link rel="stylesheet" href="assets/css/hero-section.css">
-<link rel="stylesheet" href="assets/css/metrics-section.css">
-<link rel="stylesheet" href="assets/css/pricing-section.css">
-<link rel="stylesheet" href="assets/css/shield-section.css">
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="filings4u business formation, compliance, tax filing, and DOT fleet services." name="description"/>
+<title>filings4u | Business &amp; Fleet Compliance Made Clear</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="assets/css/styles.css" rel="stylesheet"/><link href="assets/css/navigation.css" rel="stylesheet"/></head>
 <body>
-
-
-<!-- ISOLATED CONTAINER ROOT TARGET FOR NAVIGATION -->
-<div id="filings4u-global-navigation-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR HERO SECTIONS -->
-<div id="filings4u-global-hero-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 1 (METRICS) -->
-<div id="filings4u-metrics-board-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR HOMEPAGE ROUTER BOARD -->
-<div id="filings4u-homepage-router-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 3 (PROCESSING OPTIONS) -->
-<div id="filings4u-processing-packages-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 4 (LAUNCHPAD FEATURES) -->
-<div id="filings4u-launchpad-feature-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 5 (SECURITY SHIELD) -->
-<div id="filings4u-security-shield-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR SECTION 6 (SUBSCRIBE NEWSLETTER) -->
-<div id="filings4u-subscribe-newsletter-root"></div>
-
-<!-- ISOLATED NEW ENGINE TARGET POINT FOR THE GLOBAL FOOTER -->
-<div id="filings4u-global-footer-root"></div>
-
-
-
-
-<!-- Left Floating Rotation Social Proof Target -->
-<div class="f4u-proof-card-root" id="f4u-dynamic-proof-widget" data-url="">
-    <button class="f4u-proof-close-btn" id="f4u-close-proof-node" aria-label="Dismiss Social Proof">×</button>
-    <div class="f4u-proof-stars">★★★★★</div>
-    <p class="f4u-proof-text-container" id="f4u-proof-text-node">
-        Loading system telemetry proof analytics...
-    </p>
+<div class="announcement">
+<div class="container announcement__inner">
+<span>Business filings. Compliance. DOT &amp; fleet support.</span>
+<a href="#services">Explore services <span aria-hidden="true">→</span></a>
 </div>
+</div>
+<div id="filings4u-global-navigation-root"></div>
+<main>
+<section class="hero">
+<div class="hero-orb hero-orb--one"></div>
+<div class="hero-orb hero-orb--two"></div>
+<div class="container hero__grid">
+<div class="hero__copy reveal">
+<div class="eyebrow"><span class="eyebrow__dot"></span> Corporate + transportation compliance</div>
+<h1>Move your<br/>business forward.<br/><span>We’ll handle the filings.</span></h1>
+<p class="hero__lede">Launch, maintain, and protect your company with one place for entity formation, tax registrations, recurring compliance, and DOT fleet filings.</p>
+<div aria-label="What filings4u helps with" class="hero__benefits">
+<div class="hero-benefit">
+<span aria-hidden="true" class="hero-benefit__icon">▤</span>
+<div><strong>Start &amp; Grow</strong><span>Business formations<br/>done right.</span></div>
+</div>
+<div class="hero-benefit">
+<span aria-hidden="true" class="hero-benefit__icon">♢</span>
+<div><strong>Stay Compliant</strong><span>Federal &amp; state<br/>requirements.</span></div>
+</div>
+<div class="hero-benefit">
+<span aria-hidden="true" class="hero-benefit__icon">▰</span>
+<div><strong>Keep Rolling</strong><span>DOT &amp; fleet<br/>compliance support.</span></div>
+</div>
+</div>
+<div class="hero__actions">
+<a class="button button--primary" href="get-started.html">Get started <span aria-hidden="true">→</span></a>
+<a class="button button--secondary" href="#services">Browse services</a>
+</div>
+<div aria-label="Service highlights" class="hero__proof">
+<div><strong>50</strong><span>State filing support</span></div>
+<div><strong>1</strong><span>Central compliance hub</span></div>
+<div><strong>24/7</strong><span>Secure portal access</span></div>
+</div>
+</div>
+<div aria-label="filings4u compliance dashboard concept" class="hero__visual reveal">
+<div class="dashboard-card">
+<div class="dashboard-card__top">
+<div>
+<span class="mini-label">COMPLIANCE OVERVIEW</span>
+<h2>Your business, organized.</h2>
+</div>
+<div class="status-pill"><span></span> Active</div>
+</div>
+<div class="dashboard-card__score">
+<div class="score-ring"><span>92</span><small>Health</small></div>
+<div class="score-copy"><strong>Compliance is on track</strong><span>Upcoming filings stay visible in one place.</span></div>
+</div>
+<div class="task-list">
+<div class="task-row"><span class="task-icon">✓</span><div><strong>Entity status</strong><small>Good standing</small></div><span class="task-tag task-tag--done">Complete</span></div>
+<div class="task-row"><span class="task-icon">↗</span><div><strong>Annual report</strong><small>Next compliance item</small></div><span class="task-tag">Review</span></div>
+<div class="task-row"><span class="task-icon">#</span><div><strong>Tax registrations</strong><small>Federal + state support</small></div><span class="task-tag">Open</span></div>
+</div>
+</div>
+<div class="floating-note floating-note--one"><span>✓</span><div><strong>Filing accepted</strong><small>Status updated</small></div></div>
+<div class="floating-note floating-note--two"><span>●</span><div><strong>One secure portal</strong><small>Documents &amp; status</small></div></div>
+</div>
+</div>
+</section>
+<section class="trust-strip">
+<div class="container trust-strip__inner">
+<span>Built for</span>
+<strong>Startups</strong><i></i><strong>Local businesses</strong><i></i><strong>Owner-operators</strong><i></i><strong>Growing fleets</strong>
+</div>
+</section>
+<section class="section section--services" id="services">
+<div class="container">
+<div class="section-heading reveal">
+<div><span class="section-kicker">Everything in one place</span><h2>Choose the compliance support you need.</h2></div>
+<p>From your first filing to ongoing state, federal, and transportation requirements, filings4u helps keep the process clear and organized.</p>
+</div>
+<div aria-label="Service categories" class="service-tabs reveal" role="tablist">
+<button class="service-tab is-active" data-tab="formations" role="tab">Formations</button>
+<button class="service-tab" data-tab="compliance" role="tab">Compliance</button>
+<button class="service-tab" data-tab="tax" role="tab">Tax filings</button>
+<button class="service-tab" data-tab="fleet" role="tab">DOT &amp; fleet</button>
+</div>
+<div class="service-grid reveal" id="service-grid"></div>
+</div>
+</section>
+<section class="section split-section" id="business">
+<div class="container split-section__grid">
+<div class="photo-panel reveal">
+<img alt="Business professionals planning company formation" src="images/llc-formation-hero.jpg"/>
+<div class="photo-badge"><span>01</span><strong>Launch with confidence</strong></div>
+</div>
+<div class="split-copy reveal">
+<span class="section-kicker">Business formation</span>
+<h2>Build the legal foundation your business needs.</h2>
+<p>Turn your business idea into an officially recognized entity and stay supported as requirements evolve. filings4u provides formation and compliance services designed for businesses at every stage.</p>
+<ul class="check-list">
+<li><span>✓</span> LLC and corporation formation</li>
+<li><span>✓</span> EIN and business license support</li>
+<li><span>✓</span> Annual reports and good-standing services</li>
+<li><span>✓</span> Registered agent and operating agreement support</li>
+</ul>
+<a class="text-link" href="llc-formation.html">Explore business formation <span>→</span></a>
+</div>
+</div>
+</section>
+<section class="section fleet-section" id="fleet">
+<div class="container fleet-section__grid">
+<div class="split-copy reveal">
+<span class="section-kicker section-kicker--light">DOT &amp; fleet compliance</span>
+<h2>Keep your authority moving and your operation compliant.</h2>
+<p>Support for owner-operators, trucking companies, and fleets navigating federal transportation filings, operating authority, registrations, and audit readiness.</p>
+<div class="fleet-links">
+<a href="owner-operators.html"><span>Owner operators</span><b>→</b></a>
+<a href="trucker-authority.html"><span>Trucker authority</span><b>→</b></a>
+<a href="ucr-registration.html"><span>UCR registration</span><b>→</b></a>
+<a href="process-agents-boc-3.html"><span>BOC-3 filing</span><b>→</b></a>
+</div>
+</div>
+<div class="fleet-image reveal">
+<img alt="Commercial truck representing DOT and fleet compliance services" src="images/trucker-authority-hero.jpg"/>
+<div class="fleet-stat"><strong>DOT</strong><span>Compliance support from setup through ongoing requirements.</span></div>
+</div>
+</div>
+</section>
+<section class="section process-section" id="how-it-works">
+<div class="container">
+<div class="section-heading section-heading--center reveal">
+<div><span class="section-kicker">Simple by design</span><h2>From request to filed.</h2></div>
+<p>A straightforward workflow that keeps you informed without making you navigate complex government forms alone.</p>
+</div>
+<div class="process-grid reveal">
+<article><span>01</span><div class="process-icon">↗</div><h3>Tell us what you need</h3><p>Select your filing or compliance service and provide the required business details.</p></article>
+<article><span>02</span><div class="process-icon">⌁</div><h3>We prepare the filing</h3><p>Your information is organized for the relevant state, federal, or transportation requirement.</p></article>
+<article><span>03</span><div class="process-icon">✓</div><h3>Track the progress</h3><p>Use your secure portal to stay connected to documents, updates, and completion status.</p></article>
+</div>
+</div>
+</section>
+<section class="section resource-section" id="resources">
+<div class="container">
+<div class="section-heading reveal">
+<div><span class="section-kicker">Knowledge center</span><h2>Make compliance less complicated.</h2></div>
+<a class="text-link" href="blog.html">Visit resource library <span>→</span></a>
+</div>
+<div class="resource-grid reveal">
+<a class="resource-card resource-card--image" href="business-licenses.html">
+<img alt="Business licensing documents" src="images/business-licenses-hero.jpg"/>
+<div><span>Business compliance</span><h3>Business licenses and registrations</h3><p>Understand common licensing needs as your business gets established.</p></div>
+</a>
+<a class="resource-card resource-card--navy" href="new-entrant-audit.html">
+<div><span>DOT &amp; Fleet</span><h3>New entrant audit readiness</h3><p>Prepare your operation for early-stage federal motor carrier compliance requirements.</p><b>Read more →</b></div>
+</a>
+<a class="resource-card" href="employer-id-ein.html">
+<div><span>Formation</span><h3>When your business needs an EIN</h3><p>Get federal tax identification support as part of your company setup.</p><b>Learn more →</b></div>
+</a>
+</div>
+</div>
+</section>
+<section class="cta-section">
+<div class="container cta-card reveal">
+<div><span class="section-kicker section-kicker--light">Ready when you are</span><h2>Put your compliance work in motion.</h2><p>Choose your service and start with a clear path forward.</p></div>
+<div class="cta-actions"><a class="button button--light" href="get-started.html">Get started <span>→</span></a><a class="button button--ghost" href="contact.html">Talk to an expert</a></div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container footer-grid">
+<div class="footer-brand">
+<img alt="filings4u" src="images/logo-white.png"/>
+<p>Business formation, tax registration, compliance, and DOT fleet support—organized around one clearer experience.</p>
+</div>
+<div><h3>Business</h3><a href="llc-formation.html">LLC Formation</a><a href="corporations.html">Corporations</a><a href="sole-proprietorship.html">Sole Proprietorship</a><a href="dba-registration.html">DBA Registration</a><a href="employer-id-ein.html">Employer ID (EIN)</a></div>
+<div><h3>Compliance</h3><a href="annual-reports.html">Annual Reports</a><a href="operating-agreement.html">Operating Agreement</a><a href="business-licenses.html">Business Licenses</a><a href="certificate-of-good-standing.html">Good Standing</a><a href="dissolution.html">Dissolution</a></div>
+<div><h3>DOT &amp; Fleet</h3><a href="owner-operators.html">Owner Operators</a><a href="trucker-authority.html">Trucker Authority</a><a href="ucr-registration.html">UCR Registration</a><a href="dot-consortium.html">DOT Consortium</a><a href="process-agents-boc-3.html">BOC-3 Filing</a></div>
+<div><h3>Company</h3><a href="about.html">About</a><a href="blog.html">Resources</a><a href="contact.html">Contact Experts</a><a href="https://portal.filings4u.com/portal-login.html">Client Portal</a></div>
+</div>
+<div class="container footer-bottom"><span>© 2026 filings4u, LLC. All rights reserved. A Subsidiary of Roseland Companies, LLC</span><div><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a><a href="refund-policy.html">Refund Policy</a></div></div>
+</footer>
 
 
-    <!-- HIGH-SPEED DEFERRED NON-BLOCKING SCRIPT ORCHESTRATION -->
-    <script src="assets/js/patch.js" defer></script>
-    <script src="assets/js/navigation.js" defer></script>
-    <script src="assets/js/index-hero.js" defer></script>
-    <script src="assets/js/index-router.js" defer></script>
-    <script src="assets/js/section1.js" defer></script>
-    <script src="assets/js/section4.js" defer></script>
-    <script src="assets/js/section5.js" defer></script>
-    <script src="assets/js/section6.js" defer></script>
-    <script src="assets/js/footer.js" defer></script>
-    <script src="assets/js/app-orchestrator.js" defer></script>
-    <script src="assets/js/toggle.js" defer></script>
-    <script src="assets/js/proof-widget.js" defer></script>
 
-
-
-    <script>
-  // Cleanly route explicit index URLs straight back to the canonical homepage
-  if (window.location.pathname.endsWith('/')) {
-    window.location.replace(window.location.origin + '/index.html');
-  }
-</script>
-</body>
+<script defer="" src="assets/js/script.js"></script><script defer="" src="assets/js/navigation.js"></script><script defer="" src="assets/js/toggle.js"></script></body>
 </html>
