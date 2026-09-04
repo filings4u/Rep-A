@@ -33,7 +33,7 @@
   const cards = tierConfig.map(tier => {
     const price = Number(plan[tier.key] || 0);
     const bullets = bulletsFor(tier.key);
-    const fallbackUrl = `get-started.html`;
+    const fallbackUrl = "get-started.html";
 
     return `
       <article class="service-price-card${tier.featured ? " service-price-card--featured" : ""}">
