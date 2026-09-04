@@ -33,7 +33,7 @@
   const cards = tierConfig.map(tier => {
     const price = Number(plan[tier.key] || 0);
     const bullets = bulletsFor(tier.key);
-    const url = `wizard.html?service=${encodeURIComponent(serviceKey)}&plan=${encodeURIComponent(tier.key)}`;
+    const fallbackUrl = `get-started.html`;
 
     return `
       <article class="service-price-card${tier.featured ? " service-price-card--featured" : ""}">
@@ -46,7 +46,12 @@
         <ul>
           ${bullets.map(item => `<li>${item}</li>`).join("")}
         </ul>
-        <a class="button ${tier.featured ? "button--primary" : "button--secondary"}" href="${url}">
+        <a
+          class="button ${tier.featured ? "button--primary" : "button--secondary"}"
+          href="${fallbackUrl}"
+          data-wizard-handoff
+          data-service="${serviceKey}"
+          data-plan="${tier.key}">
           Choose ${tier.name} <span aria-hidden="true">→</span>
         </a>
       </article>
