@@ -634,3 +634,149 @@
     max-height: calc(100dvh - 122px) !important;
   }
 }
+
+/* ==========================================================================
+   FILINGS4U MOBILE NAV — FINAL DROPDOWN FLOW FIX
+   Keep dropdowns in document flow so they do not cover/hide menu items.
+   Load this AFTER all existing mobile navigation CSS.
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+
+  /* The floating panel itself is the only scrolling container */
+  #nav-links-container {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-padding-top: 16px !important;
+  }
+
+  /* Top-level list must grow naturally with opened dropdowns */
+  #nav-links-container .nav-links,
+  #nav-links-container > ul {
+    position: static !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Never clip an open submenu inside its parent item */
+  #nav-links-container .nav-item,
+  #nav-links-container .nav-item-dropdown,
+  #nav-links-container li {
+    position: relative !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Dropdown is CLOSED by default */
+  #nav-links-container .nav-item-dropdown .dropdown-menu,
+  #nav-links-container .nav-item-dropdown .submenu,
+  #nav-links-container .nav-item-dropdown > ul {
+    display: none !important;
+
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    margin: 0 0 8px !important;
+    padding: 6px 10px 8px !important;
+
+    transform: none !important;
+    translate: none !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    overflow: visible !important;
+
+    background: #f8fafc !important;
+    border: 0 !important;
+    border-radius: 0 0 12px 12px !important;
+    box-shadow: none !important;
+
+    z-index: auto !important;
+  }
+
+  /* Dropdown is OPEN only when its parent is active */
+  #nav-links-container .nav-item-dropdown.mobile-open .dropdown-menu,
+  #nav-links-container .nav-item-dropdown.mobile-open .submenu,
+  #nav-links-container .nav-item-dropdown.mobile-open > ul,
+  #nav-links-container .nav-item-dropdown.active-toggle .dropdown-menu,
+  #nav-links-container .nav-item-dropdown.active-toggle .submenu,
+  #nav-links-container .nav-item-dropdown.active-toggle > ul {
+    display: block !important;
+    position: static !important;
+  }
+
+  /* Submenu rows stay inside the submenu and cannot overlap other categories */
+  #nav-links-container .dropdown-menu li,
+  #nav-links-container .submenu li,
+  #nav-links-container .nav-item-dropdown > ul li {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  #nav-links-container .dropdown-menu a,
+  #nav-links-container .submenu a,
+  #nav-links-container .nav-item-dropdown > ul a {
+    position: static !important;
+    display: flex !important;
+    width: 100% !important;
+    min-height: 44px !important;
+
+    margin: 0 !important;
+    padding: 11px 8px !important;
+
+    box-sizing: border-box !important;
+
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e8edf3 !important;
+    border-radius: 0 !important;
+
+    transform: none !important;
+  }
+
+  #nav-links-container .dropdown-menu li:last-child > a,
+  #nav-links-container .submenu li:last-child > a,
+  #nav-links-container .nav-item-dropdown > ul li:last-child > a {
+    border-bottom: 0 !important;
+  }
+
+  /* Keep every top-level category above/below the submenu in normal flow */
+  #nav-links-container .dropdown-toggle {
+    position: relative !important;
+    z-index: 1 !important;
+    background: #ffffff !important;
+  }
+
+  /* Portal remains part of the normal menu flow */
+  #nav-links-container .client-portal,
+  #nav-links-container .nav-cta,
+  #nav-links-container a[class*="portal"],
+  #nav-links-container [class*="portal"] > a {
+    position: static !important;
+    flex: 0 0 auto !important;
+  }
+}

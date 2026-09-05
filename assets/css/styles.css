@@ -76,3 +76,343 @@
 
 /* Center homepage process-card content */
 .process-grid article{min-height:225px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:34px 28px}.process-grid article>span{position:absolute;right:22px;top:18px}.process-icon{margin:0 auto 22px}.process-grid h3{width:100%;text-align:center}.process-grid p{width:100%;max-width:310px;margin:0 auto;text-align:center}
+
+
+/* ==========================================================================
+   FILINGS4U — MOBILE RESPONSIVE SYSTEM
+   Additive mobile overrides
+   ========================================================================== */
+
+@media (max-width: 680px) {
+
+  /* --------------------------------------------------------------------------
+     0. GLOBAL MOBILE FOUNDATION
+     -------------------------------------------------------------------------- */
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .container {
+    width: calc(100% - 28px);
+    max-width: 100%;
+  }
+
+  /* Remove the announcement/banner completely on mobile */
+  .announcement {
+    display: none !important;
+  }
+
+  /* Sticky header sits at the very top once banner is removed */
+  .site-header {
+    top: 0;
+  }
+
+  /* Keep logo and navigation control aligned left/right without centering brand */
+  .nav-wrap {
+    height: 70px;
+    gap: 14px;
+  }
+
+  .brand {
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .brand img {
+    width: 142px;
+    max-width: 46vw;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     1. HERO — IMAGE FIRST, TEXT SECOND
+     -------------------------------------------------------------------------- */
+
+  .hero {
+    padding: 28px 0 44px;
+  }
+
+  .hero__grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 26px !important;
+    align-items: stretch !important;
+  }
+
+  .hero__visual {
+    order: 1 !important;
+    width: 100%;
+    min-height: 0 !important;
+    margin: 0;
+  }
+
+  .hero__copy {
+    order: 2 !important;
+    width: 100%;
+    max-width: none;
+  }
+
+  .dashboard-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .hero h1 {
+    margin: 18px 0 16px;
+    font-size: clamp(2.15rem, 10vw, 2.8rem);
+    line-height: 1.02;
+    letter-spacing: -.045em;
+  }
+
+  .hero__lede {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .hero__benefits {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .hero-benefit {
+    grid-template-columns: 42px 1fr !important;
+    gap: 12px;
+  }
+
+  .hero-benefit + .hero-benefit {
+    padding-top: 14px;
+  }
+
+  .hero__proof {
+    margin-top: 26px;
+    padding-top: 20px;
+    gap: 12px;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     2. ALL MAJOR IMAGE/TEXT SECTIONS — IMAGE TOP, COPY BELOW
+     -------------------------------------------------------------------------- */
+
+  .split-section__grid,
+  .fleet-section__grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+  .photo-panel,
+  .fleet-image {
+    order: 1 !important;
+    width: 100%;
+  }
+
+  .split-copy,
+  .fleet-section .split-copy {
+    order: 2 !important;
+    width: 100%;
+  }
+
+  .photo-panel img,
+  .fleet-image img {
+    width: 100%;
+    height: 300px;
+    border-radius: 20px;
+  }
+
+  .photo-badge,
+  .fleet-stat {
+    position: static !important;
+    width: 100%;
+    max-width: none;
+    margin-top: 12px;
+    border-radius: 14px;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     3. CARDS, FORMS, MENUS, GRIDS — STACK ON MOBILE
+     -------------------------------------------------------------------------- */
+
+  .service-grid,
+  .process-grid,
+  .resource-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .resource-card:first-child {
+    grid-column: auto !important;
+  }
+
+  .service-card,
+  .process-grid article,
+  .resource-card,
+  .cta-card,
+  .dashboard-card,
+  .photo-badge,
+  .fleet-stat {
+    max-width: 100%;
+  }
+
+  .service-card {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .process-grid article {
+    min-height: 0;
+    padding: 24px 20px;
+  }
+
+  .resource-card {
+    min-height: 0;
+  }
+
+  .resource-card--image {
+    grid-template-rows: 165px auto;
+  }
+
+  /* Generic form/card support for pages sharing the same stylesheet */
+  form,
+  .form-grid,
+  .form-row,
+  .form-columns,
+  .card-grid,
+  .cards-grid,
+  .pricing-grid,
+  .feature-grid,
+  .contact-grid {
+    max-width: 100%;
+  }
+
+  .form-grid,
+  .form-row,
+  .form-columns,
+  .card-grid,
+  .cards-grid,
+  .pricing-grid,
+  .feature-grid,
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    max-width: 100%;
+  }
+
+  .service-tabs {
+    width: 100%;
+    margin-bottom: 18px;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     4. MOBILE TYPOGRAPHY
+     -------------------------------------------------------------------------- */
+
+  .section-heading h2,
+  .split-copy h2,
+  .cta-card h2 {
+    font-size: clamp(1.9rem, 8vw, 2.35rem);
+    line-height: 1.08;
+    letter-spacing: -.035em;
+  }
+
+  .section-heading p,
+  .split-copy p,
+  .resource-card p,
+  .process-grid p,
+  .service-card p {
+    font-size: .94rem;
+    line-height: 1.55;
+  }
+
+  .section-kicker,
+  .eyebrow {
+    font-size: .68rem;
+    letter-spacing: .10em;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     5. BUTTONS — SIDE BY SIDE WHEN THERE IS ROOM
+     -------------------------------------------------------------------------- */
+
+  .hero__actions,
+  .cta-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px !important;
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  .hero__actions .button,
+  .cta-actions .button {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 12px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     6. TIGHTER SECTION SPACING
+     -------------------------------------------------------------------------- */
+
+  .section {
+    padding: 52px 0 !important;
+  }
+
+  .section-heading,
+  .section-heading--center {
+    margin-bottom: 24px !important;
+  }
+
+  .section-heading--center p {
+    margin-top: 10px;
+  }
+
+  .trust-strip__inner {
+    min-height: 0;
+    padding: 14px 0;
+    gap: 10px;
+  }
+
+  .check-list {
+    margin: 22px 0;
+    gap: 10px;
+  }
+
+  .fleet-links {
+    margin-top: 24px;
+  }
+
+  .cta-section {
+    padding: 0 0 52px !important;
+  }
+
+  .cta-card {
+    padding: 26px 20px;
+    gap: 22px;
+    border-radius: 20px;
+  }
+}
