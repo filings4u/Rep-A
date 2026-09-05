@@ -94,6 +94,16 @@
         padding: 32px 30px 28px;
       }
 
+
+      #f4u-secure-handoff .brand-logo {
+        display: block;
+        width: 120px;
+        max-width: 42%;
+        height: auto;
+        margin: 0 auto 22px;
+        object-fit: contain;
+      }
+
       #f4u-secure-handoff .brand {
         margin-bottom: 22px;
         color: #0a1f44;
@@ -350,18 +360,28 @@
     }
 
     redirecting = true;
-    showLoading();
+
+    /*
+     * Keep the normal handoff visually instant.
+     * Only show the loading overlay when the network/Edge Function takes
+     * long enough that the customer would otherwise think nothing happened.
+     */
+    const loadingTimer = setTimeout(() => {
+      if (redirecting) showLoading();
+    }, CONFIG.loadingDelayMs);
 
     try {
       const handoff = await mint(context);
+      clearTimeout(loadingTimer);
+
       const destination = new URL(CONFIG.wizardPath, CONFIG.wizardOrigin);
       destination.searchParams.set("handoff", handoff.token);
 
-      setTimeout(() => {
-        location.assign(destination.toString());
-      }, CONFIG.transitionMs);
+      // Navigate immediately after the secure token is ready.
+      location.assign(destination.toString());
 
     } catch (error) {
+      clearTimeout(loadingTimer);
       redirecting = false;
       console.error("[filings4u] Secure wizard handoff failed:", error);
       showError(error?.message);
