@@ -416,3 +416,52 @@
     border-radius: 20px;
   }
 }
+
+
+/* ==========================================================================
+   FILINGS4U SERVICE PAGES — MOBILE HERO IMAGE FIRST
+   Load AFTER styles.css and inner-pages.css
+   ========================================================================== */
+
+@media (max-width: 680px) {
+
+  /* Stack service-page hero vertically */
+  .page-hero__grid {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 24px !important;
+  }
+
+  /* Image first */
+  .page-hero__grid .page-visual {
+    order: 1 !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Text second */
+  .page-hero__grid > div:not(.page-visual) {
+    order: 2 !important;
+    width: 100% !important;
+  }
+
+  /* Mobile image sizing */
+  .page-visual img {
+    width: 100% !important;
+    height: 300px !important;
+    object-fit: cover !important;
+    border-radius: 20px !important;
+  }
+
+  /* Keep the image card attached cleanly */
+  .page-visual__card {
+    max-width: calc(100% - 28px) !important;
+  }
+
+  /* Tighter hero spacing on mobile */
+  .page-hero {
+    padding-top: 28px !important;
+    padding-bottom: 44px !important;
+  }
+}

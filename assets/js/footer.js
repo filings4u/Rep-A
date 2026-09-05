@@ -53,7 +53,7 @@
         <div>
           <h3>Company</h3>
           <a href="about.html">About</a>
-          <a href="blog.html">Resources</a>
+          <a href="index.html#resources">Resources</a>
           <a href="contact.html">Contact Experts</a>
           <a href="https://portal.filings4u.com/portal-login.html">Client Portal</a>
         </div>

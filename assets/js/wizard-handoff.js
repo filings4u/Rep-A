@@ -16,8 +16,8 @@
     wizardPath: "/wizard.html",
     handoffEndpoint: "https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/wizard-handoff",
     anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU",
-    transitionMs: 75
-  });
+    transitionMs: 0,
+    loadingDelayMs: 2000});
 
   let redirecting = false;
   let lastTrigger = null;

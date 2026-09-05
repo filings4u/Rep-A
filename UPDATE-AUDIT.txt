@@ -1,0 +1,10 @@
+filings4u site update audit
+HTML pages standardized: 54
+Shared navigation root/CSS/JS applied to every page.
+Shared footer root/CSS/JS applied to every page.
+Mobile theme color set to #10b981.
+Service page hero image-first mobile rule applied globally.
+Wizard handoff overlay delay set to 2000ms and network preconnects added.
+Known broken asset paths fixed: series LLC image, regulatory consulting image, payroll asset directories.
+Missing blog.html references redirected to index.html#resources.
+Remaining missing local references: 0

@@ -86,3 +86,4 @@
   .contact-form .full{grid-column:auto}
   .inner-section{padding:70px 0}
 }
+\n\n/* ==========================================================================\n   FILINGS4U SERVICE PAGES — MOBILE HERO IMAGE FIRST\n   ========================================================================== */\n@media (max-width:680px){\n  .page-hero{padding:28px 0 44px}\n  .page-hero__grid{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:24px!important}\n  .page-hero__grid .page-visual{order:1!important;width:100%!important;margin:0!important}\n  .page-hero__grid>div:not(.page-visual){order:2!important;width:100%!important}\n  .page-visual img{width:100%!important;height:300px!important;object-fit:cover!important;border-radius:20px!important}\n  .page-visual__card{max-width:calc(100% - 28px)!important}\n}\n
