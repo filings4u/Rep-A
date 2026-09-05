@@ -17,10 +17,26 @@
     handoffEndpoint: "https://lrbimrlbskjweynxlgas.supabase.co/functions/v1/wizard-handoff",
     anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyYmltcmxic2tqd2V5bnhsZ2FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MjQ0NTYsImV4cCI6MjA5NDEwMDQ1Nn0.I8fQ6ZjA9oaTqJCF-7Z7vUboXC8zv2cogBv4PC_1ihU",
     transitionMs: 0,
-    loadingDelayMs: 2000});
+    loadingDelayMs: 8000});
 
   let redirecting = false;
   let lastTrigger = null;
+  const prefetchedHandoffs = new Map();
+
+  function handoffKey(context) {
+    return [context.service, context.plan, context.state || ""].join("|");
+  }
+
+  function prefetch(trigger) {
+    const context = contextFrom(trigger);
+    if (!context.service || !context.plan) return;
+    const key = handoffKey(context);
+    if (prefetchedHandoffs.has(key)) return;
+    const promise = mint(context)
+      .then(data => ({ data, createdAt: Date.now() }))
+      .catch(() => null);
+    prefetchedHandoffs.set(key, promise);
+  }
 
   const clean = value => String(value ?? "").trim();
   const slug = value => clean(value)
@@ -371,7 +387,11 @@
     }, CONFIG.loadingDelayMs);
 
     try {
-      const handoff = await mint(context);
+      const key = handoffKey(context);
+      const prefetched = prefetchedHandoffs.get(key);
+      const cached = prefetched ? await prefetched : null;
+      const handoff = cached?.data || await mint(context);
+      prefetchedHandoffs.delete(key);
       clearTimeout(loadingTimer);
 
       const destination = new URL(CONFIG.wizardPath, CONFIG.wizardOrigin);
@@ -387,6 +407,13 @@
       showError(error?.message);
     }
   }
+
+  ["pointerenter","focusin","touchstart"].forEach(type => {
+    document.addEventListener(type, event => {
+      const trigger = event.target?.closest?.("[data-wizard-handoff]");
+      if (trigger) prefetch(trigger);
+    }, true);
+  });
 
   document.addEventListener("click", event => {
     if (
