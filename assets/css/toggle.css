@@ -1,0 +1,636 @@
+/**
+ * filings4u Mobile Navigation — minimal refinement
+ *
+ * IMPORTANT:
+ * This patch ONLY changes the three things requested:
+ * 1) clean emerald menu / X icon with no stray dots
+ * 2) centered Client Portal text
+ * 3) floating rounded mobile menu panel
+ *
+ * Load AFTER the current working mobile navigation CSS.
+ */
+
+@media (max-width: 1024px) {
+
+  /* =====================================================
+     1. CLEAN MENU ICON — NO EXTRA DOTS / MARKS
+     ===================================================== */
+
+  #mobile-menu-trigger {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 1px solid rgba(16, 185, 129, 0.28);
+    border-radius: 12px;
+    background: rgba(16, 185, 129, 0.10) !important;
+    color: #10b981;
+    overflow: hidden;
+  }
+
+  /* Hide any icon markup already inside the button so it cannot create dots */
+  #mobile-menu-trigger > * {
+    display: none !important;
+  }
+
+  /* Closed state: three clean emerald lines */
+  #mobile-menu-trigger::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 11px !important;
+    top: 21px !important;
+    width: 22px !important;
+    height: 2px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #10b981 !important;
+    box-shadow:
+      0 -7px 0 #10b981,
+      0 7px 0 #10b981 !important;
+    transform: none !important;
+  }
+
+  #mobile-menu-trigger::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 11px !important;
+    top: 21px !important;
+    width: 22px !important;
+    height: 2px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Open state: clean white X only */
+  body.nav-open #mobile-menu-trigger {
+    background: #10b981 !important;
+    border-color: #10b981 !important;
+  }
+
+  body.nav-open #mobile-menu-trigger::before {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: rotate(45deg) !important;
+  }
+
+  body.nav-open #mobile-menu-trigger::after {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: rotate(-45deg) !important;
+  }
+
+
+  /* =====================================================
+     2. CENTER CLIENT PORTAL TEXT
+     ===================================================== */
+
+  #nav-links-container .client-portal,
+  #nav-links-container .nav-cta,
+  #nav-links-container [class*="portal"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  #nav-links-container .client-portal *,
+  #nav-links-container .nav-cta *,
+  #nav-links-container [class*="portal"] * {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+
+
+  /* =====================================================
+     3. FLOATING ROUNDED MOBILE MENU
+     Keep the same drawer behavior — only inset it slightly.
+     ===================================================== */
+
+  #nav-links-container {
+    top: 94px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+
+    width: min(88vw, 360px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+
+    background: #ffffff !important;
+
+    box-shadow:
+      0 18px 45px rgba(10, 31, 68, 0.20) !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Keep backdrop behind the floating menu, not over it */
+  body.nav-open::before {
+    content: "" !important;
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(10, 31, 68, 0.32) !important;
+    z-index: 10000 !important;
+  }
+
+  #nav-links-container {
+    z-index: 10001 !important;
+  }
+
+  #mobile-menu-trigger {
+    z-index: 10002 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #nav-links-container {
+    right: 10px !important;
+    width: calc(100vw - 20px) !important;
+  }
+}
+
+
+/**
+ * filings4u Mobile Navigation — clean drawer patch
+ *
+ * PURPOSE
+ * - no page overlay / dimming
+ * - clean floating white navigation panel
+ * - dropdown items stay inside the panel
+ * - dropdowns open directly beneath their parent row
+ * - Client Portal remains centered
+ *
+ * Load AFTER the current mobile-navigation CSS.
+ */
+
+@media (max-width: 1024px) {
+
+  /* =====================================================
+     REMOVE ALL PAGE OVERLAY / BACKDROP EFFECTS
+     ===================================================== */
+
+  body.nav-open::before,
+  body.nav-open::after {
+    content: none !important;
+    display: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Do not tint, blur, or darken the page when nav is open */
+  body.nav-open,
+  body.nav-open main,
+  body.nav-open header,
+  body.nav-open .site-wrapper,
+  body.nav-open .page-wrapper {
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+
+  /* =====================================================
+     FLOATING NAVIGATION PANEL
+     ===================================================== */
+
+  #nav-links-container {
+    position: fixed !important;
+
+    top: 96px !important;
+    right: 12px !important;
+    bottom: auto !important;
+    left: auto !important;
+
+    width: min(88vw, 360px) !important;
+    max-height: calc(100dvh - 112px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 16px 18px 18px !important;
+
+    box-sizing: border-box !important;
+
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+
+    box-shadow: 0 18px 42px rgba(10, 31, 68, 0.16) !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    transform: translateX(calc(100% + 24px)) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+
+    z-index: 10001 !important;
+  }
+
+  #nav-links-container.active,
+  #nav-links-container.mobile-active {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+
+  /* =====================================================
+     NAVIGATION STACK
+     ===================================================== */
+
+  #nav-links-container .nav-links,
+  #nav-links-container > ul {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    gap: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    position: static !important;
+    transform: none !important;
+  }
+
+  #nav-links-container .nav-item,
+  #nav-links-container .nav-item-dropdown,
+  #nav-links-container li {
+    position: relative !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #nav-links-container a,
+  #nav-links-container .dropdown-toggle {
+    width: 100% !important;
+    min-height: 50px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    padding: 12px 4px !important;
+
+    box-sizing: border-box !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid #e8edf3 !important;
+
+    background: transparent !important;
+    color: #334155 !important;
+
+    text-decoration: none !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+  }
+
+
+  /* =====================================================
+     DROPDOWNS
+     Closed by default.
+     Open directly beneath the tapped category.
+     ===================================================== */
+
+  #nav-links-container .nav-item-dropdown .dropdown-menu,
+  #nav-links-container .nav-item-dropdown .submenu,
+  #nav-links-container .nav-item-dropdown > ul {
+    display: none !important;
+
+    position: static !important;
+    inset: auto !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 6px 0 8px 12px !important;
+
+    background: #f8fafc !important;
+    border: 0 !important;
+    border-radius: 0 0 10px 10px !important;
+
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  #nav-links-container .nav-item-dropdown.mobile-open .dropdown-menu,
+  #nav-links-container .nav-item-dropdown.mobile-open .submenu,
+  #nav-links-container .nav-item-dropdown.mobile-open > ul,
+  #nav-links-container .nav-item-dropdown.active-toggle .dropdown-menu,
+  #nav-links-container .nav-item-dropdown.active-toggle .submenu,
+  #nav-links-container .nav-item-dropdown.active-toggle > ul {
+    display: block !important;
+  }
+
+  #nav-links-container .dropdown-menu a,
+  #nav-links-container .submenu a,
+  #nav-links-container .nav-item-dropdown > ul a {
+    min-height: 42px !important;
+    padding: 10px 10px !important;
+
+    border-bottom: 0 !important;
+    border-radius: 8px !important;
+
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+  }
+
+  #nav-links-container .dropdown-menu a:hover,
+  #nav-links-container .submenu a:hover,
+  #nav-links-container .nav-item-dropdown > ul a:hover {
+    background: #ecfdf5 !important;
+    color: #047857 !important;
+  }
+
+
+  /* =====================================================
+     CLIENT PORTAL
+     ===================================================== */
+
+  #nav-links-container .client-portal,
+  #nav-links-container .nav-cta,
+  #nav-links-container [class*="portal"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    min-height: 52px !important;
+
+    margin-top: 16px !important;
+
+    text-align: center !important;
+  }
+
+  #nav-links-container .client-portal *,
+  #nav-links-container .nav-cta *,
+  #nav-links-container [class*="portal"] * {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+}
+
+
+@media (max-width: 480px) {
+  #nav-links-container {
+    top: 92px !important;
+    right: 10px !important;
+
+    width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 102px) !important;
+
+    border-radius: 16px !important;
+  }
+}
+
+/**
+ * filings4u Mobile Navigation — stability + portal button fix
+ *
+ * Load AFTER the current mobile navigation CSS.
+ *
+ * Fixes only:
+ * 1) Opening the menu no longer shifts/moves the page.
+ * 2) Client Portal is restored as a real emerald button with centered text.
+ */
+
+@media (max-width: 1024px) {
+
+  /* =====================================================
+     1. STOP PAGE SHIFT WHEN THE MENU OPENS
+     ===================================================== */
+
+  /*
+   * The earlier CSS used overflow:hidden on body.nav-open.
+   * On a resized desktop browser that removes the vertical scrollbar,
+   * which makes the whole page jump sideways.
+   *
+   * This floating menu does not need to change the page layout.
+   */
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  body,
+  body.nav-open {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+
+    /* Keep the existing page scrollbar so the layout does not shift */
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  /*
+   * The navigation itself remains fixed/floating and therefore does not
+   * take up document space or push the page.
+   */
+  #nav-links-container,
+  #nav-links-container.active,
+  #nav-links-container.mobile-active {
+    position: fixed !important;
+    margin: 0 !important;
+  }
+
+
+  /* =====================================================
+     2. RESTORE THE CLIENT PORTAL BUTTON
+     ===================================================== */
+
+  /*
+   * These selectors intentionally beat the generic mobile-nav anchor
+   * rule that was making the portal link look like plain text.
+   */
+  #nav-links-container a.client-portal,
+  #nav-links-container a.nav-cta,
+  #nav-links-container .client-portal > a,
+  #nav-links-container .nav-cta > a,
+  #nav-links-container [class*="portal"] > a,
+  #nav-links-container .client-portal,
+  #nav-links-container .nav-cta {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    min-height: 52px !important;
+    box-sizing: border-box !important;
+
+    margin: 16px 0 0 !important;
+    padding: 14px 18px !important;
+
+    border: 1px solid #10b981 !important;
+    border-radius: 12px !important;
+
+    background: #10b981 !important;
+    color: #0a1f44 !important;
+
+    text-align: center !important;
+    text-decoration: none !important;
+
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+
+    box-shadow: none !important;
+  }
+
+  #nav-links-container a.client-portal *,
+  #nav-links-container a.nav-cta *,
+  #nav-links-container .client-portal > a *,
+  #nav-links-container .nav-cta > a *,
+  #nav-links-container [class*="portal"] > a * {
+    margin: 0 !important;
+    text-align: center !important;
+    color: inherit !important;
+  }
+
+  #nav-links-container a.client-portal:hover,
+  #nav-links-container a.nav-cta:hover,
+  #nav-links-container .client-portal > a:hover,
+  #nav-links-container .nav-cta > a:hover,
+  #nav-links-container [class*="portal"] > a:hover {
+    background: #0ea371 !important;
+    border-color: #0ea371 !important;
+    color: #0a1f44 !important;
+  }
+}
+
+
+/**
+ * filings4u Mobile Navigation — floating panel spacing + emerald portal
+ *
+ * Load AFTER the current mobile navigation CSS.
+ *
+ * Changes:
+ * 1) Moves the floating menu farther away from the toggle button.
+ * 2) Makes the Client Portal button emerald with centered text.
+ */
+
+@media (max-width: 1024px) {
+
+  /* -----------------------------------------------------
+     FLOAT THE MENU AWAY FROM THE TOGGLE
+     ----------------------------------------------------- */
+
+  #nav-links-container {
+    /* Creates visible separation below the header / toggle */
+    top: 118px !important;
+
+    /* Keeps the card floating off the right edge */
+    right: 12px !important;
+
+    width: min(88vw, 360px) !important;
+    max-height: calc(100dvh - 132px) !important;
+
+    border-radius: 18px !important;
+    background: #ffffff !important;
+
+    box-shadow:
+      0 18px 42px rgba(10, 31, 68, 0.16) !important;
+  }
+
+
+  /* -----------------------------------------------------
+     CLIENT PORTAL — EMERALD BUTTON
+     ----------------------------------------------------- */
+
+  /*
+   * Catch the portal whether the class is on the anchor itself
+   * or on a wrapper around the anchor.
+   */
+  #nav-links-container a.client-portal,
+  #nav-links-container a.nav-cta,
+  #nav-links-container a[class*="portal"],
+  #nav-links-container .client-portal > a,
+  #nav-links-container .nav-cta > a,
+  #nav-links-container [class*="portal"] > a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    min-height: 52px !important;
+
+    margin-top: 16px !important;
+    padding: 14px 18px !important;
+
+    box-sizing: border-box !important;
+
+    border: 1px solid #10b981 !important;
+    border-radius: 12px !important;
+
+    background: #10b981 !important;
+    color: #0a1f44 !important;
+
+    text-align: center !important;
+    text-decoration: none !important;
+
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+
+    box-shadow: none !important;
+  }
+
+  #nav-links-container a.client-portal:hover,
+  #nav-links-container a.nav-cta:hover,
+  #nav-links-container a[class*="portal"]:hover,
+  #nav-links-container .client-portal > a:hover,
+  #nav-links-container .nav-cta > a:hover,
+  #nav-links-container [class*="portal"] > a:hover {
+    background: #0ea371 !important;
+    border-color: #0ea371 !important;
+    color: #0a1f44 !important;
+  }
+
+  /* Keep all portal text centered */
+  #nav-links-container a.client-portal *,
+  #nav-links-container a.nav-cta *,
+  #nav-links-container a[class*="portal"] *,
+  #nav-links-container .client-portal > a *,
+  #nav-links-container .nav-cta > a *,
+  #nav-links-container [class*="portal"] > a * {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    color: inherit !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #nav-links-container {
+    top: 112px !important;
+    right: 10px !important;
+    width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 122px) !important;
+  }
+}
