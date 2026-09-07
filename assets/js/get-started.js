@@ -189,9 +189,17 @@
       labels.enterprise||"Enterprise"
     ];
 
+    const servicePages={
+      "web-design-packages":"web-design-packages.html",
+      "logo-design-packages":"logo-design-packages.html",
+      "shipper-packages":"shipper-packages.html",
+      "carrier-packages-brokers":"carrier-packages-brokers.html",
+      "carrier-packages-truckers":"carrier-packages-truckers.html"
+    };
+
     return `
       <a class="gs-card gs-card--specialty"
-         href="wizard.html?service=${encodeURIComponent(service.slug)}"
+         href="${servicePages[service.slug]||`wizard.html?service=${encodeURIComponent(service.slug)}`}"
          data-service="${service.slug}">
         <div class="gs-card__top">
           <span class="gs-card__icon">${service.icon}</span>
