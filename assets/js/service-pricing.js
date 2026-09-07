@@ -1,4 +1,3 @@
-
 (function(){
   "use strict";
 
@@ -16,11 +15,30 @@
     return;
   }
 
+  const defaultTiers = {
+    starter: {
+      name: "Starter",
+      description: "Essential filing support"
+    },
+    compliance: {
+      name: "Compliance",
+      description: "More guidance and ongoing support"
+    },
+    enterprise: {
+      name: "Enterprise",
+      description: "Our most complete service level"
+    }
+  };
+
   const tierConfig = [
-    { key:"starter", name:"Starter", featured:false, description:"Essential filing support" },
-    { key:"compliance", name:"Compliance", featured:true, description:"More guidance and ongoing support" },
-    { key:"enterprise", name:"Enterprise", featured:false, description:"Our most complete service level" }
-  ];
+    { key:"starter", featured:false },
+    { key:"compliance", featured:true },
+    { key:"enterprise", featured:false }
+  ].map(tier => ({
+    ...tier,
+    name: plan.tierLabels?.[tier.key] || defaultTiers[tier.key].name,
+    description: plan.tierDescriptions?.[tier.key] || defaultTiers[tier.key].description
+  }));
 
   const bulletsFor = (tier) => {
     if (plan.bullets && !Array.isArray(plan.bullets) && Array.isArray(plan.bullets[tier])) {
@@ -33,7 +51,8 @@
   const cards = tierConfig.map(tier => {
     const price = Number(plan[tier.key] || 0);
     const bullets = bulletsFor(tier.key);
-    const fallbackUrl = "get-started.html";
+    const fallbackUrl = plan.checkoutUrl || "get-started.html";
+    const priceSuffix = plan.priceSuffix || "service fee";
 
     return `
       <article class="service-price-card${tier.featured ? " service-price-card--featured" : ""}">
@@ -41,7 +60,7 @@
         <span class="service-price-card__tier">${tier.name}</span>
         <h3>${tier.description}</h3>
         <div class="service-price-card__price">
-          <sup>$</sup><strong>${price.toFixed(0)}</strong><span>service fee</span>
+          <sup>$</sup><strong>${price.toFixed(0)}</strong><span>${priceSuffix}</span>
         </div>
         <ul>
           ${bullets.map(item => `<li>${item}</li>`).join("")}
@@ -58,17 +77,26 @@
     `;
   }).join("");
 
-  const jurisdictionNote = plan.requiresJurisdiction === false
-    ? `<strong>Government service:</strong> No state jurisdiction selection is required. Your selected package will carry directly into the wizard.`
-    : `<strong>State/jurisdiction service:</strong> Government filing fees vary by state and will be calculated after you select the filing jurisdiction in the wizard.`;
+  const categoryNote = (() => {
+    if (plan.requiresJurisdiction === false) {
+      if (plan.category === "design") {
+        return "<strong>Design service:</strong> No state jurisdiction selection is required. Your selected design package will carry directly into the project intake workflow.";
+      }
+      if (plan.category === "broker-operations" || plan.category === "carrier-operations") {
+        return "<strong>Operational document package:</strong> No state jurisdiction selection is required. Your selected package will carry directly into the intake workflow.";
+      }
+      return "<strong>Service package:</strong> No state jurisdiction selection is required. Your selected package will carry directly into the wizard.";
+    }
+    return "<strong>State/jurisdiction service:</strong> Government filing fees vary by state and will be calculated after you select the filing jurisdiction in the wizard.";
+  })();
 
   root.innerHTML = `
     <div class="service-pricing-head">
       <span class="section-kicker">Choose your service level</span>
       <h2>Pick the package that fits your needs.</h2>
-      <p>Every package uses the same secure filings4u workflow. Your selected service and tier carry directly into the wizard.</p>
+      <p>Your selected service and package carry directly into the filings4u intake workflow.</p>
     </div>
     <div class="service-pricing-grid">${cards}</div>
-    <div class="service-pricing-note"><span>ⓘ</span><div>${jurisdictionNote}</div></div>
+    <div class="service-pricing-note"><span>ⓘ</span><div>${categoryNote}</div></div>
   `;
 })();
