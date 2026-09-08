@@ -92,23 +92,23 @@ window.FILINGS4U_NAV_TARGET = window.FILINGS4U_NAV_TARGET || "filings4u-global-n
       <div class="dropdown-content mega-panel-two-col">
         <div class="mega-column">
           <span class="column-title">Design Services</span>
-          <a href="web-design-packages.html"
+          <a href="wizard.html?service=web-design-packages"
              data-wizard-service-link
              data-service="web-design-packages">Web Design Packages</a>
-          <a href="logo-design-packages.html"
+          <a href="wizard.html?service=logo-design-packages"
              data-wizard-service-link
              data-service="logo-design-packages">Logo Design Packages</a>
         </div>
 
         <div class="mega-column">
           <span class="column-title">Broker & Carrier Operations</span>
-          <a href="shipper-packages.html"
+          <a href="wizard.html?service=shipper-packages"
              data-wizard-service-link
              data-service="shipper-packages">Shipper Setup Packages</a>
-          <a href="carrier-packages-brokers.html"
+          <a href="wizard.html?service=carrier-packages-brokers"
              data-wizard-service-link
              data-service="carrier-packages-brokers">Carrier Setup Packages for Brokers</a>
-          <a href="carrier-packages-truckers.html"
+          <a href="wizard.html?service=carrier-packages-truckers"
              data-wizard-service-link
              data-service="carrier-packages-truckers">Carrier Packages for Trucking Companies</a>
         </div>
@@ -153,7 +153,7 @@ window.FILINGS4U_NAV_TARGET = window.FILINGS4U_NAV_TARGET || "filings4u-global-n
       </div>
     </div>
 
-    <a href="https://portal.filings4u.com/portal-login.html" class="btn-client-portal">Client Portal</a>`;
+    <a href="https://portal.filings4u.com/customer-login.html" class="btn-client-portal">Client Portal</a>`;
 
   function renderDynamicGlobalCorporateNavigation() {
     const zone = document.getElementById(window.FILINGS4U_NAV_TARGET);
