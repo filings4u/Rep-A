@@ -56,6 +56,7 @@
           <a href="index.html#resources">Resources</a>
           <a href="contact.html">Contact Experts</a>
           <a href="https://portal.filings4u.com/portal-login.html">Client Portal</a>
+          <a href="blog.html">Blog</a>
         </div>
 
       </div>
@@ -79,6 +80,7 @@
           <a href="privacy-policy.html">Privacy Policy</a>
           <a href="terms-of-service.html">Terms of Service</a>
           <a href="refund-policy.html">Refund Policy</a>
+          <a href="https://portal.filings4u.com/admin-dashboard.html">Admin Login</a>
         </div>
 
       </div>
